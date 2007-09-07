@@ -1,5 +1,5 @@
 ! fft1d.f -*-f90-*-
-! Time-stamp: <2007-06-05 17:31:07 t-nissie>
+! Time-stamp: <2007-09-07 08:16:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine fft1d(mode, n, c, increment)
@@ -17,8 +17,8 @@ subroutine fft1d(mode, n, c, increment)
      case( 32); call fft1d_fwd_0032(c,increment)
      case( 64); call fft1d_fwd_0064(c,increment)
      case(128); call fft1d_fwd_0128(c,increment)
-     case(256); call fft1d_fwd_0256(c,increment)
-     case(512); call fft1d_fwd_0512(c,increment)
+    !case(256); call fft1d_fwd_0256(c,increment)
+    !case(512); call fft1d_fwd_0512(c,increment)
      case default; stop 'Illegal n.'
      end select
   else
@@ -30,8 +30,8 @@ subroutine fft1d(mode, n, c, increment)
      case( 32); call fft1d_inv_0032(c,increment)
      case( 64); call fft1d_inv_0064(c,increment)
      case(128); call fft1d_inv_0128(c,increment)
-     case(256); call fft1d_inv_0256(c,increment)
-     case(512); call fft1d_inv_0512(c,increment)
+    !case(256); call fft1d_inv_0256(c,increment)
+    !case(512); call fft1d_inv_0512(c,increment)
      case default; stop 'Illegal n.'
      end select
   end if

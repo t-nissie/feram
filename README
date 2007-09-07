@@ -65,9 +65,8 @@ PGI Fortran (pgf95, version 7.0 or higher) http://www.pgroup.com/
   $ cd foo
   $ ../configure --help
   $ ../configure
-  $ cd src
   $ make
-  $ cd ../examples/BaTiO3-bulk-16x16x16-local.field-new-format/
+  $ cd examples/BaTiO3-bulk-16x16x16-local.field-new-format/
   $ OMP_NUM_THREADS=6 ../../src/feram T300 | tee T300.log        (example of prallel execution)
   $ ../../src/feram T300 | tee T300.log                          (example of serial execution)
 
@@ -79,7 +78,6 @@ feram runs on 1 node (16 CPUs) of SR11000 effectively.
   % mkdir SR11000-xf90
   % cd SR11000-xf90
   % env FC=xf90 ../configure --host=SR11000
-  % cd src
   % make
 Becasue SR11000 and its Fortran compiler cannot treat command arguments,
 you have to specify input file(s) in FILES file. For example,
@@ -99,8 +97,8 @@ environment variables.
 
 === rupc05
   $ FC=pgf95 LDFLAGS=-L/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/lib CPPFLAGS=-I/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/include ../configure
-  $ cd src
   $ make
+  $ cd examples/BaTiO3-bulk-16x16x16-local.field-new-format/
   $ OMP_NUM_THREADS=6 ../../pgf95/src/feram cooling > feram.log &
 
 === IA-64 Linux (appc in IMR)
@@ -115,8 +113,6 @@ On IA-64, feram may be compiled with gfortran or Intel Fortran (ifort). For exam
   % cp ../../examples/BaTiO3-bulk-32x32x32-new-format/cooling .
   % ./feram cooling
   % env OMP_NUM_THREADS=2 ./feram cooling
-
-
 
 === x86 32-bit Linux
 On x86 32-bit Linux, feram may be compiled with gfortran and Intel Fortran (ifort),

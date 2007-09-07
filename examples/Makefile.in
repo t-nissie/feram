@@ -1,20 +1,16 @@
 #-*-Makefile-*- for examples of feram
-# Time-stamp: <2007-05-22 10:05:51 t-nissie>
+# Time-stamp: <2007-09-07 08:56:31 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 srcdir = @srcdir@
 VPATH = @srcdir@
-SUBDIRECTORIES=BaTiO3-bulk-16x16x16 \
-               BaTiO3-bulk-32x32x32 \
-               BaTiO3-epit-16-16-07-01 \
-               BaTiO3-film-16-16-07-01
-EXTRA_FILES=dipole-dipole.axis plot.gp
 
 all: test-basic
 
 subdirectories:
 ifneq "$(srcdir)" "."
-	tar -C $(srcdir) -c --exclude=Makefile -f - $(SUBDIRECTORIES) $(EXTRA_FILES) | tar xf -
+	tar -C $(srcdir) -c --exclude=Makefile -f - . | tar xf -
+	rm -rf `find . -type d -name .svn`
 endif
 
 test-basic: BaTiO3-bulk-16x16x16/phase_transition.eps

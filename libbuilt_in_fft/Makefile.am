@@ -1,12 +1,17 @@
 #-*-Makefile-*-
-# Time-stamp: <2007-06-06 21:39:47 t-nissie>
+# Time-stamp: <2007-09-07 08:15:32 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
 noinst_LIBRARIES = libbuilt_in_fft.a
-EXTRA_DIST = generatefft.rb test_fft1d.f test_fft3d.f
+EXTRA_DIST = generatefft.rb test_fft1d.f test_fft3d.f \
+        fft1d_fwd_0256.f \
+        fft1d_fwd_0512.f \
+        fft1d_inv_0256.f \
+        fft1d_inv_0512.f
+
 ALL_FFT1D = \
 fft1d_fwd_0002.f \
 fft1d_fwd_0004.f \
@@ -15,17 +20,13 @@ fft1d_fwd_0016.f \
 fft1d_fwd_0032.f \
 fft1d_fwd_0064.f \
 fft1d_fwd_0128.f \
-fft1d_fwd_0256.f \
-fft1d_fwd_0512.f \
 fft1d_inv_0002.f \
 fft1d_inv_0004.f \
 fft1d_inv_0008.f \
 fft1d_inv_0016.f \
 fft1d_inv_0032.f \
 fft1d_inv_0064.f \
-fft1d_inv_0128.f \
-fft1d_inv_0256.f \
-fft1d_inv_0512.f
+fft1d_inv_0128.f
 libbuilt_in_fft_a_SOURCES = $(ALL_FFT1D) fft1d.f fft3d.f
 
 CLEANFILES = core core.* *.o test_fft1d test_fft3d
@@ -38,8 +39,8 @@ test: test_fft1d test_fft3d
 	./$<  32
 	./$<  64
 	./$< 128
-	./$< 256
-	./$< 512
+#	./$< 256
+#	./$< 512
 	time ./test_fft3d
 
 test_fft1d: test_fft1d.o libbuilt_in_fft.a

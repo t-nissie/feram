@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2007-09-07 07:33:43 takeshi>
+# Time-stamp: <2007-09-07 09:13:15 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -16,16 +16,20 @@ EXTRA_DIST = README \
              examples
 CLEANFILES = *.html
 SNAPSHOT_NAME=$(PACKAGE)-$(VERSION)_`date +"%Y-%m-%d_%H"`
+SOURCEFORGE_FERAM=t-nissie@shell.sourceforge.net:/home/groups/l/lo/loto/htdocs/feram
 
-index.html:   README         ulwmul2html.rb style.css
-	ruby $< $<      > $@
+sf: sourceforge
+sourceforge: README.html COPYING style.css
+	scp $<                            $(SOURCEFORGE_FERAM)/index.html
+	scp $^                            $(SOURCEFORGE_FERAM)
+	scp libblaslapack/COPYING         $(SOURCEFORGE_FERAM)/libblaslapack
 
-#dist-hook:
-#	cd $(distdir)/examples    && $(MAKE)     clean
+README.html:  README         ulwmul2html.rb style.css
+	ruby -I $(srcdir) $< $<                > $@
 
-#clean-local:
-#	cd examples    && $(MAKE) clean
-#	cd xmlf90-1.2g && $(MAKE) clean
+dist-hook:
+	rm -rf `find $(distdir) -type d -name .svn`
+	cd $(distdir)/examples && $(MAKE) clean
 
 .PHONY: snapshot
 snapshot:
