@@ -1,0 +1,43 @@
+#-*-Makefile-*- for examples of feram
+# Time-stamp: <2007-05-22 10:05:51 t-nissie>
+# Author: Takeshi NISHIMATSU
+##
+srcdir = @srcdir@
+VPATH = @srcdir@
+SUBDIRECTORIES=BaTiO3-bulk-16x16x16 \
+               BaTiO3-bulk-32x32x32 \
+               BaTiO3-epit-16-16-07-01 \
+               BaTiO3-film-16-16-07-01
+EXTRA_FILES=dipole-dipole.axis plot.gp
+
+all: test-basic
+
+subdirectories:
+ifneq "$(srcdir)" "."
+	tar -C $(srcdir) -c --exclude=Makefile -f - $(SUBDIRECTORIES) $(EXTRA_FILES) | tar xf -
+endif
+
+test-basic: BaTiO3-bulk-16x16x16/phase_transition.eps
+
+test-all:   BaTiO3-bulk-16x16x16/phase_transition.eps \
+            BaTiO3-bulk-32x32x32/phase_transition.eps
+
+%.eps: subdirectories ../src/feram
+	../src/feram `dirname $@`/heating `dirname $@`/cooling
+	gnuplot $(subst .eps,.gp,$@)
+
+../src/feram:
+	cd ../src && $(MAKE)
+
+.PRECIOUS: Makefile
+Makefile: $(srcdir)/Makefile.in
+	cd .. && ./config.status examples/$@
+
+%.pdf: %.eps
+	ps2pdf -sPAPERSIZE=letter $< $@
+
+distclean: clean
+	rm -f Makefile
+
+clean:
+	rm -f */*.coord */*.dat *.dat core* */core* */*.eps */*.param */*.avg */*.log */*.out

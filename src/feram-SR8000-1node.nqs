@@ -1,0 +1,17 @@
+#!/bin/sh
+# @$-s /bin/sh
+# @$-o stdout.out
+# @$-e stderr.out
+# @$-mu t-nissie@imr.edu,t_nissie_metal_guru@h.vodafone.ne.jp
+# @$-me
+##
+PATH=$PATH:/usr/local/bin:/usr/mpi/bin:/usr/local/gnu/bin
+export PATH
+
+if [ -n "$QSUB_WORKDIR" ] ; then
+    cd $QSUB_WORKDIR
+    HF_90OPTS="-Frunst(umask(1))"
+    export HF_90OPTS
+fi
+
+./feram-SR8000-1node < bulk-72x72x72-test.in | tee feram-SR8000-1node.out

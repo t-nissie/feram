@@ -1,0 +1,52 @@
+--- 64x64x64 101 iterations
+AMD Opteron 2.2GHz
+quartz01 214% time ./feram < bulk-64x64x64-test.in > feram-Opteron.out 
+226.366u 1.408s 3:47.90 99.9%   0+0k 0+0io 192pf+0w
+
+cmsappa 214% time ./feram-OSF1 < bulk-64x64x64-test.in > feram-OSF1.out
+440.714u 55.507s 9:26.79 87.5%  0+1169k 145+44io 100pf+0w
+
+#################################################################
+# job submitted   time        : 2005/11/15 17:46:08
+# request started time        : 2005/11/15 17:46:11
+# request ended   time        : 2005/11/15 18:01:19
+# executed on qea 
+# end status(0000), exit code(0)
+# allocated nodes             :  1
+# elapsed time                :  908 (sec)
+# CPU time                    :  7,223 (sec)
+# I/O                         :  0.7500 (MB), 0.8260 (KB/sec)
+# EP-processes(No. of parallels) : 1(8)
+# EP-time(sca,para)           :  573.63 (sec), 399.31 (sec)
+# rate of element parallel    :  69.600 (%)
+# floating operations         : 50,586 (M)
+# MFlops/IP                   : 7.0026 (MFlops/IP)
+# Instructions per sec        : 45.20 (MIPS/IP)
+# memory access instructions  : 150,297 (M)
+# data-cache miss             : 2,983 (M), 1.9853 (%)
+# max real memory             : 234.96 (MB)
+# freeze(result, err, detail) : 0, 0, 0
+################################################################################
+
+
+--- 72x72x72 101 iterations
+AMD Opteron 2.2GHz
+quartz01 250% uname -a ; pwd ; time ./feram < bulk-72x72x72-test.in > /dev/null
+Linux quartz01 2.6.13.wolfchen-2005-09-06 #2 SMP Tue Sep 6 22:28:08 JST 2005 i686 unknown
+/home/t-nissie/f/feram/feram-1.06/src
+349.141u 2.016s 5:51.21 99.9%   0+0k 0+0io 0pf+0w
+quartz01 251% 
+
+Alpha
+cmsappa 207% time ./feram-OSF1 < bulk-72x72x72-test.in
+526.858u 38.339s 9:58.45 94.4%  0+1713k 110+42io 11pf+0w
+
+SR8000 1 node
+FFLAGS=-free -64 -Oss -pvec -parallel=4 -uinline=2 \
+	-uinlinename=decay-functions.f:B_decay:C_decay:Crr \
+	-uinlinename=cholesky_z.f:cholesky_z \
+	-mathinline -COMOUT -exclamation=option \
+	-loglist
+LIBS=-llapack -lblas -lmatmpp
+elapsed time                :     59 (sec)
+

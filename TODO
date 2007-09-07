@@ -1,0 +1,111 @@
+o  call dipoFFT(p,c)
+   call  dVddi_dipole_dipole(p,c,e)
+   call     dVddi_unharmonic(p,c,e)
+   call        dVddi_E_field(p,c,e)
+   call optimize_homo_strain(p,c,e)
+   call optimize_inho_strain(p,c,e)
+       は nose-poincare.F, leapfrog.F, initialize_dipoR.F に共通なのでまとめる。
+
+o libbuilt_in_fft 128 256, libbuilt_in_fft -> libminimal_fft
+
+o Makefile.am の依存関係。make -j でデバグできる。
+
+o leapfrog をもう一度動くようにする。
+
+o TEST UNIT
+
+o Use msg() in write_Param() of param_module.F.
+
+o striped structure を initial configuration にできるようにする.
+
+o acoustic displacement も MD.
+
+o refactoring nose-poincare.F and energy.F
+
+o 3 node parallelization
+
+o replace DSYEV().
+
+o use autoconf and make configure
+
+o average 4倍精度に？
+
+o start.coord があれば読み込む。alloc_Coord(p,c) で？
+
+o (coord を かきだし はじめる ところ おわる ところ AVERAGE の あいだだけ)
+
+o p, q, qdot にして, いつmassで割るか考える.
+
+o dipoA_dipole_dipole() を dipoA = dipoA + dipoA_dipole_dipole に.
+
+o Q_nose must be a function of T, N and delta_t. AUTOMATIC determination.
+
+o Automatical determination of kappa
+  kappa for the Ewald summation must be a function of Lx, Ly and Lz
+
+o strain energy の 計算をする部分を分離.
+
+o compare 16x16x16, 32x32x32 
+
+o LargeKappa.gp
+
+o dipoI(:,:,:,3,3) Upper Triangle だけにする？
+  FFTの計算はUpper Triangle だけやってC.C.をこぴーするようにした.
+  配列は3x3のまま.
+  どのくらいメモリを減らせる？
+
+o mass_acoustic, mass_strain なんか関係がある
+
+o 3-dimensional hedgehog plot (`with vec` is not available for splot of GNUPLOT)
+
+o interfaceぶん
+
+o initial spin configuration をつくる program をわける？
+
+o mass の 9648.53377163899 を define.h へ
+
+o children, parents, use
+
+o input file parserをつくる, input file と param.gp とをきょうつうか
+  タイトルも引数で指定できるようにしないと面倒臭い。
+
+o timing
+
+o call msg() DEPTH or p%message_depth
+
+o msg.f へいれつかのこともかんがえて.
+
+o Use class of Fortran 2003: class Ferroelectrics has a Param, a Coord and a Energy
+
+
+x LARGE_MASS_INV = 1.0d0 / 1000000000.0d0
+
+x 入力ファイルの整備
+
+x .F -> .F90 やらない
+
+x 16(kappa=0.22), 32(kappa=0.08), 64(kappa=0.055) で精度を検証
+  dipole-dipole-long.dat が ??e-31になってるから OK?
+
+x dipole-dipole.gp
+
+
+x coord.F: complex*16, allocatable :: dipoP(:,:,:,:,:)
+  real*8 にする
+
+x make dipole-dipole.F's children
+	short-range.F
+	long-range.F
+  dipole-dipole only と, それに short-range をくわえたものをふたつともだせるようにする.
+
+x normal.f
+  正規分布する乱数発生サブルーチン。参考文献をちゃんと書く。
+
+x param.F
+  初期dipole momentの平均値と標準偏差をを与えることが出来るようにする。
+  分散 variance
+  偏差 deviation  init_u_dev(3)
+  平均 average    init_u_avg(3)
+
+x Lz_periodic -> Lz      change mirror.f
+

@@ -1,0 +1,14 @@
+$ time ./test_fftw
+   1.23450000000000
+
+real    0m5.335s
+user    0m5.152s
+sys     0m0.004s
+
+
+time ./test_fft3d
+   1.23450000000000
+
+real    0m12.008s
+user    0m11.933s
+sys     0m0.004s

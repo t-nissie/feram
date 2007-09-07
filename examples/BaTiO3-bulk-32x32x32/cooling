@@ -1,0 +1,37 @@
+!--- Method, Temperature, and mass ---------------
+'md'         method (character(3))
+ -5.0        [GPa] pressure
+ 400         [K] kelvin_start
+ 396         [K] kelvin_goal
+  -5         [K] kelvin_step
+ 41.1        mass_dipo [amu], but to be changed into [eV Angstrom^-2 ps^2] in feram
+ 1.0         Q_Nose
+!--- System geometry -----------------------------
+'bulk'
+ 32 32 32     integer Lx, Ly, Lz
+ 0            gap = 1, 3, 5, 7, ...
+ 3.94         latice constant a0 [Angstrom]
+ -0.01        epi_strain
+!--- Time step -----------------------------------
+ 0.002  [pico second]
+  800  n_thermalize
+  200  n_average
+ 1000  n_coord_freq   ! frequency for writing out the coordinates
+!--- External electric field ---------------------
+ 0.0          real*8 E_ext0      ! External electric field t=0 [V/Angstrom]
+ 0.0          real*8 frequency   ! External electric field frequency [THz]
+!--- On-site (Polynomial of order 4) -------------
+   5.502      P_kappa2 [eV/Angstrom^2] ! P_4(u) = kappa2*u^2 + alpha*u^4
+ 110.4        P_alpha  [eV/Angstrom^4] !  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+-163.1        P_gamma  [eV/Angstrom^4] ! where u^2 = u_x^2 + u_y^2 + u_z^2
+!--- Inter-site ----------------------------------
+-2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
+!--- Elastic Constants ---------------------------
+126.  44.9  50.3               B11, B12, B44 [eV]
+!--- Elastic Coupling ----------------------------
+-211. -19.3 -7.75              B1xx, B1yy, B4yz [eV/Angstrom^2]
+!--- Dipole --------------------------------------
+ 0.00 0.00 0.00 Average   of initial dipole displacements
+ 0.02 0.02 0.02 Deviation of initial dipole displacements
+ 9.956         Z_star
+ 5.24          epsilon_inf

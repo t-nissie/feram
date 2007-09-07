@@ -1,0 +1,19 @@
+#!/bin/sh
+########################################################################
+# SUN Grid Engine job wrapper
+# serial job on serial queue
+########################################################################
+#$ -N feram-serial
+#$ -q serial
+#$ -j y
+#$ -M takeshi@physics.rutgers.edu
+#$ -m e
+#$ -cwd
+########################################################################
+# do NOT remove the following line!
+source $TMPDIR/sge_init.sh
+########################################################################
+
+# put your commands here
+pwd > pwd.out
+./feram < bulk-32x32x32-test.in > feram.out

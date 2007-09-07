@@ -1,0 +1,124 @@
+#-*-Makefile-*- for feram
+# Time-stamp: <2007-08-08 08:10:48 t-nissie>
+# Author: Takeshi NISHIMATSU
+##
+FC=@FC@
+F77=$(FC)
+AM_FFLAGS=@FCFLAGS@
+LIBBUILT_IN_FFT_A=@LIBBUILT_IN_FFT_A@
+bin_PROGRAMS = feram
+MODULES = param_module.F coord_module.F energy_module.F
+feram_SRCS = average_module.F \
+	cholesky_z.f \
+	cholesky_d.f \
+	dVddi-dipole-dipole.F \
+	dVddi-homo-coupling.F \
+	dVddi-unharmonic.F \
+	dVddi_E_field.F \
+	decay-functions.f \
+	dipoFFT.F \
+	dipole-dipole-long-range.F \
+	dipole-dipole-short-range.F \
+	dipole-dipole.F \
+	elastic.F \
+	feram.F \
+	fft.F \
+	initialize_E_field.F \
+	initialize-dipoR.F \
+	leapfrog.F \
+	make-mass-matrix.F \
+	mirror.F \
+	molecular-dynamics.F \
+	msg.F \
+	normal.F \
+	nose-poincare.F \
+	optimize-homo-strain.F \
+	optimize-inho-strain.F \
+	potentials.F \
+	print-eigenvalues.F \
+	quicksort.f
+feram_SOURCES = $(MODULES) $(feram_SRCS)
+feram_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
+CLEANFILES = *.mod *.ps *.pdf
+EXTRA_DIST = define.h \
+cross-section-dVddi.sh \
+cross-section-p.sh \
+cross-section-q.sh \
+decay-test.gp \
+epit.gp \
+inhomo-K.gp \
+plot.gp \
+slicer.rb \
+splot.gp \
+strain.heating-cooling.gp
+
+../libblaslapack/libblaslapack.a:
+	cd ../libblaslapack && $(MAKE)
+
+../libbuilt_in_fft/liblibbuilt_in_fft.a:
+	cd ../libbuilt_in_fft && $(MAKE)
+
+cholesky_d.f: cholesky_z.f
+	sed -e 's/complex\*16/real*8/' -e 's/_z/_d/' $< > $@
+
+# all: plot.ps # 300K0000000.ps decay-test.ps
+
+# feram.out: $(INPUT_FILE) feram
+# 	./feram < $< | tee $@
+
+# crosssection: crosssection.gp
+# 	gnuplot $<
+
+# hensachi: hensachi.o normal.o
+# 	$(FC) $(FFLAGS) -o $@ $^ $(LIBS)
+
+# decay-test: decay-test.o decay-functions.o
+# 	$(FC) $(FFLAGS) -o $@ $^
+
+# decay-test.ps: decay-test.gp decay-test feram.out
+# 	gnuplot $<
+
+feram.o: param_module.o coord_module.o
+normal.o decay-functions.o param_module.o:             define.h
+feram.o potentials.o dipole-dipole.o:\
+                                param_module.o coord_module.o define.h
+initialize-dipoR.o dVddi-unharmonic.o leapfrog.o \
+optimize-homo-strain.o:energy_module.o param_module.o coord_module.o
+energy_module.o: param_module.o coord_module.o
+optimize-homo-strain.o:energy_module.o param_module.o coord_module.o cholesky_d.o
+optimize-inho-strain.o:energy_module.o param_module.o coord_module.o cholesky_z.o
+molecular-dynamics.o:  energy_module.o param_module.o coord_module.o average_module.o
+dipoFFT.o elastic.o dVddi-homo-coupling.o dVddi-unharmonic.o make-mass-matrix.o potential.o:\
+                                param_module.o coord_module.o
+initialize_E_field.o:           param_module.o coord_module.o define.h
+initialize-dipoR.o average_module.o:\
+                                param_module.o coord_module.o energy_module.o define.h
+nose-poincare.o:                param_module.o coord_module.o energy_module.o
+coord_module.o:                 param_module.o         define.h
+mirror.o fft.o:                 param_module.o
+dipole-dipole-long-range.o:     param_module.o         define.h fft.o
+dipole-dipole-short-range.o:    param_module.o                  fft.o
+dVddi-dipole-dipole.o: energy_module.o param_module.o coord_module.o          fft.o
+print-eigenvalues.o:                            define.h
+
+pdf: feram.pdf coord_module.pdf param_module.pdf
+.ps.pdf:
+	ps2pdf -sPAPERSIZE=a4 $< $@
+
+.F.ps:
+	a2ps --prologue=color --portrait --columns=1 --margin=3 \
+	--borders=off \
+	-f 9.7 --pretty-print=for90-free -o - $< > $@
+
+.f.ps:
+	a2ps --prologue=color --portrait --columns=1 --margin=3 \
+	--borders=off \
+	-f 11.0 --pretty-print=for90-free -o - $< > $@
+
+#diff: param.F
+#	diff -u -w $< $(INPUT_FILE) ; true
+#	egrep 'read.* DUMMY' $< | cut -b 20- > param.read_dummy
+#	diff -u -w param.read_dummy $(INPUT_FILE) ; true
+#	egrep "write.*'!" $< | cut -b 21- | sed "s/'$$//" > param.write_dummy
+#	diff -u -w param.read_dummy param.write_dummy
+
