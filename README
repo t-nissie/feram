@@ -30,10 +30,10 @@ feram is a very fast molecular dynamics simulator for bulk and thin-film ferroel
 * Coarse-graining; reduction of the number of degree of freedom
 
 === Technically
-* FFTW library version 3 http://www.fftw.org/
+* FFTW library version 3  http://www.fftw.org/
 * Palatalized with OpenMP
 * Object oriented programming (OOP) in Fortran 2003
-* GNU autotools are used skillfully
+* GNU autotools  http://www.gnu.org/software/autoconf/
 
 == References
 * R. D. King-Smith and David Vanderbilt: "First-principles investigation of ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
