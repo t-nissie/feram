@@ -18,8 +18,9 @@ http://sourceforge.net/project/showfiles.php?group_id=204591&package_id=245013 .
 feram is a very fast molecular dynamics simulator for bulk and thin-film ferroelectrics
 == Features and keywords
 === In Physics
-* Ferroelectrixs
+* Ferroelectrics
 * Relaxor
+* Phase transition
 * Thin film
 * Electrodes
 * Capacitor
