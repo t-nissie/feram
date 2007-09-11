@@ -354,6 +354,17 @@ packages http://www.netlib.org/lapack/. See libblaslapack/COPYING.
 Takeshi Nishimatsu
 (t-nissie{at}imr.tohoku.ac.jp or takeshi{at}physics.rutgers.edu)
 
+
+= Acknowledgements
+This project is/was partially supported by:
+* Ministry of Education, Culture, Sports, Science and Technology  http://www.mext.go.jp/
+* Japan Society of Promotion of Science  http://www.jsps.go.jp/
+* Tohoku University  http://www.tohoku.ac.jp/
+* Institute of Materials Research, Tohoku University  http://www.imr.tohoku.ac.jp/
+
+http://loto.sourceforge.net/feram/ is hosted by SourceForge.net .
+
+
 =end
 #
 # for ulwmul2html.rb
@@ -367,6 +378,7 @@ u2h.subs_rules << [/(\S*\/?COPYING)(\s|$|\.)/, '<a href="\1">\1</a>\2']
 u2h.subs_rules << [/(\S*\/?LICENSE)(\s|$|\.)/, '<a href="\1">\1</a>\2']
 u2h.subs_rules << [/(INSTALL\S*)(\s|$)/,       '<a href="\1">\1</a>\2']
 u2h.subs_rules << [/(examples\/\S*)(\s|$)/,    '<a href="\1">\1</a>\2']
+u2h.subs_rules << [/SourceForge.net/,          '<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a>']
 u2h.parse(ARGF)
 puts u2h.html
 
