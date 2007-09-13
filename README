@@ -1,10 +1,8 @@
 =begin
 
-:title: feram: molecular dynamics simulator for bulk and thin-film ferroelectrics
+:title: feram: molecular dynamics simulator for bulk and thin-film ferroelectrics and relaxors
 
-feram is a molecular dynamics simulator for bulk and thin-film ferroelectrics.
-
-Pronunciation of "feram": Ef-Ee-RaMu (i.e. FeRAM or Ferroelectrics and Relaxer Analyzing Machine)
+logo.jpg
 
 :contents: 3
 
@@ -15,7 +13,10 @@ You can download a tar ball of feram (feram-X.YY.ZZ.tar.gz) from
 http://sourceforge.net/project/showfiles.php?group_id=204591&package_id=245013 .
 
 = What is feram?
-feram is a very fast molecular dynamics simulator for bulk and thin-film ferroelectrics
+feram is a very fast molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
+
+Pronunciation of "feram": Ef-Ee-RaMu
+
 == Features and keywords
 === In Physics
 * Ferroelectrics
