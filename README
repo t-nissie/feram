@@ -330,6 +330,16 @@ The calculated local field from the given ionic configuration (ionic.configurati
 file) is stored in this file. This file will be reloaded in consequent temperature
 calculations and the other calculations.
 
+= Mailing list
+* Description: Discussions and announcements of loto, feram and compasses programs
+* Subscribe: https://lists.sourceforge.net/lists/listinfo/loto-feram-compasses-ml
+* Password: Do NOT use your important password. Please use a new unique password.
+* Address: loto-feram-compasses-ml@lists.sourceforge.net
+* Public: Your post to this mailing list will be publicly archived and appeared on the net.
+* Language: English
+* Administrator: Takeshi Nishimatsu
+
+
 = Copying
 == feram
 Copyright (C) 2007 Takeshi Nishimatsu
