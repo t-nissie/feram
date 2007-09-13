@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2007-09-13 11:33:41 takeshi>
+# Time-stamp: <2007-09-13 16:22:39 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -23,6 +23,10 @@ sourceforge: README.html COPYING style.css favicon.ico logo.jpg
 	scp $<                            $(SOURCEFORGE_FERAM)/index.html
 	scp $^                            $(SOURCEFORGE_FERAM)
 	scp libblaslapack/COPYING         $(SOURCEFORGE_FERAM)/libblaslapack
+
+logo.jpg: logo.eps
+	gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r120x120 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q $< \
+	 | pnmcrop -white | cjpeg -quality 80 > $@
 
 README.html:  README         ulwmul2html.rb style.css
 	ruby -I $(srcdir) $< $<                > $@
