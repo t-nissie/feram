@@ -19,13 +19,14 @@ Pronunciation of "feram": Ef-Ee-RaMu
 
 == Features and keywords
 === In Physics
+* Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
 * Ferroelectrics
 * Relaxor
 * Phase transition
 * Thin film
 * Electrodes
 * Capacitor
-* Nose-Poincare method
+* Nose-Poincare thermostat
 * Optical phonon
 * Evaluate forces in reciprocal-space; k-locality of the force matrix
 * Coarse-graining; reduction of the number of degree of freedom
@@ -35,15 +36,17 @@ Pronunciation of "feram": Ef-Ee-RaMu
 * Palatalized with OpenMP
 * Object oriented programming (OOP) in Fortran 2003
 * GNU autotools  http://www.gnu.org/software/autoconf/
+* Subversion repository at https://loto.svn.sourceforge.net/svnroot/loto/feram
 
 == References
 * R. D. King-Smith and David Vanderbilt: "First-principles investigation of ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
+* U.V. Waghmare, E. J. Cockayne, and B. P. Burton: "Ferroelectric Phase Transitions in Nano-scale Chemically Ordered PbSc0.5Nb0.5O3 using a First-principles Model Hamiltonian", Ferroelectrics vol.291, p.187 (2003).
 * Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare: "Ferroelectric Phase Transitions in Ultra-thin Films of BaTiO3", Phys. Rev. Lett., vol.99, p.077601 (2007).
 
 
 = Install
 == Requirements
-* GNU make. You cannot use BSD make. http://www.gnu.org/software/make/
+* GNU make http://www.gnu.org/software/make/ . (You cannot use BSD make.)
 * FFTW3 library. http://www.fftw.org/
 * Fortran 90 compiler
   * Intel Fortran Compiler for Linux (ifort, version 10.0.025 or higher) http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
@@ -51,8 +54,9 @@ Pronunciation of "feram": Ef-Ee-RaMu
   * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
 
 ==  Notice on PGI Fortran
-We found that feram compiled with PGI Fortran is slow.
-PGI Fortran (pgf95, version 7.0 or higher) http://www.pgroup.com/
+It is found that feram compiled with PGI Fortran 7.0 is slow.
+We are currently working on this problem.
+PGI Fortran (pgf95): http://www.pgroup.com/
 
 == Preferables
 * gnuplot (version 4.2 or higher)
@@ -121,8 +125,10 @@ On x86 32-bit Linux, feram may be compiled with gfortran and Intel Fortran (ifor
 and PGI Fortran (pgf95).
 
 = Execution
-  $ feram input_file_1 input_file_2 ...
+feram can read parameters from the standard input (stdin)
+as well as from the file(s) given by the argument(s).
   $ feram < input_file
+  $ feram cooling heating
 
 = Input files
 == parameter file
@@ -301,14 +307,14 @@ filenames of output files are starting from 'cooling',
 e.g. cooling.avg, cooling.320K0050000.coord,
 cooling.dipole-dipole-long.dat, etc.
 
-== STDOUT
-To STDOUT, feram reports the energies of every iterations.
+== Standard output (stdout)
+To stdout, feram reports the energies of every iterations.
 src/plot.gp can plot the energies:
  $ feram cooling > feram.log
  $ gnuplot plot.gp
 
 == cooling.avg
-Averages.
+Averages for each temperature.
 
 == cooling.tttKnnnnnnn.coord
 Snapshot of dipoles at ttt Kelvin and nnnnnnn-th iteration.
