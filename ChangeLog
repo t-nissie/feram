@@ -1,3 +1,7 @@
+2007-09-18  Takeshi Nishimatsu  <takeshi@physics.rutgers.edu>
+
+	* configure.ac: version 0.03.05, rev 49
+
 2007-08-10  NISHIMATSU Takeshi  <takeshi@physics.rutgers.edu>
 
 	* src/param_module.F (read_Param):
