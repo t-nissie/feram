@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2007-09-13 16:22:39 takeshi>
+# Time-stamp: <2007-09-18 23:59:34 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -13,7 +13,10 @@ EXTRA_DIST = README \
              00MEMO \
              style.css \
              utils \
-             examples
+             examples \
+             logo.eps \
+             logo.jpg \
+             logo.obj
 CLEANFILES = *.html
 SNAPSHOT_NAME=$(PACKAGE)-$(VERSION)_`date +"%Y-%m-%d_%H"`
 SOURCEFORGE_FERAM=t-nissie@shell.sourceforge.net:/home/groups/l/lo/loto/htdocs/feram
