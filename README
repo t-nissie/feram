@@ -1,70 +1,67 @@
 =begin
-
-:title: feram: molecular dynamics simulator for bulk and thin-film ferroelectrics and relaxors
+= feram: molecular dynamics simulator for bulk and thin-film ferroelectrics and relaxors
 
 logo.jpg
 
-:contents: 3
-
-= Homepage and DOWNLOAD
+== Homepage and DOWNLOAD
 feram's homepage is http://loto.sourceforge.net/feram/ .
 
 You can download a tar ball of feram (feram-X.YY.ZZ.tar.gz) from
 http://sourceforge.net/project/showfiles.php?group_id=204591&package_id=245013 .
 
-= What is feram?
+== What is feram?
 feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
 
 Pronunciation of "feram": Ef-Ee-RaMu
 
-== Features and keywords
-=== In Physics
-* Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
-* Ferroelectrics
-* Relaxor
-* Phase transition
-* Thin film
-* Electrodes
-* Capacitor
-* Nose-Poincare thermostat
-* Optical phonon
-* Evaluate forces in reciprocal-space; k-locality of the force matrix
-* Coarse-graining; reduction of the number of degree of freedom
+=== Features and keywords
+==== In Physics
+ * Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
+ * Ferroelectrics
+ * Relaxor
+ * Phase transition
+ * Thin film
+ * Electrodes
+ * Capacitor
+ * Nose-Poincare thermostat
+ * Optical phonon
+ * Evaluate forces in reciprocal-space; k-locality of the force matrix
+ * Coarse-graining; reduction of the number of degree of freedom
 
-=== Technically
-* FFTW library version 3  http://www.fftw.org/
-* Palatalized with OpenMP
-* Object oriented programming (OOP) in Fortran 2003
-* GNU autotools  http://www.gnu.org/software/autoconf/
-* Subversion repository at https://loto.svn.sourceforge.net/svnroot/loto/feram
+==== Technically
+ * FFTW library version 3  http://www.fftw.org/
+ * Palatalized with OpenMP
+ * Object oriented programming (OOP) in Fortran 2003
+ * GNU autotools  http://www.gnu.org/software/autoconf/
+ * Subversion repository at https://loto.svn.sourceforge.net/svnroot/loto/feram
 
-== References
-* R. D. King-Smith and David Vanderbilt: "First-principles investigation of ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
-* U.V. Waghmare, E. J. Cockayne, and B. P. Burton: "Ferroelectric Phase Transitions in Nano-scale Chemically Ordered PbSc0.5Nb0.5O3 using a First-principles Model Hamiltonian", Ferroelectrics vol.291, p.187 (2003).
-* Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare: "Ferroelectric Phase Transitions in Ultra-thin Films of BaTiO3", Phys. Rev. Lett., vol.99, p.077601 (2007).
+=== References
+ * R. D. King-Smith and David Vanderbilt: "First-principles investigation of ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
+ * U.V. Waghmare, E. J. Cockayne, and B. P. Burton: "Ferroelectric Phase Transitions in Nano-scale Chemically Ordered PbSc0.5Nb0.5O3 using a First-principles Model Hamiltonian", Ferroelectrics vol.291, p.187 (2003).
+ * Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare: "Ferroelectric Phase Transitions in Ultra-thin Films of BaTiO3", Phys. Rev. Lett., vol.99, p.077601 (2007).
 
 
-= Install
-== Requirements
-* GNU make http://www.gnu.org/software/make/ . (You cannot use BSD make.)
-* FFTW3 library. http://www.fftw.org/
-* Fortran 90 compiler
-  * Intel Fortran Compiler for Linux (ifort, version 10.0.025 or higher) http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
-  * gfortran (gcc-4.2.1 or higher) http://gcc.gnu.org/fortran/
-  * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
+== Install
+=== Requirements
+ * GNU make http://www.gnu.org/software/make/ . (You cannot use BSD make.)
+ * FFTW3 library. http://www.fftw.org/
+ * Fortran 90 compiler
+   * Intel Fortran Compiler for Linux (ifort, version 10.0.025 or higher) http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
+   * gfortran (gcc-4.2.1 or higher) http://gcc.gnu.org/fortran/
+   * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
 
-==  Notice on PGI Fortran
+===  Notice on PGI Fortran
 It is found that feram compiled with PGI Fortran 7.0 is slow.
 We are currently working on this problem.
 PGI Fortran (pgf95): http://www.pgroup.com/
 
-== Preferables
-* gnuplot (version 4.2 or higher)
-* Ruby (version 1.8.6 or higher)
-* autoconf (version 2.59 or higher)
-* automake (version 1.10 higher)
+=== Preferables
+ * gnuplot (version 4.2 or higher)
+ * Ruby (version 1.8.6 or higher)
+ * autoconf (version 2.59 or higher)
+ * automake (version 1.10 higher)
 
-== Quick compilation
+=== Quick compilation
   $ tar zxf feram-X.YY.ZZ.tar.gz
   $ cd feram-X.YY.ZZ
   $ mkdir foo
@@ -76,8 +73,8 @@ PGI Fortran (pgf95): http://www.pgroup.com/
   $ OMP_NUM_THREADS=6 ../../src/feram T300 | tee T300.log        (example of prallel execution)
   $ ../../src/feram T300 | tee T300.log                          (example of serial execution)
 
-== Available platforms and compilers
-=== HITACHI SR11000 with xf90 (super1 in IMR)
+=== Available platforms and compilers
+==== HITACHI SR11000 with xf90 (super1 in IMR)
 feram runs on 1 node (16 CPUs) of SR11000 effectively.
   % tar zxf feram-X.YY.ZZ.tar.gz
   % cd feram-X.YY.ZZ
@@ -92,7 +89,7 @@ you have to specify input file(s) in FILES file. For example,
  heating
 1st line: number of input file(s). 2nd- line filename(s).
 
-=== x86_64 Linux
+==== x86_64 Linux
 On x86_64, i.e. AMD64 and Intel 64, feram may be compiled with gfortran,
 Intel Fortran (ifort), and PGI Fortran (pgf95). For example,
   $ FC=gfortran ../configure
@@ -101,13 +98,13 @@ and /usr/local/include, you have to specify the directories with LDFLAGS and CPP
 environment variables.
   $ FC=ifort LDFLAGS=-L/home/t-nissie/x86_64-Linux/lib CPPFLAGS=-I/home/t-nissie/x86_64-Linux/include ../configure
 
-=== rupc05
+==== rupc05
   $ FC=pgf95 LDFLAGS=-L/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/lib CPPFLAGS=-I/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/include ../configure
   $ make
   $ cd examples/BaTiO3-bulk-16x16x16-local.field-new-format/
   $ OMP_NUM_THREADS=6 ../../pgf95/src/feram cooling > feram.log &
 
-=== IA-64 Linux (appc in IMR)
+==== IA-64 Linux (appc in IMR)
 On IA-64, feram may be compiled with gfortran or Intel Fortran (ifort). For example:
   % tar zxf feram-X.YY.ZZ.tar.gz
   % cd feram-X.YY.ZZ
@@ -120,23 +117,23 @@ On IA-64, feram may be compiled with gfortran or Intel Fortran (ifort). For exam
   % ./feram cooling
   % env OMP_NUM_THREADS=2 ./feram cooling
 
-=== x86 32-bit Linux
+==== x86 32-bit Linux
 On x86 32-bit Linux, feram may be compiled with gfortran and Intel Fortran (ifort),
 and PGI Fortran (pgf95).
 
-= Execution
+== Execution
 feram can read parameters from the standard input (stdin)
 as well as from the file(s) given by the argument(s).
   $ feram < input_file
   $ feram cooling heating
 
-= Input files
-== parameter file
+== Input files
+=== parameter file
 The parameter file for feram is a text file consisting of
 comment lines and 'tag = value(s)' lines. Filenames for
 parameter files are arbitrary.
 
-=== Comment
+==== Comment
 Lines beginning with '#' are ignored.
 Blank lines are also ignored.
  # This is a comment line.
@@ -145,7 +142,7 @@ Blank lines are also ignored.
  # Here are two more
  # comment lines.
 
-=== Tags
+==== Tags
 You must put ' = ', space-equal-space, between tag and value(s) as:
   tag = 1.0
 
@@ -154,18 +151,18 @@ You must put ' = ', space-equal-space, between tag and value(s) as:
 
 Followings are currently available tags alphabetically ordered.
 
-==== method
+===== method
 'md' for MD,
 'lf' for leap frog (Not implemented yet),
 'mc' for Monte Carlo (Not implemented yet).
 
   method = 'md'
 
-==== GPa
+===== GPa
 Pressure in GPa unit.
   GPa = -5.0
 
-==== kelvin_start, kelvin_goal, kelvin_step
+===== kelvin_start, kelvin_goal, kelvin_step
   kelvin_start = 100
   kelvin_goal  = 500
   kelvin_step  =   5
@@ -174,37 +171,37 @@ or
   kelvin_goal  = 100
   kelvin_step  =  -5
 
-==== Q_Nose
+===== Q_Nose
 Q_Nose for Nose-Poincare thermostat.
   Q_Nose = 14.4
 
-==== bulk_or_film
+===== bulk_or_film
 Specifies the structure of the system.
 'bulk' for infinitely periodic bulk
 'film' for free standing thin film.
 'epit' for epitaxially strained thin film.
   bulk_or_film = 'epit'
 
-==== L
+===== L
 System size.
   L = 16 16 10
 
-==== gap
+===== gap
 Gap for the thin film.
   gap = 1
 
-==== a0
+===== a0
 Lattice constant for the perovskite ferroelectrics in Angstrom unit.
   a0 = 3.99
 
-==== epi_strain
+===== epi_strain
   epi_strain = -0.01
 
-==== dt
+===== dt
 Time step in pico second.
   dt = 0.002
 
-==== n_thermalize, n_average, n_coord_freq
+===== n_thermalize, n_average, n_coord_freq
 The number of time steps of thermalizing, averaging, and frequency
 of taking snapshots. If n_thermalize+n_average=n_coord_freq, a
 snapshot is taken at the end of the MD at each temperature.
@@ -212,18 +209,18 @@ snapshot is taken at the end of the MD at each temperature.
   n_average    = 10000
   n_coord_freq = 50000
 
-==== n_external_E_switch_on
+===== n_external_E_switch_on
 At n_external_E_switch_on-th time-step, the external electric field is switched on.
   n_thermalize           = 50000
   n_average              = 10000
   n_coord_freq           = 20000
   n_external_E_switch_on = 30000
 
-==== external_E_field
+===== external_E_field
 Vector of the external electric field in the unit of [V/Angstrom].
   external_E_field = 0.00 0.00 -0.01
 
-==== external_E_field_frequency
+===== external_E_field_frequency
 Frequency of external electric field.
 If it is zero, the constant electric field will be applied.
 (f>0.0 is not implemented yet.)
@@ -231,46 +228,46 @@ If it is zero, the constant electric field will be applied.
 
 
 
-==== P_kappa2, P_alpha, P_gamma
+===== P_kappa2, P_alpha, P_gamma
 Coefficients for the 4-th order polynomial.
   P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
   P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
   P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
 
-==== j
+===== j
 Short-range inter-site interaction coefficients
   j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
 
-==== B11, B12, B44
+===== B11, B12, B44
 Elastic Constants
   B11 = 126.
   B12 =  44.9
   B44 =  50.3  [eV]
 
-==== B1xx, B1yy, B4yz
+===== B1xx, B1yy, B4yz
 Elastic Coupling
   B1xx = -211.   [eV/Angstrom^2]
   B1yy =  -19.3  [eV/Angstrom^2]
   B4yz =   -7.75 [eV/Angstrom^2]
 
-==== init_dipo_avg, init_dipo_dev
+===== init_dipo_avg, init_dipo_dev
 Initial dipole settings
   init_dipo_avg = 0.00 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
   init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
 
-==== Z_star
+===== Z_star
 Effective charge per site.
   Z_star     = 9.956
 
-==== epsilon_inf
+===== epsilon_inf
   epsilon_inf   = 5.24
 
-==== defect_position, defect_u
+===== defect_position, defect_u
 Position and u of a defect.
   defect_position = 16 16 16
   defect_u = 0.0 0.0 0.0
 
-== ionic.configuration file
+=== ionic.configuration file
 (Not implemented yet.)
 This file is required for the calculation of the local field.
 
@@ -287,7 +284,7 @@ This file is required for the calculation of the local field.
 Position must be given in the unit of a0.
 
 
-== local.field file
+=== local.field file
   0  0  0   0.1 -0.1 0.7
   1  0  0   0.1  0.1 0.7
   2  0  0   0.1  0.2 0.7
@@ -301,53 +298,53 @@ Position must be given in the unit of a0.
 If feram cannot find both ionic.configuration and local.field,
 it will set local.field to ZERO.
 
-= Output files
+== Output files
 If you execute the feram like `feram cooling`,
 filenames of output files are starting from 'cooling',
 e.g. cooling.avg, cooling.320K0050000.coord,
 cooling.dipole-dipole-long.dat, etc.
 
-== Standard output (stdout)
+=== Standard output (stdout)
 To stdout, feram reports the energies of every iterations.
 src/plot.gp can plot the energies:
  $ feram cooling > feram.log
  $ gnuplot plot.gp
 
-== cooling.avg
+=== cooling.avg
 Averages for each temperature.
 
-== cooling.tttKnnnnnnn.coord
+=== cooling.tttKnnnnnnn.coord
 Snapshot of dipoles at ttt Kelvin and nnnnnnn-th iteration.
 This file can be visualized with slice.rb (Ruby script) and
 cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
 (Bourne Shell scripts). cross-section-p.sh and cross-section-dVddi.sh
 are symbolic links or copy of cross-section-q.sh.
 
-== cooling.dipole-dipole-long+short.dat
+=== cooling.dipole-dipole-long+short.dat
 
-== cooling.dipole-dipole-long.dat
+=== cooling.dipole-dipole-long.dat
 
-== cooling.dipole-dipole-short.dat
+=== cooling.dipole-dipole-short.dat
 
-== cooling.inhomo-K.dat
+=== cooling.inhomo-K.dat
 
-== local.field file
+=== local.field file
 The calculated local field from the given ionic configuration (ionic.configuration
 file) is stored in this file. This file will be reloaded in consequent temperature
 calculations and the other calculations.
 
-= Mailing list
-* Description: Discussions and announcements of loto, feram and compasses programs
-* Subscribe: https://lists.sourceforge.net/lists/listinfo/loto-feram-compasses-ml
-* Password: Do NOT use your important password. Please use a new unique password.
-* Address: loto-feram-compasses-ml@lists.sourceforge.net
-* Public: Your post to this mailing list will be publicly archived and appeared on the net.
-* Language: English
-* Administrator: Takeshi Nishimatsu
+== Mailing list
+ * Description: Discussions and announcements of loto, feram and compasses programs
+ * Subscribe: https://lists.sourceforge.net/lists/listinfo/loto-feram-compasses-ml
+ * Password: Do NOT use your important password. Please use a new unique password.
+ * Address: loto-feram-compasses-ml@lists.sourceforge.net
+ * Public: Your post to this mailing list will be publicly archived and appeared on the net.
+ * Language: English
+ * Administrator: Takeshi Nishimatsu
 
 
-= Copying
-== feram
+== Copying
+=== feram
 Copyright (C) 2007 Takeshi Nishimatsu
 
 feram is distributed in the hope that
@@ -363,42 +360,48 @@ name of this program and cite our articles,
 []
 in your paper.
 
-== BLAS and LAPACK
+=== BLAS and LAPACK
 Files under the directory libblaslapack are coming from BLAS and LAPACK
 packages http://www.netlib.org/lapack/. See libblaslapack/COPYING.
 
-= Author
+== Author
 Takeshi Nishimatsu
 (t-nissie{at}imr.tohoku.ac.jp or takeshi{at}physics.rutgers.edu)
 
 
-= Acknowledgements
+== Acknowledgements
 This project is/was partially supported by:
-* Jawaharlal Nehru Centre for Advanced Scientific Research (JNCASR)  http://www.jncasr.ac.in/
-* Ministry of Education, Culture, Sports, Science and Technology  http://www.mext.go.jp/
-* Japan Society of Promotion of Science  http://www.jsps.go.jp/
-* Tohoku University  http://www.tohoku.ac.jp/
-* Institute of Materials Research (IMR)  http://www.imr.tohoku.ac.jp/
+ * Jawaharlal Nehru Centre for Advanced Scientific Research (JNCASR)  http://www.jncasr.ac.in/
+ * Ministry of Education, Culture, Sports, Science and Technology  http://www.mext.go.jp/
+ * Japan Society of Promotion of Science  http://www.jsps.go.jp/
+ * Tohoku University  http://www.tohoku.ac.jp/
+ * Institute of Materials Research (IMR)  http://www.imr.tohoku.ac.jp/
 
 http://loto.sourceforge.net/feram/ is hosted by SourceForge.net .
 
 
 =end
 #
-# for ulwmul2html.rb
+# for ulmul.rb
 #
-require 'ulwmul2html'
-u2h=Ulwmul2html.new()
-u2h.subs_rules << [/(\S*\/?\.jpg)(\s|$)/,      '<img src="\1">\2']
-u2h.subs_rules << [/(\S*\/?\.F)(\s|$)/,        '<a href="\1">\1</a>\2']
-u2h.subs_rules << [/(\S*\/?\.pdf)(\s|$)/,      '<a href="\1">\1</a>\2']
-u2h.subs_rules << [/(\S*\/?COPYING)(\s|$|\.)/, '<a href="\1">\1</a>\2']
-u2h.subs_rules << [/(\S*\/?LICENSE)(\s|$|\.)/, '<a href="\1">\1</a>\2']
-u2h.subs_rules << [/(INSTALL\S*)(\s|$)/,       '<a href="\1">\1</a>\2']
-u2h.subs_rules << [/(examples\/\S*)(\s|$)/,    '<a href="\1">\1</a>\2']
-u2h.subs_rules << [/SourceForge.net/,          '<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a>']
-u2h.parse(ARGF)
-puts u2h.html
+require 'ulmul'
+u=Ulmul.new()
+u.subs_rules << [/(\S*\/?\.jpg)(\s|$)/,      '<img src="\1" alt="\1" />\2']
+u.subs_rules << [/(\S*\/?\.F)(\s|$)/,        '<a href="\1">\1</a>\2']
+u.subs_rules << [/(\S*\/?\.pdf)(\s|$)/,      '<a href="\1">\1</a>\2']
+u.subs_rules << [/(\S*\/?COPYING)(\s|$|\.)/, '<a href="\1">\1</a>\2']
+u.subs_rules << [/(\S*\/?LICENSE)(\s|$|\.)/, '<a href="\1">\1</a>\2']
+u.subs_rules << [/(INSTALL\S*)(\s|$)/,       '<a href="\1">\1</a>\2']
+u.subs_rules << [/(README\S*)(\s|$)/,        '<a href="\1">\1</a>\2']
+u.subs_rules << [/(ulmul\S*)(\s|$)/,         '<a href="\1">\1</a>\2']
+u.subs_rules << [/(slidy\.js)/,              '<a href="\1">\1</a>\2']
+u.subs_rules << [/(style\.css)/,             '<a href="\1">\1</a>\2']
+u.subs_rules << [/(examples\/\S*)(\s|$)/,    '<a href="\1">\1</a>\2']
+u.subs_rules << [/&package_id/,              '&amp;package_id']
+u.subs_rules << [/SourceForge.net/,          '<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a>']
+
+u.parse(ARGF)
+puts u.html(["style.css"],[],"Takeshi Nishimatsu")
 
 # Local variables:
 #   mode: RD

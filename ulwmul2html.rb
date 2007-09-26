@@ -1,1 +1,0 @@
-../../loto/trunk/ulwmul2html.rb

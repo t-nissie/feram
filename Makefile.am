@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2007-09-18 23:59:34 takeshi>
+# Time-stamp: <2007-09-26 16:09:02 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -8,7 +8,7 @@ SUBDIRS = src libblaslapack libbuilt_in_fft
 EXTRA_DIST = README \
              README.html \
              TODO \
-             ulwmul2html.rb \
+             ulmul.rb \
              ChangeLog \
              00MEMO \
              style.css \
@@ -31,7 +31,7 @@ logo.jpg: logo.eps
 	gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r120x120 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q $< \
 	 | pnmcrop -white | cjpeg -quality 80 > $@
 
-README.html:  README         ulwmul2html.rb style.css
+README.html:  README         ulmul.rb style.css
 	ruby -I $(srcdir) $< $<                > $@
 
 dist-hook:
