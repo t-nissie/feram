@@ -1,0 +1,105 @@
+=begin
+= Introduction of feram
+Takeshi Nishimatsu
+
+== What is feram?
+feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
+
+figures/phase.jpg
+
+
+== Technical features and keywords
+ * Fast
+   * FFTW library version 3  http://www.fftw.org/
+   * Palatalized with OpenMP
+ * Object oriented programming (OOP) in Fortran 2003
+ * GNU autotools  http://www.gnu.org/software/autoconf/
+ * Subversion repository at https://loto.svn.sourceforge.net/svnroot/loto/feram
+
+== Features and keywords in pysics
+ * Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
+ * Ferroelectrics
+ * Relaxor
+ * Phase transition
+ * Thin film
+ * Electrodes
+ * Capacitor
+ * Nose-Poincare thermostat
+ * Optical phonon
+ * Evaluate forces in reciprocal-space; k-locality of the force matrix
+ * Coarse-graining; reduction of the number of degree of freedom
+
+
+== Parameters
+ #--- Method, Temperature, and mass ---------------
+ method = 'md'
+ GPa = -5.0
+ kelvin_start = 350
+ kelvin_goal  =  50
+ kelvin_step  =  -5
+ mass_amu = 39.0
+ Q_Nose = 1.0
+
+ #--- System geometry -----------------------------
+ bulk_or_film = 'bulk'
+ L = 32 32 32
+ a0 =  3.94         latice constant a0 [Angstrom]
+
+ #--- Time step -----------------------------------
+ dt = 0.002 [ps]
+ n_thermalize =  800
+ n_average    =  200
+ n_coord_freq = 1000
+
+ #--- On-site (Polynomial of order 4) -------------
+ P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
+ P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+ P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
+
+ #--- Inter-site ----------------------------------
+ j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
+
+ #--- Elastic Constants ---------------------------
+ B11 = 126.
+ B12 =  44.9
+ B44 =  50.3  [eV]
+
+ #--- Elastic Coupling ----------------------------
+ B1xx = -211.   [eV/Angstrom^2]
+ B1yy =  -19.3  [eV/Angstrom^2]
+ B4yz =   -7.75 [eV/Angstrom^2]
+
+ #--- Dipole --------------------------------------
+ init_dipo_avg = 0.00 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
+ init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
+ Z_star       = 9.956
+ epsilon_inf   = 5.24
+
+
+=end
+#
+# for ulmul.rb
+#
+require 'ulmul'
+u=Ulmul.new()
+u.subs_rules << [/(\S*\/?\.jpg)(\s|$)/,      '<img src="\1" alt="\1" />\2']
+u.subs_rules << [/(\S*\/?\.F)(\s|$)/,        '<a href="\1">\1</a>\2']
+u.subs_rules << [/(\S*\/?\.pdf)(\s|$)/,      '<a href="\1">\1</a>\2']
+u.subs_rules << [/(\S*\/?COPYING)(\s|$|\.)/, '<a href="\1">\1</a>\2']
+u.subs_rules << [/(\S*\/?LICENSE)(\s|$|\.)/, '<a href="\1">\1</a>\2']
+u.subs_rules << [/(INSTALL\S*)(\s|$)/,       '<a href="\1">\1</a>\2']
+u.subs_rules << [/(README\S*)(\s|$)/,        '<a href="\1">\1</a>\2']
+u.subs_rules << [/(ulmul\S*)(\s|$)/,         '<a href="\1">\1</a>\2']
+u.subs_rules << [/(slidy\.js)/,              '<a href="\1">\1</a>\2']
+u.subs_rules << [/(style\.css)/,             '<a href="\1">\1</a>\2']
+u.subs_rules << [/(examples\/\S*)(\s|$)/,    '<a href="\1">\1</a>\2']
+u.subs_rules << [/&package_id/,              '&amp;package_id']
+u.subs_rules << [/SourceForge.net/,          '<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a>']
+
+u.parse(ARGF)
+puts u.html(["feram-presentation.css"],["slidy.js"],"Takeshi Nishimatsu")
+
+# Local variables:
+#   mode: RD
+#   compile-command: "ruby -I .. feram-presentation.txt feram-presentation.txt > feram-presentation.xhtml"
+# End:

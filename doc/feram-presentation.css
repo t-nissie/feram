@@ -1,0 +1,97 @@
+/* ulmul-slidy.css -*-CSS-*-
+
+   Original slidy.css is modified by Takeshi NISHIMATSU
+   Time-stamp: <2007-09-27 17:18:00 takeshi>
+
+
+   Original Copyright notice:
+
+   Copyright (c) 2005 W3C (MIT, ERCIM, Keio), All Rights Reserved.
+   W3C liability, trademark, document use and software licensing
+   rules apply, see:
+
+   http://www.w3.org/Consortium/Legal/copyright-documents
+   http://www.w3.org/Consortium/Legal/copyright-software
+*/
+
+body {
+  font-family: helvetica, sans-serif;
+  font-weight: normal;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+pre {
+  font-family:      courier, verdana, arial, helvetica, sans-serif;
+  font-weight:      bold;
+  padding-right:    0.5em;
+  padding-left:     0.5em;
+  padding-top:      0.1ex;
+  padding-bottom:   0.1ex;
+  margin-left:      0.5em;
+  margin-right:     1.0em;
+  white-space:      pre;
+  color:            darkred;
+  background-color: #ffe3e3;
+}
+
+div.slide {
+  z-index: 20;
+  margin: 0 0 0 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-width: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  line-height: 120%;
+  background-color: transparent;
+}
+
+div.slide h2 {
+  margin: 0 0 0.5em 0;
+  padding: 4px 0;
+  background: transparent;
+  border-bottom: 3px solid #ee0000;
+  font-size: 1.6em;
+  font-weight: normal;
+  line-height: 1.2em;
+  color: #ee0000;
+}
+
+div.slide.cover {
+  background-image: url(../logo.jpg);
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+div.slide.cover h1{
+  font-weight: bold;
+  font-size: 1.6em;
+  margin:  20% 10% 1%;
+  padding: 0.5em 0;
+  background: transparent;
+  border-bottom: 3px solid #ee0000;
+  text-align: left;
+  color: #ee0000;
+}
+
+div.slide.cover p{
+  margin:  0% 10% 0%;
+  text-align: right;
+}
+
+div.toolbar {
+  position: fixed; z-index: 200;
+  top: auto; bottom: 0; left: 0; right: 0;
+  height: 1.2em; text-align: right;
+  padding-left: 1em;
+  padding-right: 1em; 
+  font-size: 60%;
+  background-color: #ee3030;
+}
