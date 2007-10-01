@@ -30,7 +30,7 @@ Pronunciation of "feram": Ef-Ee-RaMu
 
 ==== Technically
  * FFTW library version 3  http://www.fftw.org/
- * Palatalized with OpenMP
+ * Parallelized with OpenMP
  * Object oriented programming (OOP) in Fortran 2003
  * GNU autotools  http://www.gnu.org/software/autoconf/
  * Subversion repository at https://loto.svn.sourceforge.net/svnroot/loto/feram

@@ -3,18 +3,21 @@
 Takeshi Nishimatsu
 
 == What is feram?
-feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
+feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
 
-figures/phase.jpg
+figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis is strain. Difference between first- and second order transition is clear.
 
 
 == Technical features and keywords
  * Fast
    * FFTW library version 3  http://www.fftw.org/
-   * Palatalized with OpenMP
+   * Parallelized with OpenMP
+   * gfortran on x86_64 (ifort, g95, pgf95)
+   * HITACHI SR11000 Super Technical Server
  * Object oriented programming (OOP) in Fortran 2003
  * GNU autotools  http://www.gnu.org/software/autoconf/
- * Subversion repository at https://loto.svn.sourceforge.net/svnroot/loto/feram
+ * Free software (GPLv3) http://loto.sf.net/feram/
+ * Subversion repository at https://loto.svn.sf.net/svnroot/loto/feram/
 
 == Features and keywords in pysics
  * Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
@@ -30,9 +33,12 @@ figures/phase.jpg
  * Coarse-graining; reduction of the number of degree of freedom
 
 
-== Parameters
+== Parameters (input file)
  #--- Method, Temperature, and mass ---------------
  method = 'md'
+  # 'md' - Molecular Dynamics with Nose-Poincare thermostat (Canonical ensemble)
+  # 'lf' - Leap Frog (Microcanonical ensemble)
+  # 'mc' - Monte Carlo
  GPa = -5.0
  kelvin_start = 350
  kelvin_goal  =  50
@@ -47,9 +53,9 @@ figures/phase.jpg
 
  #--- Time step -----------------------------------
  dt = 0.002 [ps]
- n_thermalize =  800
- n_average    =  200
- n_coord_freq = 1000
+ n_thermalize =  40000
+ n_average    =  10000
+ n_coord_freq =   5000     Write a snapshot to the disk evry 5000 steps
 
  #--- On-site (Polynomial of order 4) -------------
  P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
@@ -75,6 +81,34 @@ figures/phase.jpg
  Z_star       = 9.956
  epsilon_inf   = 5.24
 
+== ***************************************************************************
+
+== What is relaxor?
+
+== Frequency dependence of susceptibility of relaxor
+The purpose of this study is to simulate this Frequency dependence.
+
+
+== Crystal structures of PSN
+
+== Chemically ordered and disordered regions of relaxors
+
+== susceptibility
+
+== Estimation of computational time
+32x32x32 unitcells, $\Delta t = 2$ fs, [one dual core 1.8GHz x86_64] and [SR11000 1 node = 16 cores]
+
+1THz, T=1ps,                500 steps, 55 sec, SR11000 8.4 sec.
+
+1GHz, T=1ns,            500,000 steps,       , SR11000 140 min.
+
+1MHz, T=1$\mu$s,    500,000,000 steps,       , SR11000 100 days
+
+1kHz, T=1ms,    500,000,000,000 steps,       , SR11000  30 years
+
+1Hz,  T=1s, 500,000,000,000,000 steps,       , SR11000 30,000 years
+
+
 
 =end
 #
@@ -82,19 +116,12 @@ figures/phase.jpg
 #
 require 'ulmul'
 u=Ulmul.new()
-u.subs_rules << [/(\S*\/?\.jpg)(\s|$)/,      '<img src="\1" alt="\1" />\2']
-u.subs_rules << [/(\S*\/?\.F)(\s|$)/,        '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?\.pdf)(\s|$)/,      '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?COPYING)(\s|$|\.)/, '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?LICENSE)(\s|$|\.)/, '<a href="\1">\1</a>\2']
-u.subs_rules << [/(INSTALL\S*)(\s|$)/,       '<a href="\1">\1</a>\2']
-u.subs_rules << [/(README\S*)(\s|$)/,        '<a href="\1">\1</a>\2']
-u.subs_rules << [/(ulmul\S*)(\s|$)/,         '<a href="\1">\1</a>\2']
-u.subs_rules << [/(slidy\.js)/,              '<a href="\1">\1</a>\2']
-u.subs_rules << [/(style\.css)/,             '<a href="\1">\1</a>\2']
-u.subs_rules << [/(examples\/\S*)(\s|$)/,    '<a href="\1">\1</a>\2']
-u.subs_rules << [/&package_id/,              '&amp;package_id']
-u.subs_rules << [/SourceForge.net/,          '<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a>']
+u.subs_rules << [/(\S*\/?\.jpg)\s*(.*)$/, '<div class="figure">
+  <img src="\1" alt="\1" />
+  <div class="caption">
+    \2
+  </div>
+</div>']
 
 u.parse(ARGF)
 puts u.html(["feram-presentation.css"],["slidy.js"],"Takeshi Nishimatsu")
