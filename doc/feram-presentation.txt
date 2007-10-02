@@ -19,7 +19,7 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
  * Free software (GPLv3) http://loto.sf.net/feram/
  * Subversion repository at https://loto.svn.sf.net/svnroot/loto/feram/
 
-== Features and keywords in pysics
+== Features and keywords in physics
  * Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
  * Ferroelectrics
  * Relaxor
@@ -33,29 +33,52 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
  * Coarse-graining; reduction of the number of degree of freedom
 
 
+== Coarse-graining: reduction of the number of degree of freedom
+ * Real perovskite-like system has $15N+6$ degree of freedom
+   * $N$ unit cells in supercell
+   * 5 atoms per unit cell
+   * Each atom can move along 3 directions
+   * 6 components of strain
+
+ * Simplified model has $6N+6$ degree of freedom
+   * $N$ unit cells in supercell
+   * Define 1 dipole $Z^*u(R)$ per unit cell
+   * 1 acoustic displacement (Inhomogeneous strain) $v(R)$ per unit cell
+   * 6 components of strain
+
+# Real perovskite-like system has 15N+6 degree of freedom,
+# where N is the number of unit cells in supercell,
+# because each unit cell has 5 atoms, each atom can move along 3 directions,
+# and there are 6 components of homogeniou strain.
+
+
+
 == Parameters (input file)
+ * King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)
+ * Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)
+
  #--- Method, Temperature, and mass ---------------
  method = 'md'
-  # 'md' - Molecular Dynamics with Nose-Poincare thermostat (Canonical ensemble)
-  # 'lf' - Leap Frog (Microcanonical ensemble)
-  # 'mc' - Monte Carlo
+    # 'md' - Molecular Dynamics with Nose-Poincare thermostat (Canonical ensemble)
+    # 'lf' - Leap Frog (Microcanonical ensemble)
+    # 'mc' - Monte Carlo
  GPa = -5.0
  kelvin_start = 350
  kelvin_goal  =  50
  kelvin_step  =  -5
- mass_amu = 39.0
+ mass_amu = 39.0       # Required for MD
  Q_Nose = 1.0
 
  #--- System geometry -----------------------------
  bulk_or_film = 'bulk'
  L = 32 32 32
- a0 =  3.94         latice constant a0 [Angstrom]
+ a0 =  3.94         lattice constant a0 [Angstrom]
 
  #--- Time step -----------------------------------
  dt = 0.002 [ps]
  n_thermalize =  40000
  n_average    =  10000
- n_coord_freq =   5000     Write a snapshot to the disk evry 5000 steps
+ n_coord_freq =   5000     Write a snapshot to the disk every 5000 steps
 
  #--- On-site (Polynomial of order 4) -------------
  P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
@@ -89,26 +112,33 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
 The purpose of this study is to simulate this Frequency dependence.
 
 
-== Crystal structures of PSN
+== Crystal structures of relaxors
+
+== Frequency dependence of dielectric permittivity of relaxors
+figures/TsurumiFig3.jpg After Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. Vol.33pp. 1959-1964 (1994)
 
 == Chemically ordered and disordered regions of relaxors
+figures/RandallBhallaFig8.jpg Chemically ordered region (&sim;100&Aring;) in a chemically disordered matrix. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
 
-== susceptibility
+
+== Modeling of relaxors in an illustration
+figures/DoubleWells.jpg Schematic illustration of modeling of relaxor. Bubble-like Chemically ordered regions (COR, red symmetric double wells) is created in a chemically disordered matrix (blue asymmetric double wells)
+
+== Snapshot of a simulation of PSN relaxor
+figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields.
+
+== Susceptibility
 
 == Estimation of computational time
-32x32x32 unitcells, $\Delta t = 2$ fs, [one dual core 1.8GHz x86_64] and [SR11000 1 node = 16 cores]
+32x32x32 unitcells, $\Delta t = 2$ fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
 
-1THz, T=1ps,                500 steps, 55 sec, SR11000 8.4 sec.
+1THz, $T=1\,$ps,                500 steps, 54 sec or 8.4 sec.
 
-1GHz, T=1ns,            500,000 steps,       , SR11000 140 min.
+1GHz, $T=1\,$ns,            500,000 steps, 900 min. or 140 min.
 
-1MHz, T=1$\mu$s,    500,000,000 steps,       , SR11000 100 days
+1MHz, $T=1\mu$s,    500,000,000 steps, 620 days or 97 days
 
-1kHz, T=1ms,    500,000,000,000 steps,       , SR11000  30 years
-
-1Hz,  T=1s, 500,000,000,000,000 steps,       , SR11000 30,000 years
-
-
+So, we can compair $|\chi_{\alpha\alpha}(q,\omega)|^2$ of $\omega/(2\pi)$ = 10M ... 10GHz.
 
 =end
 #
