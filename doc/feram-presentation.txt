@@ -41,16 +41,31 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
    * 6 components of strain
 
  * Simplified model has $6N+6$ degree of freedom
-   * $N$ unit cells in supercell
-   * Define 1 dipole $Z^*u(R)$ per unit cell
-   * 1 acoustic displacement (Inhomogeneous strain) $v(R)$ per unit cell
-   * 6 components of strain
+   * Define 1 dipole $Z^*{\bf u}({\bf R})$ per unit cell
+   * 1 acoustic displacement (Inhomogeneous strain) ${\bf w}({\bf R})$ per unit cell
 
 # Real perovskite-like system has 15N+6 degree of freedom,
 # where N is the number of unit cells in supercell,
 # because each unit cell has 5 atoms, each atom can move along 3 directions,
 # and there are 6 components of homogeniou strain.
+#
+# For Fast and Simple simulation, we reduce the number of degree of freedom to 6N+6,
+# by replaceing 5 atoms to 2 vectors, 1 dipole Z^*u(R) and 1 acoustic displacement
+# per unit cell.
 
+
+
+== Effective Hamiltonian for molecular dynamics simulation
+Eq. 1
+    H^{\rm eff}
+    = \frac{M^*_{\rm dipole}}{2} \sum_{{\bf R},\alpha}\dot{u}_\alpha^2({\bf R})
+    + \frac{M^*_{\rm acoustic}}{2}\sum_{{\bf R},\alpha}\dot{w}_\alpha^2({\bf R})
+    + V^{\rm self}(\{{\bf u}\})+V^{\rm dpl}(\{{\bf u}\})+V^{\rm short}(\{{\bf u}\})
+    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{{\bf w}\})
+    + V^{\rm coup,\,homo}(\{{\bf u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{{\bf u}\}, \{{\bf w}\})
+/Eq.
+Kinetic energy terms are added to Monte Carlo Hamiltonian
+(King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)).
 
 
 == Parameters (input file)
@@ -103,6 +118,20 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
  init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
  Z_star       = 9.956
  epsilon_inf   = 5.24
+
+
+== Forces on dipoles are calculated in the reciprocal space
+figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
+
+
+== Time evolution and fluctuation
+figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step plot of cooling simulations
+
+# This figure shows the time steps of simulations.
+# First, the system exchanges energy between the
+# one particle heat bath, then it reaches the equilibrium.
+# You can see Nose-Poincare Hamiltonian remains zero.
+
 
 == ***************************************************************************
 
