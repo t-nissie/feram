@@ -133,7 +133,7 @@ figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step pl
 # You can see Nose-Poincare Hamiltonian remains zero.
 
 
-== ***************************************************************************
+== ------------------------------------ Relaxor ------------------------------------
 
 == What is relaxor?
 
@@ -145,6 +145,10 @@ The purpose of this study is to simulate this Frequency dependence.
 
 == Frequency dependence of dielectric permittivity of relaxors
 figures/TsurumiFig3.jpg After Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. Vol.33pp. 1959-1964 (1994)
+
+Eq.1
+\tan\delta=\tan()
+/Eq.
 
 == Chemically ordered and disordered regions of relaxors
 figures/RandallBhallaFig8.jpg Chemically ordered region (&sim;100&Aring;) in a chemically disordered matrix. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
