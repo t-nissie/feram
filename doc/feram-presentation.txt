@@ -44,6 +44,8 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
    * Define 1 dipole $Z^*{\bf u}({\bf R})$ per unit cell
    * 1 acoustic displacement (Inhomogeneous strain) ${\bf w}({\bf R})$ per unit cell
 
+figures/CoarseGraining.jpg
+
 # Real perovskite-like system has 15N+6 degree of freedom,
 # where N is the number of unit cells in supercell,
 # because each unit cell has 5 atoms, each atom can move along 3 directions,
@@ -65,7 +67,7 @@ Eq. 1
     + V^{\rm coup,\,homo}(\{{\bf u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{{\bf u}\}, \{{\bf w}\})
 /Eq.
 Kinetic energy terms are added to Monte Carlo Hamiltonian
-(King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)).
+(Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)).
 
 
 == Parameters (input file)
@@ -125,7 +127,7 @@ figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast F
 
 
 == Time evolution and fluctuation
-figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step plot of cooling simulations
+figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
 
 # This figure shows the time steps of simulations.
 # First, the system exchanges energy between the
@@ -133,9 +135,29 @@ figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step pl
 # You can see Nose-Poincare Hamiltonian remains zero.
 
 
-== ------------------------------------ Relaxor ------------------------------------
+== Dielectric constant can be calculated from the fluctuation of dipoles
+Eq. 1
+\epsilon_{\alpha\beta}=(\epsilon_{\infty})_{\alpha\beta}+\frac{1}{\epsilon_0 V k_B T}
+                       (<S_\alpha S_\beta>-<S_\alpha><S_\beta>)
+/Eq.
+figures/32x32xL032-D0-susceptibility.jpg Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO$_3$ with perfect electrodes.
+
+== Summary
+
+== ---------------------------- Relaxor ----------------------------
 
 == What is relaxor?
+Relaxors Pb$BB$'O$_3$: Pb$^{2+}$
+ * Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$ (PSN): Sc$^{3+}$, Nb$^{5+}$
+ * Pb(Sc$_{1/2}$Ta$_{1/2}$)O$_3$ (PST): Sc$^{3+}$, Ta$^{5+}$
+ * Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$ (PMN): Mg$^{2+}$, Nb$^{5+}$
+ * $(1-x)$Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$-xPbTiO$_3$ (PMN-$x$PT): Mg$^{2+}$, Nb$^{5+}$, Ti$^{4+}$
+ * Pb(Mg$_{1/3}$Ta$_{2/3}$)O$_3$ (PMT):
+ * Pb(Zn$_{1/3}$Nb$_{2/3}$)O$_3$ (PZN):
+b-site 
+
+
+# There are some Pb-based relaxors PbBB'O3.aaaaaaa
 
 == Frequency dependence of susceptibility of relaxor
 The purpose of this study is to simulate this Frequency dependence.

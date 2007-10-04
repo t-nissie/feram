@@ -1,7 +1,7 @@
 /* ulmul-slidy.css -*-CSS-*-
 
    Original slidy.css is modified by Takeshi NISHIMATSU
-   Time-stamp: <2007-09-28 13:41:42 takeshi>
+   Time-stamp: <2007-10-04 11:35:02 takeshi>
 
 
    Original Copyright notice:
@@ -96,11 +96,11 @@ div.toolbar {
   background-color: #ee3030;
 }
 
-div.figure img { width:60%;
+div.figure img { width:70%;
                  margin-left:auto;
                  margin-right:auto;
                  display: block;}
 
-div.figure div.caption { width:85%;
+div.figure div.caption { width:90%;
                          margin-left:auto;
                          margin-right:auto;}

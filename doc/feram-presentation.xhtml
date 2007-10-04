@@ -30,16 +30,18 @@ Takeshi Nishimatsu
   <li><a href="#LABEL-7">Parameters (input file)</a></li>
   <li><a href="#LABEL-8">Forces on dipoles are calculated in the reciprocal space</a></li>
   <li><a href="#LABEL-9">Time evolution and fluctuation</a></li>
-  <li><a href="#LABEL-10">------------------------------------ Relaxor ------------------------------------</a></li>
-  <li><a href="#LABEL-11">What is relaxor?</a></li>
-  <li><a href="#LABEL-12">Frequency dependence of susceptibility of relaxor</a></li>
-  <li><a href="#LABEL-13">Crystal structures of relaxors</a></li>
-  <li><a href="#LABEL-14">Frequency dependence of dielectric permittivity of relaxors</a></li>
-  <li><a href="#LABEL-15">Chemically ordered and disordered regions of relaxors</a></li>
-  <li><a href="#LABEL-16">Modeling of relaxors in an illustration</a></li>
-  <li><a href="#LABEL-17">Snapshot of a simulation of PSN relaxor</a></li>
-  <li><a href="#LABEL-18">Susceptibility</a></li>
-  <li><a href="#LABEL-19">Estimation of computational time</a></li>
+  <li><a href="#LABEL-10">Dielectric constant can be calculated from the fluctuation of dipoles</a></li>
+  <li><a href="#LABEL-11">Summary</a></li>
+  <li><a href="#LABEL-12">---------------------------- Relaxor ----------------------------</a></li>
+  <li><a href="#LABEL-13">What is relaxor?</a></li>
+  <li><a href="#LABEL-14">Frequency dependence of susceptibility of relaxor</a></li>
+  <li><a href="#LABEL-15">Crystal structures of relaxors</a></li>
+  <li><a href="#LABEL-16">Frequency dependence of dielectric permittivity of relaxors</a></li>
+  <li><a href="#LABEL-17">Chemically ordered and disordered regions of relaxors</a></li>
+  <li><a href="#LABEL-18">Modeling of relaxors in an illustration</a></li>
+  <li><a href="#LABEL-19">Snapshot of a simulation of PSN relaxor</a></li>
+  <li><a href="#LABEL-20">Susceptibility</a></li>
+  <li><a href="#LABEL-21">Estimation of computational time</a></li>
 </ul>
 
 </div>
@@ -119,6 +121,13 @@ feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroel
       <li>1 acoustic displacement (Inhomogeneous strain) <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='bold'>w</mi></mrow><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>)</mo></math> per unit cell</li>
     </ul></li>
 </ul>
+<p>
+<div class="figure">
+  <img src="figures/CoarseGraining.jpg" alt="figures/CoarseGraining.jpg" />
+  <div class="caption">
+    
+  </div>
+</div></p>
 </div>
 
 
@@ -127,7 +136,7 @@ feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroel
 <p>
 <math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><msup><mi>H</mi><mrow><mi mathvariant='normal'>e</mi><mi mathvariant='normal'>f</mi><mi mathvariant='normal'>f</mi></mrow></msup><mo>=</mo><mfrac><mrow><msubsup><mi>M</mi><mrow><mi mathvariant='normal'>d</mi><mi mathvariant='normal'>i</mi><mi mathvariant='normal'>p</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>l</mi><mi mathvariant='normal'>e</mi></mrow><mo>*</mo></msubsup></mrow><mrow><mn>2</mn></mrow></mfrac><munder><mo>&sum;</mo><mrow><mrow><mi mathvariant='bold'>R</mi></mrow><mo>,</mo><mi>&alpha;</mi></mrow></munder><msubsup><mover><mrow><mi>u</mi></mrow><mo>&sdot;</mo></mover><mi>&alpha;</mi><mn>2</mn></msubsup><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>)</mo><mo>+</mo><mfrac><mrow><msubsup><mi>M</mi><mrow><mi mathvariant='normal'>a</mi><mi mathvariant='normal'>c</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>u</mi><mi mathvariant='normal'>s</mi><mi mathvariant='normal'>t</mi><mi mathvariant='normal'>i</mi><mi mathvariant='normal'>c</mi></mrow><mo>*</mo></msubsup></mrow><mrow><mn>2</mn></mrow></mfrac><munder><mo>&sum;</mo><mrow><mrow><mi mathvariant='bold'>R</mi></mrow><mo>,</mo><mi>&alpha;</mi></mrow></munder><msubsup><mover><mrow><mi>w</mi></mrow><mo>&sdot;</mo></mover><mi>&alpha;</mi><mn>2</mn></msubsup><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>s</mi><mi mathvariant='normal'>e</mi><mi mathvariant='normal'>l</mi><mi mathvariant='normal'>f</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mi mathvariant='bold'>u</mi></mrow><mo>}</mo><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>d</mi><mi mathvariant='normal'>p</mi><mi mathvariant='normal'>l</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mi mathvariant='bold'>u</mi></mrow><mo>}</mo><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>s</mi><mi mathvariant='normal'>h</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>r</mi><mi mathvariant='normal'>t</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mi mathvariant='bold'>u</mi></mrow><mo>}</mo><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>e</mi><mi mathvariant='normal'>l</mi><mi mathvariant='normal'>a</mi><mi mathvariant='normal'>s</mi><mo>,</mo><mspace width='0.167em' /><mi mathvariant='normal'>h</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>m</mi><mi mathvariant='normal'>o</mi></mrow></msup><mo>(</mo><msub><mi>&eta;</mi><mn>1</mn></msub><mo>,</mo><mo>.</mo><mo>.</mo><mo>.</mo><mo>,</mo><msub><mi>&eta;</mi><mn>6</mn></msub><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>e</mi><mi mathvariant='normal'>l</mi><mi mathvariant='normal'>a</mi><mi mathvariant='normal'>s</mi><mo>,</mo><mspace width='0.167em' /><mi mathvariant='normal'>i</mi><mi mathvariant='normal'>n</mi><mi mathvariant='normal'>h</mi><mi mathvariant='normal'>o</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mi mathvariant='bold'>w</mi></mrow><mo>}</mo><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>c</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>u</mi><mi mathvariant='normal'>p</mi><mo>,</mo><mspace width='0.167em' /><mi mathvariant='normal'>h</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>m</mi><mi mathvariant='normal'>o</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mi mathvariant='bold'>u</mi></mrow><mo>}</mo><mo>,</mo><msub><mi>&eta;</mi><mn>1</mn></msub><mo>,</mo><mo>.</mo><mo>.</mo><mo>.</mo><mo>,</mo><msub><mi>&eta;</mi><mn>6</mn></msub><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>c</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>u</mi><mi mathvariant='normal'>p</mi><mo>,</mo><mspace width='0.167em' /><mi mathvariant='normal'>i</mi><mi mathvariant='normal'>n</mi><mi mathvariant='normal'>h</mi><mi mathvariant='normal'>o</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mi mathvariant='bold'>u</mi></mrow><mo>}</mo><mo>,</mo><mo>{</mo><mrow><mi mathvariant='bold'>w</mi></mrow><mo>}</mo><mo>)</mo></math>
 Kinetic energy terms are added to Monte Carlo Hamiltonian
-(King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)).
+(Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)).
 </p>
 </div>
 
@@ -208,7 +217,7 @@ epsilon_inf   = 5.24
 <div class="figure">
   <img src="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" alt="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" />
   <div class="caption">
-    Energy versus time-step plot of cooling simulations
+    Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
   </div>
 </div>
 </p>
@@ -216,17 +225,51 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-10">------------------------------------ Relaxor ------------------------------------</h2>
+<h2 id="LABEL-10">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
+<p>
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><msub><mi>&epsilon;</mi><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>=</mo><mo>(</mo><msub><mi>&epsilon;</mi><mrow><mn>&infin;</mn></mrow></msub><msub><mo>)</mo><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msub><mi>&epsilon;</mi><mn>0</mn></msub><mi>V</mi><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi></mrow></mfrac><mo>(</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&alpha;</mi></msub><msub><mi>S</mi><mi>&beta;</mi></msub><mo>&gt;</mo><mo>-</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&alpha;</mi></msub><mo>&gt;</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&beta;</mi></msub><mo>&gt;</mo><mo>)</mo></math>
+<div class="figure">
+  <img src="figures/32x32xL032-D0-susceptibility.jpg" alt="figures/32x32xL032-D0-susceptibility.jpg" />
+  <div class="caption">
+    Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> with perfect electrodes.
+  </div>
+</div>
+</p>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-11">What is relaxor?</h2>
+<h2 id="LABEL-11">Summary</h2>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-12">Frequency dependence of susceptibility of relaxor</h2>
+<h2 id="LABEL-12">---------------------------- Relaxor ----------------------------</h2>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-13">What is relaxor?</h2>
+<p>
+Relaxors Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>B</mi><mi>B</mi></math>'O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>: Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>2</mn><mo>+</mo></mrow></msup></math>
+</p>
+
+<ul>
+  <li>Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PSN): Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>3</mn><mo>+</mo></mrow></msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>5</mn><mo>+</mo></mrow></msup></math></li>
+  <li>Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PST): Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>3</mn><mo>+</mo></mrow></msup></math>, Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>5</mn><mo>+</mo></mrow></msup></math></li>
+  <li>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PMN): Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>2</mn><mo>+</mo></mrow></msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>5</mn><mo>+</mo></mrow></msup></math></li>
+  <li><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></math>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>-xPbTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PMN-<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>x</mi></math>PT): Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>2</mn><mo>+</mo></mrow></msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>5</mn><mo>+</mo></mrow></msup></math>, Ti<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>4</mn><mo>+</mo></mrow></msup></math></li>
+  <li>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PMT):</li>
+  <li>Pb(Zn<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PZN):</li>
+</ul>
+<p>
+b-site 
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-14">Frequency dependence of susceptibility of relaxor</h2>
 <p>
 The purpose of this study is to simulate this Frequency dependence.
 </p>
@@ -234,12 +277,12 @@ The purpose of this study is to simulate this Frequency dependence.
 
 
 <div class="slide">
-<h2 id="LABEL-13">Crystal structures of relaxors</h2>
+<h2 id="LABEL-15">Crystal structures of relaxors</h2>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-14">Frequency dependence of dielectric permittivity of relaxors</h2>
+<h2 id="LABEL-16">Frequency dependence of dielectric permittivity of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/TsurumiFig3.jpg" alt="figures/TsurumiFig3.jpg" />
@@ -255,7 +298,7 @@ The purpose of this study is to simulate this Frequency dependence.
 
 
 <div class="slide">
-<h2 id="LABEL-15">Chemically ordered and disordered regions of relaxors</h2>
+<h2 id="LABEL-17">Chemically ordered and disordered regions of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig8.jpg" alt="figures/RandallBhallaFig8.jpg" />
@@ -268,7 +311,7 @@ The purpose of this study is to simulate this Frequency dependence.
 
 
 <div class="slide">
-<h2 id="LABEL-16">Modeling of relaxors in an illustration</h2>
+<h2 id="LABEL-18">Modeling of relaxors in an illustration</h2>
 <p>
 <div class="figure">
   <img src="figures/DoubleWells.jpg" alt="figures/DoubleWells.jpg" />
@@ -281,7 +324,7 @@ The purpose of this study is to simulate this Frequency dependence.
 
 
 <div class="slide">
-<h2 id="LABEL-17">Snapshot of a simulation of PSN relaxor</h2>
+<h2 id="LABEL-19">Snapshot of a simulation of PSN relaxor</h2>
 <p>
 <div class="figure">
   <img src="figures/SilviaFig1.jpg" alt="figures/SilviaFig1.jpg" />
@@ -294,12 +337,12 @@ The purpose of this study is to simulate this Frequency dependence.
 
 
 <div class="slide">
-<h2 id="LABEL-18">Susceptibility</h2>
+<h2 id="LABEL-20">Susceptibility</h2>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-19">Estimation of computational time</h2>
+<h2 id="LABEL-21">Estimation of computational time</h2>
 <p>
 32x32x32 unitcells, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi mathvariant='normal'>&Delta;</mi><mi>t</mi><mo>=</mo><mn>2</mn></math> fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
 </p>
