@@ -8,6 +8,10 @@ feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroel
 figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis is strain. Difference between first- and second order transition is clear.
 
 
+
+
+
+
 == Technical features and keywords
  * Fast
    * FFTW library version 3  http://www.fftw.org/
@@ -20,16 +24,25 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
  * Subversion repository at https://loto.svn.sf.net/svnroot/loto/feram/
 
 
+
+
+
+
 == Perovskite type ferroelectrics
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 
 figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
 
+
+
+
+
+
 == Effective Hamiltonian for molecular dynamics simulation
  * Monte Carlo Simulations
    * BaTiO$_3$ bulk - Zhong, Vanderbilt and Rabe: Phys. Rev. B Vol.52 p.6301 (1995).
    * PbTiO$_3$ bulk - Waghmare and Rabe: Phys. Rev. B Vol.55 p.6161 (1997).
- * Molecular dynamics symulations
+ * Molecular dynamics simulations
    * Relaxor - Waghmare, Cockayne and Burton, Ferroelectrics Vol.291, p.187 (2003).
    * Relaxor - Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).
    * BaTiO$_3$ capacitor - Paul, Nishimatsu, Kawazoe and Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007) *feram*.
@@ -43,6 +56,10 @@ Eq. 1
     + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{{\bf w}\})
     + V^{\rm coup,\,homo}(\{{\bf u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{{\bf u}\}, \{{\bf w}\})
 /Eq.
+
+
+
+
 
 
 
@@ -62,10 +79,10 @@ figures/CoarseGraining.jpg
 # Real perovskite-like system has 15N+6 degree of freedom,
 # where N is the number of unit cells in supercell,
 # because each unit cell has 5 atoms, each atom can move along 3 directions,
-# and there are 6 components of homogeniou strain.
+# and there are 6 components of homogeneous strain.
 #
 # For Fast and Simple simulation, we reduce the number of degree of freedom to 6N+6,
-# by replaceing 5 atoms to 2 vectors, 1 dipole Z^*u(R) and 1 acoustic displacement
+# by replacing 5 atoms to 2 vectors, 1 dipole Z^*u(R) and 1 acoustic displacement
 # per unit cell.
 
 
@@ -124,14 +141,29 @@ figures/CoarseGraining.jpg
  epsilon_inf   = 5.24
 
 
+
+
+
+
+
 == Forces on dipoles are calculated in the reciprocal space
 figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
 
 # Time consuming part is the calculation of forces of dipoles because dipole-dipole interactions are long-range.
 
 
+
+
+
+
+
 == Thin films in capacitors
 figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrode (b).
+
+
+
+
+
 
 == Time evolution and fluctuation
 figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
@@ -142,6 +174,10 @@ figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step pl
 # You can see Nose-Poincare Hamiltonian remains zero.
 
 
+
+
+
+
 == Dielectric constant can be calculated from the fluctuation of dipoles
 Eq. 1
 \epsilon_{\alpha\beta}=(\epsilon_{\infty})_{\alpha\beta}+\frac{1}{\epsilon_0 V k_B T}
@@ -149,7 +185,12 @@ Eq. 1
 /Eq.
 figures/32x32xL032-D0-susceptibility.jpg Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO$_3$ with perfect electrodes.
 
-== Summary
+
+
+
+
+
+== Summary for "feram" introduction
  * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
  * New programming and technical methods are employed
  * Perovskite-type ferroelectrics and relaxor
@@ -158,6 +199,11 @@ figures/32x32xL032-D0-susceptibility.jpg Calculated dielectric constants (in-pla
  * Nose-Poincare thermostat
  * Evaluate forces in reciprocal-space; k-locality of the force matrix
  * Coarse-graining; reduction of the number of degree of freedom
+ * Dielectric constant, permittivity, or susceptibility can be calculated from dipole fluctuation.
+
+
+
+
 
 == ---------------------------- Relaxor ----------------------------
 Relaxors Pb$B^'_x$$B^{''}_{(1-x)}$O$_3$: Pb$^{2+}$
@@ -172,15 +218,30 @@ The averaged valence number of B-site ions $B^'_x$ and $B^{''}_{(1-x)}$ is $4+$.
 
 # There are some Pb-based relaxors PbBB'O3.aaaaaaa
 
-== Frequency dependence of dielectric permittivity of relaxors
+
+
+
+
+== Frequency dependence of dielectric constant of relaxors
 figures/TsurumiFig3.jpg After Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. Vol.33pp. 1959-1964 (1994)
 
-Eq.1
-\tan\delta=\tan()
-/Eq.
+# Most characteristic and still mysterious property of relaxors is 
+#Eq.1
+#\tan\delta=\tan()
+#/Eq.
+
+
+
+
+
 
 == Crystal structures of relaxors
-figures/RandallBhallaFig3.jpg (a) Ordered B-site structure of $AB^'_xB^{''}_{(1-x)}$O$_3$. In the case of Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$, Sc and Nb has the NaCl structure. In the case of Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$, the Na-site is randomly occupied by Mg$_{1/3}$Nb$_{1/6}$ and the Cl-site is occupied by  Nb$_{1/2}$.  (b) Disordered structure. B-sites is occuped by $B^{'}$ and $B^{''}_{(1-x)}$ randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+figures/RandallBhallaFig3.jpg (a) Ordered B-site structure of $AB^'_xB^{''}_{(1-x)}$O$_3$. In the case of Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$, Sc and Nb has the NaCl structure. In the case of Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$, the Na-site is randomly occupied by Mg$_{1/3}$Nb$_{1/6}$ and the Cl-site is occupied by  Nb$_{1/2}$.  (b) Disordered structure. B-sites is occupied by $B^{'}$ and $B^{''}_{(1-x)}$ randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+
+
+
+
+
 
 
 == Local field on Pb-site
@@ -189,20 +250,66 @@ figures/TwoDoubleWells.jpg Symmetric potential around Pb at the chemically order
 
 
 
+
+
+
+
+
 == Chemically ordered and disordered regions of relaxors
 figures/RandallBhallaFig8.jpg The quenched sample has chemically ordered regions (&sim;100&Aring;) in a chemically disordered matrix. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+
+
+
+
 
 
 == Modeling of relaxors in an illustration
 figures/DoubleWells.jpg Schematic illustration of modeling of relaxor. Bubble-like Chemically ordered regions (COR, red symmetric double wells) is created in a chemically disordered matrix (blue asymmetric double wells)
 
+
+
+
+
 == Snapshot of a simulation of PSN relaxor
 figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields.
 
-== Susceptibility
+
+
+
+
+
+== Susceptibility tensor
+Susceptibility tensor $\chi({\bf R}-{\bf R}^',t-t^')$
+Eq. (Real space)
+{\bf S}({\bf R},t) = \sum_{{\bf R}^'}\int dt^' \chi({\bf R}-{\bf R}^',t-t^')\,{\bf E}({\bf R}^',t^')
+/Eq.
+where ${\bf S}({\bf R},t)=Z^* {\bf u}({\bf R},t)$ and ${\bf E}({\bf R}^',t^')$ is external electric field.
+Its Fourier transformation
+Eq. (q space)
+{\bf S}({\bf q},\omega) = \chi({\bf q},\omega)\,{\bf E}({\bf q},\omega) .
+/Eq.
+Using the fluctuation-dissipation theorem,
+Eq. (The fluctuation-dissipation theorem)
+{\rm Im} \chi_{\alpha\beta}({\bf q},\omega) = \frac{1}{2k_BT}\int_{-\infty}^{\infty}dt
+                            <S_\alpha(-{\bf q},0)> <S_\beta({\bf q},t)> e^{-i\omega t}
+/Eq.
+Then, with Kramers-Kronig relation,
+Eq. (Kramers-Kronig relation)
+{\rm Re} \chi_{\alpha\beta}({\bf q},\omega) = ...
+/Eq.
+
+
+
+
+# G. L. Squires: Introduction to the Theory of Thermal Neutron Scattering (Dover Publications, 1996).
+
+
+
+
+
 
 == Estimation of computational time
-32x32x32 unitcells, $\Delta t = 2$ fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
+32x32x32 unit cells, $\Delta t = 2$ fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
 
 1THz, $T=1\,$ps,                500 steps, 54 sec or 8.4 sec.
 
@@ -210,7 +317,7 @@ figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing
 
 1MHz, $T=1\mu$s,    500,000,000 steps, 620 days or 97 days
 
-So, we can compair $|\chi_{\alpha\alpha}(q,\omega)|^2$ of $\omega/(2\pi)$ = 10M ... 10GHz.
+So, I am planning to calculate and compare $\chi_{\alpha\beta}(q,\omega)$ for $\omega/(2\pi)$ = 10M ... 10GHz.
 
 =end
 #

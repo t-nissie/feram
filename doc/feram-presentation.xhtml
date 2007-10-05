@@ -32,15 +32,15 @@ Takeshi Nishimatsu
   <li><a href="#LABEL-9">Thin films in capacitors</a></li>
   <li><a href="#LABEL-10">Time evolution and fluctuation</a></li>
   <li><a href="#LABEL-11">Dielectric constant can be calculated from the fluctuation of dipoles</a></li>
-  <li><a href="#LABEL-12">Summary</a></li>
+  <li><a href="#LABEL-12">Summary for "feram" introduction</a></li>
   <li><a href="#LABEL-13">---------------------------- Relaxor ----------------------------</a></li>
-  <li><a href="#LABEL-14">Frequency dependence of dielectric permittivity of relaxors</a></li>
+  <li><a href="#LABEL-14">Frequency dependence of dielectric constant of relaxors</a></li>
   <li><a href="#LABEL-15">Crystal structures of relaxors</a></li>
   <li><a href="#LABEL-16">Local field on Pb-site</a></li>
   <li><a href="#LABEL-17">Chemically ordered and disordered regions of relaxors</a></li>
   <li><a href="#LABEL-18">Modeling of relaxors in an illustration</a></li>
   <li><a href="#LABEL-19">Snapshot of a simulation of PSN relaxor</a></li>
-  <li><a href="#LABEL-20">Susceptibility</a></li>
+  <li><a href="#LABEL-20">Susceptibility tensor</a></li>
   <li><a href="#LABEL-21">Estimation of computational time</a></li>
 </ul>
 
@@ -107,7 +107,7 @@ King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of
       <li>BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> bulk - Zhong, Vanderbilt and Rabe: Phys. Rev. B Vol.52 p.6301 (1995).</li>
       <li>PbTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> bulk - Waghmare and Rabe: Phys. Rev. B Vol.55 p.6161 (1997).</li>
     </ul></li>
-  <li>Molecular dynamics symulations
+  <li>Molecular dynamics simulations
     <ul>
       <li>Relaxor - Waghmare, Cockayne and Burton, Ferroelectrics Vol.291, p.187 (2003).</li>
       <li>Relaxor - Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).</li>
@@ -262,7 +262,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-12">Summary</h2>
+<h2 id="LABEL-12">Summary for "feram" introduction</h2>
 
 <ul>
   <li>Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian</li>
@@ -273,6 +273,7 @@ epsilon_inf   = 5.24
   <li>Nose-Poincare thermostat</li>
   <li>Evaluate forces in reciprocal-space; k-locality of the force matrix</li>
   <li>Coarse-graining; reduction of the number of degree of freedom</li>
+  <li>Dielectric constant, permittivity, or susceptibility can be calculated from dipole fluctuation.</li>
 </ul>
 </div>
 
@@ -298,7 +299,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-14">Frequency dependence of dielectric permittivity of relaxors</h2>
+<h2 id="LABEL-14">Frequency dependence of dielectric constant of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/TsurumiFig3.jpg" alt="figures/TsurumiFig3.jpg" />
@@ -306,9 +307,6 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
     After Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. Vol.33pp. 1959-1964 (1994)
   </div>
 </div>
-</p>
-<p>
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mi>tan</mi><mi>&delta;</mi><mo>=</mo><mi>tan</mi><mo>(</mo><mo>)</mo></math>
 </p>
 </div>
 
@@ -319,7 +317,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 <div class="figure">
   <img src="figures/RandallBhallaFig3.jpg" alt="figures/RandallBhallaFig3.jpg" />
   <div class="caption">
-    (a) Ordered B-site structure of <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>A</mi><msubsup><mi>B</mi><mi>x</mi><mo>&apos;</mo></msubsup><msubsup><mi>B</mi><mrow><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>&apos;</mo><mo>&apos;</mo></mrow></msubsup></math>O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>. In the case of Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>, Sc and Nb has the NaCl structure. In the case of Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>, the Na-site is randomly occupied by Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>6</mn></mrow></msub></math> and the Cl-site is occupied by  Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>.  (b) Disordered structure. B-sites is occuped by <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><mi>B</mi><mrow><mo>&apos;</mo></mrow></msup></math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup><mi>B</mi><mrow><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>&apos;</mo><mo>&apos;</mo></mrow></msubsup></math> randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+    (a) Ordered B-site structure of <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>A</mi><msubsup><mi>B</mi><mi>x</mi><mo>&apos;</mo></msubsup><msubsup><mi>B</mi><mrow><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>&apos;</mo><mo>&apos;</mo></mrow></msubsup></math>O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>. In the case of Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>, Sc and Nb has the NaCl structure. In the case of Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>, the Na-site is randomly occupied by Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>6</mn></mrow></msub></math> and the Cl-site is occupied by  Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>.  (b) Disordered structure. B-sites is occupied by <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><mi>B</mi><mrow><mo>&apos;</mo></mrow></msup></math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup><mi>B</mi><mrow><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>&apos;</mo><mo>&apos;</mo></mrow></msubsup></math> randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
   </div>
 </div>
 </p>
@@ -380,14 +378,25 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-20">Susceptibility</h2>
+<h2 id="LABEL-20">Susceptibility tensor</h2>
+<p>
+Susceptibility tensor <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>&chi;</mi><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>-</mo><msup><mrow><mi mathvariant='bold'>R</mi></mrow><mo>&apos;</mo></msup><mo>,</mo><mi>t</mi><mo>-</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo></math>
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='bold'>S</mi></mrow><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>,</mo><mi>t</mi><mo>)</mo><mo>=</mo><munder><mo>&sum;</mo><mrow><msup><mrow><mi mathvariant='bold'>R</mi></mrow><mo>&apos;</mo></msup></mrow></munder><mo>&int;</mo><mi>d</mi><msup><mi>t</mi><mo>&apos;</mo></msup><mi>&chi;</mi><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>-</mo><msup><mrow><mi mathvariant='bold'>R</mi></mrow><mo>&apos;</mo></msup><mo>,</mo><mi>t</mi><mo>-</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo><mspace width='0.167em' /><mrow><mi mathvariant='bold'>E</mi></mrow><mo>(</mo><msup><mrow><mi mathvariant='bold'>R</mi></mrow><mo>&apos;</mo></msup><mo>,</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo></math>
+where <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='bold'>S</mi></mrow><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>,</mo><mi>t</mi><mo>)</mo><mo>=</mo><msup><mi>Z</mi><mo>*</mo></msup><mrow><mi mathvariant='bold'>u</mi></mrow><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>,</mo><mi>t</mi><mo>)</mo></math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='bold'>E</mi></mrow><mo>(</mo><msup><mrow><mi mathvariant='bold'>R</mi></mrow><mo>&apos;</mo></msup><mo>,</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo></math> is external electric field.
+Its Fourier transformation
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='bold'>S</mi></mrow><mo>(</mo><mrow><mi mathvariant='bold'>q</mi></mrow><mo>,</mo><mi>&omega;</mi><mo>)</mo><mo>=</mo><mi>&chi;</mi><mo>(</mo><mrow><mi mathvariant='bold'>q</mi></mrow><mo>,</mo><mi>&omega;</mi><mo>)</mo><mspace width='0.167em' /><mrow><mi mathvariant='bold'>E</mi></mrow><mo>(</mo><mrow><mi mathvariant='bold'>q</mi></mrow><mo>,</mo><mi>&omega;</mi><mo>)</mo><mo>.</mo></math>
+Using the fluctuation-dissipation theorem,
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='normal'>I</mi><mi mathvariant='normal'>m</mi></mrow><msub><mi>&chi;</mi><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>(</mo><mrow><mi mathvariant='bold'>q</mi></mrow><mo>,</mo><mi>&omega;</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi></mrow></mfrac><msubsup><mo>&int;</mo><mrow><mo>-</mo><mn>&infin;</mn></mrow><mrow><mn>&infin;</mn></mrow></msubsup><mi>d</mi><mi>t</mi><mo>&lt;</mo><msub><mi>S</mi><mi>&alpha;</mi></msub><mo>(</mo><mo>-</mo><mrow><mi mathvariant='bold'>q</mi></mrow><mo>,</mo><mn>0</mn><mo>)</mo><mo>&gt;</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&beta;</mi></msub><mo>(</mo><mrow><mi mathvariant='bold'>q</mi></mrow><mo>,</mo><mi>t</mi><mo>)</mo><mo>&gt;</mo><msup><mi>e</mi><mrow><mo>-</mo><mi>i</mi><mi>&omega;</mi><mi>t</mi></mrow></msup></math>
+Then, with Kramers-Kronig relation,
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='normal'>R</mi><mi mathvariant='normal'>e</mi></mrow><msub><mi>&chi;</mi><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>(</mo><mrow><mi mathvariant='bold'>q</mi></mrow><mo>,</mo><mi>&omega;</mi><mo>)</mo><mo>=</mo><mo>.</mo><mo>.</mo><mo>.</mo></math>
+</p>
 </div>
 
 
 <div class="slide">
 <h2 id="LABEL-21">Estimation of computational time</h2>
 <p>
-32x32x32 unitcells, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi mathvariant='normal'>&Delta;</mi><mi>t</mi><mo>=</mo><mn>2</mn></math> fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
+32x32x32 unit cells, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi mathvariant='normal'>&Delta;</mi><mi>t</mi><mo>=</mo><mn>2</mn></math> fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
 </p>
 <p>
 1THz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mspace width='0.167em' /></math>ps,                500 steps, 54 sec or 8.4 sec.
@@ -399,7 +408,7 @@ Displacement of Pb is the main source of dipole moment.
 1MHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mi>&mu;</mi></math>s,    500,000,000 steps, 620 days or 97 days
 </p>
 <p>
-So, we can compair <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mo>|</mo><msub><mi>&chi;</mi><mrow><mi>&alpha;</mi><mi>&alpha;</mi></mrow></msub><mo>(</mo><mi>q</mi><mo>,</mo><mi>&omega;</mi><mo>)</mo><msup><mo>|</mo><mn>2</mn></msup></math> of <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>&omega;</mi><mo>/</mo><mo>(</mo><mn>2</mn><mi>&pi;</mi><mo>)</mo></math> = 10M ... 10GHz.
+So, I am planning to calculate and compare <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><mi>&chi;</mi><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>(</mo><mi>q</mi><mo>,</mo><mi>&omega;</mi><mo>)</mo></math> for <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>&omega;</mi><mo>/</mo><mo>(</mo><mn>2</mn><mi>&pi;</mi><mo>)</mo></math> = 10M ... 10GHz.
 </p>
 </div>
 </body>
