@@ -19,18 +19,31 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
  * Free software (GPLv3) http://loto.sf.net/feram/
  * Subversion repository at https://loto.svn.sf.net/svnroot/loto/feram/
 
-== Features and keywords in physics
- * Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
- * Ferroelectrics
- * Relaxor
- * Phase transition
- * Thin film
- * Electrodes
- * Capacitor
- * Nose-Poincare thermostat
- * Optical phonon
- * Evaluate forces in reciprocal-space; k-locality of the force matrix
- * Coarse-graining; reduction of the number of degree of freedom
+
+== Perovskite type ferroelectrics
+King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
+
+figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
+
+== Effective Hamiltonian for molecular dynamics simulation
+ * Monte Carlo Simulations
+   * BaTiO$_3$ bulk - Zhong, Vanderbilt and Rabe: Phys. Rev. B Vol.52 p.6301 (1995).
+   * PbTiO$_3$ bulk - Waghmare and Rabe: Phys. Rev. B Vol.55 p.6161 (1997).
+ * Molecular dynamics symulations
+   * Relaxor - Waghmare, Cockayne and Burton, Ferroelectrics Vol.291, p.187 (2003).
+   * Relaxor - Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).
+   * BaTiO$_3$ capacitor - Paul, Nishimatsu, Kawazoe and Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007) *feram*.
+
+Kinetic energy terms are added to Monte Carlo Hamiltonian
+Eq. 1
+    H^{\rm eff}
+    = \frac{M^*_{\rm dipole}}{2} \sum_{{\bf R},\alpha}\dot{u}_\alpha^2({\bf R})
+    + \frac{M^*_{\rm acoustic}}{2}\sum_{{\bf R},\alpha}\dot{w}_\alpha^2({\bf R})
+    + V^{\rm self}(\{{\bf u}\})+V^{\rm dpl}(\{{\bf u}\})+V^{\rm short}(\{{\bf u}\})
+    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{{\bf w}\})
+    + V^{\rm coup,\,homo}(\{{\bf u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{{\bf u}\}, \{{\bf w}\})
+/Eq.
+
 
 
 == Coarse-graining: reduction of the number of degree of freedom
@@ -57,17 +70,6 @@ figures/CoarseGraining.jpg
 
 
 
-== Effective Hamiltonian for molecular dynamics simulation
-Eq. 1
-    H^{\rm eff}
-    = \frac{M^*_{\rm dipole}}{2} \sum_{{\bf R},\alpha}\dot{u}_\alpha^2({\bf R})
-    + \frac{M^*_{\rm acoustic}}{2}\sum_{{\bf R},\alpha}\dot{w}_\alpha^2({\bf R})
-    + V^{\rm self}(\{{\bf u}\})+V^{\rm dpl}(\{{\bf u}\})+V^{\rm short}(\{{\bf u}\})
-    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{{\bf w}\})
-    + V^{\rm coup,\,homo}(\{{\bf u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{{\bf u}\}, \{{\bf w}\})
-/Eq.
-Kinetic energy terms are added to Monte Carlo Hamiltonian
-(Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)).
 
 
 == Parameters (input file)
@@ -125,6 +127,11 @@ Kinetic energy terms are added to Monte Carlo Hamiltonian
 == Forces on dipoles are calculated in the reciprocal space
 figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
 
+# Time consuming part is the calculation of forces of dipoles because dipole-dipole interactions are long-range.
+
+
+== Thin films in capacitors
+figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrode (b).
 
 == Time evolution and fluctuation
 figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
@@ -143,27 +150,27 @@ Eq. 1
 figures/32x32xL032-D0-susceptibility.jpg Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO$_3$ with perfect electrodes.
 
 == Summary
+ * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
+ * New programming and technical methods are employed
+ * Perovskite-type ferroelectrics and relaxor
+ * Phase transition
+ * Thin-film capacitor: perfect and imperfect short-circuited electrodes
+ * Nose-Poincare thermostat
+ * Evaluate forces in reciprocal-space; k-locality of the force matrix
+ * Coarse-graining; reduction of the number of degree of freedom
 
 == ---------------------------- Relaxor ----------------------------
-
-== What is relaxor?
-Relaxors Pb$BB$'O$_3$: Pb$^{2+}$
+Relaxors Pb$B^'_x$$B^{''}_{(1-x)}$O$_3$: Pb$^{2+}$
  * Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$ (PSN): Sc$^{3+}$, Nb$^{5+}$
  * Pb(Sc$_{1/2}$Ta$_{1/2}$)O$_3$ (PST): Sc$^{3+}$, Ta$^{5+}$
- * Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$ (PMN): Mg$^{2+}$, Nb$^{5+}$
+ * Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$ (PMN:) Mg$^{2+}$, Nb$^{5+}$
  * $(1-x)$Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$-xPbTiO$_3$ (PMN-$x$PT): Mg$^{2+}$, Nb$^{5+}$, Ti$^{4+}$
- * Pb(Mg$_{1/3}$Ta$_{2/3}$)O$_3$ (PMT):
- * Pb(Zn$_{1/3}$Nb$_{2/3}$)O$_3$ (PZN):
-b-site 
+ * Pb(Mg$_{1/3}$Ta$_{2/3}$)O$_3$ (PMT): Mg$^{2+}$, Ta$^{5+}$
+ * Pb(Zn$_{1/3}$Nb$_{2/3}$)O$_3$ (PZN): Zn$^{2+}$, Nb$^{5+}$
+The averaged valence number of B-site ions $B^'_x$ and $B^{''}_{(1-x)}$ is $4+$.
 
 
 # There are some Pb-based relaxors PbBB'O3.aaaaaaa
-
-== Frequency dependence of susceptibility of relaxor
-The purpose of this study is to simulate this Frequency dependence.
-
-
-== Crystal structures of relaxors
 
 == Frequency dependence of dielectric permittivity of relaxors
 figures/TsurumiFig3.jpg After Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. Vol.33pp. 1959-1964 (1994)
@@ -172,8 +179,18 @@ Eq.1
 \tan\delta=\tan()
 /Eq.
 
+== Crystal structures of relaxors
+figures/RandallBhallaFig3.jpg (a) Ordered B-site structure of $AB^'_xB^{''}_{(1-x)}$O$_3$. In the case of Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$, Sc and Nb has the NaCl structure. In the case of Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$, the Na-site is randomly occupied by Mg$_{1/3}$Nb$_{1/6}$ and the Cl-site is occupied by  Nb$_{1/2}$.  (b) Disordered structure. B-sites is occuped by $B^{'}$ and $B^{''}_{(1-x)}$ randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+
+
+== Local field on Pb-site
+Displacement of Pb is the main source of dipole moment.
+figures/TwoDoubleWells.jpg Symmetric potential around Pb at the chemically ordered region (COR). Asymmetric one at the chemically disordered region (CDR).
+
+
+
 == Chemically ordered and disordered regions of relaxors
-figures/RandallBhallaFig8.jpg Chemically ordered region (&sim;100&Aring;) in a chemically disordered matrix. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+figures/RandallBhallaFig8.jpg The quenched sample has chemically ordered regions (&sim;100&Aring;) in a chemically disordered matrix. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
 
 
 == Modeling of relaxors in an illustration
