@@ -1,0 +1,20 @@
+# -*-Makefile-*- for loto/doc
+# Time-stamp: <2007-10-06 19:17:32 takeshi>
+# Author: Takeshi NISHIMATSU
+##
+srcdir = @srcdir@
+VPATH = @srcdir@
+SOURCEFORGE_FERAM=t-nissie@shell.sourceforge.net:/home/groups/l/lo/loto/htdocs/feram
+
+feram-presentation.xhtml: feram-presentation.txt
+	ruby -I $(srcdir)/.. $< $< > $@
+
+sourceforge: favicon.ico feram-presentation.css feram-presentation.txt feram-presentation.xhtml figures
+	scp -r $^ $(SOURCEFORGE_FERAM)/doc
+
+.PRECIOUS: Makefile
+Makefile: $(srcdir)/Makefile.in
+	cd .. && ./config.status doc/$@
+
+clean:
+	rm -rf *.aux *.bbl *.blg *.dvi *.log *.ps *.pdf config.log

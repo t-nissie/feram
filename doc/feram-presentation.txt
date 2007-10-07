@@ -28,7 +28,7 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
 
 
 
-== Perovskite type ferroelectrics
+== Perovskite type ferroelectrics ABO3
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 
 figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
