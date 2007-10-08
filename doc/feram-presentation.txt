@@ -2,13 +2,37 @@
 = Introduction of feram
 Takeshi Nishimatsu
 
+(Hit [Space] to go to next page.)
+
+# Today, I will introduce you my new simulation program "feram", that is for
+# "Ferroelectrics and Relaxor Analyzing Machine. In second half of my talk,
+# I will introduce a planning study of relaxors using this "feram".
+
+
+== How to use Slidy
+This presentation is written with Slidy http://www.w3.org/Talks/Tools/Slidy/ .
+ * Advance to next slide with mouse click or [Space]
+ * Move forward/backward between slides with [Left], [Right], [Pg Up] and [Pg Dn] keys
+ * [Home] key for first slide, [End] key for last slide
+ * The [C] key for an automatically generated table of contents (or click on "contents" on the toolbar)
+ * Function [F11] toggles between the full screen mode and the normal mode
+ * [F] key toggles the display of the tool bar below.
+ * [A] key toggles the presentation mode and the printing mode
+ * [S] and [B] keys can control the size of fonts
+Use Firefox web browser and put some mathematical fonts
+in your $HOME/.fonts/ directory to view equations correctly.
+For more detail, See http://www.mozilla.org/projects/mathml/fonts/ .
+
+
 == What is feram?
 feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
 
 figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis is strain. Difference between first- and second order transition is clear.
 
-
-
+# feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics
+# and relaxors. Compared to the Monte Carlo simulations, MD simulation steps have a physical
+# meaning of the time evolution. So, for example, you can do cooling and heating simulations
+# and can get suc hysteresis in temperature.
 
 
 
@@ -23,8 +47,9 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
  * Free software (GPLv3) http://loto.sf.net/feram/
  * Subversion repository at https://loto.svn.sf.net/svnroot/loto/feram/
 
-
-
+# Before going to physics, Let me introduce some technical features of ferams.
+# It's fast. For speeding up, I use some computational technique as well as
+# physics of mathematics. I employed FFTW library, .....
 
 
 
@@ -33,8 +58,11 @@ King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of
 
 figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
 
-
-
+# Let's go back to physics.
+# As you know, in perovskite type ferroelectrics ABO3, atomic displacements and strains
+# are strongly coupled. This is the cubic ot high temperature srystal structure of ABO3.
+# Unit cell has 5 atoms. So atomic displacements spans a 3x5=15-dimensional space.
+# This is a 2-dimentional subspace of the 15-dimensinal space......
 
 
 
@@ -149,7 +177,9 @@ figures/CoarseGraining.jpg
 == Forces on dipoles are calculated in the reciprocal space
 figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
 
-# Time consuming part is the calculation of forces of dipoles because dipole-dipole interactions are long-range.
+# Time consuming part in simulation is the calculation of forces of dipoles because
+# dipole-dipole interactions are long-range. ..... You can reduce computational time
+# from O(N^2) to O(NlogN).
 
 
 
@@ -263,7 +293,7 @@ figures/RandallBhallaFig8.jpg The quenched sample has chemically ordered regions
 
 
 
-== Modeling of relaxors in an illustration
+== Modeling of relaxors
 figures/DoubleWells.jpg Schematic illustration of modeling of relaxor. Bubble-like Chemically ordered regions (COR, red symmetric double wells) is created in a chemically disordered matrix (blue asymmetric double wells)
 
 
@@ -271,7 +301,7 @@ figures/DoubleWells.jpg Schematic illustration of modeling of relaxor. Bubble-li
 
 
 == Snapshot of a simulation of PSN relaxor
-figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields.
+figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields. After Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).
 
 
 
@@ -279,6 +309,8 @@ figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing
 
 
 == Susceptibility tensor
+Now you can calculate ${\bf S}({\bf R},t)$ in some periods (1-100 ns) with feram.
+
 Susceptibility tensor $\chi({\bf R}-{\bf R}^',t-t^')$
 Eq. (Real space)
 {\bf S}({\bf R},t) = \sum_{{\bf R}^'}\int dt^' \chi({\bf R}-{\bf R}^',t-t^')\,{\bf E}({\bf R}^',t^')
@@ -299,11 +331,13 @@ Eq. (Kramers-Kronig relation)
 /Eq.
 
 
-
-
+# If you apply external electric field at site R' at time t', dopole at R,t sespinses
+# through this equation with real-space-and-time usceptibility tensor chi(R-R',t-t').
+# You can simplify it by Fourier transformation and get q-omega expression.
+# And then, if you apply the fluctuation-dissipation theorem to it, you may get
+# the imaginary part of chi. Then with Kramers-Kronig relation, you can get the real part.
+#
 # G. L. Squires: Introduction to the Theory of Thermal Neutron Scattering (Dover Publications, 1996).
-
-
 
 
 
@@ -311,11 +345,11 @@ Eq. (Kramers-Kronig relation)
 == Estimation of computational time
 32x32x32 unit cells, $\Delta t = 2$ fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
 
-1THz, $T=1\,$ps,                500 steps, 54 sec or 8.4 sec.
+1THz, $T=1\,$ps,            500 steps,  54 sec  or 8.4 sec.
 
-1GHz, $T=1\,$ns,            500,000 steps, 900 min. or 140 min.
+1GHz, $T=1\,$ns,        500,000 steps, 900 min. or 140 min.
 
-1MHz, $T=1\mu$s,    500,000,000 steps, 620 days or 97 days
+1MHz, $T=1\mu$s,    500,000,000 steps, 620 days or  97 days
 
 So, I am planning to calculate and compare $\chi_{\alpha\beta}(q,\omega)$ for $\omega/(2\pi)$ = 10M ... 10GHz.
 

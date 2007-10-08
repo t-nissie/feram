@@ -20,35 +20,63 @@
 <p>
 Takeshi Nishimatsu
 </p>
+<p>
+(Hit [Space] to go to next page.)
+</p>
 <br />Contents:
 <ul>
-  <li><a href="#LABEL-2">What is feram?</a></li>
-  <li><a href="#LABEL-3">Technical features and keywords</a></li>
-  <li><a href="#LABEL-4">Perovskite type ferroelectrics ABO<sub>3</sub></a></li>
-  <li><a href="#LABEL-5">Effective Hamiltonian for molecular dynamics simulation</a></li>
-  <li><a href="#LABEL-6">Coarse-graining: reduction of the number of degree of freedom</a></li>
-  <li><a href="#LABEL-7">Parameters (input file)</a></li>
-  <li><a href="#LABEL-8">Forces on dipoles are calculated in the reciprocal space</a></li>
-  <li><a href="#LABEL-9">Thin films in capacitors</a></li>
-  <li><a href="#LABEL-10">Time evolution and fluctuation</a></li>
-  <li><a href="#LABEL-11">Dielectric constant can be calculated from the fluctuation of dipoles</a></li>
-  <li><a href="#LABEL-12">Summary for "feram" introduction</a></li>
-  <li><a href="#LABEL-13">---------------------------- Relaxor ----------------------------</a></li>
-  <li><a href="#LABEL-14">Frequency dependence of dielectric constant of relaxors</a></li>
-  <li><a href="#LABEL-15">Crystal structures of relaxors</a></li>
-  <li><a href="#LABEL-16">Local field on Pb-site</a></li>
-  <li><a href="#LABEL-17">Chemically ordered and disordered regions of relaxors</a></li>
-  <li><a href="#LABEL-18">Modeling of relaxors in an illustration</a></li>
-  <li><a href="#LABEL-19">Snapshot of a simulation of PSN relaxor</a></li>
-  <li><a href="#LABEL-20">Susceptibility tensor</a></li>
-  <li><a href="#LABEL-21">Estimation of computational time</a></li>
+  <li><a href="#LABEL-2">How to use Slidy</a></li>
+  <li><a href="#LABEL-3">What is feram?</a></li>
+  <li><a href="#LABEL-4">Technical features and keywords</a></li>
+  <li><a href="#LABEL-5">Perovskite type ferroelectrics ABO<sub>3</sub></a></li>
+  <li><a href="#LABEL-6">Effective Hamiltonian for molecular dynamics simulation</a></li>
+  <li><a href="#LABEL-7">Coarse-graining: reduction of the number of degree of freedom</a></li>
+  <li><a href="#LABEL-8">Parameters (input file)</a></li>
+  <li><a href="#LABEL-9">Forces on dipoles are calculated in the reciprocal space</a></li>
+  <li><a href="#LABEL-10">Thin films in capacitors</a></li>
+  <li><a href="#LABEL-11">Time evolution and fluctuation</a></li>
+  <li><a href="#LABEL-12">Dielectric constant can be calculated from the fluctuation of dipoles</a></li>
+  <li><a href="#LABEL-13">Summary for "feram" introduction</a></li>
+  <li><a href="#LABEL-14">---------------------------- Relaxor ----------------------------</a></li>
+  <li><a href="#LABEL-15">Frequency dependence of dielectric constant of relaxors</a></li>
+  <li><a href="#LABEL-16">Crystal structures of relaxors</a></li>
+  <li><a href="#LABEL-17">Local field on Pb-site</a></li>
+  <li><a href="#LABEL-18">Chemically ordered and disordered regions of relaxors</a></li>
+  <li><a href="#LABEL-19">Modeling of relaxors</a></li>
+  <li><a href="#LABEL-20">Snapshot of a simulation of PSN relaxor</a></li>
+  <li><a href="#LABEL-21">Susceptibility tensor</a></li>
+  <li><a href="#LABEL-22">Estimation of computational time</a></li>
 </ul>
 
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-2">What is feram?</h2>
+<h2 id="LABEL-2">How to use Slidy</h2>
+<p>
+This presentation is written with Slidy <a href="http://www.w3.org/Talks/Tools/Slidy/">http://www.w3.org/Talks/Tools/Slidy/</a> .
+</p>
+
+<ul>
+  <li>Advance to next slide with mouse click or [Space]</li>
+  <li>Move forward/backward between slides with [Left], [Right], [Pg Up] and [Pg Dn] keys</li>
+  <li>[Home] key for first slide, [End] key for last slide</li>
+  <li>The [C] key for an automatically generated table of contents (or click on "contents" on the toolbar)</li>
+  <li>Function [F11] toggles between the full screen mode and the normal mode</li>
+  <li>[F] key toggles the display of the tool bar below.</li>
+  <li>[A] key toggles the presentation mode and the printing mode</li>
+  <li>[S] and [B] keys can control the size of fonts</li>
+</ul>
+<p>
+Use Firefox web browser and put some mathematical fonts
+in your $HOME/.fonts/ directory to view equations correctly.
+For more detail, See <a href="http://www.mozilla.org/projects/mathml/fonts/">http://www.mozilla.org/projects/mathml/fonts/</a> .
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-3">What is feram?</h2>
 <p>
 feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
 </p>
@@ -64,7 +92,7 @@ feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-3">Technical features and keywords</h2>
+<h2 id="LABEL-4">Technical features and keywords</h2>
 
 <ul>
   <li>Fast
@@ -83,7 +111,7 @@ feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-4">Perovskite type ferroelectrics ABO<sub>3</sub></h2>
+<h2 id="LABEL-5">Perovskite type ferroelectrics ABO<sub>3</sub></h2>
 <p>
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 </p>
@@ -99,7 +127,7 @@ King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of
 
 
 <div class="slide">
-<h2 id="LABEL-5">Effective Hamiltonian for molecular dynamics simulation</h2>
+<h2 id="LABEL-6">Effective Hamiltonian for molecular dynamics simulation</h2>
 
 <ul>
   <li>Monte Carlo Simulations
@@ -122,7 +150,7 @@ Kinetic energy terms are added to Monte Carlo Hamiltonian
 
 
 <div class="slide">
-<h2 id="LABEL-6">Coarse-graining: reduction of the number of degree of freedom</h2>
+<h2 id="LABEL-7">Coarse-graining: reduction of the number of degree of freedom</h2>
 
 <ul>
   <li>Real perovskite-like system has <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mn>15</mn><mi>N</mi><mo>+</mo><mn>6</mn></math> degree of freedom
@@ -152,7 +180,7 @@ Kinetic energy terms are added to Monte Carlo Hamiltonian
 
 
 <div class="slide">
-<h2 id="LABEL-7">Parameters (input file)</h2>
+<h2 id="LABEL-8">Parameters (input file)</h2>
 
 <ul>
   <li>King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)</li>
@@ -209,7 +237,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-8">Forces on dipoles are calculated in the reciprocal space</h2>
+<h2 id="LABEL-9">Forces on dipoles are calculated in the reciprocal space</h2>
 <p>
 <div class="figure">
   <img src="figures/flow.jpg" alt="figures/flow.jpg" />
@@ -222,7 +250,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-9">Thin films in capacitors</h2>
+<h2 id="LABEL-10">Thin films in capacitors</h2>
 <p>
 <div class="figure">
   <img src="figures/capacitor.jpg" alt="figures/capacitor.jpg" />
@@ -235,7 +263,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-10">Time evolution and fluctuation</h2>
+<h2 id="LABEL-11">Time evolution and fluctuation</h2>
 <p>
 <div class="figure">
   <img src="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" alt="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" />
@@ -248,7 +276,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-11">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
+<h2 id="LABEL-12">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
 <p>
 <math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><msub><mi>&epsilon;</mi><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>=</mo><mo>(</mo><msub><mi>&epsilon;</mi><mrow><mn>&infin;</mn></mrow></msub><msub><mo>)</mo><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msub><mi>&epsilon;</mi><mn>0</mn></msub><mi>V</mi><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi></mrow></mfrac><mo>(</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&alpha;</mi></msub><msub><mi>S</mi><mi>&beta;</mi></msub><mo>&gt;</mo><mo>-</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&alpha;</mi></msub><mo>&gt;</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&beta;</mi></msub><mo>&gt;</mo><mo>)</mo></math>
 <div class="figure">
@@ -262,7 +290,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-12">Summary for "feram" introduction</h2>
+<h2 id="LABEL-13">Summary for "feram" introduction</h2>
 
 <ul>
   <li>Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian</li>
@@ -279,7 +307,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-13">---------------------------- Relaxor ----------------------------</h2>
+<h2 id="LABEL-14">---------------------------- Relaxor ----------------------------</h2>
 <p>
 Relaxors Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup><mi>B</mi><mi>x</mi><mo>&apos;</mo></msubsup></math><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup><mi>B</mi><mrow><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>&apos;</mo><mo>&apos;</mo></mrow></msubsup></math>O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>: Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>2</mn><mo>+</mo></mrow></msup></math>
 </p>
@@ -299,7 +327,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-14">Frequency dependence of dielectric constant of relaxors</h2>
+<h2 id="LABEL-15">Frequency dependence of dielectric constant of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/TsurumiFig3.jpg" alt="figures/TsurumiFig3.jpg" />
@@ -312,7 +340,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-15">Crystal structures of relaxors</h2>
+<h2 id="LABEL-16">Crystal structures of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig3.jpg" alt="figures/RandallBhallaFig3.jpg" />
@@ -325,7 +353,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-16">Local field on Pb-site</h2>
+<h2 id="LABEL-17">Local field on Pb-site</h2>
 <p>
 Displacement of Pb is the main source of dipole moment.
 <div class="figure">
@@ -339,7 +367,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-17">Chemically ordered and disordered regions of relaxors</h2>
+<h2 id="LABEL-18">Chemically ordered and disordered regions of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig8.jpg" alt="figures/RandallBhallaFig8.jpg" />
@@ -352,7 +380,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-18">Modeling of relaxors in an illustration</h2>
+<h2 id="LABEL-19">Modeling of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/DoubleWells.jpg" alt="figures/DoubleWells.jpg" />
@@ -365,12 +393,12 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-19">Snapshot of a simulation of PSN relaxor</h2>
+<h2 id="LABEL-20">Snapshot of a simulation of PSN relaxor</h2>
 <p>
 <div class="figure">
   <img src="figures/SilviaFig1.jpg" alt="figures/SilviaFig1.jpg" />
   <div class="caption">
-    A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields.
+    A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields. After Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).
   </div>
 </div>
 </p>
@@ -378,7 +406,10 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-20">Susceptibility tensor</h2>
+<h2 id="LABEL-21">Susceptibility tensor</h2>
+<p>
+Now you can calculate <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='bold'>S</mi></mrow><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>,</mo><mi>t</mi><mo>)</mo></math> in some periods (1-100 ns) with feram.
+</p>
 <p>
 Susceptibility tensor <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>&chi;</mi><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>-</mo><msup><mrow><mi mathvariant='bold'>R</mi></mrow><mo>&apos;</mo></msup><mo>,</mo><mi>t</mi><mo>-</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo></math>
 <math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='bold'>S</mi></mrow><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>,</mo><mi>t</mi><mo>)</mo><mo>=</mo><munder><mo>&sum;</mo><mrow><msup><mrow><mi mathvariant='bold'>R</mi></mrow><mo>&apos;</mo></msup></mrow></munder><mo>&int;</mo><mi>d</mi><msup><mi>t</mi><mo>&apos;</mo></msup><mi>&chi;</mi><mo>(</mo><mrow><mi mathvariant='bold'>R</mi></mrow><mo>-</mo><msup><mrow><mi mathvariant='bold'>R</mi></mrow><mo>&apos;</mo></msup><mo>,</mo><mi>t</mi><mo>-</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo><mspace width='0.167em' /><mrow><mi mathvariant='bold'>E</mi></mrow><mo>(</mo><msup><mrow><mi mathvariant='bold'>R</mi></mrow><mo>&apos;</mo></msup><mo>,</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo></math>
@@ -394,18 +425,18 @@ Then, with Kramers-Kronig relation,
 
 
 <div class="slide">
-<h2 id="LABEL-21">Estimation of computational time</h2>
+<h2 id="LABEL-22">Estimation of computational time</h2>
 <p>
 32x32x32 unit cells, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi mathvariant='normal'>&Delta;</mi><mi>t</mi><mo>=</mo><mn>2</mn></math> fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
 </p>
 <p>
-1THz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mspace width='0.167em' /></math>ps,                500 steps, 54 sec or 8.4 sec.
+1THz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mspace width='0.167em' /></math>ps,            500 steps,  54 sec  or 8.4 sec.
 </p>
 <p>
-1GHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mspace width='0.167em' /></math>ns,            500,000 steps, 900 min. or 140 min.
+1GHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mspace width='0.167em' /></math>ns,        500,000 steps, 900 min. or 140 min.
 </p>
 <p>
-1MHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mi>&mu;</mi></math>s,    500,000,000 steps, 620 days or 97 days
+1MHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mi>&mu;</mi></math>s,    500,000,000 steps, 620 days or  97 days
 </p>
 <p>
 So, I am planning to calculate and compare <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><mi>&chi;</mi><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>(</mo><mi>q</mi><mo>,</mo><mi>&omega;</mi><mo>)</mo></math> for <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>&omega;</mi><mo>/</mo><mo>(</mo><mn>2</mn><mi>&pi;</mi><mo>)</mo></math> = 10M ... 10GHz.
