@@ -78,11 +78,11 @@ figures/perovskite-contours.jpg Coupling between atomic displacements and strain
 Kinetic energy terms are added to Monte Carlo Hamiltonian
 Eq. 1
     H^{\rm eff}
-    = \frac{M^*_{\rm dipole}}{2} \sum_{{\bf R},\alpha}\dot{u}_\alpha^2({\bf R})
-    + \frac{M^*_{\rm acoustic}}{2}\sum_{{\bf R},\alpha}\dot{w}_\alpha^2({\bf R})
-    + V^{\rm self}(\{{\bf u}\})+V^{\rm dpl}(\{{\bf u}\})+V^{\rm short}(\{{\bf u}\})
-    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{{\bf w}\})
-    + V^{\rm coup,\,homo}(\{{\bf u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{{\bf u}\}, \{{\bf w}\})
+    = \frac{M^*_{\rm dipole}}{2} \sum_{{\bm R},\alpha}\dot{u}_\alpha^2({\bm R})
+    + \frac{M^*_{\rm acoustic}}{2}\sum_{{\bm R},\alpha}\dot{w}_\alpha^2({\bm R})
+    + V^{\rm self}(\{{\bm u}\})+V^{\rm dpl}(\{{\bm u}\})+V^{\rm short}(\{{\bm u}\})
+    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{{\bm w}\})
+    + V^{\rm coup,\,homo}(\{{\bm u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{{\bm u}\}, \{{\bm w}\})
 /Eq.
 
 
@@ -99,8 +99,8 @@ Eq. 1
    * 6 components of strain
 
  * Simplified model has $6N+6$ degree of freedom
-   * Define 1 dipole $Z^*{\bf u}({\bf R})$ per unit cell
-   * 1 acoustic displacement (Inhomogeneous strain) ${\bf w}({\bf R})$ per unit cell
+   * Define 1 dipole $Z^*{\bm u}({\bm R})$ per unit cell
+   * 1 acoustic displacement (Inhomogeneous strain) ${\bm w}({\bm R})$ per unit cell
 
 figures/CoarseGraining.jpg
 
@@ -188,7 +188,7 @@ figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast F
 
 
 == Thin films in capacitors
-figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrode (b).
+figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b).
 
 
 
@@ -309,25 +309,25 @@ figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing
 
 
 == Susceptibility tensor
-Now you can calculate ${\bf S}({\bf R},t)$ in some periods (1-100 ns) with feram.
+Now you can calculate ${\bm S}({\bm R},t)$ in some periods (1-100 ns) with feram.
 
-Susceptibility tensor $\chi({\bf R}-{\bf R}^',t-t^')$
+Susceptibility tensor $\chi({\bm R}-{\bm R}^',t-t^')$
 Eq. (Real space)
-{\bf S}({\bf R},t) = \sum_{{\bf R}^'}\int dt^' \chi({\bf R}-{\bf R}^',t-t^')\,{\bf E}({\bf R}^',t^')
+{\bm S}({\bm R},t) = \sum_{{\bm R}^'}\int dt^' \chi({\bm R}-{\bm R}^',t-t^')\,\mathscr{E}({\bm R}^',t^')
 /Eq.
-where ${\bf S}({\bf R},t)=Z^* {\bf u}({\bf R},t)$ and ${\bf E}({\bf R}^',t^')$ is external electric field.
+where ${\bm S}({\bm R},t)=Z^* {\bm u}({\bm R},t)$ and $\mathscr{E}({\bm R}^',t^')$ is external electric field.
 Its Fourier transformation
 Eq. (q space)
-{\bf S}({\bf q},\omega) = \chi({\bf q},\omega)\,{\bf E}({\bf q},\omega) .
+{\bm S}({\bm q},\omega) = \chi({\bm q},\omega)\,\mathscr{E}({\bm q},\omega) .
 /Eq.
 Using the fluctuation-dissipation theorem,
 Eq. (The fluctuation-dissipation theorem)
-{\rm Im} \chi_{\alpha\beta}({\bf q},\omega) = \frac{1}{2k_BT}\int_{-\infty}^{\infty}dt
-                            <S_\alpha(-{\bf q},0)> <S_\beta({\bf q},t)> e^{-i\omega t}
+{\rm Im} \chi_{\alpha\beta}({\bm q},\omega) = \frac{1}{2k_BT}\int_{-\infty}^{\infty}dt
+                            <S_\alpha(-{\bm q},0)> <S_\beta({\bm q},t)> e^{-i\omega t}
 /Eq.
 Then, with Kramers-Kronig relation,
 Eq. (Kramers-Kronig relation)
-{\rm Re} \chi_{\alpha\beta}({\bf q},\omega) = ...
+{\rm Re} \chi_{\alpha\beta}({\bm q},\omega) = ...
 /Eq.
 
 
