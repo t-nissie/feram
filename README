@@ -43,12 +43,12 @@ Pronunciation of "feram": Ef-Ee-RaMu
 
 == Install
 === Requirements
- * GNU make http://www.gnu.org/software/make/ . (You cannot use BSD make.)
- * FFTW3 library. http://www.fftw.org/
+ * GNU make (You cannot use BSD make.)  http://www.gnu.org/software/make/
+ * FFTW3 library  http://www.fftw.org/
  * Fortran 90 compiler
-   * Intel Fortran Compiler for Linux (ifort, version 10.0.025 or higher) http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
-   * gfortran (gcc-4.2.1 or higher) http://gcc.gnu.org/fortran/
-   * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
+   * Intel Fortran Compiler for Linux (ifort, version 10.0.025 or higher)  http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
+   * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
+   * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server  http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
 
 ===  Notice on PGI Fortran
 It is found that feram compiled with PGI Fortran 7.0 is slow.
