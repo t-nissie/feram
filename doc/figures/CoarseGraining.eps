@@ -1,0 +1,923 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: -1 665 592 780
+%%Title: CoarseGraining
+%%CreationDate: Thu Oct 18 16:01:46 2007
+%%Creator: Tgif-4.1.45-QPL written by William Chia-Wei Cheng (bill.cheng@acm.org)
+%%ProducedBy: (unknown)
+%%Pages: 1
+%%DocumentFonts: (atend)
+%%EndComments
+%%BeginProlog
+
+/tgifdict 85 dict def
+tgifdict begin
+
+/tgifellipsedict 6 dict def
+tgifellipsedict /mtrx matrix put
+
+/TGEL % tgifellipse
+ { tgifellipsedict begin
+      /yrad exch def
+      /xrad exch def
+      /y exch def
+      /x exch def
+      /savematrix mtrx currentmatrix def
+      x y translate
+      xrad yrad scale
+      0 0 1 0 360 arc
+      savematrix setmatrix
+   end
+ } def
+
+/tgifarrowtipdict 8 dict def
+tgifarrowtipdict /mtrx matrix put
+
+/TGAT % tgifarrowtip
+ { tgifarrowtipdict begin
+      /dy exch def
+      /dx exch def
+      /h exch def
+      /w exch def
+      /y exch def
+      /x exch def
+      /savematrix mtrx currentmatrix def
+      x y translate
+      dy dx atan rotate
+      0 0 moveto
+      w neg h lineto
+      w neg h neg lineto
+      savematrix setmatrix
+   end
+ } def
+
+/tgifpatdict 10 dict def
+
+/tgifpatbyte
+ { currentdict /retstr get exch
+   pat i cellsz mod get put
+ } def
+
+/tgifpatproc
+ { 0 1 widthlim {tgifpatbyte} for retstr
+   /i i 1 add def
+ } def
+
+/TGPF % tgifpatfill
+ { tgifpatdict begin
+      /h exch def
+      /w exch def
+      /lty exch def
+      /ltx exch def
+      /cellsz exch def
+      /pat exch def
+
+      /widthlim w cellsz div cvi 1 sub def
+      /retstr widthlim 1 add string def
+      /i 0 def
+
+      tgiforigctm setmatrix
+      ltx lty translate
+      w h true [1 0 0 1 0 0] {tgifpatproc} imagemask
+      ltx neg lty neg translate
+   end
+ } def
+
+/pat3 <8000000008000000> def
+/pat4 <8800000022000000> def
+/pat5 <8800220088002200> def
+/pat6 <8822882288228822> def
+/pat7 <aa55aa55aa55aa55> def
+/pat8 <77dd77dd77dd77dd> def
+/pat9 <77ffddff77ffddff> def
+/pat10 <77ffffff77ffffff> def
+/pat11 <7fffffff7fffffff> def
+/pat12 <8040200002040800> def
+/pat13 <40a00000040a0000> def
+/pat14 <ff888888ff888888> def
+/pat15 <ff808080ff080808> def
+/pat16 <f87422478f172271> def
+/pat17 <038448300c020101> def
+/pat18 <081c22c180010204> def
+/pat19 <8080413e080814e3> def
+/pat20 <8040201008040201> def
+/pat21 <8844221188442211> def
+/pat22 <77bbddee77bbddee> def
+/pat23 <c1e070381c0e0783> def
+/pat24 <7fbfdfeff7fbfdfe> def
+/pat25 <3e1f8fc7e3f1f87c> def
+/pat26 <0102040810204080> def
+/pat27 <1122448811224488> def
+/pat28 <eeddbb77eeddbb77> def
+/pat29 <83070e1c3870e0c1> def
+/pat30 <fefdfbf7efdfbf7f> def
+/pat31 <7cf8f1e3c78f1f3e> def
+
+/bd { bind def } bind def
+
+/GS { gsave } bd
+/GR { grestore } bd
+/NP { newpath } bd
+/CP { closepath } bd
+/CHP { charpath } bd
+/CT { curveto } bd
+/L { lineto } bd
+/RL { rlineto } bd
+/M { moveto } bd
+/RM { rmoveto } bd
+/S { stroke } bd
+/F { fill } bd
+/TR { translate } bd
+/RO { rotate } bd
+/SC { scale } bd
+/MU { mul } bd
+/DI { div } bd
+/DU { dup } bd
+/NE { neg } bd
+/AD { add } bd
+/SU { sub } bd
+/PO { pop } bd
+/EX { exch } bd
+/CO { concat } bd
+/CL { clip } bd
+/EC { eoclip } bd
+/EF { eofill } bd
+/IM { image } bd
+/IMM { imagemask } bd
+/ARY { array } bd
+/SG { setgray } bd
+/RG { setrgbcolor } bd
+/SD { setdash } bd
+/W { setlinewidth } bd
+/SM { setmiterlimit } bd
+/SLC { setlinecap } bd
+/SLJ { setlinejoin } bd
+/SH { show } bd
+/FF { findfont } bd
+/MS { makefont setfont } bd
+/AR { arcto 4 {pop} repeat } bd
+/CURP { currentpoint } bd
+/FLAT { flattenpath strokepath clip newpath } bd
+/TGSM { tgiforigctm setmatrix } def
+/TGRM { savematrix setmatrix } def
+
+end
+
+%%EndProlog
+%%Page: 1 1
+
+%%PageBoundingBox: -1 665 592 780
+tgifdict begin
+/tgifsavedpage save def
+
+1 SM
+1 W
+
+0 SG
+
+72 0 MU 72 11.602 MU TR
+72 128 DI 100.000 MU 100 DI DU NE SC
+
+GS
+
+/tgiforigctm matrix currentmatrix def
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      0 165 M
+      50 160 L
+      160 140 L
+      250 140 L
+      360 130 L
+      450 160 L
+      500 160 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      0 260 M
+      50 260 L
+      150 240 L
+      250 260 L
+      360 240 L
+      450 260 L
+      490 260 L
+      500 260 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      455 100 M
+      450 160 L
+      450 260 L
+      450 300 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      155 100 M
+      160 140 L
+      150 240 L
+      150 300 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      55 100 M
+      50 160 L
+      50 260 L
+      60 300 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      255 100 M
+      250 140 L
+      250 260 L
+      250 300 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      365 100 M
+      360 130 L
+      360 240 L
+      350 300 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0.000 1.000 0.000 RG
+GS
+   NP
+      625 235 M
+      -70 55 atan DU cos 22.000 MU 680 exch SU
+      exch sin 22.000 MU 165 exch SU L
+   TGSM
+   7 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      680 165 22.000 9.000 55 -70 TGAT
+   1 SG CP F
+   0.000 1.000 0.000 RG
+   NP
+      680 165 22.000 9.000 55 -70 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0.000 1.000 0.000 RG
+GS
+   NP
+      750 225 M
+      -55 5 atan DU cos 22.000 MU 755 exch SU
+      exch sin 22.000 MU 170 exch SU L
+   TGSM
+   7 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      755 170 22.000 9.000 5 -55 TGAT
+   1 SG CP F
+   0.000 1.000 0.000 RG
+   NP
+      755 170 22.000 9.000 5 -55 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0.000 1.000 0.000 RG
+GS
+   NP
+      835 225 M
+      -70 40 atan DU cos 22.000 MU 875 exch SU
+      exch sin 22.000 MU 155 exch SU L
+   TGSM
+   7 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      875 155 22.000 9.000 40 -70 TGAT
+   1 SG CP F
+   0.000 1.000 0.000 RG
+   NP
+      875 155 22.000 9.000 40 -70 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0.000 1.000 0.000 RG
+GS
+   NP
+      970 235 M
+      -65 -30 atan DU cos 22.000 MU 940 exch SU
+      exch sin 22.000 MU 170 exch SU L
+   TGSM
+   7 W
+   S
+   1 W
+GR
+GS
+   TGSM
+   NP
+      940 170 22.000 9.000 -30 -65 TGAT
+   1 SG CP F
+   0.000 1.000 0.000 RG
+   NP
+      940 170 22.000 9.000 -30 -65 TGAT
+   CP F
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      550 165 M
+      600 160 L
+      710 140 L
+      800 140 L
+      910 130 L
+      1000 160 L
+      1050 160 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      550 260 M
+      600 260 L
+      700 240 L
+      800 260 L
+      910 240 L
+      1000 260 L
+      1040 260 L
+      1050 260 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      1005 100 M
+      1000 160 L
+      1000 260 L
+      1000 300 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      705 100 M
+      710 140 L
+      700 240 L
+      700 300 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      605 100 M
+      600 160 L
+      600 260 L
+      610 300 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      805 100 M
+      800 140 L
+      800 260 L
+      800 300 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% POLY/OPEN-SPLINE
+0 SG
+GS
+   NP
+      915 100 M
+      910 130 L
+      910 240 L
+      900 300 L
+   TGSM
+   2 W
+   S
+   1 W
+GR
+
+% OVAL
+0 SG
+GS
+   NP 50 160 15 15 TGEL
+   CP 1 SG F
+   0 SG
+   NP 50 160 15 15 TGEL
+   CP EC NP
+   pat7 8 32 136 40 48 TGPF
+GR
+GS
+   GS
+      NP 50 160 15 15 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+GS
+   NP 160 140 15 15 TGEL
+   CP 1 SG F
+   0 SG
+   NP 160 140 15 15 TGEL
+   CP EC NP
+   pat7 8 136 120 48 40 TGPF
+GR
+GS
+   GS
+      NP 160 140 15 15 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+GS
+   NP 250 140 15 15 TGEL
+   CP 1 SG F
+   0 SG
+   NP 250 140 15 15 TGEL
+   CP EC NP
+   pat7 8 232 120 40 40 TGPF
+GR
+GS
+   GS
+      NP 250 140 15 15 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+GS
+   NP 360 130 15 15 TGEL
+   CP 1 SG F
+   0 SG
+   NP 360 130 15 15 TGEL
+   CP EC NP
+   pat7 8 336 112 48 40 TGPF
+GR
+GS
+   GS
+      NP 360 130 15 15 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+GS
+   NP 450 160 15 15 TGEL
+   CP 1 SG F
+   0 SG
+   NP 450 160 15 15 TGEL
+   CP EC NP
+   pat7 8 432 136 40 48 TGPF
+GR
+GS
+   GS
+      NP 450 160 15 15 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+GS
+   NP 50 260 15 15 TGEL
+   CP 1 SG F
+   0 SG
+   NP 50 260 15 15 TGEL
+   CP EC NP
+   pat7 8 32 240 40 40 TGPF
+GR
+GS
+   GS
+      NP 50 260 15 15 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+GS
+   NP 150 240 15 15 TGEL
+   CP 1 SG F
+   0 SG
+   NP 150 240 15 15 TGEL
+   CP EC NP
+   pat7 8 128 216 40 48 TGPF
+GR
+GS
+   GS
+      NP 150 240 15 15 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+GS
+   NP 250 260 15 15 TGEL
+   CP 1 SG F
+   0 SG
+   NP 250 260 15 15 TGEL
+   CP EC NP
+   pat7 8 232 240 40 40 TGPF
+GR
+GS
+   GS
+      NP 250 260 15 15 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+GS
+   NP 450 260 15 15 TGEL
+   CP 1 SG F
+   0 SG
+   NP 450 260 15 15 TGEL
+   CP EC NP
+   pat7 8 432 240 40 40 TGPF
+GR
+GS
+   GS
+      NP 450 260 15 15 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0 SG
+GS
+   NP 360 240 15 15 TGEL
+   CP 1 SG F
+   0 SG
+   NP 360 240 15 15 TGEL
+   CP EC NP
+   pat7 8 336 216 48 48 TGPF
+GR
+GS
+   GS
+      NP 360 240 15 15 TGEL
+      S
+   GR
+GR
+
+% OVAL
+0.000 1.000 0.000 RG
+GS
+   NP 110 190 15 15 TGEL
+   CP 1 SG F
+   0.000 1.000 0.000 RG
+   NP 110 190 15 15 TGEL
+   CP EC NP
+   pat6 8 88 168 40 40 TGPF
+GR
+GS
+   GS
+      NP 110 190 15 15 TGEL
+      2 W
+      S
+   GR
+GR
+
+% OVAL
+0.000 1.000 0.000 RG
+GS
+   NP 205 190 15 15 TGEL
+   CP 1 SG F
+   0.000 1.000 0.000 RG
+   NP 205 190 15 15 TGEL
+   CP EC NP
+   pat6 8 184 168 40 40 TGPF
+GR
+GS
+   GS
+      NP 205 190 15 15 TGEL
+      2 W
+      S
+   GR
+GR
+
+% OVAL
+0.000 1.000 0.000 RG
+GS
+   NP 310 180 15 15 TGEL
+   CP 1 SG F
+   0.000 1.000 0.000 RG
+   NP 310 180 15 15 TGEL
+   CP EC NP
+   pat6 8 288 160 40 40 TGPF
+GR
+GS
+   GS
+      NP 310 180 15 15 TGEL
+      2 W
+      S
+   GR
+GR
+
+% OVAL
+0.000 1.000 0.000 RG
+GS
+   NP 395 185 15 15 TGEL
+   CP 1 SG F
+   0.000 1.000 0.000 RG
+   NP 395 185 15 15 TGEL
+   CP EC NP
+   pat6 8 376 168 40 40 TGPF
+GR
+GS
+   GS
+      NP 395 185 15 15 TGEL
+      2 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 105 150 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 105 150 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 205 140 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 205 140 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 305 135 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 305 135 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 405 145 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 405 145 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 450 210 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 450 210 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 405 250 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 405 250 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 360 200 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 360 200 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 305 250 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 305 250 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 250 200 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 250 200 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 200 250 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 200 250 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 155 195 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 155 195 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 100 250 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 100 250 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% OVAL
+1.000 0.000 0.000 RG
+NP 50 210 20 20 TGEL
+CP 1 SG F
+   1.000 0.000 0.000 RG
+GS
+   GS
+      NP 50 210 20 20 TGEL
+      4 W
+      S
+   GR
+GR
+
+% POLYGON/CLOSED-SPLINE
+0.000 0.000 1.000 RG
+NP
+   500 200 M
+   530 200 L
+   530 180 L
+   550 215 L
+   530 250 L
+   530 230 L
+   500 230 L
+CP
+GS
+   EF
+GR
+GS
+   S
+GR
+
+GR
+tgifsavedpage restore
+end
+showpage
+
+%%Trailer
+%MatchingCreationDate: Thu Oct 18 16:01:46 2007
+%%DocumentFonts: 
+%%EOF
