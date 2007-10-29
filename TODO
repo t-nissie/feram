@@ -1,3 +1,7 @@
+o Imprement Nose:JPhysSocJpn:70:p75-77:2001
+
+o dVddi_... -> dV_du_...
+
 o  call dipoFFT(p,c)
    call  dVddi_dipole_dipole(p,c,e)
    call     dVddi_unharmonic(p,c,e)
