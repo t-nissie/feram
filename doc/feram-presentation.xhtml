@@ -81,7 +81,10 @@ feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroel
 <div class="figure">
   <img src="figures/phase.jpg" alt="figures/phase.jpg" />
   <div class="caption">
-    Cooling and heating simulation of BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>. Horizontal axis is strain. Difference between first- and second order transition is clear.
+    Cooling and heating simulation of BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>. Horizontal axis is strain. Difference between first- and second order transition is clear.
   </div>
 </div>
 </p>
@@ -129,19 +132,266 @@ King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of
 <ul>
   <li>Monte Carlo Simulations
     <ul>
-      <li>BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> bulk - Zhong, Vanderbilt and Rabe: Phys. Rev. B Vol.52 p.6301 (1995).</li>
-      <li>PbTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> bulk - Waghmare and Rabe: Phys. Rev. B Vol.55 p.6161 (1997).</li>
+      <li>BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> bulk - Zhong, Vanderbilt and Rabe: Phys. Rev. B Vol.52 p.6301 (1995).</li>
+      <li>PbTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> bulk - Waghmare and Rabe: Phys. Rev. B Vol.55 p.6161 (1997).</li>
     </ul></li>
   <li>Molecular dynamics simulations
     <ul>
       <li>Relaxor - Waghmare, Cockayne and Burton, Ferroelectrics Vol.291, p.187 (2003).</li>
       <li>Relaxor - Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).</li>
-      <li>BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> capacitor - Paul, Nishimatsu, Kawazoe and Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007) *feram*.</li>
+      <li>BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> capacitor - Paul, Nishimatsu, Kawazoe and Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007) *feram*.</li>
     </ul></li>
 </ul>
 <p>
 Kinetic energy terms are added to Monte Carlo Hamiltonian
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><msup><mi>H</mi><mrow><mi mathvariant='normal'>e</mi><mi mathvariant='normal'>f</mi><mi mathvariant='normal'>f</mi></mrow></msup><mo>=</mo><mfrac><mrow><msubsup><mi>M</mi><mrow><mi mathvariant='normal'>d</mi><mi mathvariant='normal'>i</mi><mi mathvariant='normal'>p</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>l</mi><mi mathvariant='normal'>e</mi></mrow><mo>*</mo></msubsup></mrow><mrow><mn>2</mn></mrow></mfrac><munder><mo>&sum;</mo><mrow><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>,</mo><mi>&alpha;</mi></mrow></munder><msubsup><mover><mrow><mi>u</mi></mrow><mo>&sdot;</mo></mover><mi>&alpha;</mi><mn>2</mn></msubsup><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>)</mo><mo>+</mo><mfrac><mrow><msubsup><mi>M</mi><mrow><mi mathvariant='normal'>a</mi><mi mathvariant='normal'>c</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>u</mi><mi mathvariant='normal'>s</mi><mi mathvariant='normal'>t</mi><mi mathvariant='normal'>i</mi><mi mathvariant='normal'>c</mi></mrow><mo>*</mo></msubsup></mrow><mrow><mn>2</mn></mrow></mfrac><munder><mo>&sum;</mo><mrow><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>,</mo><mi>&alpha;</mi></mrow></munder><msubsup><mover><mrow><mi>w</mi></mrow><mo>&sdot;</mo></mover><mi>&alpha;</mi><mn>2</mn></msubsup><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>s</mi><mi mathvariant='normal'>e</mi><mi mathvariant='normal'>l</mi><mi mathvariant='normal'>f</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow><mo>}</mo><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>d</mi><mi mathvariant='normal'>p</mi><mi mathvariant='normal'>l</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow><mo>}</mo><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>s</mi><mi mathvariant='normal'>h</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>r</mi><mi mathvariant='normal'>t</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow><mo>}</mo><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>e</mi><mi mathvariant='normal'>l</mi><mi mathvariant='normal'>a</mi><mi mathvariant='normal'>s</mi><mo>,</mo><mspace width='0.167em' /><mi mathvariant='normal'>h</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>m</mi><mi mathvariant='normal'>o</mi></mrow></msup><mo>(</mo><msub><mi>&eta;</mi><mn>1</mn></msub><mo>,</mo><mo>.</mo><mo>.</mo><mo>.</mo><mo>,</mo><msub><mi>&eta;</mi><mn>6</mn></msub><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>e</mi><mi mathvariant='normal'>l</mi><mi mathvariant='normal'>a</mi><mi mathvariant='normal'>s</mi><mo>,</mo><mspace width='0.167em' /><mi mathvariant='normal'>i</mi><mi mathvariant='normal'>n</mi><mi mathvariant='normal'>h</mi><mi mathvariant='normal'>o</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow><mo>}</mo><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>c</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>u</mi><mi mathvariant='normal'>p</mi><mo>,</mo><mspace width='0.167em' /><mi mathvariant='normal'>h</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>m</mi><mi mathvariant='normal'>o</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow><mo>}</mo><mo>,</mo><msub><mi>&eta;</mi><mn>1</mn></msub><mo>,</mo><mo>.</mo><mo>.</mo><mo>.</mo><mo>,</mo><msub><mi>&eta;</mi><mn>6</mn></msub><mo>)</mo><mo>+</mo><msup><mi>V</mi><mrow><mi mathvariant='normal'>c</mi><mi mathvariant='normal'>o</mi><mi mathvariant='normal'>u</mi><mi mathvariant='normal'>p</mi><mo>,</mo><mspace width='0.167em' /><mi mathvariant='normal'>i</mi><mi mathvariant='normal'>n</mi><mi mathvariant='normal'>h</mi><mi mathvariant='normal'>o</mi></mrow></msup><mo>(</mo><mo>{</mo><mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow><mo>}</mo><mo>,</mo><mo>{</mo><mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow><mo>}</mo><mo>)</mo></math>
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <msup>
+  <mi>H</mi>
+  <mrow>
+   <mi mathvariant='normal'>e</mi>
+   <mi mathvariant='normal'>f</mi>
+   <mi mathvariant='normal'>f</mi>
+  </mrow>
+ </msup>
+ <mo>=</mo>
+ <mfrac>
+  <mrow><msubsup>
+   <mi>M</mi>
+   <mrow>
+    <mi mathvariant='normal'>d</mi>
+    <mi mathvariant='normal'>i</mi>
+    <mi mathvariant='normal'>p</mi>
+    <mi mathvariant='normal'>o</mi>
+    <mi mathvariant='normal'>l</mi>
+    <mi mathvariant='normal'>e</mi>
+   </mrow>
+   <mo>*</mo>
+  </msubsup></mrow>
+  <mrow><mn>2</mn></mrow>
+ </mfrac>
+ <munder>
+  <mo>&sum;</mo>
+  <mrow>
+   <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+   <mo>,</mo>
+   <mi>&alpha;</mi>
+  </mrow>
+ </munder>
+ <msubsup>
+  <mover>
+   <mrow><mi>u</mi></mrow>
+   <mo>&sdot;</mo>
+  </mover>
+  <mi>&alpha;</mi>
+  <mn>2</mn>
+ </msubsup>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>)</mo>
+ <mo>+</mo>
+ <mfrac>
+  <mrow><msubsup>
+   <mi>M</mi>
+   <mrow>
+    <mi mathvariant='normal'>a</mi>
+    <mi mathvariant='normal'>c</mi>
+    <mi mathvariant='normal'>o</mi>
+    <mi mathvariant='normal'>u</mi>
+    <mi mathvariant='normal'>s</mi>
+    <mi mathvariant='normal'>t</mi>
+    <mi mathvariant='normal'>i</mi>
+    <mi mathvariant='normal'>c</mi>
+   </mrow>
+   <mo>*</mo>
+  </msubsup></mrow>
+  <mrow><mn>2</mn></mrow>
+ </mfrac>
+ <munder>
+  <mo>&sum;</mo>
+  <mrow>
+   <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+   <mo>,</mo>
+   <mi>&alpha;</mi>
+  </mrow>
+ </munder>
+ <msubsup>
+  <mover>
+   <mrow><mi>w</mi></mrow>
+   <mo>&sdot;</mo>
+  </mover>
+  <mi>&alpha;</mi>
+  <mn>2</mn>
+ </msubsup>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>s</mi>
+   <mi mathvariant='normal'>e</mi>
+   <mi mathvariant='normal'>l</mi>
+   <mi mathvariant='normal'>f</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>d</mi>
+   <mi mathvariant='normal'>p</mi>
+   <mi mathvariant='normal'>l</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>s</mi>
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>o</mi>
+   <mi mathvariant='normal'>r</mi>
+   <mi mathvariant='normal'>t</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>e</mi>
+   <mi mathvariant='normal'>l</mi>
+   <mi mathvariant='normal'>a</mi>
+   <mi mathvariant='normal'>s</mi>
+   <mo>,</mo>
+   <mspace width='0.167em' />
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>o</mi>
+   <mi mathvariant='normal'>m</mi>
+   <mi mathvariant='normal'>o</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <msub>
+  <mi>&eta;</mi>
+  <mn>1</mn>
+ </msub>
+ <mo>,</mo>
+ <mo>.</mo>
+ <mo>.</mo>
+ <mo>.</mo>
+ <mo>,</mo>
+ <msub>
+  <mi>&eta;</mi>
+  <mn>6</mn>
+ </msub>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>e</mi>
+   <mi mathvariant='normal'>l</mi>
+   <mi mathvariant='normal'>a</mi>
+   <mi mathvariant='normal'>s</mi>
+   <mo>,</mo>
+   <mspace width='0.167em' />
+   <mi mathvariant='normal'>i</mi>
+   <mi mathvariant='normal'>n</mi>
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>o</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>c</mi>
+   <mi mathvariant='normal'>o</mi>
+   <mi mathvariant='normal'>u</mi>
+   <mi mathvariant='normal'>p</mi>
+   <mo>,</mo>
+   <mspace width='0.167em' />
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>o</mi>
+   <mi mathvariant='normal'>m</mi>
+   <mi mathvariant='normal'>o</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>,</mo>
+ <msub>
+  <mi>&eta;</mi>
+  <mn>1</mn>
+ </msub>
+ <mo>,</mo>
+ <mo>.</mo>
+ <mo>.</mo>
+ <mo>.</mo>
+ <mo>,</mo>
+ <msub>
+  <mi>&eta;</mi>
+  <mn>6</mn>
+ </msub>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>c</mi>
+   <mi mathvariant='normal'>o</mi>
+   <mi mathvariant='normal'>u</mi>
+   <mi mathvariant='normal'>p</mi>
+   <mo>,</mo>
+   <mspace width='0.167em' />
+   <mi mathvariant='normal'>i</mi>
+   <mi mathvariant='normal'>n</mi>
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>o</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>,</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+</math>
 </p>
 </div>
 
@@ -150,7 +400,12 @@ Kinetic energy terms are added to Monte Carlo Hamiltonian
 <h2 id="LABEL-7">Coarse-graining: reduction of the number of degree of freedom</h2>
 
 <ul>
-  <li>Real perovskite-like system has <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mn>15</mn><mi>N</mi><mo>+</mo><mn>6</mn></math> degree of freedom
+  <li>Real perovskite-like system has <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mn>15</mn>
+ <mi>N</mi>
+ <mo>+</mo>
+ <mn>6</mn>
+</math> degree of freedom
     <ul>
       <li><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>N</mi></math> unit cells in supercell</li>
       <li>5 atoms per unit cell</li>
@@ -160,10 +415,29 @@ Kinetic energy terms are added to Monte Carlo Hamiltonian
 </ul>
 
 <ul>
-  <li>Simplified model has <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mn>6</mn><mi>N</mi><mo>+</mo><mn>6</mn></math> degree of freedom
+  <li>Simplified model has <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mn>6</mn>
+ <mi>N</mi>
+ <mo>+</mo>
+ <mn>6</mn>
+</math> degree of freedom
     <ul>
-      <li>Define 1 dipole <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><mi>Z</mi><mo>*</mo></msup><mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>)</mo></math> per unit cell</li>
-      <li>1 acoustic displacement (Inhomogeneous strain) <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>)</mo></math> per unit cell</li>
+      <li>Define 1 dipole <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <msup>
+  <mi>Z</mi>
+  <mo>*</mo>
+ </msup>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>)</mo>
+</math> per unit cell</li>
+      <li>1 acoustic displacement (Inhomogeneous strain) <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>)</mo>
+</math> per unit cell</li>
     </ul></li>
 </ul>
 <p>
@@ -275,11 +549,76 @@ epsilon_inf   = 5.24
 <div class="slide">
 <h2 id="LABEL-12">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
 <p>
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><msub><mi>&epsilon;</mi><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>=</mo><mo>(</mo><msub><mi>&epsilon;</mi><mrow><mn>&infin;</mn></mrow></msub><msub><mo>)</mo><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>+</mo><mfrac><mrow><mn>1</mn></mrow><mrow><msub><mi>&epsilon;</mi><mn>0</mn></msub><mi>V</mi><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi></mrow></mfrac><mo>(</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&alpha;</mi></msub><msub><mi>S</mi><mi>&beta;</mi></msub><mo>&gt;</mo><mo>-</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&alpha;</mi></msub><mo>&gt;</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&beta;</mi></msub><mo>&gt;</mo><mo>)</mo></math>
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <msub>
+  <mi>&epsilon;</mi>
+  <mrow>
+   <mi>&alpha;</mi>
+   <mi>&beta;</mi>
+  </mrow>
+ </msub>
+ <mo>=</mo>
+ <mo>(</mo>
+ <msub>
+  <mi>&epsilon;</mi>
+  <mrow><mn>&infin;</mn></mrow>
+ </msub>
+ <msub>
+  <mo>)</mo>
+  <mrow>
+   <mi>&alpha;</mi>
+   <mi>&beta;</mi>
+  </mrow>
+ </msub>
+ <mo>+</mo>
+ <mfrac>
+  <mrow><mn>1</mn></mrow>
+  <mrow>
+   <msub>
+    <mi>&epsilon;</mi>
+    <mn>0</mn>
+   </msub>
+   <mi>V</mi>
+   <msub>
+    <mi>k</mi>
+    <mi>B</mi>
+   </msub>
+   <mi>T</mi>
+  </mrow>
+ </mfrac>
+ <mo>(</mo>
+ <mo>&lt;</mo>
+ <msub>
+  <mi>S</mi>
+  <mi>&alpha;</mi>
+ </msub>
+ <msub>
+  <mi>S</mi>
+  <mi>&beta;</mi>
+ </msub>
+ <mo>&gt;</mo>
+ <mo>-</mo>
+ <mo>&lt;</mo>
+ <msub>
+  <mi>S</mi>
+  <mi>&alpha;</mi>
+ </msub>
+ <mo>&gt;</mo>
+ <mo>&lt;</mo>
+ <msub>
+  <mi>S</mi>
+  <mi>&beta;</mi>
+ </msub>
+ <mo>&gt;</mo>
+ <mo>)</mo>
+</math>
 <div class="figure">
   <img src="figures/32x32xL032-D0-susceptibility.jpg" alt="figures/32x32xL032-D0-susceptibility.jpg" />
   <div class="caption">
-    Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> with perfect electrodes.
+    Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> with perfect electrodes.
   </div>
 </div>
 </p>
@@ -306,19 +645,254 @@ epsilon_inf   = 5.24
 <div class="slide">
 <h2 id="LABEL-14">---------------------------- Relaxor ----------------------------</h2>
 <p>
-Relaxors Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup><mi>B</mi><mi>x</mi><mo>&apos;</mo></msubsup></math><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup><mi>B</mi><mrow><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>&apos;</mo><mo>&apos;</mo></mrow></msubsup></math>O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>: Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>2</mn><mo>+</mo></mrow></msup></math>
+Relaxors Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
+ <mi>B</mi>
+ <mi>x</mi>
+ <mo>&apos;</mo>
+</msubsup></math><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
+ <mi>B</mi>
+ <mrow>
+  <mo>(</mo>
+  <mn>1</mn>
+  <mo>-</mo>
+  <mi>x</mi>
+  <mo>)</mo>
+ </mrow>
+ <mrow>
+  <mo>&apos;</mo>
+  <mo>&apos;</mo>
+ </mrow>
+</msubsup></math>O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>: Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>
 </p>
 
 <ul>
-  <li>Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PSN): Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>3</mn><mo>+</mo></mrow></msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>5</mn><mo>+</mo></mrow></msup></math></li>
-  <li>Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PST): Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>3</mn><mo>+</mo></mrow></msup></math>, Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>5</mn><mo>+</mo></mrow></msup></math></li>
-  <li>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PMN:) Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>2</mn><mo>+</mo></mrow></msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>5</mn><mo>+</mo></mrow></msup></math></li>
-  <li><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></math>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>-xPbTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PMN-<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>x</mi></math>PT): Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>2</mn><mo>+</mo></mrow></msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>5</mn><mo>+</mo></mrow></msup></math>, Ti<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>4</mn><mo>+</mo></mrow></msup></math></li>
-  <li>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PMT): Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>2</mn><mo>+</mo></mrow></msup></math>, Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>5</mn><mo>+</mo></mrow></msup></math></li>
-  <li>Pb(Zn<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math> (PZN): Zn<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>2</mn><mo>+</mo></mrow></msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><none /><mrow><mn>5</mn><mo>+</mo></mrow></msup></math></li>
+  <li>Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PSN): Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>3</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+  <li>Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PST): Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>3</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+  <li>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PMN:) Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+  <li><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mo>(</mo>
+ <mn>1</mn>
+ <mo>-</mo>
+ <mi>x</mi>
+ <mo>)</mo>
+</math>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>-xPbTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PMN-<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>x</mi></math>PT): Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Ti<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>4</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+  <li>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PMT): Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+  <li>Pb(Zn<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PZN): Zn<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
 </ul>
 <p>
-The averaged valence number of B-site ions <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup><mi>B</mi><mi>x</mi><mo>&apos;</mo></msubsup></math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup><mi>B</mi><mrow><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>&apos;</mo><mo>&apos;</mo></mrow></msubsup></math> is <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mn>4</mn><mo>+</mo></math>.
+The averaged valence number of B-site ions <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
+ <mi>B</mi>
+ <mi>x</mi>
+ <mo>&apos;</mo>
+</msubsup></math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
+ <mi>B</mi>
+ <mrow>
+  <mo>(</mo>
+  <mn>1</mn>
+  <mo>-</mo>
+  <mi>x</mi>
+  <mo>)</mo>
+ </mrow>
+ <mrow>
+  <mo>&apos;</mo>
+  <mo>&apos;</mo>
+ </mrow>
+</msubsup></math> is <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mn>4</mn>
+ <mo>+</mo>
+</math>.
 </p>
 </div>
 
@@ -342,7 +916,102 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 <div class="figure">
   <img src="figures/RandallBhallaFig3.jpg" alt="figures/RandallBhallaFig3.jpg" />
   <div class="caption">
-    (a) Ordered B-site structure of <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>A</mi><msubsup><mi>B</mi><mi>x</mi><mo>&apos;</mo></msubsup><msubsup><mi>B</mi><mrow><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>&apos;</mo><mo>&apos;</mo></mrow></msubsup></math>O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>. In the case of Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>, Sc and Nb has the NaCl structure. In the case of Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mn>3</mn></msub></math>, the Na-site is randomly occupied by Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>3</mn></mrow></msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>6</mn></mrow></msub></math> and the Cl-site is occupied by  Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><none /><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msub></math>.  (b) Disordered structure. B-sites is occupied by <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup><mi>B</mi><mrow><mo>&apos;</mo></mrow></msup></math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup><mi>B</mi><mrow><mo>(</mo><mn>1</mn><mo>-</mo><mi>x</mi><mo>)</mo></mrow><mrow><mo>&apos;</mo><mo>&apos;</mo></mrow></msubsup></math> randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+    (a) Ordered B-site structure of <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi>A</mi>
+ <msubsup>
+  <mi>B</mi>
+  <mi>x</mi>
+  <mo>&apos;</mo>
+ </msubsup>
+ <msubsup>
+  <mi>B</mi>
+  <mrow>
+   <mo>(</mo>
+   <mn>1</mn>
+   <mo>-</mo>
+   <mi>x</mi>
+   <mo>)</mo>
+  </mrow>
+  <mrow>
+   <mo>&apos;</mo>
+   <mo>&apos;</mo>
+  </mrow>
+ </msubsup>
+</math>O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>. In the case of Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, Sc and Nb has the NaCl structure. In the case of Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, the Na-site is randomly occupied by Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>6</mn>
+ </mrow>
+</msub></math> and the Cl-site is occupied by  Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>.  (b) Disordered structure. B-sites is occupied by <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+ <mi>B</mi>
+ <mrow><mo>&apos;</mo></mrow>
+</msup></math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
+ <mi>B</mi>
+ <mrow>
+  <mo>(</mo>
+  <mn>1</mn>
+  <mo>-</mo>
+  <mi>x</mi>
+  <mo>)</mo>
+ </mrow>
+ <mrow>
+  <mo>&apos;</mo>
+  <mo>&apos;</mo>
+ </mrow>
+</msubsup></math> randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
   </div>
 </div>
 </p>
@@ -405,18 +1074,237 @@ Displacement of Pb is the main source of dipole moment.
 <div class="slide">
 <h2 id="LABEL-21">Susceptibility tensor</h2>
 <p>
-Now you can calculate <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>,</mo><mi>t</mi><mo>)</mo></math> in some periods (1-100 ns) with feram.
+Now you can calculate <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>,</mo>
+ <mi>t</mi>
+ <mo>)</mo>
+</math> in some periods (1-100 ns) with feram.
 </p>
 <p>
-Susceptibility tensor <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>&chi;</mi><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>-</mo><msup><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>&apos;</mo></msup><mo>,</mo><mi>t</mi><mo>-</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo></math>
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>,</mo><mi>t</mi><mo>)</mo><mo>=</mo><munder><mo>&sum;</mo><mrow><msup><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>&apos;</mo></msup></mrow></munder><mo>&int;</mo><mi>d</mi><msup><mi>t</mi><mo>&apos;</mo></msup><mi>&chi;</mi><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>-</mo><msup><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>&apos;</mo></msup><mo>,</mo><mi>t</mi><mo>-</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo><mspace width='0.167em' /><mrow><mrow><mi>&Escr;</mi></mrow></mrow><mo>(</mo><msup><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>&apos;</mo></msup><mo>,</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo></math>
-where <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>,</mo><mi>t</mi><mo>)</mo><mo>=</mo><msup><mi>Z</mi><mo>*</mo></msup><mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>,</mo><mi>t</mi><mo>)</mo></math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mrow><mi>&Escr;</mi></mrow></mrow><mo>(</mo><msup><mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow><mo>&apos;</mo></msup><mo>,</mo><msup><mi>t</mi><mo>&apos;</mo></msup><mo>)</mo></math> is external electric field.
+Susceptibility tensor <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi>&chi;</mi>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>-</mo>
+ <msup>
+  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+  <mo>&apos;</mo>
+ </msup>
+ <mo>,</mo>
+ <mi>t</mi>
+ <mo>-</mo>
+ <msup>
+  <mi>t</mi>
+  <mo>&apos;</mo>
+ </msup>
+ <mo>)</mo>
+</math>
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>,</mo>
+ <mi>t</mi>
+ <mo>)</mo>
+ <mo>=</mo>
+ <munder>
+  <mo>&sum;</mo>
+  <mrow><msup>
+   <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+   <mo>&apos;</mo>
+  </msup></mrow>
+ </munder>
+ <mo>&int;</mo>
+ <mi>d</mi>
+ <msup>
+  <mi>t</mi>
+  <mo>&apos;</mo>
+ </msup>
+ <mi>&chi;</mi>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>-</mo>
+ <msup>
+  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+  <mo>&apos;</mo>
+ </msup>
+ <mo>,</mo>
+ <mi>t</mi>
+ <mo>-</mo>
+ <msup>
+  <mi>t</mi>
+  <mo>&apos;</mo>
+ </msup>
+ <mo>)</mo>
+ <mspace width='0.167em' />
+ <mrow><mrow><mi>&Escr;</mi></mrow></mrow>
+ <mo>(</mo>
+ <msup>
+  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+  <mo>&apos;</mo>
+ </msup>
+ <mo>,</mo>
+ <msup>
+  <mi>t</mi>
+  <mo>&apos;</mo>
+ </msup>
+ <mo>)</mo>
+</math>
+where <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>,</mo>
+ <mi>t</mi>
+ <mo>)</mo>
+ <mo>=</mo>
+ <msup>
+  <mi>Z</mi>
+  <mo>*</mo>
+ </msup>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>,</mo>
+ <mi>t</mi>
+ <mo>)</mo>
+</math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mrow><mrow><mi>&Escr;</mi></mrow></mrow>
+ <mo>(</mo>
+ <msup>
+  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+  <mo>&apos;</mo>
+ </msup>
+ <mo>,</mo>
+ <msup>
+  <mi>t</mi>
+  <mo>&apos;</mo>
+ </msup>
+ <mo>)</mo>
+</math> is external electric field.
 Its Fourier transformation
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow><mo>,</mo><mi>&omega;</mi><mo>)</mo><mo>=</mo><mi>&chi;</mi><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow><mo>,</mo><mi>&omega;</mi><mo>)</mo><mspace width='0.167em' /><mrow><mrow><mi>&Escr;</mi></mrow></mrow><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow><mo>,</mo><mi>&omega;</mi><mo>)</mo><mo>.</mo></math>
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow>
+ <mo>,</mo>
+ <mi>&omega;</mi>
+ <mo>)</mo>
+ <mo>=</mo>
+ <mi>&chi;</mi>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow>
+ <mo>,</mo>
+ <mi>&omega;</mi>
+ <mo>)</mo>
+ <mspace width='0.167em' />
+ <mrow><mrow><mi>&Escr;</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow>
+ <mo>,</mo>
+ <mi>&omega;</mi>
+ <mo>)</mo>
+ <mo>.</mo>
+</math>
 Using the fluctuation-dissipation theorem,
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='normal'>I</mi><mi mathvariant='normal'>m</mi></mrow><msub><mi>&chi;</mi><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow><mo>,</mo><mi>&omega;</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn><msub><mi>k</mi><mi>B</mi></msub><mi>T</mi></mrow></mfrac><msubsup><mo>&int;</mo><mrow><mo>-</mo><mn>&infin;</mn></mrow><mrow><mn>&infin;</mn></mrow></msubsup><mi>d</mi><mi>t</mi><mo>&lt;</mo><msub><mi>S</mi><mi>&alpha;</mi></msub><mo>(</mo><mo>-</mo><mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow><mo>,</mo><mn>0</mn><mo>)</mo><mo>&gt;</mo><mo>&lt;</mo><msub><mi>S</mi><mi>&beta;</mi></msub><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow><mo>,</mo><mi>t</mi><mo>)</mo><mo>&gt;</mo><msup><mi>e</mi><mrow><mo>-</mo><mi>i</mi><mi>&omega;</mi><mi>t</mi></mrow></msup></math>
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mrow>
+  <mi mathvariant='normal'>I</mi>
+  <mi mathvariant='normal'>m</mi>
+ </mrow>
+ <msub>
+  <mi>&chi;</mi>
+  <mrow>
+   <mi>&alpha;</mi>
+   <mi>&beta;</mi>
+  </mrow>
+ </msub>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow>
+ <mo>,</mo>
+ <mi>&omega;</mi>
+ <mo>)</mo>
+ <mo>=</mo>
+ <mfrac>
+  <mrow><mn>1</mn></mrow>
+  <mrow>
+   <mn>2</mn>
+   <msub>
+    <mi>k</mi>
+    <mi>B</mi>
+   </msub>
+   <mi>T</mi>
+  </mrow>
+ </mfrac>
+ <msubsup>
+  <mo>&int;</mo>
+  <mrow>
+   <mo>-</mo>
+   <mn>&infin;</mn>
+  </mrow>
+  <mrow><mn>&infin;</mn></mrow>
+ </msubsup>
+ <mi>d</mi>
+ <mi>t</mi>
+ <mo>&lt;</mo>
+ <msub>
+  <mi>S</mi>
+  <mi>&alpha;</mi>
+ </msub>
+ <mo>(</mo>
+ <mo>-</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow>
+ <mo>,</mo>
+ <mn>0</mn>
+ <mo>)</mo>
+ <mo>&gt;</mo>
+ <mo>&lt;</mo>
+ <msub>
+  <mi>S</mi>
+  <mi>&beta;</mi>
+ </msub>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow>
+ <mo>,</mo>
+ <mi>t</mi>
+ <mo>)</mo>
+ <mo>&gt;</mo>
+ <msup>
+  <mi>e</mi>
+  <mrow>
+   <mo>-</mo>
+   <mi>i</mi>
+   <mi>&omega;</mi>
+   <mi>t</mi>
+  </mrow>
+ </msup>
+</math>
 Then, with Kramers-Kronig relation,
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'><mrow><mi mathvariant='normal'>R</mi><mi mathvariant='normal'>e</mi></mrow><msub><mi>&chi;</mi><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>(</mo><mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow><mo>,</mo><mi>&omega;</mi><mo>)</mo><mo>=</mo><mo>.</mo><mo>.</mo><mo>.</mo></math>
+<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mrow>
+  <mi mathvariant='normal'>R</mi>
+  <mi mathvariant='normal'>e</mi>
+ </mrow>
+ <msub>
+  <mi>&chi;</mi>
+  <mrow>
+   <mi>&alpha;</mi>
+   <mi>&beta;</mi>
+  </mrow>
+ </msub>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow>
+ <mo>,</mo>
+ <mi>&omega;</mi>
+ <mo>)</mo>
+ <mo>=</mo>
+ <mo>.</mo>
+ <mo>.</mo>
+ <mo>.</mo>
+</math>
 </p>
 </div>
 
@@ -424,19 +1312,59 @@ Then, with Kramers-Kronig relation,
 <div class="slide">
 <h2 id="LABEL-22">Estimation of computational time</h2>
 <p>
-32x32x32 unit cells, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi mathvariant='normal'>&Delta;</mi><mi>t</mi><mo>=</mo><mn>2</mn></math> fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
+32x32x32 unit cells, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi mathvariant='normal'>&Delta;</mi>
+ <mi>t</mi>
+ <mo>=</mo>
+ <mn>2</mn>
+</math> fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
 </p>
 <p>
-1THz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mspace width='0.167em' /></math>ps,            500 steps,  54 sec  or 8.4 sec.
+1THz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi>T</mi>
+ <mo>=</mo>
+ <mn>1</mn>
+ <mspace width='0.167em' />
+</math>ps,            500 steps,  54 sec  or 8.4 sec.
 </p>
 <p>
-1GHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mspace width='0.167em' /></math>ns,        500,000 steps, 900 min. or 140 min.
+1GHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi>T</mi>
+ <mo>=</mo>
+ <mn>1</mn>
+ <mspace width='0.167em' />
+</math>ns,        500,000 steps, 900 min. or 140 min.
 </p>
 <p>
-1MHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>T</mi><mo>=</mo><mn>1</mn><mi>&mu;</mi></math>s,    500,000,000 steps, 620 days or  97 days
+1MHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi>T</mi>
+ <mo>=</mo>
+ <mn>1</mn>
+ <mi>&mu;</mi>
+</math>s,    500,000,000 steps, 620 days or  97 days
 </p>
 <p>
-So, I am planning to calculate and compare <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub><mi>&chi;</mi><mrow><mi>&alpha;</mi><mi>&beta;</mi></mrow></msub><mo>(</mo><mi>q</mi><mo>,</mo><mi>&omega;</mi><mo>)</mo></math> for <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>&omega;</mi><mo>/</mo><mo>(</mo><mn>2</mn><mi>&pi;</mi><mo>)</mo></math> = 10M ... 10GHz.
+So, I am planning to calculate and compare <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <msub>
+  <mi>&chi;</mi>
+  <mrow>
+   <mi>&alpha;</mi>
+   <mi>&beta;</mi>
+  </mrow>
+ </msub>
+ <mo>(</mo>
+ <mi>q</mi>
+ <mo>,</mo>
+ <mi>&omega;</mi>
+ <mo>)</mo>
+</math> for <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi>&omega;</mi>
+ <mo>/</mo>
+ <mo>(</mo>
+ <mn>2</mn>
+ <mi>&pi;</mi>
+ <mo>)</mo>
+</math> = 10M ... 10GHz.
 </p>
 </div>
 </body>
