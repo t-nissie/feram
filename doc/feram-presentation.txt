@@ -59,8 +59,8 @@ King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of
 figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
 
 # Let's go back to physics.
-# As you know, in perovskite type ferroelectrics ABO3, atomic displacements and strains
-# are strongly coupled. This is the cubic ot high temperature srystal structure of ABO3.
+# As you know, in perovskite type ferroelectrics ABO$_3$, atomic displacements and strains
+# are strongly coupled. This is the cubic ot high temperature srystal structure of ABO$_3$.
 # Unit cell has 5 atoms. So atomic displacements spans a 3x5=15-dimensional space.
 # This is a 2-dimentional subspace of the 15-dimensinal space......
 
@@ -236,17 +236,17 @@ figures/32x32xL032-D0-susceptibility.jpg Calculated dielectric constants (in-pla
 
 
 == ---------------------------- Relaxor ----------------------------
-Relaxors Pb$B^'_x$$B^{''}_{(1-x)}$O$_3$: Pb$^{2+}$
+Relaxors Pb$B'_x$$B''_{(1-x)}$O$_3$: Pb$^{2+}$
  * Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$ (PSN): Sc$^{3+}$, Nb$^{5+}$
  * Pb(Sc$_{1/2}$Ta$_{1/2}$)O$_3$ (PST): Sc$^{3+}$, Ta$^{5+}$
  * Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$ (PMN:) Mg$^{2+}$, Nb$^{5+}$
  * $(1-x)$Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$-xPbTiO$_3$ (PMN-$x$PT): Mg$^{2+}$, Nb$^{5+}$, Ti$^{4+}$
  * Pb(Mg$_{1/3}$Ta$_{2/3}$)O$_3$ (PMT): Mg$^{2+}$, Ta$^{5+}$
  * Pb(Zn$_{1/3}$Nb$_{2/3}$)O$_3$ (PZN): Zn$^{2+}$, Nb$^{5+}$
-The averaged valence number of B-site ions $B^'_x$ and $B^{''}_{(1-x)}$ is $4+$.
+The averaged valence number of B-site ions $B'_x$ and $B''_{(1-x)}$ is $4+$.
 
 
-# There are some Pb-based relaxors PbBB'O3.aaaaaaa
+# There are some Pb-based relaxors PbB'B''O$_3$.
 
 
 
@@ -266,7 +266,7 @@ figures/TsurumiFig3.jpg After Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and 
 
 
 == Crystal structures of relaxors
-figures/RandallBhallaFig3.jpg (a) Ordered B-site structure of $AB^'_xB^{''}_{(1-x)}$O$_3$. In the case of Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$, Sc and Nb has the NaCl structure. In the case of Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$, the Na-site is randomly occupied by Mg$_{1/3}$Nb$_{1/6}$ and the Cl-site is occupied by  Nb$_{1/2}$.  (b) Disordered structure. B-sites is occupied by $B^{'}$ and $B^{''}_{(1-x)}$ randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+figures/RandallBhallaFig3.jpg (a) Ordered B-site structure of $AB'_xB''_{(1-x)}$O$_3$. In the case of Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$, Sc and Nb has the NaCl structure. In the case of Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$, the Na-site is randomly occupied by Mg$_{1/3}$Nb$_{1/6}$ and the Cl-site is occupied by  Nb$_{1/2}$.  (b) Disordered structure. B-sites is occupied by $B'$ and $B''_{(1-x)}$ randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
 
 
 
@@ -311,11 +311,11 @@ figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing
 == Susceptibility tensor
 Now you can calculate ${\bm S}({\bm R},t)$ in some periods (1-100 ns) with feram.
 
-Susceptibility tensor $\chi({\bm R}-{\bm R}^',t-t^')$
+Susceptibility tensor $\chi({\bm R}-{\bm R}',t-t')$
 Eq. (Real space)
-{\bm S}({\bm R},t) = \sum_{{\bm R}^'}\int dt^' \chi({\bm R}-{\bm R}^',t-t^')\,\mathscr{E}({\bm R}^',t^')
+{\bm S}({\bm R},t) = \sum_{{\bm R}'}\int dt' \chi({\bm R}-{\bm R}',t-t')\,\mathscr{E}({\bm R}',t')
 /Eq.
-where ${\bm S}({\bm R},t)=Z^* {\bm u}({\bm R},t)$ and $\mathscr{E}({\bm R}^',t^')$ is external electric field.
+where ${\bm S}({\bm R},t)=Z^* {\bm u}({\bm R},t)$ and $\mathscr{E}({\bm R}',t')$ is external electric field.
 Its Fourier transformation
 Eq. (q space)
 {\bm S}({\bm q},\omega) = \chi({\bm q},\omega)\,\mathscr{E}({\bm q},\omega) .
@@ -323,7 +323,7 @@ Eq. (q space)
 Using the fluctuation-dissipation theorem,
 Eq. (The fluctuation-dissipation theorem)
 {\rm Im} \chi_{\alpha\beta}({\bm q},\omega) = \frac{1}{2k_BT}\int_{-\infty}^{\infty}dt
-                            <S_\alpha(-{\bm q},0)> <S_\beta({\bm q},t)> e^{-i\omega t}
+                            <S_\alpha(-{\bm q},0) \,\, S_\beta({\bm q},t)> e^{-i\omega t}
 /Eq.
 Then, with Kramers-Kronig relation,
 Eq. (Kramers-Kronig relation)
