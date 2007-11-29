@@ -1,11 +1,10 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2007-08-08 08:10:48 t-nissie>
+# Time-stamp: <2007-11-28 19:06:25 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
-LIBBUILT_IN_FFT_A=@LIBBUILT_IN_FFT_A@
 bin_PROGRAMS = feram
 MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -39,6 +38,7 @@ feram_SRCS = average_module.F \
 	quicksort.f
 feram_SOURCES = $(MODULES) $(feram_SRCS)
 feram_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
+feram_DEPENDENCIES =   ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
 CLEANFILES = *.mod *.ps *.pdf
 EXTRA_DIST = define.h \
 cross-section-dVddi.sh \
@@ -55,7 +55,7 @@ strain.heating-cooling.gp
 ../libblaslapack/libblaslapack.a:
 	cd ../libblaslapack && $(MAKE)
 
-../libbuilt_in_fft/liblibbuilt_in_fft.a:
+../libbuilt_in_fft/libbuilt_in_fft.a:
 	cd ../libbuilt_in_fft && $(MAKE)
 
 cholesky_d.f: cholesky_z.f
