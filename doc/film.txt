@@ -1,53 +1,54 @@
 =begin
 = Introduction of feram
-Takeshi Nishimatsu
 
-(Hit [Space] to go to next page.)
+<b>a fast MD program for perovskite-type ferroelectric bulks and thin films</b>
+
+.
+
+Jaita Paul, <b>Takeshi Nishimatsu</b>, Yoshiyuki Kawazoe and
+
+Umesh V. Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007)
 
 # Today, I will introduce you my new simulation program "feram", that is for
 # "Ferroelectrics and Relaxor Analyzing Machine. In second half of my talk,
 # I will introduce a planning study of relaxors using this "feram".
 
 
-== How to use Slidy
-This presentation is written with Slidy http://www.w3.org/Talks/Tools/Slidy/ .
- * Advance to next slide with mouse click or [Space]
- * Move forward/backward between slides with [Left], [Right], [Pg Up] and [Pg Dn] keys
- * [Home] key for first slide, [End] key for last slide
- * The [C] key for an automatically generated table of contents (or click on "contents" on the toolbar)
- * Function [F11] toggles between the full screen mode and the normal mode
- * [F] key toggles the display of the tool bar below.
- * [A] key toggles the presentation mode and the printing mode
- * [S] and [B] keys can control the size of fonts
-Use Firefox web browser and put some mathematical fonts
-in your $HOME/.fonts/ directory to view equations correctly.
-For more detail, See http://www.mozilla.org/projects/mathml/fonts/ .
-
-
 == What is feram?
-feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
+feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics.
 
 figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis is strain. Difference between first- and second order transition is clear.
 
 # feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics
 # and relaxors. Compared to the Monte Carlo simulations, MD simulation steps have a physical
 # meaning of the time evolution. So, for example, you can do cooling and heating simulations
-# and can get suc hysteresis in temperature.
+# and can get such hysteresis in temperature,
+# As you may often see in textbooks of ferroelectrics, 
 
 
+== Features
+ * Scientific features
+   * Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
+   * Ferroelectrics and Relaxor
+   * Phase transition
+   * Capacitor, <b>thin film</b> is sandwiched between short-circuited electrodes
+   * Evaluate forces in reciprocal-space; k-locality of the force matrix
+   * Coarse-graining; reduction of the number of degree of freedom
 
-== Technical features and keywords
- * Fast
-   * FFTW library version 3  http://www.fftw.org/
-   * Parallelized with OpenMP
- * Multi-platform
-   * Linux
-   * HITACHI SR11000 Super Technical Server
- * Object oriented programming (OOP) in Fortran 2003
- * Fortran compilers: gfortran, ifort, g95 and pgf95
- * GNU autotools  http://www.gnu.org/software/autoconf/
- * Free software (GPLv3) http://loto.sf.net/feram/
- * Subversion repository at https://loto.svn.sf.net/svnroot/loto/feram/
+ * Technical features
+   * Fast
+     * FFTW library version 3  http://www.fftw.org/
+     * Parallelized with OpenMP
+   * Multi-platform
+     * Linux
+     * HITACHI SR11000 Super Technical Server
+   * Object oriented programming (OOP) in Fortran 2003
+   * GNU autotools  http://www.gnu.org/software/autoconf/
+   * Free software (GPLv3) http://loto.sf.net/feram/
+
+# * Nose-Poincare thermostat
+
+# * Subversion repository at https://loto.svn.sf.net/svnroot/loto/feram/
 
 # Before going to physics, Let me introduce some technical features of ferams.
 # It's fast. For speeding up, I use some computational technique as well as
@@ -360,7 +361,7 @@ So, I am planning to calculate and compare $\chi_{\alpha\beta}(q,\omega)$ for $\
 # for ulmul.rb
 #
 require 'ulmul'
-u=Ulmul.new()
+u=Ulmul.new(1..0)
 u.subs_rules << [/(\S*\/?\.jpg)\s*(.*)$/, '<div class="figure">
   <img src="\1" alt="\1" />
   <div class="caption">
@@ -373,5 +374,5 @@ puts u.html(["feram-presentation.css"],["slidy.js"],"Takeshi Nishimatsu")
 
 # Local variables:
 #   mode: RD
-#   compile-command: "ruby -I .. feram-presentation.txt feram-presentation.txt > feram-presentation.xhtml"
+#   compile-command: "ruby -I .. film.txt film.txt > film.xhtml"
 # End:
