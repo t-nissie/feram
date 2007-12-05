@@ -15,7 +15,7 @@
 <div class="slide cover">
 <h1 id="LABEL-1">Introduction of feram</h1>
 <p>
-<b>a fast MD program for perovskite-type ferroelectric bulks and thin films</b>
+<b>A fast MD program for perovskite-type ferroelectric bulks and thin films</b>
 </p>
 <p>
 .
@@ -26,20 +26,72 @@ Jaita Paul, <b>Takeshi Nishimatsu</b>, Yoshiyuki Kawazoe and
 <p>
 Umesh V. Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007)
 </p>
+<p>
+.
+</p>
+<p>
+<a href="http://loto.sf.net/feram/">http://loto.sf.net/feram/</a>
+</p>
 <!-- Contents -->
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-2">What is feram?</h2>
+<h2 id="LABEL-2">What are ferroelectrics?</h2>
 <p>
-feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
+<div class="figure">
+  <img src="figures/ferroelectrics.jpg" alt="figures/ferroelectrics.jpg" />
+  <div class="caption">
+    Properties of ferroelectrics, such as BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, PbTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, KNbO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, LiNbO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, LiTaO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, SrTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> and Pb(Zr<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mrow>
+  <mo>(</mo>
+  <mn>1</mn>
+  <mo>-</mo>
+  <mi>x</mi>
+  <mo>)</mo>
+ </mrow>
+</msub></math>Ti<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mi>x</mi>
+</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PZT). <b>feram</b> can simulate such ferroelectrics.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-3">What is feram?</h2>
+<p>
+feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics.
 </p>
 <p>
 <div class="figure">
   <img src="figures/phase.jpg" alt="figures/phase.jpg" />
   <div class="caption">
-    Cooling and heating simulation of BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+    Cooling and heating simulation of bulk BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
  <none />
  <mn>3</mn>
 </msub></math>. Horizontal axis is strain. Difference between first- and second order transition is clear.
@@ -50,7 +102,7 @@ feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-3">Features</h2>
+<h2 id="LABEL-4">Features of feram</h2>
 
 <ul>
   <li>Scientific features
@@ -58,7 +110,7 @@ feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroel
       <li>Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian</li>
       <li>Ferroelectrics and Relaxor</li>
       <li>Phase transition</li>
-      <li>Capacitor, <b>thin film</b> is sandwiched between short-circuited electrodes</li>
+      <li>Capacitor, <b>ferroelectric thin film</b> is sandwiched between short-circuited electrodes</li>
       <li>Evaluate forces in reciprocal-space; k-locality of the force matrix</li>
       <li>Coarse-graining; reduction of the number of degree of freedom</li>
     </ul></li>
@@ -86,7 +138,31 @@ feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-4">Perovskite type ferroelectrics ABO<sub>3</sub></h2>
+<h2 id="LABEL-5">Purpose of this simulation program: ferroelectric thin-film capacitors</h2>
+
+<ul>
+  <li>Down-sizing of non-volatile FeRAM</li>
+  <li>Fatigue of electrodes of capacitors
+    (M. Dawber et al.: J. Phys. Condes. Matter vol.15 p.L393 (2003))</li>
+  <li>Hysteresis, polarization switching, dynamics of domain wall
+    and their nano-size effects are not well known (Figure below).</li>
+  <li><em>in situ</em> observations are difficult</li>
+</ul>
+<p>
+<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mo>&rightarrow;</mo></math> Computational simulation with "feram" program.
+</p>
+<p>
+<div class="figure">
+  <img src="figures/Fong.jpg" alt="figures/Fong.jpg" />
+  <div class="caption">
+    
+  </div>
+</div></p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-6">Perovskite type ferroelectrics ABO<sub>3</sub></h2>
 <p>
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 </p>
@@ -102,32 +178,15 @@ King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of
 
 
 <div class="slide">
-<h2 id="LABEL-5">Effective Hamiltonian for molecular dynamics simulation</h2>
-
-<ul>
-  <li>Monte Carlo Simulations
-    <ul>
-      <li>BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
- <none />
- <mn>3</mn>
-</msub></math> bulk - Zhong, Vanderbilt and Rabe: Phys. Rev. B Vol.52 p.6301 (1995).</li>
-      <li>PbTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
- <none />
- <mn>3</mn>
-</msub></math> bulk - Waghmare and Rabe: Phys. Rev. B Vol.55 p.6161 (1997).</li>
-    </ul></li>
-  <li>Molecular dynamics simulations
-    <ul>
-      <li>Relaxor - Waghmare, Cockayne and Burton, Ferroelectrics Vol.291, p.187 (2003).</li>
-      <li>Relaxor - Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).</li>
-      <li>BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
- <none />
- <mn>3</mn>
-</msub></math> capacitor - Paul, Nishimatsu, Kawazoe and Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007) *feram*.</li>
-    </ul></li>
-</ul>
+<h2 id="LABEL-7">Effective Hamiltonian and Coarse-graining</h2>
 <p>
-Kinetic energy terms are added to Monte Carlo Hamiltonian
+Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi>A</mi>
+ <mi>B</mi>
+</math>O<sub>3</sub>)<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mi>N</mi>
+</msub></math>
 <math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
  <msup>
   <mi>H</mi>
@@ -368,11 +427,6 @@ Kinetic energy terms are added to Monte Carlo Hamiltonian
  <mo>)</mo>
 </math>
 </p>
-</div>
-
-
-<div class="slide">
-<h2 id="LABEL-6">Coarse-graining: reduction of the number of degree of freedom</h2>
 
 <ul>
   <li>Real perovskite-like system has <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
@@ -426,7 +480,52 @@ Kinetic energy terms are added to Monte Carlo Hamiltonian
 
 
 <div class="slide">
-<h2 id="LABEL-7">Parameters (input file)</h2>
+<h2 id="LABEL-8">Thin films in capacitors</h2>
+<p>
+<div class="figure">
+  <img src="figures/capacitor.jpg" alt="figures/capacitor.jpg" />
+  <div class="caption">
+    Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b).
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-9">Results</h2>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-10">Thiner film has finer domain structure to avoid stronger depolarization field</h2>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-11">Propose of experiments</h2>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-12">Summary</h2>
+
+<ul>
+  <li>Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian</li>
+  <li>New programming and technical methods are employed</li>
+  <li>Perovskite-type ferroelectrics and relaxor</li>
+  <li>Phase transition</li>
+  <li>Thin-film capacitor: perfect and imperfect short-circuited electrodes</li>
+  <li>Nose-Poincare thermostat</li>
+  <li>Evaluate forces in reciprocal-space; k-locality of the force matrix</li>
+  <li>Coarse-graining; reduction of the number of degree of freedom</li>
+  <li>Dielectric constant, permittivity, or susceptibility can be calculated from dipole fluctuation.</li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-13">Parameters (input file)</h2>
 
 <ul>
   <li>King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)</li>
@@ -483,7 +582,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-8">Forces on dipoles are calculated in the reciprocal space</h2>
+<h2 id="LABEL-14">Forces on dipoles are calculated in the reciprocal space</h2>
 <p>
 <div class="figure">
   <img src="figures/flow.jpg" alt="figures/flow.jpg" />
@@ -496,20 +595,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-9">Thin films in capacitors</h2>
-<p>
-<div class="figure">
-  <img src="figures/capacitor.jpg" alt="figures/capacitor.jpg" />
-  <div class="caption">
-    Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b).
-  </div>
-</div>
-</p>
-</div>
-
-
-<div class="slide">
-<h2 id="LABEL-10">Time evolution and fluctuation</h2>
+<h2 id="LABEL-15">Time evolution and fluctuation</h2>
 <p>
 <div class="figure">
   <img src="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" alt="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" />
@@ -522,7 +608,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-11">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
+<h2 id="LABEL-16">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
 <p>
 <math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
  <msub>
@@ -601,24 +687,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-12">Summary for "feram" introduction</h2>
-
-<ul>
-  <li>Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian</li>
-  <li>New programming and technical methods are employed</li>
-  <li>Perovskite-type ferroelectrics and relaxor</li>
-  <li>Phase transition</li>
-  <li>Thin-film capacitor: perfect and imperfect short-circuited electrodes</li>
-  <li>Nose-Poincare thermostat</li>
-  <li>Evaluate forces in reciprocal-space; k-locality of the force matrix</li>
-  <li>Coarse-graining; reduction of the number of degree of freedom</li>
-  <li>Dielectric constant, permittivity, or susceptibility can be calculated from dipole fluctuation.</li>
-</ul>
-</div>
-
-
-<div class="slide">
-<h2 id="LABEL-13">---------------------------- Relaxor ----------------------------</h2>
+<h2 id="LABEL-17">---------------------------- Relaxor ----------------------------</h2>
 <p>
 Relaxors Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
  <mi>B</mi>
@@ -873,7 +942,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-14">Frequency dependence of dielectric constant of relaxors</h2>
+<h2 id="LABEL-18">Frequency dependence of dielectric constant of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/TsurumiFig3.jpg" alt="figures/TsurumiFig3.jpg" />
@@ -886,7 +955,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-15">Crystal structures of relaxors</h2>
+<h2 id="LABEL-19">Crystal structures of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig3.jpg" alt="figures/RandallBhallaFig3.jpg" />
@@ -994,7 +1063,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-16">Local field on Pb-site</h2>
+<h2 id="LABEL-20">Local field on Pb-site</h2>
 <p>
 Displacement of Pb is the main source of dipole moment.
 <div class="figure">
@@ -1008,7 +1077,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-17">Chemically ordered and disordered regions of relaxors</h2>
+<h2 id="LABEL-21">Chemically ordered and disordered regions of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig8.jpg" alt="figures/RandallBhallaFig8.jpg" />
@@ -1021,7 +1090,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-18">Modeling of relaxors</h2>
+<h2 id="LABEL-22">Modeling of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/DoubleWells.jpg" alt="figures/DoubleWells.jpg" />
@@ -1034,7 +1103,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-19">Snapshot of a simulation of PSN relaxor</h2>
+<h2 id="LABEL-23">Snapshot of a simulation of PSN relaxor</h2>
 <p>
 <div class="figure">
   <img src="figures/SilviaFig1.jpg" alt="figures/SilviaFig1.jpg" />
@@ -1047,7 +1116,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-20">Susceptibility tensor</h2>
+<h2 id="LABEL-24">Susceptibility tensor</h2>
 <p>
 Now you can calculate <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
  <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
@@ -1285,7 +1354,7 @@ Then, with Kramers-Kronig relation,
 
 
 <div class="slide">
-<h2 id="LABEL-21">Estimation of computational time</h2>
+<h2 id="LABEL-25">Estimation of computational time</h2>
 <p>
 32x32x32 unit cells, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
  <mi mathvariant='normal'>&Delta;</mi>

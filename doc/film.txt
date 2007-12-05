@@ -1,7 +1,7 @@
 =begin
 = Introduction of feram
 
-<b>a fast MD program for perovskite-type ferroelectric bulks and thin films</b>
+<b>A fast MD program for perovskite-type ferroelectric bulks and thin films</b>
 
 .
 
@@ -9,15 +9,36 @@ Jaita Paul, <b>Takeshi Nishimatsu</b>, Yoshiyuki Kawazoe and
 
 Umesh V. Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007)
 
+.
+
+http://loto.sf.net/feram/
+
 # Today, I will introduce you my new simulation program "feram", that is for
 # "Ferroelectrics and Relaxor Analyzing Machine. In second half of my talk,
 # I will introduce a planning study of relaxors using this "feram".
 
 
+== What are ferroelectrics?
+figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$ and Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT). <b>feram</b> can simulate such ferroelectrics.
+
+# As you know,
+# ferroelectrics such as BaTiO3, PbTiO3, SrTiO3 and PZT
+# has characteristic properties, for example,
+# spontaneous polarization
+# phase transition
+# piezoelectric effect
+# inverse piezoelectric effect.
+#
+# Here, I'd like to emphasize that
+# without long-rage interaction and finite size effects,
+# you will not see the domain structure like this.
+
+
+
 == What is feram?
 feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics.
 
-figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis is strain. Difference between first- and second order transition is clear.
+figures/phase.jpg Cooling and heating simulation of bulk BaTiO$_3$. Horizontal axis is strain. Difference between first- and second order transition is clear.
 
 # feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics
 # and relaxors. Compared to the Monte Carlo simulations, MD simulation steps have a physical
@@ -26,12 +47,12 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
 # As you may often see in textbooks of ferroelectrics, 
 
 
-== Features
+== Features of feram
  * Scientific features
    * Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
    * Ferroelectrics and Relaxor
    * Phase transition
-   * Capacitor, <b>thin film</b> is sandwiched between short-circuited electrodes
+   * Capacitor, <b>ferroelectric thin film</b> is sandwiched between short-circuited electrodes
    * Evaluate forces in reciprocal-space; k-locality of the force matrix
    * Coarse-graining; reduction of the number of degree of freedom
 
@@ -56,29 +77,55 @@ figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis i
 
 
 
+== Purpose of this simulation program: ferroelectric thin-film capacitors
+ * Down-sizing of non-volatile FeRAM
+ * Fatigue of electrodes of capacitors
+   (M. Dawber et al.: J. Phys. Condes. Matter vol.15 p.L393 (2003))
+ * Hysteresis, polarization switching, dynamics of domain wall
+   and their nano-size effects are not well known (Figure below).
+ * <em>in situ</em> observations are difficult
+$\to$ Computational simulation with "feram" program.
+
+
+figures/Fong.jpg
+
+# So, purpose of this simulation program is to study
+# the thermal properties
+# of ferroelectric thin-film and its capacitors.
+#
+# Ferroelectric thin-film capacitors are applied in non-volatile FeRAM.
+# And their down-sizing are highly demanded.
+#
+# Fatigue of electrodes of capacitors is a current big problem
+#
+# But their Hysteresis, polarization switching, dynamics of domain wall
+# and their nano-size effects are not well known.
+#
+# This is an example of experimental study of thin films.
+# Fong et al. studied PbTiO3 thin films' striped ferroelectric domain structure
+# with strong X-ray. They found thickness dependence of Tc.
+#
+# Basically, experimental {\em in situ} observations of such dynamics are difficult.
+#
+# But you can do simulation with feram.
+
+
 == Perovskite type ferroelectrics ABO<sub>3</sub>
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 
 figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
 
-# Let's go back to physics.
-# As you know, in perovskite type ferroelectrics ABO$_3$, atomic displacements and strains
+# feram can simulate Perovskite type ferroelectrics which have ABO3 formula.
+# In perovskite type ferroelectrics ABO$_3$, atomic displacements and strains
 # are strongly coupled. This is the cubic ot high temperature srystal structure of ABO$_3$.
 # Unit cell has 5 atoms. So atomic displacements spans a 3x5=15-dimensional space.
 # This is a 2-dimentional subspace of the 15-dimensinal space......
+#
+# In 1994, my boss David Vanderbilt parametrized this coupling.
 
 
-
-== Effective Hamiltonian for molecular dynamics simulation
- * Monte Carlo Simulations
-   * BaTiO$_3$ bulk - Zhong, Vanderbilt and Rabe: Phys. Rev. B Vol.52 p.6301 (1995).
-   * PbTiO$_3$ bulk - Waghmare and Rabe: Phys. Rev. B Vol.55 p.6161 (1997).
- * Molecular dynamics simulations
-   * Relaxor - Waghmare, Cockayne and Burton, Ferroelectrics Vol.291, p.187 (2003).
-   * Relaxor - Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).
-   * BaTiO$_3$ capacitor - Paul, Nishimatsu, Kawazoe and Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007) *feram*.
-
-Kinetic energy terms are added to Monte Carlo Hamiltonian
+== Effective Hamiltonian and Coarse-graining
+Simulation with a supercell; ($AB$O<sub>3</sub>)$_N$
 Eq. 1
     H^{\rm eff}
     = \frac{M^*_{\rm dipole}}{2} \sum_{\bm{R},\alpha}\dot{u}_\alpha^2(\bm{R})
@@ -88,13 +135,6 @@ Eq. 1
     + V^{\rm coup,\,homo}(\{\bm{u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{\bm{u}\}, \{\bm{w}\})
 /Eq.
 
-
-
-
-
-
-
-== Coarse-graining: reduction of the number of degree of freedom
  * Real perovskite-like system has $15N+6$ degree of freedom
    * $N$ unit cells in supercell
    * 5 atoms per unit cell
@@ -107,6 +147,12 @@ Eq. 1
 
 figures/CoarseGraining.jpg
 
+# Using that parameters, we can construct an effective Hamiltonian for a supercell with
+# N unit cells of ABO3.
+#
+# In the Hamiltonian, Coarse-graining is employed.
+# In the other words, the number of degree of freedom is reduced.
+#
 # Real perovskite-like system has 15N+6 degree of freedom,
 # where N is the number of unit cells in supercell,
 # because each unit cell has 5 atoms, each atom can move along 3 directions,
@@ -115,6 +161,39 @@ figures/CoarseGraining.jpg
 # For Fast and Simple simulation, we reduce the number of degree of freedom to 6N+6,
 # by replacing 5 atoms to 2 vectors, 1 dipole Z^*u(R) and 1 acoustic displacement
 # per unit cell.
+#
+# We solve this Hamiltonian with Molecular Dynamics.
+
+
+
+
+
+== Thin films in capacitors
+figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b).
+
+# This slide show you how ...
+
+
+
+== Results
+
+
+== Thiner film has finer domain structure to avoid stronger depolarization field
+
+
+== Propose of experiments
+
+
+== Summary
+ * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
+ * New programming and technical methods are employed
+ * Perovskite-type ferroelectrics and relaxor
+ * Phase transition
+ * Thin-film capacitor: perfect and imperfect short-circuited electrodes
+ * Nose-Poincare thermostat
+ * Evaluate forces in reciprocal-space; k-locality of the force matrix
+ * Coarse-graining; reduction of the number of degree of freedom
+ * Dielectric constant, permittivity, or susceptibility can be calculated from dipole fluctuation.
 
 
 
@@ -190,14 +269,6 @@ figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast F
 
 
 
-== Thin films in capacitors
-figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b).
-
-
-
-
-
-
 == Time evolution and fluctuation
 figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
 
@@ -218,21 +289,6 @@ Eq. 1
 /Eq.
 figures/32x32xL032-D0-susceptibility.jpg Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO$_3$ with perfect electrodes.
 
-
-
-
-
-
-== Summary for "feram" introduction
- * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
- * New programming and technical methods are employed
- * Perovskite-type ferroelectrics and relaxor
- * Phase transition
- * Thin-film capacitor: perfect and imperfect short-circuited electrodes
- * Nose-Poincare thermostat
- * Evaluate forces in reciprocal-space; k-locality of the force matrix
- * Coarse-graining; reduction of the number of degree of freedom
- * Dielectric constant, permittivity, or susceptibility can be calculated from dipole fluctuation.
 
 
 
