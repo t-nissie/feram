@@ -97,7 +97,7 @@ figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Hori
 # You can freely download feram from this site.
 
 
-== Purpose of this simulation program: ferroelectric thin-film capacitors
+== Purpose of feram: ferroelectric thin-film capacitors
  * Down-sizing of non-volatile FeRAM
  * Fatigue of electrodes of capacitors
    (M. Dawber et al.: J. Phys. Condes. Matter vol.15 p.L393 (2003))
@@ -195,8 +195,8 @@ figures/CoarseGraining.jpg
 
 
 
-== Thin films in capacitors
-figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b).
+== Thin films sandwiched between short-circuited electrodes
+figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b). In (a) depolarization field $P_d=0$, but in (b) $P_d=4\pi P_z \frac{d}{l+d}$.
 
 # This slide show you how ...
 
@@ -232,7 +232,7 @@ figures/epitDEN.jpg
 
 == Uniformly polarized structure and striped domain structure
 figures/epit-32x32-L015-D1-5.0GPa-100K.jpg
-Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of l=15, d=1. There is thermally unhoppable bistability between these two structure.
+Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of $32\times 32 \times (l=15, d=1)$. There is thermally unhoppable bistability between these two structure.
 
 == Thiner film has finer domain structure to avoid stronger depolarization field
 figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes. Thiner film has finer domain structure to avoid stronger depolarization field.
