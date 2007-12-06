@@ -13,9 +13,15 @@ Umesh V. Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007)
 
 http://loto.sf.net/feram/
 
-# Today, I will introduce you my new simulation program "feram", that is for
-# "Ferroelectrics and Relaxor Analyzing Machine. In second half of my talk,
-# I will introduce a planning study of relaxors using this "feram".
+# Today, I will introduce you my new simulation program "feram".
+# A fast Molecular Dynamics simulation program for perovskite-type ferroelectric bulks and thin films.
+# feram is an abbreviation of "Ferroelectrics and Relaxor Analyzing Machine"
+# or of course "Ferroelectrics Random Access Memory."
+# My name is Takeshi Nishimatsu.
+# You can find some details of today's talk in this paper or in this web site.
+
+
+
 
 
 == What are ferroelectrics?
@@ -35,26 +41,31 @@ figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTi
 
 
 
-== What is feram?
-feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics.
+== Monte Carlo (MC) vs. Molecular Dynamics (MD)
+feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroelectrics.
 
-figures/phase.jpg Cooling and heating simulation of bulk BaTiO$_3$. Horizontal axis is strain. Difference between first- and second order transition is clear.
+figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
 
-# feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics
-# and relaxors. Compared to the Monte Carlo simulations, MD simulation steps have a physical
-# meaning of the time evolution. So, for example, you can do cooling and heating simulations
-# and can get such hysteresis in temperature,
-# As you may often see in textbooks of ferroelectrics, 
+# feram is a molecular dynamics program for bulk and thin-film ferroelectrics.
+#
+# This shows Simulations of bulk BaTiO<sub>3</sub> with MC and MD.
+# Horizontal axis is temperature. Vertical axis is strain.
+# Compared to old Monte Carlo simulations, MD simulation steps have a physical
+# meaning of the time evolution. So, for example, Cooling and heating MD simulation
+# can show hysteresis in temperature clearly.
+# As you may often see in textbooks of ferroelectrics,
 
 
-== Features of feram
+== Features of feram program
  * Scientific features
-   * Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
-   * Ferroelectrics and Relaxor
-   * Phase transition
-   * Capacitor, <b>ferroelectric thin film</b> is sandwiched between short-circuited electrodes
-   * Evaluate forces in reciprocal-space; k-locality of the force matrix
+   * Molecular dynamics (MD) simulation based on first-principles-based effective Hamiltonian
+   * $AB$O<sub>3</sub>-type perovskite ferroelectrics and relaxors
+   * Uses supercell; ($AB$O<sub>3</sub>)$_N$, $N=32\times 32\times 512$ $\Rightarrow$ 2,621,440 atoms
    * Coarse-graining; reduction of the number of degree of freedom
+   * Long-range dipole-dipole interaction is treated in reciprocal-space; k-locality of the force matrix
+   * Applications:
+     * Phase transition of bulk ferroelectrics
+     * Capacitor, <b>ferroelectric thin film</b> is sandwiched between short-circuited electrodes
 
  * Technical features
    * Fast
@@ -67,14 +78,23 @@ figures/phase.jpg Cooling and heating simulation of bulk BaTiO$_3$. Horizontal a
    * GNU autotools  http://www.gnu.org/software/autoconf/
    * Free software (GPLv3) http://loto.sf.net/feram/
 
-# * Nose-Poincare thermostat
-
-# * Subversion repository at https://loto.svn.sf.net/svnroot/loto/feram/
-
-# Before going to physics, Let me introduce some technical features of ferams.
-# It's fast. For speeding up, I use some computational technique as well as
-# physics of mathematics. I employed FFTW library, .....
-
+# The other features of feram program are:
+# Its Molecular dynamics (MD) simulation is based on first-principles-based effective Hamiltonian.
+# It can simulate ABO3-type perovskite ferroelectrics and relaxors
+# It can use big size of supercell up to 32x32x512. It corresponds 2,621,440 atoms.
+# It can do such a huge calculation because it employs some kind of Coarse-graining that
+# reduces the number of degree of freedom of the system.
+# and because Long-range dipole-dipole interaction is treated
+# in reciprocal-space using k-locality of the force matrix
+#
+# Using this program, you can simulate
+# Phase transition of bulk ferroelectrics and properties of
+# capacitors in which ferroelectric thin film is sandwiched between short-circuited electrodes.
+# Today, I will show you our study of ferroelectric thin film.
+#
+# This program is fast, because it uses a fast FFT library and
+# it is parallelized with OpenMP.
+# You can freely download feram from this site.
 
 
 == Purpose of this simulation program: ferroelectric thin-film capacitors
@@ -89,7 +109,7 @@ $\to$ Computational simulation with "feram" program.
 
 figures/Fong.jpg
 
-# So, purpose of this simulation program is to study
+# One of the purposes of this simulation program is to study
 # the thermal properties
 # of ferroelectric thin-film and its capacitors.
 #
@@ -110,6 +130,9 @@ figures/Fong.jpg
 # But you can do simulation with feram.
 
 
+
+
+
 == Perovskite type ferroelectrics ABO<sub>3</sub>
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 
@@ -117,11 +140,15 @@ figures/perovskite-contours.jpg Coupling between atomic displacements and strain
 
 # feram can simulate Perovskite type ferroelectrics which have ABO3 formula.
 # In perovskite type ferroelectrics ABO$_3$, atomic displacements and strains
-# are strongly coupled. This is the cubic ot high temperature srystal structure of ABO$_3$.
+# are strongly coupled. This is the cubic to high temperature crystal structure of ABO$_3$.
 # Unit cell has 5 atoms. So atomic displacements spans a 3x5=15-dimensional space.
-# This is a 2-dimentional subspace of the 15-dimensinal space......
+# This is a 2-dimensional subspace of the 15-dimensional space......
 #
 # In 1994, my boss David Vanderbilt parametrized this coupling.
+
+
+
+
 
 
 == Effective Hamiltonian and Coarse-graining
@@ -175,28 +202,46 @@ figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perf
 
 
 
-== Results
 
+
+
+
+
+== Temperature dependence of polarizations of thin-film capacitors
+figures/epitDEN.jpg
+
+
+
+== Uniformly polarized structure and striped domain structure
+figures/epit-32x32-L015-D1-5.0GPa-100K.jpg
+Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of l=15, d=1. There is thermally unhoppable bistability between these two structure.
 
 == Thiner film has finer domain structure to avoid stronger depolarization field
+figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes. Thiner film has finer domain structure to avoid stronger depolarization field.
 
 
-== Propose of experiments
+
+
+
+
+== Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor
+figures/proposal2.gif (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) grow BaTiO<sub>3</sub> thin and thick thin films, (3) cover them with the metal, (4) if you use x-ray or whatever, (5) you may observe deference of fineness in their domain structures.
+
+
+
+
+
+
+
+
 
 
 == Summary
+ * feram is a fast simulator for perovskite-type ferroelectric bulks and thin films
  * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
- * New programming and technical methods are employed
- * Perovskite-type ferroelectrics and relaxor
- * Phase transition
+ * Phase transition of bulk ferroelectrics
  * Thin-film capacitor: perfect and imperfect short-circuited electrodes
- * Nose-Poincare thermostat
- * Evaluate forces in reciprocal-space; k-locality of the force matrix
- * Coarse-graining; reduction of the number of degree of freedom
- * Dielectric constant, permittivity, or susceptibility can be calculated from dipole fluctuation.
-
-
-
+   * Striped domain structure
 
 
 == Parameters (input file)
@@ -418,10 +463,10 @@ So, I am planning to calculate and compare $\chi_{\alpha\beta}(q,\omega)$ for $\
 #
 require 'ulmul'
 u=Ulmul.new(1..0)
-u.subs_rules << [/(\S*\/?\.jpg)\s*(.*)$/, '<div class="figure">
+u.subs_rules << [/(\S*\/?\.(jpg|gif))\s*(.*)$/, '<div class="figure">
   <img src="\1" alt="\1" />
   <div class="caption">
-    \2
+    \3
   </div>
 </div>']
 

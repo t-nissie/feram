@@ -83,18 +83,15 @@ Umesh V. Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007)
 
 
 <div class="slide">
-<h2 id="LABEL-3">What is feram?</h2>
+<h2 id="LABEL-3">Monte Carlo (MC) vs. Molecular Dynamics (MD)</h2>
 <p>
-feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics.
+feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroelectrics.
 </p>
 <p>
 <div class="figure">
-  <img src="figures/phase.jpg" alt="figures/phase.jpg" />
+  <img src="figures/MC-vs-MD.jpg" alt="figures/MC-vs-MD.jpg" />
   <div class="caption">
-    Cooling and heating simulation of bulk BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
- <none />
- <mn>3</mn>
-</msub></math>. Horizontal axis is strain. Difference between first- and second order transition is clear.
+    Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
   </div>
 </div>
 </p>
@@ -102,17 +99,38 @@ feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-4">Features of feram</h2>
+<h2 id="LABEL-4">Features of feram program</h2>
 
 <ul>
   <li>Scientific features
     <ul>
-      <li>Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian</li>
-      <li>Ferroelectrics and Relaxor</li>
-      <li>Phase transition</li>
-      <li>Capacitor, <b>ferroelectric thin film</b> is sandwiched between short-circuited electrodes</li>
-      <li>Evaluate forces in reciprocal-space; k-locality of the force matrix</li>
+      <li>Molecular dynamics (MD) simulation based on first-principles-based effective Hamiltonian</li>
+      <li><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi>A</mi>
+ <mi>B</mi>
+</math>O<sub>3</sub>-type perovskite ferroelectrics and relaxors</li>
+      <li>Uses supercell; (<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi>A</mi>
+ <mi>B</mi>
+</math>O<sub>3</sub>)<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+ <none />
+ <mi>N</mi>
+</msub></math>, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+ <mi>N</mi>
+ <mo>=</mo>
+ <mn>32</mn>
+ <mo>&times;</mo>
+ <mn>32</mn>
+ <mo>&times;</mo>
+ <mn>512</mn>
+</math> <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mo>&Rightarrow;</mo></math> 2,621,440 atoms</li>
       <li>Coarse-graining; reduction of the number of degree of freedom</li>
+      <li>Long-range dipole-dipole interaction is treated in reciprocal-space; k-locality of the force matrix</li>
+      <li>Applications:
+        <ul>
+          <li>Phase transition of bulk ferroelectrics</li>
+          <li>Capacitor, <b>ferroelectric thin film</b> is sandwiched between short-circuited electrodes</li>
+        </ul></li>
     </ul></li>
 </ul>
 
@@ -493,39 +511,73 @@ Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/19
 
 
 <div class="slide">
-<h2 id="LABEL-9">Results</h2>
+<h2 id="LABEL-9">Temperature dependence of polarizations of thin-film capacitors</h2>
+<p>
+<div class="figure">
+  <img src="figures/epitDEN.jpg" alt="figures/epitDEN.jpg" />
+  <div class="caption">
+    
+  </div>
+</div></p>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-10">Thiner film has finer domain structure to avoid stronger depolarization field</h2>
+<h2 id="LABEL-10">Uniformly polarized structure and striped domain structure</h2>
+<p>
+<div class="figure">
+  <img src="figures/epit-32x32-L015-D1-5.0GPa-100K.jpg" alt="figures/epit-32x32-L015-D1-5.0GPa-100K.jpg" />
+  <div class="caption">
+    
+  </div>
+</div>Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of l=15, d=1. There is thermally unhoppable bistability between these two structure.
+</p>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-11">Propose of experiments</h2>
+<h2 id="LABEL-11">Thiner film has finer domain structure to avoid stronger depolarization field</h2>
+<p>
+<div class="figure">
+  <img src="figures/slice32x32.jpg" alt="figures/slice32x32.jpg" />
+  <div class="caption">
+    Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes. Thiner film has finer domain structure to avoid stronger depolarization field.
+  </div>
+</div>
+</p>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-12">Summary</h2>
+<h2 id="LABEL-12">Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor</h2>
+<p>
+<div class="figure">
+  <img src="figures/proposal2.gif" alt="figures/proposal2.gif" />
+  <div class="caption">
+    (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) grow BaTiO<sub>3</sub> thin and thick thin films, (3) cover them with the metal, (4) if you use x-ray or whatever, (5) you may observe deference of fineness in their domain structures.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-13">Summary</h2>
 
 <ul>
+  <li>feram is a fast simulator for perovskite-type ferroelectric bulks and thin films</li>
   <li>Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian</li>
-  <li>New programming and technical methods are employed</li>
-  <li>Perovskite-type ferroelectrics and relaxor</li>
-  <li>Phase transition</li>
-  <li>Thin-film capacitor: perfect and imperfect short-circuited electrodes</li>
-  <li>Nose-Poincare thermostat</li>
-  <li>Evaluate forces in reciprocal-space; k-locality of the force matrix</li>
-  <li>Coarse-graining; reduction of the number of degree of freedom</li>
-  <li>Dielectric constant, permittivity, or susceptibility can be calculated from dipole fluctuation.</li>
+  <li>Phase transition of bulk ferroelectrics</li>
+  <li>Thin-film capacitor: perfect and imperfect short-circuited electrodes
+    <ul>
+      <li>Striped domain structure</li>
+    </ul></li>
 </ul>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-13">Parameters (input file)</h2>
+<h2 id="LABEL-14">Parameters (input file)</h2>
 
 <ul>
   <li>King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)</li>
@@ -582,7 +634,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-14">Forces on dipoles are calculated in the reciprocal space</h2>
+<h2 id="LABEL-15">Forces on dipoles are calculated in the reciprocal space</h2>
 <p>
 <div class="figure">
   <img src="figures/flow.jpg" alt="figures/flow.jpg" />
@@ -595,7 +647,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-15">Time evolution and fluctuation</h2>
+<h2 id="LABEL-16">Time evolution and fluctuation</h2>
 <p>
 <div class="figure">
   <img src="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" alt="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" />
@@ -608,7 +660,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-16">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
+<h2 id="LABEL-17">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
 <p>
 <math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
  <msub>
@@ -687,7 +739,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-17">---------------------------- Relaxor ----------------------------</h2>
+<h2 id="LABEL-18">---------------------------- Relaxor ----------------------------</h2>
 <p>
 Relaxors Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
  <mi>B</mi>
@@ -942,7 +994,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-18">Frequency dependence of dielectric constant of relaxors</h2>
+<h2 id="LABEL-19">Frequency dependence of dielectric constant of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/TsurumiFig3.jpg" alt="figures/TsurumiFig3.jpg" />
@@ -955,7 +1007,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-19">Crystal structures of relaxors</h2>
+<h2 id="LABEL-20">Crystal structures of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig3.jpg" alt="figures/RandallBhallaFig3.jpg" />
@@ -1063,7 +1115,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-20">Local field on Pb-site</h2>
+<h2 id="LABEL-21">Local field on Pb-site</h2>
 <p>
 Displacement of Pb is the main source of dipole moment.
 <div class="figure">
@@ -1077,7 +1129,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-21">Chemically ordered and disordered regions of relaxors</h2>
+<h2 id="LABEL-22">Chemically ordered and disordered regions of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig8.jpg" alt="figures/RandallBhallaFig8.jpg" />
@@ -1090,7 +1142,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-22">Modeling of relaxors</h2>
+<h2 id="LABEL-23">Modeling of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/DoubleWells.jpg" alt="figures/DoubleWells.jpg" />
@@ -1103,7 +1155,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-23">Snapshot of a simulation of PSN relaxor</h2>
+<h2 id="LABEL-24">Snapshot of a simulation of PSN relaxor</h2>
 <p>
 <div class="figure">
   <img src="figures/SilviaFig1.jpg" alt="figures/SilviaFig1.jpg" />
@@ -1116,7 +1168,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-24">Susceptibility tensor</h2>
+<h2 id="LABEL-25">Susceptibility tensor</h2>
 <p>
 Now you can calculate <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
  <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
@@ -1354,7 +1406,7 @@ Then, with Kramers-Kronig relation,
 
 
 <div class="slide">
-<h2 id="LABEL-25">Estimation of computational time</h2>
+<h2 id="LABEL-26">Estimation of computational time</h2>
 <p>
 32x32x32 unit cells, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
  <mi mathvariant='normal'>&Delta;</mi>
