@@ -210,6 +210,24 @@ figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perf
 == Temperature dependence of polarizations of thin-film capacitors
 figures/epitDEN.jpg
 
+# These complicated figures are the calculated results for the thin-film
+# capacitors. Horizontal axes are temperature and vertical axes are
+# averaged u-z or sqrt of averaged u-z-square.
+# Red solid line can be considered as z-component of
+# polarization for heating-up simulation. Blue one is that for cooling.
+#
+# You can find the thickness dependent transition for heating-up simulations.
+# but no transition for cooling-down simulations.
+#
+# It can be understood there is thermally unhoppable bistability between
+# uniformly out-of-plane-polarized ferroelectric structure and
+# striped ferroelectric domain structure.
+#
+# You can read from the average of u-z-square that
+# true ferroelectric - paraelectric phase transition
+# which is almost constant around 650 Kelvin.
+#
+# In next slide, I show the snapshot of this point structure.
 
 
 == Uniformly polarized structure and striped domain structure
@@ -241,8 +259,8 @@ figures/proposal2.gif (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) gro
  * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
  * Phase transition of bulk ferroelectrics
  * Thin-film capacitor: perfect and imperfect short-circuited electrodes
-   * Striped domain structure
-
+   * Striped domain structure is predicted
+   * An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed
 
 == Parameters (input file)
  * King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)
