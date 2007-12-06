@@ -21,23 +21,23 @@ http://loto.sf.net/feram/
 # You can find some details of today's talk in this paper or in this web site.
 
 
-
-
-
 == What are ferroelectrics?
-figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$ and Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT). <b>feram</b> can simulate such ferroelectrics.
+figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT), etc.. <b>feram</b> can simulate such ferroelectrics. Without long-range dipole-dipole interaction and finite size effects, you will not see the domain structure like this. In other words, the domain structure is formed to avoid depolarization field induced by surface charges.
+
 
 # As you know,
-# ferroelectrics such as BaTiO3, PbTiO3, SrTiO3 and PZT
+# ferroelectrics such as BaTiO3, PbTiO3, SrTiO3, PZT, etc.
 # has characteristic properties, for example,
 # spontaneous polarization
 # phase transition
-# piezoelectric effect
+# piezoelectric effect and
 # inverse piezoelectric effect.
 #
 # Here, I'd like to emphasize that
-# without long-rage interaction and finite size effects,
+# without long-range dipole-dipole interaction and finite size effects,
 # you will not see the domain structure like this.
+# In other words, the domain structure is formed to avoid
+# depolarization field induced by surface charges.
 
 
 
@@ -46,19 +46,19 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
 
 figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
 
-# feram is a molecular dynamics program for bulk and thin-film ferroelectrics.
+# feram is a molecular dynamics program for ferroelectrics.
 #
-# This shows Simulations of bulk BaTiO<sub>3</sub> with MC and MD.
+# This shows simulations of bulk BaTiO<sub>3</sub> with MC and MD.
 # Horizontal axis is temperature. Vertical axis is strain.
 # Compared to old Monte Carlo simulations, MD simulation steps have a physical
 # meaning of the time evolution. So, for example, Cooling and heating MD simulation
-# can show hysteresis in temperature clearly.
-# As you may often see in textbooks of ferroelectrics,
+# can show hysteresis in temperature,
+# as you may often see in textbooks of ferroelectrics.
 
 
 == Features of feram program
  * Scientific features
-   * Molecular dynamics (MD) simulation based on first-principles-based effective Hamiltonian
+   * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
    * $AB$O<sub>3</sub>-type perovskite ferroelectrics and relaxors
    * Uses supercell; ($AB$O<sub>3</sub>)$_N$, $N=32\times 32\times 512$ $\Rightarrow$ 2,621,440 atoms
    * Coarse-graining; reduction of the number of degree of freedom
@@ -72,16 +72,16 @@ figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Hori
      * FFTW library version 3  http://www.fftw.org/
      * Parallelized with OpenMP
    * Multi-platform
-     * Linux
+     * Linux PC
      * HITACHI SR11000 Super Technical Server
    * Object oriented programming (OOP) in Fortran 2003
    * GNU autotools  http://www.gnu.org/software/autoconf/
    * Free software (GPLv3) http://loto.sf.net/feram/
 
-# The other features of feram program are:
-# Its Molecular dynamics (MD) simulation is based on first-principles-based effective Hamiltonian.
+# Other features of feram program are:
+# Its Molecular dynamics (MD) simulation uses first-principles-based effective Hamiltonian.
 # It can simulate ABO3-type perovskite ferroelectrics and relaxors
-# It can use big size of supercell up to 32x32x512. It corresponds 2,621,440 atoms.
+# It can use big size of supercell up to 32x32x512. It corresponds to 2,621,440 atoms.
 # It can do such a huge calculation because it employs some kind of Coarse-graining that
 # reduces the number of degree of freedom of the system.
 # and because Long-range dipole-dipole interaction is treated
@@ -90,10 +90,12 @@ figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Hori
 # Using this program, you can simulate
 # Phase transition of bulk ferroelectrics and properties of
 # capacitors in which ferroelectric thin film is sandwiched between short-circuited electrodes.
-# Today, I will show you our study of ferroelectric thin film.
+# Today, I will mainly show you our study of ferroelectric thin films.
 #
 # This program is fast, because it uses a fast FFT library and
 # it is parallelized with OpenMP.
+# I usually use normal Linux personal comuters.
+# But you can also use feram on some supercomputers.
 # You can freely download feram from this site.
 
 
@@ -109,11 +111,11 @@ $\to$ Computational simulation with "feram" program.
 
 figures/Fong.jpg
 
-# One of the purposes of this simulation program is to study
+# Again, one of the purposes of this simulation program is to study
 # the thermal properties
 # of ferroelectric thin-film and its capacitors.
 #
-# Ferroelectric thin-film capacitors are applied in non-volatile FeRAM.
+# Ferroelectric thin-film capacitors are applied, in for example, non-volatile FeRAM.
 # And their down-sizing are highly demanded.
 #
 # Fatigue of electrodes of capacitors is a current big problem
@@ -139,12 +141,16 @@ King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of
 figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
 
 # feram can simulate Perovskite type ferroelectrics which have ABO3 formula.
-# In perovskite type ferroelectrics ABO$_3$, atomic displacements and strains
-# are strongly coupled. This is the cubic to high temperature crystal structure of ABO$_3$.
+# In perovskite type ferroelectrics ABO$_3$, atomic displacements 
+# or polarization and strains are strongly coupled.
+# This is the cubic high temperature crystal structure of ABO3.
 # Unit cell has 5 atoms. So atomic displacements spans a 3x5=15-dimensional space.
-# This is a 2-dimensional subspace of the 15-dimensional space......
+# This is a 2-dimensional subspace of the 15-dimensional space of atomic displacements.
+# In the 2-dimensional subspace, potential surface is ploted.
+# If there is strain in crystal, the potential minimum goes far from its origin and
+# get deeper.
 #
-# In 1994, my boss David Vanderbilt parametrized this coupling.
+# In 1994, my current boss David Vanderbilt parametrized this coupling.
 
 
 
@@ -178,7 +184,7 @@ figures/CoarseGraining.jpg
 # N unit cells of ABO3.
 #
 # In the Hamiltonian, Coarse-graining is employed.
-# In the other words, the number of degree of freedom is reduced.
+# In other words, the number of degree of freedom is reduced.
 #
 # Real perovskite-like system has 15N+6 degree of freedom,
 # where N is the number of unit cells in supercell,
@@ -198,12 +204,17 @@ figures/CoarseGraining.jpg
 == Thin films sandwiched between short-circuited electrodes
 figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b). In (a) depolarization field $P_d=0$, but in (b) $P_d=4\pi P_z \frac{d}{l+d}$.
 
-# This slide show you how ...
-
-
-
-
-
+# This slide show you how to simulate thin films
+# sandwiched between short-circuited electrodes.
+# As we learned when we were under-graduate students,
+# An electrode act like a mirror for charges.
+# So two parallel electrodes act like two parallel mirrors.
+# You have infintes mirro images beyond the mirrors.
+# Such configuration can simulate with doubled-size supercell
+# which have TWO l thickness.
+#
+# moreover, if you introduce a gap d in the doubled-size supercell,
+# you can automatically simulate damaged or imperfect electrodes.
 
 
 
@@ -212,7 +223,7 @@ figures/epitDEN.jpg
 
 # These complicated figures are the calculated results for the thin-film
 # capacitors. Horizontal axes are temperature and vertical axes are
-# averaged u-z or sqrt of averaged u-z-square.
+# averaged dipole length u-z.
 # Red solid line can be considered as z-component of
 # polarization for heating-up simulation. Blue one is that for cooling.
 #
@@ -223,21 +234,24 @@ figures/epitDEN.jpg
 # uniformly out-of-plane-polarized ferroelectric structure and
 # striped ferroelectric domain structure.
 #
-# You can read from the average of u-z-square that
-# true ferroelectric - paraelectric phase transition
-# which is almost constant around 650 Kelvin.
-#
-# In next slide, I show the snapshot of this point structure.
+# In the next slide, I show the snapshot of this point structure.
 
 
 == Uniformly polarized structure and striped domain structure
 figures/epit-32x32-L015-D1-5.0GPa-100K.jpg
 Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of $32\times 32 \times (l=15, d=1)$. There is thermally unhoppable bistability between these two structure.
 
+# these are the horizontal slice and vertical cross-section of
+# almost unformly polarized structure and striped domain structure.
+
+
+
 == Thiner film has finer domain structure to avoid stronger depolarization field
-figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes. Thiner film has finer domain structure to avoid stronger depolarization field.
+figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes $32\times 32 \times (l=7, 15, 31, 63, 127 and 255, d=1$). Thiner film has finer domain structure to avoid stronger depolarization field $P_d=4\pi P_z \frac{d}{l+d}$. 
 
-
+# Here I show thickness dependence of striped domain structure.
+# We found that thiner film has finer domain
+# structure to avoid stronger depolarization field.
 
 
 
