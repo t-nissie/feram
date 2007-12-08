@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2007-08-07 07:31:08 t-nissie>
+! Time-stamp: <07/12/08 07:39:40 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -17,6 +17,7 @@ module Coord_module
      complex*16, pointer     :: dipoK(:,:,:,:)   => null()
      real*8,     pointer     :: dipoP(:,:,:,:)   => null()
      real*8,     pointer     :: dVddi(:,:,:,:)   => null()
+     real*8,     pointer     :: E_field(:,:,:,:) => null()
      real*8,     pointer     :: dipoI(:,:,:,:,:) => null()
      real*8,     pointer     :: didiR(:,:,:,:)   => null()
      complex*16, pointer     :: didiK(:,:,:,:)   => null()
