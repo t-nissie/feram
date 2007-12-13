@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2007-08-08 08:02:36 t-nissie>
+! Time-stamp: <2007-12-12 21:55:05 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -109,13 +109,12 @@ contains
     call msg_ez(6,message)
   end subroutine correlation
 
-  subroutine divide_and_write_Average(p,avg,kelvin)
+  subroutine divide_and_write_Average(p,avg)
     use Param_module
     implicit none
     !--- arguments -------------------------------------
     type(Param_type),   intent(in)    :: p
     type(Average_type), intent(inout) :: avg
-    real*8 kelvin
     !--- END of variable definitions -------------------
     if (p%n_average.eq.0) return
 
@@ -140,13 +139,13 @@ contains
 
     avg%correlation(:)  = avg%correlation(:) / p%n_average
 
-    write(UNIT_AVG,"(f6.1,' avg%total_energy'    ,1e13.5)") kelvin, avg%total_energy
-    write(UNIT_AVG,"(f6.1,' avg%strain'          ,6e13.5)") kelvin, avg%strain(:)
-    write(UNIT_AVG,"(f6.1,' avg%sorted_strain'   ,6e13.5)") kelvin, avg%sorted_strain(:)
-    write(UNIT_AVG,"(f6.1,' avg%polarization'    ,3e15.7)") kelvin, avg%polarization(:)
-    write(UNIT_AVG,"(f6.1,' avg%abs_polarization',3e15.7)") kelvin, avg%abs_polarization(:)
-    write(UNIT_AVG,"(f6.1,' avg%didiK000pUC'     ,6e13.5)") kelvin, avg%didiK000pUC(:)
-    write(UNIT_AVG,"(f6.1,' avg%correlation'     ,5e13.5)") kelvin, avg%correlation(:)
+    write(UNIT_AVG,"(f6.1,' avg%total_energy'    ,1e13.5)") p%kelvin, avg%total_energy
+    write(UNIT_AVG,"(f6.1,' avg%strain'          ,6e13.5)") p%kelvin, avg%strain(:)
+    write(UNIT_AVG,"(f6.1,' avg%sorted_strain'   ,6e13.5)") p%kelvin, avg%sorted_strain(:)
+    write(UNIT_AVG,"(f6.1,' avg%polarization'    ,3e15.7)") p%kelvin, avg%polarization(:)
+    write(UNIT_AVG,"(f6.1,' avg%abs_polarization',3e15.7)") p%kelvin, avg%abs_polarization(:)
+    write(UNIT_AVG,"(f6.1,' avg%didiK000pUC'     ,6e13.5)") p%kelvin, avg%didiK000pUC(:)
+    write(UNIT_AVG,"(f6.1,' avg%correlation'     ,5e13.5)") p%kelvin, avg%correlation(:)
     call flush(UNIT_AVG)
   end subroutine divide_and_write_Average
 end module Average_module

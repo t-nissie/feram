@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2007-08-07 14:47:00 t-nissie>
+! Time-stamp: <2007-12-13 10:41:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -72,16 +72,18 @@ subroutine initialize_dipoR(p,c,e)
   end if
 
   call dipoFFT(p,c)
-  call  dVddi_dipole_dipole(p,c,e)
-  call     dVddi_unharmonic(p,c,e)
-  call        dVddi_E_field(p,c,e)
-  call optimize_homo_strain(p,c,e)
-  call optimize_inho_strain(p,c,e)
+  call   dVddi_dipole_dipole(p,c,e)
+  call      dVddi_unharmonic(p,c,e)
+  call         dVddi_E_field(p,c,e)
+  call  optimize_homo_strain(p,c,e)
+  call  optimize_inho_strain(p,c,e)
 
-  ! deffect and mirror dVddi
+  ! deffect
   if (p%defect_position(1).ge.0) then
      c%dVddi(p%defect_position(1),p%defect_position(2),p%defect_position(3),:) = 0.0d0
   end if
+
+  ! mirror dVddi
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
      call mirror(p, c%dVddi)
   end if

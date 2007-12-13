@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2007-08-10 07:38:45 t-nissie>
+! Time-stamp: <2007-12-12 22:39:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -31,9 +31,7 @@ module Param_module
      !--- Method, Temperature, and mass ---------------
      character(len=3) :: method ! 'mc', or 'md'
      real*8 GPa          ! [GPa]
-     real*8 kelvin_start ! [K]
-     real*8 kelvin_goal  ! [K]
-     real*8 kelvin_step  ! [K]
+     real*8 kelvin       ! [K]
      real*8 mass_dipo    ! [eV Angstrom^-2 ps^2]
      real*8 Q_Nose       ! [eV ps^2]
      !--- System geometry -----------------------------
@@ -48,9 +46,7 @@ module Param_module
      integer n_average
      integer n_coord_freq  ! frequency for writing out the coordinates
      !!--- External electric field ---------------------
-     real*8    external_E_field(3)        ! External electric field [V/Angstrom]
-     integer n_external_E_switch_on       ! Ext. E field is swiched on after this number of iteration
-     real*8    external_E_field_frequency ! Ext. E field frequency. f=0 => constant E field
+     real*8    external_E_field(3)  ! External electric field [V/Angstrom]
      !--- On-site (Polynomial of order 4) -------------
      real*8 P_kappa2    ! P_4(u) = kappa2*u^2 + alpha*u^4
      real*8 P_alpha     !  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
@@ -95,10 +91,8 @@ contains
     ! Default parameters
     p%defect_position(1)  = -1    ; p%defect_position(2)  = -1    ; p%defect_position(3)  = -1
     p%defect_u(1)         = 0.0d0 ; p%defect_u(2)         = 0.0d0 ; p%defect_u(3)         = 0.0d0
-    p%external_E_field(1) = 0.0d0 ; p%external_E_field(2) = 0.0d0 ; p%external_E_field(3) = 0.0d0
+    p%external_E_field(:) = 0.0d0
     p%n_coord_freq           = huge(1)   ! maximum integer
-    p%n_external_E_switch_on = huge(1)   ! maximum integer
-    p%external_E_field_frequency = -100.0
 
     ! Read parameters from the imput file
     line_number = 0
@@ -117,12 +111,9 @@ contains
           read(str,*) dmy1, dmy2, p%method
        case('GPa')
           read(str,*) dmy1, dmy2, p%GPa
-       case('kelvin_start')
-          read(str,*) dmy1, dmy2, p%kelvin_start
-       case('kelvin_goal')
-          read(str,*) dmy1, dmy2, p%kelvin_goal
-       case('kelvin_step')
-          read(str,*) dmy1, dmy2, p%kelvin_step
+       case('kelvin')
+          read(str,*) dmy1, dmy2, p%kelvin
+          p%temperature_eV = p%kelvin / KELVIN_EV
        case('mass_amu')
           read(str,*) dmy1, dmy2, mass_amu  ! [amu]
           p%mass_dipo=mass_amu/9648.53377163899
@@ -148,10 +139,6 @@ contains
           read(str,*) dmy1, dmy2, p%n_coord_freq
        case('external_E_field')
           read(str,*) dmy1, dmy2, p%external_E_field(1), p%external_E_field(2), p%external_E_field(3)
-       case('n_external_E_switch_on')
-          read(str,*) dmy1, dmy2, p%n_external_E_switch_on
-       case('external_E_field_frequency')
-          read(str,*) dmy1, dmy2, p%external_E_field_frequency
        case('P_kappa2')
           read(str,*) dmy1, dmy2, p%P_kappa2
        case('P_alpha')
@@ -201,11 +188,6 @@ contains
     type(Param_type),intent(inout) :: p
     call msg(6, __FILE__, __LINE__, 'BEGIN', ': make_Param().')
 
-    if ( (p%kelvin_goal-p%kelvin_start)*p%kelvin_step .le. 0.0d0 ) then
-       stop "(kelvin_goal-kelvin_start)*kelvin_step must be positive."
-    end if
-
-
     p%film_thickness = p%Lz/2-p%gap
     p%N = p%Lx * p%Ly * p%Lz
     p%dt_2 = p%dt / 2
@@ -217,7 +199,6 @@ contains
     !end if
     p%unit_cell_volume = p%a0 ** 3
     p%pNa03 = p%GPa *0.01d0 / ELEMENTARY_CHARGE * p%N * p%unit_cell_volume
-    !p%temperature_eV = p%kelvin / KELVIN_EV
     call msg(6, __FILE__, __LINE__, 'END',   ':   make_Param().')
   end subroutine make_Param
 

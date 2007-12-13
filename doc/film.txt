@@ -202,7 +202,7 @@ figures/CoarseGraining.jpg
 
 
 == Thin films sandwiched between short-circuited electrodes
-figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b). In (a) depolarization field $P_d=0$, but in (b) $P_d=4\pi P_z \frac{d}{l+d}$.
+figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b). In (a) depolarization field $E_d=0$, but in (b) $E_d=4\pi P_z \frac{d}{l+d}$.
 
 # This slide show you how to simulate thin films
 # sandwiched between short-circuited electrodes.
@@ -247,7 +247,7 @@ Almost uniformly polarized structure ((a) and (b))and striped domain structure (
 
 
 == Thiner film has finer domain structure to avoid stronger depolarization field
-figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes $32\times 32 \times (l=7, 15, 31, 63, 127 and 255, d=1$). Thiner film has finer domain structure to avoid stronger depolarization field $P_d=4\pi P_z \frac{d}{l+d}$. 
+figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes $32\times 32 \times (l=7, 15, 31, 63, 127 and 255, d=1$). Thiner film has finer domain structure to avoid stronger depolarization field $E_d=4\pi P_z \frac{d}{l+d}$. 
 
 # Here I show thickness dependence of striped domain structure.
 # We found that thiner film has finer domain

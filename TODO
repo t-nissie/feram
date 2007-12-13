@@ -1,6 +1,8 @@
-o slice.rb $B%^%K%e%"%k(B
+o dispersion = .ture. で分散関係が出力されるようにする。32x32x32を使う。FILENAME.param は無くす方向で。
 
-o cross-section $B%^%K%e%"%k(B
+o slice.rb マニュアル
+
+o cross-section マニュアル
 
 o Imprement Nose:JPhysSocJpn:70:p75-77:2001
 
@@ -12,21 +14,21 @@ o  call dipoFFT(p,c)
    call        dVddi_E_field(p,c,e)
    call optimize_homo_strain(p,c,e)
    call optimize_inho_strain(p,c,e)
-       $B$O(B nose-poincare.F, leapfrog.F, initialize_dipoR.F $B$K6&DL$J$N$G$^$H$a$k!#(B
+       は nose-poincare.F, leapfrog.F, initialize_dipoR.F に共通なのでまとめる。
 
 o libbuilt_in_fft 128 256, libbuilt_in_fft -> libminimal_fft
 
-o Makefile.am $B$N0MB84X78!#(Bmake -j $B$G%G%P%0$G$-$k!#(B
+o Makefile.am の依存関係。make -j でデバグできる。
 
-o leapfrog $B$r$b$&0lEYF0$/$h$&$K$9$k!#(B
+o 力の計算の部分をsubroutineにして、leapfrog をもう一度動くようにする。
 
 o TEST UNIT
 
 o Use msg() in write_Param() of param_module.F.
 
-o striped structure $B$r(B initial configuration $B$K$G$-$k$h$&$K$9$k(B.
+o striped structure を initial configuration にできるようにする.
 
-o acoustic displacement $B$b(B MD.
+o acoustic displacement も MD.
 
 o refactoring nose-poincare.F and energy.F
 
@@ -36,84 +38,82 @@ o replace DSYEV().
 
 o use autoconf and make configure
 
-o average 4$BG\@:EY$K!)(B
+o average 4倍精度に？
 
-o start.coord $B$,$"$l$PFI$_9~$`!#(Balloc_Coord(p,c) $B$G!)(B
+o start.coord があれば読み込む。alloc_Coord(p,c) で？
 
-o (coord $B$r(B $B$+$-$@$7(B $B$O$8$a$k(B $B$H$3$m(B $B$*$o$k(B $B$H$3$m(B AVERAGE $B$N(B $B$"$$$@$@$1(B)
+o (coord を かきだし はじめる ところ おわる ところ AVERAGE の あいだだけ)
 
-o p, q, qdot $B$K$7$F(B, $B$$$D(Bmass$B$G3d$k$+9M$($k(B.
+o p, q, qdot にして, いつmassで割るか考える.
 
-o dipoA_dipole_dipole() $B$r(B dipoA = dipoA + dipoA_dipole_dipole $B$K(B.
+o dipoA_dipole_dipole() を dipoA = dipoA + dipoA_dipole_dipole に.
 
 o Q_nose must be a function of T, N and delta_t. AUTOMATIC determination.
 
 o Automatical determination of kappa
   kappa for the Ewald summation must be a function of Lx, Ly and Lz
 
-o strain energy $B$N(B $B7W;;$r$9$kItJ,$rJ,N%(B.
+o strain energy の 計算をする部分を分離.
 
 o compare 16x16x16, 32x32x32 
 
 o LargeKappa.gp
 
-o dipoI(:,:,:,3,3) Upper Triangle $B$@$1$K$9$k!)(B
-  FFT$B$N7W;;$O(BUpper Triangle $B$@$1$d$C$F(BC.C.$B$r$3$T!<$9$k$h$&$K$7$?(B.
-  $BG[Ns$O(B3x3$B$N$^$^(B.
-  $B$I$N$/$i$$%a%b%j$r8:$i$;$k!)(B
+o dipoI(:,:,:,3,3) Upper Triangle だけにする？
+  FFTの計算はUpper Triangle だけやってC.C.をこぴーするようにした.
+  配列は3x3のまま.
+  どのくらいメモリを減らせる？
 
-o mass_acoustic, mass_strain $B$J$s$+4X78$,$"$k(B
+o mass_acoustic, mass_strain なんか関係がある
 
 o 3-dimensional hedgehog plot (`with vec` is not available for splot of GNUPLOT)
 
-o interface$B$V$s(B
+o interfaceぶん
 
-o initial spin configuration $B$r$D$/$k(B program $B$r$o$1$k!)(B
+o initial spin configuration をつくる program をわける？
 
-o mass $B$N(B 9648.53377163899 $B$r(B define.h $B$X(B
+o mass の 9648.53377163899 を define.h へ
 
 o children, parents, use
 
-o input file parser$B$r$D$/$k(B, input file $B$H(B param.gp $B$H$r$-$g$&$D$&$+(B
-  $B%?%$%H%k$b0z?t$G;XDj$G$-$k$h$&$K$7$J$$$HLLE]=-$$!#(B
+o input file parserをつくる, input file と param.gp とをきょうつうか
+  タイトルも引数で指定できるようにしないと面倒臭い。
 
 o timing
 
 o call msg() DEPTH or p%message_depth
-
-o msg.f $B$X$$$l$D$+$N$3$H$b$+$s$,$($F(B.
 
 o Use class of Fortran 2003: class Ferroelectrics has a Param, a Coord and a Energy
 
 
 x LARGE_MASS_INV = 1.0d0 / 1000000000.0d0
 
-x $BF~NO%U%!%$%k$N@0Hw(B
+x 入力ファイルの整備
 
-x .F -> .F90 $B$d$i$J$$(B
+x .F -> .F90 やらない
 
-x 16(kappa=0.22), 32(kappa=0.08), 64(kappa=0.055) $B$G@:EY$r8!>Z(B
-  dipole-dipole-long.dat $B$,(B ??e-31$B$K$J$C$F$k$+$i(B OK?
+x 16(kappa=0.22), 32(kappa=0.08), 64(kappa=0.055) で精度を検証
+  dipole-dipole-long.dat が ??e-31になってるから OK?
 
 x dipole-dipole.gp
 
 
 x coord.F: complex*16, allocatable :: dipoP(:,:,:,:,:)
-  real*8 $B$K$9$k(B
+  real*8 にする
 
 x make dipole-dipole.F's children
 	short-range.F
 	long-range.F
-  dipole-dipole only $B$H(B, $B$=$l$K(B short-range $B$r$/$o$($?$b$N$r$U$?$D$H$b$@$;$k$h$&$K$9$k(B.
+  dipole-dipole only と, それに short-range をくわえたものをふたつともだせるようにする.
 
 x normal.f
-  $B@55,J,I[$9$kMp?tH/@8%5%V%k!<%A%s!#;29MJ88%$r$A$c$s$H=q$/!#(B
+  正規分布する乱数発生サブルーチン。参考文献をちゃんと書く。
 
 x param.F
-  $B=i4|(Bdipole moment$B$NJ?6QCM$HI8=`JP:9$r$rM?$($k$3$H$,=PMh$k$h$&$K$9$k!#(B
-  $BJ,;6(B variance
-  $BJP:9(B deviation  init_u_dev(3)
-  $BJ?6Q(B average    init_u_avg(3)
+  初期dipole momentの平均値と標準偏差をを与えることが出来るようにする。
+  分散 variance
+  偏差 deviation  init_u_dev(3)
+  平均 average    init_u_avg(3)
 
 x Lz_periodic -> Lz      change mirror.f
 

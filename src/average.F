@@ -1,5 +1,5 @@
 ! average.F -*-f90-*-
-! Time-stamp: <2005-10-13 18:38:10 t-nissie>
+! Time-stamp: <2007-12-12 21:54:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -109,13 +109,12 @@ contains
     call msg_ez(6,message)
   end subroutine correlation
 
-  subroutine divide_and_write_Average(p,avg,kelvin,fd)
+  subroutine divide_and_write_Average(p,avg,fd)
     use Param_module
     implicit none
     !--- arguments -------------------------------------
     type(Param_type),   intent(in)    :: p
     type(Average_type), intent(inout) :: avg
-    real*8 kelvin
     integer fd
     !--- local -----------------------------------------
     character(110) message
@@ -143,19 +142,19 @@ contains
 
     avg%correlation(:)  = avg%correlation(:) / p%n_average
 
-    write(message,"(f6.1,' avg%total_energy'    ,1e13.5)") kelvin, avg%total_energy
+    write(message,"(f6.1,' avg%total_energy'    ,1e13.5)") p%kelvin, avg%total_energy
     call msg_ez(fd,message)
-    write(message,"(f6.1,' avg%strain'          ,6e13.5)") kelvin, avg%strain(:)
+    write(message,"(f6.1,' avg%strain'          ,6e13.5)") p%kelvin, avg%strain(:)
     call msg_ez(fd,message)
-    write(message,"(f6.1,' avg%sorted_strain'   ,6e13.5)") kelvin, avg%sorted_strain(:)
+    write(message,"(f6.1,' avg%sorted_strain'   ,6e13.5)") p%kelvin, avg%sorted_strain(:)
     call msg_ez(fd,message)
-    write(message,"(f6.1,' avg%polarization'    ,3e15.7)") kelvin, avg%polarization(:)
+    write(message,"(f6.1,' avg%polarization'    ,3e15.7)") p%kelvin, avg%polarization(:)
     call msg_ez(fd,message)
-    write(message,"(f6.1,' avg%abs_polarization',3e15.7)") kelvin, avg%abs_polarization(:)
+    write(message,"(f6.1,' avg%abs_polarization',3e15.7)") p%kelvin, avg%abs_polarization(:)
     call msg_ez(fd,message)
-    write(message,"(f6.1,' avg%didiK000pUC'     ,6e13.5)") kelvin, avg%didiK000pUC(:)
+    write(message,"(f6.1,' avg%didiK000pUC'     ,6e13.5)") p%kelvin, avg%didiK000pUC(:)
     call msg_ez(fd,message)
-    write(message,"(f6.1,' avg%correlation'     ,5e13.5)") kelvin, avg%correlation(:)
+    write(message,"(f6.1,' avg%correlation'     ,5e13.5)") p%kelvin, avg%correlation(:)
     call msg_ez(fd,message)
   end subroutine divide_and_write_Average
 end module Average_module

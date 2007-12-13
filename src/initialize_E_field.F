@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2007-08-08 07:59:59 t-nissie>
+! Time-stamp: <2007-12-13 10:55:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -10,10 +10,12 @@ subroutine initialize_E_field(p,c)
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
   integer ix, iy, iz, ios, dummy_x, dummy_y, dummy_z
-  !integer sign
+  character(110) message
   real*8 normal_dist
   external normal_dist
   call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+
+  c%E_field(:,:,:,:) = 0.0d0
 
   open(unit=UNIT_SYSTEM, file='local.field', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
@@ -37,11 +39,29 @@ subroutine initialize_E_field(p,c)
         ! 3. Check symmetry, if it is 'film' or 'epit'.
         ! 4. Calculate the local field.
         ! 5. Write out the local field to the 'local.field' file.
-     else
-        call msg(6, __FILE__, __LINE__, 'FILE: ', &
-             'ionic.configuration was NOT found. The local fied is set to ZERO')
-        c%E_field(:,:,:,:) = 0.0d0
      end if
   end if
+
+  !=== Add external constant electric field to c%E_field ========================
+  if ( p%external_E_field(1).ne.0.0d0 .or. &
+       p%external_E_field(2).ne.0.0d0 .or. &
+       p%external_E_field(3).ne.0.0d0 ) then
+     write(message,'(a,3f9.5,a)') 'external_ E_field(:)=', p%external_E_field(:), &
+          ' [V/Angstrom] is added to E_field'
+     call msg(6, __FILE__, __LINE__, 'NOTICE: ', message)
+     do iz = 0, p%Lz-1
+        do iy = 0, p%Ly-1
+           do ix = 0, p%Lx-1
+              c%E_field(ix,iy,iz,:) = c%E_field(ix,iy,iz,:) + p%external_E_field(:)
+           end do
+        end do
+     end do
+  end if
+
+  !=== Mirror ===================================================================
+  if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
+     call mirror(p, c%E_field)
+  end if
+
   call msg(6, __FILE__, __LINE__, 'END', '')
 end subroutine initialize_E_field

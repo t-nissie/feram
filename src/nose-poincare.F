@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2007-08-07 14:48:29 t-nissie>
+! Time-stamp: <2007-12-13 13:49:43 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! ref_1: Stephen D. Bond, Benedict J. Leimkuhler and Brian B. Laird:
 !         J. Comput. Phys. Vol.151 p.114 (1999)
@@ -19,6 +19,7 @@ subroutine nose_poincare(p,c,e)
   e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
   CB = p%n_freedom*p%temperature_eV*(1.0d0+log(c%s_Nose)) - e%dipo_kinetic/c%s_Nose**2 &
        & + e%dipole_dipole &
+       & + e%dipole_E_field&
        & + e%unharmonic    &
        & + e%homo_strain   &
        & + e%homo_coupling &
