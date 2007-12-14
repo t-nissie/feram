@@ -1,5 +1,5 @@
 ! energy.F -*-f90-*-
-! Time-stamp: <2007-08-08 14:17:58 t-nissie>
+! Time-stamp: <2007-12-14 00:11:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -19,6 +19,19 @@ module Energy_module
   end type Energy_type
 !
 contains
+  real*8 function sum_potential_energies(e)
+    implicit none
+    type(Energy_type), intent(in) :: e
+    sum_potential_energies &
+         = e%dipole_dipole &
+         + e%dipole_E_field&
+         + e%unharmonic    &
+         + e%homo_strain   &
+         + e%homo_coupling &
+         + e%inho_strain   &
+         + e%inho_coupling
+  end function sum_potential_energies
+
   subroutine write_Energy(p,c,e,fd)
     use Param_module
     use Coord_module
@@ -33,13 +46,7 @@ contains
     character(45) message
     !--- END of variable definitions -------------------
 
-    e%total = e%dipo_kinetic/c%s_Nose**2  &
-          & + e%dipole_dipole &
-          & + e%unharmonic    &
-          & + e%homo_strain   &
-          & + e%homo_coupling &
-          & + e%inho_strain   &
-          & + e%inho_coupling
+    e%total = e%dipo_kinetic/c%s_Nose**2 + sum_potential_energies(e)
     write(message,fmt) 'dipo_kinetic   ', e%dipo_kinetic/c%s_Nose**2/p%N
                                                                  call msg_ez(fd,message)
     write(message,fmt) 'dipole_dipole  ', e%dipole_dipole/p%N;   call msg_ez(fd,message)
@@ -70,17 +77,12 @@ contains
     !character(30), parameter :: fmt = "(a14,f16.10,' [eV/u.c.]')"
     !character(45) message
     !--- END of variable definitions -------------------
-    e%H_Nose_Poincare = &
-       & e%dipo_kinetic / c%s_Nose**2 &
-       & + e%dipole_dipole &
-       & + e%dipole_E_field&
-       & + e%unharmonic    &
-       & + e%homo_strain   &
-       & + e%homo_coupling &
-       & + e%inho_strain   &
-       & + e%inho_coupling &
-       & + c%pi_Nose**2/2/p%Q_Nose &
-       & + 3*p%N*p%temperature_eV*log(c%s_Nose) - c%H0
+    e%H_Nose_Poincare &
+         = e%dipo_kinetic / c%s_Nose**2 &
+         + sum_potential_energies(e) &
+         + c%pi_Nose**2/2/p%Q_Nose &
+         + 3*p%N*p%temperature_eV*log(c%s_Nose) &
+         - c%H0
     e%H_Nose_Poincare = e%H_Nose_Poincare * c%s_Nose
   end subroutine Nose_Poincare_Hamiltonian
 

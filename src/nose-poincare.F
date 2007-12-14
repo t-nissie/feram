@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2007-12-13 13:49:43 takeshi>
+! Time-stamp: <2007-12-14 00:12:20 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! ref_1: Stephen D. Bond, Benedict J. Leimkuhler and Brian B. Laird:
 !         J. Comput. Phys. Vol.151 p.114 (1999)
@@ -17,15 +17,10 @@ subroutine nose_poincare(p,c,e)
 
   c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - (p%dt_2*c%s_Nose) * c%dVddi(:,:,:,:) !(35a)
   e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
-  CB = p%n_freedom*p%temperature_eV*(1.0d0+log(c%s_Nose)) - e%dipo_kinetic/c%s_Nose**2 &
-       & + e%dipole_dipole &
-       & + e%dipole_E_field&
-       & + e%unharmonic    &
-       & + e%homo_strain   &
-       & + e%homo_coupling &
-       & + e%inho_strain   &
-       & + e%inho_coupling &
-       & - c%H0
+  CB = p%n_freedom*p%temperature_eV*(1.0d0+log(c%s_Nose)) &
+       - e%dipo_kinetic/c%s_Nose**2 &
+       + sum_potential_energies(e) &
+       - c%H0
   CB = p%dt_2 * CB - c%pi_Nose
   c%pi_Nose = -2 * CB / (1.0d0 + sqrt(1.0d0-CB*p%dt/p%Q_Nose)) !(38) <- (35b)
   s_Nose_old = c%s_Nose

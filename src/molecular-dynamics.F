@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2007-12-12 22:38:06 takeshi>
+! Time-stamp: <2007-12-14 02:14:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -16,10 +16,10 @@ subroutine molecular_dynamics(p,c)
   !--- local -----------------------------------------
   type(Energy_type) :: e
   type(Average_type) :: avg
-  integer i_step, i, ix, iy, iz
-  character(100), parameter :: fmt_time_step = &
-  & "('TIME_STEP ',i7,' ---------------------------------------------------')"
-  character (len=85) :: message
+  integer i_step, i
+  character(120), parameter :: fmt_time_step = &
+  & "('TIME_STEP ',i7,' ---------------------------------------------------------------------------------')"
+  character (len=120) :: message
   character (len=120) :: fn, fn_avg
   !--- END of variable definitions -------------------
   call msg(6, __FILE__, __LINE__, 'BEGIN', ': MD')
@@ -27,16 +27,16 @@ subroutine molecular_dynamics(p,c)
   write(fn_avg,'(a,a)') trim(p%filename), '.avg'
   open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
 
-  call msg_ez(6, &
-       & 'INITIALIZE COORDINATES ==============================================================')
+  write(message,'(f5.1,a)') p%kelvin, ' [K] BEGIN ========================================================'
+  call msg(6, __FILE__, __LINE__, 'T = ', message)
+
+  write(message,fmt_time_step) 0; call msg_ez(6,message)
   call initialize_E_field(p,c)
   call initialize_dipoR(p,c,e)
   call write_Energy(p,c,e,6)
   write(message,"('strain',6e13.5)") c%strain(:)
   call msg_ez(6,message)
 
-  write(message,'(f5.1,a)') p%kelvin, ' [K] ============================================='
-  call msg(6, __FILE__, __LINE__, 'T = ', message)
 
   c%H0 = 0.0d0
   call Nose_Poincare_Hamiltonian(p,c,e)
@@ -52,7 +52,7 @@ subroutine molecular_dynamics(p,c)
      call nose_poincare(p,c,e)   ! H_Nose_Poincare == 0, always
 
      if (i_step-(i_step/p%n_coord_freq)*p%n_coord_freq.eq.0) then
-        write(fn,'(a,a,i3.3,a,i7.7,a)') trim(p%filename), '.', int(p%kelvin), 'K', i_step, '.coord'
+        write(fn,'(a,a,i7.7,a)') trim(p%filename), '.', i_step, '.coord'
         call write_system(p,c,fn)
      end if
 
@@ -76,7 +76,8 @@ subroutine molecular_dynamics(p,c)
      call add_to_Average(p,c,e,avg)
   end do
 
-  call msg_ez(6,'END of ITERATIONS ---------------------------------------------------')
+  write(message,'(f5.1,a)') p%kelvin, ' [K] END =========================================================='
+  call msg(6, __FILE__, __LINE__, 'T = ', message)
   call divide_and_write_Average(p,avg)
 
   close(UNIT_AVG)
