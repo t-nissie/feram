@@ -1,19 +1,18 @@
 #!/bin/sh
 # externalE.sh
-# Time-stamp: <2007-12-14 02:45:39 takeshi>
+# Time-stamp: <2007-12-14 02:53:35 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
-rm -f feram.log
 rm -f externalE.avg
 
 temperature=100
 
 externalE_start=-0.01
-externalE_goal=-0.008
+externalE_goal=0.01
 externalE_step=0.001
 
-n_thermalize=4000
-n_average=1000
+n_thermalize=40000
+n_average=10000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 externalE=$externalE_start
@@ -66,7 +65,7 @@ init_dipo_dev = 0.02  0.02  0.02   [Angstrom]  # Deviation of initial dipole dis
 Z_star        = 9.956
 epsilon_inf   = 5.24
 EOF
-../feram $filename >> feram.log
+../feram $filename
 ln -sf $filename.`printf '%.7d' $n_coord_freq`.coord restart.coord
 cat $filename.avg >> externalE.avg
 externalE=`echo "$externalE + $externalE_step" | bc`

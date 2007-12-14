@@ -1,3 +1,5 @@
+o FILENAME.avgの出力の見直し polarization -> <u_z> とか
+
 o dispersion = .ture. で分散関係が出力されるようにする。32x32x32を使う。FILENAME.param は無くす方向で。
 
 o slice.rb マニュアル
