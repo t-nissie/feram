@@ -1,3 +1,7 @@
+2007-12-15  Takeshi Nishimatsu  <takeshi@lotus>
+
+	* configure.ac: version 0.04.01, rev 139
+
 2007-10-06  Takeshi Nishimatsu  <takeshi@physics.rutgers.edu>
 
 	* configure.ac: version 0.03.06, rev 8?, add doc/

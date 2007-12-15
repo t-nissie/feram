@@ -1,6 +1,6 @@
 o FILENAME.avgの出力の見直し polarization -> <u_z> とか
 
-o dispersion = .ture. で分散関係が出力されるようにする。32x32x32を使う。FILENAME.param は無くす方向で。
+o plot_dispersion = .ture. のとき32x32x32を使う。FILENAME.param は無くす方向で。
 
 o slice.rb マニュアル
 
@@ -87,6 +87,9 @@ o call msg() DEPTH or p%message_depth
 
 o Use class of Fortran 2003: class Ferroelectrics has a Param, a Coord and a Energy
 
+
+
+x plot_dispersion = .ture. で分散関係が出力されるようにする。
 
 x LARGE_MASS_INV = 1.0d0 / 1000000000.0d0
 
