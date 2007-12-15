@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2007-12-12 22:39:17 takeshi>
+! Time-stamp: <2007-12-15 11:53:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -64,6 +64,7 @@ module Param_module
      real*8 epsilon_inf   ! relative dielectric constant of core ions
      integer defect_position(3)
      real*8  defect_u(3)
+     logical plot_dispersion
      !=== Parameters to be calculated from above =========================
      integer film_thickness
      integer N
@@ -93,6 +94,7 @@ contains
     p%defect_u(1)         = 0.0d0 ; p%defect_u(2)         = 0.0d0 ; p%defect_u(3)         = 0.0d0
     p%external_E_field(:) = 0.0d0
     p%n_coord_freq           = huge(1)   ! maximum integer
+    p%plot_dispersion = .false.
 
     ! Read parameters from the imput file
     line_number = 0
@@ -171,6 +173,8 @@ contains
           read(str,*) dmy1, dmy2, p%defect_position(1), p%defect_position(2), p%defect_position(3)
        case('defect_u')
           read(str,*) dmy1, dmy2, p%defect_u(1), p%defect_u(2), p%defect_u(3)
+       case('plot_dispersion')
+          read(str,*) dmy1, dmy2, p%plot_dispersion
        case default
           write(6,'(a,a,i3,a,a)') trim(p%filename),':', line_number, ':', trim(str)
           stop ': Input error: No such parameter'

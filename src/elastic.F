@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2007-04-24 15:04:38 t-nissie>
+! Time-stamp: <2007-12-15 11:55:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -86,9 +86,11 @@ subroutine elastic(p,c)
      end do
   end do
 
-  write(fn,'(a,a)') trim(p%filename),'.inhomo-K.dat'
-  call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%inhomo_K, fn)
-  call msg(6, __FILE__, __LINE__, 'FILE: ',fn)
+  if (p%plot_dispersion) then
+     write(fn,'(a,a)') trim(p%filename),'.inhomo-K.dat'
+     call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%inhomo_K, fn)
+     call msg(6, __FILE__, __LINE__, 'FILE: ',fn)
+  end if
 
   ! inhomo_coup2_K -----------------------------
   k(0) = 0.0d0

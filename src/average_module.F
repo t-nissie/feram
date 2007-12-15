@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2007-12-14 02:32:40 takeshi>
+! Time-stamp: <2007-12-15 12:19:30 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -139,6 +139,10 @@ contains
 
     avg%correlation(:)  = avg%correlation(:) / p%n_average
 
+
+    write(fn_avg,'(a,a)') trim(p%filename), '.avg'
+    open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
+
     write(UNIT_AVG,"(f6.1,3f9.5,' avg%total_energy'    ,1e13.5)") p%kelvin, p%external_E_field(:), avg%total_energy
     write(UNIT_AVG,"(f6.1,3f9.5,' avg%strain'          ,6e13.5)") p%kelvin, p%external_E_field(:), avg%strain(:)
     write(UNIT_AVG,"(f6.1,3f9.5,' avg%sorted_strain'   ,6e13.5)") p%kelvin, p%external_E_field(:), avg%sorted_strain(:)
@@ -146,6 +150,7 @@ contains
     write(UNIT_AVG,"(f6.1,3f9.5,' avg%abs_polarization',3e15.7)") p%kelvin, p%external_E_field(:), avg%abs_polarization(:)
     write(UNIT_AVG,"(f6.1,3f9.5,' avg%didiK000pUC'     ,6e13.5)") p%kelvin, p%external_E_field(:), avg%didiK000pUC(:)
     write(UNIT_AVG,"(f6.1,3f9.5,' avg%correlation'     ,5e13.5)") p%kelvin, p%external_E_field(:), avg%correlation(:)
-    call flush(UNIT_AVG)
+
+    close(UNIT_AVG)
   end subroutine divide_and_write_Average
 end module Average_module
