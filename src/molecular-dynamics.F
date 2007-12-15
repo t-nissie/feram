@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2007-12-15 12:19:04 takeshi>
+! Time-stamp: <2007-12-15 13:55:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -20,7 +20,7 @@ subroutine molecular_dynamics(p,c)
   character(120), parameter :: fmt_time_step = &
   & "('TIME_STEP ',i7,' ---------------------------------------------------------------------------------')"
   character (len=120) :: message
-  character (len=120) :: fn, fn_avg
+  character (len=120) :: fn
   !--- END of variable definitions -------------------
   call msg(6, __FILE__, __LINE__, 'BEGIN', ': MD')
 

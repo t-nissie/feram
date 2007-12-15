@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2007-12-15 12:19:30 takeshi>
+! Time-stamp: <2007-12-15 13:57:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -112,10 +112,10 @@ contains
   subroutine divide_and_write_Average(p,avg)
     use Param_module
     implicit none
-    !--- arguments -------------------------------------
     type(Param_type),   intent(in)    :: p
     type(Average_type), intent(inout) :: avg
-    !--- END of variable definitions -------------------
+    character (len=120)               :: fn_avg
+
     if (p%n_average.eq.0) return
 
     avg%total_energy    = avg%total_energy    / p%n_average / p%N

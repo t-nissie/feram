@@ -1,14 +1,14 @@
 #!/bin/sh
 # externalE.sh
-# Time-stamp: <2007-12-14 02:53:35 takeshi>
+# Time-stamp: <2007-12-15 14:21:24 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f externalE.avg
 
 temperature=100
 
-externalE_start=-0.01
-externalE_goal=0.01
+externalE_start=-0.04
+externalE_goal=0.04
 externalE_step=0.001
 
 n_thermalize=40000
