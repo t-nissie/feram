@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2007-12-14 00:12:20 takeshi>
+! Time-stamp: <2007-12-21 15:32:47 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! ref_1: Stephen D. Bond, Benedict J. Leimkuhler and Brian B. Laird:
 !         J. Comput. Phys. Vol.151 p.114 (1999)
@@ -43,7 +43,7 @@ subroutine nose_poincare(p,c,e)
   call  dVddi_dipole_dipole(p,c,e)
   call     dVddi_unharmonic(p,c,e)
   call        dVddi_E_field(p,c,e)
-  call optimize_homo_strain(p,c,e)
+  call optimize_homo_strain(p,c,e)   ! It calls dVddi_homo_coupling().
   call optimize_inho_strain(p,c,e)
   ! deffect and mirror dVddi
   if (p%defect_position(1).ge.0) then

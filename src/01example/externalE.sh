@@ -1,6 +1,6 @@
 #!/bin/sh
 # externalE.sh
-# Time-stamp: <2007-12-15 14:21:24 takeshi>
+# Time-stamp: <2007-12-21 15:45:34 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f externalE.avg
@@ -15,9 +15,11 @@ n_thermalize=40000
 n_average=10000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
+i=0
 externalE=$externalE_start
 while [ `echo "$externalE <= $externalE_goal" | bc` = "1" ] ; do
-filename=externalE"$temperature"K`printf '%+.4f' $externalE`
+i=`expr $i + 1`
+filename=externalE"$temperature"K`printf '%.3d%+.5f' $i $externalE`
 cat > $filename <<EOF
 #--- Method, Temperature, and mass ---------------
 method = 'md'
