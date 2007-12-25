@@ -1,6 +1,6 @@
 #!/bin/sh
 # externalE.sh
-# Time-stamp: <07/12/25 01:21:30 takeshi>
+# Time-stamp: <07/12/25 07:20:38 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f externalE.avg
@@ -17,7 +17,7 @@ n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
 externalE=$externalE_start
-while [ `echo "$externalE <= $externalE_goal" | bc` = "1" ] ; do
+while [ `perl -e "print $externalE <= $externalE_goal"` = "1" ] ; do
 i=`expr $i + 1`
 filename=externalE"$temperature"K`printf '%.3d%+.5f' $i $externalE`
 cat > $filename <<EOF
@@ -73,5 +73,5 @@ echo $filename >> FILES
 # OMP_NUM_THREADS=6 ./feram $filename > /dev/null
 ln -sf $filename.`printf '%.7d' $n_coord_freq`.coord restart.coord
 cat $filename.avg >> externalE.avg
-externalE=`echo "$externalE + $externalE_step" | bc`
+externalE=`perl -e "print $externalE + $externalE_step"`
 done
