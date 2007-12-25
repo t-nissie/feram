@@ -1,6 +1,6 @@
 #!/bin/sh
 # externalE.sh
-# Time-stamp: <2007-12-21 15:45:34 takeshi>
+# Time-stamp: <07/12/25 01:21:30 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f externalE.avg
@@ -67,7 +67,10 @@ init_dipo_dev = 0.02  0.02  0.02   [Angstrom]  # Deviation of initial dipole dis
 Z_star        = 9.956
 epsilon_inf   = 5.24
 EOF
+echo 1 > FILES
+echo $filename >> FILES
 ../feram $filename
+# OMP_NUM_THREADS=6 ./feram $filename > /dev/null
 ln -sf $filename.`printf '%.7d' $n_coord_freq`.coord restart.coord
 cat $filename.avg >> externalE.avg
 externalE=`echo "$externalE + $externalE_step" | bc`
