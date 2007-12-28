@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2007-12-15 11:53:04 takeshi>
+! Time-stamp: <2007-12-28 13:54:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -58,8 +58,9 @@ module Param_module
      !--- Elastic Coupling ----------------------------
      real*8 B1xx, B1yy, B4yz
      !--- Dipole --------------------------------------
-     real*8 init_dipo_avg(3) ! Average   of initial dipole displacements
-     real*8 init_dipo_dev(3) ! Deviation of initial dipole displacements
+     real*8  init_dipo_avg(3) ! Average   of initial dipole displacements
+     real*8  init_dipo_dev(3) ! Deviation of initial dipole displacements
+     integer init_dipo_stripe_lambda_2  ! lambda/2 for potential surface plot
      real*8 Z_star        ! Born effective charge
      real*8 epsilon_inf   ! relative dielectric constant of core ions
      integer defect_position(3)
@@ -95,6 +96,7 @@ contains
     p%external_E_field(:) = 0.0d0
     p%n_coord_freq           = huge(1)   ! maximum integer
     p%plot_dispersion = .false.
+    p%init_dipo_stripe_lambda_2 = 0
 
     ! Read parameters from the imput file
     line_number = 0
@@ -165,6 +167,8 @@ contains
           read(str,*) dmy1, dmy2, (p%init_dipo_avg(i),i=1,3)
        case('init_dipo_dev')
           read(str,*) dmy1, dmy2, (p%init_dipo_dev(i),i=1,3)
+       case('init_dipo_stripe_lambda_2')
+          read(str,*) dmy1, dmy2, p%init_dipo_stripe_lambda_2
        case('Z_star')
           read(str,*) dmy1, dmy2, p%Z_star
        case('epsilon_inf')

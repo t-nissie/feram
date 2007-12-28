@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2007-12-13 10:41:04 takeshi>
+! Time-stamp: <2007-12-28 13:54:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -37,30 +37,15 @@ subroutine initialize_dipoR(p,c,e)
               do ix = 0, p%Lx-1
                  c%dipoR(ix,iy,iz,alpha) = &
                       & normal_dist(p%init_dipo_avg(alpha),p%init_dipo_dev(alpha))
+                 if (p%init_dipo_stripe_lambda_2.ne.0 .and. mod(ix/p%init_dipo_stripe_lambda_2,2).eq.1) then
+                    c%dipoR(ix,iy,iz,alpha) = -c%dipoR(ix,iy,iz,alpha)
+                 end if
               end do
            end do
         end do
      end do
      c%dipoP(:,:,:,:) = 0.0d0
   end if
-
-  !--- for DEBUG begin ----------------------------
-  !do alpha = 1, 3
-  !   do ix = 0, p%Lx-1
-  !      if (mod(ix,2)<1) then
-  !         sign =  1
-  !      else
-  !         sign = -1
-  !      end if
-  !      c%dipoR(ix,:,:,alpha) = sign * p%init_dipo_avg(alpha)
-  !   end do
-  !end do
-  !------------------------------------------------
-  !c%acouR(:,:,:,:) = 0.0d0
-  !do iz = 0, p%Lz-1
-  !   c%acouR(:,:,iz,3) = 0.02d0 * cos(2*M_PI*1/16*iz)
-  !end do
-  !--- for DEBUG end ------------------------------
 
   ! deffect and mirror dipoR
   if (p%defect_position(1).ge.0) then
