@@ -1,0 +1,70 @@
+#!/usr/bin/env gnuplot
+# Time-stamp: <2006-03-21 13:45:15 takeshi>
+# Author: Takeshi NISHIMATSU
+# ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
+##
+set grid
+set bmargin 4
+set xrange [0:0.20]
+set ytics 0.01
+set format x "%.2f"
+set format y "%.2f"
+
+set ylabel '{/Times-Italic E} [eV / unit cell]'
+
+set terminal postscript landscape enhanced solid color 'Times-Roman' 12
+set output  'stripe.16x16-zzALL-0.01-5GPaDEN.eps'
+set multiplot
+
+E0=0.0240037155
+
+set label 1  "(a) {/Times-Italic l} = 15,  {/Times-Italic d} = 1" at 0.085, -0.007 font "Times-Roman,16"
+set key 0.045, -0.018 spacing 1.1
+set origin 0.0, 0.745
+set size   0.6, 0.241
+set xlabel ''
+set yrange [-0.04:0.0]
+plot 'stripe.16x16-15-01-0.01-5GPa-wl002.dat' u 1:($2-E0) t '{/Symbol l} =  2'             w lp,\
+     'stripe.16x16-15-01-0.01-5GPa-wl004.dat' u 1:($2-E0) t '{/Symbol l} =  4'             w lp,\
+     'stripe.16x16-15-01-0.01-5GPa-wl008.dat' u 1:($2-E0) t '{/Symbol l} =  8'             w lp,\
+     'stripe.16x16-15-01-0.01-5GPa-wl016.dat' u 1:($2-E0) t '{/Symbol l} = 16'             w lp,\
+     'stripe.16x16-15-01-0.01-5GPa-wlINF.dat' u 1:($2-E0) t '{/Symbol l} = {/Symbol \245}' w lp
+
+set label 1  "(b) {/Times-Italic l} = 31,  {/Times-Italic d} = 1" at 0.085, -0.007 font "Times-Roman,16"
+set key 0.045, -0.024 spacing 1.3
+set origin 0.0, 0.52
+set size   0.6, 0.28
+set xlabel ''
+set yrange [-0.05:0.0]
+plot 'stripe.16x16-31-01-0.01-5GPa-wl002.dat' u 1:($2-E0) t '{/Symbol l} =  2'             w lp,\
+     'stripe.16x16-31-01-0.01-5GPa-wl004.dat' u 1:($2-E0) t '{/Symbol l} =  4'             w lp,\
+     'stripe.16x16-31-01-0.01-5GPa-wl008.dat' u 1:($2-E0) t '{/Symbol l} =  8'             w lp,\
+     'stripe.16x16-31-01-0.01-5GPa-wl016.dat' u 1:($2-E0) t '{/Symbol l} = 16'             w lp,\
+     'stripe.16x16-31-01-0.01-5GPa-wlINF.dat' u 1:($2-E0) t '{/Symbol l} = {/Symbol \245}' w lp
+
+set label 1  "(c) {/Times-Italic l} = 127,  {/Times-Italic d} = 1" at 0.085, -0.007 font "Times-Roman,16"
+set key 0.045, -0.033 spacing 1.3
+set origin 0.0, 0.255
+set size   0.6, 0.32
+set xlabel ''
+set yrange [-0.060:0.0]
+plot 'stripe.16x16-127-01-0.01-5GPa-wl002.dat' u 1:($2-E0) t '{/Symbol l} =  2'             w lp,\
+     'stripe.16x16-127-01-0.01-5GPa-wl004.dat' u 1:($2-E0) t '{/Symbol l} =  4'             w lp,\
+     'stripe.16x16-127-01-0.01-5GPa-wl008.dat' u 1:($2-E0) t '{/Symbol l} =  8'             w lp,\
+     'stripe.16x16-127-01-0.01-5GPa-wl016.dat' u 1:($2-E0) t '{/Symbol l} = 16'             w lp,\
+     'stripe.16x16-127-01-0.01-5GPa-wlINF.dat' u 1:($2-E0) t '{/Symbol l} = {/Symbol \245}' w lp
+
+set label 1  "(d) {/Times-Italic l} = {/Symbol \245}" at 0.085, -0.007 font "Times-Roman,16"
+set key 0.045, -0.033 spacing 1.3
+set origin 0.0,-0.01
+set size   0.6, 0.32
+set xlabel '{/Times-Italic u_z} [@^{/Symbol \ \260}A]'
+set yrange [-0.060:0.0]
+plot 'stripe.16x16-256-00-0.01-5GPa-wl002.dat' u 1:($2-E0) t '{/Symbol l} =  2'             w lp,\
+     'stripe.16x16-256-00-0.01-5GPa-wl004.dat' u 1:($2-E0) t '{/Symbol l} =  4'             w lp,\
+     'stripe.16x16-256-00-0.01-5GPa-wl008.dat' u 1:($2-E0) t '{/Symbol l} =  8'             w lp,\
+     'stripe.16x16-256-00-0.01-5GPa-wl016.dat' u 1:($2-E0) t '{/Symbol l} = 16'             w lp,\
+     'stripe.16x16-256-00-0.01-5GPa-wlINF.dat' u 1:($2-E0) t '{/Symbol l} = {/Symbol \245}' w lp
+#Local variables:
+#  compile-command: "gnuplot stripe.16x16-zzALL-0.01-5GPa.gp && kill -HUP `pgrep gv`"
+#End:
