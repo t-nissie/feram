@@ -1,6 +1,6 @@
 #!/bin/sh
 # potential-surface.sh
-# Time-stamp: <2007-12-28 18:15:08 takeshi>
+# Time-stamp: <07/12/29 10:10:54 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 
@@ -27,7 +27,7 @@ mass_amu = 39.0
 Q_Nose = 0.05
 
 #--- System geometry -----------------------------
-bulk_or_film = \'$bulk_or_film\'
+bulk_or_film = '$bulk_or_film'
 L = 32 32 $Lz
 gap = $gap
 a0 =  3.94         latice constant a0 [Angstrom]
@@ -62,6 +62,7 @@ B4yz =   -7.75 [eV/Angstrom^2]
 #--- Dipole --------------------------------------
 init_dipo_avg = 0.00  0.00  $u_z   [Angstrom]  # Average   of initial dipole displacements
 init_dipo_dev = 0.00  0.00  0.00   [Angstrom]  # Deviation of initial dipole displacements
+init_dipo_stripe_lambda_2 = $init_dipo_stripe_lambda_2
 Z_star        = 9.956
 epsilon_inf   = 5.24
 EOF
