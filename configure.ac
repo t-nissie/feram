@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2007-12-18 06:29:59 t-nissie>
+dnl Time-stamp: <07/12/29 06:48:39 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -129,6 +129,5 @@ AC_CONFIG_FILES([Makefile
              doc/Makefile
    libblaslapack/Makefile
  libbuilt_in_fft/Makefile
-        examples/Makefile
              src/Makefile])
 AC_OUTPUT
