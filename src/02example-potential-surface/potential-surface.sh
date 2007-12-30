@@ -1,13 +1,13 @@
 #!/bin/sh
 # potential-surface.sh
-# Time-stamp: <07/12/29 10:10:54 takeshi>
+# Time-stamp: <07/12/30 00:12:25 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 
 for bulk_or_film in epit film ; do
 
     gap=0
-    for Lz in 32 32 64 128 256 ; do
+    for Lz in 32 512; do
 	thickness=`expr $Lz / 2 - $gap`
 
 	init_dipo_stripe_lambda_2=0

@@ -1,13 +1,9 @@
 #-*-Makefile-*- for examples of feram
-# Time-stamp: <2007-12-28 16:53:03 takeshi>
+# Time-stamp: <07/12/30 11:10:50 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
-feram.log: externalE.sh ../feram
+all-potential-surface.ps: all-potential-surface.gp
 	./$<
-
-externalE.sh.ps: externalE.sh Makefile
-	LANG=C a2ps --prologue=color --portrait --columns=1 \
-	--borders=off -f 9.3 --medium=letter --pretty-print=shell -o - $< > $@
 
 clean:
 	rm -f feram.* *.ps *.pdf *lambda*.dat
