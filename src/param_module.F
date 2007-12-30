@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2007-12-28 13:54:52 takeshi>
+! Time-stamp: <07/12/29 18:20:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -91,6 +91,7 @@ contains
     call msg(6, __FILE__, __LINE__, 'BEGIN', ': read_Param().')
 
     ! Default parameters
+    p%bulk_or_film = 'bulk'
     p%defect_position(1)  = -1    ; p%defect_position(2)  = -1    ; p%defect_position(3)  = -1
     p%defect_u(1)         = 0.0d0 ; p%defect_u(2)         = 0.0d0 ; p%defect_u(3)         = 0.0d0
     p%external_E_field(:) = 0.0d0
@@ -125,6 +126,10 @@ contains
           read(str,*) dmy1, dmy2, p%Q_Nose
        case('bulk_or_film')
           read(str,*) dmy1, dmy2, p%bulk_or_film
+          if (p%bulk_or_film.ne.'bulk' .and. p%bulk_or_film.ne.'film' .and. p%bulk_or_film.ne.'epit')  then
+             write(6,'(a,a,i3,a,a)') trim(p%filename),':', line_number, ':', trim(str)
+             stop ': Input error: bulk_or_film must be bulk, film or epit.'
+          end if
        case('L')
           read(str,*) dmy1, dmy2, p%Lx, p%Ly, p%Lz
        case('gap')
