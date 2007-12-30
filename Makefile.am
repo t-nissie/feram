@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2007-10-06 19:47:09 takeshi>
+# Time-stamp: <07/12/29 06:47:47 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -38,7 +38,6 @@ README.html:  README         ulmul.rb style.css
 
 dist-hook:
 	rm -rf `find $(distdir) -type d -name .svn`
-	cd $(distdir)/examples && $(MAKE) clean
 	cd $(distdir)/doc      && $(MAKE)
 
 .PHONY: snapshot
