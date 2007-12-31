@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <07/12/29 18:20:33 takeshi>
+! Time-stamp: <2007-12-31 17:18:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -98,6 +98,7 @@ contains
     p%n_coord_freq           = huge(1)   ! maximum integer
     p%plot_dispersion = .false.
     p%init_dipo_stripe_lambda_2 = 0
+    p%gap = 0
 
     ! Read parameters from the imput file
     line_number = 0
