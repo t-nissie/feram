@@ -493,6 +493,7 @@ So, I am planning to calculate and compare $\chi_{\alpha\beta}(q,\omega)$ for $\
 #
 # for ulmul.rb
 #
+require 'rubygems'
 require 'ulmul'
 u=Ulmul.new(1..0)
 u.subs_rules << [/(\S*\/?\.(jpg|gif))\s*(.*)$/, '<div class="figure">
@@ -507,5 +508,5 @@ puts u.html(["feram-presentation.css"],["slidy.js"],"Takeshi Nishimatsu")
 
 # Local variables:
 #   mode: RD
-#   compile-command: "ruby -I .. film.txt film.txt > film.xhtml"
+#   compile-command: "ruby film.txt film.txt > film.xhtml"
 # End:

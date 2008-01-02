@@ -1,5 +1,5 @@
 # -*-Makefile-*- for loto/doc
-# Time-stamp: <2007-12-06 02:30:09 takeshi>
+# Time-stamp: <2008-01-01 19:10:29 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 srcdir = @srcdir@
@@ -9,7 +9,7 @@ SOURCEFORGE_FERAM=t-nissie@shell.sourceforge.net:/home/groups/l/lo/loto/htdocs/f
 all: feram-presentation.xhtml film.xhtml
 
 %.xhtml: %.txt
-	ruby -I $(srcdir)/.. $< $< > $@
+	ruby $< $< > $@
 
 sf: sourceforge
 sourceforge: favicon.ico feram-presentation.css feram-presentation.txt feram-presentation.xhtml film.xhtml slidy.js
