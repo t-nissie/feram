@@ -384,6 +384,7 @@ http://loto.sourceforge.net/feram/ is hosted by SourceForge.net .
 #
 # for ulmul.rb
 #
+require 'rubygems'
 require 'ulmul'
 u=Ulmul.new()
 u.subs_rules << [/(\S*\/?\.jpg)(\s|$)/,      '<img src="\1" alt="\1" />\2']

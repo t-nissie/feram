@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <07/12/29 06:47:47 takeshi>
+# Time-stamp: <2008-01-01 19:07:26 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -9,7 +9,6 @@ EXTRA_DIST = doc \
              README \
              README.html \
              TODO \
-             ulmul.rb \
              ChangeLog \
              00MEMO \
              style.css \
@@ -33,7 +32,7 @@ logo.jpg: logo.eps
 	gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r120x120 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q $< \
 	 | pnmcrop -white | cjpeg -quality 80 > $@
 
-README.html:  README         ulmul.rb style.css
+README.html:  README style.css
 	ruby -I $(srcdir) $< $<                > $@
 
 dist-hook:
