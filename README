@@ -68,10 +68,13 @@ PGI Fortran (pgf95): http://www.pgroup.com/
   $ cd foo
   $ ../configure --help
   $ ../configure
+  $ cd src
   $ make
-  $ cd examples/BaTiO3-bulk-16x16x16-local.field-new-format/
-  $ OMP_NUM_THREADS=6 ../../src/feram T300 | tee T300.log        (example of prallel execution)
-  $ ../../src/feram T300 | tee T300.log                          (example of serial execution)
+  $ ls -l feram
+  $ cp -r ../../src/01example-BaTiO3-epit-hysteresis-loop .
+  $ cd 01example-BaTiO3-epit-hysteresis-loop
+  $ ./externalE.sh
+  $ gnuplot hysteresis.gp
 
 === Available platforms and compilers
 ==== HITACHI SR11000 with xf90 (super1 in IMR)
@@ -162,14 +165,9 @@ Followings are currently available tags alphabetically ordered.
 Pressure in GPa unit.
   GPa = -5.0
 
-===== kelvin_start, kelvin_goal, kelvin_step
-  kelvin_start = 100
-  kelvin_goal  = 500
-  kelvin_step  =   5
-or
-  kelvin_start = 500
-  kelvin_goal  = 100
-  kelvin_step  =  -5
+===== kelvin
+Temperature in Kelvin.
+  kelvin = 100
 
 ===== Q_Nose
 Q_Nose for Nose-Poincare thermostat.

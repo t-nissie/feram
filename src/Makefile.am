@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2007-11-28 19:06:25 takeshi>
+# Time-stamp: <2008-01-04 16:10:48 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -50,7 +50,9 @@ inhomo-K.gp \
 plot.gp \
 slicer.rb \
 splot.gp \
-strain.heating-cooling.gp
+strain.heating-cooling.gp \
+01example-BaTiO3-epit-hysteresis-loop \
+02example-BaTiO3-potential-surface
 
 ../libblaslapack/libblaslapack.a:
 	cd ../libblaslapack && $(MAKE)
@@ -122,3 +124,5 @@ pdf: feram.pdf coord_module.pdf param_module.pdf
 #	egrep "write.*'!" $< | cut -b 21- | sed "s/'$$//" > param.write_dummy
 #	diff -u -w param.read_dummy param.write_dummy
 
+dist-hook:
+	cd $(distdir)/01example-BaTiO3-epit-hysteresis-loop && $(MAKE) clean
