@@ -1,34 +1,23 @@
 #!/bin/sh
-# externalE.sh
-# Time-stamp: <2008-01-14 17:45:00 takeshi>
+# cooling.sh
+# Time-stamp: <2008-01-19 19:48:43 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
-rm -f externalE.avg
+rm -f cooling.avg
 
-temperature=100
-
-externalE_start=-0.04
-externalE_goal=0.04
-externalE_step=0.001
+temperature_start=350
+temperature_goal=170
+temperature_step=-5
 
 n_thermalize=40000
 n_average=10000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
-dt=0.002
-
-frequency=`perl -e "print $externalE_step/(4.0e-6*$dt*$n_coord_freq*$externalE_goal)"`
-printf "# dt = %.6f [pico second]\n"                       $dt             >> externalE.avg
-printf "# n_steps = %d\n"                                  $n_coord_freq   >> externalE.avg
-printf "# E_0 = %.5f [V/Angstrom]\n"                       $externalE_goal >> externalE.avg
-printf "# dE  = %.5f [V/Angstrom]\n"                       $externalE_step >> externalE.avg
-printf "# frequency = dE/(4 dt n_steps E_0)= %.6f [MHz]\n" $frequency      >> externalE.avg
-
 i=0
-externalE=$externalE_start
-while [ `perl -e "print $externalE <= $externalE_goal"` = "1" ] ; do
+temperature=$temperature_start
+while [ `perl -e "print $temperature >= $temperature_goal"` = "1" ] ; do
 i=`expr $i + 1`
-filename=externalE"$temperature"K`printf '%.3d%+.5f' $i $externalE`
+filename=cooling`printf '%.3d' $i`-"$temperature"K
 cat > $filename <<EOF
 #--- Method, Temperature, and mass ---------------
 method = 'md'
@@ -38,19 +27,14 @@ mass_amu = 39.0
 Q_Nose = 0.05
 
 #--- System geometry -----------------------------
-bulk_or_film = 'epit'
-L = 16 16 32
-gap = 1
+bulk_or_film = 'bulk'
+L = 16 16 16
 a0 =  3.94         latice constant a0 [Angstrom]
-epi_strain = -0.01
 #--- Time step -----------------------------------
-dt = $dt [pico second]
+dt = 0.002 [pico second]
 n_thermalize = $n_thermalize
 n_average    = $n_average
 n_coord_freq = $n_coord_freq
-
-#--- External electric field ---------------------
-external_E_field = 0.00 0.00 $externalE
 
 #--- On-site (Polynomial of order 4) -------------
 P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
@@ -81,6 +65,6 @@ echo $filename >> FILES
 ../feram $filename
 # OMP_NUM_THREADS=6 ./feram $filename > /dev/null
 ln -sf $filename.`printf '%.7d' $n_coord_freq`.coord restart.coord
-cat $filename.avg >> externalE.avg
-externalE=`perl -e "print $externalE + $externalE_step"`
+cat $filename.avg >> cooling.avg
+externalE=`perl -e "print $temperature + $temperature_step"`
 done
