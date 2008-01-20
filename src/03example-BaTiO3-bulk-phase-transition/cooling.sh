@@ -1,6 +1,6 @@
 #!/bin/sh
 # cooling.sh
-# Time-stamp: <2008-01-19 20:06:46 takeshi>
+# Time-stamp: <2008-01-20 17:54:44 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f cooling.avg
@@ -15,7 +15,7 @@ n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
 temperature=$temperature_start
-while [ `perl -e "print $temperature >= $temperature_goal"` = "1" ] ; do
+while [ `perl -e "print $temperature >= $temperature_goal || 0"` = "1" ] ; do
 i=`expr $i + 1`
 filename=cooling`printf '%.3d' $i`-"$temperature"K
 cat > $filename <<EOF
@@ -66,5 +66,5 @@ echo $filename >> FILES
 # OMP_NUM_THREADS=6 ./feram $filename > /dev/null
 ln -sf $filename.`printf '%.7d' $n_coord_freq`.coord restart.coord
 cat $filename.avg >> cooling.avg
-externalE=`perl -e "print $temperature + $temperature_step"`
+temperature=`perl -e "print $temperature + $temperature_step"`
 done
