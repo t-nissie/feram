@@ -1,6 +1,6 @@
 #!/bin/sh
 # externalE.sh
-# Time-stamp: <2008-01-14 17:45:00 takeshi>
+# Time-stamp: <2008-01-20 19:53:58 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f externalE.avg
@@ -26,7 +26,7 @@ printf "# frequency = dE/(4 dt n_steps E_0)= %.6f [MHz]\n" $frequency      >> ex
 
 i=0
 externalE=$externalE_start
-while [ `perl -e "print $externalE <= $externalE_goal"` = "1" ] ; do
+while [ `perl -e "print $externalE <= $externalE_goal || 0"` = "1" ] ; do
 i=`expr $i + 1`
 filename=externalE"$temperature"K`printf '%.3d%+.5f' $i $externalE`
 cat > $filename <<EOF
