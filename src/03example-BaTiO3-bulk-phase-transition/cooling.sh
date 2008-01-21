@@ -1,6 +1,6 @@
 #!/bin/sh
 # cooling.sh
-# Time-stamp: <2008-01-20 17:54:44 takeshi>
+# Time-stamp: <2008-01-20 20:30:33 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f cooling.avg
@@ -24,7 +24,7 @@ method = 'md'
 GPa = -5.0
 kelvin = $temperature
 mass_amu = 39.0
-Q_Nose = 0.05
+Q_Nose = 0.1
 
 #--- System geometry -----------------------------
 bulk_or_film = 'bulk'
@@ -56,7 +56,7 @@ B4yz =   -7.75 [eV/Angstrom^2]
 
 #--- Dipole --------------------------------------
 init_dipo_avg = 0.0   0.0   0.0    [Angstrom]  # Average   of initial dipole displacements
-init_dipo_dev = 0.02  0.02  0.02   [Angstrom]  # Deviation of initial dipole displacements
+init_dipo_dev = 0.03  0.03  0.03   [Angstrom]  # Deviation of initial dipole displacements
 Z_star        = 9.956
 epsilon_inf   = 5.24
 EOF
