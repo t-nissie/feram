@@ -1,5 +1,5 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2008-01-21 15:10:19 takeshi>
+# Time-stamp: <2008-02-01 09:51:14 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 #set grid
@@ -14,12 +14,12 @@ set key 255,0.0215
 set format y '%.3f'
 set yrange [0.008:0.022]
 set ylabel 'strain'
-plot '< grep avg%strain heating.avg' using 1:6 t 'heating' w l lt 1 lw 2,\
-     '< grep avg%strain heating.avg' using 1:7 t ''        w l lt 1 lw 2,\
-     '< grep avg%strain heating.avg' using 1:8 t ''        w l lt 1 lw 2,\
-     '< grep avg%strain cooling.avg' using 1:6 t 'cooling' w l lt 3 lw 2,\
-     '< grep avg%strain cooling.avg' using 1:7 t ''        w l lt 3 lw 2,\
-     '< grep avg%strain cooling.avg' using 1:8 t ''        w l lt 3 lw 2
+plot 'heating.avg' using 1:7 t 'heating' w l lt 1 lw 2,\
+     'heating.avg' using 1:8 t ''        w l lt 1 lw 2,\
+     'heating.avg' using 1:9 t ''        w l lt 1 lw 2,\
+     'cooling.avg' using 1:7 t 'cooling' w l lt 3 lw 2,\
+     'cooling.avg' using 1:8 t ''        w l lt 3 lw 2,\
+     'cooling.avg' using 1:9 t ''        w l lt 3 lw 2
 
 #Local variables:
 #  compile-command: "gnuplot strain.heating-cooling.gp && kill -HUP `pgrep gv`"

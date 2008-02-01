@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2008-01-04 16:10:48 takeshi>
+# Time-stamp: <2008-01-31 14:51:33 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -34,8 +34,7 @@ feram_SRCS = average_module.F \
 	optimize-homo-strain.F \
 	optimize-inho-strain.F \
 	potentials.F \
-	print-eigenvalues.F \
-	quicksort.f
+	print-eigenvalues.F
 feram_SOURCES = $(MODULES) $(feram_SRCS)
 feram_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
 feram_DEPENDENCIES =   ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
