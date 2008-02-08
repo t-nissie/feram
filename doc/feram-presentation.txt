@@ -1,5 +1,5 @@
 =begin
-= Introduction of feram
+= Simulations of hysteresis loops for thin-film ferroelectric capacitors with feram code
 Takeshi Nishimatsu
 
 (Hit [Space] to go to next page.)
@@ -24,82 +24,43 @@ in your $HOME/.fonts/ directory to view equations correctly.
 For more detail, See http://www.mozilla.org/projects/mathml/fonts/ .
 
 
-== What is feram?
-feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
-
-figures/phase.jpg Cooling and heating simulation of BaTiO$_3$. Horizontal axis is strain. Difference between first- and second order transition is clear.
-
-# feram is a FAST molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics
-# and relaxors. Compared to the Monte Carlo simulations, MD simulation steps have a physical
-# meaning of the time evolution. So, for example, you can do cooling and heating simulations
-# and can get suc hysteresis in temperature.
-
+== Purpose of feram: ferroelectric thin-film capacitors
+ * Down-sizing of non-volatile FeRAM
+ * Fatigue of electrodes of capacitors
+   [M. Dawber et al.: J. Phys. Condes. Matter vol.15 p.L393 (2003)]
+ * Hysteresis, polarization switching, dynamics of domain wall
+   and their nano-size effects are not well known (Figure below).
+ * <em>in situ</em> observations are difficult
+$\to\to\to$ Computational simulation with "feram" program.
 
 
-== Technical features and keywords
- * Fast
-   * FFTW library version 3  http://www.fftw.org/
-   * Parallelized with OpenMP
- * Multi-platform
-   * Linux
-   * HITACHI SR11000 Super Technical Server
- * Object oriented programming (OOP) in Fortran 2003
- * Fortran compilers: gfortran, ifort, g95 and pgf95
- * GNU autotools  http://www.gnu.org/software/autoconf/
- * Free software (GPLv3) http://loto.sf.net/feram/
- * Subversion repository at https://loto.svn.sf.net/svnroot/loto/feram/
-
-# Before going to physics, Let me introduce some technical features of ferams.
-# It's fast. For speeding up, I use some computational technique as well as
-# physics of mathematics. I employed FFTW library, .....
+figures/Fong.jpg
 
 
-
-== Perovskite type ferroelectrics ABO<sub>3</sub>
+== Background: effective Hamiltonian
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 
 figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
 
-# Let's go back to physics.
-# As you know, in perovskite type ferroelectrics ABO$_3$, atomic displacements and strains
-# are strongly coupled. This is the cubic ot high temperature srystal structure of ABO$_3$.
+# feram can simulate Perovskite type ferroelectrics which have ABO3 formula.
+# In perovskite type ferroelectrics ABO$_3$, atomic displacements
+# or polarization and strains are strongly coupled.
+# This is the cubic high temperature crystal structure of ABO3.
 # Unit cell has 5 atoms. So atomic displacements spans a 3x5=15-dimensional space.
-# This is a 2-dimentional subspace of the 15-dimensinal space......
-
-
-
-== Effective Hamiltonian for molecular dynamics simulation
- * Monte Carlo Simulations
-   * BaTiO$_3$ bulk - Zhong, Vanderbilt and Rabe: Phys. Rev. B Vol.52 p.6301 (1995).
-   * PbTiO$_3$ bulk - Waghmare and Rabe: Phys. Rev. B Vol.55 p.6161 (1997).
- * Molecular dynamics simulations
-   * Relaxor - Waghmare, Cockayne and Burton, Ferroelectrics Vol.291, p.187 (2003).
-   * Relaxor - Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).
-   * BaTiO$_3$ capacitor - Paul, Nishimatsu, Kawazoe and Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007) *feram*.
-
-Kinetic energy terms are added to Monte Carlo Hamiltonian
-Eq. 1
-    H^{\rm eff}
-    = \frac{M^*_{\rm dipole}}{2} \sum_{\bm{R},\alpha}\dot{u}_\alpha^2(\bm{R})
-    + \frac{M^*_{\rm acoustic}}{2}\sum_{\bm{R},\alpha}\dot{w}_\alpha^2(\bm{R})
-    + V^{\rm self}(\{\bm{u}\})+V^{\rm dpl}(\{\bm{u}\})+V^{\rm short}(\{\bm{u}\})
-    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{\bm{w}\})
-    + V^{\rm coup,\,homo}(\{\bm{u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{\bm{u}\}, \{\bm{w}\})
-/Eq.
-
-
-
-
-
+# This is a 2-dimensional subspace of the 15-dimensional space of atomic displacements.
+# In the 2-dimensional subspace, potential surface is ploted.
+# If there is strain in crystal, the potential minimum goes far from its origin and
+# get deeper.
+#
+# In 1994, my current boss David Vanderbilt parametrized this coupling.
 
 
 == Coarse-graining: reduction of the number of degree of freedom
  * Real perovskite-like system has $15N+6$ degree of freedom
    * $N$ unit cells in supercell
-   * 5 atoms per unit cell
+   * $AB$O$_3$ perovskite-type ferroelectrics have 5 atoms per unit cell
    * Each atom can move along 3 directions
    * 6 components of strain
-
  * Simplified model has $6N+6$ degree of freedom
    * Define 1 dipole $Z^*\bm{u}(\bm{R})$ per unit cell
    * 1 acoustic displacement (Inhomogeneous strain) $\bm{w}(\bm{R})$ per unit cell
@@ -116,68 +77,57 @@ figures/CoarseGraining.jpg
 # per unit cell.
 
 
+== MD simulation with first-principles-based effective Hamiltonian
+ * Parametrization 1: [R. D. King-Smith and David Vanderbilt: Phys. Rev. B, vol.49, pp.5828-5844 (1994)].
+ * Parametrization 2: [Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)].
+ * [New] External electric field $\bm{\mathscr{E}}$.
+ * [New] Kinetic energy terms are added to Monte Carlo Hamiltonian with effective masses.
 
-
-
-== Parameters (input file)
- * King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)
- * Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)
-
- #--- Method, Temperature, and mass ---------------
- method = 'md'
-    # 'md' - Molecular Dynamics with Nose-Poincare thermostat (Canonical ensemble)
-    # 'lf' - Leap Frog (Microcanonical ensemble)
-    # 'mc' - Monte Carlo
- GPa = -5.0
- kelvin_start = 350
- kelvin_goal  =  50
- kelvin_step  =  -5
- mass_amu = 39.0       # Required for MD
- Q_Nose = 1.0
-
- #--- System geometry -----------------------------
- bulk_or_film = 'bulk'
- L = 32 32 32
- a0 =  3.94         lattice constant a0 [Angstrom]
-
- #--- Time step -----------------------------------
- dt = 0.002 [ps]
- n_thermalize =  40000
- n_average    =  10000
- n_coord_freq =   5000     Write a snapshot to the disk every 5000 steps
-
- #--- On-site (Polynomial of order 4) -------------
- P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
- P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
- P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
-
- #--- Inter-site ----------------------------------
- j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
-
- #--- Elastic Constants ---------------------------
- B11 = 126.
- B12 =  44.9
- B44 =  50.3  [eV]
-
- #--- Elastic Coupling ----------------------------
- B1xx = -211.   [eV/Angstrom^2]
- B1yy =  -19.3  [eV/Angstrom^2]
- B4yz =   -7.75 [eV/Angstrom^2]
-
- #--- Dipole --------------------------------------
- init_dipo_avg = 0.00 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
- init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
- Z_star       = 9.956
- epsilon_inf   = 5.24
+Eq. 1
+    H^{\rm eff}
+    = \frac{M^*_{\rm dipole}}{2} \sum_{\bm{R},\alpha}\dot{u}_\alpha^2(\bm{R})
+    + \frac{M^*_{\rm acoustic}}{2}\sum_{\bm{R},\alpha}\dot{w}_\alpha^2(\bm{R})
+    + V^{\rm self}(\{\bm{u}\})+V^{\rm dpl}(\{\bm{u}\})+V^{\rm short}(\{\bm{u}\})
+    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{\bm{w}\})
+    + V^{\rm coup,\,homo}(\{\bm{u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{\bm{u}\}, \{\bm{w}\})
+    -Z^*\sum_{\bm{R}}\bm{\mathscr{E}}\cdot\bm{u}(\bm{R})
+/Eq.
 
 
 
 
 
+== Features of feram
+ * Ferroelectric thin films with perfect and imperfect electrodes (explained in the next slide).
+ * feram is fast!!!
+   * Efficient treatment of long-range dipole-dipole interaction (explained in the next next slide).
+   * Nosé-Poincaré thermostat $\Rightarrow$ $\Delta t$ = 2 fs.
+   * FFTW library version 3 http://www.FFTW.org/
+   * Parallelized with OpenMP http://www.OpenMP.org/
+   $\Rightarrow\Rightarrow\Rightarrow$ Large scale and realistic time-dependent MD simulations.
+   * Spercell: ($AB$O$_3$)$_N$, $N=32\times 32\times 512$ $\approx$ 2,621,440 atoms
+   * Up to 0.1-1$\mu$s
+ * Multi-platform
+   * Linux PC (Intel and AMD multi-core CPUs)
+   * HITACHI SR11000 Super Technical Server
+   * SONY PLAYSTATION3 (ongoing)
+ * Object oriented programming (OOP) in Fortran 2003
+ * GNU autotools are employed $\Rightarrow$ easy to compile
+ * Free software under the GNU General Public License version 3 (the "GPLv3"); DOWNLOAD: http://loto.sourceforge.net/feram/
+
+
+# Before going to physics, Let me introduce some technical features of ferams.
+# It's fast. For speeding up, I use some computational technique as well as
+# physics of mathematics. I employed FFTW library, .....
+
+
+
+== Electrostatic boundary conditions for capacitors in simulations
+figures/capacitor.jpg (a) A thin film in vacuum. (b) A thin film with short-circuited perfect electrodes. Doubly periodic boundary conditions for simulations of films sandwiched between (c) perfect and (d) imperfect short-circuited electrodes. In (a) depolarization field $E_{\rm d}= -4\pi P_z$, in (b) and (c) $E_{\rm d}=0$, and in (d) $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$.
 
 
 == Forces on dipoles are calculated in the reciprocal space
-figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
+figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Long-range dipole-dipole interaction is treated in reciprocal-space using $\bm{k}$-locality of the force matrix [U.V. Waghmare, E. J. Cockayne, and B. P. Burton: Ferroelectrics vol.291, p.187 (2003)]. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation.
 
 # Time consuming part in simulation is the calculation of forces of dipoles because
 # dipole-dipole interactions are long-range. ..... You can reduce computational time
@@ -185,16 +135,114 @@ figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast F
 
 
 
+== Time-dependent external electric field
+figures/step.jpg Schematic illustrations of triangle-wave electric field for measuring hysteresis loops of ferroelectrics experimentally (inset) and that for present simulations.
+
+Frequency may be
+Eq. 4
+  f=\frac{\Delta\mathscr{E}}{4 \Delta t n_{\rm steps} \mathscr{E}_0} .
+/Eq.
+When
+$\Delta t = 2$ fs,
+$n_{\rm steps}=50000$,
+$\mathscr{E}_0 = 0.040$ V/Å and
+$\Delta\mathscr{E} = 0.001$ V/Å,
+$f = 62.5$ MHz.
 
 
 
 
-== Thin films in capacitors
-figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b).
+== Parameters for BaTiO<sub>3</sub> and an input file
+ * King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)
+ * Zhong, Vanderbilt and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)
 
-
-
-
+Tricky shell script:
+ #!/bin/sh
+ # externalE.sh
+ # Time-stamp: <2008-02-05 19:07:16 takeshi>
+ # Author: Takeshi NISHIMATSU
+ ##
+ rm -f externalE.avg
+ 
+ temperature=100
+ 
+ externalE_start=-0.04
+ externalE_goal=0.04
+ externalE_step=0.001
+ 
+ n_thermalize=400
+ n_average=100
+ n_coord_freq=`expr $n_thermalize + $n_average`
+ 
+ dt=0.002
+ 
+ frequency=`perl -e "print $externalE_step/(4.0e-6*$dt*$n_coord_freq*$externalE_goal)"`
+ printf "# dt = %.6f [pico second]\n"                       $dt             >> externalE.avg
+ printf "# n_steps = %d\n"                                  $n_coord_freq   >> externalE.avg
+ printf "# E_0 = %.5f [V/Angstrom]\n"                       $externalE_goal >> externalE.avg
+ printf "# dE  = %.5f [V/Angstrom]\n"                       $externalE_step >> externalE.avg
+ printf "# frequency = dE/(4 dt n_steps E_0)= %.6f [MHz]\n" $frequency      >> externalE.avg
+ 
+ i=0
+ externalE=$externalE_start
+ while [ `perl -e "print $externalE <= $externalE_goal || 0"` = "1" ] ; do
+     i=`expr $i + 1`
+     filename=externalE"$temperature"K`printf '%.3d%+.5f' $i $externalE`
+     cat > $filename <<-EOF
+         #--- Method, Temperature, and mass ---------------
+         method = 'md'
+         GPa = -5.0
+         kelvin = $temperature
+         mass_amu = 39.0
+         Q_Nose = 0.05
+         
+         #--- System geometry -----------------------------
+         bulk_or_film = 'epit'
+         L = 16 16 32
+         gap = 1
+         a0 =  3.94         latice constant a0 [Angstrom]
+         epi_strain = -0.01
+         #--- Time step -----------------------------------
+         dt = $dt [pico second]
+         n_thermalize = $n_thermalize
+         n_average    = $n_average
+         n_coord_freq = $n_coord_freq
+         
+         #--- External electric field ---------------------
+         external_E_field = 0.00 0.00 $externalE
+         
+         #--- On-site (Polynomial of order 4) -------------
+         P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
+         P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+         P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
+         
+         #--- Inter-site ----------------------------------
+         j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
+         
+         #--- Elastic Constants ---------------------------
+         B11 = 126.
+         B12 =  44.9
+         B44 =  50.3  [eV]
+         
+         #--- Elastic Coupling ----------------------------
+         B1xx = -211.   [eV/Angstrom^2]
+         B1yy =  -19.3  [eV/Angstrom^2]
+         B4yz =   -7.75 [eV/Angstrom^2]
+         
+         #--- Dipole --------------------------------------
+         init_dipo_avg = 0.00  0.00 -0.10   [Angstrom]  # Average   of initial dipole displacements
+         init_dipo_dev = 0.02  0.02  0.02   [Angstrom]  # Deviation of initial dipole displacements
+         Z_star        = 9.956
+         epsilon_inf   = 5.24
+ EOF
+     echo 1 > FILES
+     echo $filename >> FILES
+     ../feram $filename
+     # OMP_NUM_THREADS=6 ./feram $filename > /dev/null
+     ln -sf $filename.`printf '%.7d' $n_coord_freq`.coord restart.coord
+     cat $filename.avg >> externalE.avg
+     externalE=`perl -e "print $externalE + $externalE_step"`
+ done
 
 
 == Time evolution and fluctuation
@@ -207,33 +255,47 @@ figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step pl
 
 
 
+== Hysteresis loops of bulk BaTiO<sub>3</sub> at various temperatures
+figures/bulk-two-box.jpg Paraelectric/ferroelectric transition ($T_{\rm C}\approx 320$ K (underestimated)) can be clearly seen.
 
+
+== epitaxially constraint and "free" ferroelectric films
+figures/epit-vs-free.jpg
+
+
+== Hysteresis loops of epitaxially constraint and "free" capacitors
+figures/epit-vs-free-hysteresis-box.jpg
+
+
+
+== Summary
+ * "feram" is a fast simulator for perovskite-type ferroelectric bulk and thin film
+ * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
+ * "feram" can simulate temperature, thickness, frequency and electrode dependences of ferroelectric properties
+ * Phase transition of bulk ferroelectrics
+ * Thin-film capacitor: perfect and imperfect short-circuited electrodes
+ * Striped domain structure is predicted
+ * Hysteresis loops for bulk ferroelectrics and ferroelectric capacitors
+ * We confirmed that the imperfect screening of electrodes
+   decreases the coercive field as the film thicknesses decreases,
+   as described in [M. Dawber et al.: J. Phys. Condes. Matter vol.15 p.L393 (2003)].
+ * We also found that compressive strain arising from epitaxial constraints
+   prevents the polarization switching, while the inclusion of
+   inhomogeneous strain (i.e., acoustic displacements) eases the switching.
+
+
+== Future work
+ * first-principles-based (non-empirical) and semi-empirical potentials for other $AB$O$_3$ perovskite-type ferroelectrics
+ * Key-Dunn scaling $E_{\rm c} \propto l^{\frac{2}{3}}$, $l$: film thickness
+ * Frequency dependence of susceptibility of relaxors
 
 
 == Dielectric constant can be calculated from the fluctuation of dipoles
-Eq. 1
-\epsilon_{\alpha\beta}=(\epsilon_{\infty})_{\alpha\beta}+\frac{1}{\epsilon_0 V k_B T}
-                       (<S_\alpha S_\beta>-<S_\alpha><S_\beta>)
+Eq. 2
+\epsilon_{\alpha\beta}^{\rm r}=(\epsilon_{\infty}^{\rm r})_{\alpha\beta}+\frac{1}{\epsilon_0 V k_B T}
+                       (<P_\alpha P_\beta>-<P_\alpha><P_\beta>)
 /Eq.
 figures/32x32xL032-D0-susceptibility.jpg Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO$_3$ with perfect electrodes.
-
-
-
-
-
-
-== Summary for "feram" introduction
- * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
- * New programming and technical methods are employed
- * Perovskite-type ferroelectrics and relaxor
- * Phase transition
- * Thin-film capacitor: perfect and imperfect short-circuited electrodes
- * Nose-Poincare thermostat
- * Evaluate forces in reciprocal-space; k-locality of the force matrix
- * Coarse-graining; reduction of the number of degree of freedom
- * Dielectric constant, permittivity, or susceptibility can be calculated from dipole fluctuation.
-
-
 
 
 
@@ -255,7 +317,7 @@ The averaged valence number of B-site ions $B'_x$ and $B''_{(1-x)}$ is $4+$.
 
 
 == Frequency dependence of dielectric constant of relaxors
-figures/TsurumiFig3.jpg After Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. Vol.33pp. 1959-1964 (1994)
+figures/TsurumiFig3.jpg After [Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. Vol.33pp. 1959-1964 (1994)].
 
 # Most characteristic and still mysterious property of relaxors is 
 #Eq.1
@@ -268,7 +330,7 @@ figures/TsurumiFig3.jpg After Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and 
 
 
 == Crystal structures of relaxors
-figures/RandallBhallaFig3.jpg (a) Ordered B-site structure of $AB'_xB''_{(1-x)}$O$_3$. In the case of Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$, Sc and Nb has the NaCl structure. In the case of Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$, the Na-site is randomly occupied by Mg$_{1/3}$Nb$_{1/6}$ and the Cl-site is occupied by  Nb$_{1/2}$.  (b) Disordered structure. B-sites is occupied by $B'$ and $B''_{(1-x)}$ randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+figures/RandallBhallaFig3.jpg (a) Ordered B-site structure of $AB'_xB''_{(1-x)}$O$_3$. In the case of Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$, Sc and Nb has the NaCl structure. In the case of Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$, the Na-site is randomly occupied by Mg$_{1/3}$Nb$_{1/6}$ and the Cl-site is occupied by  Nb$_{1/2}$.  (b) Disordered structure. B-sites is occupied by $B'$ and $B''_{(1-x)}$ randomly. After [C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990)].
 
 
 
@@ -288,7 +350,7 @@ figures/TwoDoubleWells.jpg Symmetric potential around Pb at the chemically order
 
 
 == Chemically ordered and disordered regions of relaxors
-figures/RandallBhallaFig8.jpg The quenched sample has chemically ordered regions (&sim;100&Aring;) in a chemically disordered matrix. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+figures/RandallBhallaFig8.jpg The quenched sample has chemically ordered regions (&sim;100&Aring;) in a chemically disordered matrix. After [C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990)].
 
 
 
@@ -303,7 +365,7 @@ figures/DoubleWells.jpg Schematic illustration of modeling of relaxor. Bubble-li
 
 
 == Snapshot of a simulation of PSN relaxor
-figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields. After Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).
+figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields. After [Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006)].
 
 
 
