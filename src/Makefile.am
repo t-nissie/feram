@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2008-01-31 14:51:33 takeshi>
+# Time-stamp: <2008-02-01 10:15:52 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -49,7 +49,6 @@ inhomo-K.gp \
 plot.gp \
 slicer.rb \
 splot.gp \
-strain.heating-cooling.gp \
 01example-BaTiO3-epit-hysteresis-loop \
 02example-BaTiO3-potential-surface
 
