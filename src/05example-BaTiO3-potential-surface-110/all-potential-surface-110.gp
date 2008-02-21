@@ -1,5 +1,5 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2008-02-20 23:02:08 takeshi>
+# Time-stamp: <2008-02-21 17:59:41 takeshi>
 # Author: Takeshi NISHIMATSU
 # ref_1: R. D. King-Smith and David Vanderbilt: PRB vol.49 p.5828 (1994)
 ##
@@ -12,7 +12,7 @@ set ytics 0.02
 set format x "%.1f"
 set format y "%.2f"
 
-set key 0.11,-0.025
+set key 0.125,-0.021
 set yrange [-0.06:0.0]
 
 set terminal postscript portrait enhanced dashed color 'Times-Roman' 12
@@ -22,66 +22,61 @@ set multiplot
 set ylabel '{/Times-Italic E} [eV / unit cell]'
 epitE0=0.024003715545
 
-set size   0.5, 0.27
+set size   0.54, 0.27
 set title 'epitaxially constraint film'
 set label 1  "(a) {/Times-Italic l} = 15,  {/Times-Italic d} = 1" at 0.08, -0.007 font "Times-Roman,14"
-set origin 0.04, 0.74
+set origin 0.00, 0.74
 set xlabel ''
 plot \
      'epit-L015-D1-110k0.0000.dat' u 1:($3-epitE0) t '(000)'          w l lt 1,\
      'epit-L015-D1-110k0.0625.dat' u 1:($3-epitE0) t '(1/16 1/16 0)'  w l lt 2,\
      'epit-L015-D1-110k0.1250.dat' u 1:($3-epitE0) t '(1/8 1/8 0)'    w l lt 3,\
-     'epit-L015-D1-110k0.2500.dat' u 1:($3-epitE0) t '(1/4 1/4 0)'    w l lt 4,\
-     'epit-L015-D1-110k0.5000.dat' u 1:($3-epitE0) t '(1/2 1/2 0)'    w l lt 5
+     'epit-L015-D1-110k0.2500.dat' u 1:($3-epitE0) t '(1/4 1/4 0)'    w l lt 4
 
-set size   0.5, 0.241
+set size   0.54, 0.241
 set title ''
 set label 1  "(b) {/Times-Italic l} = 31,  {/Times-Italic d} = 1" at 0.08, -0.007 font "Times-Roman,14"
-set origin 0.04, 0.555
+set origin 0.00, 0.555
 set xlabel ''
 plot \
      'epit-L031-D1-110k0.0000.dat' u 1:($3-epitE0) t '(000)'         w l lt 1,\
      'epit-L031-D1-110k0.0625.dat' u 1:($3-epitE0) t '(1/16 1/16 0)' w l lt 2,\
      'epit-L031-D1-110k0.1250.dat' u 1:($3-epitE0) t '(1/8 1/8 0)'   w l lt 3,\
-     'epit-L031-D1-110k0.2500.dat' u 1:($3-epitE0) t '(1/4 1/4 0)'   w l lt 4,\
-     'epit-L031-D1-110k0.5000.dat' u 1:($3-epitE0) t '(1/2 1/2 0)'   w l lt 5
+     'epit-L031-D1-110k0.2500.dat' u 1:($3-epitE0) t '(1/4 1/4 0)'   w l lt 4
 
 set label 1  "(c) {/Times-Italic l} = 127,  {/Times-Italic d} = 1" at 0.07, -0.007 font "Times-Roman,14"
-set origin 0.04, 0.37
+set origin 0.00, 0.37
 set xlabel ''
 plot \
      'epit-L127-D1-110k0.0000.dat' u 1:($3-epitE0) t '(000)'         w l lt 1,\
      'epit-L127-D1-110k0.0625.dat' u 1:($3-epitE0) t '(1/16 1/16 0)' w l lt 2,\
      'epit-L127-D1-110k0.1250.dat' u 1:($3-epitE0) t '(1/8 1/8 0)'   w l lt 3,\
-     'epit-L127-D1-110k0.2500.dat' u 1:($3-epitE0) t '(1/4 1/4 0)'   w l lt 4,\
-     'epit-L127-D1-110k0.5000.dat' u 1:($3-epitE0) t '(1/2 1/2 0)'   w l lt 5
+     'epit-L127-D1-110k0.2500.dat' u 1:($3-epitE0) t '(1/4 1/4 0)'   w l lt 4
 
 set label 1  "(d) {/Times-Italic l} = 255,  {/Times-Italic d} = 1" at 0.07, -0.007 font "Times-Roman,14"
-set origin 0.04, 0.185
+set origin 0.00, 0.185
 set xlabel ''
 plot \
      'epit-L255-D1-110k0.0000.dat' u 1:($3-epitE0) t '(000)'         w l lt 1,\
      'epit-L255-D1-110k0.0625.dat' u 1:($3-epitE0) t '(1/16 1/16 0)' w l lt 2,\
      'epit-L255-D1-110k0.1250.dat' u 1:($3-epitE0) t '(1/8 1/8 0)'   w l lt 3,\
-     'epit-L255-D1-110k0.2500.dat' u 1:($3-epitE0) t '(1/4 1/4 0)'   w l lt 4,\
-     'epit-L255-D1-110k0.5000.dat' u 1:($3-epitE0) t '(1/2 1/2 0)'   w l lt 5
+     'epit-L255-D1-110k0.2500.dat' u 1:($3-epitE0) t '(1/4 1/4 0)'   w l lt 4
 
 set label 1  "(e) {/Times-Italic d} = 0" at 0.08, -0.007 font "Times-Roman,14"
-set origin 0.04, 0.0
+set origin 0.00, 0.0
 set xlabel '{/Times-Italic u_z} [\305]'
 plot \
      'epit-L008-D0-110k0.0000.dat' u 1:($3-epitE0) t '(000)'         w l lt 1,\
      'epit-L008-D0-110k0.0625.dat' u 1:($3-epitE0) t '(1/16 1/16 0)' w l lt 2,\
      'epit-L008-D0-110k0.1250.dat' u 1:($3-epitE0) t '(1/8 1/8 0)'   w l lt 3,\
-     'epit-L008-D0-110k0.2500.dat' u 1:($3-epitE0) t '(1/4 1/4 0)'   w l lt 4,\
-     'epit-L008-D0-110k0.5000.dat' u 1:($3-epitE0) t '(1/2 1/2 0)'   w l lt 5
+     'epit-L008-D0-110k0.2500.dat' u 1:($3-epitE0) t '(1/4 1/4 0)'   w l lt 4
 
 
 #---------------------------------------------------------------------------------------------------
 set ylabel ''
 filmE0=-0.025324240381
 
-set size   0.5, 0.27
+set size   0.52, 0.27
 set title '"free" film'
 set label 1  "(f) {/Times-Italic l} = 15,  {/Times-Italic d} = 1" at 0.08, -0.023 font "Times-Roman,14"
 set origin 0.47, 0.74
@@ -90,10 +85,9 @@ plot \
      'film-L015-D1-110k0.0000.dat' u 1:($3-filmE0) t '(000)'         w l lt 1,\
      'film-L015-D1-110k0.0625.dat' u 1:($3-filmE0) t '(1/16 1/16 0)' w l lt 2,\
      'film-L015-D1-110k0.1250.dat' u 1:($3-filmE0) t '(1/8 1/8 0)'   w l lt 3,\
-     'film-L015-D1-110k0.2500.dat' u 1:($3-filmE0) t '(1/4 1/4 0)'   w l lt 4,\
-     'film-L015-D1-110k0.5000.dat' u 1:($3-filmE0) t '(1/2 1/2 0)'   w l lt 5
+     'film-L015-D1-110k0.2500.dat' u 1:($3-filmE0) t '(1/4 1/4 0)'   w l lt 4
 
-set size   0.5, 0.241
+set size   0.52, 0.241
 set title ''
 set label 1  "(g) {/Times-Italic l} = 31,  {/Times-Italic d} = 1" at 0.08, -0.007 font "Times-Roman,14"
 set origin 0.47, 0.555
@@ -102,8 +96,7 @@ plot \
      'film-L031-D1-110k0.0000.dat' u 1:($3-filmE0) t '(000)'         w l lt 1,\
      'film-L031-D1-110k0.0625.dat' u 1:($3-filmE0) t '(1/16 1/16 0)' w l lt 2,\
      'film-L031-D1-110k0.1250.dat' u 1:($3-filmE0) t '(1/8 1/8 0)'   w l lt 3,\
-     'film-L031-D1-110k0.2500.dat' u 1:($3-filmE0) t '(1/4 1/4 0)'   w l lt 4,\
-     'film-L031-D1-110k0.5000.dat' u 1:($3-filmE0) t '(1/2 1/2 0)'   w l lt 5
+     'film-L031-D1-110k0.2500.dat' u 1:($3-filmE0) t '(1/4 1/4 0)'   w l lt 4
 
 set label 1  "(h) {/Times-Italic l} = 127,  {/Times-Italic d} = 1" at 0.07, -0.007 font "Times-Roman,14"
 set origin 0.47, 0.37
@@ -112,8 +105,7 @@ plot \
      'film-L127-D1-110k0.0000.dat' u 1:($3-filmE0) t '(000)'         w l lt 1,\
      'film-L127-D1-110k0.0625.dat' u 1:($3-filmE0) t '(1/16 1/16 0)' w l lt 2,\
      'film-L127-D1-110k0.1250.dat' u 1:($3-filmE0) t '(1/8 1/8 0)'   w l lt 3,\
-     'film-L127-D1-110k0.2500.dat' u 1:($3-filmE0) t '(1/4 1/4 0)'   w l lt 4,\
-     'film-L127-D1-110k0.5000.dat' u 1:($3-filmE0) t '(1/2 1/2 0)'   w l lt 5
+     'film-L127-D1-110k0.2500.dat' u 1:($3-filmE0) t '(1/4 1/4 0)'   w l lt 4
 
 set label 1  "(i) {/Times-Italic l} = 255,  {/Times-Italic d} = 1" at 0.07, -0.007 font "Times-Roman,14"
 set origin 0.47, 0.185
@@ -122,8 +114,7 @@ plot \
      'film-L255-D1-110k0.0000.dat' u 1:($3-filmE0) t '(000)'         w l lt 1,\
      'film-L255-D1-110k0.0625.dat' u 1:($3-filmE0) t '(1/16 1/16 0)' w l lt 2,\
      'film-L255-D1-110k0.1250.dat' u 1:($3-filmE0) t '(1/8 1/8 0)'   w l lt 3,\
-     'film-L255-D1-110k0.2500.dat' u 1:($3-filmE0) t '(1/4 1/4 0)'   w l lt 4,\
-     'film-L255-D1-110k0.5000.dat' u 1:($3-filmE0) t '(1/2 1/2 0)'   w l lt 5
+     'film-L255-D1-110k0.2500.dat' u 1:($3-filmE0) t '(1/4 1/4 0)'   w l lt 4
 
 set label 1  "(j) {/Times-Italic d} = 0" at 0.08, -0.007 font "Times-Roman,14"
 set origin 0.47, 0.0
@@ -132,8 +123,7 @@ plot \
      'film-L008-D0-110k0.0000.dat' u 1:($3-filmE0) t '(000)'         w l lt 1,\
      'film-L008-D0-110k0.0625.dat' u 1:($3-filmE0) t '(1/16 1/16 0)' w l lt 2,\
      'film-L008-D0-110k0.1250.dat' u 1:($3-filmE0) t '(1/8 1/8 0)'   w l lt 3,\
-     'film-L008-D0-110k0.2500.dat' u 1:($3-filmE0) t '(1/4 1/4 0)'   w l lt 4,\
-     'film-L008-D0-110k0.5000.dat' u 1:($3-filmE0) t '(1/2 1/2 0)'   w l lt 5
+     'film-L008-D0-110k0.2500.dat' u 1:($3-filmE0) t '(1/4 1/4 0)'   w l lt 4
 
 set nomultiplot
 set output
