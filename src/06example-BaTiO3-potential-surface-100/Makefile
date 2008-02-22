@@ -1,8 +1,14 @@
 #-*-Makefile-*- for examples of feram
-# Time-stamp: <2008-02-20 16:28:50 takeshi>
+# Time-stamp: <2008-02-22 14:13:48 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
-all-potential-surface.ps: all-potential-surface.gp
+all: potential-surface-100.sh
+	sh $<
+
+potential-surface-100.sh: ../05example-BaTiO3-potential-surface-110/potential-surface-110.sh
+	sed -e 's/110/100/' $< > $@
+
+all-potential-surface-100.ps: all-potential-surface-100.gp
 	./$<
 
 clean:
