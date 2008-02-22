@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2008-01-31 17:24:21 takeshi>
+! Time-stamp: <2008-02-20 17:00:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -79,16 +79,16 @@ contains
     if (p%n_average.eq.0) return
 
     avg%total_energy    = avg%total_energy    / p%n_average / p%N
-    avg%e2              = avg%e2              / p%n_average / p%N**2
+    avg%e2              = avg%e2              / p%n_average / p%N
 
     avg%strain(:)       = avg%strain(:)       / p%n_average
 
     if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
        avg%u(:)  = avg%u(:)  /p%n_average /(p%Lx*p%Ly*p%film_thickness)
-       avg%uu(:) = avg%uu(:) /p%n_average /(p%Lx*p%Ly*p%film_thickness)**2
+       avg%uu(:) = avg%uu(:) /p%n_average /(p%Lx*p%Ly*p%film_thickness)
     else
        avg%u(:)  = avg%u(:)  /p%n_average /p%N
-       avg%uu(:) = avg%uu(:) /p%n_average /p%N**2
+       avg%uu(:) = avg%uu(:) /p%n_average /p%N
     end if
 
 

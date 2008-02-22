@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2007-12-28 13:54:14 takeshi>
+! Time-stamp: <2008-02-20 16:08:23 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -37,7 +37,7 @@ subroutine initialize_dipoR(p,c,e)
               do ix = 0, p%Lx-1
                  c%dipoR(ix,iy,iz,alpha) = &
                       & normal_dist(p%init_dipo_avg(alpha),p%init_dipo_dev(alpha))
-                 if (p%init_dipo_stripe_lambda_2.ne.0 .and. mod(ix/p%init_dipo_stripe_lambda_2,2).eq.1) then
+                 if ( cos(M_2PI*(p%k_stripe(1)*ix+p%k_stripe(2)*iy+p%k_stripe(3)*iz+1.0d-4)) < 0.0d0 ) then
                     c%dipoR(ix,iy,iz,alpha) = -c%dipoR(ix,iy,iz,alpha)
                  end if
               end do
