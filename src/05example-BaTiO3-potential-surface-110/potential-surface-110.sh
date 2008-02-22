@@ -1,6 +1,6 @@
 #!/bin/sh
 # potential-surface.sh
-# Time-stamp: <2008-02-22 09:40:38 takeshi>
+# Time-stamp: <2008-02-22 14:18:00 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 
@@ -10,8 +10,8 @@ for bulk_or_film in epit film ; do
     for Lz in 16 32 64 128 256 512 ; do
         thickness=`expr $Lz / 2 - $gap`
 
-#                           1/24                 1/16   1/12                1/8   1/6
-        for k_stripe in 0.0 0.041666666666666664 0.0625 0.08333333333333333 0.125 0.16666666666666666 0.250 ; do
+#                           1/24                  1/16   1/12                1/8   1/6                  1/4
+        for k_stripe in 0.0 0.0416666666666666666 0.0625 0.08333333333333333 0.125 0.166666666666666666 0.250 ; do
             dat=$bulk_or_film-L`printf '%.3d' $thickness`-D$gap-110k`printf '%6.4f' $k_stripe`.dat
             rm -f $dat
 
