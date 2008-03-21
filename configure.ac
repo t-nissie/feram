@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2008-02-25 14:12:12 takeshi>
+dnl Time-stamp: <2008-03-17 09:28:31 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -79,7 +79,7 @@ fi
 
 ## FFT library
 case "$host" in
-  SR11000)	
+  SR11000)
     AC_DEFINE([SR11000], [1], [HITACHI SR11000 Series Super Technical Server])
     AC_MSG_NOTICE([We use MATRIX/MPP (matmpp) library of SR11000.])
     LDFLAGS="$LDFLAGS -L/opt/hitachi/matmpp/lib"
