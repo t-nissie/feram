@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2008-03-24 16:11:17 takeshi>
+! Time-stamp: <2008-03-24 18:31:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -125,9 +125,9 @@ contains
           yy=iy
        end if
        do ix=0, p%Lx/2
-          write(12,*) abs(c%dipoK(ix,yy,0,3)), c%dipoK(ix,yy,0,3)
+          write(UNIT_SYSTEM,*) abs(c%dipoK(ix,yy,0,3)), c%dipoK(ix,yy,0,3)
        end do
-       write(12,*) ''
+       write(UNIT_SYSTEM,*) ''
     end do
     close(UNIT_SYSTEM)
     call msg(6, __FILE__, __LINE__, 'FILE: ', fn)
