@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2007-12-15 13:55:57 takeshi>
+! Time-stamp: <2008-03-24 16:07:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -51,6 +51,8 @@ subroutine molecular_dynamics(p,c)
      if (i_step-(i_step/p%n_coord_freq)*p%n_coord_freq.eq.0) then
         write(fn,'(a,a,i7.7,a)') trim(p%filename), '.', i_step, '.coord'
         call write_system(p,c,fn)
+        write(fn,'(a,a,i7.7,a)') trim(p%filename), '.', i_step, '.fft'
+        call write_fft(p,c,fn)
      end if
 
      write(message,"('strain',6e13.5)") c%strain(:)

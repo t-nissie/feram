@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <07/12/08 07:39:40 takeshi>
+! Time-stamp: <2008-03-24 16:11:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -107,4 +107,30 @@ contains
     call msg(6, __FILE__, __LINE__, 'FILE: ', fn)
     call msg(6, __FILE__, __LINE__, 'END', '')
   end subroutine write_system
+
+  subroutine write_fft(p,c,fn)
+    use Param_module
+    implicit none
+    type(Param_type), intent(in) :: p
+    type(Coord_type), intent(in) :: c
+    character(len=*) :: fn
+    integer ix,iy,yy
+
+    call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+    open(unit=UNIT_SYSTEM,file=fn)
+    do iy= -p%Ly/2, p%Ly/2
+       if (iy<0) then
+          yy=p%Ly+iy
+       else
+          yy=iy
+       end if
+       do ix=0, p%Lx/2
+          write(12,*) abs(c%dipoK(ix,yy,0,3)), c%dipoK(ix,yy,0,3)
+       end do
+       write(12,*) ''
+    end do
+    close(UNIT_SYSTEM)
+    call msg(6, __FILE__, __LINE__, 'FILE: ', fn)
+    call msg(6, __FILE__, __LINE__, 'END', '')
+  end subroutine write_fft
 end module Coord_module
