@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2008-03-24 16:07:24 takeshi>
+! Time-stamp: <2008-03-25 11:57:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -49,10 +49,12 @@ subroutine molecular_dynamics(p,c)
      call nose_poincare(p,c,e)   ! H_Nose_Poincare == 0, always
 
      if (i_step-(i_step/p%n_coord_freq)*p%n_coord_freq.eq.0) then
-        write(fn,'(a,a,i7.7,a)') trim(p%filename), '.', i_step, '.coord'
+        write(   fn,'(a,a,i7.7,a)') trim(p%filename), '.', i_step, '.coord'
         call write_system(p,c,fn)
-        write(fn,'(a,a,i7.7,a)') trim(p%filename), '.', i_step, '.fft'
-        call write_fft(p,c,fn)
+        if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
+           write(fn,'(a,a,i7.7,a)') trim(p%filename), '.', i_step, '.fft'
+           call write_fft(p,c,fn)
+        end if
      end if
 
      write(message,"('strain',6e13.5)") c%strain(:)
