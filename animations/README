@@ -1,0 +1,43 @@
+=begin
+= Animations created by feram
+
+== Heating-up and cooling-down simulations of ferroelectric capacitors
+Animations of holizontal slices of heating-up and cooling-down
+simulations for BaTiO3 thin-film capacitors with short-circuited
+electrodes under 1% in-plane biaxial compressive strain.
+The +z-polarized and &minus;z-polarized sites are
+denoted by red open squares and blue filled squares, respectively.
+Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
+ * (a) l=15, d=1
+   * heating-up
+   * cooling-down
+ * (b) l=31, d=1
+   * heating-up
+   * cooling-down
+ * (c) l=127, d=1
+   * heating-up
+   * cooling-down epit-40x40-L127-D1-5.0GPa-cooling-animation.gif
+ * (d) l=255, d=1
+   * heating-up
+   * cooling-down
+ * (e) l=32, d=0
+   * heating-up
+   * cooling-down
+
+=end
+#
+# for ulmul.rb
+#
+require 'rubygems'
+require 'ulmul'
+u=Ulmul.new(1..0)
+u.subs_rules << [  /(heating-up)\s*(\S*\/?\.gif)(\s|$)/,'<a href="\2">\1</a>\3']
+u.subs_rules << [/(cooling-down)\s*(\S*\/?\.gif)(\s|$)/,'<a href="\2">\1</a>\3']
+
+u.parse(ARGF)
+puts u.html(["style.css"],[],"Takeshi Nishimatsu")
+
+# Local variables:
+#   mode: RD
+#   compile-command: "ruby README README > index.html"
+# End:
