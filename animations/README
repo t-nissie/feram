@@ -18,11 +18,11 @@ Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
    * heating-up   epit-40x40-L127-D1-5.0GPa-heating-animation.gif
    * cooling-down epit-40x40-L127-D1-5.0GPa-cooling-animation.gif
  * (d) l=255, d=1
-   * heating-up   
-   * cooling-down 
+   * heating-up   (coming soon)
+   * cooling-down (coming soon)
  * (e) l=32, d=0
    * heating-up   
-   * cooling-down epit-32x32-L032-D0-5.0GPa-cooling-animation.gif
+   * cooling-down epit-40x40-L032-D0-5.0GPa-cooling-animation.gif
 
 =end
 #
