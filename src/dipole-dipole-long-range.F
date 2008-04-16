@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2007-09-05 13:10:50 takeshi>
+! Time-stamp: <2008-04-16 17:53:05 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -7,30 +7,32 @@ subroutine dipole_dipole_long_range(p,long_range)
   use Param_module
   implicit none
   !--- arguments -------------------------------------
-  type(Param_type), intent(in)  :: p
-  real*8,           intent(out) :: long_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3) !"/2" See fft.F!
+  type(Param_type), intent(inout)  :: p
+  real*8,           intent(out)    :: long_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3) !"/2" See fft.F!
   !--- local -----------------------------------------
   real*8,     allocatable :: TMPreal(:,:,:,:,:)
   complex*16, allocatable :: TMPcomplex(:,:,:,:,:)
-  real*8   kappa
   real*8   four_pi_over_unit_cell_volume, two_pi_over_a, four_kappa2
   real*8   Lx_a0, Ly_a0, Lz_a0
   integer  ix, iy, iz, jx, jy, jz, alpha, beta
+  integer  max_x, max_y, max_z
   real*8   k(3),kk
   real*8   r(3), n(3), rn(3), rnrn, rn_norm
+  character(50)            :: message
   !--- decay functions -------------------------------
-
   real*8   B_decay,C_decay
   external B_decay,C_decay
   !--- END of variable definitions -------------------
 
-  call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+  if (p%kappa<=0.0d0) then
+     p%kappa = sqrt(M_PI) / p%a0 / (dble(p%Lx*p%Ly*p%Lz))**(1.0d0/6)
+  end if
+  write(message,'(a,f10.4)') ': p%kappa = ', p%kappa
+  call msg(6, __FILE__, __LINE__, 'BEGIN', message)
 
-  kappa = sqrt(M_PI) / p%a0 / (dble(p%Lx*p%Ly*p%Lz))**(1.0d0/6)
-  !write(6,'(f10.4)') kappa
   four_pi_over_unit_cell_volume  = 4 * M_PI / p%a0**3
   two_pi_over_a                  = 2 * M_PI / p%a0
-  four_kappa2                    = 4 * kappa**2
+  four_kappa2                    = 4 * p%kappa**2
   Lx_a0 = p%Lx * p%a0
   Ly_a0 = p%Ly * p%a0
   Lz_a0 = p%Lz * p%a0
@@ -39,18 +41,22 @@ subroutine dipole_dipole_long_range(p,long_range)
   allocate(TMPcomplex(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!
   TMPreal(:,:,:,:,:)=0.0d0
 
+  max_x = 16/p%Lx
+  max_y = 16/p%Ly
+  max_z = 16/p%Lz
+
   !--- BEGIN of self-interaction correction ----------------
   do alpha = 1, 3
-     TMPreal(0, 0, 0, alpha, alpha) = - 2 * M_2_SQRTPI * kappa**3 / 3
+     TMPreal(0, 0, 0, alpha, alpha) = - 2 * M_2_SQRTPI * p%kappa**3 / 3
   end do
   !--- END of self-interaction correction ------------------
 !
   !--- BEGIN of real-space summation -----------------------
-  do jz = -1, 0
+  do jz = -1-max_x, max_x
      n(3) = jz * Lz_a0
-     do jy = -1, 0
+     do jy = -1-max_y, max_y
         n(2) = jy * Ly_a0
-        do jx = -1, 0
+        do jx = -1-max_z, max_z
            n(1) = jx * Lx_a0
            do beta = 1, 3
               do alpha = 1, 3
@@ -69,11 +75,11 @@ subroutine dipole_dipole_long_range(p,long_range)
                           rn_norm = sqrt(rnrn)
                           if (alpha.eq.beta) then
                             TMPreal(ix, iy, iz, alpha, beta) = &
-                          & TMPreal(ix, iy, iz, alpha, beta) + B_decay(rn_norm, rnrn, kappa)
+                          & TMPreal(ix, iy, iz, alpha, beta) + B_decay(rn_norm, rnrn, p%kappa)
                           end if
                           TMPreal(ix, iy, iz, alpha, beta) = &
                         & TMPreal(ix, iy, iz, alpha, beta)   &
-                        &   - rn(alpha) * rn(beta) * C_decay(rn_norm, rnrn, kappa)
+                        &   - rn(alpha) * rn(beta) * C_decay(rn_norm, rnrn, p%kappa)
                        end do
                     end do
                  end do

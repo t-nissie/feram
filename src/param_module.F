@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2008-02-20 15:35:48 takeshi>
+! Time-stamp: <2008-04-16 17:14:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -63,6 +63,7 @@ module Param_module
      real*8  k_stripe(3)      ! wave number of striped domain structure in 2*pi/a_0 unit
      real*8 Z_star        ! Born effective charge
      real*8 epsilon_inf   ! relative dielectric constant of core ions
+     real*8 kappa         ! arbitrary kappa for dipole-dipole-long-range.F
      integer defect_position(3)
      real*8  defect_u(3)
      logical plot_dispersion
@@ -96,6 +97,7 @@ contains
     p%defect_u(1)         = 0.0d0 ; p%defect_u(2)         = 0.0d0 ; p%defect_u(3)         = 0.0d0
     p%external_E_field(:) = 0.0d0
     p%n_coord_freq           = huge(1)   ! maximum integer
+    p%kappa = 0.0d0
     p%plot_dispersion = .false.
     p%k_stripe = 0.0d0
     p%gap = 0
@@ -179,6 +181,8 @@ contains
           read(str,*) dmy1, dmy2, p%Z_star
        case('epsilon_inf')
           read(str,*) dmy1, dmy2, p%epsilon_inf
+       case('kappa')
+          read(str,*) dmy1, dmy2, p%kappa
        case('defect_position')
           read(str,*) dmy1, dmy2, p%defect_position(1), p%defect_position(2), p%defect_position(3)
        case('defect_u')
