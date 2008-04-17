@@ -1,3 +1,7 @@
+2008-04-17  Takeshi Nishimatsu  <t-nissie@imr.tohoku.ac.jp>
+
+	* src/dipole-dipole-long-range.F (dipole_dipole_long_range): kGkG
+
 2007-12-15  Takeshi Nishimatsu  <takeshi@lotus>
 
 	* configure.ac: version 0.04.02, rev 142

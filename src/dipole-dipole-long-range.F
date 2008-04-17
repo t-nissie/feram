@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2008-04-17 11:49:18 takeshi>
+! Time-stamp: <2008-04-17 18:48:32 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -37,13 +37,13 @@ subroutine dipole_dipole_long_range(p,long_range)
   Ly_a0 = p%Ly * p%a0
   Lz_a0 = p%Lz * p%a0
 
+  max_x = 24/p%Lx
+  max_y = 24/p%Ly
+  max_z = 24/p%Lz
+
   allocate(   TMPreal(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3, 3))
   allocate(TMPcomplex(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!
   TMPreal(:,:,:,:,:)=0.0d0
-
-  max_x = 16/p%Lx
-  max_y = 16/p%Ly
-  max_z = 16/p%Lz
 
   !--- BEGIN of self-interaction correction ----------------
   do alpha = 1, 3
@@ -52,11 +52,11 @@ subroutine dipole_dipole_long_range(p,long_range)
   !--- END of self-interaction correction ------------------
 !
   !--- BEGIN of real-space summation -----------------------
-  do jz = -1-max_x, max_x
+  do jz = -1-max_z, max_z
      n(3) = jz * Lz_a0
      do jy = -1-max_y, max_y
         n(2) = jy * Ly_a0
-        do jx = -1-max_z, max_z
+        do jx = -1-max_x, max_x
            n(1) = jx * Lx_a0
            do beta = 1, 3
               do alpha = 1, 3

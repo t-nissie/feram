@@ -181,7 +181,7 @@ Specifies the structure of the system.
   bulk_or_film = 'epit'
 
 ===== L
-System size, L_x, L_y and L_z. L_alpha>=16.
+System size, L_x, L_y and L_z. L_alpha>=4.
   L = 16 16 32
 
 ===== gap

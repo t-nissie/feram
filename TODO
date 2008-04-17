@@ -26,6 +26,8 @@ o 力の計算の部分をsubroutineにして、leapfrog をもう一度動く�
 
 o TEST UNIT
 
+o gfortranに新しく導入される-Mオプションの活用。
+
 o Use msg() in write_Param() of param_module.F.
 
 o striped structure を initial configuration にできるようにする.
