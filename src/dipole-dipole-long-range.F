@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2008-04-16 17:53:05 takeshi>
+! Time-stamp: <2008-04-17 11:49:18 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -14,9 +14,9 @@ subroutine dipole_dipole_long_range(p,long_range)
   complex*16, allocatable :: TMPcomplex(:,:,:,:,:)
   real*8   four_pi_over_unit_cell_volume, two_pi_over_a, four_kappa2
   real*8   Lx_a0, Ly_a0, Lz_a0
-  integer  ix, iy, iz, jx, jy, jz, alpha, beta
+  integer  ix, iy, iz, jx, jy, jz, alpha, beta, nx, ny, nz
   integer  max_x, max_y, max_z
-  real*8   k(3),kk
+  real*8   k(3), kG(3), kGkG
   real*8   r(3), n(3), rn(3), rnrn, rn_norm
   character(50)            :: message
   !--- decay functions -------------------------------
@@ -97,23 +97,36 @@ subroutine dipole_dipole_long_range(p,long_range)
   !--- BEGIN of reciplocal-space summation -----------------
   do beta = 1, 3
      do alpha = 1, 3
+
         do iz = 0, p%Lz-1
            k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
-           k(3) = k(3) * two_pi_over_a
            do iy = 0, p%Ly-1
               k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
-              k(2) = k(2) * two_pi_over_a
               do ix = 0, p%Lx/2
-                 if (ix.eq.0 .and. iy.eq.0 .and. iz.eq.0) cycle
-                 k(1) = dble(ix) / p%Lx * two_pi_over_a
-                 kk = k(1)**2 + k(2)**2 + k(3)**2
-                 long_range(ix,iy,iz,alpha,beta) = &
-               & long_range(ix,iy,iz,alpha,beta) &
-               & + four_pi_over_unit_cell_volume * k(alpha) * k(beta) &
-               &   * exp(-kk/four_kappa2) / kk
+                 k(1) = dble(ix) / p%Lx
+
+
+                 do nz = -max_z, max_z
+                    kG(3) = two_pi_over_a*(k(3)+nz)
+                    do ny = -max_y, max_y
+                       kG(2) = two_pi_over_a*(k(2)+ny)
+                       do nx = -max_x, max_x
+                          if (ix.eq.0 .and. iy.eq.0 .and. iz.eq.0 .and. &
+                            & nx.eq.0 .and. ny.eq.0 .and. nz.eq.0) cycle
+                          kG(1) = two_pi_over_a*(k(1)+nx)
+                          kGkG = kG(1)**2 + kG(2)**2 + kG(3)**2
+                          long_range(ix,iy,iz,alpha,beta) = &
+                               & long_range(ix,iy,iz,alpha,beta) &
+                               & + four_pi_over_unit_cell_volume * kG(alpha) * kG(beta) &
+                               &   * exp(-kGkG/four_kappa2) / kGkG
+                       end do
+                    end do
+                 end do
+
               end do
            end do
         end do
+
      end do
   end do
   !--- END of reciplocal-space summation -------------------
