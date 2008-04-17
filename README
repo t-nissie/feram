@@ -182,7 +182,7 @@ Specifies the structure of the system.
 
 ===== L
 System size, L_x, L_y and L_z. L_alpha>=4.
-  L = 16 16 32
+  L = 32 32 4
 
 ===== gap
 Gap for the thin film.
