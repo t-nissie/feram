@@ -1,3 +1,7 @@
+o Copyright
+
+o Examples
+
 o FILENAME.avgの出力の見直し polarization -> <u_z> とか
 
 o plot_dispersion = .ture. のとき32x32x32を使う。FILENAME.param は無くす方向で。
