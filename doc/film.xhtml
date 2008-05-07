@@ -1,66 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+                     "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Introduction of feram</title>
-<meta name="author" content="Takeshi Nishimatsu" />
-<meta name="copyright" content="Copyright &#169; 2007 Takeshi Nishimatsu" />
-<link rel="stylesheet" href="feram-presentation.css" type="text/css" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Fast Molecular-Dynamics Simulation for Ferroelectric Thin-Film Capacitors Using a First-Principles Effective Hamiltonian</title>
+  <meta name="author" content="Takeshi Nishimatsu" />
+  <meta name="copyright" content="Copyright &#169; 2008 Takeshi Nishimatsu" />
+  <link rel="stylesheet" href="feram-presentation.css" type="text/css" />
 <script src="slidy.js" type="text/javascript"></script>
 <link rel="shortcut icon" href="favicon.ico" />
 </head>
 <body>
 <div class="slide cover">
-<h1 id="LABEL-1">Introduction of feram</h1>
+<h1 id="LABEL-1">Fast Molecular-Dynamics Simulation for Ferroelectric Thin-Film Capacitors Using a First-Principles Effective Hamiltonian</h1>
 <p>
-<b>A fast MD program for perovskite-type ferroelectric bulks and thin films</b>
+Takeshi Nishimatsu
 </p>
 <p>
-.
+Preprint: <a href="http://arXiv.org/abs/0804.1853">http://arXiv.org/abs/0804.1853</a>
 </p>
 <p>
-Jaita Paul, <b>Takeshi Nishimatsu</b>, Yoshiyuki Kawazoe and
-</p>
-<p>
-Umesh V. Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007)
-</p>
-<p>
-.
-</p>
-<p>
-<a href="http://loto.sf.net/feram/">http://loto.sf.net/feram/</a>
+Download: <a href="http://loto.sf.net/feram/">http://loto.sf.net/feram/</a>
 </p>
 <!-- Contents -->
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-2">What are ferroelectrics?</h2>
+<h2 id="LABEL-2">Introduction: What are ferroelectrics?</h2>
 <p>
 <div class="figure">
   <img src="figures/ferroelectrics.jpg" alt="figures/ferroelectrics.jpg" />
   <div class="caption">
-    Properties of ferroelectrics, such as BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+    Properties of ferroelectrics, such as BaTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>, PbTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>, PbTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>, KNbO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>, KNbO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>, LiNbO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>, LiNbO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>, LiTaO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>, LiTaO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>, SrTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>, SrTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>, Pb(Zr<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>, Pb(Zr<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mo>(</mo>
@@ -69,13 +61,13 @@ Umesh V. Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007)
   <mi>x</mi>
   <mo>)</mo>
  </mrow>
-</msub></math>Ti<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>Ti<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mi>x</mi>
-</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math> (PZT), etc.. <b>feram</b> can simulate such ferroelectrics. Without long-range dipole-dipole interaction and finite size effects, you will not see the domain structure like this. In other words, the domain structure is formed to avoid depolarization field induced by surface charges.
+</msub></math> (PZT), etc..
   </div>
 </div>
 </p>
@@ -83,15 +75,29 @@ Umesh V. Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007)
 
 
 <div class="slide">
-<h2 id="LABEL-3">Monte Carlo (MC) vs. Molecular Dynamics (MD)</h2>
-<p>
-feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroelectrics.
-</p>
+<h2 id="LABEL-3">Background: Ferroelectric thin-films</h2>
+
+<ul>
+  <li>Various applications of ferroelectric thin-films:
+    <ul>
+      <li>multilayer capacitors</li>
+      <li>nonvolatile FeRAMs</li>
+      <li>nanoactuators</li>
+    </ul></li>
+  <li>Down-sizing of FeRAMs (nano-capacitors of ferroelectric
+    thin-films) is highly demanded.</li>
+  <li>Epitaxially constraint ferroelectric films made by PLD.</li>
+  <li>Effect of imperfect screening of electrodes is NOT well understood.
+    <ul>
+      <li>[M. Dawber et al.: J. Phys. Condes. Matter <b>15</b>, L393 (2003)]</li>
+    </ul></li>
+  <li>Fatigue causes damages in polarization behaviors of ferroelectric capacitors.</li>
+</ul>
 <p>
 <div class="figure">
-  <img src="figures/MC-vs-MD.jpg" alt="figures/MC-vs-MD.jpg" />
+  <img src="figures/J.F.Scott.Fig.1.1.ae.jpg" alt="figures/J.F.Scott.Fig.1.1.ae.jpg" />
   <div class="caption">
-    Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
+    After [J. F. Scott: Ferroelectric Memories (Springer, 2000)].
   </div>
 </div>
 </p>
@@ -99,23 +105,76 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-4">Features of feram program</h2>
+<h2 id="LABEL-4">Dynamics, nanosize effects and temperature dependences</h2>
+
+<ul>
+  <li><b>Dynamics</b> of ferroelectric thin-film capacitors:
+    <ul>
+      <li>Hysteresis loop</li>
+      <li>Polarization switching</li>
+      <li>Dynamics of domain wall</li>
+    </ul></li>
+  <li>Their <b>nanosize effects</b> and <b>temperature dependences</b> remain pooly known.
+    <ul>
+      <li>Experimentally, <em>in situ</em> observations are difficult.</li>
+      <li>Theoretically,
+        <ul>
+          <li>The long-range Coulomb interaction limits the size
+            and time of molecular-dynamics (MD) simulations.</li>
+          <li>How to include depolarization fields caused by imperfect electrodes
+            was unclear.</li>
+        </ul></li>
+    </ul></li>
+</ul>
+<p>
+<div class="figure">
+  <img src="figures/Fong.jpg" alt="figures/Fong.jpg" />
+  <div class="caption">
+    After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thin-films (<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mo>&lt;</mo>
+ <mn>4</mn>
+</math> layers) may not have spontaneous polarization.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-5">Purpose of this study</h2>
+
+<ul>
+  <li>Development of fast molecular dynamics (MD) code which can simulate
+    ferroelectric thin-film capacitors for
+    a realistic system size (up to 100~nm) and
+    a realistic time span (<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mo>&gt;</mo></math> 1~ns).</li>
+  <li>Clarify the effect of dead layers between ferroelectrics and electrodes.</li>
+  <li>Predic the effect of the compressive strain arising from epitaxial constraints.</li>
+</ul>
+<p>
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mo>&rightarrow;</mo></math> We develope "feram" code. 
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-6">Features of feram program</h2>
 
 <ul>
   <li>Scientific features
     <ul>
       <li>Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian</li>
-      <li><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+      <li><math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>A</mi>
  <mi>B</mi>
 </math>O<sub>3</sub>-type perovskite ferroelectrics and relaxors</li>
-      <li>Uses supercell; (<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+      <li>Uses supercell; (<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>A</mi>
  <mi>B</mi>
-</math>O<sub>3</sub>)<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</math>O<sub>3</sub>)<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mi>N</mi>
-</msub></math>, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+</msub></math>, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>N</mi>
  <mo>=</mo>
  <mn>32</mn>
@@ -123,7 +182,7 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
  <mn>32</mn>
  <mo>&times;</mo>
  <mn>512</mn>
-</math> <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mo>&Rightarrow;</mo></math> 2,621,440 atoms</li>
+</math> <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mo>&Rightarrow;</mo></math> 2,621,440 atoms</li>
       <li>Coarse-graining; reduction of the number of degree of freedom</li>
       <li>Long-range dipole-dipole interaction is treated in reciprocal-space; k-locality of the force matrix</li>
       <li>Applications:
@@ -156,31 +215,12 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-5">Purpose of feram: ferroelectric thin-film capacitors</h2>
-
-<ul>
-  <li>Down-sizing of non-volatile FeRAM</li>
-  <li>Fatigue of electrodes of capacitors
-    (M. Dawber et al.: J. Phys. Condes. Matter vol.15 p.L393 (2003))</li>
-  <li>Hysteresis, polarization switching, dynamics of domain wall
-    and their nano-size effects are not well known (Figure below).</li>
-  <li><em>in situ</em> observations are difficult</li>
-</ul>
-<p>
-<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mo>&rightarrow;</mo></math> Computational simulation with "feram" program.
-</p>
-<p>
-<div class="figure">
-  <img src="figures/Fong.jpg" alt="figures/Fong.jpg" />
-  <div class="caption">
-    
-  </div>
-</div></p>
+<h2 id="LABEL-7">Employed theories in feram</h2>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-6">Perovskite type ferroelectrics ABO<sub>3</sub></h2>
+<h2 id="LABEL-8">Soft-mode displacements of perovskite type ferroelectrics <em>AB</em>O<sub>3</sub></h2>
 <p>
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 </p>
@@ -196,16 +236,70 @@ King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of
 
 
 <div class="slide">
-<h2 id="LABEL-7">Effective Hamiltonian and Coarse-graining</h2>
+<h2 id="LABEL-9">Coarse-graining</h2>
+
+<ul>
+  <li>Real perovskite-like system has <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mn>15</mn>
+ <mi>N</mi>
+ <mo>+</mo>
+ <mn>6</mn>
+</math> degree of freedom
+    <ul>
+      <li><math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>N</mi></math> unit cells in supercell</li>
+      <li>5 atoms per unit cell</li>
+      <li>Each atom can move along 3 directions</li>
+      <li>6 components of strain</li>
+    </ul></li>
+</ul>
+
+<ul>
+  <li>Simplified model has <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mn>6</mn>
+ <mi>N</mi>
+ <mo>+</mo>
+ <mn>6</mn>
+</math> degree of freedom
+    <ul>
+      <li>Define 1 dipole <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <msup>
+  <mi>Z</mi>
+  <mo>*</mo>
+ </msup>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>)</mo>
+</math> per unit cell</li>
+      <li>1 acoustic displacement (Inhomogeneous strain) <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>)</mo>
+</math> per unit cell</li>
+    </ul></li>
+</ul>
 <p>
-Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+<div class="figure">
+  <img src="figures/CoarseGraining.jpg" alt="figures/CoarseGraining.jpg" />
+  <div class="caption">
+    
+  </div>
+</div></p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-10">First-principles effective Hamiltonian</h2>
+<p>
+Simulation with a supercell; (<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>A</mi>
  <mi>B</mi>
-</math>O<sub>3</sub>)<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</math>O<sub>3</sub>)<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mi>N</mi>
 </msub></math>
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
  <msup>
   <mi>H</mi>
   <mrow>
@@ -445,77 +539,29 @@ Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/19
  <mo>)</mo>
 </math>
 </p>
-
-<ul>
-  <li>Real perovskite-like system has <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
- <mn>15</mn>
- <mi>N</mi>
- <mo>+</mo>
- <mn>6</mn>
-</math> degree of freedom
-    <ul>
-      <li><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>N</mi></math> unit cells in supercell</li>
-      <li>5 atoms per unit cell</li>
-      <li>Each atom can move along 3 directions</li>
-      <li>6 components of strain</li>
-    </ul></li>
-</ul>
-
-<ul>
-  <li>Simplified model has <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
- <mn>6</mn>
- <mi>N</mi>
- <mo>+</mo>
- <mn>6</mn>
-</math> degree of freedom
-    <ul>
-      <li>Define 1 dipole <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
- <msup>
-  <mi>Z</mi>
-  <mo>*</mo>
- </msup>
- <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
- <mo>(</mo>
- <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
- <mo>)</mo>
-</math> per unit cell</li>
-      <li>1 acoustic displacement (Inhomogeneous strain) <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
- <mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow>
- <mo>(</mo>
- <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
- <mo>)</mo>
-</math> per unit cell</li>
-    </ul></li>
-</ul>
-<p>
-<div class="figure">
-  <img src="figures/CoarseGraining.jpg" alt="figures/CoarseGraining.jpg" />
-  <div class="caption">
-    
-  </div>
-</div></p>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-8">Thin films sandwiched between short-circuited electrodes</h2>
+<h2 id="LABEL-11">Boundary condition for capacitors</h2>
 <p>
 <div class="figure">
   <img src="figures/capacitor.jpg" alt="figures/capacitor.jpg" />
   <div class="caption">
-    Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b). In (a) depolarization field <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+    Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b). In (a) depolarization field <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <msub>
   <mi>E</mi>
-  <mi>d</mi>
+  <mrow><mi mathvariant='normal'>d</mi></mrow>
  </msub>
  <mo>=</mo>
  <mn>0</mn>
-</math>, but in (b) <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+</math>, but in (b) <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <msub>
   <mi>E</mi>
-  <mi>d</mi>
+  <mrow><mi mathvariant='normal'>d</mi></mrow>
  </msub>
  <mo>=</mo>
+ <mo>-</mo>
  <mn>4</mn>
  <mi>&pi;</mi>
  <msub>
@@ -538,7 +584,36 @@ Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/19
 
 
 <div class="slide">
-<h2 id="LABEL-9">Temperature dependence of polarizations of thin-film capacitors</h2>
+<h2 id="LABEL-12">Forces on dipoles are calculated in the reciprocal space</h2>
+<p>
+<div class="figure">
+  <img src="figures/flow.jpg" alt="figures/flow.jpg" />
+  <div class="caption">
+    Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-13">Results: Monte Carlo (MC) vs. Molecular Dynamics (MD)</h2>
+<p>
+feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroelectrics.
+</p>
+<p>
+<div class="figure">
+  <img src="figures/MC-vs-MD.jpg" alt="figures/MC-vs-MD.jpg" />
+  <div class="caption">
+    Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-14">Temperature dependence of polarizations of thin-film capacitors</h2>
 <p>
 <div class="figure">
   <img src="figures/epitDEN.jpg" alt="figures/epitDEN.jpg" />
@@ -550,14 +625,14 @@ Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/19
 
 
 <div class="slide">
-<h2 id="LABEL-10">Uniformly polarized structure and striped domain structure</h2>
+<h2 id="LABEL-15">Uniformly polarized structure and striped domain structure</h2>
 <p>
 <div class="figure">
   <img src="figures/epit-32x32-L015-D1-5.0GPa-100K.jpg" alt="figures/epit-32x32-L015-D1-5.0GPa-100K.jpg" />
   <div class="caption">
     
   </div>
-</div>Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+</div>Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mn>32</mn>
  <mo>&times;</mo>
  <mn>32</mn>
@@ -577,12 +652,12 @@ Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/19
 
 
 <div class="slide">
-<h2 id="LABEL-11">Thiner film has finer domain structure to avoid stronger depolarization field</h2>
+<h2 id="LABEL-16">Thiner film has finer domain structure to avoid stronger depolarization field</h2>
 <p>
 <div class="figure">
   <img src="figures/slice32x32.jpg" alt="figures/slice32x32.jpg" />
   <div class="caption">
-    Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+    Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mn>32</mn>
  <mo>&times;</mo>
  <mn>32</mn>
@@ -607,12 +682,13 @@ Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/19
  <mi>d</mi>
  <mo>=</mo>
  <mn>1</mn>
-</math>). Thiner film has finer domain structure to avoid stronger depolarization field <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+</math>). Thiner film has finer domain structure to avoid stronger depolarization field <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <msub>
   <mi>E</mi>
-  <mi>d</mi>
+  <mrow><mi mathvariant='normal'>d</mi></mrow>
  </msub>
  <mo>=</mo>
+ <mo>-</mo>
  <mn>4</mn>
  <mi>&pi;</mi>
  <msub>
@@ -635,7 +711,7 @@ Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/19
 
 
 <div class="slide">
-<h2 id="LABEL-12">Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor</h2>
+<h2 id="LABEL-17">Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor</h2>
 <p>
 <div class="figure">
   <img src="figures/proposal2.gif" alt="figures/proposal2.gif" />
@@ -648,7 +724,7 @@ Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/19
 
 
 <div class="slide">
-<h2 id="LABEL-13">Summary</h2>
+<h2 id="LABEL-18">Summary</h2>
 
 <ul>
   <li>feram is a fast simulator for perovskite-type ferroelectric bulks and thin films</li>
@@ -664,7 +740,7 @@ Simulation with a supercell; (<math display='inline' xmlns='http://www.w3.org/19
 
 
 <div class="slide">
-<h2 id="LABEL-14">Parameters (input file)</h2>
+<h2 id="LABEL-19">Parameters (input file)</h2>
 
 <ul>
   <li>King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)</li>
@@ -721,20 +797,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-15">Forces on dipoles are calculated in the reciprocal space</h2>
-<p>
-<div class="figure">
-  <img src="figures/flow.jpg" alt="figures/flow.jpg" />
-  <div class="caption">
-    Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
-  </div>
-</div>
-</p>
-</div>
-
-
-<div class="slide">
-<h2 id="LABEL-16">Time evolution and fluctuation</h2>
+<h2 id="LABEL-20">Time evolution and fluctuation</h2>
 <p>
 <div class="figure">
   <img src="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" alt="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" />
@@ -747,9 +810,9 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-17">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
+<h2 id="LABEL-21">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
 <p>
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
  <msub>
   <mi>&epsilon;</mi>
   <mrow>
@@ -815,7 +878,7 @@ epsilon_inf   = 5.24
 <div class="figure">
   <img src="figures/32x32xL032-D0-susceptibility.jpg" alt="figures/32x32xL032-D0-susceptibility.jpg" />
   <div class="caption">
-    Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+    Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
 </msub></math> with perfect electrodes.
@@ -826,13 +889,13 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-18">---------------------------- Relaxor ----------------------------</h2>
+<h2 id="LABEL-22">---------------------------- Relaxor ----------------------------</h2>
 <p>
-Relaxors Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
+Relaxors Pb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
  <mi>B</mi>
  <mi>x</mi>
  <mrow><mo>&prime;</mo></mrow>
-</msubsup></math><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
+</msubsup></math><math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
  <mi>B</mi>
  <mrow>
   <mo>(</mo>
@@ -845,10 +908,10 @@ Relaxors Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><ms
   <mo>&prime;</mo>
   <mo>&prime;</mo>
  </mrow>
-</msubsup></math>O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msubsup></math>O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>: Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msub></math>: Pb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>2</mn>
@@ -858,195 +921,195 @@ Relaxors Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><ms
 </p>
 
 <ul>
-  <li>Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+  <li>Pb(Sc<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>2</mn>
  </mrow>
-</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>2</mn>
  </mrow>
-</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math> (PSN): Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msub></math> (PSN): Sc<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>3</mn>
   <mo>+</mo>
  </mrow>
-</msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msup></math>, Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>5</mn>
   <mo>+</mo>
  </mrow>
 </msup></math></li>
-  <li>Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+  <li>Pb(Sc<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>2</mn>
  </mrow>
-</msub></math>Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>Ta<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>2</mn>
  </mrow>
-</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math> (PST): Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msub></math> (PST): Sc<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>3</mn>
   <mo>+</mo>
  </mrow>
-</msup></math>, Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msup></math>, Ta<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>5</mn>
   <mo>+</mo>
  </mrow>
 </msup></math></li>
-  <li>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+  <li>Pb(Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>2</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math> (PMN:) Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msub></math> (PMN:) Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>2</mn>
   <mo>+</mo>
  </mrow>
-</msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msup></math>, Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>5</mn>
   <mo>+</mo>
  </mrow>
 </msup></math></li>
-  <li><math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+  <li><math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mo>(</mo>
  <mn>1</mn>
  <mo>-</mo>
  <mi>x</mi>
  <mo>)</mo>
-</math>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</math>Pb(Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>2</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>-xPbTiO<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>-xPbTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math> (PMN-<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><mi>x</mi></math>PT): Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msub></math> (PMN-<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>x</mi></math>PT): Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>2</mn>
   <mo>+</mo>
  </mrow>
-</msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msup></math>, Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>5</mn>
   <mo>+</mo>
  </mrow>
-</msup></math>, Ti<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msup></math>, Ti<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>4</mn>
   <mo>+</mo>
  </mrow>
 </msup></math></li>
-  <li>Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+  <li>Pb(Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>Ta<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>2</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math> (PMT): Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msub></math> (PMT): Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>2</mn>
   <mo>+</mo>
  </mrow>
-</msup></math>, Ta<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msup></math>, Ta<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>5</mn>
   <mo>+</mo>
  </mrow>
 </msup></math></li>
-  <li>Pb(Zn<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+  <li>Pb(Zn<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>2</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math> (PZN): Zn<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msub></math> (PZN): Zn<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>2</mn>
   <mo>+</mo>
  </mrow>
-</msup></math>, Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msup></math>, Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <none />
  <mrow>
   <mn>5</mn>
@@ -1055,11 +1118,11 @@ Relaxors Pb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><ms
 </msup></math></li>
 </ul>
 <p>
-The averaged valence number of B-site ions <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
+The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
  <mi>B</mi>
  <mi>x</mi>
  <mrow><mo>&prime;</mo></mrow>
-</msubsup></math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
+</msubsup></math> and <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
  <mi>B</mi>
  <mrow>
   <mo>(</mo>
@@ -1072,7 +1135,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
   <mo>&prime;</mo>
   <mo>&prime;</mo>
  </mrow>
-</msubsup></math> is <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+</msubsup></math> is <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mn>4</mn>
  <mo>+</mo>
 </math>.
@@ -1081,7 +1144,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-19">Frequency dependence of dielectric constant of relaxors</h2>
+<h2 id="LABEL-23">Frequency dependence of dielectric constant of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/TsurumiFig3.jpg" alt="figures/TsurumiFig3.jpg" />
@@ -1094,12 +1157,12 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-20">Crystal structures of relaxors</h2>
+<h2 id="LABEL-24">Crystal structures of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig3.jpg" alt="figures/RandallBhallaFig3.jpg" />
   <div class="caption">
-    (a) Ordered B-site structure of <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+    (a) Ordered B-site structure of <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>A</mi>
  <msubsup>
   <mi>B</mi>
@@ -1120,68 +1183,68 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
    <mo>&prime;</mo>
   </mrow>
  </msubsup>
-</math>O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</math>O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>. In the case of Pb(Sc<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>. In the case of Pb(Sc<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>2</mn>
  </mrow>
-</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>2</mn>
  </mrow>
-</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>, Sc and Nb has the NaCl structure. In the case of Pb(Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>, Sc and Nb has the NaCl structure. In the case of Pb(Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>2</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>)O<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mn>3</mn>
-</msub></math>, the Na-site is randomly occupied by Mg<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>, the Na-site is randomly occupied by Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>3</mn>
  </mrow>
-</msub></math>Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>6</mn>
  </mrow>
-</msub></math> and the Cl-site is occupied by  Nb<math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msub>
+</msub></math> and the Cl-site is occupied by  Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
  <none />
  <mrow>
   <mn>1</mn>
   <mo>/</mo>
   <mn>2</mn>
  </mrow>
-</msub></math>.  (b) Disordered structure. B-sites is occupied by <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msup>
+</msub></math>.  (b) Disordered structure. B-sites is occupied by <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
  <mi>B</mi>
  <mrow><mo>&prime;</mo></mrow>
-</msup></math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'><msubsup>
+</msup></math> and <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
  <mi>B</mi>
  <mrow>
   <mo>(</mo>
@@ -1202,7 +1265,7 @@ The averaged valence number of B-site ions <math display='inline' xmlns='http://
 
 
 <div class="slide">
-<h2 id="LABEL-21">Local field on Pb-site</h2>
+<h2 id="LABEL-25">Local field on Pb-site</h2>
 <p>
 Displacement of Pb is the main source of dipole moment.
 <div class="figure">
@@ -1216,7 +1279,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-22">Chemically ordered and disordered regions of relaxors</h2>
+<h2 id="LABEL-26">Chemically ordered and disordered regions of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig8.jpg" alt="figures/RandallBhallaFig8.jpg" />
@@ -1229,7 +1292,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-23">Modeling of relaxors</h2>
+<h2 id="LABEL-27">Modeling of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/DoubleWells.jpg" alt="figures/DoubleWells.jpg" />
@@ -1242,7 +1305,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-24">Snapshot of a simulation of PSN relaxor</h2>
+<h2 id="LABEL-28">Snapshot of a simulation of PSN relaxor</h2>
 <p>
 <div class="figure">
   <img src="figures/SilviaFig1.jpg" alt="figures/SilviaFig1.jpg" />
@@ -1255,9 +1318,9 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-25">Susceptibility tensor</h2>
+<h2 id="LABEL-29">Susceptibility tensor</h2>
 <p>
-Now you can calculate <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+Now you can calculate <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
  <mo>(</mo>
  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
@@ -1267,7 +1330,7 @@ Now you can calculate <math display='inline' xmlns='http://www.w3.org/1998/Math/
 </math> in some periods (1-100 ns) with feram.
 </p>
 <p>
-Susceptibility tensor <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+Susceptibility tensor <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>&chi;</mi>
  <mo>(</mo>
  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
@@ -1285,7 +1348,7 @@ Susceptibility tensor <math display='inline' xmlns='http://www.w3.org/1998/Math/
  </msup>
  <mo>)</mo>
 </math>
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
  <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
  <mo>(</mo>
  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
@@ -1336,7 +1399,7 @@ Susceptibility tensor <math display='inline' xmlns='http://www.w3.org/1998/Math/
  </msup>
  <mo>)</mo>
 </math>
-where <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+where <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
  <mo>(</mo>
  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
@@ -1354,7 +1417,7 @@ where <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
  <mo>,</mo>
  <mi>t</mi>
  <mo>)</mo>
-</math> and <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+</math> and <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mrow><mrow><mi>&Escr;</mi></mrow></mrow>
  <mo>(</mo>
  <msup>
@@ -1369,7 +1432,7 @@ where <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
  <mo>)</mo>
 </math> is external electric field.
 Its Fourier transformation
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
  <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
  <mo>(</mo>
  <mrow><mrow><mi mathvariant='bold-italic'>q</mi></mrow></mrow>
@@ -1393,7 +1456,7 @@ Its Fourier transformation
  <mo>.</mo>
 </math>
 Using the fluctuation-dissipation theorem,
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
  <mrow>
   <mi mathvariant='normal'>I</mi>
   <mi mathvariant='normal'>m</mi>
@@ -1466,7 +1529,7 @@ Using the fluctuation-dissipation theorem,
  </msup>
 </math>
 Then, with Kramers-Kronig relation,
-<math display='block' xmlns='http://www.w3.org/1998/Math/MathML'>
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
  <mrow>
   <mi mathvariant='normal'>R</mi>
   <mi mathvariant='normal'>e</mi>
@@ -1493,9 +1556,9 @@ Then, with Kramers-Kronig relation,
 
 
 <div class="slide">
-<h2 id="LABEL-26">Estimation of computational time</h2>
+<h2 id="LABEL-30">Estimation of computational time</h2>
 <p>
-32x32x32 unit cells, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+32x32x32 unit cells, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi mathvariant='normal'>&Delta;</mi>
  <mi>t</mi>
  <mo>=</mo>
@@ -1503,7 +1566,7 @@ Then, with Kramers-Kronig relation,
 </math> fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
 </p>
 <p>
-1THz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+1THz, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>T</mi>
  <mo>=</mo>
  <mn>1</mn>
@@ -1511,7 +1574,7 @@ Then, with Kramers-Kronig relation,
 </math>ps,            500 steps,  54 sec  or 8.4 sec.
 </p>
 <p>
-1GHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+1GHz, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>T</mi>
  <mo>=</mo>
  <mn>1</mn>
@@ -1519,7 +1582,7 @@ Then, with Kramers-Kronig relation,
 </math>ns,        500,000 steps, 900 min. or 140 min.
 </p>
 <p>
-1MHz, <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+1MHz, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>T</mi>
  <mo>=</mo>
  <mn>1</mn>
@@ -1527,7 +1590,7 @@ Then, with Kramers-Kronig relation,
 </math>s,    500,000,000 steps, 620 days or  97 days
 </p>
 <p>
-So, I am planning to calculate and compare <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+So, I am planning to calculate and compare <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <msub>
   <mi>&chi;</mi>
   <mrow>
@@ -1540,7 +1603,7 @@ So, I am planning to calculate and compare <math display='inline' xmlns='http://
  <mo>,</mo>
  <mi>&omega;</mi>
  <mo>)</mo>
-</math> for <math display='inline' xmlns='http://www.w3.org/1998/Math/MathML'>
+</math> for <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>&omega;</mi>
  <mo>/</mo>
  <mo>(</mo>

@@ -1,28 +1,19 @@
 =begin
-= Introduction of feram
+= Fast Molecular-Dynamics Simulation for Ferroelectric Thin-Film Capacitors Using a First-Principles Effective Hamiltonian
+Takeshi Nishimatsu
 
-<b>A fast MD program for perovskite-type ferroelectric bulks and thin films</b>
+Preprint: http://arXiv.org/abs/0804.1853
 
-.
+Download: http://loto.sf.net/feram/
 
-Jaita Paul, <b>Takeshi Nishimatsu</b>, Yoshiyuki Kawazoe and
-
-Umesh V. Waghmare: Phys. Rev. Lett. Vol.99 p.077601 (2007)
-
-.
-
-http://loto.sf.net/feram/
-
-# Today, I will introduce you my new simulation program "feram".
-# A fast Molecular Dynamics simulation program for perovskite-type ferroelectric bulks and thin films.
-# feram is an abbreviation of "Ferroelectrics and Relaxor Analyzing Machine"
-# or of course "Ferroelectrics Random Access Memory."
-# My name is Takeshi Nishimatsu.
-# You can find some details of today's talk in this paper or in this web site.
+# I entitled my talk "Fast Molecular-Dynamics Simulation for Ferroelectric Thin-Film Capacitors Using a First-Principles Effective Hamiltonian".
+# You can find its preprint at here.
+# This study is done by my original MD code, feram.
+# You can download the code from here.
 
 
-== What are ferroelectrics?
-figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT), etc.. <b>feram</b> can simulate such ferroelectrics. Without long-range dipole-dipole interaction and finite size effects, you will not see the domain structure like this. In other words, the domain structure is formed to avoid depolarization field induced by surface charges.
+== Introduction: What are ferroelectrics?
+figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT), etc..
 
 
 # As you know,
@@ -40,20 +31,74 @@ figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTi
 # depolarization field induced by surface charges.
 
 
+== Background: Ferroelectric thin-films
+ * Various applications of ferroelectric thin-films:
+   * multilayer capacitors
+   * nonvolatile FeRAMs
+   * nanoactuators
+ * Down-sizing of FeRAMs (nano-capacitors of ferroelectric
+   thin-films) is highly demanded.
+ * Epitaxially constraint ferroelectric films made by PLD.
+ * Effect of imperfect screening of electrodes is NOT well understood.
+   * [M. Dawber et al.: J. Phys. Condes. Matter <b>15</b>, L393 (2003)]
+ * Fatigue causes damages in polarization behaviors of ferroelectric capacitors.
 
-== Monte Carlo (MC) vs. Molecular Dynamics (MD)
-feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroelectrics.
+figures/J.F.Scott.Fig.1.1.ae.jpg After [J. F. Scott: Ferroelectric Memories (Springer, 2000)].
 
-figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
+# I explain the background of this study with following two slides.
 
-# feram is a molecular dynamics program for ferroelectrics.
+
+== Dynamics, nanosize effects and temperature dependences
+ * <b>Dynamics</b> of ferroelectric thin-film capacitors:
+   * Hysteresis loop
+   * Polarization switching
+   * Dynamics of domain wall
+ * Their <b>nanosize effects</b> and <b>temperature dependences</b> remain pooly known.
+   * Experimentally, <em>in situ</em> observations are difficult.
+   * Theoretically,
+     * The long-range Coulomb interaction limits the size
+       and time of molecular-dynamics (MD) simulations.
+     * How to include depolarization fields caused by imperfect electrodes
+       was unclear.
+
+figures/Fong.jpg After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thin-films ($< 4$ layers) may not have spontaneous polarization.
+
+# There are many dynamical behaviors in ferroelectric thin-film capacitors.
+# For example, Hysteresis loop, polarization switching, and
+# dynamics of domain wall.
 #
-# This shows simulations of bulk BaTiO<sub>3</sub> with MC and MD.
-# Horizontal axis is temperature. Vertical axis is strain.
-# Compared to old Monte Carlo simulations, MD simulation steps have a physical
-# meaning of the time evolution. So, for example, Cooling and heating MD simulation
-# can show hysteresis in temperature,
-# as you may often see in textbooks of ferroelectrics.
+# For example, this is ...
+
+
+== Purpose of this study
+ * Development of fast molecular dynamics (MD) code which can simulate
+   ferroelectric thin-film capacitors for
+   a realistic system size (up to 100~nm) and
+   a realistic time span ($>$ 1~ns).
+ * Clarify the effect of dead layers between ferroelectrics and electrodes.
+ * Predic the effect of the compressive strain arising from epitaxial constraints.
+
+$\to$ We develope "feram" code. 
+
+# Again, one of the purposes of this simulation program is to study
+# the thermal properties
+# of ferroelectric thin-film and its capacitors.
+#
+# Ferroelectric thin-film capacitors are applied, in for example, non-volatile FeRAM.
+# And their down-sizing are highly demanded.
+#
+# Fatigue of electrodes of capacitors is a current big problem
+#
+# But their Hysteresis, polarization switching, dynamics of domain wall
+# and their nano-size effects are not well known.
+#
+# This is an example of experimental study of thin films.
+# Fong et al. studied PbTiO3 thin films' striped ferroelectric domain structure
+# with strong X-ray. They found thickness dependence of Tc.
+#
+# Basically, experimental {\em in situ} observations of such dynamics are difficult.
+#
+# But you can do simulation with feram.
 
 
 == Features of feram program
@@ -99,43 +144,10 @@ figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Hori
 # You can freely download feram from this site.
 
 
-== Purpose of feram: ferroelectric thin-film capacitors
- * Down-sizing of non-volatile FeRAM
- * Fatigue of electrodes of capacitors
-   (M. Dawber et al.: J. Phys. Condes. Matter vol.15 p.L393 (2003))
- * Hysteresis, polarization switching, dynamics of domain wall
-   and their nano-size effects are not well known (Figure below).
- * <em>in situ</em> observations are difficult
-$\to$ Computational simulation with "feram" program.
+== Employed theories in feram
 
 
-figures/Fong.jpg
-
-# Again, one of the purposes of this simulation program is to study
-# the thermal properties
-# of ferroelectric thin-film and its capacitors.
-#
-# Ferroelectric thin-film capacitors are applied, in for example, non-volatile FeRAM.
-# And their down-sizing are highly demanded.
-#
-# Fatigue of electrodes of capacitors is a current big problem
-#
-# But their Hysteresis, polarization switching, dynamics of domain wall
-# and their nano-size effects are not well known.
-#
-# This is an example of experimental study of thin films.
-# Fong et al. studied PbTiO3 thin films' striped ferroelectric domain structure
-# with strong X-ray. They found thickness dependence of Tc.
-#
-# Basically, experimental {\em in situ} observations of such dynamics are difficult.
-#
-# But you can do simulation with feram.
-
-
-
-
-
-== Perovskite type ferroelectrics ABO<sub>3</sub>
+== Soft-mode displacements of perovskite type ferroelectrics <em>AB</em>O<sub>3</sub>
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 
 figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
@@ -153,21 +165,7 @@ figures/perovskite-contours.jpg Coupling between atomic displacements and strain
 # In 1994, my current boss David Vanderbilt parametrized this coupling.
 
 
-
-
-
-
-== Effective Hamiltonian and Coarse-graining
-Simulation with a supercell; ($AB$O<sub>3</sub>)$_N$
-Eq. 1
-    H^{\rm eff}
-    = \frac{M^*_{\rm dipole}}{2} \sum_{\bm{R},\alpha}\dot{u}_\alpha^2(\bm{R})
-    + \frac{M^*_{\rm acoustic}}{2}\sum_{\bm{R},\alpha}\dot{w}_\alpha^2(\bm{R})
-    + V^{\rm self}(\{\bm{u}\})+V^{\rm dpl}(\{\bm{u}\})+V^{\rm short}(\{\bm{u}\})
-    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{\bm{w}\})
-    + V^{\rm coup,\,homo}(\{\bm{u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{\bm{u}\}, \{\bm{w}\})
-/Eq.
-
+== Coarse-graining
  * Real perovskite-like system has $15N+6$ degree of freedom
    * $N$ unit cells in supercell
    * 5 atoms per unit cell
@@ -180,9 +178,6 @@ Eq. 1
 
 figures/CoarseGraining.jpg
 
-# Using that parameters, we can construct an effective Hamiltonian for a supercell with
-# N unit cells of ABO3.
-#
 # In the Hamiltonian, Coarse-graining is employed.
 # In other words, the number of degree of freedom is reduced.
 #
@@ -195,13 +190,26 @@ figures/CoarseGraining.jpg
 # by replacing 5 atoms to 2 vectors, 1 dipole Z^*u(R) and 1 acoustic displacement
 # per unit cell.
 #
+
+
+== First-principles effective Hamiltonian
+Simulation with a supercell; ($AB$O<sub>3</sub>)$_N$
+Eq. 1
+    H^{\rm eff}
+    = \frac{M^*_{\rm dipole}}{2} \sum_{\bm{R},\alpha}\dot{u}_\alpha^2(\bm{R})
+    + \frac{M^*_{\rm acoustic}}{2}\sum_{\bm{R},\alpha}\dot{w}_\alpha^2(\bm{R})
+    + V^{\rm self}(\{\bm{u}\})+V^{\rm dpl}(\{\bm{u}\})+V^{\rm short}(\{\bm{u}\})
+    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{\bm{w}\})
+    + V^{\rm coup,\,homo}(\{\bm{u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{\bm{u}\}, \{\bm{w}\})
+/Eq.
+
+# Using that parameters, we can construct an effective Hamiltonian for a supercell with
+# N unit cells of ABO3.
+#
 # We solve this Hamiltonian with Molecular Dynamics.
 
 
-
-
-
-== Thin films sandwiched between short-circuited electrodes
+== Boundary condition for capacitors
 figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b). In (a) depolarization field $E_{\rm d}=0$, but in (b) $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$.
 
 # This slide show you how to simulate thin films
@@ -215,6 +223,32 @@ figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perf
 #
 # moreover, if you introduce a gap d in the doubled-size supercell,
 # you can automatically simulate damaged or imperfect electrodes.
+
+
+== Forces on dipoles are calculated in the reciprocal space
+figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
+
+# Time consuming part in simulation is the calculation of forces of dipoles because
+# dipole-dipole interactions are long-range. ..... You can reduce computational time
+# from O(N^2) to O(NlogN).
+
+
+
+
+== Results: Monte Carlo (MC) vs. Molecular Dynamics (MD)
+feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroelectrics.
+
+figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
+
+# feram is a molecular dynamics program for ferroelectrics.
+#
+# This shows simulations of bulk BaTiO<sub>3</sub> with MC and MD.
+# Horizontal axis is temperature. Vertical axis is strain.
+# Compared to old Monte Carlo simulations, MD simulation steps have a physical
+# meaning of the time evolution. So, for example, Cooling and heating MD simulation
+# can show hysteresis in temperature,
+# as you may often see in textbooks of ferroelectrics.
+
 
 
 
@@ -332,13 +366,6 @@ figures/proposal2.gif (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) gro
 
 
 
-
-== Forces on dipoles are calculated in the reciprocal space
-figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
-
-# Time consuming part in simulation is the calculation of forces of dipoles because
-# dipole-dipole interactions are long-range. ..... You can reduce computational time
-# from O(N^2) to O(NlogN).
 
 
 
