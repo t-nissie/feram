@@ -15,7 +15,6 @@ Download: http://loto.sf.net/feram/
 == Introduction: What are ferroelectrics?
 figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT), etc..
 
-
 # As you know,
 # ferroelectrics such as BaTiO3, PbTiO3, SrTiO3, PZT, etc.
 # has characteristic properties, for example,
@@ -23,6 +22,10 @@ figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTi
 # phase transition
 # piezoelectric effect and
 # inverse piezoelectric effect.
+#
+# You can see both piezoelectric and inverse piezoelectric effects with this toy.
+# This white part is PZT.
+# It can be a sensor and a speaker.
 #
 # Here, I'd like to emphasize that
 # without long-range dipole-dipole interaction and finite size effects,
@@ -73,12 +76,14 @@ figures/Fong.jpg After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thi
 == Purpose of this study
  * Development of fast molecular dynamics (MD) code which can simulate
    ferroelectric thin-film capacitors for
-   a realistic system size (up to 100~nm) and
-   a realistic time span ($>$ 1~ns).
+   a realistic system size (up to 100 nm) and
+   a realistic time span ($>$ 1 ns).
  * Clarify the effect of dead layers between ferroelectrics and electrodes.
  * Predic the effect of the compressive strain arising from epitaxial constraints.
 
 $\to$ We develope "feram" code. 
+
+../logo.jpg
 
 # Again, one of the purposes of this simulation program is to study
 # the thermal properties
