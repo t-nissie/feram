@@ -1,5 +1,5 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <07/12/30 11:12:26 takeshi>
+# Time-stamp: <2008-05-27 20:45:39 takeshi>
 # Author: Takeshi NISHIMATSU
 # ref_1: R. D. King-Smith and David Vanderbilt: PRB vol.49 p.5828 (1994)
 ##
@@ -23,7 +23,7 @@ set ylabel '{/Times-Italic E} [eV / unit cell]'
 epitE0=0.024003715545
 
 set size   0.5, 0.27
-set title 'epitaxially constraint film'
+set title 'epitaxially constrained film'
 set label 1  "(a) {/Times-Italic l} = 15,  {/Times-Italic d} = 1" at 0.08, -0.007 font "Times-Roman,14"
 set origin 0.04, 0.74
 set xlabel ''

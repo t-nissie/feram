@@ -335,7 +335,7 @@ minilines(649,37,0,0,1,0,0,[
 mini_line(649,30,7,0,0,0,[
 str_block(0,649,30,7,0,-2,0,0,0,[
 str_seg('black','Times-Roman',0,195840,649,30,7,0,-2,0,0,0,0,0,
-	"(a) epitaxially constraint film (difficult to switch)")])
+	"(a) epitaxially constrained film (difficult to switch)")])
 ])
 ])]).
 text('blue',525,1050,1,1,1,406,37,546,30,7,0,0,0,0,2,406,37,0,0,"",0,0,0,0,1080,'',[
