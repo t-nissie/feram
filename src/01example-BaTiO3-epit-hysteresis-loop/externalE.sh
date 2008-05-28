@@ -1,18 +1,18 @@
 #!/bin/sh
 # externalE.sh
-# Time-stamp: <2008-05-28 17:48:46 takeshi>
+# Time-stamp: <2008-05-28 18:31:26 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f externalE.avg
 
-temperature=100
+temperature=175
 
-externalE_start=-0.04
-externalE_goal=0.04
-externalE_step=0.001
+externalE_start=-0.02
+externalE_goal=0.02
+externalE_step=0.002
 
 n_thermalize=40000
-n_average=10000
+n_average=60000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 dt=0.002
@@ -39,8 +39,8 @@ while [ `perl -e "print $externalE <= $externalE_goal || 0"` = "1" ] ; do
 	
 	#--- System geometry -----------------------------
 	bulk_or_film = 'epit'
-	L = 16 16 32
-	gap = 1
+	L = 16 16 8
+	gap = 0
 	a0 =  3.94         latice constant a0 [Angstrom]
 	epi_strain = -0.01
 	#--- Time step -----------------------------------
