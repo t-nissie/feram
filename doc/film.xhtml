@@ -75,7 +75,7 @@ Download: <a href="http://loto.sf.net/feram/">http://loto.sf.net/feram/</a>
 
 
 <div class="slide">
-<h2 id="LABEL-3">Background: Ferroelectric thin-films</h2>
+<h2 id="LABEL-3">Background: Ferroelectric thin films</h2>
 
 <ul>
   <li>Various applications of ferroelectric thin-films:
@@ -85,7 +85,7 @@ Download: <a href="http://loto.sf.net/feram/">http://loto.sf.net/feram/</a>
       <li>nanoactuators</li>
     </ul></li>
   <li>Down-sizing of FeRAMs (nano-capacitors of ferroelectric
-    thin-films) is highly demanded.</li>
+    thin films) is highly demanded.</li>
   <li>Epitaxially constraint ferroelectric films made by PLD.</li>
   <li>Effect of imperfect screening of electrodes is NOT well understood.
     <ul>
@@ -130,7 +130,7 @@ Download: <a href="http://loto.sf.net/feram/">http://loto.sf.net/feram/</a>
 <div class="figure">
   <img src="figures/Fong.jpg" alt="figures/Fong.jpg" />
   <div class="caption">
-    After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thin-films (<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+    After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thin films (<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mo>&lt;</mo>
  <mn>4</mn>
 </math> layers) may not have spontaneous polarization.
@@ -152,7 +152,7 @@ Download: <a href="http://loto.sf.net/feram/">http://loto.sf.net/feram/</a>
   <li>Predic the effect of the compressive strain arising from epitaxial constraints.</li>
 </ul>
 <p>
-<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mo>&rightarrow;</mo></math> We develope "feram" code. 
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mo>&rightarrow;</mo></math> We develope "feram" code.
 </p>
 <p>
 <div class="figure">
@@ -697,6 +697,14 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
   </div>
 </div>
 </p>
+<p>
+<div class="figure">
+  <img src="figures/BaTiO3-abc-T-dependence.jpg" alt="figures/BaTiO3-abc-T-dependence.jpg" />
+  <div class="caption">
+    Experimentally observed one from .
+  </div>
+</div>
+</p>
 </div>
 
 
@@ -704,7 +712,7 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
 <h2 id="LABEL-15">Heating-up and cooling-down simulations of ferroelectric capacitors</h2>
 <p>
 Animations of holizontal slices of heating-up and cooling-down
-simulations for BaTiO3 thin-film capacitors with short-circuited
+simulations for BaTiO<sub>3</sub> thin-film capacitors with short-circuited
 electrodes under 1% in-plane biaxial compressive strain.
 The +z-polarized and &minus;z-polarized sites are
 denoted by red open squares and blue filled squares, respectively.
@@ -879,23 +887,71 @@ Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
 
 
 <div class="slide">
-<h2 id="LABEL-22">Summary</h2>
+<h2 id="LABEL-22">Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub></h2>
+<p>
+<div class="figure">
+  <img src="figures/bulk-two-box.jpg" alt="figures/bulk-two-box.jpg" />
+  <div class="caption">
+    Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-23">Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors</h2>
+<p>
+<div class="figure">
+  <img src="figures/epit-vs-free-hysteresis-box.jpg" alt="figures/epit-vs-free-hysteresis-box.jpg" />
+  <div class="caption">
+    Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and (b) ``free'' films of various thickness <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>l</mi></math> and with dead layer <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>d</mi></math> at 100 K.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-24">Epitaxially constrained film vs. "free" film (again)</h2>
+<p>
+<div class="figure">
+  <img src="figures/epit-vs-free.jpg" alt="figures/epit-vs-free.jpg" />
+  <div class="caption">
+    Schematic comparison between the epitaxially constrained film and the ``free'' film. In the epitaxially constrained film, switching may have to climb over a potential barrier, but, in the ``free'' film, dipoles can be easily rotated and switching can go around a valley of the potential.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-25">Summary</h2>
 
 <ul>
-  <li>feram is a fast simulator for perovskite-type ferroelectric bulks and thin films</li>
+  <li>We developed "feram", a fast simulator for perovskite-type ferroelectric bulks and thin films</li>
   <li>Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian</li>
   <li>Phase transition of bulk ferroelectrics</li>
   <li>Thin-film capacitor: perfect and imperfect short-circuited electrodes
     <ul>
       <li>Striped domain structure is predicted</li>
-      <li>An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed</li>
+      <li>Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors</li>
     </ul></li>
+  <li>An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed</li>
 </ul>
+<p>
+<div class="figure">
+  <img src="../logo.jpg" alt="../logo.jpg" />
+  <div class="caption">
+    Thank you for your attention.
+  </div>
+</div>
+</p>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-23">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
+<h2 id="LABEL-26">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
 <p>
 <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
  <msub>
@@ -974,7 +1030,7 @@ Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
 
 
 <div class="slide">
-<h2 id="LABEL-24">---------------------------- Relaxor ----------------------------</h2>
+<h2 id="LABEL-27">---------------------------- Relaxor ----------------------------</h2>
 <p>
 Relaxors Pb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
  <mi>B</mi>
@@ -1229,7 +1285,7 @@ The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/M
 
 
 <div class="slide">
-<h2 id="LABEL-25">Frequency dependence of dielectric constant of relaxors</h2>
+<h2 id="LABEL-28">Frequency dependence of dielectric constant of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/TsurumiFig3.jpg" alt="figures/TsurumiFig3.jpg" />
@@ -1242,7 +1298,7 @@ The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/M
 
 
 <div class="slide">
-<h2 id="LABEL-26">Crystal structures of relaxors</h2>
+<h2 id="LABEL-29">Crystal structures of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig3.jpg" alt="figures/RandallBhallaFig3.jpg" />
@@ -1350,7 +1406,7 @@ The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/M
 
 
 <div class="slide">
-<h2 id="LABEL-27">Local field on Pb-site</h2>
+<h2 id="LABEL-30">Local field on Pb-site</h2>
 <p>
 Displacement of Pb is the main source of dipole moment.
 <div class="figure">
@@ -1364,7 +1420,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-28">Chemically ordered and disordered regions of relaxors</h2>
+<h2 id="LABEL-31">Chemically ordered and disordered regions of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig8.jpg" alt="figures/RandallBhallaFig8.jpg" />
@@ -1377,7 +1433,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-29">Modeling of relaxors</h2>
+<h2 id="LABEL-32">Modeling of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/DoubleWells.jpg" alt="figures/DoubleWells.jpg" />
@@ -1390,7 +1446,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-30">Snapshot of a simulation of PSN relaxor</h2>
+<h2 id="LABEL-33">Snapshot of a simulation of PSN relaxor</h2>
 <p>
 <div class="figure">
   <img src="figures/SilviaFig1.jpg" alt="figures/SilviaFig1.jpg" />
@@ -1403,7 +1459,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-31">Susceptibility tensor</h2>
+<h2 id="LABEL-34">Susceptibility tensor</h2>
 <p>
 Now you can calculate <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
@@ -1641,7 +1697,7 @@ Then, with Kramers-Kronig relation,
 
 
 <div class="slide">
-<h2 id="LABEL-32">Estimation of computational time</h2>
+<h2 id="LABEL-35">Estimation of computational time</h2>
 <p>
 32x32x32 unit cells, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi mathvariant='normal'>&Delta;</mi>

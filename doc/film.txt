@@ -34,13 +34,13 @@ figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTi
 # depolarization field induced by surface charges.
 
 
-== Background: Ferroelectric thin-films
+== Background: Ferroelectric thin films
  * Various applications of ferroelectric thin-films:
    * multilayer capacitors
    * nonvolatile FeRAMs
    * nanoactuators
  * Down-sizing of FeRAMs (nano-capacitors of ferroelectric
-   thin-films) is highly demanded.
+   thin films) is highly demanded.
  * Epitaxially constraint ferroelectric films made by PLD.
  * Effect of imperfect screening of electrodes is NOT well understood.
    * [M. Dawber et al.: J. Phys. Condes. Matter <b>15</b>, L393 (2003)]
@@ -49,7 +49,7 @@ figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTi
 figures/J.F.Scott.Fig.1.1.ae.jpg After [J. F. Scott: Ferroelectric Memories (Springer, 2000)].
 
 # I explain the background of this study with following two slides.
-
+# There are various applications of ferroelectric thin films
 
 == Dynamics, nanosize effects and temperature dependences
  * <b>Dynamics</b> of ferroelectric thin-film capacitors:
@@ -64,7 +64,7 @@ figures/J.F.Scott.Fig.1.1.ae.jpg After [J. F. Scott: Ferroelectric Memories (Spr
      * How to include depolarization fields caused by imperfect electrodes
        was unclear.
 
-figures/Fong.jpg After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thin-films ($< 4$ layers) may not have spontaneous polarization.
+figures/Fong.jpg After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thin films ($< 4$ layers) may not have spontaneous polarization.
 
 # There are many dynamical behaviors in ferroelectric thin-film capacitors.
 # For example, Hysteresis loop, polarization switching, and
@@ -81,13 +81,13 @@ figures/Fong.jpg After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thi
  * Clarify the effect of dead layers between ferroelectrics and electrodes.
  * Predic the effect of the compressive strain arising from epitaxial constraints.
 
-$\to$ We develope "feram" code. 
+$\to$ We develope "feram" code.
 
 ../logo.jpg
 
 # Again, one of the purposes of this simulation program is to study
 # the thermal properties
-# of ferroelectric thin-film and its capacitors.
+# of ferroelectric thin film and its capacitors.
 #
 # Ferroelectric thin-film capacitors are applied, in for example, non-volatile FeRAM.
 # And their down-sizing are highly demanded.
@@ -309,6 +309,9 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
 
 figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
 
+figures/BaTiO3-abc-T-dependence.jpg Experimentally observed one from .
+
+
 # feram is a molecular dynamics program for ferroelectrics.
 #
 # This shows simulations of bulk BaTiO<sub>3</sub> with MC and MD.
@@ -321,7 +324,7 @@ figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Hori
 
 == Heating-up and cooling-down simulations of ferroelectric capacitors
 Animations of holizontal slices of heating-up and cooling-down
-simulations for BaTiO3 thin-film capacitors with short-circuited
+simulations for BaTiO<sub>3</sub> thin-film capacitors with short-circuited
 electrodes under 1% in-plane biaxial compressive strain.
 The +z-polarized and &minus;z-polarized sites are
 denoted by red open squares and blue filled squares, respectively.
@@ -392,20 +395,34 @@ figures/proposal2.gif (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) gro
 figures/step.jpg Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
 
 
+== Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>
+figures/bulk-two-box.jpg Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
+
+== Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
+figures/epit-vs-free-hysteresis-box.jpg Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and (b) ``free'' films of various thickness $l$ and with dead layer $d$ at 100 K.
+
+#    Supercell sizes were $16\times 16\times 2(l+d)$.
+#    $\Delta t=2$~fs and $n_{\rm steps}=$~50,000.
+#    For epitaxially constrained films,
+#    $\mathcal{E}_0 =$~4,000~kV/cm and $\Delta \mathcal{E} =$~100~kV/cm are employed.
+#    For ``free'' films,
+#    $\mathcal{E}_0 =$~400~kV/cm and $\Delta \mathcal{E} =$~10~kV/cm are employed.
 
 
+== Epitaxially constrained film vs. "free" film (again)
+figures/epit-vs-free.jpg Schematic comparison between the epitaxially constrained film and the ``free'' film. In the epitaxially constrained film, switching may have to climb over a potential barrier, but, in the ``free'' film, dipoles can be easily rotated and switching can go around a valley of the potential.
 
 
 
 == Summary
- * feram is a fast simulator for perovskite-type ferroelectric bulks and thin films
+ * We developed "feram", a fast simulator for perovskite-type ferroelectric bulks and thin films
  * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
  * Phase transition of bulk ferroelectrics
  * Thin-film capacitor: perfect and imperfect short-circuited electrodes
    * Striped domain structure is predicted
-   * An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed
-
-
+   * Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
+ * An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed
+../logo.jpg Thank you for your attention.
 
 
 == Dielectric constant can be calculated from the fluctuation of dipoles
