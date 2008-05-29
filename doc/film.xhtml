@@ -205,13 +205,14 @@ Download: <a href="http://loto.sf.net/feram/">http://loto.sf.net/feram/</a>
     <ul>
       <li>Fast
         <ul>
-          <li>FFTW library version 3  <a href="http://www.fftw.org/">http://www.fftw.org/</a></li>
-          <li>Parallelized with OpenMP</li>
+          <li>FFTW library version 3  <a href="http://www.FFTW.org/">http://www.FFTW.org/</a></li>
+          <li>Parallelized with OpenMP <a href="http://www.OpenMP.org/">http://www.OpenMP.org/</a></li>
         </ul></li>
       <li>Multi-platform
         <ul>
           <li>Linux PC</li>
           <li>HITACHI SR11000 Super Technical Server</li>
+          <li>SONY PLAYSTATION3 (ongoing)</li>
         </ul></li>
       <li>Object oriented programming (OOP) in Fortran 2003</li>
       <li>GNU autotools  <a href="http://www.gnu.org/software/autoconf/">http://www.gnu.org/software/autoconf/</a></li>
@@ -222,12 +223,7 @@ Download: <a href="http://loto.sf.net/feram/">http://loto.sf.net/feram/</a>
 
 
 <div class="slide">
-<h2 id="LABEL-7">Employed theories in feram</h2>
-</div>
-
-
-<div class="slide">
-<h2 id="LABEL-8">Soft-mode displacements of perovskite type ferroelectrics <em>AB</em>O<sub>3</sub></h2>
+<h2 id="LABEL-7">Soft-mode displacements of perovskite type ferroelectrics <em>AB</em>O<sub>3</sub></h2>
 <p>
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 </p>
@@ -243,7 +239,7 @@ King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of
 
 
 <div class="slide">
-<h2 id="LABEL-9">Coarse-graining</h2>
+<h2 id="LABEL-8">Coarse-graining</h2>
 
 <ul>
   <li>Real perovskite-like system has <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
@@ -297,7 +293,7 @@ King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of
 
 
 <div class="slide">
-<h2 id="LABEL-10">First-principles effective Hamiltonian</h2>
+<h2 id="LABEL-9">First-principles effective Hamiltonian</h2>
 <p>
 Simulation with a supercell; (<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi>A</mi>
@@ -550,7 +546,7 @@ Simulation with a supercell; (<math xmlns='http://www.w3.org/1998/Math/MathML' d
 
 
 <div class="slide">
-<h2 id="LABEL-11">Boundary condition for capacitors</h2>
+<h2 id="LABEL-10">Boundary condition for capacitors</h2>
 <p>
 <div class="figure">
   <img src="figures/capacitor.jpg" alt="figures/capacitor.jpg" />
@@ -591,12 +587,27 @@ Simulation with a supercell; (<math xmlns='http://www.w3.org/1998/Math/MathML' d
 
 
 <div class="slide">
-<h2 id="LABEL-12">Forces on dipoles are calculated in the reciprocal space</h2>
+<h2 id="LABEL-11">Forces on dipoles are calculated in the reciprocal space</h2>
 <p>
 <div class="figure">
   <img src="figures/flow.jpg" alt="figures/flow.jpg" />
   <div class="caption">
-    Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
+    Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions. You can reduce computational time from <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>O</mi>
+ <mo>(</mo>
+ <msup>
+  <mi>N</mi>
+  <mn>2</mn>
+ </msup>
+ <mo>)</mo>
+</math> to <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>O</mi>
+ <mo>(</mo>
+ <mi>N</mi>
+ <mi>log</mi>
+ <mi>N</mi>
+ <mo>)</mo>
+</math>.
   </div>
 </div>
 </p>
@@ -604,7 +615,77 @@ Simulation with a supercell; (<math xmlns='http://www.w3.org/1998/Math/MathML' d
 
 
 <div class="slide">
-<h2 id="LABEL-13">Results: Monte Carlo (MC) vs. Molecular Dynamics (MD)</h2>
+<h2 id="LABEL-12">Parameters (input file)</h2>
+
+<ul>
+  <li>King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)</li>
+  <li>Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)</li>
+</ul>
+<pre>#--- Method, Temperature, and mass ---------------
+method = 'md'
+   # 'md' - Molecular Dynamics with Nose-Poincare thermostat (Canonical ensemble)
+   # 'lf' - Leap Frog (Microcanonical ensemble)
+   # 'mc' - Monte Carlo
+GPa = -5.0
+kelvin_start = 350
+kelvin_goal  =  50
+kelvin_step  =  -5
+mass_amu = 39.0       # Required for MD
+Q_Nose = 1.0
+
+#--- System geometry -----------------------------
+bulk_or_film = 'bulk'
+L = 32 32 32
+a0 =  3.94         lattice constant a0 [Angstrom]
+
+#--- Time step -----------------------------------
+dt = 0.002 [ps]
+n_thermalize =  40000
+n_average    =  10000
+n_coord_freq =   5000     Write a snapshot to the disk every 5000 steps
+
+#--- On-site (Polynomial of order 4) -------------
+P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
+P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
+
+#--- Inter-site ----------------------------------
+j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
+
+#--- Elastic Constants ---------------------------
+B11 = 126.
+B12 =  44.9
+B44 =  50.3  [eV]
+
+#--- Elastic Coupling ----------------------------
+B1xx = -211.   [eV/Angstrom^2]
+B1yy =  -19.3  [eV/Angstrom^2]
+B4yz =   -7.75 [eV/Angstrom^2]
+
+#--- Dipole --------------------------------------
+init_dipo_avg = 0.00 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
+init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
+Z_star       = 9.956
+epsilon_inf   = 5.24
+</pre>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-13">Time evolution and fluctuation</h2>
+<p>
+<div class="figure">
+  <img src="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" alt="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" />
+  <div class="caption">
+    Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-14">Results: Monte Carlo (MC) vs. Molecular Dynamics (MD)</h2>
 <p>
 feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroelectrics.
 </p>
@@ -620,7 +701,48 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-14">Temperature dependence of polarizations of thin-film capacitors</h2>
+<h2 id="LABEL-15">Heating-up and cooling-down simulations of ferroelectric capacitors</h2>
+<p>
+Animations of holizontal slices of heating-up and cooling-down
+simulations for BaTiO3 thin-film capacitors with short-circuited
+electrodes under 1% in-plane biaxial compressive strain.
+The +z-polarized and &minus;z-polarized sites are
+denoted by red open squares and blue filled squares, respectively.
+Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
+</p>
+
+<ul>
+  <li>(a) l=15, d=1
+    <ul>
+      <li><a href="../animations/epit-40x40-L015-D1-5.0GPa-heating-animation.gif">heating-up</a></li>
+      <li><a href="../animations/epit-40x40-L015-D1-5.0GPa-cooling-animation.gif">cooling-down</a></li>
+    </ul></li>
+  <li>(b) l=31, d=1
+    <ul>
+      <li><a href="../animations/epit-40x40-L031-D1-5.0GPa-heating-animation.gif">heating-up</a></li>
+      <li><a href="../animations/epit-40x40-L031-D1-5.0GPa-cooling-animation.gif">cooling-down</a></li>
+    </ul></li>
+  <li>(c) l=127, d=1
+    <ul>
+      <li><a href="../animations/epit-40x40-L127-D1-5.0GPa-heating-animation.gif">heating-up</a></li>
+      <li><a href="../animations/epit-40x40-L127-D1-5.0GPa-cooling-animation.gif">cooling-down</a></li>
+    </ul></li>
+  <li>(d) l=255, d=1
+    <ul>
+      <li>heating-up   (coming soon)</li>
+      <li><a href="../animations/epit-40x40-L255-D1-5.0GPa-cooling-animation.gif">cooling-down</a></li>
+    </ul></li>
+  <li>(e) l=32, d=0
+    <ul>
+      <li><a href="../animations/epit-40x40-L032-D0-5.0GPa-heating-animation.gif">heating-up</a></li>
+      <li><a href="../animations/epit-40x40-L032-D0-5.0GPa-cooling-animation.gif">cooling-down</a></li>
+    </ul></li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-16">Temperature dependence of polarizations of thin-film capacitors</h2>
 <p>
 <div class="figure">
   <img src="figures/epitDEN.jpg" alt="figures/epitDEN.jpg" />
@@ -632,14 +754,12 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-15">Uniformly polarized structure and striped domain structure</h2>
+<h2 id="LABEL-17">Uniformly polarized structure and striped domain structure</h2>
 <p>
 <div class="figure">
   <img src="figures/epit-32x32-L015-D1-5.0GPa-100K.jpg" alt="figures/epit-32x32-L015-D1-5.0GPa-100K.jpg" />
   <div class="caption">
-    
-  </div>
-</div>Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+    Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mn>32</mn>
  <mo>&times;</mo>
  <mn>32</mn>
@@ -654,12 +774,27 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
  <mn>1</mn>
  <mo>)</mo>
 </math>. There is thermally unhoppable bistability between these two structure.
+  </div>
+</div>
 </p>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-16">Thiner film has finer domain structure to avoid stronger depolarization field</h2>
+<h2 id="LABEL-18">Epitaxially constrained film vs. "free" film</h2>
+<p>
+<div class="figure">
+  <img src="figures/epit-vs-free.jpg" alt="figures/epit-vs-free.jpg" />
+  <div class="caption">
+    Schematic comparison between the epitaxially constrained film and the ``free'' film. In the epitaxially constrained film, switching may have to climb over a potential barrier, but, in the ``free'' film, dipoles can be easily rotated and switching can go around a valley of the potential.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-19">Thiner film has finer domain structure to avoid stronger depolarization field</h2>
 <p>
 <div class="figure">
   <img src="figures/slice32x32.jpg" alt="figures/slice32x32.jpg" />
@@ -718,7 +853,7 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-17">Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor</h2>
+<h2 id="LABEL-20">Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor</h2>
 <p>
 <div class="figure">
   <img src="figures/proposal2.gif" alt="figures/proposal2.gif" />
@@ -731,7 +866,20 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-18">Summary</h2>
+<h2 id="LABEL-21">Applied external electric field</h2>
+<p>
+<div class="figure">
+  <img src="figures/step.jpg" alt="figures/step.jpg" />
+  <div class="caption">
+    Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-22">Summary</h2>
 
 <ul>
   <li>feram is a fast simulator for perovskite-type ferroelectric bulks and thin films</li>
@@ -747,77 +895,7 @@ feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroel
 
 
 <div class="slide">
-<h2 id="LABEL-19">Parameters (input file)</h2>
-
-<ul>
-  <li>King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)</li>
-  <li>Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)</li>
-</ul>
-<pre>#--- Method, Temperature, and mass ---------------
-method = 'md'
-   # 'md' - Molecular Dynamics with Nose-Poincare thermostat (Canonical ensemble)
-   # 'lf' - Leap Frog (Microcanonical ensemble)
-   # 'mc' - Monte Carlo
-GPa = -5.0
-kelvin_start = 350
-kelvin_goal  =  50
-kelvin_step  =  -5
-mass_amu = 39.0       # Required for MD
-Q_Nose = 1.0
-
-#--- System geometry -----------------------------
-bulk_or_film = 'bulk'
-L = 32 32 32
-a0 =  3.94         lattice constant a0 [Angstrom]
-
-#--- Time step -----------------------------------
-dt = 0.002 [ps]
-n_thermalize =  40000
-n_average    =  10000
-n_coord_freq =   5000     Write a snapshot to the disk every 5000 steps
-
-#--- On-site (Polynomial of order 4) -------------
-P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
-P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
-P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
-
-#--- Inter-site ----------------------------------
-j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
-
-#--- Elastic Constants ---------------------------
-B11 = 126.
-B12 =  44.9
-B44 =  50.3  [eV]
-
-#--- Elastic Coupling ----------------------------
-B1xx = -211.   [eV/Angstrom^2]
-B1yy =  -19.3  [eV/Angstrom^2]
-B4yz =   -7.75 [eV/Angstrom^2]
-
-#--- Dipole --------------------------------------
-init_dipo_avg = 0.00 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
-init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
-Z_star       = 9.956
-epsilon_inf   = 5.24
-</pre>
-</div>
-
-
-<div class="slide">
-<h2 id="LABEL-20">Time evolution and fluctuation</h2>
-<p>
-<div class="figure">
-  <img src="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" alt="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" />
-  <div class="caption">
-    Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
-  </div>
-</div>
-</p>
-</div>
-
-
-<div class="slide">
-<h2 id="LABEL-21">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
+<h2 id="LABEL-23">Dielectric constant can be calculated from the fluctuation of dipoles</h2>
 <p>
 <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
  <msub>
@@ -896,7 +974,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-22">---------------------------- Relaxor ----------------------------</h2>
+<h2 id="LABEL-24">---------------------------- Relaxor ----------------------------</h2>
 <p>
 Relaxors Pb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
  <mi>B</mi>
@@ -1151,7 +1229,7 @@ The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/M
 
 
 <div class="slide">
-<h2 id="LABEL-23">Frequency dependence of dielectric constant of relaxors</h2>
+<h2 id="LABEL-25">Frequency dependence of dielectric constant of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/TsurumiFig3.jpg" alt="figures/TsurumiFig3.jpg" />
@@ -1164,7 +1242,7 @@ The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/M
 
 
 <div class="slide">
-<h2 id="LABEL-24">Crystal structures of relaxors</h2>
+<h2 id="LABEL-26">Crystal structures of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig3.jpg" alt="figures/RandallBhallaFig3.jpg" />
@@ -1272,7 +1350,7 @@ The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/M
 
 
 <div class="slide">
-<h2 id="LABEL-25">Local field on Pb-site</h2>
+<h2 id="LABEL-27">Local field on Pb-site</h2>
 <p>
 Displacement of Pb is the main source of dipole moment.
 <div class="figure">
@@ -1286,7 +1364,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-26">Chemically ordered and disordered regions of relaxors</h2>
+<h2 id="LABEL-28">Chemically ordered and disordered regions of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig8.jpg" alt="figures/RandallBhallaFig8.jpg" />
@@ -1299,7 +1377,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-27">Modeling of relaxors</h2>
+<h2 id="LABEL-29">Modeling of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/DoubleWells.jpg" alt="figures/DoubleWells.jpg" />
@@ -1312,7 +1390,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-28">Snapshot of a simulation of PSN relaxor</h2>
+<h2 id="LABEL-30">Snapshot of a simulation of PSN relaxor</h2>
 <p>
 <div class="figure">
   <img src="figures/SilviaFig1.jpg" alt="figures/SilviaFig1.jpg" />
@@ -1325,7 +1403,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-29">Susceptibility tensor</h2>
+<h2 id="LABEL-31">Susceptibility tensor</h2>
 <p>
 Now you can calculate <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mrow><mrow><mi mathvariant='bold-italic'>S</mi></mrow></mrow>
@@ -1563,7 +1641,7 @@ Then, with Kramers-Kronig relation,
 
 
 <div class="slide">
-<h2 id="LABEL-30">Estimation of computational time</h2>
+<h2 id="LABEL-32">Estimation of computational time</h2>
 <p>
 32x32x32 unit cells, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi mathvariant='normal'>&Delta;</mi>

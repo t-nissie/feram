@@ -119,11 +119,12 @@ $\to$ We develope "feram" code.
 
  * Technical features
    * Fast
-     * FFTW library version 3  http://www.fftw.org/
-     * Parallelized with OpenMP
+     * FFTW library version 3  http://www.FFTW.org/
+     * Parallelized with OpenMP http://www.OpenMP.org/
    * Multi-platform
      * Linux PC
      * HITACHI SR11000 Super Technical Server
+     * SONY PLAYSTATION3 (ongoing)
    * Object oriented programming (OOP) in Fortran 2003
    * GNU autotools  http://www.gnu.org/software/autoconf/
    * Free software (GPLv3) http://loto.sf.net/feram/
@@ -147,9 +148,6 @@ $\to$ We develope "feram" code.
 # I usually use normal Linux personal comuters.
 # But you can also use feram on some supercomputers.
 # You can freely download feram from this site.
-
-
-== Employed theories in feram
 
 
 == Soft-mode displacements of perovskite type ferroelectrics <em>AB</em>O<sub>3</sub>
@@ -231,89 +229,12 @@ figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perf
 
 
 == Forces on dipoles are calculated in the reciprocal space
-figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions.
+figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions. You can reduce computational time from $O(N^2)$ to $O(N \log N)$.
 
 # Time consuming part in simulation is the calculation of forces of dipoles because
 # dipole-dipole interactions are long-range. ..... You can reduce computational time
 # from O(N^2) to O(NlogN).
 
-
-
-
-== Results: Monte Carlo (MC) vs. Molecular Dynamics (MD)
-feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroelectrics.
-
-figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
-
-# feram is a molecular dynamics program for ferroelectrics.
-#
-# This shows simulations of bulk BaTiO<sub>3</sub> with MC and MD.
-# Horizontal axis is temperature. Vertical axis is strain.
-# Compared to old Monte Carlo simulations, MD simulation steps have a physical
-# meaning of the time evolution. So, for example, Cooling and heating MD simulation
-# can show hysteresis in temperature,
-# as you may often see in textbooks of ferroelectrics.
-
-
-
-
-== Temperature dependence of polarizations of thin-film capacitors
-figures/epitDEN.jpg
-
-# These complicated figures are the calculated results for the thin-film
-# capacitors. Horizontal axes are temperature and vertical axes are
-# averaged dipole length u-z.
-# Red solid line can be considered as z-component of
-# polarization for heating-up simulation. Blue one is that for cooling.
-#
-# You can find the thickness dependent transition for heating-up simulations.
-# but no transition for cooling-down simulations.
-#
-# It can be understood there is thermally unhoppable bistability between
-# uniformly out-of-plane-polarized ferroelectric structure and
-# striped ferroelectric domain structure.
-#
-# In the next slide, I show the snapshot of this point structure.
-
-
-== Uniformly polarized structure and striped domain structure
-figures/epit-32x32-L015-D1-5.0GPa-100K.jpg
-Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of $32\times 32 \times (l=15, d=1)$. There is thermally unhoppable bistability between these two structure.
-
-# these are the horizontal slice and vertical cross-section of
-# almost unformly polarized structure and striped domain structure.
-
-
-
-== Thiner film has finer domain structure to avoid stronger depolarization field
-figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes $32\times 32 \times (l=7, 15, 31, 63, 127 and 255, d=1$). Thiner film has finer domain structure to avoid stronger depolarization field $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$. 
-
-# Here I show thickness dependence of striped domain structure.
-# We found that thiner film has finer domain
-# structure to avoid stronger depolarization field.
-
-
-
-
-== Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor
-figures/proposal2.gif (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) grow BaTiO<sub>3</sub> thin and thick thin films, (3) cover them with the metal, (4) if you use x-ray or whatever, (5) you may observe deference of fineness in their domain structures.
-
-
-
-
-
-
-
-
-
-
-== Summary
- * feram is a fast simulator for perovskite-type ferroelectric bulks and thin films
- * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
- * Phase transition of bulk ferroelectrics
- * Thin-film capacitor: perfect and imperfect short-circuited electrodes
-   * Striped domain structure is predicted
-   * An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed
 
 == Parameters (input file)
  * King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)
@@ -371,13 +292,6 @@ figures/proposal2.gif (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) gro
 
 
 
-
-
-
-
-
-
-
 == Time evolution and fluctuation
 figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
 
@@ -387,6 +301,109 @@ figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step pl
 # You can see Nose-Poincare Hamiltonian remains zero.
 
 
+
+
+
+== Results: Monte Carlo (MC) vs. Molecular Dynamics (MD)
+feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroelectrics.
+
+figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
+
+# feram is a molecular dynamics program for ferroelectrics.
+#
+# This shows simulations of bulk BaTiO<sub>3</sub> with MC and MD.
+# Horizontal axis is temperature. Vertical axis is strain.
+# Compared to old Monte Carlo simulations, MD simulation steps have a physical
+# meaning of the time evolution. So, for example, Cooling and heating MD simulation
+# can show hysteresis in temperature,
+# as you may often see in textbooks of ferroelectrics.
+
+
+== Heating-up and cooling-down simulations of ferroelectric capacitors
+Animations of holizontal slices of heating-up and cooling-down
+simulations for BaTiO3 thin-film capacitors with short-circuited
+electrodes under 1% in-plane biaxial compressive strain.
+The +z-polarized and &minus;z-polarized sites are
+denoted by red open squares and blue filled squares, respectively.
+Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
+ * (a) l=15, d=1
+   * heating-up   epit-40x40-L015-D1-5.0GPa-heating-animation.gif
+   * cooling-down epit-40x40-L015-D1-5.0GPa-cooling-animation.gif
+ * (b) l=31, d=1
+   * heating-up   epit-40x40-L031-D1-5.0GPa-heating-animation.gif
+   * cooling-down epit-40x40-L031-D1-5.0GPa-cooling-animation.gif
+ * (c) l=127, d=1
+   * heating-up   epit-40x40-L127-D1-5.0GPa-heating-animation.gif
+   * cooling-down epit-40x40-L127-D1-5.0GPa-cooling-animation.gif
+ * (d) l=255, d=1
+   * heating-up   (coming soon)
+   * cooling-down epit-40x40-L255-D1-5.0GPa-cooling-animation.gif
+ * (e) l=32, d=0
+   * heating-up   epit-40x40-L032-D0-5.0GPa-heating-animation.gif
+   * cooling-down epit-40x40-L032-D0-5.0GPa-cooling-animation.gif
+
+
+== Temperature dependence of polarizations of thin-film capacitors
+figures/epitDEN.jpg
+
+# These complicated figures are the calculated results for the thin-film
+# capacitors. Horizontal axes are temperature and vertical axes are
+# averaged dipole length u-z.
+# Red solid line can be considered as z-component of
+# polarization for heating-up simulation. Blue one is that for cooling.
+#
+# You can find the thickness dependent transition for heating-up simulations.
+# but no transition for cooling-down simulations.
+#
+# It can be understood there is thermally unhoppable bistability between
+# uniformly out-of-plane-polarized ferroelectric structure and
+# striped ferroelectric domain structure.
+#
+# In the next slide, I show the snapshot of this point structure.
+
+
+== Uniformly polarized structure and striped domain structure
+figures/epit-32x32-L015-D1-5.0GPa-100K.jpg Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of $32\times 32 \times (l=15, d=1)$. There is thermally unhoppable bistability between these two structure.
+
+# these are the horizontal slice and vertical cross-section of
+# almost unformly polarized structure and striped domain structure.
+
+
+== Epitaxially constrained film vs. "free" film
+figures/epit-vs-free.jpg Schematic comparison between the epitaxially constrained film and the ``free'' film. In the epitaxially constrained film, switching may have to climb over a potential barrier, but, in the ``free'' film, dipoles can be easily rotated and switching can go around a valley of the potential.
+
+
+
+== Thiner film has finer domain structure to avoid stronger depolarization field
+figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes $32\times 32 \times (l=7, 15, 31, 63, 127 and 255, d=1$). Thiner film has finer domain structure to avoid stronger depolarization field $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$. 
+
+# Here I show thickness dependence of striped domain structure.
+# We found that thiner film has finer domain
+# structure to avoid stronger depolarization field.
+
+
+
+== Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor
+figures/proposal2.gif (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) grow BaTiO<sub>3</sub> thin and thick thin films, (3) cover them with the metal, (4) if you use x-ray or whatever, (5) you may observe deference of fineness in their domain structures.
+
+
+
+== Applied external electric field
+figures/step.jpg Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
+
+
+
+
+
+
+
+== Summary
+ * feram is a fast simulator for perovskite-type ferroelectric bulks and thin films
+ * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
+ * Phase transition of bulk ferroelectrics
+ * Thin-film capacitor: perfect and imperfect short-circuited electrodes
+   * Striped domain structure is predicted
+   * An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed
 
 
 
@@ -528,10 +545,18 @@ So, I am planning to calculate and compare $\chi_{\alpha\beta}(q,\omega)$ for $\
 require 'rubygems'
 require 'ulmul'
 u=Ulmul.new(1..0)
-u.subs_rules << [/(\S*\/?\.(jpg|gif))\s*(.*)$/, '<div class="figure">
+u.subs_rules << [  /(heating-up)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
+u.subs_rules << [/(cooling-down)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
+u.subs_rules << [/(\S*\/?\.jpg)\s*(.*)$/, '<div class="figure">
   <img src="\1" alt="\1" />
   <div class="caption">
-    \3
+    \2
+  </div>
+</div>']
+u.subs_rules << [/(figures\/proposal2\.gif)\s*(.*)$/, '<div class="figure">
+  <img src="\1" alt="\1" />
+  <div class="caption">
+    \2
   </div>
 </div>']
 
