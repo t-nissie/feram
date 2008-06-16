@@ -39,5 +39,5 @@ puts u.html(["style.css"],[],"Takeshi Nishimatsu")
 
 # Local variables:
 #   mode: RD
-#   compile-command: "ruby README README > index.html"
+#   compile-command: "ruby index.txt index.txt > index.html"
 # End:
