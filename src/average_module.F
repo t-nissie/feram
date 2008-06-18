@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2008-02-20 17:00:14 takeshi>
+! Time-stamp: <2008-06-12 10:21:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -98,8 +98,8 @@ contains
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
 
     write(UNIT_AVG,"(f6.1,3f9.5,17e13.5)"),&
-         p%kelvin, p%external_E_field(:), avg%total_energy, avg%e2, avg%strain(:),&
-         avg%u(:), avg%uu(:)
+         p%kelvin, p%external_E_field(1:3), avg%total_energy, avg%e2, avg%strain(1:6),&
+         avg%u(1:3), avg%uu(1:6)
 
     close(UNIT_AVG)
   end subroutine divide_and_write_Average
