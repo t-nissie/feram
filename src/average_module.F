@@ -1,11 +1,12 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2008-06-12 10:21:57 takeshi>
+! Time-stamp: <2008-06-26 16:50:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
 module Average_module
+  use Energy_module
   type Average_type
-     real*8 total_energy
+     type(Energy_type) energy    
      real*8 e2
      real*8 strain(6)
      real*8 u(3)
@@ -18,7 +19,7 @@ contains
     !--- arguments -------------------------------------
     type(Average_type), intent(inout) :: avg
     !--- END of variable definitions -------------------
-    avg%total_energy = 0.0d0
+    avg%energy       = Energy_type(0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0)
     avg%e2           = 0.0d0
     avg%strain(:)    = 0.0d0
     avg%u(:)         = 0.0d0
@@ -28,7 +29,6 @@ contains
   subroutine add_to_Average(p,c,e,avg) ! We use p implicitly. Don't worry about compile warning on it.
     use Param_module
     use Coord_module
-    use Energy_module
     implicit none
     !--- arguments -------------------------------------
     type(Param_type),   intent(in)    :: p
@@ -40,7 +40,7 @@ contains
     real*8 u_tmp(3)
     character(90) message
     !--- END of variable definitions -------------------
-    avg%total_energy    = avg%total_energy  + e%total
+    avg%energy          = avg%energy        + e
     avg%e2              = avg%e2            + e%total**2
     avg%strain(:)       = avg%strain(:)     + c%strain(:)
 
@@ -78,10 +78,10 @@ contains
 
     if (p%n_average.eq.0) return
 
-    avg%total_energy    = avg%total_energy    / p%n_average / p%N
-    avg%e2              = avg%e2              / p%n_average / p%N
+    avg%energy    = div_energy(avg%energy, p%n_average*p%N)
+    avg%e2        = avg%e2        /       (p%n_average*p%N)
 
-    avg%strain(:)       = avg%strain(:)       / p%n_average
+    avg%strain(:) = avg%strain(:) / p%n_average
 
     if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
        avg%u(:)  = avg%u(:)  /p%n_average /(p%Lx*p%Ly*p%film_thickness)
@@ -97,9 +97,19 @@ contains
     write(fn_avg,'(a,a)') trim(p%filename), '.avg'
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
 
-    write(UNIT_AVG,"(f6.1,3f9.5,17e13.5)"),&
-         p%kelvin, p%external_E_field(1:3), avg%total_energy, avg%e2, avg%strain(1:6),&
-         avg%u(1:3), avg%uu(1:6)
+    write(UNIT_AVG,"(f6.1,3f9.5,26e13.5)"),&
+         p%kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
+         avg%energy%dipo_kinetic    ,&
+         avg%energy%dipole_dipole   ,&
+         avg%energy%dipole_E_field  ,&
+         avg%energy%unharmonic      ,&
+         avg%energy%homo_strain     ,&
+         avg%energy%homo_coupling   ,&
+         avg%energy%inho_strain     ,&
+         avg%energy%inho_coupling   ,&
+         avg%energy%total           ,&
+         avg%energy%H_Nose_Poincare ,&
+         avg%e2
 
     close(UNIT_AVG)
   end subroutine divide_and_write_Average

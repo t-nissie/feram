@@ -1,14 +1,14 @@
 ! energy.F -*-f90-*-
-! Time-stamp: <2007-12-14 00:11:28 takeshi>
+! Time-stamp: <2008-06-26 16:30:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
   type Energy_type
-     ! energy per unit cell   ! calculated in
+                              ! calculated in
      real*8 dipo_kinetic      ! leapfrog.F or nose-poincare.F, initialize in initialize_dipoR.F
      real*8 dipole_dipole     ! subroutine write_Energy() below
      real*8 dipole_E_field    ! -m.E, dVddi_E_field.F
-     real*8 unharmonic        ! unharmonic.F
+     real*8 unharmonic        ! dVddi-unharmonic.F
      real*8 homo_strain       ! optimize-homo-strain.F
      real*8 homo_coupling     ! optimize-homo-strain.F
      real*8 inho_strain       ! optimize-inho-strain.F
@@ -18,9 +18,51 @@ module Energy_module
      real*8 H_Nose_Poincare
   end type Energy_type
 !
+interface operator(+)
+   module procedure add_Energy
+end interface
+
 contains
-  real*8 function sum_potential_energies(e)
+  function add_Energy(a,b)
     implicit none
+    type(Energy_type)             :: add_Energy
+    type(Energy_type), intent(in) :: a, b
+
+    add_Energy%dipo_kinetic    = a%dipo_kinetic    + b%dipo_kinetic
+    add_Energy%dipole_dipole   = a%dipole_dipole   + b%dipole_dipole
+    add_Energy%dipole_E_field  = a%dipole_E_field  + b%dipole_E_field
+    add_Energy%unharmonic      = a%unharmonic      + b%unharmonic
+    add_Energy%homo_strain     = a%homo_strain     + b%homo_strain
+    add_Energy%homo_coupling   = a%homo_coupling   + b%homo_coupling
+    add_Energy%inho_strain     = a%inho_strain     + b%inho_strain
+    add_Energy%inho_coupling   = a%inho_coupling   + b%inho_coupling
+    add_Energy%total           = a%total           + b%total
+
+    add_Energy%H_Nose_Poincare = a%H_Nose_Poincare + b%H_Nose_Poincare
+  end function add_Energy
+
+  function div_Energy(a,n)
+    implicit none
+    type(Energy_type)             :: div_Energy
+    type(Energy_type), intent(in) :: a
+    integer, intent(in)           :: n
+
+    div_Energy%dipo_kinetic    = a%dipo_kinetic    / n
+    div_Energy%dipole_dipole   = a%dipole_dipole   / n
+    div_Energy%dipole_E_field  = a%dipole_E_field  / n
+    div_Energy%unharmonic      = a%unharmonic      / n
+    div_Energy%homo_strain     = a%homo_strain     / n
+    div_Energy%homo_coupling   = a%homo_coupling   / n
+    div_Energy%inho_strain     = a%inho_strain     / n
+    div_Energy%inho_coupling   = a%inho_coupling   / n
+    div_Energy%total           = a%total           / n
+
+    div_Energy%H_Nose_Poincare = a%H_Nose_Poincare / n
+  end function div_Energy
+
+  function sum_potential_energies(e)
+    implicit none
+    real*8 :: sum_potential_energies
     type(Energy_type), intent(in) :: e
     sum_potential_energies &
          = e%dipole_dipole &
