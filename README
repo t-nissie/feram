@@ -343,7 +343,7 @@ calculations and the other calculations.
 
 == Copying
 === feram
-Copyright (C) 2007 Takeshi Nishimatsu
+Copyright (C) 2007 2008 Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
@@ -354,18 +354,34 @@ For more detail, see COPYING.
 
 The author is grateful if you would kindly refer the
 name of this program and cite our articles,
-[Phys. Rev. Lett., vol.99, p.077601 (2007)] and
-[]
-in your paper.
+[Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
+Phys. Rev. Lett. 99 (2007) 077601] and [Takeshi Nishimatsu, Umesh V. Waghmare,
+Yoshiyuki Kawazoe, and David Vanderbilt: arXiv:0804.1853] in your papers.
 
 === BLAS and LAPACK
 Files under the directory libblaslapack are coming from BLAS and LAPACK
-packages http://www.netlib.org/lapack/. See libblaslapack/COPYING.
+packages http://www.netlib.org/lapack/ .  See libblaslapack/COPYING.
 
 === Cited figures
-Authors and/or publishers of the papers have copyrights for following cited figures.
- * doc/figures/BaTiO3-abc-T-dependence.eps and doc/figures/BaTiO3-abc-T-dependence.jpg are cited from [].
- * Fong.jpg
+Authors and/or publishers of the papers have their copyrights for the following cited figures.
+ * doc/figures/BaTiO3-abc-T-dependence.eps and doc/figures/BaTiO3-abc-T-dependence.jpg
+   are cited from [H. E. Kay and P. Vousden: Philos. Mag. 40, 1019  (1949)].
+ * doc/figures/Fong.jpg and doc/figures/FongScience.eps are cited from
+   [Dillon D. Fong et al.: Science 304, 1650 (2004)].
+ * doc/figures/J.F.Scott.Fig.1.1.a.eps,  doc/figures/J.F.Scott.Fig.1.1.ae.eps
+   doc/figures/J.F.Scott.Fig.1.1.ae.jpg, doc/figures/J.F.Scott.Fig.1.1.e.eps are
+   cited from [J. F. Scott: Ferroelectric Memories (Springer-Verlag,
+   Berlin Heidelberg, 2000)].
+ * doc/figures/MC-vs-MD.eps, doc/figures/MC-vs-MD.jpg, doc/figures/MC-vs-MD.obj, and
+   doc/figures/PRBv52p6301-FIG3.jpg are cited from [W. Zhong, D. Vanderbilt, and
+   K. M. Rabe: Phys. Rev. B 52, 6301 (1995)].
+ * doc/figures/RandallBhallaFig3.jpg and doc/figures/RandallBhallaFig8.jpg  are
+   cited from [C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. 29, 327 (1990)].
+ * doc/figures/SilviaFig1.jpg is cited from [Silvia Tinte, B. P. Burton,
+   Eric Cockayne and U. V. Waghmare: Phys. Rev. Lett. 97, 137601 (2006)].
+ * doc/figures/TsurumiFig3.eps and doc/figures/TsurumiFig3.jpg are cited from
+   [Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya. and Masaki Daimon:
+   Jpn. J. Appl. Phys. 33, 1959 (1994)].
 
 == Author
 Takeshi Nishimatsu
@@ -390,7 +406,9 @@ http://loto.sourceforge.net/feram/ is hosted by SourceForge.net .
 require 'rubygems'
 require 'ulmul'
 u=Ulmul.new()
-u.subs_rules << [/(\S*\/?\.jpg)(\s|$)/,      '<img src="\1" alt="\1" />\2']
+u.subs_rules << [/logo\.jpg/,                '<img src="logo.jpg" alt="feram logo mark" />']
+u.subs_rules << [/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2']
+u.subs_rules << [/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2']
 u.subs_rules << [/(\S*\/?\.F)(\s|$)/,        '<a href="\1">\1</a>\2']
 u.subs_rules << [/(\S*\/?\.pdf)(\s|$)/,      '<a href="\1">\1</a>\2']
 u.subs_rules << [/(\S*\/?COPYING)(\s|$|\.)/, '<a href="\1">\1</a>\2']
