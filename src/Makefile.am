@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2008-02-01 10:15:52 takeshi>
+# Time-stamp: <2008-07-05 17:29:11 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -50,7 +50,8 @@ plot.gp \
 slicer.rb \
 splot.gp \
 01example-BaTiO3-epit-hysteresis-loop \
-02example-BaTiO3-potential-surface
+02example-BaTiO3-potential-surface \
+03example-BaTiO3-bulk-phase-transition
 
 ../libblaslapack/libblaslapack.a:
 	cd ../libblaslapack && $(MAKE)
