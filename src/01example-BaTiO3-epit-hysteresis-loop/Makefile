@@ -1,5 +1,5 @@
 #-*-Makefile-*- for examples of feram
-# Time-stamp: <2007-12-27 18:12:36 takeshi>
+# Time-stamp: <2008-07-07 19:49:43 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 feram.log: externalE.sh ../feram
@@ -10,5 +10,5 @@ externalE.sh.ps: externalE.sh Makefile
 	--borders=off -f 9.3 --medium=letter --pretty-print=shell -o - $< > $@
 
 clean:
-	rm -f *.coord *.dat core* *.eps *.param *.avg *.log *.out *.err *.ps *.pdf \
+	rm -f *.coord *.dat core* *.param externalE[12345]*.avg *.log *.out *.err *.ps \
 	externalE???K???-* externalE???K???+* FILES
