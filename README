@@ -30,6 +30,8 @@ Pronunciation of "feram": Ef-Ee-RaMu
 
 ==== Technically
  * FFTW library version 3  http://www.fftw.org/
+   * On Debian or Ubuntu GNU/Linux, FFTW can be installed
+     with `apt-get install libfftw3-dev`
  * Parallelized with OpenMP
  * Object oriented programming (OOP) in Fortran 2003
  * GNU autotools  http://www.gnu.org/software/autoconf/
@@ -46,8 +48,8 @@ Pronunciation of "feram": Ef-Ee-RaMu
  * GNU make (You cannot use BSD make.)  http://www.gnu.org/software/make/
  * FFTW3 library  http://www.fftw.org/
  * Fortran 90 compiler
-   * Intel Fortran Compiler for Linux (ifort, version 10.0.025 or higher)  http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
+   * Intel Fortran Compiler for GNU/Linux (ifort, version 10.0.025 or higher)  http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
    * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server  http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
 
 ===  Notice on PGI Fortran
@@ -58,14 +60,14 @@ PGI Fortran (pgf95): http://www.pgroup.com/
 === Preferables
  * gnuplot (version 4.2 or higher)
  * Ruby (version 1.8.6 or higher)
- * autoconf (version 2.59 or higher)
+ * autoconf (version 2.61 or higher)
  * automake (version 1.10 higher)
 
 === Quick compilation
   $ tar zxf feram-X.YY.ZZ.tar.gz
   $ cd feram-X.YY.ZZ
-  $ mkdir foo
-  $ cd foo
+  $ mkdir Linux-i686-gfortran-4.2.2
+  $ cd Linux-i686-gfortran-4.2.2
   $ ../configure --help
   $ ../configure
   $ cd src
@@ -87,12 +89,13 @@ feram runs on 1 node (16 CPUs) of SR11000 effectively.
   % make
 Becasue SR11000 and its Fortran compiler cannot treat command arguments,
 you have to specify input file(s) in FILES file. For example,
- 2
- cooling
- heating
+ 3
+ foo
+ bar
+ baz
 1st line: number of input file(s). 2nd- line filename(s).
 
-==== x86_64 Linux
+==== x86_64 GNU/Linux
 On x86_64, i.e. AMD64 and Intel 64, feram may be compiled with gfortran,
 Intel Fortran (ifort), and PGI Fortran (pgf95). For example,
   $ FC=gfortran ../configure
@@ -105,9 +108,9 @@ environment variables.
   $ FC=pgf95 LDFLAGS=-L/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/lib CPPFLAGS=-I/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/include ../configure
   $ make
   $ cd examples/BaTiO3-bulk-16x16x16-local.field-new-format/
-  $ OMP_NUM_THREADS=6 ../../pgf95/src/feram cooling > feram.log &
+  $ OMP_NUM_THREADS=6 ../../pgf95/src/feram foo123 > feram.log &
 
-==== IA-64 Linux (appc in IMR)
+==== IA-64 GNU/Linux (appc in IMR)
 On IA-64, feram may be compiled with gfortran or Intel Fortran (ifort). For example:
   % tar zxf feram-X.YY.ZZ.tar.gz
   % cd feram-X.YY.ZZ
@@ -116,19 +119,16 @@ On IA-64, feram may be compiled with gfortran or Intel Fortran (ifort). For exam
   % env FC=ifort LDFLAGS=-L/home/t-nissie/ia64-Linux/lib CPPFLAGS=-I/home/t-nissie/ia64-Linux/include ../configure
   % cd src
   % make
-  % cp ../../examples/BaTiO3-bulk-32x32x32-new-format/cooling .
-  % ./feram cooling
-  % env OMP_NUM_THREADS=2 ./feram cooling
 
-==== x86 32-bit Linux
-On x86 32-bit Linux, feram may be compiled with gfortran and Intel Fortran (ifort),
+==== x86 32-bit GNU/Linux
+On x86 32-bit GNU/Linux, feram may be compiled with gfortran and Intel Fortran (ifort),
 and PGI Fortran (pgf95).
 
 == Execution
 feram can read parameters from the standard input (stdin)
 as well as from the file(s) given by the argument(s).
   $ feram < input_file
-  $ feram cooling heating
+  $ feram foo bar baz
 
 == Input files
 === parameter file
@@ -297,34 +297,34 @@ If feram cannot find both ionic.configuration and local.field,
 it will set local.field to ZERO.
 
 == Output files
-If you execute the feram like `feram cooling`,
-filenames of output files are starting from 'cooling',
-e.g. cooling.avg, cooling.320K0050000.coord,
-cooling.dipole-dipole-long.dat, etc.
+If you execute the feram like `feram foo123`,
+filenames of output files are starting from 'foo123',
+e.g. foo123.avg, foo123.320K0050000.coord,
+foo123.dipole-dipole-long.dat, etc.
 
 === Standard output (stdout)
 To stdout, feram reports the energies of every iterations.
 src/plot.gp can plot the energies:
- $ feram cooling > feram.log
+ $ feram foo123 > feram.log
  $ gnuplot plot.gp
 
-=== cooling.avg
+=== foo123.avg
 Averages for each temperature.
 
-=== cooling.tttKnnnnnnn.coord
+=== foo123.tttKnnnnnnn.coord
 Snapshot of dipoles at ttt Kelvin and nnnnnnn-th iteration.
 This file can be visualized with slice.rb (Ruby script) and
 cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
 (Bourne Shell scripts). cross-section-p.sh and cross-section-dVddi.sh
 are symbolic links or copy of cross-section-q.sh.
 
-=== cooling.dipole-dipole-long+short.dat
+=== foo123.dipole-dipole-long+short.dat
 
-=== cooling.dipole-dipole-long.dat
+=== foo123.dipole-dipole-long.dat
 
-=== cooling.dipole-dipole-short.dat
+=== foo123.dipole-dipole-short.dat
 
-=== cooling.inhomo-K.dat
+=== foo123.inhomo-K.dat
 
 === local.field file
 The calculated local field from the given ionic configuration (ionic.configuration
@@ -384,8 +384,7 @@ Authors and/or publishers of the papers have their copyrights for the following 
    Jpn. J. Appl. Phys. 33, 1959 (1994)].
 
 == Author
-Takeshi Nishimatsu
-(t-nissie{at}imr.tohoku.ac.jp or takeshi{at}physics.rutgers.edu)
+Takeshi Nishimatsu t-nissie{at}imr.tohoku.ac.jp
 
 
 == Acknowledgements
