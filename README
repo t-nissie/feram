@@ -331,6 +331,11 @@ The calculated local field from the given ionic configuration (ionic.configurati
 file) is stored in this file. This file will be reloaded in consequent temperature
 calculations and the other calculations.
 
+
+== Examples
+=== Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>
+example: doc/figures/bulk-two-box.jpg Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
+
 == Mailing list
  * Description: Discussions and announcements of loto, feram and compasses programs
  * Subscribe: https://lists.sourceforge.net/lists/listinfo/loto-feram-compasses-ml
@@ -406,6 +411,12 @@ require 'rubygems'
 require 'ulmul'
 u=Ulmul.new()
 u.subs_rules << [/logo\.jpg/,                '<img src="logo.jpg" alt="feram logo mark" />']
+u.subs_rules << [/example: (doc\/figures\/\S*\.jpg) (.*)$/, '<div class="figure">
+  <img src="\1" alt="\1" />
+  <div class="caption">
+    \2
+  </div>
+</div>']
 u.subs_rules << [/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2']
 u.subs_rules << [/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2']
 u.subs_rules << [/(\S*\/?\.F)(\s|$)/,        '<a href="\1">\1</a>\2']
