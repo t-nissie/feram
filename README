@@ -30,8 +30,8 @@ Pronunciation of "feram": Ef-Ee-RaMu
 
 ==== Technically
  * FFTW library version 3  http://www.fftw.org/
-   * On Debian or Ubuntu GNU/Linux, FFTW can be installed
-     with `apt-get install libfftw3-dev`
+   * On Debian GNU/Linux, FFTW can be installed with `apt-get install fftw3 fftw3-dev fftw3-doc`.
+   * On Ubuntu GNU/Linux, FFTW can be installed with `apt-get install libfftw3 libfftw3-dev libfftw3-doc`.
  * Parallelized with OpenMP
  * Object oriented programming (OOP) in Fortran 2003
  * GNU autotools  http://www.gnu.org/software/autoconf/
