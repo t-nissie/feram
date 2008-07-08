@@ -207,13 +207,6 @@ snapshot is taken at the end of the MD at each temperature.
   n_average    = 10000
   n_coord_freq = 50000
 
-===== n_external_E_switch_on
-At n_external_E_switch_on-th time-step, the external electric field is switched on.
-  n_thermalize           = 50000
-  n_average              = 10000
-  n_coord_freq           = 20000
-  n_external_E_switch_on = 30000
-
 ===== external_E_field
 Vector of the external electric field in the unit of [V/Angstrom].
   external_E_field = 0.00 0.00 -0.01
@@ -223,8 +216,6 @@ Frequency of external electric field.
 If it is zero, the constant electric field will be applied.
 (f>0.0 is not implemented yet.)
   external_E_field_frequency = 0.0
-
-
 
 ===== P_kappa2, P_alpha, P_gamma
 Coefficients for the 4-th order polynomial.
@@ -259,6 +250,10 @@ Effective charge per site.
 
 ===== epsilon_inf
   epsilon_inf   = 5.24
+
+===== kappa
+This is for debug. Arbitrary kappa for Ewald summation in src/dipole-dipole-long-range.F.
+  kappa = 0.15
 
 ===== defect_position, defect_u
 Position and u of a defect.
@@ -333,8 +328,14 @@ calculations and the other calculations.
 
 
 == Examples
+=== Energies vs MD step in cooling simulation
+example: doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energies vs MD steps in cooling simulation.
+=== Temperature dependence of strain and susceptibility of bulk BaTiO<sub>3</sub>
+example: doc/figures/strain-susceptibility.jpg Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Susceptibilities are calculated from fluctuations of dipoles.
 === Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>
 example: doc/figures/bulk-two-box.jpg Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
+== Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
+example: doc/figures/epit-vs-free-hysteresis-box.jpg Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and (b) "free" films of various thickness <i>l</i> and with dead layer <i>d</i> at 100 K.
 
 == Mailing list
  * Description: Discussions and announcements of loto, feram and compasses programs
@@ -389,7 +390,7 @@ Authors and/or publishers of the papers have their copyrights for the following 
    Jpn. J. Appl. Phys. 33, 1959 (1994)].
 
 == Author
-Takeshi Nishimatsu t-nissie{at}imr.tohoku.ac.jp
+Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 
 
 == Acknowledgements
