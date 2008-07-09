@@ -75,8 +75,9 @@ PGI Fortran (pgf95): http://www.pgroup.com/
   $ ls -l feram
   $ cp -r ../../src/01example-BaTiO3-epit-hysteresis-loop .
   $ cd 01example-BaTiO3-epit-hysteresis-loop
-  $ ./externalE.sh
-  $ gnuplot hysteresis.gp
+  $ ./externalE.sh         # test run
+  $ gnuplot hysteresis.gp  # plot a hysteresis loop
+  $ gv hysteresis.gp       # preview
 
 === Available platforms and compilers
 ==== HITACHI SR11000 with xf90 (super1 in IMR)
@@ -87,7 +88,7 @@ feram runs on 1 node (16 CPUs) of SR11000 effectively.
   % cd SR11000-xf90
   % env FC=xf90 ../configure --host=SR11000
   % make
-Becasue SR11000 and its Fortran compiler cannot treat command arguments,
+Because SR11000 and its Fortran compiler cannot treat command arguments,
 you have to specify input file(s) in FILES file. For example,
  3
  foo
