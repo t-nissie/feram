@@ -256,6 +256,12 @@ Effective charge per site.
 This is for debug. Arbitrary kappa for Ewald summation in src/dipole-dipole-long-range.F.
   kappa = 0.15
 
+===== plot_dispersion
+If
+  plot_dispersion = .true.
+data files for plotting dispersion relation will be written. Deafault is .false..
+
+
 ===== defect_position, defect_u
 Position and u of a defect.
   defect_position = 16 16 16
@@ -335,7 +341,7 @@ example: doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energies vs M
 example: doc/figures/strain-susceptibility.jpg Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Susceptibilities are calculated from fluctuations of dipoles.
 === Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>
 example: doc/figures/bulk-two-box.jpg Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
-== Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
+=== Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
 example: doc/figures/epit-vs-free-hysteresis-box.jpg Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and (b) "free" films of various thickness <i>l</i> and with dead layer <i>d</i> at 100 K.
 
 == Mailing list
