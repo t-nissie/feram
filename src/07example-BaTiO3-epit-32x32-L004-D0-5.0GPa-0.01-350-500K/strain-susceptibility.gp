@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # strain-susceptibility.gp
-# Time-stamp: <2008-07-07 12:57:43 t-nissie>
+# Time-stamp: <2008-07-14 17:43:41 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set terminal postscript port enhanced color dashed "Times-Roman" 20
@@ -67,7 +67,7 @@ plot 'cooling/cooling.avg' using 1:(C*($16-N*$13**2)/$1) title '{/Symbol e}_{/Ti
 
 set nomultiplot
 set output
-!ps2pdf -sPAPERSIZE=letter strain-susceptibility.eps > strain-susceptibility.pdf
+!ps2pdf -sPAPERSIZE=a4 strain-susceptibility.eps > strain-susceptibility.pdf
 
 #Local variables:
 #  compile-cqommand: "gnuplot strain-susceptibility.gp && kill -HUP `pgrep gv`"

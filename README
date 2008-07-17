@@ -261,7 +261,6 @@ If
   plot_dispersion = .true.
 data files for plotting dispersion relation will be written. Deafault is .false..
 
-
 ===== defect_position, defect_u
 Position and u of a defect.
   defect_position = 16 16 16
