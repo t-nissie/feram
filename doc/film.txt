@@ -12,6 +12,20 @@ Download: http://loto.sf.net/feram/
 # You can download the code from here.
 
 
+== How to use Slidy
+This presentation is written with Slidy http://www.w3.org/Talks/Tools/Slidy/ .
+ * Advance to next slide with mouse click or [Space]
+ * Move forward/backward between slides with [Left], [Right], [Pg Up] and [Pg Dn] keys
+ * [Home] key for first slide, [End] key for last slide
+ * The [C] key for an automatically generated table of contents (or click on "contents" on the toolbar)
+ * Function [F11] toggles between the full screen mode and the normal mode
+ * [F] key toggles the display of the tool bar below.
+ * [A] key toggles the presentation mode and the printing mode
+ * [S] and [B] keys can control the size of fonts
+Use Firefox web browser and put some mathematical fonts
+in your $HOME/.fonts/ directory to view equations correctly.
+For more detail, See http://www.mozilla.org/projects/mathml/fonts/ .
+
 == Introduction: What are ferroelectrics?
 figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT), etc..
 
