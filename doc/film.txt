@@ -1,6 +1,7 @@
 =begin
-= Fast Molecular-Dynamics Simulation for Ferroelectric Thin-Film Capacitors Using a First-Principles Effective Hamiltonian
-Takeshi Nishimatsu
+= feramコードによるBaTiO3強誘電体薄膜キャパシターのヒステリシス・ループの分子動力学計算
+#Fast Molecular-Dynamics Simulation for Ferroelectric Thin-Film Capacitors Using a First-Principles Effective Hamiltonian
+西松毅 (Takeshi Nishimatsu)
 
 Preprint: http://arXiv.org/abs/0804.1853
 
@@ -14,6 +15,7 @@ Download: http://loto.sf.net/feram/
 
 == How to use Slidy
 This presentation is written with Slidy http://www.w3.org/Talks/Tools/Slidy/ .
+Use Firefox web browser.
  * Advance to next slide with mouse click or [Space]
  * Move forward/backward between slides with [Left], [Right], [Pg Up] and [Pg Dn] keys
  * [Home] key for first slide, [End] key for last slide
@@ -22,9 +24,7 @@ This presentation is written with Slidy http://www.w3.org/Talks/Tools/Slidy/ .
  * [F] key toggles the display of the tool bar below.
  * [A] key toggles the presentation mode and the printing mode
  * [S] and [B] keys can control the size of fonts
-Use Firefox web browser and put some mathematical fonts
-in your $HOME/.fonts/ directory to view equations correctly.
-For more detail, See http://www.mozilla.org/projects/mathml/fonts/ .
+
 
 == Introduction: What are ferroelectrics?
 figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT), etc..
@@ -46,6 +46,10 @@ figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTi
 # you will not see the domain structure like this.
 # In other words, the domain structure is formed to avoid
 # depolarization field induced by surface charges.
+
+
+== Domain structure is comming from finite structure
+figures/single2striped.jpg Depolarization field raises energy.
 
 
 == Background: Ferroelectric thin films
@@ -167,7 +171,7 @@ $\to$ We develope "feram" code.
 == Soft-mode displacements of perovskite type ferroelectrics <em>AB</em>O<sub>3</sub>
 King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994): Parametrization of coupling between soft-mode displacement and strains.
 
-figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
+figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After Hashimoto, Nishimatsu et al.: Jpn. J. Appl. Phys. Vol.43 p.6785 (2004).
 
 # feram can simulate Perovskite type ferroelectrics which have ABO3 formula.
 # In perovskite type ferroelectrics ABO$_3$, atomic displacements 
@@ -226,6 +230,65 @@ Eq. 1
 # We solve this Hamiltonian with Molecular Dynamics.
 
 
+== Self potential of a local dipole
+Eq. 1
+    V^{\rm self}(\bm{u}_i)=\kappa_2 u_i^2 + \alpha u_i^4 + \gamma(u_{iy}^2u_{iz}^2+u_{iz}^2u_{ix}^2+u_{ix}^2u_{iy}^2)
+/Eq.
+
+Eq. 1
+    u_i^2=u_{ix}^2 + u_{iy}^2 + u_{iz}^2
+/Eq.
+
+figures/fourth.jpg Double well.
+
+
+== Dipole-dipole interaction
+Long-range:
+Eq. 1
+    V^{\rm dpl}(\{\bm{u}\}) = 
+    \frac{1}{2}\sum_{i=1}^N \sum_\alpha \sum_{j=1}^N \sum_\beta
+    u_\alpha(\bm{R}_i) \Phi_{\alpha\beta}(\bm{R}_{ij}) u_\beta(\bm{R}_j),
+/Eq.
+
+Eq. 2
+     \Phi_{\alpha\beta}(\bm{R}_{ij})= \frac{Z^{*2}}{\epsilon_\infty}\sum_{\bm{n}}{}'
+     \frac{\delta_{\alpha\beta} - 3(\widehat{\bm{R}_{ij}+\bm{n}})_\alpha(\widehat{\bm{R}_{ij}+\bm{n}})_\beta}{|{\bm{R}_{ij}+\bm{n}}|^3},
+/Eq.
+
+$\bm{n}$ is the supercell lattice vector:
+Eq. 3
+     n_\alpha = \cdots, -2{L_\alpha} a_0, -{L_\alpha} a_0, 0, {L_\alpha} a_0, 2{L_\alpha} a_0,\cdots 
+/Eq.
+
+Short-range:
+Eq. 4
+     V^{\rm shrt}(\{\bm{u}\})=
+     \frac{1}{2}\sum_{i=1}^N \sum_\alpha \sum_j^{\rm 3nn} \sum_\beta
+     u_\alpha(\bm{R}_i) \,J_{ij,\alpha\beta}\, u_\beta(\bm{R}_j)
+/Eq.
+$J_{ij,\alpha\beta} = J_k$: Short-range interaction matrix ($k=1,\cdots,7$)
+
+
+
+== Forces on dipoles are calculated in the reciprocal space
+figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions. You can reduce computational time from $O(N^2)$ to $O(N \log N)$.
+
+# Time consuming part in simulation is the calculation of forces of dipoles because
+# dipole-dipole interactions are long-range. ..... You can reduce computational time
+# from O(N^2) to O(NlogN).
+
+== "Optical phonon" dispersion
+figures/bulk32x32x32.dipole-dipole-long.energy.jpg Only with dipole-dipole interaction, the minimum is M point.
+
+figures/bulk32x32x32.dipole-dipole-long+short.energy.jpg By introducing short-range interaction, the minimum become $\Gamma$ point.
+
+figures/bulk32x32x32.dipole-dipole-long+short.jpg "Optical phonon" dispersion
+
+figures/sc.BZ.jpg First Brillouin zone for simple cubic crystals.
+
+
+
+
 == Boundary condition for capacitors
 figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b). In (a) depolarization field $E_{\rm d}=0$, but in (b) $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$.
 
@@ -242,14 +305,6 @@ figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perf
 # you can automatically simulate damaged or imperfect electrodes.
 
 
-== Forces on dipoles are calculated in the reciprocal space
-figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions. You can reduce computational time from $O(N^2)$ to $O(N \log N)$.
-
-# Time consuming part in simulation is the calculation of forces of dipoles because
-# dipole-dipole interactions are long-range. ..... You can reduce computational time
-# from O(N^2) to O(NlogN).
-
-
 == Parameters (input file)
  * King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)
  * Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)
@@ -260,9 +315,7 @@ figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast F
     # 'lf' - Leap Frog (Microcanonical ensemble)
     # 'mc' - Monte Carlo
  GPa = -5.0
- kelvin_start = 350
- kelvin_goal  =  50
- kelvin_step  =  -5
+ kelvin = 300
  mass_amu = 39.0       # Required for MD
  Q_Nose = 1.0
 
@@ -336,6 +389,13 @@ figures/BaTiO3-abc-T-dependence.jpg Experimentally observed one from .
 # as you may often see in textbooks of ferroelectrics.
 
 
+
+== Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>
+figures/bulk-two-box.jpg Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
+
+== Susceptibility can be calculated from fluctuations
+figures/strain-susceptibility.jpg Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Susceptibilities are calculated from fluctuations of dipoles.
+
 == Heating-up and cooling-down simulations of ferroelectric capacitors
 Animations of holizontal slices of heating-up and cooling-down
 simulations for BaTiO<sub>3</sub> thin-film capacitors with short-circuited
@@ -360,6 +420,15 @@ Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
    * cooling-down epit-40x40-L032-D0-5.0GPa-cooling-animation.gif
 
 
+== Thiner film has finer domain structure to avoid stronger depolarization field
+figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes $32\times 32 \times (l=7, 15, 31, 63, 127 and 255, d=1$). Thiner film has finer domain structure to avoid stronger depolarization field $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$. 
+
+# Here I show thickness dependence of striped domain structure.
+# We found that thiner film has finer domain
+# structure to avoid stronger depolarization field.
+
+
+
 == Temperature dependence of polarizations of thin-film capacitors
 figures/epitDEN.jpg
 
@@ -379,38 +448,27 @@ figures/epitDEN.jpg
 # In the next slide, I show the snapshot of this point structure.
 
 
-== Uniformly polarized structure and striped domain structure
-figures/epit-32x32-L015-D1-5.0GPa-100K.jpg Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of $32\times 32 \times (l=15, d=1)$. There is thermally unhoppable bistability between these two structure.
-
+#== Uniformly polarized structure and striped domain structure
+#figures/epit-32x32-L015-D1-5.0GPa-100K.jpg Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of $32\times 32 \times (l=15, d=1)$. There is thermally unhoppable bistability between these two structure.
+#
 # these are the horizontal slice and vertical cross-section of
 # almost unformly polarized structure and striped domain structure.
 
 
-== Epitaxially constrained film vs. "free" film
-figures/epit-vs-free.jpg Schematic comparison between the epitaxially constrained film and the ``free'' film. In the epitaxially constrained film, switching may have to climb over a potential barrier, but, in the ``free'' film, dipoles can be easily rotated and switching can go around a valley of the potential.
+#== Epitaxially constrained film vs. "free" film
+#figures/epit-vs-free.jpg Schematic comparison between the epitaxially constrained film and the ``free'' film. In the epitaxially constrained film, switching may have to climb over a potential barrier, but, in the ``free'' film, dipoles can be easily rotated and switching can go around a valley of the potential.
 
 
 
-== Thiner film has finer domain structure to avoid stronger depolarization field
-figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes $32\times 32 \times (l=7, 15, 31, 63, 127 and 255, d=1$). Thiner film has finer domain structure to avoid stronger depolarization field $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$. 
-
-# Here I show thickness dependence of striped domain structure.
-# We found that thiner film has finer domain
-# structure to avoid stronger depolarization field.
 
 
 
-== Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor
-figures/proposal2.gif (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) grow BaTiO<sub>3</sub> thin and thick thin films, (3) cover them with the metal, (4) if you use x-ray or whatever, (5) you may observe deference of fineness in their domain structures.
+#== Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor
+#figures/proposal2.gif (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) grow BaTiO<sub>3</sub> thin and thick thin films, (3) cover them with the metal, (4) if you use x-ray or whatever, (5) you may observe deference of fineness in their domain structures.
 
 
 
-== Applied external electric field
-figures/step.jpg Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
 
-
-== Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>
-figures/bulk-two-box.jpg Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
 
 == Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
 figures/epit-vs-free-hysteresis-box.jpg Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and (b) ``free'' films of various thickness $l$ and with dead layer $d$ at 100 K.
@@ -435,9 +493,13 @@ figures/epit-vs-free.jpg Schematic comparison between the epitaxially constraine
  * Thin-film capacitor: perfect and imperfect short-circuited electrodes
    * Striped domain structure is predicted
    * Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
- * An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed
 ../logo.jpg Thank you for your attention.
 
+# * An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed
+
+
+== Applied external electric field
+figures/step.jpg Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
 
 == Dielectric constant can be calculated from the fluctuation of dipoles
 Eq. 1
@@ -592,7 +654,7 @@ u.subs_rules << [/(figures\/proposal2\.gif)\s*(.*)$/, '<div class="figure">
 </div>']
 
 u.parse(ARGF)
-puts u.html(["feram-presentation.css"],["slidy.js"],"Takeshi Nishimatsu")
+puts u.html(["feram-presentation.css"],["slidy.js"],"Takeshi Nishimatsu","ja")
 
 # Local variables:
 #   mode: RD
