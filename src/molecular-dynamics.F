@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2008-03-25 11:57:16 takeshi>
+! Time-stamp: <2008-08-07 18:45:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -45,8 +45,11 @@ subroutine molecular_dynamics(p,c)
   do i_step = 1, p%n_thermalize+p%n_average
      write(message,fmt_time_step) i_step; call msg_ez(6,message)
 
-     !call leapfrog(p,c,e)       ! For debug. Total energy is the conservation value
-     call nose_poincare(p,c,e)   ! H_Nose_Poincare == 0, always
+     if (p%method.eq.'md ') then
+        call nose_poincare(p,c,e)   ! H_Nose_Poincare == 0, always
+     else if (p%method.eq.'lf ') then
+        call leapfrog(p,c,e)        ! Leapfrog
+     end if
 
      if (i_step-(i_step/p%n_coord_freq)*p%n_coord_freq.eq.0) then
         write(   fn,'(a,a,i7.7,a)') trim(p%filename), '.', i_step, '.coord'

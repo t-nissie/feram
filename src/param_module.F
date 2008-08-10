@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2008-04-16 17:14:04 takeshi>
+! Time-stamp: <2008-08-09 15:34:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -29,8 +29,8 @@ module Param_module
      !             (N_Avogadro = 6.0221415e23 [mol^-1 (amu/g)])
      !
      !--- Method, Temperature, and mass ---------------
-     character(len=3) :: method ! 'mc', or 'md'
-     real*8 GPa          ! [GPa]
+     character(len=3) :: method ! 'md' for MD in the canonical ensemble using the Nose-Poincare thermostat, 'lf' for MD in the
+     real*8 GPa          ! [GPa]            microcanonical ensemble using the leap-frog method, or 'mc' for Monte Carlo method
      real*8 kelvin       ! [K]
      real*8 mass_dipo    ! [eV Angstrom^-2 ps^2]
      real*8 Q_Nose       ! [eV ps^2]
@@ -92,6 +92,8 @@ contains
     call msg(6, __FILE__, __LINE__, 'BEGIN', ': read_Param().')
 
     ! Default parameters
+    p%kelvin = 0.0d0
+    p%temperature_eV = 0.0d0
     p%bulk_or_film = 'bulk'
     p%defect_position(1)  = -1    ; p%defect_position(2)  = -1    ; p%defect_position(3)  = -1
     p%defect_u(1)         = 0.0d0 ; p%defect_u(2)         = 0.0d0 ; p%defect_u(3)         = 0.0d0

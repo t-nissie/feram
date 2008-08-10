@@ -1,5 +1,5 @@
 ! energy.F -*-f90-*-
-! Time-stamp: <2008-06-26 16:30:39 takeshi>
+! Time-stamp: <2008-08-08 13:33:19 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -100,10 +100,12 @@ contains
     write(message,fmt) 'inho_coupling  ', e%inho_coupling/p%N;   call msg_ez(fd,message)
     call msg_ez(fd,'--------------------------------------------')
     write(message,fmt) 'total_energy   ', e%total/p%N;           call msg_ez(fd,message)
-    write(message,fmt) 'H_Nose_Poincare', e%H_Nose_Poincare/p%N; call msg_ez(fd,message)
 
-    write(message,'(a7,f14.8,a9,f14.8)') 's_Nose=', c%s_Nose, ' pi_Nose=', c%pi_Nose
-    call msg_ez(fd,message)
+    if (p%method.eq.'md ') then
+       write(message,fmt) 'H_Nose_Poincare', e%H_Nose_Poincare/p%N; call msg_ez(fd,message)
+       write(message,'(a7,f14.8,a9,f14.8)') 's_Nose=', c%s_Nose, ' pi_Nose=', c%pi_Nose
+       call msg_ez(fd,message)
+    end if
   end subroutine write_Energy
 
   subroutine Nose_Poincare_Hamiltonian(p,c,e)

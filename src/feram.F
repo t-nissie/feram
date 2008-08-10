@@ -1,5 +1,5 @@
 ! feram.F -*-f90-*-
-! Time-stamp: <2007-08-08 19:33:50 t-nissie>
+! Time-stamp: <2008-08-07 18:07:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -68,7 +68,7 @@ program feram
      call  potentials(p,c)
      call make_mass_matrix(p,c)
 
-     if (p%method.eq.'md ') then
+     if (p%method.eq.'md ' .or. p%method.eq.'lf ') then
         call molecular_dynamics(p,c)
      else
         write(message,'(a,a,a)') &
