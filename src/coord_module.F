@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2008-03-24 18:31:03 takeshi>
+! Time-stamp: <2008-08-22 18:14:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -31,7 +31,7 @@ module Coord_module
      real*8,     allocatable :: dipoP(:,:,:,:)   ! Momenta
      real*8,     allocatable :: dVddi(:,:,:,:)   ! dV/dq for dipole
      real*8,     allocatable :: E_field(:,:,:,:) ! external and local electric field
-     real*8,     allocatable :: dipoI(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8!!!
+     real*8,     allocatable :: dipoI(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8 because of the inversion symmetry!!!
      real*8,     allocatable :: didiR(:,:,:,:)   ! 6 kind of dipoR*dipoR
      complex*16, allocatable :: didiK(:,:,:,:)   ! 6 kind of dipoR*dipoR
     !real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space

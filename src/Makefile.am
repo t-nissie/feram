@@ -1,12 +1,13 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2008-07-07 19:36:50 takeshi>
+# Time-stamp: <2008-08-21 18:23:46 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
-bin_PROGRAMS = feram
-MODULES = param_module.F coord_module.F energy_module.F
+bin_PROGRAMS = feram diagonalize15x15
+
+feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
 	cholesky_z.f \
 	cholesky_d.f \
@@ -35,9 +36,14 @@ feram_SRCS = average_module.F \
 	optimize-inho-strain.F \
 	potentials.F \
 	print-eigenvalues.F
-feram_SOURCES = $(MODULES) $(feram_SRCS)
+feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
 feram_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
 feram_DEPENDENCIES =   ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
+
+diagonalize15x15_SOURCES = diagonalize15x15.F
+diagonalize15x15_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
+diagonalize15x15_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
+
 CLEANFILES = *.mod *.ps *.pdf
 EXTRA_DIST = define.h \
 cross-section-dVddi.sh \
