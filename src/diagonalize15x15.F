@@ -1,5 +1,5 @@
 ! diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2008-08-24 15:32:32 takeshi>
+! Time-stamp: <2008-08-24 15:49:23 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Usage: tail -225 SOMEWHERE1/perovskite_o_DS5_DDB | SOMEWHERE2/diagonalize15x15
 !!
@@ -30,9 +30,9 @@ program diagonalize15x15
 !LAPACK zheev(JOBZ,UPLO,N,        A,        LXL,      W,          WORK,LWORK,RWORK,INFO)
   call  zheev('V', 'L', N_FREEDOM,SecondDTE,N_FREEDOM,eigenvalues,work,LWORK,rwork,info)
 
-  write(fmt_eigen,'(a,i3,a)') '(i3,f14.9,', N_FREEDOM, 'f7.3)'
+  write(fmt_eigen,'(a,i3,a)') "(i2,f11.6,", N_FREEDOM, "(f6.2,f5.2))"
   do j=1,N_FREEDOM
-     write(6,fmt_eigen) j, eigenvalues(j), (abs(SecondDTE(i,j)), i=1,N_FREEDOM)
+     write(6,fmt_eigen) j, eigenvalues(j), (SecondDTE(i,j), i=1,N_FREEDOM)
   end do
 end program diagonalize15x15
 
