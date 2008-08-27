@@ -48,8 +48,8 @@ figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTi
 # depolarization field induced by surface charges.
 
 
-== Domain structure is comming from finite structure
-figures/single2striped.jpg Depolarization field raises energy.
+#== Domain structure is comming from finite structure
+#figures/single2striped.jpg Depolarization field raises energy.
 
 
 == Background: Ferroelectric thin films
@@ -393,8 +393,8 @@ figures/BaTiO3-abc-T-dependence.jpg Experimentally observed one from .
 == Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>
 figures/bulk-two-box.jpg Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
 
-== Susceptibility can be calculated from fluctuations
-figures/strain-susceptibility.jpg Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Susceptibilities are calculated from fluctuations of dipoles.
+== Dielectric constants can be calculated from fluctuations
+figures/strain-susceptibility.jpg Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Dielectric constants can be calculated from fluctuations of dipoles.
 
 == Heating-up and cooling-down simulations of ferroelectric capacitors
 Animations of holizontal slices of heating-up and cooling-down
@@ -498,15 +498,6 @@ figures/epit-vs-free.jpg Schematic comparison between the epitaxially constraine
 # * An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed
 
 
-== Applied external electric field
-figures/step.jpg Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
-
-== Dielectric constant can be calculated from the fluctuation of dipoles
-Eq. 1
-\epsilon_{\alpha\beta}=(\epsilon_{\infty})_{\alpha\beta}+\frac{1}{\epsilon_0 V k_B T}
-                       (<S_\alpha S_\beta>-<S_\alpha><S_\beta>)
-/Eq.
-figures/32x32xL032-D0-susceptibility.jpg Calculated dielectric constants (in-plane and out-of-plane) of epitaxially grown BaTiO$_3$ with perfect electrodes.
 
 
 
@@ -586,26 +577,9 @@ figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing
 
 
 
-== Susceptibility tensor
-Now you can calculate $\bm{S}(\bm{R},t)$ in some periods (1-100 ns) with feram.
-
-Susceptibility tensor $\chi(\bm{R}-\bm{R}',t-t')$
-Eq. (Real space)
-\bm{S}(\bm{R},t) = \sum_{\bm{R}'}\int dt' \chi(\bm{R}-\bm{R}',t-t')\,\mathscr{E}(\bm{R}',t')
-/Eq.
-where $\bm{S}(\bm{R},t)=Z^* \bm{u}(\bm{R},t)$ and $\mathscr{E}(\bm{R}',t')$ is external electric field.
-Its Fourier transformation
-Eq. (q space)
-\bm{S}(\bm{q},\omega) = \chi(\bm{q},\omega)\,\mathscr{E}(\bm{q},\omega) .
-/Eq.
-Using the fluctuation-dissipation theorem,
+== Frequency dependence of dielectric constant
 Eq. (The fluctuation-dissipation theorem)
-{\rm Im} \chi_{\alpha\beta}(\bm{q},\omega) = \frac{1}{2k_BT}\int_{-\infty}^{\infty}dt
-                            <S_\alpha(-\bm{q},0) \,\, S_\beta(\bm{q},t)> e^{-i\omega t}
-/Eq.
-Then, with Kramers-Kronig relation,
-Eq. (Kramers-Kronig relation)
-{\rm Re} \chi_{\alpha\beta}(\bm{q},\omega) = ...
+\epsilon(\omega) - \epsilon_\infty = \frac{(Z^*)^2}{3\epsilon_0 V k_B T}\left[ \left\langle \bm{u}^2 \right\rangle - \int_{-\infty}^{\infty} dt e^{i\omega t} \left\langle \bm{u}(t) \cdot \bm{u}(0) \right\rangle \right]
 /Eq.
 
 
@@ -621,7 +595,7 @@ Eq. (Kramers-Kronig relation)
 
 
 == Estimation of computational time
-32x32x32 unit cells, $\Delta t = 2$ fs, [one dual core 1.8GHz x86_64] or [SR11000 1 node = 16 cores]
+32x32x32 unit cells, $\Delta t = 2$ fs, [AMD64 1.8GHz dual core] or [SR11000 1 node = 16 cores]
 
 1THz, $T=1\,$ps,            500 steps,  54 sec  or 8.4 sec.
 
@@ -629,7 +603,14 @@ Eq. (Kramers-Kronig relation)
 
 1MHz, $T=1\mu$s,    500,000,000 steps, 620 days or  97 days
 
-So, I am planning to calculate and compare $\chi_{\alpha\beta}(q,\omega)$ for $\omega/(2\pi)$ = 10M ... 10GHz.
+So, I am planning to calculate and compare $\epsilon(\omega)$ for $\omega/(2\pi)$ = 10M ... 10GHz.
+
+
+== Applied external electric field
+figures/step.jpg Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
+
+
+
 
 =end
 #
