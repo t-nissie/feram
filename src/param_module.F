@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2008-08-09 15:34:38 takeshi>
+! Time-stamp: <2008-09-04 15:36:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -67,6 +67,14 @@ module Param_module
      integer defect_position(3)
      real*8  defect_u(3)
      logical plot_dispersion
+     !--- DDB2short -----------------------------------
+     real*8 DDB_a
+     real*8 DDB_b
+     real*8 DDB_c
+     real*8 DDB_d
+     real*8 DDB_e
+     real*8 DDB_f
+     real*8 DDB_g
      !=== Parameters to be calculated from above =========================
      integer film_thickness
      integer N
