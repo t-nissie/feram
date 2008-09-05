@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2008-09-04 15:36:59 takeshi>
+! Time-stamp: <2008-09-05 12:15:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -109,6 +109,13 @@ contains
     p%n_coord_freq           = huge(1)   ! maximum integer
     p%kappa = 0.0d0
     p%plot_dispersion = .false.
+    p%DDB_a = 0.0d0
+    p%DDB_b = 0.0d0
+    p%DDB_c = 0.0d0
+    p%DDB_d = 0.0d0
+    p%DDB_e = 0.0d0
+    p%DDB_f = 0.0d0
+    p%DDB_g = 0.0d0
     p%k_stripe = 0.0d0
     p%gap = 0
 
@@ -199,6 +206,20 @@ contains
           read(str,*) dmy1, dmy2, p%defect_u(1), p%defect_u(2), p%defect_u(3)
        case('plot_dispersion')
           read(str,*) dmy1, dmy2, p%plot_dispersion
+       case('DDB_a')
+          read(str,*) dmy1, dmy2, p%DDB_a
+       case('DDB_b')
+          read(str,*) dmy1, dmy2, p%DDB_b
+       case('DDB_c')
+          read(str,*) dmy1, dmy2, p%DDB_c
+       case('DDB_d')
+          read(str,*) dmy1, dmy2, p%DDB_d
+       case('DDB_e')
+          read(str,*) dmy1, dmy2, p%DDB_e
+       case('DDB_f')
+          read(str,*) dmy1, dmy2, p%DDB_f
+       case('DDB_g')
+          read(str,*) dmy1, dmy2, p%DDB_g
        case default
           write(6,'(a,a,i3,a,a)') trim(p%filename),':', line_number, ':', trim(str)
           stop ': Input error: No such parameter'

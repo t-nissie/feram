@@ -1,11 +1,11 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2008-08-21 18:23:46 takeshi>
+# Time-stamp: <2008-09-05 16:44:56 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
-bin_PROGRAMS = feram diagonalize15x15
+bin_PROGRAMS = feram diagonalize15x15 DDB2short
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -43,6 +43,10 @@ feram_DEPENDENCIES =   ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
 diagonalize15x15_SOURCES = diagonalize15x15.F
 diagonalize15x15_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
 diagonalize15x15_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
+
+DDB2short_SOURCES = DDB2short.F msg.F param_module.F
+DDB2short_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
+DDB2short_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
 
 CLEANFILES = *.mod *.ps *.pdf
 EXTRA_DIST = define.h \
