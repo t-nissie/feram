@@ -1,0 +1,1862 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+                     "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>BaTiO3強誘電体薄膜キャパシターのヒステリシス・ループの分子動力学計算</title>
+  <meta name="author" content="Takeshi Nishimatsu" />
+  <meta name="copyright" content="Copyright &#169; 2008 Takeshi Nishimatsu" />
+  <link rel="stylesheet" href="feram-presentation.css" type="text/css" />
+<script src="slidy.js" type="text/javascript"></script>
+<link rel="shortcut icon" href="favicon.ico" />
+</head>
+<body>
+<div class="slide cover">
+<h1 id="LABEL-1">BaTiO3強誘電体薄膜キャパシターのヒステリシス・ループの分子動力学計算</h1>
+<p>
+西松毅, Umesh V. Waghmare, 川添良幸, David Vanderbilt
+</p>
+<p>
+論文: Phys. Rev. B <b>78</b>, 104104 (2008)
+</p>
+<p>
+フリーソフトウエアferam: <a href="http://loto.sourceforge.net/feram/">http://loto.sourceforge.net/feram/</a>
+</p>
+<!-- Contents -->
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-2">Slidyの使い方</h2>
+<p>
+このプレゼンは Slidy <a href="http://www.w3.org/Talks/Tools/Slidy/">http://www.w3.org/Talks/Tools/Slidy/</a> を使っています.
+Firefoxを使うとより正確にご覧になれます.
+</p>
+
+<ul>
+  <li>[Space]か[Left]かマウス・クリックで次のスライドへ</li>
+  <li>[Left], [Right], [Pg Up] そして [Pg Dn] でスライド操作</li>
+  <li>[Home]→最初のスライド</li>
+  <li>[End]→最後のスライド</li>
+  <li>[C]で目次が表示されます</li>
+  <li>[F11]ファンクション・キーで全画面モードを切り替え（Firefoxの機能）</li>
+  <li>[F]でツール・バーのON/OFFを切り替え</li>
+  <li>[A]でプレゼン・モードとプリント・モードを切り替え</li>
+  <li>[S]と[B]とでフォントサイズを変更</li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-3">本研究の背景</h2>
+
+<ul>
+  <li>強誘電体薄膜: 積層コンデンサ, ナノ・アクチュエータ, 不揮発性メモリ (FeRAM) 等に応用</li>
+  <li>それらの微細化（ダウンサイジング）が求められている</li>
+  <li>疲労による分極特性の劣化 [J. F. Scott: Ferroelectric Memories (Springer, 2000)]</li>
+</ul>
+<p>
+<div class="figure">
+  <img src="figures/J.F.Scott.Fig.1.1.ae.jpg" alt="figures/J.F.Scott.Fig.1.1.ae.jpg" />
+  <div class="caption">
+    
+  </div>
+</div></p>
+
+<ul>
+  <li>電極・強誘電体界面の不活性層のおよぼす影響
+    [M. Dawber et al.: J. Phys. Condes. Matter <b>15</b>, L393 (2003)]</li>
+  <li>ヒステリシス・ループや分極反転、ドメイン壁の<b>動的性質</b>、またそれらの<b>ナノサイズ効果</b>はよく理解されていない
+    <ul>
+      <li>実験による「その場観察」が困難であった</li>
+      <li>長距離の双極子−双極子相互作用が大規模長時間のコンピューターシミュレーションを不可能にしていた</li>
+    </ul></li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-4">本研究の目的</h2>
+
+<ul>
+  <li>強誘電体薄膜キャパシターを実際的な規模と時間でシミュレートできる<b>高速</b>な分子動力学計算コードの開発</li>
+  <li>電極・強誘電体界面の不活性層のおよぼす影響の解明</li>
+  <li>エピタキシャル成長に伴う圧縮ひずみの分極特性へ影響の検証</li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-5">feramコードの特徴</h2>
+<p>
+<div class="figure">
+  <img src="../logo.jpg" alt="../logo.jpg" />
+  <div class="caption">
+    
+  </div>
+</div></p>
+
+<ul>
+  <li>ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>の第一原理計算から求められた有効ハミルトニアンに基づく、スーパーセルを使った分子動力学計算（詳細後述）</li>
+  <li>短絡された２つの電極に挟まれた強誘電体薄膜キャパシターのシミュレーションが可能（詳細後述）</li>
+  <li>高速（大規模で実際的なタイムスケールの計算が可能）
+    <ul>
+      <li>長距離の双極子間相互作用をFFTを使って逆空間で計算（詳細後述）</li>
+      <li>Nosé-Poincaré thermostat ⇒ <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi mathvariant='normal'>&Delta;</mi>
+ <mi>t</mi>
+</math> = 2 fs</li>
+      <li>FFTW library version 3 <a href="http://www.FFTW.org/">http://www.FFTW.org/</a></li>
+      <li>並列化: OpenMP <a href="http://www.OpenMP.org/">http://www.OpenMP.org/</a></li>
+    </ul></li>
+  <li>マルチ・プラットホーム
+    <ul>
+      <li>PC: Linuxで動いている対称型マルチプロセッサ (SMP)</li>
+      <li>スパコン: HITACHI SR11000</li>
+      <li>ゲーム機: SONY PLAYSTATION3（準備中）</li>
+    </ul></li>
+  <li>Fortran 2003 でオブジェクト指向プログラミングされている</li>
+  <li>./configure ; make で簡単にコンパイル (GNU autotools)</li>
+  <li>フリーソフトウエア <a href="http://loto.sourceforge.net/feram/">http://loto.sourceforge.net/feram/</a></li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-6">ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub></h2>
+<p>
+<div class="figure">
+  <img src="figures/perovskite-contours.jpg" alt="figures/perovskite-contours.jpg" />
+  <div class="caption">
+    原子変位と格子歪みのカップリングの様子. [T. Hashimoto, T. Nishimatsu et al.: Jpn. J. Appl. Phys. <b>43</b>, 6785 (2004)] より.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-7">粗視化: 系の自由度を簡単化, 有効ハミルトニアンの構築</h2>
+<p>
+<div class="figure">
+  <img src="figures/CoarseGraining.jpg" alt="figures/CoarseGraining.jpg" />
+  <div class="caption">
+    
+  </div>
+</div></p>
+
+<ul>
+  <li>実際のペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>: <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mn>15</mn>
+ <mi>N</mi>
+ <mo>+</mo>
+ <mn>6</mn>
+</math> 自由度
+    <ul>
+      <li>スーパーセル中<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>N</mi></math>個の単位胞</li>
+      <li>単位胞中5個の原子</li>
+      <li>各原子は<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>x</mi></math>, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>y</mi></math>, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>z</mi></math>の3方向に動く</li>
+      <li>歪みの6成分</li>
+    </ul></li>
+  <li>単純化したモデル: <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mn>6</mn>
+ <mi>N</mi>
+ <mo>+</mo>
+ <mn>6</mn>
+</math>  自由度
+    <ul>
+      <li>単位胞に１つの双極子ベクトル<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <msup>
+  <mi>Z</mi>
+  <mo>*</mo>
+ </msup>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>)</mo>
+</math> ⇒ 3 自由度/単位胞</li>
+      <li>単位胞に１つの「音響フォノン変位」ベクトル <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>)</mo>
+</math> ⇒ 3 自由度/単位胞</li>
+      <li>計 6 自由度/単位胞</li>
+    </ul></li>
+</ul>
+<p>
+有効ハミルトニアン:
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+ <msup>
+  <mi>H</mi>
+  <mrow>
+   <mi mathvariant='normal'>e</mi>
+   <mi mathvariant='normal'>f</mi>
+   <mi mathvariant='normal'>f</mi>
+  </mrow>
+ </msup>
+ <mo>=</mo>
+ <mfrac>
+  <mrow><msubsup>
+   <mi>M</mi>
+   <mrow>
+    <mi mathvariant='normal'>d</mi>
+    <mi mathvariant='normal'>i</mi>
+    <mi mathvariant='normal'>p</mi>
+    <mi mathvariant='normal'>o</mi>
+    <mi mathvariant='normal'>l</mi>
+    <mi mathvariant='normal'>e</mi>
+   </mrow>
+   <mo>*</mo>
+  </msubsup></mrow>
+  <mrow><mn>2</mn></mrow>
+ </mfrac>
+ <munder>
+  <mo>&sum;</mo>
+  <mrow>
+   <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+   <mo>,</mo>
+   <mi>&alpha;</mi>
+  </mrow>
+ </munder>
+ <msubsup>
+  <mover>
+   <mrow><mi>u</mi></mrow>
+   <mo>&sdot;</mo>
+  </mover>
+  <mi>&alpha;</mi>
+  <mn>2</mn>
+ </msubsup>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>)</mo>
+ <mo>+</mo>
+ <mfrac>
+  <mrow><msubsup>
+   <mi>M</mi>
+   <mrow>
+    <mi mathvariant='normal'>a</mi>
+    <mi mathvariant='normal'>c</mi>
+    <mi mathvariant='normal'>o</mi>
+    <mi mathvariant='normal'>u</mi>
+    <mi mathvariant='normal'>s</mi>
+    <mi mathvariant='normal'>t</mi>
+    <mi mathvariant='normal'>i</mi>
+    <mi mathvariant='normal'>c</mi>
+   </mrow>
+   <mo>*</mo>
+  </msubsup></mrow>
+  <mrow><mn>2</mn></mrow>
+ </mfrac>
+ <munder>
+  <mo>&sum;</mo>
+  <mrow>
+   <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+   <mo>,</mo>
+   <mi>&alpha;</mi>
+  </mrow>
+ </munder>
+ <msubsup>
+  <mover>
+   <mrow><mi>w</mi></mrow>
+   <mo>&sdot;</mo>
+  </mover>
+  <mi>&alpha;</mi>
+  <mn>2</mn>
+ </msubsup>
+ <mo>(</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>s</mi>
+   <mi mathvariant='normal'>e</mi>
+   <mi mathvariant='normal'>l</mi>
+   <mi mathvariant='normal'>f</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>d</mi>
+   <mi mathvariant='normal'>p</mi>
+   <mi mathvariant='normal'>l</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>s</mi>
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>o</mi>
+   <mi mathvariant='normal'>r</mi>
+   <mi mathvariant='normal'>t</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>e</mi>
+   <mi mathvariant='normal'>l</mi>
+   <mi mathvariant='normal'>a</mi>
+   <mi mathvariant='normal'>s</mi>
+   <mo>,</mo>
+   <mspace width='0.167em' />
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>o</mi>
+   <mi mathvariant='normal'>m</mi>
+   <mi mathvariant='normal'>o</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <msub>
+  <mi>&eta;</mi>
+  <mn>1</mn>
+ </msub>
+ <mo>,</mo>
+ <mo>.</mo>
+ <mo>.</mo>
+ <mo>.</mo>
+ <mo>,</mo>
+ <msub>
+  <mi>&eta;</mi>
+  <mn>6</mn>
+ </msub>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>e</mi>
+   <mi mathvariant='normal'>l</mi>
+   <mi mathvariant='normal'>a</mi>
+   <mi mathvariant='normal'>s</mi>
+   <mo>,</mo>
+   <mspace width='0.167em' />
+   <mi mathvariant='normal'>i</mi>
+   <mi mathvariant='normal'>n</mi>
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>o</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>c</mi>
+   <mi mathvariant='normal'>o</mi>
+   <mi mathvariant='normal'>u</mi>
+   <mi mathvariant='normal'>p</mi>
+   <mo>,</mo>
+   <mspace width='0.167em' />
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>o</mi>
+   <mi mathvariant='normal'>m</mi>
+   <mi mathvariant='normal'>o</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>,</mo>
+ <msub>
+  <mi>&eta;</mi>
+  <mn>1</mn>
+ </msub>
+ <mo>,</mo>
+ <mo>.</mo>
+ <mo>.</mo>
+ <mo>.</mo>
+ <mo>,</mo>
+ <msub>
+  <mi>&eta;</mi>
+  <mn>6</mn>
+ </msub>
+ <mo>)</mo>
+ <mo>+</mo>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>c</mi>
+   <mi mathvariant='normal'>o</mi>
+   <mi mathvariant='normal'>u</mi>
+   <mi mathvariant='normal'>p</mi>
+   <mo>,</mo>
+   <mspace width='0.167em' />
+   <mi mathvariant='normal'>i</mi>
+   <mi mathvariant='normal'>n</mi>
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>o</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>,</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>w</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+</math>
+</p>
+<p>
+<div class="figure">
+  <img src="figures/arrows.jpg" alt="figures/arrows.jpg" />
+  <div class="caption">
+    
+  </div>
+</div></p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-8">長距離双極子−双極子相互作用の高速計算</h2>
+<p>
+長距離双極子−双極子相互作用:
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>d</mi>
+   <mi mathvariant='normal'>p</mi>
+   <mi mathvariant='normal'>l</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+ <mo>=</mo>
+ <mfrac>
+  <mrow><mn>1</mn></mrow>
+  <mrow><mn>2</mn></mrow>
+ </mfrac>
+ <munderover>
+  <mo>&sum;</mo>
+  <mrow>
+   <mi>i</mi>
+   <mo>=</mo>
+   <mn>1</mn>
+  </mrow>
+  <mi>N</mi>
+ </munderover>
+ <munder>
+  <mo>&sum;</mo>
+  <mi>&alpha;</mi>
+ </munder>
+ <munderover>
+  <mo>&sum;</mo>
+  <mrow>
+   <mi>j</mi>
+   <mo>=</mo>
+   <mn>1</mn>
+  </mrow>
+  <mi>N</mi>
+ </munderover>
+ <munder>
+  <mo>&sum;</mo>
+  <mi>&beta;</mi>
+ </munder>
+ <msub>
+  <mi>u</mi>
+  <mi>&alpha;</mi>
+ </msub>
+ <mo>(</mo>
+ <msub>
+  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+  <mi>i</mi>
+ </msub>
+ <mo>)</mo>
+ <msub>
+  <mi mathvariant='normal'>&Phi;</mi>
+  <mrow>
+   <mi>&alpha;</mi>
+   <mi>&beta;</mi>
+  </mrow>
+ </msub>
+ <mo>(</mo>
+ <msub>
+  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+  <mrow>
+   <mi>i</mi>
+   <mi>j</mi>
+  </mrow>
+ </msub>
+ <mo>)</mo>
+ <msub>
+  <mi>u</mi>
+  <mi>&beta;</mi>
+ </msub>
+ <mo>(</mo>
+ <msub>
+  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+  <mi>j</mi>
+ </msub>
+ <mo>)</mo>
+ <mo>,</mo>
+</math>
+</p>
+<p>
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+ <msub>
+  <mi mathvariant='normal'>&Phi;</mi>
+  <mrow>
+   <mi>&alpha;</mi>
+   <mi>&beta;</mi>
+  </mrow>
+ </msub>
+ <mo>(</mo>
+ <msub>
+  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+  <mrow>
+   <mi>i</mi>
+   <mi>j</mi>
+  </mrow>
+ </msub>
+ <mo>)</mo>
+ <mo>=</mo>
+ <mfrac>
+  <mrow><msup>
+   <mi>Z</mi>
+   <mrow>
+    <mo>*</mo>
+    <mn>2</mn>
+   </mrow>
+  </msup></mrow>
+  <mrow><msub>
+   <mi>&epsilon;</mi>
+   <mn>&infin;</mn>
+  </msub></mrow>
+ </mfrac>
+ <munder>
+  <mo>&sum;</mo>
+  <mrow><mrow><mrow><mi mathvariant='bold-italic'>n</mi></mrow></mrow></mrow>
+ </munder>
+ <msup>
+  <mrow />
+  <mrow><mo>&prime;</mo></mrow>
+ </msup>
+ <mfrac>
+  <mrow>
+   <msub>
+    <mi>&delta;</mi>
+    <mrow>
+     <mi>&alpha;</mi>
+     <mi>&beta;</mi>
+    </mrow>
+   </msub>
+   <mo>-</mo>
+   <mn>3</mn>
+   <mo>(</mo>
+   <mover>
+    <mrow>
+     <msub>
+      <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+      <mrow>
+       <mi>i</mi>
+       <mi>j</mi>
+      </mrow>
+     </msub>
+     <mo>+</mo>
+     <mrow><mrow><mi mathvariant='bold-italic'>n</mi></mrow></mrow>
+    </mrow>
+    <mo>&circ;</mo>
+   </mover>
+   <msub>
+    <mo>)</mo>
+    <mi>&alpha;</mi>
+   </msub>
+   <mo>(</mo>
+   <mover>
+    <mrow>
+     <msub>
+      <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+      <mrow>
+       <mi>i</mi>
+       <mi>j</mi>
+      </mrow>
+     </msub>
+     <mo>+</mo>
+     <mrow><mrow><mi mathvariant='bold-italic'>n</mi></mrow></mrow>
+    </mrow>
+    <mo>&circ;</mo>
+   </mover>
+   <msub>
+    <mo>)</mo>
+    <mi>&beta;</mi>
+   </msub>
+  </mrow>
+  <mrow>
+   <mo>|</mo>
+   <mrow>
+    <msub>
+     <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+     <mrow>
+      <mi>i</mi>
+      <mi>j</mi>
+     </mrow>
+    </msub>
+    <mo>+</mo>
+    <mrow><mrow><mi mathvariant='bold-italic'>n</mi></mrow></mrow>
+   </mrow>
+   <msup>
+    <mo>|</mo>
+    <mn>3</mn>
+   </msup>
+  </mrow>
+ </mfrac>
+ <mo>,</mo>
+</math>
+</p>
+<p>
+ここで<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mrow><mrow><mi mathvariant='bold-italic'>n</mi></mrow></mrow></math>はスーパーセルの格子ベクトルで
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+ <msub>
+  <mi>n</mi>
+  <mi>&alpha;</mi>
+ </msub>
+ <mo>=</mo>
+ <mo>&ctdot;</mo>
+ <mo>,</mo>
+ <mo>-</mo>
+ <mn>2</mn>
+ <mrow><msub>
+  <mi>L</mi>
+  <mi>&alpha;</mi>
+ </msub></mrow>
+ <msub>
+  <mi>a</mi>
+  <mn>0</mn>
+ </msub>
+ <mo>,</mo>
+ <mo>-</mo>
+ <mrow><msub>
+  <mi>L</mi>
+  <mi>&alpha;</mi>
+ </msub></mrow>
+ <msub>
+  <mi>a</mi>
+  <mn>0</mn>
+ </msub>
+ <mo>,</mo>
+ <mn>0</mn>
+ <mo>,</mo>
+ <mrow><msub>
+  <mi>L</mi>
+  <mi>&alpha;</mi>
+ </msub></mrow>
+ <msub>
+  <mi>a</mi>
+  <mn>0</mn>
+ </msub>
+ <mo>,</mo>
+ <mn>2</mn>
+ <mrow><msub>
+  <mi>L</mi>
+  <mi>&alpha;</mi>
+ </msub></mrow>
+ <msub>
+  <mi>a</mi>
+  <mn>0</mn>
+ </msub>
+ <mo>,</mo>
+ <mo>&ctdot;</mo>
+ <mo>.</mo>
+</math>
+</p>
+<p>
+近距離の相互作用:
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+ <msup>
+  <mi>V</mi>
+  <mrow>
+   <mi mathvariant='normal'>s</mi>
+   <mi mathvariant='normal'>h</mi>
+   <mi mathvariant='normal'>r</mi>
+   <mi mathvariant='normal'>t</mi>
+  </mrow>
+ </msup>
+ <mo>(</mo>
+ <mo>{</mo>
+ <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+ <mo>}</mo>
+ <mo>)</mo>
+ <mo>=</mo>
+ <mfrac>
+  <mrow><mn>1</mn></mrow>
+  <mrow><mn>2</mn></mrow>
+ </mfrac>
+ <munderover>
+  <mo>&sum;</mo>
+  <mrow>
+   <mi>i</mi>
+   <mo>=</mo>
+   <mn>1</mn>
+  </mrow>
+  <mi>N</mi>
+ </munderover>
+ <munder>
+  <mo>&sum;</mo>
+  <mi>&alpha;</mi>
+ </munder>
+ <munderover>
+  <mo>&sum;</mo>
+  <mi>j</mi>
+  <mrow>
+   <mn>3</mn>
+   <mi mathvariant='normal'>n</mi>
+   <mi mathvariant='normal'>n</mi>
+  </mrow>
+ </munderover>
+ <munder>
+  <mo>&sum;</mo>
+  <mi>&beta;</mi>
+ </munder>
+ <msub>
+  <mi>u</mi>
+  <mi>&alpha;</mi>
+ </msub>
+ <mo>(</mo>
+ <msub>
+  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+  <mi>i</mi>
+ </msub>
+ <mo>)</mo>
+ <mspace width='0.167em' />
+ <msub>
+  <mi>J</mi>
+  <mrow>
+   <mi>i</mi>
+   <mi>j</mi>
+   <mo>,</mo>
+   <mi>&alpha;</mi>
+   <mi>&beta;</mi>
+  </mrow>
+ </msub>
+ <mspace width='0.167em' />
+ <msub>
+  <mi>u</mi>
+  <mi>&beta;</mi>
+ </msub>
+ <mo>(</mo>
+ <msub>
+  <mrow><mrow><mi mathvariant='bold-italic'>R</mi></mrow></mrow>
+  <mi>j</mi>
+ </msub>
+ <mo>)</mo>
+</math>
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <msub>
+  <mi>J</mi>
+  <mrow>
+   <mi>i</mi>
+   <mi>j</mi>
+   <mo>,</mo>
+   <mi>&alpha;</mi>
+   <mi>&beta;</mi>
+  </mrow>
+ </msub>
+ <mo>=</mo>
+ <msub>
+  <mi>J</mi>
+  <mi>k</mi>
+ </msub>
+</math>: Short-range interaction matrix (<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>k</mi>
+ <mo>=</mo>
+ <mn>1</mn>
+ <mo>,</mo>
+ <mo>&ctdot;</mo>
+ <mo>,</mo>
+ <mn>7</mn>
+</math>)
+</p>
+<p>
+<div class="figure">
+  <img src="figures/flow.jpg" alt="figures/flow.jpg" />
+  <div class="caption">
+    双極子に働く力の計算方法の簡単化したフローチャート. 高速フーリエ変換 (FFT) と逆FFT (IFFT) とが長距離双極子−双極子相互作用の高速計算を可能にし, 実空間で計算していたら<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>O</mi>
+ <mo>(</mo>
+ <msup>
+  <mi>N</mi>
+  <mn>2</mn>
+ </msup>
+ <mo>)</mo>
+</math>の計算時間がかかるものが<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>O</mi>
+ <mo>(</mo>
+ <mi>N</mi>
+ <mi>log</mi>
+ <mi>N</mi>
+ <mo>)</mo>
+</math>になる.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-9">「光学フォノン」の分散関係</h2>
+<p>
+<div class="figure">
+  <img src="figures/bulk32x32x32.dipole-dipole-long.energy.jpg" alt="figures/bulk32x32x32.dipole-dipole-long.energy.jpg" />
+  <div class="caption">
+    長距離双極子−双極子相互作用だけの分散関係. M点がミニマムになっている.
+  </div>
+</div>
+</p>
+<p>
+<div class="figure">
+  <img src="figures/bulk32x32x32.dipole-dipole-long+short.energy.jpg" alt="figures/bulk32x32x32.dipole-dipole-long+short.energy.jpg" />
+  <div class="caption">
+    近距離の相互作用を導入して始めてΓ点がミニマムになる.
+  </div>
+</div>
+</p>
+<p>
+<div class="figure">
+  <img src="figures/bulk32x32x32.dipole-dipole-long+short.jpg" alt="figures/bulk32x32x32.dipole-dipole-long+short.jpg" />
+  <div class="caption">
+    「光学フォノン」の分散関係
+  </div>
+</div>
+</p>
+<p>
+<div class="figure">
+  <img src="figures/sc.BZ.jpg" alt="figures/sc.BZ.jpg" />
+  <div class="caption">
+    立方晶の第一ブリルアンゾーン.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-10">キャパシターのシミュレーションのための周期境界条件</h2>
+<p>
+<div class="figure">
+  <img src="figures/capacitor.jpg" alt="figures/capacitor.jpg" />
+  <div class="caption">
+    (a) 真空中に置かれた強誘電体薄膜. 分極の薄膜に垂直な成分<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <mi>P</mi>
+ <mi>z</mi>
+</msub></math>は薄膜に<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mo>&pm;</mo>
+ <msub>
+  <mi>P</mi>
+  <mi>z</mi>
+ </msub>
+</math>の表面電荷を生じさせる. 表面電荷は薄膜内に<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <msub>
+  <mi>E</mi>
+  <mi>d</mi>
+ </msub>
+ <mo>=</mo>
+ <mo>-</mo>
+ <mn>4</mn>
+ <mi>&pi;</mi>
+ <msub>
+  <mi>P</mi>
+  <mi>z</mi>
+ </msub>
+</math>の反分極場を作る. (b) ストライプ・ドメイン構造を取ることで反分極場<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <mi>E</mi>
+ <mi>d</mi>
+</msub></math>をゼロにして系が安定化する. (c) 短絡した電極で挟まれている強誘電体薄膜. <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <msub>
+  <mi>E</mi>
+  <mi>d</mi>
+ </msub>
+ <mo>=</mo>
+ <mn>0</mn>
+</math>となる. (d) 電極は静電的な鏡とみなせるので, ２倍周期のスーパーセルを使うことによってシミュレーションが可能. (e) 電極と強誘電体の間に隙間がある場合. 部分的な反分極場<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <msub>
+  <mi>E</mi>
+  <mrow><mi mathvariant='normal'>d</mi></mrow>
+ </msub>
+ <mo>=</mo>
+ <mo>-</mo>
+ <mn>4</mn>
+ <mi>&pi;</mi>
+ <msub>
+  <mi>P</mi>
+  <mi>z</mi>
+ </msub>
+ <mfrac>
+  <mrow><mi>d</mi></mrow>
+  <mrow>
+   <mi>l</mi>
+   <mo>+</mo>
+   <mi>d</mi>
+  </mrow>
+ </mfrac>
+</math>がかかる. (f) この場合も２倍周期のスーパーセルを使うことによってシミュレーションが可能.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-11">計算結果: モンテカルロ法　対　分子動力学法</h2>
+<p>
+<div class="figure">
+  <img src="figures/MC-vs-MD.jpg" alt="figures/MC-vs-MD.jpg" />
+  <div class="caption">
+    バルクBaTiO<sub>3</sub>のモンテカルロ法と分子動力学法のシミュレーション. モンテカルロ・ステップには物理的な意味がないのに対して、分子動力学法はきちんと時間発展をしているので温度に対するヒステリシスが明確になる.
+  </div>
+</div>
+</p>
+<p>
+<div class="figure">
+  <img src="figures/BaTiO3-abc-T-dependence.jpg" alt="figures/BaTiO3-abc-T-dependence.jpg" />
+  <div class="caption">
+    実験値.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-12">バルクBaTiO<sub>3</sub>のヒステリシス・ループの温度依存性</h2>
+<p>
+<div class="figure">
+  <img src="figures/bulk-two-box.jpg" alt="figures/bulk-two-box.jpg" />
+  <div class="caption">
+    バルクBaTiO<sub>3</sub>のヒステリシス・ループの温度依存性. 常誘電状態から強電状態への相転移が明確に見られる.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-13">エピタキシャル成長による圧縮応力下のBaTiO<sub>3</sub>薄膜キャパシタと「自由」薄膜キャパシタとのヒステリシス・ループの比較</h2>
+<p>
+<div class="figure">
+  <img src="figures/epit-vs-free-hysteresis-box.jpg" alt="figures/epit-vs-free-hysteresis-box.jpg" />
+  <div class="caption">
+    (a) エピタキシャル成長による圧縮応力下のBaTiO<sub>3</sub>薄膜キャパシタと, (b)「自由」BaTiO<sub>3</sub>薄膜キャパシタとのヒステリシス・ループの膜厚依存性の比較. <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>T</mi>
+ <mo>=</mo>
+</math> 100 K.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-14">エピタキシャル成長による圧縮応力下の薄膜と「自由」薄膜との違い</h2>
+<p>
+<div class="figure">
+  <img src="figures/epit-vs-free.jpg" alt="figures/epit-vs-free.jpg" />
+  <div class="caption">
+    エピタキシャル成長により誘起される圧縮歪は分極のスイッチングを妨げる働きをし, 逆に非一様歪 (音響変位) の導入はスイッチングを容易化する.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-15">まとめ</h2>
+
+<ul>
+  <li>ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>のための第一原理有効ハミルトニアンに基づく高速な分子動力学計算コードferamを独自開発し,
+    BaTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>のバルクと薄膜キャパシターに適用した.</li>
+  <li>分極特性やヒステリシス・ループなどの温度、膜厚、圧縮応力依存性がシミュレートできるようになった.</li>
+  <li>電極と強誘電体の界面の構造に起因する不完全な遮蔽もシミュレートできる.</li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-16">付録: 強誘電体とは何か</h2>
+<p>
+<div class="figure">
+  <img src="figures/ferroelectrics.jpg" alt="figures/ferroelectrics.jpg" />
+  <div class="caption">
+    BaTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, PbTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, KNbO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, LiNbO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, LiTaO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, SrTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, Pb(Zr<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mo>(</mo>
+  <mn>1</mn>
+  <mo>-</mo>
+  <mi>x</mi>
+  <mo>)</mo>
+ </mrow>
+</msub></math>Ti<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mi>x</mi>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PZT) 等の強誘電体の主な性質.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-17">付録: LO-TO splittingとはイオン系のプラズマ振動数みたいなモノ</h2>
+<p>
+<div class="figure">
+  <img src="figures/oscillation.jpg" alt="figures/oscillation.jpg" />
+  <div class="caption">
+    誘電体薄膜の縦波振動. 分極の薄膜に垂直な成分<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <mi>P</mi>
+ <mi>z</mi>
+</msub></math>は薄膜に<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mo>&pm;</mo>
+ <msub>
+  <mi>P</mi>
+  <mi>z</mi>
+ </msub>
+</math>の表面電荷を生じさせる. 表面電荷は薄膜内に<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <msub>
+  <mi>E</mi>
+  <mi>d</mi>
+ </msub>
+ <mo>=</mo>
+ <mo>-</mo>
+ <mn>4</mn>
+ <mi>&pi;</mi>
+ <msub>
+  <mi>P</mi>
+  <mi>z</mi>
+ </msub>
+</math>の反分極場を作る. 反分極場により<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <mi>P</mi>
+ <mi>z</mi>
+</msub></math>には復元力が働くので「振動」する.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-18">Parameters (input file)</h2>
+
+<ul>
+  <li>King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)</li>
+  <li>Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)</li>
+</ul>
+<pre>#--- Method, Temperature, and mass ---------------
+method = 'md'
+   # 'md' - Molecular Dynamics with Nose-Poincare thermostat (Canonical ensemble)
+   # 'lf' - Leap Frog (Microcanonical ensemble)
+   # 'mc' - Monte Carlo
+GPa = -5.0
+kelvin = 300
+mass_amu = 39.0       # Required for MD
+Q_Nose = 1.0
+
+#--- System geometry -----------------------------
+bulk_or_film = 'bulk'
+L = 32 32 32
+a0 =  3.94         lattice constant a0 [Angstrom]
+
+#--- Time step -----------------------------------
+dt = 0.002 [ps]
+n_thermalize =  40000
+n_average    =  10000
+n_coord_freq =   5000     Write a snapshot to the disk every 5000 steps
+
+#--- On-site (Polynomial of order 4) -------------
+P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
+P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
+
+#--- Inter-site ----------------------------------
+j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
+
+#--- Elastic Constants ---------------------------
+B11 = 126.
+B12 =  44.9
+B44 =  50.3  [eV]
+
+#--- Elastic Coupling ----------------------------
+B1xx = -211.   [eV/Angstrom^2]
+B1yy =  -19.3  [eV/Angstrom^2]
+B4yz =   -7.75 [eV/Angstrom^2]
+
+#--- Dipole --------------------------------------
+init_dipo_avg = 0.00 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
+init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
+Z_star       = 9.956
+epsilon_inf   = 5.24
+</pre>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-19">Time evolution and fluctuation</h2>
+<p>
+<div class="figure">
+  <img src="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" alt="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" />
+  <div class="caption">
+    Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-20">Dielectric constants can be calculated from fluctuations</h2>
+<p>
+<div class="figure">
+  <img src="figures/strain-susceptibility.jpg" alt="figures/strain-susceptibility.jpg" />
+  <div class="caption">
+    Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Dielectric constants can be calculated from fluctuations of dipoles.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-21">Heating-up and cooling-down simulations of ferroelectric capacitors</h2>
+<p>
+Animations of holizontal slices of heating-up and cooling-down
+simulations for BaTiO<sub>3</sub> thin-film capacitors with short-circuited
+electrodes under 1% in-plane biaxial compressive strain.
+The +z-polarized and &minus;z-polarized sites are
+denoted by red open squares and blue filled squares, respectively.
+Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
+</p>
+
+<ul>
+  <li>(a) l=15, d=1
+    <ul>
+      <li><a href="../animations/epit-40x40-L015-D1-5.0GPa-heating-animation.gif">heating-up</a></li>
+      <li><a href="../animations/epit-40x40-L015-D1-5.0GPa-cooling-animation.gif">cooling-down</a></li>
+    </ul></li>
+  <li>(b) l=31, d=1
+    <ul>
+      <li><a href="../animations/epit-40x40-L031-D1-5.0GPa-heating-animation.gif">heating-up</a></li>
+      <li><a href="../animations/epit-40x40-L031-D1-5.0GPa-cooling-animation.gif">cooling-down</a></li>
+    </ul></li>
+  <li>(c) l=127, d=1
+    <ul>
+      <li><a href="../animations/epit-40x40-L127-D1-5.0GPa-heating-animation.gif">heating-up</a></li>
+      <li><a href="../animations/epit-40x40-L127-D1-5.0GPa-cooling-animation.gif">cooling-down</a></li>
+    </ul></li>
+  <li>(d) l=255, d=1
+    <ul>
+      <li>heating-up   (coming soon)</li>
+      <li><a href="../animations/epit-40x40-L255-D1-5.0GPa-cooling-animation.gif">cooling-down</a></li>
+    </ul></li>
+  <li>(e) l=32, d=0
+    <ul>
+      <li><a href="../animations/epit-40x40-L032-D0-5.0GPa-heating-animation.gif">heating-up</a></li>
+      <li><a href="../animations/epit-40x40-L032-D0-5.0GPa-cooling-animation.gif">cooling-down</a></li>
+    </ul></li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-22">Thiner film has finer domain structure to avoid stronger depolarization field</h2>
+<p>
+<div class="figure">
+  <img src="figures/slice32x32.jpg" alt="figures/slice32x32.jpg" />
+  <div class="caption">
+    Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mn>32</mn>
+ <mo>&times;</mo>
+ <mn>32</mn>
+ <mo>&times;</mo>
+ <mo>(</mo>
+ <mi>l</mi>
+ <mo>=</mo>
+ <mn>7</mn>
+ <mo>,</mo>
+ <mn>15</mn>
+ <mo>,</mo>
+ <mn>31</mn>
+ <mo>,</mo>
+ <mn>63</mn>
+ <mo>,</mo>
+ <mn>127</mn>
+ <mi>a</mi>
+ <mi>n</mi>
+ <mi>d</mi>
+ <mn>255</mn>
+ <mo>,</mo>
+ <mi>d</mi>
+ <mo>=</mo>
+ <mn>1</mn>
+</math>). Thiner film has finer domain structure to avoid stronger depolarization field <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <msub>
+  <mi>E</mi>
+  <mrow><mi mathvariant='normal'>d</mi></mrow>
+ </msub>
+ <mo>=</mo>
+ <mo>-</mo>
+ <mn>4</mn>
+ <mi>&pi;</mi>
+ <msub>
+  <mi>P</mi>
+  <mi>z</mi>
+ </msub>
+ <mfrac>
+  <mrow><mi>d</mi></mrow>
+  <mrow>
+   <mi>l</mi>
+   <mo>+</mo>
+   <mi>d</mi>
+  </mrow>
+ </mfrac>
+</math>. 
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-23">Temperature dependence of polarizations of thin-film capacitors</h2>
+<p>
+<div class="figure">
+  <img src="figures/epitDEN.jpg" alt="figures/epitDEN.jpg" />
+  <div class="caption">
+    
+  </div>
+</div></p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-24">---------------------------- Relaxor ----------------------------</h2>
+<p>
+Relaxors Pb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
+ <mi>B</mi>
+ <mi>x</mi>
+ <mrow><mo>&prime;</mo></mrow>
+</msubsup></math><math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
+ <mi>B</mi>
+ <mrow>
+  <mo>(</mo>
+  <mn>1</mn>
+  <mo>-</mo>
+  <mi>x</mi>
+  <mo>)</mo>
+ </mrow>
+ <mrow>
+  <mo>&prime;</mo>
+  <mo>&prime;</mo>
+ </mrow>
+</msubsup></math>O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>: Pb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>
+</p>
+
+<ul>
+  <li>Pb(Sc<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PSN): Sc<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>3</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+  <li>Pb(Sc<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>Ta<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PST): Sc<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>3</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Ta<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+  <li>Pb(Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PMN:) Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+  <li><math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mo>(</mo>
+ <mn>1</mn>
+ <mo>-</mo>
+ <mi>x</mi>
+ <mo>)</mo>
+</math>Pb(Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>-xPbTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PMN-<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><mi>x</mi></math>PT): Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Ti<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>4</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+  <li>Pb(Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Ta<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PMT): Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Ta<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+  <li>Pb(Zn<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PZN): Zn<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math>, Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <none />
+ <mrow>
+  <mn>5</mn>
+  <mo>+</mo>
+ </mrow>
+</msup></math></li>
+</ul>
+<p>
+The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
+ <mi>B</mi>
+ <mi>x</mi>
+ <mrow><mo>&prime;</mo></mrow>
+</msubsup></math> and <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
+ <mi>B</mi>
+ <mrow>
+  <mo>(</mo>
+  <mn>1</mn>
+  <mo>-</mo>
+  <mi>x</mi>
+  <mo>)</mo>
+ </mrow>
+ <mrow>
+  <mo>&prime;</mo>
+  <mo>&prime;</mo>
+ </mrow>
+</msubsup></math> is <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mn>4</mn>
+ <mo>+</mo>
+</math>.
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-25">Frequency dependence of dielectric constant of relaxors</h2>
+<p>
+<div class="figure">
+  <img src="figures/TsurumiFig3.jpg" alt="figures/TsurumiFig3.jpg" />
+  <div class="caption">
+    After Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. Vol.33pp. 1959-1964 (1994)
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-26">Crystal structures of relaxors</h2>
+<p>
+<div class="figure">
+  <img src="figures/RandallBhallaFig3.jpg" alt="figures/RandallBhallaFig3.jpg" />
+  <div class="caption">
+    (a) Ordered B-site structure of <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>A</mi>
+ <msubsup>
+  <mi>B</mi>
+  <mi>x</mi>
+  <mrow><mo>&prime;</mo></mrow>
+ </msubsup>
+ <msubsup>
+  <mi>B</mi>
+  <mrow>
+   <mo>(</mo>
+   <mn>1</mn>
+   <mo>-</mo>
+   <mi>x</mi>
+   <mo>)</mo>
+  </mrow>
+  <mrow>
+   <mo>&prime;</mo>
+   <mo>&prime;</mo>
+  </mrow>
+ </msubsup>
+</math>O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>. In the case of Pb(Sc<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, Sc and Nb has the NaCl structure. In the case of Pb(Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>2</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, the Na-site is randomly occupied by Mg<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>3</mn>
+ </mrow>
+</msub></math>Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>6</mn>
+ </mrow>
+</msub></math> and the Cl-site is occupied by  Nb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mn>1</mn>
+  <mo>/</mo>
+  <mn>2</mn>
+ </mrow>
+</msub></math>.  (b) Disordered structure. B-sites is occupied by <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msup>
+ <mi>B</mi>
+ <mrow><mo>&prime;</mo></mrow>
+</msup></math> and <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
+ <mi>B</mi>
+ <mrow>
+  <mo>(</mo>
+  <mn>1</mn>
+  <mo>-</mo>
+  <mi>x</mi>
+  <mo>)</mo>
+ </mrow>
+ <mrow>
+  <mo>&prime;</mo>
+  <mo>&prime;</mo>
+ </mrow>
+</msubsup></math> randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-27">Local field on Pb-site</h2>
+<p>
+Displacement of Pb is the main source of dipole moment.
+<div class="figure">
+  <img src="figures/TwoDoubleWells.jpg" alt="figures/TwoDoubleWells.jpg" />
+  <div class="caption">
+    Symmetric potential around Pb at the chemically ordered region (COR). Asymmetric one at the chemically disordered region (CDR).
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-28">Chemically ordered and disordered regions of relaxors</h2>
+<p>
+<div class="figure">
+  <img src="figures/RandallBhallaFig8.jpg" alt="figures/RandallBhallaFig8.jpg" />
+  <div class="caption">
+    The quenched sample has chemically ordered regions (&sim;100&Aring;) in a chemically disordered matrix. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-29">Modeling of relaxors</h2>
+<p>
+<div class="figure">
+  <img src="figures/DoubleWells.jpg" alt="figures/DoubleWells.jpg" />
+  <div class="caption">
+    Schematic illustration of modeling of relaxor. Bubble-like Chemically ordered regions (COR, red symmetric double wells) is created in a chemically disordered matrix (blue asymmetric double wells)
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-30">Snapshot of a simulation of PSN relaxor</h2>
+<p>
+<div class="figure">
+  <img src="figures/SilviaFig1.jpg" alt="figures/SilviaFig1.jpg" />
+  <div class="caption">
+    A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields. After Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-31">Frequency dependence of dielectric constant</h2>
+<p>
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
+ <mi>&epsilon;</mi>
+ <mo>(</mo>
+ <mi>&omega;</mi>
+ <mo>)</mo>
+ <mo>-</mo>
+ <msub>
+  <mi>&epsilon;</mi>
+  <mn>&infin;</mn>
+ </msub>
+ <mo>=</mo>
+ <mfrac>
+  <mrow>
+   <mo>(</mo>
+   <msup>
+    <mi>Z</mi>
+    <mo>*</mo>
+   </msup>
+   <msup>
+    <mo>)</mo>
+    <mn>2</mn>
+   </msup>
+  </mrow>
+  <mrow>
+   <mn>3</mn>
+   <msub>
+    <mi>&epsilon;</mi>
+    <mn>0</mn>
+   </msub>
+   <mi>V</mi>
+   <msub>
+    <mi>k</mi>
+    <mi>B</mi>
+   </msub>
+   <mi>T</mi>
+  </mrow>
+ </mfrac>
+ <mfenced close=']' open='['><mrow>
+  <mfenced close='&rangle;' open='&langle;'><mrow><msup>
+   <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+   <mn>2</mn>
+  </msup></mrow></mfenced>
+  <mo>-</mo>
+  <msubsup>
+   <mo>&int;</mo>
+   <mrow>
+    <mo>-</mo>
+    <mn>&infin;</mn>
+   </mrow>
+   <mrow><mn>&infin;</mn></mrow>
+  </msubsup>
+  <mi>d</mi>
+  <mi>t</mi>
+  <msup>
+   <mi>e</mi>
+   <mrow>
+    <mi>i</mi>
+    <mi>&omega;</mi>
+    <mi>t</mi>
+   </mrow>
+  </msup>
+  <mfenced close='&rangle;' open='&langle;'><mrow>
+   <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+   <mo>(</mo>
+   <mi>t</mi>
+   <mo>)</mo>
+   <mo>&sdot;</mo>
+   <mrow><mrow><mi mathvariant='bold-italic'>u</mi></mrow></mrow>
+   <mo>(</mo>
+   <mn>0</mn>
+   <mo>)</mo>
+  </mrow></mfenced>
+ </mrow></mfenced>
+</math>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-32">Estimation of computational time</h2>
+<p>
+32x32x32 unit cells, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi mathvariant='normal'>&Delta;</mi>
+ <mi>t</mi>
+ <mo>=</mo>
+ <mn>2</mn>
+</math> fs, [AMD64 1.8GHz dual core] or [SR11000 1 node = 16 cores]
+</p>
+<p>
+1THz, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>T</mi>
+ <mo>=</mo>
+ <mn>1</mn>
+ <mspace width='0.167em' />
+</math>ps,            500 steps,  54 sec  or 8.4 sec.
+</p>
+<p>
+1GHz, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>T</mi>
+ <mo>=</mo>
+ <mn>1</mn>
+ <mspace width='0.167em' />
+</math>ns,        500,000 steps, 900 min. or 140 min.
+</p>
+<p>
+1MHz, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>T</mi>
+ <mo>=</mo>
+ <mn>1</mn>
+ <mi>&mu;</mi>
+</math>s,    500,000,000 steps, 620 days or  97 days
+</p>
+<p>
+So, I am planning to calculate and compare <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>&epsilon;</mi>
+ <mo>(</mo>
+ <mi>&omega;</mi>
+ <mo>)</mo>
+</math> for <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
+ <mi>&omega;</mi>
+ <mo>/</mo>
+ <mo>(</mo>
+ <mn>2</mn>
+ <mi>&pi;</mi>
+ <mo>)</mo>
+</math> = 10M ... 10GHz.
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-33">Applied external electric field</h2>
+<p>
+<div class="figure">
+  <img src="figures/step.jpg" alt="figures/step.jpg" />
+  <div class="caption">
+    Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
+  </div>
+</div>
+</p>
+</div>
+</body>
+</html>

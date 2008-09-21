@@ -1,0 +1,442 @@
+=begin
+= BaTiO3強誘電体薄膜キャパシターのヒステリシス・ループの分子動力学計算
+西松毅, Umesh V. Waghmare, 川添良幸, David Vanderbilt
+
+論文: Phys. Rev. B <b>78</b>, 104104 (2008)
+
+フリーソフトウエアferam: http://loto.sourceforge.net/feram/
+
+# I entitled my talk "Fast Molecular-Dynamics Simulation for Ferroelectric Thin-Film Capacitors Using a First-Principles Effective Hamiltonian".
+# You can find its preprint at here.
+# This study is done by my original MD code, feram.
+# You can download the code from here.
+
+
+== Slidyの使い方
+このプレゼンは Slidy http://www.w3.org/Talks/Tools/Slidy/ を使っています.
+Firefoxを使うとより正確にご覧になれます.
+ * [Space]か[Left]かマウス・クリックで次のスライドへ
+ * [Left], [Right], [Pg Up] そして [Pg Dn] でスライド操作
+ * [Home]→最初のスライド
+ * [End]→最後のスライド
+ * [C]で目次が表示されます
+ * [F11]ファンクション・キーで全画面モードを切り替え（Firefoxの機能）
+ * [F]でツール・バーのON/OFFを切り替え
+ * [A]でプレゼン・モードとプリント・モードを切り替え
+ * [S]と[B]とでフォントサイズを変更
+
+
+== 本研究の背景
+ * 強誘電体薄膜: 積層コンデンサ, ナノ・アクチュエータ, 不揮発性メモリ (FeRAM) 等に応用
+ * それらの微細化（ダウンサイジング）が求められている
+ * 疲労による分極特性の劣化 [J. F. Scott: Ferroelectric Memories (Springer, 2000)]
+figures/J.F.Scott.Fig.1.1.ae.jpg
+ * 電極・強誘電体界面の不活性層のおよぼす影響
+   [M. Dawber et al.: J. Phys. Condes. Matter <b>15</b>, L393 (2003)]
+ * ヒステリシス・ループや分極反転、ドメイン壁の<b>動的性質</b>、またそれらの<b>ナノサイズ効果</b>はよく理解されていない
+   * 実験による「その場観察」が困難であった
+   * 長距離の双極子−双極子相互作用が大規模長時間のコンピューターシミュレーションを不可能にしていた
+
+
+== 本研究の目的
+ * 強誘電体薄膜キャパシターを実際的な規模と時間でシミュレートできる<b>高速</b>な分子動力学計算コードの開発
+ * 電極・強誘電体界面の不活性層のおよぼす影響の解明
+ * エピタキシャル成長に伴う圧縮ひずみの分極特性へ影響の検証
+
+== feramコードの特徴
+../logo.jpg
+ * ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>の第一原理計算から求められた有効ハミルトニアンに基づく、スーパーセルを使った分子動力学計算（詳細後述）
+ * 短絡された２つの電極に挟まれた強誘電体薄膜キャパシターのシミュレーションが可能（詳細後述）
+ * 高速（大規模で実際的なタイムスケールの計算が可能）
+   * 長距離の双極子間相互作用をFFTを使って逆空間で計算（詳細後述）
+   * Nosé-Poincaré thermostat ⇒ $\Delta t$ = 2 fs
+   * FFTW library version 3 http://www.FFTW.org/
+   * 並列化: OpenMP http://www.OpenMP.org/
+ * マルチ・プラットホーム
+   * PC: Linuxで動いている対称型マルチプロセッサ (SMP)
+   * スパコン: HITACHI SR11000
+   * ゲーム機: SONY PLAYSTATION3（準備中）
+ * Fortran 2003 でオブジェクト指向プログラミングされている
+ * ./configure ; make で簡単にコンパイル (GNU autotools)
+ * フリーソフトウエア http://loto.sourceforge.net/feram/
+
+== ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>
+figures/perovskite-contours.jpg 原子変位と格子歪みのカップリングの様子. [T. Hashimoto, T. Nishimatsu et al.: Jpn. J. Appl. Phys. <b>43</b>, 6785 (2004)] より.
+
+
+== 粗視化: 系の自由度を簡単化, 有効ハミルトニアンの構築
+figures/CoarseGraining.jpg
+ * 実際のペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>: $15N+6$ 自由度
+   * スーパーセル中$N$個の単位胞
+   * 単位胞中5個の原子
+   * 各原子は$x$, $y$, $z$の3方向に動く
+   * 歪みの6成分
+ * 単純化したモデル: $6N+6$  自由度
+   * 単位胞に１つの双極子ベクトル$Z^*\bm{u}(\bm{R})$ ⇒ 3 自由度/単位胞
+   * 単位胞に１つの「音響フォノン変位」ベクトル $\bm{w}(\bm{R})$ ⇒ 3 自由度/単位胞
+   * 計 6 自由度/単位胞
+
+有効ハミルトニアン:
+Eq. 1
+    H^{\rm eff}
+    = \frac{M^*_{\rm dipole}}{2} \sum_{\bm{R},\alpha}\dot{u}_\alpha^2(\bm{R})
+    + \frac{M^*_{\rm acoustic}}{2}\sum_{\bm{R},\alpha}\dot{w}_\alpha^2(\bm{R})
+    + V^{\rm self}(\{\bm{u}\})+V^{\rm dpl}(\{\bm{u}\})+V^{\rm short}(\{\bm{u}\})
+    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{\bm{w}\})
+    + V^{\rm coup,\,homo}(\{\bm{u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{\bm{u}\}, \{\bm{w}\})
+/Eq.
+
+figures/arrows.jpg
+
+# == Self potential of a local dipole
+# Eq. 1
+#     V^{\rm self}(\bm{u}_i)=\kappa_2 u_i^2 + \alpha u_i^4 + \gamma(u_{iy}^2u_{iz}^2+u_{iz}^2u_{ix}^2+u_{ix}^2u_{iy}^2)
+# /Eq.
+#
+# Eq. 1
+#     u_i^2=u_{ix}^2 + u_{iy}^2 + u_{iz}^2
+# /Eq.
+#
+# figures/fourth.jpg Double well.
+
+
+== 長距離双極子−双極子相互作用の高速計算
+長距離双極子−双極子相互作用:
+Eq. 1
+    V^{\rm dpl}(\{\bm{u}\}) = 
+    \frac{1}{2}\sum_{i=1}^N \sum_\alpha \sum_{j=1}^N \sum_\beta
+    u_\alpha(\bm{R}_i) \Phi_{\alpha\beta}(\bm{R}_{ij}) u_\beta(\bm{R}_j),
+/Eq.
+
+Eq. 2
+     \Phi_{\alpha\beta}(\bm{R}_{ij})= \frac{Z^{*2}}{\epsilon_\infty}\sum_{\bm{n}}{}'
+     \frac{\delta_{\alpha\beta} - 3(\widehat{\bm{R}_{ij}+\bm{n}})_\alpha(\widehat{\bm{R}_{ij}+\bm{n}})_\beta}{|{\bm{R}_{ij}+\bm{n}}|^3},
+/Eq.
+
+ここで$\bm{n}$はスーパーセルの格子ベクトルで
+Eq. 3
+     n_\alpha = \cdots, -2{L_\alpha} a_0, -{L_\alpha} a_0, 0, {L_\alpha} a_0, 2{L_\alpha} a_0,\cdots .
+/Eq.
+
+近距離の相互作用:
+Eq. 4
+     V^{\rm shrt}(\{\bm{u}\})=
+     \frac{1}{2}\sum_{i=1}^N \sum_\alpha \sum_j^{\rm 3nn} \sum_\beta
+     u_\alpha(\bm{R}_i) \,J_{ij,\alpha\beta}\, u_\beta(\bm{R}_j)
+/Eq.
+$J_{ij,\alpha\beta} = J_k$: Short-range interaction matrix ($k=1,\cdots,7$)
+
+figures/flow.jpg 双極子に働く力の計算方法の簡単化したフローチャート. 高速フーリエ変換 (FFT) と逆FFT (IFFT) とが長距離双極子−双極子相互作用の高速計算を可能にし, 実空間で計算していたら$O(N^2)$の計算時間がかかるものが$O(N \log N)$になる.
+
+== 「光学フォノン」の分散関係
+figures/bulk32x32x32.dipole-dipole-long.energy.jpg 長距離双極子−双極子相互作用だけの分散関係. M点がミニマムになっている.
+
+figures/bulk32x32x32.dipole-dipole-long+short.energy.jpg 近距離の相互作用を導入して始めてΓ点がミニマムになる.
+
+figures/bulk32x32x32.dipole-dipole-long+short.jpg 「光学フォノン」の分散関係
+
+figures/sc.BZ.jpg 立方晶の第一ブリルアンゾーン.
+
+
+
+
+== キャパシターのシミュレーションのための周期境界条件
+figures/capacitor.jpg (a) 真空中に置かれた強誘電体薄膜. 分極の薄膜に垂直な成分$P_z$は薄膜に$\pm P_z$の表面電荷を生じさせる. 表面電荷は薄膜内に$E_d=-4 \pi P_z$の反分極場を作る. (b) ストライプ・ドメイン構造を取ることで反分極場$E_d$をゼロにして系が安定化する. (c) 短絡した電極で挟まれている強誘電体薄膜. $E_d=0$となる. (d) 電極は静電的な鏡とみなせるので, ２倍周期のスーパーセルを使うことによってシミュレーションが可能. (e) 電極と強誘電体の間に隙間がある場合. 部分的な反分極場$E_{\rm d}=-4\pi P_z \frac{d}{l+d}$がかかる. (f) この場合も２倍周期のスーパーセルを使うことによってシミュレーションが可能.
+
+
+
+== 計算結果: モンテカルロ法　対　分子動力学法
+figures/MC-vs-MD.jpg バルクBaTiO<sub>3</sub>のモンテカルロ法と分子動力学法のシミュレーション. モンテカルロ・ステップには物理的な意味がないのに対して、分子動力学法はきちんと時間発展をしているので温度に対するヒステリシスが明確になる.
+
+figures/BaTiO3-abc-T-dependence.jpg 実験値.
+
+
+
+== バルクBaTiO<sub>3</sub>のヒステリシス・ループの温度依存性
+figures/bulk-two-box.jpg バルクBaTiO<sub>3</sub>のヒステリシス・ループの温度依存性. 常誘電状態から強電状態への相転移が明確に見られる.
+
+
+== エピタキシャル成長による圧縮応力下のBaTiO<sub>3</sub>薄膜キャパシタと「自由」薄膜キャパシタとのヒステリシス・ループの比較
+figures/epit-vs-free-hysteresis-box.jpg (a) エピタキシャル成長による圧縮応力下のBaTiO<sub>3</sub>薄膜キャパシタと, (b)「自由」BaTiO<sub>3</sub>薄膜キャパシタとのヒステリシス・ループの膜厚依存性の比較. $T=$ 100 K.
+
+== エピタキシャル成長による圧縮応力下の薄膜と「自由」薄膜との違い
+figures/epit-vs-free.jpg エピタキシャル成長により誘起される圧縮歪は分極のスイッチングを妨げる働きをし, 逆に非一様歪 (音響変位) の導入はスイッチングを容易化する.
+
+== まとめ
+ * ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>のための第一原理有効ハミルトニアンに基づく高速な分子動力学計算コードferamを独自開発し,
+   BaTiO$_3$のバルクと薄膜キャパシターに適用した.
+ * 分極特性やヒステリシス・ループなどの温度、膜厚、圧縮応力依存性がシミュレートできるようになった.
+ * 電極と強誘電体の界面の構造に起因する不完全な遮蔽もシミュレートできる.
+
+== 付録: 強誘電体とは何か
+figures/ferroelectrics.jpg BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT) 等の強誘電体の主な性質.
+
+== 付録: LO-TO splittingとはイオン系のプラズマ振動数みたいなモノ
+figures/oscillation.jpg 誘電体薄膜の縦波振動. 分極の薄膜に垂直な成分$P_z$は薄膜に$\pm P_z$の表面電荷を生じさせる. 表面電荷は薄膜内に$E_d=-4 \pi P_z$の反分極場を作る. 反分極場により$P_z$には復元力が働くので「振動」する.
+
+
+== Parameters (input file)
+ * King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)
+ * Zhong, Vanderbilt, and Rabe: Phys. Rev. B Vol.52 p.6301 (1995)
+
+ #--- Method, Temperature, and mass ---------------
+ method = 'md'
+    # 'md' - Molecular Dynamics with Nose-Poincare thermostat (Canonical ensemble)
+    # 'lf' - Leap Frog (Microcanonical ensemble)
+    # 'mc' - Monte Carlo
+ GPa = -5.0
+ kelvin = 300
+ mass_amu = 39.0       # Required for MD
+ Q_Nose = 1.0
+
+ #--- System geometry -----------------------------
+ bulk_or_film = 'bulk'
+ L = 32 32 32
+ a0 =  3.94         lattice constant a0 [Angstrom]
+
+ #--- Time step -----------------------------------
+ dt = 0.002 [ps]
+ n_thermalize =  40000
+ n_average    =  10000
+ n_coord_freq =   5000     Write a snapshot to the disk every 5000 steps
+
+ #--- On-site (Polynomial of order 4) -------------
+ P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
+ P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+ P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
+
+ #--- Inter-site ----------------------------------
+ j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
+
+ #--- Elastic Constants ---------------------------
+ B11 = 126.
+ B12 =  44.9
+ B44 =  50.3  [eV]
+
+ #--- Elastic Coupling ----------------------------
+ B1xx = -211.   [eV/Angstrom^2]
+ B1yy =  -19.3  [eV/Angstrom^2]
+ B4yz =   -7.75 [eV/Angstrom^2]
+
+ #--- Dipole --------------------------------------
+ init_dipo_avg = 0.00 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
+ init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
+ Z_star       = 9.956
+ epsilon_inf   = 5.24
+
+
+
+
+
+
+== Time evolution and fluctuation
+figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
+
+# This figure shows the time steps of simulations.
+# First, the system exchanges energy between the
+# one particle heat bath, then it reaches the equilibrium.
+# You can see Nose-Poincare Hamiltonian remains zero.
+
+
+
+
+
+== Dielectric constants can be calculated from fluctuations
+figures/strain-susceptibility.jpg Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Dielectric constants can be calculated from fluctuations of dipoles.
+
+== Heating-up and cooling-down simulations of ferroelectric capacitors
+Animations of holizontal slices of heating-up and cooling-down
+simulations for BaTiO<sub>3</sub> thin-film capacitors with short-circuited
+electrodes under 1% in-plane biaxial compressive strain.
+The +z-polarized and &minus;z-polarized sites are
+denoted by red open squares and blue filled squares, respectively.
+Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
+ * (a) l=15, d=1
+   * heating-up   epit-40x40-L015-D1-5.0GPa-heating-animation.gif
+   * cooling-down epit-40x40-L015-D1-5.0GPa-cooling-animation.gif
+ * (b) l=31, d=1
+   * heating-up   epit-40x40-L031-D1-5.0GPa-heating-animation.gif
+   * cooling-down epit-40x40-L031-D1-5.0GPa-cooling-animation.gif
+ * (c) l=127, d=1
+   * heating-up   epit-40x40-L127-D1-5.0GPa-heating-animation.gif
+   * cooling-down epit-40x40-L127-D1-5.0GPa-cooling-animation.gif
+ * (d) l=255, d=1
+   * heating-up   (coming soon)
+   * cooling-down epit-40x40-L255-D1-5.0GPa-cooling-animation.gif
+ * (e) l=32, d=0
+   * heating-up   epit-40x40-L032-D0-5.0GPa-heating-animation.gif
+   * cooling-down epit-40x40-L032-D0-5.0GPa-cooling-animation.gif
+
+
+== Thiner film has finer domain structure to avoid stronger depolarization field
+figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes $32\times 32 \times (l=7, 15, 31, 63, 127 and 255, d=1$). Thiner film has finer domain structure to avoid stronger depolarization field $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$. 
+
+# Here I show thickness dependence of striped domain structure.
+# We found that thiner film has finer domain
+# structure to avoid stronger depolarization field.
+
+
+
+== Temperature dependence of polarizations of thin-film capacitors
+figures/epitDEN.jpg
+
+# These complicated figures are the calculated results for the thin-film
+# capacitors. Horizontal axes are temperature and vertical axes are
+# averaged dipole length u-z.
+# Red solid line can be considered as z-component of
+# polarization for heating-up simulation. Blue one is that for cooling.
+#
+# You can find the thickness dependent transition for heating-up simulations.
+# but no transition for cooling-down simulations.
+#
+# It can be understood there is thermally unhoppable bistability between
+# uniformly out-of-plane-polarized ferroelectric structure and
+# striped ferroelectric domain structure.
+#
+# In the next slide, I show the snapshot of this point structure.
+
+
+#== Uniformly polarized structure and striped domain structure
+#figures/epit-32x32-L015-D1-5.0GPa-100K.jpg Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of $32\times 32 \times (l=15, d=1)$. There is thermally unhoppable bistability between these two structure.
+#
+# these are the horizontal slice and vertical cross-section of
+# almost unformly polarized structure and striped domain structure.
+
+
+== ---------------------------- Relaxor ----------------------------
+Relaxors Pb$B'_x$$B''_{(1-x)}$O$_3$: Pb$^{2+}$
+ * Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$ (PSN): Sc$^{3+}$, Nb$^{5+}$
+ * Pb(Sc$_{1/2}$Ta$_{1/2}$)O$_3$ (PST): Sc$^{3+}$, Ta$^{5+}$
+ * Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$ (PMN:) Mg$^{2+}$, Nb$^{5+}$
+ * $(1-x)$Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$-xPbTiO$_3$ (PMN-$x$PT): Mg$^{2+}$, Nb$^{5+}$, Ti$^{4+}$
+ * Pb(Mg$_{1/3}$Ta$_{2/3}$)O$_3$ (PMT): Mg$^{2+}$, Ta$^{5+}$
+ * Pb(Zn$_{1/3}$Nb$_{2/3}$)O$_3$ (PZN): Zn$^{2+}$, Nb$^{5+}$
+The averaged valence number of B-site ions $B'_x$ and $B''_{(1-x)}$ is $4+$.
+
+
+# There are some Pb-based relaxors PbB'B''O$_3$.
+
+
+
+
+
+== Frequency dependence of dielectric constant of relaxors
+figures/TsurumiFig3.jpg After Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. Vol.33pp. 1959-1964 (1994)
+
+# Most characteristic and still mysterious property of relaxors is 
+#Eq.1
+#\tan\delta=\tan()
+#/Eq.
+
+
+
+
+
+
+== Crystal structures of relaxors
+figures/RandallBhallaFig3.jpg (a) Ordered B-site structure of $AB'_xB''_{(1-x)}$O$_3$. In the case of Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$, Sc and Nb has the NaCl structure. In the case of Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$, the Na-site is randomly occupied by Mg$_{1/3}$Nb$_{1/6}$ and the Cl-site is occupied by  Nb$_{1/2}$.  (b) Disordered structure. B-sites is occupied by $B'$ and $B''_{(1-x)}$ randomly. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+
+
+
+
+
+
+
+== Local field on Pb-site
+Displacement of Pb is the main source of dipole moment.
+figures/TwoDoubleWells.jpg Symmetric potential around Pb at the chemically ordered region (COR). Asymmetric one at the chemically disordered region (CDR).
+
+
+
+
+
+
+
+
+== Chemically ordered and disordered regions of relaxors
+figures/RandallBhallaFig8.jpg The quenched sample has chemically ordered regions (&sim;100&Aring;) in a chemically disordered matrix. After C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. Vol. 29 pp.327-333 (1990).
+
+
+
+
+
+
+== Modeling of relaxors
+figures/DoubleWells.jpg Schematic illustration of modeling of relaxor. Bubble-like Chemically ordered regions (COR, red symmetric double wells) is created in a chemically disordered matrix (blue asymmetric double wells)
+
+
+
+
+
+== Snapshot of a simulation of PSN relaxor
+figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields. After Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. Vol.97 p.137601 (2006).
+
+
+
+
+
+
+== Frequency dependence of dielectric constant
+Eq. (The fluctuation-dissipation theorem)
+\epsilon(\omega) - \epsilon_\infty = \frac{(Z^*)^2}{3\epsilon_0 V k_B T}\left[ \left\langle \bm{u}^2 \right\rangle - \int_{-\infty}^{\infty} dt e^{i\omega t} \left\langle \bm{u}(t) \cdot \bm{u}(0) \right\rangle \right]
+/Eq.
+
+
+# If you apply external electric field at site R' at time t', dopole at R,t sespinses
+# through this equation with real-space-and-time usceptibility tensor chi(R-R',t-t').
+# You can simplify it by Fourier transformation and get q-omega expression.
+# And then, if you apply the fluctuation-dissipation theorem to it, you may get
+# the imaginary part of chi. Then with Kramers-Kronig relation, you can get the real part.
+#
+# G. L. Squires: Introduction to the Theory of Thermal Neutron Scattering (Dover Publications, 1996).
+
+
+
+
+== Estimation of computational time
+32x32x32 unit cells, $\Delta t = 2$ fs, [AMD64 1.8GHz dual core] or [SR11000 1 node = 16 cores]
+
+1THz, $T=1\,$ps,            500 steps,  54 sec  or 8.4 sec.
+
+1GHz, $T=1\,$ns,        500,000 steps, 900 min. or 140 min.
+
+1MHz, $T=1\mu$s,    500,000,000 steps, 620 days or  97 days
+
+So, I am planning to calculate and compare $\epsilon(\omega)$ for $\omega/(2\pi)$ = 10M ... 10GHz.
+
+
+== Applied external electric field
+figures/step.jpg Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
+
+
+
+
+=end
+#
+# for ulmul.rb
+#
+require 'rubygems'
+require 'ulmul'
+u=Ulmul.new(1..0)
+u.subs_rules << [  /(heating-up)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
+u.subs_rules << [/(cooling-down)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
+u.subs_rules << [/(\S*\/?\.jpg)\s*(.*)$/, '<div class="figure">
+  <img src="\1" alt="\1" />
+  <div class="caption">
+    \2
+  </div>
+</div>']
+u.subs_rules << [/(figures\/proposal2\.gif)\s*(.*)$/, '<div class="figure">
+  <img src="\1" alt="\1" />
+  <div class="caption">
+    \2
+  </div>
+</div>']
+
+u.parse(ARGF)
+puts u.html(["feram-presentation.css"],["slidy.js"],"Takeshi Nishimatsu","ja")
+
+# Local variables:
+#   mode: RD
+#   compile-command: "ruby film-for-JPS-meeting-2008.txt film-for-JPS-meeting-2008.txt > film-for-JPS-meeting-2008.xhtml"
+# End:
