@@ -1,7 +1,6 @@
 =begin
-= feramコードによるBaTiO3強誘電体薄膜キャパシターのヒステリシス・ループの分子動力学計算
-#Fast Molecular-Dynamics Simulation for Ferroelectric Thin-Film Capacitors Using a First-Principles Effective Hamiltonian
-西松毅 (Takeshi Nishimatsu)
+= Fast Molecular-Dynamics Simulation for Ferroelectric Thin-Film Capacitors Using a First-Principles Effective Hamiltonian
+Takeshi Nishimatsu
 
 Preprint: http://arXiv.org/abs/0804.1853
 
@@ -635,7 +634,7 @@ u.subs_rules << [/(figures\/proposal2\.gif)\s*(.*)$/, '<div class="figure">
 </div>']
 
 u.parse(ARGF)
-puts u.html(["feram-presentation.css"],["slidy.js"],"Takeshi Nishimatsu","ja")
+puts u.html(["feram-presentation.css"],["slidy.js"],"Takeshi Nishimatsu","en")
 
 # Local variables:
 #   mode: RD

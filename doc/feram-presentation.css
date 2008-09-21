@@ -1,7 +1,7 @@
 /* ulmul-slidy.css -*-CSS-*-
 
    Original slidy.css is modified by Takeshi NISHIMATSU
-   Time-stamp: <2007-12-06 09:24:17 takeshi>
+   Time-stamp: <2008-09-19 17:59:13 takeshi>
 
 
    Original Copyright notice:
@@ -35,6 +35,12 @@ pre {
   white-space:      pre;
   color:            darkred;
   background-color: #ffe3e3;
+}
+
+a
+{
+    text-decoration: none;
+    color: darkblue;
 }
 
 div.slide {
@@ -72,7 +78,8 @@ div.slide.cover {
 
 div.slide.cover h1{
   font-weight: bold;
-  font-size: 1.6em;
+  font-size: 1.5em;
+  line-height: 1.5em;
   margin:  20% 10% 1%;
   padding: 0.5em 0;
   background: transparent;
