@@ -37,6 +37,12 @@ figures/J.F.Scott.Fig.1.1.ae.jpg
    * 実験による「その場観察」が困難であった
    * 長距離の双極子−双極子相互作用が大規模長時間のコンピューターシミュレーションを不可能にしていた
 
+ * 強誘電体薄膜中の（点）欠陥はスイッチングの核形成の中心になるか？ドメイン壁を引っ掛けるか？
+
+
+== 強誘電体とは
+figures/ferroelectrics.jpg BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT) 等の強誘電体の主な性質.
+
 
 == 本研究の目的
  * 強誘電体薄膜キャパシターを実際的な規模と時間でシミュレートできる<b>高速</b>な分子動力学計算コードの開発
@@ -47,7 +53,7 @@ figures/J.F.Scott.Fig.1.1.ae.jpg
 ../logo.jpg
  * ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>の第一原理計算から求められた有効ハミルトニアンに基づく、スーパーセルを使った分子動力学計算（詳細後述）
  * 短絡された２つの電極に挟まれた強誘電体薄膜キャパシターのシミュレーションが可能（詳細後述）
- * 高速（大規模で実際的なタイムスケールの計算が可能）
+ * 高速（大規模（〜100nm）で実際的なタイムスケール（〜1ns）の計算が可能）
    * 長距離の双極子間相互作用をFFTを使って逆空間で計算（詳細後述）
    * Nosé-Poincaré thermostat ⇒ $\Delta t$ = 2 fs
    * FFTW library version 3 http://www.FFTW.org/
@@ -148,8 +154,12 @@ figures/capacitor.jpg (a) 真空中に置かれた強誘電体薄膜. 分極の�
 == 計算結果: モンテカルロ法　対　分子動力学法
 figures/MC-vs-MD.jpg バルクBaTiO<sub>3</sub>のモンテカルロ法と分子動力学法のシミュレーション. モンテカルロ・ステップには物理的な意味がないのに対して、分子動力学法はきちんと時間発展をしているので温度に対するヒステリシスが明確になる.
 
-figures/BaTiO3-abc-T-dependence.jpg 実験値.
+figures/BaTiO3-abc-T-dependence.jpg 実験値. [H. E. Kay and P. Vousden: Philos. Mag. 40, 1019  (1949)] より.
 
+
+
+== 誘電率は双極子の揺らぎから計算できる
+figures/strain-susceptibility.jpg バルクBaTiO<sub>3</sub>の誘電率の３成分の温度依存性. ３回の相転移のときの誘電率の発散がシミュレートできている.
 
 
 == バルクBaTiO<sub>3</sub>のヒステリシス・ループの温度依存性
@@ -162,14 +172,20 @@ figures/epit-vs-free-hysteresis-box.jpg (a) エピタキシャル成長による
 == エピタキシャル成長による圧縮応力下の薄膜と「自由」薄膜との違い
 figures/epit-vs-free.jpg エピタキシャル成長により誘起される圧縮歪は分極のスイッチングを妨げる働きをし, 逆に非一様歪 (音響変位) の導入はスイッチングを容易化する.
 
+== 点欠陥の影響
+膜中の１つの双極子を固定することで点欠陥をシミュレート
+
+Preliminaryな結果
+ * マクロな物理量に影響はない
+ * ドメイン壁をピンニングしない
+
+
 == まとめ
  * ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>のための第一原理有効ハミルトニアンに基づく高速な分子動力学計算コードferamを独自開発し,
    BaTiO$_3$のバルクと薄膜キャパシターに適用した.
  * 分極特性やヒステリシス・ループなどの温度、膜厚、圧縮応力依存性がシミュレートできるようになった.
  * 電極と強誘電体の界面の構造に起因する不完全な遮蔽もシミュレートできる.
-
-== 付録: 強誘電体とは何か
-figures/ferroelectrics.jpg BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT) 等の強誘電体の主な性質.
+ * 強誘電体薄膜中の点欠陥の影響→ない？
 
 == 付録: LO-TO splittingとはイオン系のプラズマ振動数みたいなモノ
 figures/oscillation.jpg 誘電体薄膜の縦波振動. 分極の薄膜に垂直な成分$P_z$は薄膜に$\pm P_z$の表面電荷を生じさせる. 表面電荷は薄膜内に$E_d=-4 \pi P_z$の反分極場を作る. 反分極場により$P_z$には復元力が働くので「振動」する.
@@ -240,9 +256,6 @@ figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step pl
 
 
 
-
-== Dielectric constants can be calculated from fluctuations
-figures/strain-susceptibility.jpg Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Dielectric constants can be calculated from fluctuations of dipoles.
 
 == Heating-up and cooling-down simulations of ferroelectric capacitors
 Animations of holizontal slices of heating-up and cooling-down

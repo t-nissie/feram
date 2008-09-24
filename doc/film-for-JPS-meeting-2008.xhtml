@@ -74,11 +74,61 @@ Firefoxを使うとより正確にご覧になれます.
       <li>長距離の双極子−双極子相互作用が大規模長時間のコンピューターシミュレーションを不可能にしていた</li>
     </ul></li>
 </ul>
+
+<ul>
+  <li>強誘電体薄膜中の（点）欠陥はスイッチングの核形成の中心になるか？ドメイン壁を引っ掛けるか？</li>
+</ul>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-4">本研究の目的</h2>
+<h2 id="LABEL-4">強誘電体とは</h2>
+<p>
+<div class="figure">
+  <img src="figures/ferroelectrics.jpg" alt="figures/ferroelectrics.jpg" />
+  <div class="caption">
+    BaTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, PbTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, KNbO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, LiNbO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, LiTaO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, SrTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math>, Pb(Zr<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mrow>
+  <mo>(</mo>
+  <mn>1</mn>
+  <mo>-</mo>
+  <mi>x</mi>
+  <mo>)</mo>
+ </mrow>
+</msub></math>Ti<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mi>x</mi>
+</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
+ <none />
+ <mn>3</mn>
+</msub></math> (PZT) 等の強誘電体の主な性質.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-5">本研究の目的</h2>
 
 <ul>
   <li>強誘電体薄膜キャパシターを実際的な規模と時間でシミュレートできる<b>高速</b>な分子動力学計算コードの開発</li>
@@ -89,7 +139,7 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-5">feramコードの特徴</h2>
+<h2 id="LABEL-6">feramコードの特徴</h2>
 <p>
 <div class="figure">
   <img src="../logo.jpg" alt="../logo.jpg" />
@@ -101,7 +151,7 @@ Firefoxを使うとより正確にご覧になれます.
 <ul>
   <li>ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>の第一原理計算から求められた有効ハミルトニアンに基づく、スーパーセルを使った分子動力学計算（詳細後述）</li>
   <li>短絡された２つの電極に挟まれた強誘電体薄膜キャパシターのシミュレーションが可能（詳細後述）</li>
-  <li>高速（大規模で実際的なタイムスケールの計算が可能）
+  <li>高速（大規模（〜100nm）で実際的なタイムスケール（〜1ns）の計算が可能）
     <ul>
       <li>長距離の双極子間相互作用をFFTを使って逆空間で計算（詳細後述）</li>
       <li>Nosé-Poincaré thermostat ⇒ <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
@@ -125,7 +175,7 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-6">ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub></h2>
+<h2 id="LABEL-7">ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub></h2>
 <p>
 <div class="figure">
   <img src="figures/perovskite-contours.jpg" alt="figures/perovskite-contours.jpg" />
@@ -138,7 +188,7 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-7">粗視化: 系の自由度を簡単化, 有効ハミルトニアンの構築</h2>
+<h2 id="LABEL-8">粗視化: 系の自由度を簡単化, 有効ハミルトニアンの構築</h2>
 <p>
 <div class="figure">
   <img src="figures/CoarseGraining.jpg" alt="figures/CoarseGraining.jpg" />
@@ -439,7 +489,7 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-8">長距離双極子−双極子相互作用の高速計算</h2>
+<h2 id="LABEL-9">長距離双極子−双極子相互作用の高速計算</h2>
 <p>
 長距離双極子−双極子相互作用:
 <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
@@ -828,7 +878,7 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-9">「光学フォノン」の分散関係</h2>
+<h2 id="LABEL-10">「光学フォノン」の分散関係</h2>
 <p>
 <div class="figure">
   <img src="figures/bulk32x32x32.dipole-dipole-long.energy.jpg" alt="figures/bulk32x32x32.dipole-dipole-long.energy.jpg" />
@@ -865,7 +915,7 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-10">キャパシターのシミュレーションのための周期境界条件</h2>
+<h2 id="LABEL-11">キャパシターのシミュレーションのための周期境界条件</h2>
 <p>
 <div class="figure">
   <img src="figures/capacitor.jpg" alt="figures/capacitor.jpg" />
@@ -931,7 +981,7 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-11">計算結果: モンテカルロ法　対　分子動力学法</h2>
+<h2 id="LABEL-12">計算結果: モンテカルロ法　対　分子動力学法</h2>
 <p>
 <div class="figure">
   <img src="figures/MC-vs-MD.jpg" alt="figures/MC-vs-MD.jpg" />
@@ -944,7 +994,7 @@ Firefoxを使うとより正確にご覧になれます.
 <div class="figure">
   <img src="figures/BaTiO3-abc-T-dependence.jpg" alt="figures/BaTiO3-abc-T-dependence.jpg" />
   <div class="caption">
-    実験値.
+    実験値. [H. E. Kay and P. Vousden: Philos. Mag. 40, 1019  (1949)] より.
   </div>
 </div>
 </p>
@@ -952,7 +1002,20 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-12">バルクBaTiO<sub>3</sub>のヒステリシス・ループの温度依存性</h2>
+<h2 id="LABEL-13">誘電率は双極子の揺らぎから計算できる</h2>
+<p>
+<div class="figure">
+  <img src="figures/strain-susceptibility.jpg" alt="figures/strain-susceptibility.jpg" />
+  <div class="caption">
+    バルクBaTiO<sub>3</sub>の誘電率の３成分の温度依存性. ３回の相転移のときの誘電率の発散がシミュレートできている.
+  </div>
+</div>
+</p>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-14">バルクBaTiO<sub>3</sub>のヒステリシス・ループの温度依存性</h2>
 <p>
 <div class="figure">
   <img src="figures/bulk-two-box.jpg" alt="figures/bulk-two-box.jpg" />
@@ -965,7 +1028,7 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-13">エピタキシャル成長による圧縮応力下のBaTiO<sub>3</sub>薄膜キャパシタと「自由」薄膜キャパシタとのヒステリシス・ループの比較</h2>
+<h2 id="LABEL-15">エピタキシャル成長による圧縮応力下のBaTiO<sub>3</sub>薄膜キャパシタと「自由」薄膜キャパシタとのヒステリシス・ループの比較</h2>
 <p>
 <div class="figure">
   <img src="figures/epit-vs-free-hysteresis-box.jpg" alt="figures/epit-vs-free-hysteresis-box.jpg" />
@@ -981,7 +1044,7 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-14">エピタキシャル成長による圧縮応力下の薄膜と「自由」薄膜との違い</h2>
+<h2 id="LABEL-16">エピタキシャル成長による圧縮応力下の薄膜と「自由」薄膜との違い</h2>
 <p>
 <div class="figure">
   <img src="figures/epit-vs-free.jpg" alt="figures/epit-vs-free.jpg" />
@@ -994,7 +1057,23 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-15">まとめ</h2>
+<h2 id="LABEL-17">点欠陥の影響</h2>
+<p>
+膜中の１つの双極子を固定することで点欠陥をシミュレート
+</p>
+<p>
+Preliminaryな結果
+</p>
+
+<ul>
+  <li>マクロな物理量に影響はない</li>
+  <li>ドメイン壁をピンニングしない</li>
+</ul>
+</div>
+
+
+<div class="slide">
+<h2 id="LABEL-18">まとめ</h2>
 
 <ul>
   <li>ペロブスカイト型強誘電体<i>AB</i>O<sub>3</sub>のための第一原理有効ハミルトニアンに基づく高速な分子動力学計算コードferamを独自開発し,
@@ -1004,58 +1083,13 @@ Firefoxを使うとより正確にご覧になれます.
 </msub></math>のバルクと薄膜キャパシターに適用した.</li>
   <li>分極特性やヒステリシス・ループなどの温度、膜厚、圧縮応力依存性がシミュレートできるようになった.</li>
   <li>電極と強誘電体の界面の構造に起因する不完全な遮蔽もシミュレートできる.</li>
+  <li>強誘電体薄膜中の点欠陥の影響→ない？</li>
 </ul>
 </div>
 
 
 <div class="slide">
-<h2 id="LABEL-16">付録: 強誘電体とは何か</h2>
-<p>
-<div class="figure">
-  <img src="figures/ferroelectrics.jpg" alt="figures/ferroelectrics.jpg" />
-  <div class="caption">
-    BaTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
- <none />
- <mn>3</mn>
-</msub></math>, PbTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
- <none />
- <mn>3</mn>
-</msub></math>, KNbO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
- <none />
- <mn>3</mn>
-</msub></math>, LiNbO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
- <none />
- <mn>3</mn>
-</msub></math>, LiTaO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
- <none />
- <mn>3</mn>
-</msub></math>, SrTiO<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
- <none />
- <mn>3</mn>
-</msub></math>, Pb(Zr<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
- <none />
- <mrow>
-  <mo>(</mo>
-  <mn>1</mn>
-  <mo>-</mo>
-  <mi>x</mi>
-  <mo>)</mo>
- </mrow>
-</msub></math>Ti<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
- <none />
- <mi>x</mi>
-</msub></math>)O<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msub>
- <none />
- <mn>3</mn>
-</msub></math> (PZT) 等の強誘電体の主な性質.
-  </div>
-</div>
-</p>
-</div>
-
-
-<div class="slide">
-<h2 id="LABEL-17">付録: LO-TO splittingとはイオン系のプラズマ振動数みたいなモノ</h2>
+<h2 id="LABEL-19">付録: LO-TO splittingとはイオン系のプラズマ振動数みたいなモノ</h2>
 <p>
 <div class="figure">
   <img src="figures/oscillation.jpg" alt="figures/oscillation.jpg" />
@@ -1093,7 +1127,7 @@ Firefoxを使うとより正確にご覧になれます.
 
 
 <div class="slide">
-<h2 id="LABEL-18">Parameters (input file)</h2>
+<h2 id="LABEL-20">Parameters (input file)</h2>
 
 <ul>
   <li>King-Smith and Vanderbilt: Phys. Rev. B Vol.49 p.5828 (1994)</li>
@@ -1148,7 +1182,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-19">Time evolution and fluctuation</h2>
+<h2 id="LABEL-21">Time evolution and fluctuation</h2>
 <p>
 <div class="figure">
   <img src="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" alt="figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg" />
@@ -1161,20 +1195,7 @@ epsilon_inf   = 5.24
 
 
 <div class="slide">
-<h2 id="LABEL-20">Dielectric constants can be calculated from fluctuations</h2>
-<p>
-<div class="figure">
-  <img src="figures/strain-susceptibility.jpg" alt="figures/strain-susceptibility.jpg" />
-  <div class="caption">
-    Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Dielectric constants can be calculated from fluctuations of dipoles.
-  </div>
-</div>
-</p>
-</div>
-
-
-<div class="slide">
-<h2 id="LABEL-21">Heating-up and cooling-down simulations of ferroelectric capacitors</h2>
+<h2 id="LABEL-22">Heating-up and cooling-down simulations of ferroelectric capacitors</h2>
 <p>
 Animations of holizontal slices of heating-up and cooling-down
 simulations for BaTiO<sub>3</sub> thin-film capacitors with short-circuited
@@ -1215,7 +1236,7 @@ Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
 
 
 <div class="slide">
-<h2 id="LABEL-22">Thiner film has finer domain structure to avoid stronger depolarization field</h2>
+<h2 id="LABEL-23">Thiner film has finer domain structure to avoid stronger depolarization field</h2>
 <p>
 <div class="figure">
   <img src="figures/slice32x32.jpg" alt="figures/slice32x32.jpg" />
@@ -1274,7 +1295,7 @@ Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
 
 
 <div class="slide">
-<h2 id="LABEL-23">Temperature dependence of polarizations of thin-film capacitors</h2>
+<h2 id="LABEL-24">Temperature dependence of polarizations of thin-film capacitors</h2>
 <p>
 <div class="figure">
   <img src="figures/epitDEN.jpg" alt="figures/epitDEN.jpg" />
@@ -1286,7 +1307,7 @@ Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
 
 
 <div class="slide">
-<h2 id="LABEL-24">---------------------------- Relaxor ----------------------------</h2>
+<h2 id="LABEL-25">---------------------------- Relaxor ----------------------------</h2>
 <p>
 Relaxors Pb<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><msubsup>
  <mi>B</mi>
@@ -1541,7 +1562,7 @@ The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/M
 
 
 <div class="slide">
-<h2 id="LABEL-25">Frequency dependence of dielectric constant of relaxors</h2>
+<h2 id="LABEL-26">Frequency dependence of dielectric constant of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/TsurumiFig3.jpg" alt="figures/TsurumiFig3.jpg" />
@@ -1554,7 +1575,7 @@ The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/M
 
 
 <div class="slide">
-<h2 id="LABEL-26">Crystal structures of relaxors</h2>
+<h2 id="LABEL-27">Crystal structures of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig3.jpg" alt="figures/RandallBhallaFig3.jpg" />
@@ -1662,7 +1683,7 @@ The averaged valence number of B-site ions <math xmlns='http://www.w3.org/1998/M
 
 
 <div class="slide">
-<h2 id="LABEL-27">Local field on Pb-site</h2>
+<h2 id="LABEL-28">Local field on Pb-site</h2>
 <p>
 Displacement of Pb is the main source of dipole moment.
 <div class="figure">
@@ -1676,7 +1697,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-28">Chemically ordered and disordered regions of relaxors</h2>
+<h2 id="LABEL-29">Chemically ordered and disordered regions of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/RandallBhallaFig8.jpg" alt="figures/RandallBhallaFig8.jpg" />
@@ -1689,7 +1710,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-29">Modeling of relaxors</h2>
+<h2 id="LABEL-30">Modeling of relaxors</h2>
 <p>
 <div class="figure">
   <img src="figures/DoubleWells.jpg" alt="figures/DoubleWells.jpg" />
@@ -1702,7 +1723,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-30">Snapshot of a simulation of PSN relaxor</h2>
+<h2 id="LABEL-31">Snapshot of a simulation of PSN relaxor</h2>
 <p>
 <div class="figure">
   <img src="figures/SilviaFig1.jpg" alt="figures/SilviaFig1.jpg" />
@@ -1715,7 +1736,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-31">Frequency dependence of dielectric constant</h2>
+<h2 id="LABEL-32">Frequency dependence of dielectric constant</h2>
 <p>
 <math xmlns='http://www.w3.org/1998/Math/MathML' display='block'>
  <mi>&epsilon;</mi>
@@ -1796,7 +1817,7 @@ Displacement of Pb is the main source of dipole moment.
 
 
 <div class="slide">
-<h2 id="LABEL-32">Estimation of computational time</h2>
+<h2 id="LABEL-33">Estimation of computational time</h2>
 <p>
 32x32x32 unit cells, <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'>
  <mi mathvariant='normal'>&Delta;</mi>
@@ -1848,7 +1869,7 @@ So, I am planning to calculate and compare <math xmlns='http://www.w3.org/1998/M
 
 
 <div class="slide">
-<h2 id="LABEL-33">Applied external electric field</h2>
+<h2 id="LABEL-34">Applied external electric field</h2>
 <p>
 <div class="figure">
   <img src="figures/step.jpg" alt="figures/step.jpg" />
