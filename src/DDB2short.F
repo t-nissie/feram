@@ -1,5 +1,5 @@
 ! DDB2short.F -*-f90-*-
-! Time-stamp: <2008-09-05 16:46:24 takeshi>
+! Time-stamp: <2008-09-05 17:14:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -58,3 +58,6 @@ program DDB2short
 
   call msg(6, __FILE__, __LINE__, 'END', '')
 end program DDB2short
+!local variables:
+!  compile-command: "make -k DDB2short && cd 10-example-PbTiO3-DDB2short && ../DDB2short PbTiO3a3.9500.in"
+!End:
