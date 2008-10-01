@@ -397,6 +397,13 @@ Authors and/or publishers of the papers have their copyrights for the following 
    [Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya. and Masaki Daimon:
    Jpn. J. Appl. Phys. 33, 1959 (1994)].
 
+=== pseudopotentials
+These LDA (Teter "extended norm-conserving") pseudopotential files are downloaded from
+http://www.abinit.org/Psps/?text=../Psps/LDA_EX/lda . They are distributed under GPL.
+src/10-example-PbTiO3-DDB2short/82pb.960808c.mod
+src/10-example-PbTiO3-DDB2short/22ti.psp.mod
+src/10-example-PbTiO3-DDB2short/8o.phoney.mod
+
 == Author
 Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 

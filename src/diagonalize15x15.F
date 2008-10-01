@@ -1,5 +1,5 @@
 ! diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2008-08-26 16:12:36 takeshi>
+! Time-stamp: <2008-10-01 19:10:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: tail -225 SOMEWHERE1/perovskite_o_DS5_DDB | SOMEWHERE2/diagonalize15x15
 !!
@@ -50,5 +50,5 @@ program diagonalize15x15
 end program diagonalize15x15
 
 !local variables:
-!  compile-command: "make -k diagonalize15x15 && tail -324 ~/abinit/PbTiO3-phonon/PbTiO3-phonon-03-8x8x8-ecut40/perovskite_o_DS3_DDB | ./diagonalize15x15"
+!  compile-command: "make -k diagonalize15x15 && tail -324 10-example-PbTiO3-DDB2short/perovskite-Gamma_o_DS3_DDB | ./diagonalize15x15"
 !End:
