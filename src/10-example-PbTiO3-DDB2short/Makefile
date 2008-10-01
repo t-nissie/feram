@@ -9,7 +9,7 @@ all: perovskite-Gamma_o_DS1_WFK \
 perovskite-Gamma_o_DS1_WFK: perovskite-Gamma.files perovskite-Gamma.in 82pb.960808c.mod 22ti.psp.mod 8o.phoney.mod abinis
 	./abinis < $< > `basename $< .files`.log
 
-perovskite-%_o_DS1_DDB: perovskite-%.files perovskite-%.in pot_A pot_B pot_O abinis perovskite-Gamma_o_DS1_WFK
+perovskite-%_o_DS1_DDB: perovskite-%.files perovskite-%.in             82pb.960808c.mod 22ti.psp.mod 8o.phoney.mod abinis perovskite-Gamma_o_DS1_WFK
 	./abinis < $< > `basename $< .files`.log
 
 diagonalize: ../diagonalize15x15 all
