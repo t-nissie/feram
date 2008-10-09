@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2008-07-06 12:07:22 t-nissie>
+! Time-stamp: <2008-10-09 11:13:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -8,6 +8,7 @@ module Average_module
   type Average_type
      type(Energy_type) energy    
      real*8 e2
+     real*8 dipo_kinetic_true
      real*8 strain(6)
      real*8 u(3)
      real*8 uu(6)
@@ -19,11 +20,12 @@ contains
     !--- arguments -------------------------------------
     type(Average_type), intent(inout) :: avg
     !--- END of variable definitions -------------------
-    avg%energy       = Energy_type(0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0)
-    avg%e2           = 0.0d0
-    avg%strain(:)    = 0.0d0
-    avg%u(:)         = 0.0d0
-    avg%uu(:)        = 0.0d0
+    avg%energy            = Energy_type(0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0)
+    avg%e2                = 0.0d0
+    avg%dipo_kinetic_true = 0.0d0
+    avg%strain(:)         = 0.0d0
+    avg%u(:)              = 0.0d0
+    avg%uu(:)             = 0.0d0
   end subroutine reset_Average
 
   subroutine add_to_Average(p,c,e,avg) ! We use p implicitly. Don't worry about compile warning on it.
@@ -40,9 +42,10 @@ contains
     real*8 u_tmp(3)
     character(90) message
     !--- END of variable definitions -------------------
-    avg%energy          = avg%energy        + e
-    avg%e2              = avg%e2            + e%total**2
-    avg%strain(:)       = avg%strain(:)     + c%strain(:)
+    avg%energy            = avg%energy            + e
+    avg%e2                = avg%e2                + e%total**2
+    avg%dipo_kinetic_true = avg%dipo_kinetic_true + e%dipo_kinetic/c%s_Nose**2
+    avg%strain(:)         = avg%strain(:)         + c%strain(:)
 
     if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
        do alpha = 1, 3
@@ -75,30 +78,36 @@ contains
     type(Param_type),   intent(in)    :: p
     type(Average_type), intent(inout) :: avg
     character (len=120)               :: fn_avg
+    real*8                            :: kelvin
 
     if (p%n_average.eq.0) return
 
-    avg%energy    = div_energy(avg%energy, p%n_average*p%N)
-    avg%e2        = avg%e2        /       (p%n_average*p%N)
+    avg%energy = div_energy(avg%energy, p%n_average)
+    avg%energy = div_energy(avg%energy, p%N)
+    avg%e2                = avg%e2                / p%n_average / p%N
+    avg%dipo_kinetic_true = avg%dipo_kinetic_true / p%n_average / p%N
 
     avg%strain(:) = avg%strain(:) / p%n_average
 
     if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-       avg%u(:)  = avg%u(:)  /p%n_average /(p%Lx*p%Ly*p%film_thickness)
-       avg%uu(:) = avg%uu(:) /p%n_average /(p%Lx*p%Ly*p%film_thickness)
+       avg%u(:)  = avg%u(:)  / p%n_average / (p%Lx*p%Ly*p%film_thickness)
+       avg%uu(:) = avg%uu(:) / p%n_average / (p%Lx*p%Ly*p%film_thickness)
     else
-       avg%u(:)  = avg%u(:)  /p%n_average /p%N
-       avg%uu(:) = avg%uu(:) /p%n_average /p%N
+       avg%u(:)  = avg%u(:)  / p%n_average / p%N
+       avg%uu(:) = avg%uu(:) / p%n_average / p%N
     end if
 
-
-
+    if (p%method.eq.'lf ') then
+       kelvin = avg%dipo_kinetic_true * 0.666666666666666666666666666667d0 * KELVIN_EV
+    else
+       kelvin = p%kelvin
+    end if
 
     write(fn_avg,'(a,a)') trim(p%filename), '.avg'
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
 
-    write(UNIT_AVG,"(f6.1,3f9.5,26e13.5)")&
-         p%kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
+    write(UNIT_AVG,"(f6.1,3f9.5,27e13.5)")&
+         kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
          avg%energy%dipo_kinetic    ,&
          avg%energy%dipole_dipole   ,&
          avg%energy%dipole_E_field  ,&
@@ -109,7 +118,8 @@ contains
          avg%energy%inho_coupling   ,&
          avg%energy%total           ,&
          avg%energy%H_Nose_Poincare ,&
-         avg%e2
+         avg%e2                     ,&
+         avg%dipo_kinetic_true
 
     close(UNIT_AVG)
   end subroutine divide_and_write_Average
