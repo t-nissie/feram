@@ -1,5 +1,5 @@
 #-*-Makefile-*- for examples of feram
-# Time-stamp: <2008-08-09 15:33:12 takeshi>
+# Time-stamp: <2008-10-09 21:50:54 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 feram.log: leapfrog.sh ../../feram
@@ -11,4 +11,4 @@ feram.log: leapfrog.sh ../../feram
 
 clean:
 	rm -f *.coord *.dat core* *.param *.log *.out *.err *.ps *.pdf \
-	leapfrog00[123456789]* FILES leapfrog.avg
+	leapfrog0* FILES leapfrog.avg

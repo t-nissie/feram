@@ -1,6 +1,6 @@
 #!/bin/sh
 # leapfrog.sh
-# Time-stamp: <2008-08-09 23:41:13 takeshi>
+# Time-stamp: <2008-10-10 01:19:49 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 n_thermalize=40000
@@ -8,9 +8,10 @@ n_average=10000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
-while [ $i -le 8 ] ; do
+while [ $i -le 60 ] ; do
     i=`expr $i + 1`
-    filename=leapfrog`printf '%.3d' $i`
+    dev=`printf '%.3d' $i`
+    filename=leapfrog"$dev"
     cat > $filename <<-EOF
 	#--- Method, Temperature, and mass ---------------
 	method = 'lf'
@@ -47,14 +48,13 @@ while [ $i -le 8 ] ; do
 	B4yz =   -7.75 [eV/Angstrom^2]
 	
 	#--- Dipole --------------------------------------
-	init_dipo_avg = 0.0   0.0   0.16    [Angstrom]  # Average   of initial dipole displacements
-	init_dipo_dev = 0.0$i  0.0$i  0.0$i    [Angstrom]  # Deviation of initial dipole displacements
+	init_dipo_avg = 0.143 0.143 0.143   [Angstrom]  # Average   of initial dipole displacements
+	init_dipo_dev = 0.$dev 0.$dev 0.$dev  [Angstrom]  # Deviation of initial dipole displacements
 	Z_star        = 9.956
 	epsilon_inf   = 5.24
 EOF
     echo 1 > FILES
     echo $filename >> FILES
-    # ../../feram $filename
-    OMP_NUM_THREADS=6 ../../feram $filename
+    OMP_NUM_THREADS=6 ./feram $filename > /dev/null
     cat $filename.avg >> leapfrog.avg
 done
