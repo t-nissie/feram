@@ -1,0 +1,23 @@
+#Input file for 'band2eps.' This data layout must be used, line-by-line.
+    #number of atoms in a cell :
+5
+    #minimum value, maximum value and number of tics of the vertical axe :
+-300.0  900.0  12
+    #Units : 1 for cm-1, 2 for THz :
+1
+    #Number of lines :
+7
+    #Description of the points in q space :
+gamma X M gamma R X R M
+    #Number of q points for each line :
+16  16  16  16  16  16  16
+    #Scale factor for each line :
+0.5 0.5 0.7071067811865476 0.8660254037844386 0.7071067811865476 0.7071067811865476 0.5
+    #COLOR DEFINITION :
+    #put 1 in place of the atom you want to be colored in 
+    #red
+1 0 0 0 0
+    #green
+0 1 0 0 0
+    #blue
+0 0 1 1 1
