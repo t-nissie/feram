@@ -1,5 +1,5 @@
 ! feram.F -*-f90-*-
-! Time-stamp: <2008-08-07 18:07:37 takeshi>
+! Time-stamp: <2008-10-14 12:17:27 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -70,6 +70,8 @@ program feram
 
      if (p%method.eq.'md ' .or. p%method.eq.'lf ') then
         call molecular_dynamics(p,c)
+     else if (p%method.eq.'hl ') then
+        call hysteresis_loop(p,c)
      else
         write(message,'(a,a,a)') &
              ": '", p%method, "' is an illegal or not-yet-implemented method. Stop."
