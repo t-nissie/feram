@@ -1,5 +1,5 @@
 ! diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2008-10-01 19:10:07 takeshi>
+! Time-stamp: <2008-10-14 11:26:41 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: tail -225 SOMEWHERE1/perovskite_o_DS5_DDB | SOMEWHERE2/diagonalize15x15
 !!
@@ -35,7 +35,7 @@ program diagonalize15x15
   if (all_real) then
      !LAPACK dsyev(JOBZ, UPLO, N,         A,                        LDA,       W,           WORK,  LWORK, INFO)
      call    dsyev('V',  'L',  N_FREEDOM, SecondDTE_real_symmetric, N_FREEDOM, eigenvalues, rwork, LWORK, info)
-     write(fmt_eigen,'(a,i3,a)') '(i2,f11.6,', N_ATOM, '(f10.3f7.3f7.3))'
+     write(fmt_eigen,'(a,i3,a)') '(i2,f11.6,', N_ATOM, '(f10.3,f7.3,f7.3))'
      do j=1,N_FREEDOM
         write(6,fmt_eigen) j, eigenvalues(j), (SecondDTE_real_symmetric(i,j), i=1,N_FREEDOM)
      end do
