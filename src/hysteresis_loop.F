@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2008-10-14 20:26:14 takeshi>
+! Time-stamp: <2008-10-15 12:41:21 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -14,8 +14,8 @@ subroutine hysteresis_loop(p,c)
   !--- local -----------------------------------------
   type(Energy_type) :: e
   real*8, allocatable :: E_field_initial(:,:,:,:) ! initial external electric field
-  real*8 E_field_add(3),u(3),uu(6)
-  integer i_step, ix, iy, iz
+  real*8 target_kinetic_energy, E_field_add(3), u(3)
+  integer i_step, ix, iy, iz, alpha
   character(120), parameter :: fmt_time_step = &
        "('TIME_STEP ',i8,3f16.12,' -----------------------------------------------------')"
   character (len=150) :: message
@@ -25,6 +25,7 @@ subroutine hysteresis_loop(p,c)
 
   allocate(E_field_initial(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
 
+  target_kinetic_energy = p%kelvin * 1.5d0 * p%N / KELVIN_EV
   write(message,'(f5.1,a)') p%kelvin, ' [K] BEGIN ========================================================'
   call msg(6, __FILE__, __LINE__, 'T = ', message)
 
@@ -43,7 +44,6 @@ subroutine hysteresis_loop(p,c)
   open(unit=UNIT_HL,file=fn_hl, status='REPLACE')
 
   do i_step = 1, p%n_thermalize+p%n_average
-
      if (i_step>p%n_thermalize) then
         E_field_add = -2*p%external_E_field*(i_step-p%n_thermalize)/p%n_average
         do iz = 0, p%Lz-1
@@ -59,37 +59,31 @@ subroutine hysteresis_loop(p,c)
      write(message,fmt_time_step) i_step, p%external_E_field+E_field_add
      call msg_ez(6,message)
 
-!      if (i_step-(i_step/p%n_coord_freq)*p%n_coord_freq.eq.0) then
-!         write(   fn,'(a,a,i7.7,a)') trim(p%filename), '.', i_step, '.coord'
-!         call write_system(p,c,fn)
-!         if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-!            write(fn,'(a,a,i7.7,a)') trim(p%filename), '.', i_step, '.fft'
-!            call write_fft(p,c,fn)
-!         end if
-!      end if
-
-!      write(message,"('strain',6e13.5)") c%strain(:)
-!      call msg_ez(6,message)
-
-!      !=== For debug =========================================================
-!      write(message,'(a,3e15.7)') 'dipoR(0,0,4,i)=', (c%dipoR(0,0,4,i), i=1,3)
-!      call msg_ez(6,message)
-!      write(message,'(a,3e15.7)') 'dVddi(0,0,4,i)=', (c%dVddi(0,0,4,i), i=1,3)
-!      call msg_ez(6,message)
-
+     c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt_2 * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
+     call mirror_force_mirror(p,c,e)
+     c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt_2 * c%dVddi(:,:,:,:)
+     e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
+     c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) * sqrt(target_kinetic_energy/e%dipo_kinetic)
+     !e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
 
      call write_Energy(p,c,e,6)
 
      if (i_step>=p%n_thermalize .and. mod(i_step,p%n_coord_freq)==0) then
-        u(:)  = real(c%dipoK(0,0,0,1:3))
         if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-           u(:)  = u(:)  / (p%Lx*p%Ly*p%film_thickness)
-           uu(:) = uu(:) / (p%Lx*p%Ly*p%film_thickness)
+           do alpha = 1, 3
+              if (p%gap.eq.0) then
+                 u(alpha) = SUM(c%dipoR(:,:,0:p%film_thickness-1,alpha))
+              else
+                 u(alpha) = SUM(c%dipoR(:,:,(p%gap+1)/2:p%gap/2+p%film_thickness,alpha))
+              end if
+           end do
+           u(:) = u(:) / (p%Lx*p%Ly*p%film_thickness)
         else
-           u(:)  = u(:)  / p%N
-           uu(:) = uu(:) / p%N
+           u(:) = dble(c%dipoK(0,0,0,:))
+           u(:) = u(:) / p%N
         end if
         write(UNIT_HL,"(f6.1,3f16.12,9e13.5)") p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
+        call flush(UNIT_HL)
      end if
   end do
 

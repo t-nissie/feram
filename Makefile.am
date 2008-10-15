@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2008-09-25 06:57:39 takeshi>
+# Time-stamp: <2008-10-15 16:03:23 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -14,6 +14,7 @@ EXTRA_DIST = doc \
              style.css \
              utils \
              old-examples \
+             animations \
              logo.eps \
              logo.jpg \
              logo.obj
