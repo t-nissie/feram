@@ -1,6 +1,6 @@
 #!/bin/sh
 # leapfrog.sh
-# Time-stamp: <2008-10-10 01:19:49 t-nissie>
+# Time-stamp: <2008-10-14 20:37:02 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 n_thermalize=40000
@@ -55,6 +55,6 @@ while [ $i -le 60 ] ; do
 EOF
     echo 1 > FILES
     echo $filename >> FILES
-    OMP_NUM_THREADS=6 ./feram $filename > /dev/null
+    OMP_NUM_THREADS=6 ../../feram $filename > /dev/null
     cat $filename.avg >> leapfrog.avg
 done

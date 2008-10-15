@@ -1,6 +1,7 @@
 /* Some constants */
 #define UNIT_SYSTEM 8
 #define UNIT_AVG 10
+#define UNIT_HL 12
 #define N_CORRELATION 5
 
 /* mathematical and physical constants */

@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # dipole-dipole.gp
-# Time-stamp: <2008-07-23 15:24:54 takeshi>
+# Time-stamp: <2008-10-15 10:12:29 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set encoding iso_8859_1
@@ -44,7 +44,6 @@ set label 2 "TO" at 0.1, -0.85 left font "Times-Roman,30" tc lt 2
 set label 3 "LO" at 0.1,  1.3  left font "Times-Roman,30" tc lt 4
 set label 4 "{/Symbol w}_@1^2+{/Symbol w}_@2^2+{/Symbol w}_@3^2=0"\
                                at 2.4, 1.1 left font "Times-Roman,30" tc lt 5
-set label 5 "cond-mat/0512563" at 2.4, 0.8 left font "Times-Roman,30" tc lt 5
 plot 0,\
 'bulk32x32x32.dipole-dipole-long.dat' using 1:(($5>0?sqrt($5):-sqrt(-$5))/omega_unit_m) w l,\
 'bulk32x32x32.dipole-dipole-long.dat' using 1:(($6>0?sqrt($6):-sqrt(-$6))/omega_unit_m) w l,\

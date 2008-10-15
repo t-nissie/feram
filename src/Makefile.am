@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2008-10-14 15:20:12 takeshi>
+# Time-stamp: <2008-10-14 20:31:02 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -29,6 +29,7 @@ feram_SRCS = average_module.F \
 	leapfrog.F \
 	make-mass-matrix.F \
 	mirror.F \
+	mirror_force_mirror.F \
 	molecular-dynamics.F \
 	msg.F \
 	normal.F \
@@ -105,7 +106,8 @@ dipoFFT.o elastic.o dVddi-homo-coupling.o dVddi-unharmonic.o make-mass-matrix.o 
 initialize_E_field.o:           param_module.o coord_module.o define.h
 initialize-dipoR.o average_module.o:\
                                 param_module.o coord_module.o energy_module.o define.h
-nose-poincare.o:                param_module.o coord_module.o energy_module.o
+nose-poincare.o leapfrog.o mirror_force_mirror.o:\
+                                param_module.o coord_module.o energy_module.o
 coord_module.o:                 param_module.o         define.h
 mirror.o fft.o:                 param_module.o
 dipole-dipole-long-range.o:     param_module.o         define.h fft.o

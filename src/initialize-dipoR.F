@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2008-02-20 16:08:23 takeshi>
+! Time-stamp: <2008-10-14 20:17:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -52,26 +52,28 @@ subroutine initialize_dipoR(p,c,e)
      c%dipoR(p%defect_position(1),p%defect_position(2),p%defect_position(3),:) = p%defect_u(:)
      c%m_inv(p%defect_position(1),p%defect_position(2),p%defect_position(3),:) = LARGE_MASS_INV
   end if
-  if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-     call mirror(p, c%dipoR)
-  end if
 
-  call dipoFFT(p,c)
-  call   dVddi_dipole_dipole(p,c,e)
-  call      dVddi_unharmonic(p,c,e)
-  call         dVddi_E_field(p,c,e)
-  call  optimize_homo_strain(p,c,e)
-  call  optimize_inho_strain(p,c,e)
+  call mirror_force_mirror(p,c,e)
+!   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
+!      call mirror(p, c%dipoR)
+!   end if
 
-  ! deffect
-  if (p%defect_position(1).ge.0) then
-     c%dVddi(p%defect_position(1),p%defect_position(2),p%defect_position(3),:) = 0.0d0
-  end if
+!   call dipoFFT(p,c)
+!   call   dVddi_dipole_dipole(p,c,e)
+!   call      dVddi_unharmonic(p,c,e)
+!   call         dVddi_E_field(p,c,e)
+!   call  optimize_homo_strain(p,c,e)
+!   call  optimize_inho_strain(p,c,e)
 
-  ! mirror dVddi
-  if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-     call mirror(p, c%dVddi)
-  end if
+!   ! deffect
+!   if (p%defect_position(1).ge.0) then
+!      c%dVddi(p%defect_position(1),p%defect_position(2),p%defect_position(3),:) = 0.0d0
+!   end if
+
+!   ! mirror dVddi
+!   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
+!      call mirror(p, c%dVddi)
+!   end if
 
   c%s_Nose  = 1.0d0   ! s0
   c%pi_Nose = 0.0d0   ! pi0

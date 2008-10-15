@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2008-08-24 15:36:27 takeshi>
+! Time-stamp: <2008-10-14 20:31:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -133,4 +133,5 @@ contains
     call msg(6, __FILE__, __LINE__, 'FILE: ', fn)
     call msg(6, __FILE__, __LINE__, 'END', '')
   end subroutine write_fft
+
 end module Coord_module
