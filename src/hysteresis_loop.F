@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2008-10-16 15:57:56 t-nissie>
+! Time-stamp: <2008-10-16 18:11:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -45,7 +45,7 @@ subroutine hysteresis_loop(p,c)
   open(unit=UNIT_HL,file=fn_hl, status='REPLACE')
 
   do i_step = 1, p%n_thermalize+p%n_average
-     if (i_step>p%n_thermalize) then
+     if (i_step>=p%n_thermalize) then
         E_field_add = -2*p%external_E_field*(i_step-p%n_thermalize)/p%n_average
         do iz = 0, p%Lz-1
            do iy = 0, p%Ly-1
