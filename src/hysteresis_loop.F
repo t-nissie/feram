@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2008-10-15 12:41:21 takeshi>
+! Time-stamp: <2008-10-16 15:57:56 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -24,9 +24,10 @@ subroutine hysteresis_loop(p,c)
   call msg(6, __FILE__, __LINE__, 'BEGIN', ': MD')
 
   allocate(E_field_initial(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+!
 
   target_kinetic_energy = p%kelvin * 1.5d0 * p%N / KELVIN_EV
-  write(message,'(f5.1,a)') p%kelvin, ' [K] BEGIN ========================================================'
+  write(message,'(f5.1,a)') p%kelvin, ' [K] BEGIN ================================================'
   call msg(6, __FILE__, __LINE__, 'T = ', message)
 
 
@@ -59,9 +60,9 @@ subroutine hysteresis_loop(p,c)
      write(message,fmt_time_step) i_step, p%external_E_field+E_field_add
      call msg_ez(6,message)
 
-     c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt_2 * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
+     c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
      call mirror_force_mirror(p,c,e)
-     c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt_2 * c%dVddi(:,:,:,:)
+     c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt * c%dVddi(:,:,:,:)
      e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
      c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) * sqrt(target_kinetic_energy/e%dipo_kinetic)
      !e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
@@ -82,14 +83,15 @@ subroutine hysteresis_loop(p,c)
            u(:) = dble(c%dipoK(0,0,0,:))
            u(:) = u(:) / p%N
         end if
-        write(UNIT_HL,"(f6.1,3f16.12,9e13.5)") p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
+        write(UNIT_HL,"(f6.1,3f16.12,9e13.5)") &
+             p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
         call flush(UNIT_HL)
      end if
   end do
 
   close(UNIT_HL)
 
-  write(message,'(f5.1,a)') p%kelvin, ' [K] END =========================================================='
+  write(message,'(f5.1,a)') p%kelvin, ' [K] END =================================================='
   call msg(6, __FILE__, __LINE__, 'T = ', message)
 
   deallocate(E_field_initial)
