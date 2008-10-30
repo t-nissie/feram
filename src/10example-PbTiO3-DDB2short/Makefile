@@ -44,4 +44,4 @@ perovskite-band2eps.eps: perovskite-band2eps.files perovskite-band2eps.in perovs
 	./band2eps < $< | tee perovskite-band2eps.log
 
 allclean:
-	rm -f *.out *.out? *_o_* *_LOG_* *.log *_STATUS* *.out *.err *.log core
+	rm -f *.out *.out? *_o_* *_LOG_* *.log *_STATUS* perovskite*.out *.err *.log core
