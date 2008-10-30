@@ -1,10 +1,11 @@
 #!/usr/bin/env gnuplot
 # dipole-dipole.gp
-# Time-stamp: <2008-10-15 10:12:29 takeshi>
+# Time-stamp: <2008-10-21 21:30:23 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set encoding iso_8859_1
 call 'bulk32x32x32.param'
+c =                  14.399644 * Z_star**2 / epsilon_inf / a0**3
 omega_unit_m = sqrt( 14.399644 * Z_star**2 / epsilon_inf*4*pi / 3 / a0**3 )
 omega_unit = omega_unit_m / sqrt(mass_dipo)
 print "omega_unit = ", omega_unit, " x 10^12 [s^-1]"
@@ -81,20 +82,27 @@ plot 0,\
 
 set nolabel 1
 
-set yrange [-1.5:2.5]
-set ytics -0.5
+set yrange [-3:6]
+set ytics 1
 set format y "%.1f"
-set ylabel '{/Symbol w}^2 / ( 4{/Symbol p}{/Times-Italic Z}^{*2} / 3{/Symbol e_\245}{/Times-Italic M}^*{/Times-Italic a}_@0^3 )'
-call 'dipole-dipole-axis.gp' '-1.63'
+set ylabel '(interaction energy per unit cell) / ( {/Times-Italic Z}^{*2} {/Times-Italic u}^2 / {/Symbol e_\245}{/Times-Italic a}_@0^3 )'
+call 'dipole-dipole-axis.gp' '-3.25'
 
 set terminal postscript landscape enhanced color "Times-Roman" 21
-set output "bulk32x32x32.dipole-dipole-long.omega2.eps"
-plot 0,\
-'bulk32x32x32.dipole-dipole-long.dat' using 1:($5/omega_unit_m**2) w l,\
-'bulk32x32x32.dipole-dipole-long.dat' using 1:($6/omega_unit_m**2) w l,\
-'bulk32x32x32.dipole-dipole-long.dat' using 1:($7/omega_unit_m**2) w l
 
-set yrange [-15:30]
+set output "bulk32x32x32.dipole-dipole-long.interaction.eps"
+plot 0 w l lt 2,\
+'bulk32x32x32.dipole-dipole-long.dat' using 1:($5/c/2) w l lt 1 lw 3,\
+'bulk32x32x32.dipole-dipole-long.dat' using 1:($6/c/2) w l lt 3 lw 3,\
+'bulk32x32x32.dipole-dipole-long.dat' using 1:($7/c/2) w l lt 4 lw 3
+
+set output "bulk32x32x32.dipole-dipole-long+short.interaction.eps"
+plot 0 w l lt 2,\
+'bulk32x32x32.dipole-dipole-long+short.dat' using 1:($5/c/2) w l lt 1 lw 3,\
+'bulk32x32x32.dipole-dipole-long+short.dat' using 1:($6/c/2) w l lt 3 lw 3,\
+'bulk32x32x32.dipole-dipole-long+short.dat' using 1:($7/c/2) w l lt 4 lw 3
+
+#set yrange [-15:30]
 set ytics -5
 #set format y "%.3f"
 set ylabel 'Eigenvalues of {/Symbol F}({/Times-Italic k})/2 [eV \305^{-2} unit-cell^{-1}]'

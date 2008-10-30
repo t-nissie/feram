@@ -1,10 +1,12 @@
 ! DDB2short.F -*-f90-*-
-! Time-stamp: <2008-09-05 17:14:14 takeshi>
+! Time-stamp: <2008-10-30 22:10:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
+
+#include "define.h"
 
 #if defined(SR11000)
    function command_argument_count()
@@ -29,7 +31,10 @@ program DDB2short
   implicit none
   type(Param_type) :: p
   character(70) message
-  integer i, fd, argn, command_argument_count
+  integer i, fd, argn, command_argument_count, INFO, IPIV(8)
+  ! solve A*x=b
+  real*8 :: A(8,8)
+  real*8 :: b(8) !kappa_2, j_1, j_2, j_3, j_4, j_5, j_6, j_7, j_8
 
   write(message,'(a,a)') ': Version ', PACKAGE_VERSION
   call msg(6, __FILE__, __LINE__, 'BEGIN', message)
@@ -55,6 +60,22 @@ program DDB2short
      call  read_Param(p,fd)
      call  make_Param(p)
   end do
+
+  b(1) = p%DDB_a * HARTREE_IN_EV / p%a0  -  ( -4.188790 * p%Z_star**2 / p%epsilon_inf / p%a0**3 )            !(a) 4*pi/3
+  b(2) = p%DDB_b * HARTREE_IN_EV / p%a0  -  (  9.687445 * p%Z_star**2 / p%epsilon_inf / p%a0**3 )            !(b)
+  b(3) = p%DDB_c * HARTREE_IN_EV / p%a0  -  ( -4.843723 * p%Z_star**2 / p%epsilon_inf / p%a0**3 )            !(c)
+  b(4) = p%DDB_d * HARTREE_IN_EV / p%a0  -  ( -5.353578 * p%Z_star**2 / p%epsilon_inf / p%a0**3 )            !(d)
+  b(5) = p%DDB_e * HARTREE_IN_EV / p%a0  -  (  2.676787 * p%Z_star**2 / p%epsilon_inf / p%a0**3 )            !(e)
+  b(6) = p%DDB_f * HARTREE_IN_EV / p%a0  -  (  0.0      * p%Z_star**2 / p%epsilon_inf / p%a0**3 )            !(f)
+  b(7) = p%DDB_g * HARTREE_IN_EV / p%a0  -  (  5.864529 * p%Z_star**2 / p%epsilon_inf / p%a0**3 )            !(g)
+  b(8) = 0.0d0
+
+
+
+
+
+
+  call DGESV( 8, 1, A, 8, IPIV, b, 8, INFO )
 
   call msg(6, __FILE__, __LINE__, 'END', '')
 end program DDB2short
