@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2008-10-16 18:11:50 takeshi>
+! Time-stamp: <2008-11-01 17:47:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -43,6 +43,8 @@ subroutine hysteresis_loop(p,c)
 
   write(fn_hl,'(a,a)') trim(p%filename), '.hl'
   open(unit=UNIT_HL,file=fn_hl, status='REPLACE')
+
+  E_field_add(:) = 0.0d0
 
   do i_step = 1, p%n_thermalize+p%n_average
      if (i_step>=p%n_thermalize) then
