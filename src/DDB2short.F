@@ -1,5 +1,5 @@
 ! DDB2short.F -*-f90-*-
-! Time-stamp: <2008-11-04 17:33:24 takeshi>
+! Time-stamp: <2008-11-07 18:48:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -60,6 +60,15 @@ program DDB2short
      call  read_Param(p,fd)
      call  make_Param(p)
   end do
+
+  A = reshape((/ 1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  0.5d0,  0.0d0, &
+                 2.0d0,  2.0d0,  0.0d0, -2.0d0,  0.0d0, -2.0d0,  1.0d0,  0.0d0, &
+                 1.0d0, -1.0d0,  1.0d0,  1.0d0, -1.0d0, -1.0d0,  0.0d0,  0.0d0, &
+                 4.0d0, -4.0d0,  0.0d0, -4.0d0,  0.0d0,  4.0d0,  0.0d0,  0.0d0, &
+                 2.0d0,  2.0d0, -2.0d0,  2.0d0, -2.0d0,  2.0d0,  0.0d0,  0.0d0, &
+                 0.0d0,  0.0d0,  0.0d0,  0.0d0,  0.0d0,  0.0d0, -2.0d0,  0.0d0, &
+                 4.0d0, -4.0d0, -4.0d0,  4.0d0,  4.0d0, -4.0d0,  0.0d0,  1.0d0, &
+                 0.0d0,  0.0d0,  0.0d0,  0.0d0,  0.0d0,  0.0d0, -4.0d0, -2.0d0/),(/8,8/))
 
   b(1) = p%DDB_a * HARTREE_IN_EV / p%a0**2  -  ( -4.188790 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(a) 4*pi/3
   b(2) = p%DDB_b * HARTREE_IN_EV / p%a0**2  -  (  9.687445 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(b)
