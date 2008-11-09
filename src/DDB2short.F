@@ -1,5 +1,5 @@
 ! DDB2short.F -*-f90-*-
-! Time-stamp: <2008-11-07 18:48:38 takeshi>
+! Time-stamp: <2008-11-09 22:05:25 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -30,11 +30,11 @@ program DDB2short
   use Param_module
   implicit none
   type(Param_type) :: p
-  character(70) message
   integer i, fd, argn, command_argument_count, INFO, IPIV(8)
   ! solve A*x=b
-  real*8 :: A(8,8)
-  real*8 :: b(8) !kappa_2, j_1, j_2, j_3, j_4, j_5, j_6, j_7, j_8
+  real*8            :: A(8,8)
+  real*8            :: b(8) !kappa_2, j_1, j_2, j_3, j_4, j_5, j_6, j_7, j_8
+  character(len=80) :: message
 
   write(message,'(a,a)') ': Version ', PACKAGE_VERSION
   call msg(6, __FILE__, __LINE__, 'BEGIN', message)
@@ -79,13 +79,31 @@ program DDB2short
   b(7) = p%DDB_g * HARTREE_IN_EV / p%a0**2  -  (  5.864529 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(g)
   b(8) = 0.0d0
 
-
-
+  b(:) = 0.5d0 * b(:)
 
   call DGESV( 8, 1, A, 8, IPIV, b, 8, INFO )
 
+  call write_kappa_2_and_j_i('kappa_2 =', b(1))
+  call write_kappa_2_and_j_i('    j_1 =', b(2))
+  call write_kappa_2_and_j_i('    j_2 =', b(3))
+  call write_kappa_2_and_j_i('    j_3 =', b(4))
+  call write_kappa_2_and_j_i('    j_4 =', b(5))
+  call write_kappa_2_and_j_i('    j_5 =', b(6))
+  call write_kappa_2_and_j_i('    j_6 =', b(7))
+  call write_kappa_2_and_j_i('    j_7 =', b(8))
+
   call msg(6, __FILE__, __LINE__, 'END', '')
 end program DDB2short
+
+subroutine write_kappa_2_and_j_i(str,c)
+  implicit none
+  character (len=*)            :: str
+  real*8                       :: c
+  character(len=20), parameter :: fmt_short = '(a,f16.10,a)'
+  character(len=80)            :: message
+  write(message,fmt_short) str, c, ' [eV/Angstrom^2] ='
+  call msg_ez(6, message)
+end subroutine write_kappa_2_and_j_i
 !local variables:
-!  compile-command: "make -k DDB2short && cd 10-example-PbTiO3-DDB2short && ../DDB2short PbTiO3a3.9500.in"
+!  compile-command: "make -k DDB2short && ./DDB2short 10example-PbTiO3-DDB2short/PbTiO3-3.9500-DDB2short.in"
 !End:
