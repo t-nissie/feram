@@ -1,6 +1,7 @@
 ! DDB2short.F -*-f90-*-
-! Time-stamp: <2008-11-09 22:05:25 takeshi>
+! Time-stamp: <2008-11-10 12:54:56 takeshi>
 ! Author: Takeshi NISHIMATSU
+! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
@@ -99,9 +100,9 @@ subroutine write_kappa_2_and_j_i(str,c)
   implicit none
   character (len=*)            :: str
   real*8                       :: c
-  character(len=20), parameter :: fmt_short = '(a,f16.10,a)'
+  character(len=30), parameter :: fmt_short = '(a,f16.10,a,f16.10,a)'
   character(len=80)            :: message
-  write(message,fmt_short) str, c, ' [eV/Angstrom^2] ='
+  write(message,fmt_short) str, c, ' [eV/Angstrom^2] =', c * BOHR_RADIUS**2 / HARTREE_IN_EV, ' [Hartree/Bohr^2]'
   call msg_ez(6, message)
 end subroutine write_kappa_2_and_j_i
 !local variables:
