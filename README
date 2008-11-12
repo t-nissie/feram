@@ -38,6 +38,8 @@ Pronunciation of "feram": Ef-Ee-RaMu
  * Subversion repository at https://loto.svn.sourceforge.net/svnroot/loto/feram
 
 === References
+ * Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and David Vanderbilt: "Fast molecular-dynamics simulation for
+   ferroelectric thin-film capacitors using a first-principles effective Hamiltonian", Phys. Rev. B, vol.78, p.104104 (2008)
  * R. D. King-Smith and David Vanderbilt: "First-principles investigation of ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
  * U.V. Waghmare, E. J. Cockayne, and B. P. Burton: "Ferroelectric Phase Transitions in Nano-scale Chemically Ordered PbSc0.5Nb0.5O3 using a First-principles Model Hamiltonian", Ferroelectrics vol.291, p.187 (2003).
  * Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare: "Ferroelectric Phase Transitions in Ultra-thin Films of BaTiO3", Phys. Rev. Lett., vol.99, p.077601 (2007).
@@ -366,9 +368,10 @@ For more detail, see COPYING.
 
 The author is grateful if you would kindly refer the
 name of this program and cite our articles,
-[Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
-Phys. Rev. Lett. 99 (2007) 077601] and [Takeshi Nishimatsu, Umesh V. Waghmare,
-Yoshiyuki Kawazoe, and David Vanderbilt: arXiv:0804.1853] in your papers.
+[Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and
+David Vanderbilt: Phys. Rev. B 78 (2008) 104104] and [Jaita Paul,
+Takeshi Nishimatsu, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
+Phys. Rev. Lett. 99 (2007) 077601] in your papers.
 
 === BLAS and LAPACK
 Files under the directory libblaslapack are coming from BLAS and LAPACK
