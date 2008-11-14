@@ -66,30 +66,30 @@ PGI Fortran (pgf95): http://www.pgroup.com/
  * automake (version 1.10 higher)
 
 === Quick compilation
-  $ tar zxf feram-X.YY.ZZ.tar.gz
-  $ cd feram-X.YY.ZZ
-  $ mkdir Linux-i686-gfortran-4.2.2
-  $ cd Linux-i686-gfortran-4.2.2
-  $ ../configure --help
-  $ ../configure
-  $ cd src
-  $ make
-  $ ls -l feram
-  $ cp -r ../../src/01example-BaTiO3-epit-hysteresis-loop .
-  $ cd 01example-BaTiO3-epit-hysteresis-loop
-  $ ./externalE.sh         # test run
-  $ gnuplot hysteresis.gp  # plot a hysteresis loop
-  $ gv hysteresis.gp       # preview
+ $ tar zxf feram-X.YY.ZZ.tar.gz
+ $ cd feram-X.YY.ZZ
+ $ mkdir Linux-i686-gfortran-4.2.2
+ $ cd Linux-i686-gfortran-4.2.2
+ $ ../configure --help
+ $ ../configure
+ $ cd src
+ $ make
+ $ ls -l feram
+ $ cp -r ../../src/01example-BaTiO3-epit-hysteresis-loop .
+ $ cd 01example-BaTiO3-epit-hysteresis-loop
+ $ ./externalE.sh         # test run
+ $ gnuplot hysteresis.gp  # plot a hysteresis loop
+ $ gv hysteresis.gp       # preview
 
 === Available platforms and compilers
 ==== HITACHI SR11000 with xf90 (super1 in IMR)
 feram runs on 1 node (16 CPUs) of SR11000 effectively.
-  % tar zxf feram-X.YY.ZZ.tar.gz
-  % cd feram-X.YY.ZZ
-  % mkdir SR11000-xf90
-  % cd SR11000-xf90
-  % env FC=xf90 ../configure --host=SR11000
-  % make
+ % tar zxf feram-X.YY.ZZ.tar.gz
+ % cd feram-X.YY.ZZ
+ % mkdir SR11000-xf90
+ % cd SR11000-xf90
+ % env FC=xf90 ../configure --host=SR11000
+ % make
 Because SR11000 and its Fortran compiler cannot treat command arguments,
 you have to specify input file(s) in FILES file. For example,
  3
@@ -101,27 +101,27 @@ you have to specify input file(s) in FILES file. For example,
 ==== x86_64 GNU/Linux
 On x86_64, i.e. AMD64 and Intel 64, feram may be compiled with gfortran,
 Intel Fortran (ifort), and PGI Fortran (pgf95). For example,
-  $ FC=gfortran ../configure
+ $ FC=gfortran ../configure
 If FFTW3 was installed other than in /usr/lib and /usr/include or /usr/local/lib
 and /usr/local/include, you have to specify the directories with LDFLAGS and CPPFLAGS
 environment variables.
-  $ FC=ifort LDFLAGS=-L/home/t-nissie/x86_64-Linux/lib CPPFLAGS=-I/home/t-nissie/x86_64-Linux/include ../configure
+ $ FC=ifort LDFLAGS=-L/home/t-nissie/x86_64-Linux/lib CPPFLAGS=-I/home/t-nissie/x86_64-Linux/include ../configure
 
 ==== rupc05
-  $ FC=pgf95 LDFLAGS=-L/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/lib CPPFLAGS=-I/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/include ../configure
-  $ make
-  $ cd examples/BaTiO3-bulk-16x16x16-local.field-new-format/
-  $ OMP_NUM_THREADS=6 ../../pgf95/src/feram foo123 > feram.log &
+ $ FC=pgf95 LDFLAGS=-L/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/lib CPPFLAGS=-I/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/include ../configure
+ $ make
+ $ cd examples/BaTiO3-bulk-16x16x16-local.field-new-format/
+ $ OMP_NUM_THREADS=6 ../../pgf95/src/feram foo123 > feram.log &
 
 ==== IA-64 GNU/Linux (appc in IMR)
 On IA-64, feram may be compiled with gfortran or Intel Fortran (ifort). For example:
-  % tar zxf feram-X.YY.ZZ.tar.gz
-  % cd feram-X.YY.ZZ
-  % mkdir appc-FFTW3/
-  % cd appc-FFTW3/
-  % env FC=ifort LDFLAGS=-L/home/t-nissie/ia64-Linux/lib CPPFLAGS=-I/home/t-nissie/ia64-Linux/include ../configure
-  % cd src
-  % make
+ % tar zxf feram-X.YY.ZZ.tar.gz
+ % cd feram-X.YY.ZZ
+ % mkdir appc-FFTW3/
+ % cd appc-FFTW3/
+ % env FC=ifort LDFLAGS=-L/home/t-nissie/ia64-Linux/lib CPPFLAGS=-I/home/t-nissie/ia64-Linux/include ../configure
+ % cd src
+ % make
 
 ==== x86 32-bit GNU/Linux
 On x86 32-bit GNU/Linux, feram may be compiled with gfortran and Intel Fortran (ifort),
@@ -130,8 +130,8 @@ and PGI Fortran (pgf95).
 == Execution
 feram can read parameters from the standard input (stdin)
 as well as from the file(s) given by the argument(s).
-  $ feram < input_file
-  $ feram foo bar baz
+ $ feram < input_file
+ $ feram foo bar baz
 
 == Input files
 === parameter file
@@ -150,150 +150,154 @@ Blank lines are also ignored.
 
 ==== Tags
 You must put ' = ', space-equal-space, between tag and value(s) as:
-  tag = 1.0
+ tag = 1.0
 
-  tag = -2.0 -3.0 -4.0
-  tag =  5.0  6.0  7.0
+ tag = -2.0 -3.0 -4.0
+ tag =  5.0  6.0  7.0
 
 Followings are currently available tags alphabetically ordered.
 
 ===== method
-'md' for MD,
-'lf' for leap frog (Not implemented yet),
-'mc' for Monte Carlo (Not implemented yet).
+ method = 'md'
+'md' is for a molecular-dynamics simulation in the canonical ensemble using the Nosé-Poincaré thermostat
 
-  method = 'md'
+ method = 'lf'
+'lf' is for a molecular-dynamics simulation in the microcanonical ensemble using the leap-frog method
+
+ method = 'mc'
+'mc' is for a Monte Carlo simulation, but it is NOT IMPLEMENTED YET.
+
+ method = 'hl'
+'hl' is for a simulation of hysteresis loop. In this case, tags of n_average and external_E_field have special meanings.
+foo.hl file will be created.
+See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
+example: doc/figures/external-E-field-hysteresis-loop.jpg Special meanings of n_average and external_E_field, in the case of method = 'hl', a simulation of hysteresis loop. After thermalization, the external electric field is gradually altered from external_E_field to -external_E_field.
 
 ===== GPa
 Pressure in GPa unit.
-  GPa = -5.0
+ GPa = -5.0
 
 ===== kelvin
 Temperature in Kelvin.
-  kelvin = 100
+ kelvin = 100
 
 ===== Q_Nose
 Q_Nose for Nose-Poincare thermostat.
-  Q_Nose = 14.4
+ Q_Nose = 14.4
 
 ===== bulk_or_film
 Specifies the structure of the system.
 'bulk' for infinitely periodic bulk
 'film' for free standing thin film.
 'epit' for epitaxially strained thin film.
-  bulk_or_film = 'epit'
+ bulk_or_film = 'epit'
 
 ===== L
 System size, L_x, L_y and L_z. L_alpha>=4.
-  L = 32 32 4
+ L = 32 32 4
 
 ===== gap
 Gap for the thin film.
-  gap = 1
+ gap = 1
 
 ===== a0
 Lattice constant for the perovskite ferroelectrics in Angstrom unit.
-  a0 = 3.99
+ a0 = 3.99
 
 ===== epi_strain
-  epi_strain = -0.01
+ epi_strain = -0.01
 
 ===== dt
 Time step in pico second.
-  dt = 0.002
+ dt = 0.002
 
 ===== n_thermalize, n_average, n_coord_freq
 The number of time steps of thermalizing, averaging, and frequency
 of taking snapshots. If n_thermalize+n_average=n_coord_freq, a
 snapshot is taken at the end of the MD at each temperature.
-  n_thermalize = 40000
-  n_average    = 10000
-  n_coord_freq = 50000
+ n_thermalize = 40000
+ n_average    = 10000
+ n_coord_freq = 50000
 
 ===== external_E_field
 Vector of the external electric field in the unit of [V/Angstrom].
-  external_E_field = 0.00 0.00 -0.01
-
-===== external_E_field_frequency
-Frequency of external electric field.
-If it is zero, the constant electric field will be applied.
-(f>0.0 is not implemented yet.)
-  external_E_field_frequency = 0.0
+ external_E_field = 0.00 0.00 -0.01
 
 ===== P_kappa2, P_alpha, P_gamma
 Coefficients for the 4-th order polynomial.
-  P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
-  P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
-  P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
+ P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
+ P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+ P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
 
 ===== j
 Short-range inter-site interaction coefficients
-  j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
+ j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
 
 ===== B11, B12, B44
 Elastic Constants
-  B11 = 126.
-  B12 =  44.9
-  B44 =  50.3  [eV]
+ B11 = 126.
+ B12 =  44.9
+ B44 =  50.3  [eV]
 
 ===== B1xx, B1yy, B4yz
 Elastic Coupling
-  B1xx = -211.   [eV/Angstrom^2]
-  B1yy =  -19.3  [eV/Angstrom^2]
-  B4yz =   -7.75 [eV/Angstrom^2]
+ B1xx = -211.   [eV/Angstrom^2]
+ B1yy =  -19.3  [eV/Angstrom^2]
+ B4yz =   -7.75 [eV/Angstrom^2]
 
 ===== init_dipo_avg, init_dipo_dev
 Initial dipole settings
-  init_dipo_avg = 0.00 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
-  init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
+ init_dipo_avg = 0.00 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
+ init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
 
 ===== Z_star
 Effective charge per site.
-  Z_star     = 9.956
+ Z_star     = 9.956
 
 ===== epsilon_inf
-  epsilon_inf   = 5.24
+ epsilon_inf   = 5.24
 
 ===== kappa
-This is for debug. Arbitrary kappa for Ewald summation in src/dipole-dipole-long-range.F.
-  kappa = 0.15
+This is for debug. You do not have to set this tag.
+Arbitrary kappa for Ewald summation in src/dipole-dipole-long-range.F.
+ kappa = 0.15
 
 ===== plot_dispersion
 If
-  plot_dispersion = .true.
+ plot_dispersion = .true.
 data files for plotting dispersion relation will be written. Deafault is .false..
 
 ===== defect_position, defect_u
 Position and u of a defect.
-  defect_position = 16 16 16
-  defect_u = 0.0 0.0 0.0
+ defect_position = 16 16 16
+ defect_u = 0.0 0.0 0.0
 
 === ionic.configuration file
 (Not implemented yet.)
 This file is required for the calculation of the local field.
 
-  0.0 0.0 0.0   +3.0
-  0.5 0.0 0.0   -2.0
-  0.0 0.5 0.0   -2.0
-  0.0 0.0 0.5   -2.0
-     :
-     :
-  position_x position_y position_z    effective_charge_of_the_ion
-     :
-     :
+ 0.0 0.0 0.0   +3.0
+ 0.5 0.0 0.0   -2.0
+ 0.0 0.5 0.0   -2.0
+ 0.0 0.0 0.5   -2.0
+    :
+    :
+ position_x position_y position_z    effective_charge_of_the_ion
+    :
+    :
 
 Position must be given in the unit of a0.
 
 
 === local.field file
-  0  0  0   0.1 -0.1 0.7
-  1  0  0   0.1  0.1 0.7
-  2  0  0   0.1  0.2 0.7
-     :
-     :
+ 0  0  0   0.1 -0.1 0.7
+ 1  0  0   0.1  0.1 0.7
+ 2  0  0   0.1  0.2 0.7
+    :
+    :
  position_x position_y position_z    E_local_x E_local_y E_local_z [V/Angstrom]
-     :
-     :
+    :
+    :
  Lx Ly Lz   0.1  0.2 0.7
 
 If feram cannot find both ionic.configuration and local.field,
@@ -313,6 +317,9 @@ src/plot.gp can plot the energies:
 
 === foo123.avg
 Averages for each temperature.
+
+=== foo123.hl
+In the case of method = 'hl', a simulation of hysteresis loop, one .hl file will be created instead of a .avg file.
 
 === foo123.tttKnnnnnnn.coord
 Snapshot of dipoles at ttt Kelvin and nnnnnnn-th iteration.
