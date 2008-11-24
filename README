@@ -111,7 +111,7 @@ environment variables.
  $ FC=pgf95 LDFLAGS=-L/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/lib CPPFLAGS=-I/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/include ../configure
  $ make
  $ cd examples/BaTiO3-bulk-16x16x16-local.field-new-format/
- $ OMP_NUM_THREADS=6 ../../pgf95/src/feram foo123 > feram.log &
+ $ OMP_NUM_THREADS=6 ../../pgf95/src/feram foo123 > feram.log
 
 ==== IA-64 GNU/Linux (appc in IMR)
 On IA-64, feram may be compiled with gfortran or Intel Fortran (ifort). For example:
@@ -171,7 +171,12 @@ Followings are currently available tags alphabetically ordered.
 'hl' is for a simulation of hysteresis loop. In this case, tags of n_average and external_E_field have special meanings.
 foo.hl file will be created.
 See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
-example: doc/figures/external-E-field-hysteresis-loop.jpg Special meanings of n_average and external_E_field, in the case of method = 'hl', a simulation of hysteresis loop. After thermalization, the external electric field is gradually altered from external_E_field to -external_E_field.
+Fig. 1 doc/figures/external-E-field-hysteresis-loop.jpg
+  Special meanings of n_average and external_E_field,
+  in the case of method = 'hl', a simulation of hysteresis loop.
+  After thermalization, the external electric field is gradually
+  altered from external_E_field to -external_E_field.
+/Fig.
 
 ===== GPa
 Pressure in GPa unit.
@@ -344,13 +349,25 @@ calculations and the other calculations.
 
 == Examples
 === Energies vs MD step in cooling simulation
-example: doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energies vs MD steps in cooling simulation.
+Fig. 2 doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
+  Energies vs MD steps in cooling simulation.
+/Fig.
 === Temperature dependence of strain and susceptibility of bulk BaTiO<sub>3</sub>
-example: doc/figures/strain-susceptibility.jpg Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Susceptibilities are calculated from fluctuations of dipoles.
+Fig. 3 doc/figures/strain-susceptibility.jpg
+  Temperature dependence of three components of strain and relative
+  dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions
+  are clearly seen. Susceptibilities are calculated from fluctuations of dipoles.
+/Fig.
 === Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>
-example: doc/figures/bulk-two-box.jpg Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
+Fig. 4 doc/figures/bulk-two-box.jpg
+  Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>.
+  The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
+/Fig.
 === Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
-example: doc/figures/epit-vs-free-hysteresis-box.jpg Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and (b) "free" films of various thickness <i>l</i> and with dead layer <i>d</i> at 100 K.
+Fig. 5 doc/figures/epit-vs-free-hysteresis-box.jpg
+  Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and
+  (b) "free" films of various thickness <i>l</i> and with dead layer <i>d</i> at 100 K.
+/Fig.
 
 == Mailing list
  * Description: Discussions and announcements of loto, feram and compasses programs
@@ -437,12 +454,6 @@ require 'rubygems'
 require 'ulmul'
 u=Ulmul.new()
 u.subs_rules << [/logo\.jpg/,                '<img src="logo.jpg" alt="feram logo mark" />']
-u.subs_rules << [/example: (doc\/figures\/\S*\.jpg) (.*)$/, '<div class="figure">
-  <img src="\1" alt="\1" />
-  <div class="caption">
-    \2
-  </div>
-</div>']
 u.subs_rules << [/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2']
 u.subs_rules << [/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2']
 u.subs_rules << [/(\S*\/?\.F)(\s|$)/,        '<a href="\1">\1</a>\2']

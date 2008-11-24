@@ -1,10 +1,12 @@
 =begin
-= Molecular Dynamics Simulations of Hysteresis Loops for BaTiO<sub>3</sub> Ferroelectric Thin-Film Capacitors Using the feram Code
+= Molecular Dynamics Simulations of Hysteresis Loops for BaTiO3 Ferroelectric Thin-Film Capacitors Using the feram Code
 Takeshi Nishimatsu
 
 http://dx.doi.org/10.1103/PhysRevB.78.104104
 
 http://loto.sourceforge.net/feram/
+
+CLICK anywhere to go to the next page.
 
 # I entitled my talk "Molecular Dynamics Simulations of Hysteresis Loops for BaTiO<sub>3</sub> Ferroelectric Thin-Film Capacitors Using the feram Code".
 # This study is done by my original MD code, feram.
@@ -25,7 +27,10 @@ Use Firefox web browser.
 
 
 == What is ferroelectric?
-figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT), etc..
+Fig. 1 figures/ferroelectrics.jpg
+  Properties of ferroelectrics, such as BaTiO$_3$, PbTiO$_3$, KNbO$_3$, LiNbO$_3$, LiTaO$_3$, SrTiO$_3$, Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT), etc..
+/Fig.
+
 
 # First, let me remind you what ferroelectric is.
 # As you know,
@@ -52,7 +57,10 @@ figures/ferroelectrics.jpg Properties of ferroelectrics, such as BaTiO$_3$, PbTi
 
 
 == Non-volatile ferroelectric memory (FeRAM)
-figures/twoFeRAM.jpg Schematic device configurations of two types of FeRAM (a) 1-transistor and 1-capacitor (1T1C) type and (b) 1-transistor (1T) type. (c) and (d) are their circuit diagrams, respectively.
+Fig. 1 figures/twoFeRAM.jpg
+  Schematic device configurations of two types of FeRAM (a) 1-transistor and 1-capacitor (1T1C) type and (b) 1-transistor (1T) type. (c) and (d) are their circuit diagrams, respectively.
+/Fig.
+
 
 # Such ferroelectrics are currently used in Non-volatile ferroelectric memory, FeRAM.
 # They are schematic device configurations and their circuit diagrams.
@@ -75,7 +83,10 @@ figures/twoFeRAM.jpg Schematic device configurations of two types of FeRAM (a) 1
    * [M. Dawber et al.: J. Phys. Condes. Matter <b>15</b>, L393 (2003)]
  * Fatigue causes damages in polarization behaviors of ferroelectric capacitors.
 
-figures/J.F.Scott.Fig.1.1.ae.jpg After [J. F. Scott: Ferroelectric Memories (Springer, 2000)].
+Fig. 1 figures/J.F.Scott.Fig.1.1.ae.jpg
+  After [J. F. Scott: Ferroelectric Memories (Springer, 2000)].
+/Fig.
+
 
 # I explain the background of this study with following two slides.
 # There are various applications of ferroelectric thin films.
@@ -97,7 +108,10 @@ figures/J.F.Scott.Fig.1.1.ae.jpg After [J. F. Scott: Ferroelectric Memories (Spr
      * How to include depolarization fields caused by imperfect electrodes
        was unclear.
 
-figures/Fong.jpg After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thin films ($< 4$ layers) may not have spontaneous polarization.
+Fig. 1 figures/Fong.jpg
+  After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thin films ($< 4$ layers) may not have spontaneous polarization.
+/Fig.
+
 
 # There are many dynamical behaviors in ferroelectric thin-film capacitors.
 # For example, Hysteresis loop, polarization switching, and
@@ -119,7 +133,8 @@ figures/Fong.jpg After [Fong et al.: Science <b>304</b>, 1650 (2004)]. Ultra thi
 
 $\to$ We develop "feram" code.
 
-../logo.jpg
+Fig. 1 ../logo.jpg
+/Fig.
 
 # Again, one of the purposes of this simulation program is to study
 # the thermal properties
@@ -195,7 +210,10 @@ $\to$ We develop "feram" code.
 == Soft-mode displacements of perovskite type ferroelectrics <em>AB</em>O<sub>3</sub>
 # [King-Smith and Vanderbilt: Phys. Rev. B <b>49</b> 5828 (1994)] Parametrization of coupling between soft-mode displacement and strains.
 
-figures/perovskite-contours.jpg Coupling between atomic displacements and strains. After [T. Hashimoto, T. Nishimatsu et al.: Jpn. J. Appl. Phys. <b>43</b>, 6785 (2004)].
+Fig. 1 figures/perovskite-contours.jpg
+  Coupling between atomic displacements and strains. After [T. Hashimoto, T. Nishimatsu et al.: Jpn. J. Appl. Phys. <b>43</b>, 6785 (2004)].
+/Fig.
+
 
 # The origin of electric polarization of perovskite type ferroelectrics ABO3 is its Soft-mode displacement.
 # And the atomic displacement is strongly coupled with strains.
@@ -224,7 +242,8 @@ figures/perovskite-contours.jpg Coupling between atomic displacements and strain
    * Define 1 dipole $Z^*\bm{u}(\bm{R})$ per unit cell
    * 1 acoustic displacement (Inhomogeneous strain) $\bm{w}(\bm{R})$ per unit cell
 
-figures/CoarseGraining.jpg
+Fig. 1 figures/CoarseGraining.jpg
+/Fig.
 
 # In the Hamiltonian, Coarse-graining is employed.
 # In other words, the number of degree of freedom is reduced.
@@ -256,7 +275,10 @@ Eq. 1
     - Z^*\sum_{\bm{R}} \mathscr{E} \cdot \bm{u}(\bm{R})
 /Eq.
 
-figures/arrows.jpg Snapshot of the supercell. Strengths and directions of $\{\bm{u}(\bm{R})\}$ are indicated with arrows. red and blue colors represent $+z$-polarized and $-z$-polarized sites.
+Fig. 1 figures/arrows.jpg
+  Snapshot of the supercell. Strengths and directions of $\{\bm{u}(\bm{R})\}$ are indicated with arrows. red and blue colors represent $+z$-polarized and $-z$-polarized sites.
+/Fig.
+
 
 
 # Using that parameters, we can construct an effective Hamiltonian for a supercell with
@@ -281,7 +303,10 @@ Eq. 1
     u^2=u_{x}^2 + u_{y}^2 + u_{z}^2.
 /Eq.
 
-figures/fourth.jpg Schematic illustration of self potential of a local dipole. Double well is made by the fourth order terms of u.
+Fig. 1 figures/fourth.jpg
+  Schematic illustration of self potential of a local dipole. Double well is made by the fourth order terms of u.
+/Fig.
+
 
 
 # I shall introduce you some terms of the effective Hamiltonian.
@@ -324,31 +349,49 @@ $J_{ij,\alpha\beta} = J_k$: Short-range interaction matrix ($k=1,\cdots,7$)
 # 
 
 == Forces on dipoles are calculated in the reciprocal space
-figures/flow.jpg Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions. You can reduce computational time from $O(N^2)$ to $O(N \log N)$.
+Fig. 1 figures/flow.jpg
+  Simplified flow chart for calculating forces on dipoles. Fast Fourier transformation (FFT) and inverse FFT (IFFT) enable the rapid calculation of long-range dipole-dipole interactions. You can reduce computational time from $O(N^2)$ to $O(N \log N)$.
+/Fig.
+
 
 # Time consuming part in simulation is the calculation of forces of dipoles because
 # dipole-dipole interactions are long-range. ..... You can reduce computational time
 # from O(N^2) to O(NlogN).
 
 == Long-range dipole-dipole interaction
-figures/bulk32x32x32.dipole-dipole-long.interaction.jpg Long-range interaction energy per unit cell is plotted in the first Brillouin zone for the simple cubic crystal. Only with dipole-dipole interaction, the minimum is at the M point, i.e., the checker-board-type antiferroelectric order is most stable.
+Fig. 1 figures/bulk32x32x32.dipole-dipole-long.interaction.jpg
+  Long-range interaction energy per unit cell is plotted in the first Brillouin zone for the simple cubic crystal. Only with dipole-dipole interaction, the minimum is at the M point, i.e., the checker-board-type antiferroelectric order is most stable.
+/Fig.
+
 
 == Long-range + short-range interaction
-figures/bulk32x32x32.dipole-dipole-long+short.interaction.jpg By introducing short-range interaction, the minimum come to the $\Gamma$ point, i.e., the ferroelectric order is most stable.
+Fig. 1 figures/bulk32x32x32.dipole-dipole-long+short.interaction.jpg
+  By introducing short-range interaction, the minimum come to the $\Gamma$ point, i.e., the ferroelectric order is most stable.
+/Fig.
+
 
 == First Brillouin zone for simple cubic crystals
-figures/sc.BZ.jpg First Brillouin zone for simple cubic crystals.
+Fig. 1 figures/sc.BZ.jpg
+  First Brillouin zone for simple cubic crystals.
+/Fig.
+
 
 == LO-TO splitting
 LO-TO splitting is the ion version of the plasma frequency.
 
-figures/oscillation.jpg Schematic illustration of longitudinal oscillation of a dielectric thin film. Polarization $P_z=Z^* u_z / \Omega$ perpendicular to the film causes surface charges $\pm P_z$. The surface charges result in depolarization field $E_{\rm d}=-4\pi P_z$ in the film. This depolarization field causes restoring force $F=-4\pi Pz Z^* u_z=-4\pi Z^{*2} u_z^2 / \Omega$ on $u_z$.
+Fig. 1 figures/oscillation.jpg
+  Schematic illustration of longitudinal oscillation of a dielectric thin film. Polarization $P_z=Z^* u_z / \Omega$ perpendicular to the film causes surface charges $\pm P_z$. The surface charges result in depolarization field $E_{\rm d}=-4\pi P_z$ in the film. This depolarization field causes restoring force $F=-4\pi Pz Z^* u_z=-4\pi Z^{*2} u_z^2 / \Omega$ on $u_z$.
+/Fig.
+
 
 #The surface charges result in depolarization field $E_{\rm d}=-\frac{4\pi}{\epsilon_\infty} P_z$ in the film. This depolarization field causes restoring force $F=-\frac{4\pi}{\epsilon_\infty} Pz Z^* u_z=-\frac{4\pi}{\epsilon_\infty} Z^{*2} u_z^2 / \Omega$ on $u_z$.
 
 
 == Boundary condition for capacitors
-figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b). In (a) depolarization field $E_{\rm d}=0$, but in (b) $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$.
+Fig. 1 figures/capacitor.jpg
+  Ferroelectrics are sandwiched between short-circuited perfect electrodes (a) and imperfect electrodes (b). In (a) depolarization field $E_{\rm d}=0$, but in (b) $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$.
+/Fig.
+
 
 # This slide show you how to simulate thin films
 # sandwiched between short-circuited electrodes.
@@ -419,7 +462,10 @@ figures/capacitor.jpg Ferroelectrics are sandwiched between short-circuited perf
 
 
 == Time evolution and fluctuation
-figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
+Fig. 1 figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
+  Energy versus time-step plot of a cooling simulation. You can see Nose-Poincare Hamiltonian remains zero.
+/Fig.
+
 
 # This figure shows the time steps of simulations.
 # First, the system exchanges energy between the
@@ -433,9 +479,15 @@ figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg Energy versus time-step pl
 == Results: Monte Carlo (MC) vs. Molecular Dynamics (MD)
 feram is a <b>molecular dynamics (MD)</b> program for bulk and thin-film ferroelectrics.
 
-figures/MC-vs-MD.jpg Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
+Fig. 1 figures/MC-vs-MD.jpg
+  Simulations of bulk BaTiO<sub>3</sub> with MC and MD.  Horizontal axis is temperature. Vertical axis is strain. While Monte Carlo steps do NOT have physical meaning, MD simulation steps have a physical meaning of the time evolution. Cooling and heating MD simulation can show hysteresis in temperature clearly.
+/Fig.
 
-figures/BaTiO3-abc-T-dependence.jpg Experimentally observed one after [H. E. Kay and P. Vousden: Philos. Mag. <b>40</b>, 1019  (1949)]. The relatively weak first-order nature of the cubic-to-tetragonal phase transition can be compared with the first-order tetragonal-to-orthorhombic and orthorhombic-to-rhombohedral phase transitions.
+
+Fig. 1 figures/BaTiO3-abc-T-dependence.jpg
+  Experimentally observed one after [H. E. Kay and P. Vousden: Philos. Mag. <b>40</b>, 1019  (1949)]. The relatively weak first-order nature of the cubic-to-tetragonal phase transition can be compared with the first-order tetragonal-to-orthorhombic and orthorhombic-to-rhombohedral phase transitions.
+/Fig.
+
 
 
 # feram is a molecular dynamics program for ferroelectrics.
@@ -450,7 +502,10 @@ figures/BaTiO3-abc-T-dependence.jpg Experimentally observed one after [H. E. Kay
 
 
 == Dielectric constants can be calculated from fluctuations
-figures/strain-susceptibility.jpg Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Dielectric constants can be calculated from fluctuations of dipoles.
+Fig. 1 figures/strain-susceptibility.jpg
+  Temperature dependence of three components of strain and relative dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions are clearly seen. Dielectric constants can be calculated from fluctuations of dipoles.
+/Fig.
+
 
 == Heating-up and cooling-down simulations of ferroelectric capacitors
 Animations of horizontal slices of heating-up and cooling-down
@@ -478,11 +533,17 @@ Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
 
 
 == Single domain structures and striped domain structures
-figures/epit-32x32-L015-D1-5.0GPa-100K-three.jpg Snapshots at $T=100$ K in heating-up ((a)) and cooling-down ((b) and (c)) simulations of ferroelectric thin-film capacitors of $l=15$ with $d=1$. (a) and (b) are horizontal slices. (c) is a vertical cross section.
+Fig. 1 figures/epit-32x32-L015-D1-5.0GPa-100K-three.jpg
+  Snapshots at $T=100$ K in heating-up ((a)) and cooling-down ((b) and (c)) simulations of ferroelectric thin-film capacitors of $l=15$ with $d=1$. (a) and (b) are horizontal slices. (c) is a vertical cross section.
+/Fig.
+
 
 
 == Thinner film has finer domain structure to avoid stronger depolarization field
-figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes $32\times 32 \times (l=7, 15, 31, 63, 127 and 255, d=1$). Thinner film has finer domain structure to avoid stronger depolarization field $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$. 
+Fig. 1 figures/slice32x32.jpg
+  Horizontal slices of domain structures in capacitors of epitaxial BaTiO<sub>3</sub> thin-film with imperfect electrodes $32\times 32 \times (l=7, 15, 31, 63, 127 and 255, d=1$). Thinner film has finer domain structure to avoid stronger depolarization field $E_{\rm d}=-4\pi P_z \frac{d}{l+d}$. 
+/Fig.
+
 
 # Here I show thickness dependence of striped domain structure.
 # We found that thinner film has finer domain
@@ -491,7 +552,8 @@ figures/slice32x32.jpg Horizontal slices of domain structures in capacitors of e
 
 
 == Temperature dependence of polarizations of thin-film capacitors
-figures/epitDEN.jpg
+Fig. 1 figures/epitDEN.jpg
+/Fig.
 
 # These complicated figures are the calculated results for the thin-film
 # capacitors. Horizontal axes are temperature and vertical axes are
@@ -509,35 +571,48 @@ figures/epitDEN.jpg
 # In the next slide, I show the snapshot of this point structure.
 
 
-#== Uniformly polarized structure and striped domain structure
-#figures/epit-32x32-L015-D1-5.0GPa-100K.jpg Almost uniformly polarized structure ((a) and (b))and striped domain structure ((c) and (d)) of thin-film BaTiO<sub>3</sub> capacitors of $32\times 32 \times (l=15, d=1)$. There is thermally unhoppable bistability between these two structure.
-#
+== Uniformly polarized structure and striped domain structure
+Fig. 1 figures/epit-32x32-L015-D1-5.0GPa-100K.jpg
+  Almost uniformly polarized structure ((a) and (b)) and striped domain structure ((c) and (d))
+  of thin-film BaTiO<sub>3</sub> capacitors of $32\times 32 \times (l=15, d=1)$.
+  There is thermally unhoppable bistability between these two structure.
+/Fig.
+
+
 # these are the horizontal slice and vertical cross-section of
 # almost uniformly polarized structure and striped domain structure.
-
-
-#== Epitaxially constrained film vs. "free" film
-#figures/epit-vs-free.jpg Schematic comparison between the epitaxially constrained film and the ``free'' film. In the epitaxially constrained film, switching may have to climb over a potential barrier, but, in the ``free'' film, dipoles can be easily rotated and switching can go around a valley of the potential.
-
 
 
 
 
 
 #== Proposal of an experiment of BaTiO<sub>3</sub> thin-film capacitor
-#figures/proposal2.gif (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) grow BaTiO<sub>3</sub> thin and thick thin films, (3) cover them with the metal, (4) if you use x-ray or whatever, (5) you may observe deference of fineness in their domain structures.
+Fig. 1 figures/proposal2.gif
+  (1) On SrRuO<sub>3</sub> or Pt metallic substrate, (2) grow BaTiO<sub>3</sub>
+  thin and thick thin films, (3) cover them with the metal, (4) if you use x-ray
+  or whatever, (5) you may observe deference of fineness in their domain structures.
+/Fig.
 
 
 == Applied external electric field
-figures/step.jpg Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
+Fig. 1 figures/step.jpg
+  Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
+/Fig.
+
 
 == Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>
-figures/bulk-two-box.jpg Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
+Fig. 1 figures/bulk-two-box.jpg
+  Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>. The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
+/Fig.
+
 
 
 
 == Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
-figures/epit-vs-free-hysteresis-box.jpg Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and (b) ``free'' films of various thickness $l$ and with dead layer $d$ at 100 K.
+Fig. 1 figures/epit-vs-free-hysteresis-box.jpg
+  Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and (b) ``free'' films of various thickness $l$ and with dead layer $d$ at 100 K.
+/Fig.
+
 
 #    Supercell sizes were $16\times 16\times 2(l+d)$.
 #    $\Delta t=2$~fs and $n_{\rm steps}=$~50,000.
@@ -547,10 +622,16 @@ figures/epit-vs-free-hysteresis-box.jpg Calculated hysteresis loops for capacito
 #    $\mathcal{E}_0 =$~400~kV/cm and $\Delta \mathcal{E} =$~10~kV/cm are employed.
 
 == Out-of-plane polarization is no longer the ground state
-figures/damaged.jpg Vertical cross section of a simulated ferroelectric "free" film capacitor with a single dead layer; 16 x 16 x (l=63, d=1). The snapshot was taken at the point marked "x". The projection of the dipole moments onto the xz-plane are indicated with arrows.
+Fig. 1 figures/damaged.jpg
+  Vertical cross section of a simulated ferroelectric "free" film capacitor with a single dead layer; 16 x 16 x (l=63, d=1). The snapshot was taken at the point marked "x". The projection of the dipole moments onto the xz-plane are indicated with arrows.
+/Fig.
+
 
 == Epitaxially constrained film vs. "free" film (again)
-figures/epit-vs-free.jpg Schematic comparison between the epitaxially constrained film and the ``free'' film. In the epitaxially constrained film, switching may have to climb over a potential barrier, but, in the ``free'' film, dipoles can be easily rotated and switching can go around a valley of the potential.
+Fig. 1 figures/epit-vs-free.jpg
+  Schematic comparison between the epitaxially constrained film and the ``free'' film. In the epitaxially constrained film, switching may have to climb over a potential barrier, but, in the ``free'' film, dipoles can be easily rotated and switching can go around a valley of the potential.
+/Fig.
+
 
 
 
@@ -574,7 +655,10 @@ The averaged valence number of B-site ions $B'_x$ and $B''_{1-x}$ is $4+$.
 
 
 == Frequency dependence of dielectric constant of relaxors
-figures/TsurumiFig3.jpg After [Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. <b>33</b>, 1959-1964 (1994)]
+Fig. 1 figures/TsurumiFig3.jpg
+  After [Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and Masaki Daimon: Jpn. J. Appl. Phys. <b>33</b>, 1959-1964 (1994)]
+/Fig.
+
 
 # Most characteristic and still mysterious property of relaxors is 
 #Eq.1
@@ -587,7 +671,10 @@ figures/TsurumiFig3.jpg After [Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya and
 
 
 == Crystal structures of relaxors
-figures/RandallBhallaFig3.jpg (a) Ordered B-site structure of $AB'_xB''_{(1-x)}$O$_3$. In the case of Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$, Sc and Nb has the NaCl structure. In the case of Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$, the Na-site is randomly occupied by Mg$_{1/3}$Nb$_{1/6}$ and the Cl-site is occupied by  Nb$_{1/2}$.  (b) Disordered structure. B-sites is occupied by $B'$ and $B''_{(1-x)}$ randomly. After [C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. <b>29</b>, 327-333 (1990)].
+Fig. 1 figures/RandallBhallaFig3.jpg
+  (a) Ordered B-site structure of $AB'_xB''_{(1-x)}$O$_3$. In the case of Pb(Sc$_{1/2}$Nb$_{1/2}$)O$_3$, Sc and Nb has the NaCl structure. In the case of Pb(Mg$_{1/3}$Nb$_{2/3}$)O$_3$, the Na-site is randomly occupied by Mg$_{1/3}$Nb$_{1/6}$ and the Cl-site is occupied by  Nb$_{1/2}$.  (b) Disordered structure. B-sites is occupied by $B'$ and $B''_{(1-x)}$ randomly. After [C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. <b>29</b>, 327-333 (1990)].
+/Fig.
+
 
 
 
@@ -597,7 +684,10 @@ figures/RandallBhallaFig3.jpg (a) Ordered B-site structure of $AB'_xB''_{(1-x)}$
 
 == Local field on Pb-site
 Displacement of Pb is the main source of dipole moment.
-figures/TwoDoubleWells.jpg Symmetric potential around Pb at the chemically ordered region (COR). Asymmetric one at the chemically disordered region (CDR).
+Fig. 1 figures/TwoDoubleWells.jpg
+  Symmetric potential around Pb at the chemically ordered region (COR). Asymmetric one at the chemically disordered region (CDR).
+/Fig.
+
 
 
 
@@ -607,7 +697,10 @@ figures/TwoDoubleWells.jpg Symmetric potential around Pb at the chemically order
 
 
 == Chemically ordered and disordered regions of relaxors
-figures/RandallBhallaFig8.jpg The quenched sample has chemically ordered regions (&sim;100&Aring;) in a chemically disordered matrix. After [C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. <b>29</b>, 327-333 (1990)].
+Fig. 1 figures/RandallBhallaFig8.jpg
+  The quenched sample has chemically ordered regions (&sim;100&Aring;) in a chemically disordered matrix. After [C. A. Randall and A. S. Bhalla: Jpn. J. Appl. Phys. <b>29</b>, 327-333 (1990)].
+/Fig.
+
 
 
 
@@ -615,14 +708,20 @@ figures/RandallBhallaFig8.jpg The quenched sample has chemically ordered regions
 
 
 == Modeling of relaxors
-figures/DoubleWells.jpg Schematic illustration of modeling of relaxor. Bubble-like Chemically ordered regions (COR, red symmetric double wells) is created in a chemically disordered matrix (blue asymmetric double wells)
+Fig. 1 figures/DoubleWells.jpg
+  Schematic illustration of modeling of relaxor. Bubble-like Chemically ordered regions (COR, red symmetric double wells) is created in a chemically disordered matrix (blue asymmetric double wells)
+/Fig.
+
 
 
 
 
 
 == Snapshot of a simulation of PSN relaxor
-figures/SilviaFig1.jpg A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields. After [Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. <b>97</b>, 137601 (2006)].
+Fig. 1 figures/SilviaFig1.jpg
+  A (110) plane through the PSN simulation box representing the projected local field (arbitrary units) at each Pb site in the plane. Chemically ordered regions (approximately circular) have small approximately homogeneous fields, and chemically disordered regions have larger more varied and disordered local fields. After [Tinte, Burton, Cockayne and Waghmare: Phys. Rev. Lett. <b>97</b>, 137601 (2006)].
+/Fig.
+
 
 
 
@@ -676,7 +775,9 @@ So, I am planning to calculate and compare $\epsilon(\omega)$ for $\omega/(2\pi)
    * Striped domain structure is predicted
    * Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
  * Investigations of relaxors with MD are proposed.
-../logo.jpg Thank you for your attention.
+Fig. 1 ../logo.jpg
+  Thank you for your attention.
+/Fig.
 
 # * An experiment of BaTiO<sub>3</sub> thin-film capacitor is proposed
 
@@ -690,19 +791,6 @@ require 'ulmul'
 u=Ulmul.new(1..0)
 u.subs_rules << [  /(heating-up)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
 u.subs_rules << [/(cooling-down)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
-u.subs_rules << [/(\S*\/?\.jpg)\s*(.*)$/, '<div class="figure">
-  <img src="\1" alt="\1" />
-  <div class="caption">
-    \2
-  </div>
-</div>']
-u.subs_rules << [/(figures\/proposal2\.gif)\s*(.*)$/, '<div class="figure">
-  <img src="\1" alt="\1" />
-  <div class="caption">
-    \2
-  </div>
-</div>']
-
 u.parse(ARGF)
 puts u.html(["feram-presentation.css"],["slidy.js"],"Takeshi Nishimatsu","en")
 
