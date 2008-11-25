@@ -198,7 +198,7 @@ Specifies the structure of the system.
  bulk_or_film = 'epit'
 
 ===== L
-System size, L_x, L_y and L_z. L_alpha>=4.
+System size, L_x, L_y and L_z. They must be equal or larger than 4.
  L = 32 32 4
 
 ===== gap
@@ -294,7 +294,7 @@ This file is required for the calculation of the local field.
 Position must be given in the unit of a0.
 
 
-=== local.field file
+=== local.field input file
  0  0  0   0.1 -0.1 0.7
  1  0  0   0.1  0.1 0.7
  2  0  0   0.1  0.2 0.7
@@ -341,7 +341,7 @@ are symbolic links or copy of cross-section-q.sh.
 
 === foo123.inhomo-K.dat
 
-=== local.field file
+=== local.field output file
 The calculated local field from the given ionic configuration (ionic.configuration
 file) is stored in this file. This file will be reloaded in consequent temperature
 calculations and the other calculations.
