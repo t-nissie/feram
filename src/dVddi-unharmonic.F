@@ -1,5 +1,5 @@
 ! dVddi-unharmonic.F   -*-f90-*-
-! Time-stamp: <2008-12-10 13:40:55 takeshi>
+! Time-stamp: <2008-12-10 21:50:41 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_unharmonic(p,c,e)
@@ -59,7 +59,7 @@ subroutine dVddi_unharmonic(p,c,e)
                                 c%didiR(ix,iy,iz,3) )**2 &
                 + p%P_gamma * ( c%didiR(ix,iy,iz,1)*c%didiR(ix,iy,iz,2) + &
                                 c%didiR(ix,iy,iz,2)*c%didiR(ix,iy,iz,3) + &
-                                c%didiR(ix,iy,iz,3)*c%didiR(ix,iy,iz,1) )
+                                c%didiR(ix,iy,iz,3)*c%didiR(ix,iy,iz,1) ) &
                 + p%P_k1    * ( c%didiR(ix,iy,iz,1) + &
                                 c%didiR(ix,iy,iz,2) + &
                                 c%didiR(ix,iy,iz,3) )**3 &
