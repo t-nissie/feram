@@ -234,6 +234,9 @@ Coefficients for the 4-th order polynomial.
  P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
  P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
 
+===== P_k1, P_k2, P_k3
+Coefficients for the 6-th order part
+
 ===== j
 Short-range inter-site interaction coefficients
  j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
@@ -425,11 +428,11 @@ Authors and/or publishers of the papers have their copyrights for the following 
    Jpn. J. Appl. Phys. 33, 1959 (1994)].
 
 === pseudopotentials
-These LDA (Teter "extended norm-conserving") pseudopotential files are downloaded from
+Three LDA (Teter "extended norm-conserving") pseudopotential files are downloaded from
 http://www.abinit.org/Psps/?text=../Psps/LDA_EX/lda . They are distributed under GPL.
-src/10-example-PbTiO3-DDB2short/82pb.960808c.mod
-src/10-example-PbTiO3-DDB2short/22ti.psp.mod
-src/10-example-PbTiO3-DDB2short/8o.phoney.mod
+ src/10-example-PbTiO3-DDB2short/82pb.960808c.mod
+ src/10-example-PbTiO3-DDB2short/22ti.psp.mod
+ src/10-example-PbTiO3-DDB2short/8o.phoney.mod
 
 == Author
 Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)

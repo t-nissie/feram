@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2008-09-05 12:15:12 takeshi>
+! Time-stamp: <2008-12-10 13:32:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -47,10 +47,13 @@ module Param_module
      integer n_coord_freq  ! frequency for writing out the coordinates
      !!--- External electric field ---------------------
      real*8    external_E_field(3)  ! External electric field [V/Angstrom]
-     !--- On-site (Polynomial of order 4) -------------
-     real*8 P_kappa2    ! P_4(u) = kappa2*u^2 + alpha*u^4
+     !--- On-site (Polynomial of order 6) -------------
+     real*8 P_kappa2    ! P_6(u) = kappa2*u^2 + alpha*u^4
      real*8 P_alpha     !  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
-     real*8 P_gamma     ! where u^2 = u_x^2 + u_y^2 + u_z^2
+     real*8 P_gamma     !  + k1*u^6
+     real*8 P_k1        !  + k2*[u_x^4(u_y^2+u_z^2)+u_y^4(u_z^2+u_x^2)+u_z^4(u^x2+u_y^2)]
+     real*8 P_k2        !  + k3*u_x^2u_y^2u_z^2
+     real*8 P_k3        ! where u^2 = u_x^2 + u_y^2 + u_z^2, u^4=(u^2)^2, u^6=(u^2)^3
      !--- Inter-site ----------------------------------
      real*8 j(7)
      !--- Elastic Constants ---------------------------
@@ -106,6 +109,12 @@ contains
     p%defect_position(1)  = -1    ; p%defect_position(2)  = -1    ; p%defect_position(3)  = -1
     p%defect_u(1)         = 0.0d0 ; p%defect_u(2)         = 0.0d0 ; p%defect_u(3)         = 0.0d0
     p%external_E_field(:) = 0.0d0
+    p%P_kappa2 = 0.0d0
+    p%P_alpha  = 0.0d0
+    p%P_gamma  = 0.0d0
+    p%P_k1     = 0.0d0
+    p%P_k2     = 0.0d0
+    p%P_k3     = 0.0d0
     p%n_coord_freq           = huge(1)   ! maximum integer
     p%kappa = 0.0d0
     p%plot_dispersion = .false.
@@ -174,6 +183,12 @@ contains
           read(str,*) dmy1, dmy2, p%P_alpha
        case('P_gamma')
           read(str,*) dmy1, dmy2, p%P_gamma
+       case('P_k1')
+          read(str,*) dmy1, dmy2, p%P_k1
+       case('P_k2')
+          read(str,*) dmy1, dmy2, p%P_k2
+       case('P_k3')
+          read(str,*) dmy1, dmy2, p%P_k3
        case('j')
           read(str,*) dmy1, dmy2, p%j(1),p%j(2),p%j(3),p%j(4),p%j(5),p%j(6),p%j(7)
        case('B11')
