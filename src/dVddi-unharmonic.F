@@ -1,5 +1,5 @@
 ! dVddi-unharmonic.F   -*-f90-*-
-! Time-stamp: <2008-12-10 21:50:41 takeshi>
+! Time-stamp: <2008-12-18 23:58:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_unharmonic(p,c,e)
@@ -25,7 +25,7 @@ subroutine dVddi_unharmonic(p,c,e)
              two_gamma =               2*p%P_gamma
   six_k1_two_k2 =  6*p%P_k1 + 2*p%P_k2
          two_k2 =             2*p%P_k2
-        four_k2_two_k3 =      2*p%P_k2 - 4*p%P_k3
+        four_k2_two_k3 =      4*p%P_k2 - 2*p%P_k3
 
   do alpha = 1,3
      ! 4th order
@@ -45,8 +45,8 @@ subroutine dVddi_unharmonic(p,c,e)
      end if
      c%dVddi(:,:,:,alpha) = c%dVddi(:,:,:,alpha) + c%dipoR(:,:,:,alpha) * &
           ( six_k1_two_k2 * (c%didiR(:,:,:,1)+c%didiR(:,:,:,2)+c%didiR(:,:,:,3))**2 &
-                 - two_k2 * c%didiR(:,:,:,alpha)**4 &
-                - four_k2_two_k3 * c%didiR(:,:,:,alpha1)**2 * c%didiR(:,:,:,alpha2)**2 )
+                 - two_k2 *  c%didiR(:,:,:,alpha)**2 &
+                - four_k2_two_k3 * c%didiR(:,:,:,alpha1) * c%didiR(:,:,:,alpha2) )
   end do
 
   e%unharmonic = 0.0d0
@@ -60,13 +60,11 @@ subroutine dVddi_unharmonic(p,c,e)
                 + p%P_gamma * ( c%didiR(ix,iy,iz,1)*c%didiR(ix,iy,iz,2) + &
                                 c%didiR(ix,iy,iz,2)*c%didiR(ix,iy,iz,3) + &
                                 c%didiR(ix,iy,iz,3)*c%didiR(ix,iy,iz,1) ) &
-                + p%P_k1    * ( c%didiR(ix,iy,iz,1) + &
-                                c%didiR(ix,iy,iz,2) + &
-                                c%didiR(ix,iy,iz,3) )**3 &
-                + p%P_k2    * ( c%didiR(ix,iy,iz,1)**4 * (c%didiR(ix,iy,iz,2)**2 + c%didiR(ix,iy,iz,3)**2) + &
-                                c%didiR(ix,iy,iz,2)**4 * (c%didiR(ix,iy,iz,3)**2 + c%didiR(ix,iy,iz,1)**2) + &
-                                c%didiR(ix,iy,iz,3)**4 * (c%didiR(ix,iy,iz,1)**2 + c%didiR(ix,iy,iz,2)**2) ) &
-                + p%P_k3    *   c%didiR(ix,iy,iz,1)**2 * c%didiR(ix,iy,iz,2)**2 * c%didiR(ix,iy,iz,3)**2
+                + p%P_k1 * ( c%didiR(ix,iy,iz,1) + c%didiR(ix,iy,iz,2) + c%didiR(ix,iy,iz,3) )**3 &
+                + p%P_k2 * ( c%didiR(ix,iy,iz,1)**2 * (c%didiR(ix,iy,iz,2) + c%didiR(ix,iy,iz,3)) + &
+                             c%didiR(ix,iy,iz,2)**2 * (c%didiR(ix,iy,iz,3) + c%didiR(ix,iy,iz,1)) + &
+                             c%didiR(ix,iy,iz,3)**2 * (c%didiR(ix,iy,iz,1) + c%didiR(ix,iy,iz,2)) ) &
+                + p%P_k3 *   c%didiR(ix,iy,iz,1) * c%didiR(ix,iy,iz,2) * c%didiR(ix,iy,iz,3)
         end do
      end do
   end do

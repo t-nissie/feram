@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2008-08-07 18:45:39 takeshi>
+! Time-stamp: <2008-12-18 23:16:40 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -17,6 +17,7 @@ subroutine molecular_dynamics(p,c)
   type(Energy_type) :: e
   type(Average_type) :: avg
   integer i_step, i
+  integer location(4)
   character(120), parameter :: fmt_time_step = &
   & "('TIME_STEP ',i7,' ---------------------------------------------------------------------------------')"
   character (len=120) :: message
@@ -66,6 +67,17 @@ subroutine molecular_dynamics(p,c)
      !=== For debug =========================================================
      write(message,'(a,3e15.7)') 'dipoR(0,0,4,i)=', (c%dipoR(0,0,4,i), i=1,3)
      call msg_ez(6,message)
+
+     location = maxloc(c%dipoR)
+     write(message,'(a,3i4,i2,a,f15.7)') 'MAX dipoR = dipoR(', location, ') = ', &
+          c%dipoR(location(1),location(2),location(3),location(4))
+     call msg_ez(6,message)
+
+     location = minloc(c%dipoR)
+     write(message,'(a,3i4,i2,a,f15.7)') 'MIN dipoR = dipoR(', location, ') = ', &
+          c%dipoR(location(1),location(2),location(3),location(4))
+     call msg_ez(6,message)
+
      write(message,'(a,3e15.7)') 'dVddi(0,0,4,i)=', (c%dVddi(0,0,4,i), i=1,3)
      call msg_ez(6,message)
 
