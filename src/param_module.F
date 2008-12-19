@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2008-12-10 13:32:33 takeshi>
+! Time-stamp: <2008-12-19 14:30:53 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -54,6 +54,7 @@ module Param_module
      real*8 P_k1        !  + k2*[u_x^4(u_y^2+u_z^2)+u_y^4(u_z^2+u_x^2)+u_z^4(u^x2+u_y^2)]
      real*8 P_k2        !  + k3*u_x^2u_y^2u_z^2
      real*8 P_k3        ! where u^2 = u_x^2 + u_y^2 + u_z^2, u^4=(u^2)^2, u^6=(u^2)^3
+     real*8 P_k4        ! for u^8
      !--- Inter-site ----------------------------------
      real*8 j(7)
      !--- Elastic Constants ---------------------------
@@ -115,6 +116,7 @@ contains
     p%P_k1     = 0.0d0
     p%P_k2     = 0.0d0
     p%P_k3     = 0.0d0
+    p%P_k4     = 0.0d0
     p%n_coord_freq           = huge(1)   ! maximum integer
     p%kappa = 0.0d0
     p%plot_dispersion = .false.
@@ -189,6 +191,8 @@ contains
           read(str,*) dmy1, dmy2, p%P_k2
        case('P_k3')
           read(str,*) dmy1, dmy2, p%P_k3
+       case('P_k4')
+          read(str,*) dmy1, dmy2, p%P_k4
        case('j')
           read(str,*) dmy1, dmy2, p%j(1),p%j(2),p%j(3),p%j(4),p%j(5),p%j(6),p%j(7)
        case('B11')

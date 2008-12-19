@@ -1,5 +1,5 @@
 ! dVddi-unharmonic.F   -*-f90-*-
-! Time-stamp: <2008-12-18 23:58:50 takeshi>
+! Time-stamp: <2008-12-19 14:30:23 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_unharmonic(p,c,e)
@@ -32,7 +32,7 @@ subroutine dVddi_unharmonic(p,c,e)
      c%dVddi(:,:,:,alpha) = c%dVddi(:,:,:,alpha) + c%dipoR(:,:,:,alpha) * &
           ( four_alpha_two_gamma * (c%didiR(:,:,:,1)+c%didiR(:,:,:,2)+c%didiR(:,:,:,3)) &
                      - two_gamma *  c%didiR(:,:,:,alpha)                                )
-     ! 6th order
+     ! 6th an 8th order
      if (alpha==1) then
         alpha1 = 2
         alpha2 = 3
@@ -45,6 +45,7 @@ subroutine dVddi_unharmonic(p,c,e)
      end if
      c%dVddi(:,:,:,alpha) = c%dVddi(:,:,:,alpha) + c%dipoR(:,:,:,alpha) * &
           ( six_k1_two_k2 * (c%didiR(:,:,:,1)+c%didiR(:,:,:,2)+c%didiR(:,:,:,3))**2 &
+               + 8*p%P_k4 * (c%didiR(:,:,:,1)+c%didiR(:,:,:,2)+c%didiR(:,:,:,3))**3 &
                  - two_k2 *  c%didiR(:,:,:,alpha)**2 &
                 - four_k2_two_k3 * c%didiR(:,:,:,alpha1) * c%didiR(:,:,:,alpha2) )
   end do
@@ -64,7 +65,8 @@ subroutine dVddi_unharmonic(p,c,e)
                 + p%P_k2 * ( c%didiR(ix,iy,iz,1)**2 * (c%didiR(ix,iy,iz,2) + c%didiR(ix,iy,iz,3)) + &
                              c%didiR(ix,iy,iz,2)**2 * (c%didiR(ix,iy,iz,3) + c%didiR(ix,iy,iz,1)) + &
                              c%didiR(ix,iy,iz,3)**2 * (c%didiR(ix,iy,iz,1) + c%didiR(ix,iy,iz,2)) ) &
-                + p%P_k3 *   c%didiR(ix,iy,iz,1) * c%didiR(ix,iy,iz,2) * c%didiR(ix,iy,iz,3)
+                + p%P_k3 *   c%didiR(ix,iy,iz,1) * c%didiR(ix,iy,iz,2) * c%didiR(ix,iy,iz,3) &
+                + p%P_k4 * ( c%didiR(ix,iy,iz,1) + c%didiR(ix,iy,iz,2) + c%didiR(ix,iy,iz,3) )**4
         end do
      end do
   end do
