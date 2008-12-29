@@ -16,13 +16,14 @@ Pronunciation of "feram": Ef-Ee-RaMu
 
 === Features and keywords
 ==== In Physics
- * Molecular dynamics (MD) simulation of first-principles-based effective Hamiltonian
+ * Molecular dynamics (MD) simulation with a first-principles-based model Hamiltonian
  * Ferroelectrics
  * Relaxor
  * Phase transition
  * Thin film
  * Electrodes
  * Capacitor
+ * Hysteresis loop
  * Nose-Poincare thermostat
  * Optical phonon
  * Evaluate forces in reciprocal-space; k-locality of the force matrix
@@ -33,17 +34,25 @@ Pronunciation of "feram": Ef-Ee-RaMu
    * On Debian GNU/Linux, FFTW can be installed with `apt-get install fftw3 fftw3-dev fftw3-doc`.
    * On Ubuntu GNU/Linux, FFTW can be installed with `apt-get install libfftw3 libfftw3-dev libfftw3-doc`.
  * Parallelized with OpenMP
- * Object oriented programming (OOP) in Fortran 2003
- * GNU autotools  http://www.gnu.org/software/autoconf/
+ * Object oriented programming (OOP) in Fortran 95/2003
+ * GNU autotools  http://www.gnu.org/software/autoconf/  Easy to compile!
  * Subversion repository at https://loto.svn.sourceforge.net/svnroot/loto/feram
 
 === References
- * Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and David Vanderbilt: "Fast molecular-dynamics simulation for
-   ferroelectric thin-film capacitors using a first-principles effective Hamiltonian", Phys. Rev. B, vol.78, p.104104 (2008)
- * R. D. King-Smith and David Vanderbilt: "First-principles investigation of ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
- * U.V. Waghmare, E. J. Cockayne, and B. P. Burton: "Ferroelectric Phase Transitions in Nano-scale Chemically Ordered PbSc0.5Nb0.5O3 using a First-principles Model Hamiltonian", Ferroelectrics vol.291, p.187 (2003).
- * Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare: "Ferroelectric Phase Transitions in Ultra-thin Films of BaTiO3", Phys. Rev. Lett., vol.99, p.077601 (2007).
-
+ * Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and David Vanderbilt:
+   "Fast molecular-dynamics simulation for ferroelectric thin-film capacitors using a
+   first-principles effective Hamiltonian", Phys. Rev. B, vol.78, p.104104 (2008)
+ * R. D. King-Smith and David Vanderbilt: "First-principles investigation of
+   ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
+ * U.V. Waghmare, E. J. Cockayne, and B. P. Burton: "Ferroelectric Phase Transitions
+   in Nano-scale Chemically Ordered PbSc0.5Nb0.5O3 using a First-principles Model
+   Hamiltonian", Ferroelectrics vol.291, p.187 (2003).
+ * Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare:
+   "Ferroelectric Phase Transitions in Ultra-thin Films of BaTiO3", Phys. Rev. Lett.,
+   vol.99, p.077601 (2007).
+ * Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare:
+   "Polarization switching in epitaxial films of BaTiO3: A molecular dynamics study",
+   Appl. Phys. Lett., vol.93, p.242905 (2008).
 
 == Install
 === Requirements
@@ -159,10 +168,10 @@ Followings are currently available tags alphabetically ordered.
 
 ===== method
  method = 'md'
-'md' is for a molecular-dynamics simulation in the canonical ensemble using the Nosé-Poincaré thermostat
+'md' is for a molecular-dynamics simulation in the canonical ensemble using the Nosé-Poincaré thermostat.
 
  method = 'lf'
-'lf' is for a molecular-dynamics simulation in the microcanonical ensemble using the leap-frog method
+'lf' is for a molecular-dynamics simulation in the microcanonical ensemble using the leap-frog method.
 
  method = 'mc'
 'mc' is for a Monte Carlo simulation, but it is NOT IMPLEMENTED YET.
@@ -273,7 +282,7 @@ Arbitrary kappa for Ewald summation in src/dipole-dipole-long-range.F.
 ===== plot_dispersion
 If
  plot_dispersion = .true.
-data files for plotting dispersion relation will be written. Deafault is .false..
+data files for plotting dispersion relation will be written. Default is .false..
 
 ===== defect_position, defect_u
 Position and u of a defect.
@@ -384,7 +393,7 @@ Fig. 5 doc/figures/epit-vs-free-hysteresis-box.jpg
 
 == Copying
 === feram
-Copyright (C) 2007 2008 Takeshi Nishimatsu
+Copyright (C) 2007-2009 Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
