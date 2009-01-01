@@ -8,3 +8,7 @@ DDB_d = -1.965852
 DDB_e = 18.538530
 DDB_f = 15.574949
 DDB_g =  2.766148
+
+#Local variables:
+#  compile-command: "../DDB2short BaTiO3-4.0000-DDB2short.in"
+#End:
