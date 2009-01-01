@@ -1,10 +1,14 @@
 a0 =  3.9500
-Z_star        = 9.956
-epsilon_inf   = 5.24
+Z_star        = 9.060
+epsilon_inf   = 8.64
 DDB_a = -1.947579
 DDB_b =  4.014886
 DDB_c =  0.013553
 DDB_d =  0.416356
-DDB_e = -0.103277
-DDB_f =  0.643472 
+DDB_e = 17.149528
+DDB_f = 14.787627
 DDB_g =  0.994773
+
+#Local variables:
+#  compile-command: "../DDB2short PbTiO3-3.9500-DDB2short.in"
+#End:
