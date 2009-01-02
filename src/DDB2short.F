@@ -1,5 +1,5 @@
 ! DDB2short.F -*-f90-*-
-! Time-stamp: <2008-11-10 12:54:56 takeshi>
+! Time-stamp: <2009-01-02 13:10:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -84,19 +84,22 @@ program DDB2short
 
   call DGESV( 8, 1, A, 8, IPIV, b, 8, INFO )
 
-  call write_kappa_2_and_j_i('kappa_2 =', b(1))
-  call write_kappa_2_and_j_i('    j_1 =', b(2))
-  call write_kappa_2_and_j_i('    j_2 =', b(3))
-  call write_kappa_2_and_j_i('    j_3 =', b(4))
-  call write_kappa_2_and_j_i('    j_4 =', b(5))
-  call write_kappa_2_and_j_i('    j_5 =', b(6))
-  call write_kappa_2_and_j_i('    j_6 =', b(7))
-  call write_kappa_2_and_j_i('    j_7 =', b(8))
+  call write_kappa2_and_j_i('P_kappa2 =', b(1))
+  call write_kappa2_and_j_i('     j_1 =', b(2))
+  call write_kappa2_and_j_i('     j_2 =', b(3))
+  call write_kappa2_and_j_i('     j_3 =', b(4))
+  call write_kappa2_and_j_i('     j_4 =', b(5))
+  call write_kappa2_and_j_i('     j_5 =', b(6))
+  call write_kappa2_and_j_i('     j_6 =', b(7))
+  call write_kappa2_and_j_i('     j_7 =', b(8))
+
+  write(message,'(a,7f9.5)') 'j = ', b(2:8)
+  call msg_ez(6, message)
 
   call msg(6, __FILE__, __LINE__, 'END', '')
 end program DDB2short
 
-subroutine write_kappa_2_and_j_i(str,c)
+subroutine write_kappa2_and_j_i(str,c)
   implicit none
   character (len=*)            :: str
   real*8                       :: c
@@ -104,7 +107,7 @@ subroutine write_kappa_2_and_j_i(str,c)
   character(len=80)            :: message
   write(message,fmt_short) str, c, ' [eV/Angstrom^2] =', c * BOHR_RADIUS**2 / HARTREE_IN_EV, ' [Hartree/Bohr^2]'
   call msg_ez(6, message)
-end subroutine write_kappa_2_and_j_i
+end subroutine write_kappa2_and_j_i
 !local variables:
 !  compile-command: "make -k DDB2short && ./DDB2short 10example-PbTiO3-DDB2short/PbTiO3-3.9500-DDB2short.in"
 !End:
