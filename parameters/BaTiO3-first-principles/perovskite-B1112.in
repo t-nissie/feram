@@ -1,0 +1,63 @@
+optcell 0
+
+prtwf 1
+getwfk -1
+prtden 0
+
+ecut 43.0
+ecutsm 3.0
+ixc 3
+
+ndtset 19
+acell1  3*7.36
+acell2  3*7.38
+acell3  3*7.40
+acell4  3*7.42
+acell5  3*7.4434230817
+acell6  3*7.46
+acell7  3*7.48
+acell8  3*7.50
+acell9  3*7.52
+acell10 2*7.4434230817 3*7.36
+acell11 2*7.4434230817 3*7.38
+acell12 2*7.4434230817 3*7.40
+acell13 2*7.4434230817 3*7.42
+acell14 2*7.4434230817 3*7.4434230817
+acell15 2*7.4434230817 3*7.46
+acell16 2*7.4434230817 3*7.48
+acell17 2*7.4434230817 3*7.50
+acell18 2*7.4434230817 3*7.52
+acell19 2*7.4434230817 3*7.54
+
+rprim  1 0 0
+       0 1 0
+       0 0 1
+
+#Definition of the atom types
+ntypat 3
+znucl 56 22 8
+
+#Definition of the atoms
+natom 5
+typat 1*1 1*2 3*3
+xred
+  0.0 0.0 0.0
+  0.5 0.5 0.5
+  0.0 0.5 0.5
+  0.5 0.0 0.5
+  0.5 0.5 0.0
+#Definition of the k-point grid
+kptopt 1
+ngkpt  8 8 8
+nshiftk 1
+shiftk 0.5 0.5 0.5
+
+#Definition of the SCF procedure
+nstep 35
+toldfe 1.0d-8
+
+diemac 12.0
+
+#Local variables:
+#  compile-command: "submit bm -exec perovskite-B1112.nqs -n 4 -J `basename $PWD`-B1112"
+#End:

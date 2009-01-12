@@ -1,0 +1,6 @@
+#!/bin/sh
+mpdtrace || mpdboot
+mpirun -np 4 ./abinip < perovskite-B11-12.files > perovskite-B11-12.log
+echo $PWD $0 | mail -s `basename $PWD` t-nissie-antoine@softbank.ne.jp
+
+sed -n '/after computation/,$p' perovskite-B11-12.out | egrep 'etotal' | paste perovskite-B11-12.delta - > perovskite-B11-12.dat

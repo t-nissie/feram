@@ -1,0 +1,4 @@
+#!/bin/sh
+mpdtrace || mpdboot
+mpirun -np 4 ./abinip < perovskite-a0.files > perovskite-a0.log
+echo $PWD $0 | mail -s `basename $PWD` t-nissie-antoine@softbank.ne.jp
