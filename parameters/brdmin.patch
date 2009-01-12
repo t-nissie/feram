@@ -1,0 +1,321 @@
+--- brdmin.F90.orig	2007-10-15 13:19:26.000000000 +0900
++++ brdmin.F90	2008-08-04 05:39:06.519505329 +0900
+@@ -229,6 +229,12 @@
+  real(dp) :: rprimd(3,3)
+  real(dp),allocatable :: fred_corrected(:,:),hessin(:,:),vin(:),vin_prev(:)
+  real(dp),allocatable :: vout(:),vout_prev(:),xcart(:,:)
++ integer :: i,j,jdim                                                 ! hasitaka
++ real(dp),allocatable :: n_vin(:),n_hessin(:),modified_vout(:)       ! hasitaka
++ real(dp) :: vincart(15),vinred(15)                                  ! hasitaka
++ real(dp) :: v_cart(3,5),v_red(3,5)                                  ! hasitaka
++ real(dp) :: translation(3), u(3), u_mid(3)                          ! hasitaka
++ real(dp) :: const_ux, const_uy, const_uz, prod, lambda, denominator ! hasitaka
+ 
+ !***************************************************************************
+ !Beginning of executable session
+@@ -252,6 +258,7 @@
+ 
+  allocate(fred_corrected(3,dtset%natom),xcart(3,dtset%natom))
+  allocate(vin(ndim),vout(ndim),vin_prev(ndim),vout_prev(ndim))
++ allocate(modified_vout(ndim),n_vin(ndim),n_hessin(ndim))      ! hasitaka
+  allocate(hessin(ndim,ndim))
+ 
+ !Compute dimensional primitive translations rprimd, then metric tensor gmet
+@@ -310,11 +317,213 @@
+     etotal_prev=results_gs%etotal
+     vin_prev(:)=vin(:)
+ 
++!!! hasitaka start !!!
++    write(message, '(5(a,3es18.10,a))' )&
++&   '  BEFORE vin    =',vin(1:3),ch10,&
++&   '                 ',vin(4:6),ch10,&
++&   '                 ',vin(7:9),ch10,&
++&   '                 ',vin(10:12),ch10,&
++&   '                 ',vin(13:15),ch10
++    call wrtout(ab_out,message,'COLL')
++
++    write(message,'(a,3f21.16)') 'previous acell(1),acell(2),acell(3)=', acell(1),acell(2),acell(3)
++    call wrtout(ab_out,message,'COLL')
++
++    vincart(:)=0.0d0
++    call perovskite_remove_translation(vin,rprimd,dtset%natom,vincart,translation)
++    call perovskite_displacement_u(vincart,u)
++
++    write(message,'(a,3f21.16)') 'u_x=,u_y=,u_z=', u(1),u(2),u(3)
++    call wrtout(ab_out,message,'COLL')
++
++    if(itime==1)then
++     const_ux = u(1)
++     const_uy = u(2)    
++     const_uz = u(3)
++    end if
++
++    write(message, '(5(a,3es18.10,a))' )&
++&   '  BEFORE vincart=',vincart(1:3),ch10,&
++&   '                 ',vincart(4:6),ch10,&
++&   '                 ',vincart(7:9),ch10,&
++&   '                 ',vincart(10:12),ch10,&
++&   '                 ',vincart(13:15),ch10
++    call wrtout(ab_out,message,'COLL')
++
++    write(message, '(a,3es18.10,a)' )&
++&   '  BEFORE acell  =',acell(1:3),ch10
++    call wrtout(ab_out,message,'COLL')
++
++!gradient vout
++    write(message, '(5(a,3es18.10,a))' )&
++&   '  BEFORE vout   =',vout(1:3),ch10,&
++&   '                 ',vout(4:6),ch10,&
++&   '                 ',vout(7:9),ch10,&
++&   '                 ',vout(10:12),ch10,&
++&   '                 ',vout(13:15),ch10
++    call wrtout(ab_out,message,'COLL')
++
++! unit vector n_vin
++    n_vin=0.0d0
++    if(u(1).NE.0.0d0) then
++      do i=1,5
++        n_vin(3*i-2) = vincart(3*i-2) / u(1)
++      enddo
++    endif
++    if(u(2).NE.0.0d0) then
++      do i=1,5
++        n_vin(3*i-1) = vincart(3*i-1) / u(2)
++      enddo
++    endif
++    if(u(3).NE.0.0d0) then
++      do i=1,5
++        n_vin(3*i)   = vincart(3*i)   / u(3)
++      enddo
++    endif
++
++    write(message, '(5(a,3es18.10,a))' )&
++&   '  unit_vector   =',n_vin(1:3),ch10,&
++&   '                 ',n_vin(4:6),ch10,&
++&   '                 ',n_vin(7:9),ch10,&
++&   '                 ',n_vin(10:12),ch10,&
++&   '                 ',n_vin(13:15),ch10
++    call wrtout(ab_out,message,'COLL')
++
++!n_vector * hes_inverse
++    n_hessin=0.0d0
++    do jdim=1,ndim
++       do idim=1,ndim
++          n_hessin(jdim)=n_hessin(jdim)+n_vin(idim)*hessin(idim,jdim)
++       enddo
++    enddo
++
++    lambda=DOT_PRODUCT(n_hessin(:),vout(:))         ! bunshi
++    denominator=DOT_PRODUCT(n_hessin(:),n_vin(:))   ! bunbo
++    lambda=lambda/denominator
++    write(message,'(a,f21.16)') 'lambda=', lambda
++    call wrtout(ab_out,message,'COLL')
++
++!( ) no nakami, modified_vout = g - lambda*n
++    modified_vout(:) = vout(:)
++    do i=1,15
++     modified_vout(i) = modified_vout(i) - lambda * n_vin(i)
++    enddo
++
++    write(message, '(5(a,3es18.10,a))' )&
++&   '  modified_vout =',modified_vout(1:3),ch10,&
++&   '                 ',modified_vout(4:6),ch10,&
++&   '                 ',modified_vout(7:9),ch10,&
++&   '                 ',modified_vout(10:12),ch10,&
++&   '                 ',modified_vout(13:15),ch10
++    call wrtout(ab_out,message,'COLL')
++!!! hasitaka end !!!
++
+ !   New atomic cartesian coordinates are obtained from vin, hessin and vout
+     do idim=1,ndim
+-     vin(:)=vin(:)-hessin(:,idim)*vout(idim)
++     vin(:)=vin(:)-hessin(:,idim)*modified_vout(idim)             ! hasitaka
+     end do
+ 
++!!! hasitaka start   THIS SHOULD BE IMPLEMENTED IN Src_5common/xfpack.f
++! Get rprimd, from current vin 
++    option=2
++    call xfpack(acell,acell0,results_gs%fred,dtset%natom,ndim,&
++&  dtset%nsym,optcell,option,rprim,rprimd0,&
++&  dtset%strtarget,results_gs%strten,dtset%symrel,ucvol,ucvol0,vin,vout,xred)
++
++    call mkrdim(acell,rprim,rprimd)
++
++    vincart(:)=0.0d0
++    call perovskite_remove_translation(vin,rprimd,dtset%natom,vincart,translation)
++    call perovskite_displacement_u(vincart,u_mid)
++    write(message,'(a,3f21.16)') 'u_mid_x=,u_mid_y=,u_mid_z=', u_mid(1),u_mid(2),u_mid(3)
++    call wrtout(ab_out,message,'COLL')
++
++    if(u_mid(1).NE.0.0d0) then
++     do i=1,5
++       vincart(3*i-2) = const_ux * (vincart(3*i-2)/u_mid(1))
++     enddo
++    endif
++    if(u_mid(2).NE.0.0d0) then
++     do i=1,5
++       vincart(3*i-1) = const_uy * (vincart(3*i-1)/u_mid(2))
++     enddo
++    endif
++    if(u_mid(3).NE.0.0d0) then
++     do i=1,5
++       vincart(3*i)   = const_uz * (vincart(3*i)  /u_mid(3))
++     enddo
++    endif
++
++    write(message, '(5(a,3es18.10,a))' )&
++&   '  AFTER  vincart=',vincart(1:3),ch10,&
++&   '                 ',vincart(4:6),ch10,&
++&   '                 ',vincart(7:9),ch10,&
++&   '                 ',vincart(10:12),ch10,&
++&   '                 ',vincart(13:15),ch10
++    call wrtout(ab_out,message,'COLL')
++
++    write(message, '(a,3es18.10,a)' )&
++&   '  AFTER  acell  =',acell(1:3),ch10
++    call wrtout(ab_out,message,'COLL')
++
++    v_cart(:,:)=reshape( vincart(1:15), (/3,dtset%natom/) )
++
++    write(message, '(5(a,3es18.10,a))' )&
++&   '  AFTER  v_cart =',v_cart(1:3,1),ch10,&
++&   '                 ',v_cart(1:3,2),ch10,&
++&   '                 ',v_cart(1:3,3),ch10,&
++&   '                 ',v_cart(1:3,4),ch10,&
++&   '                 ',v_cart(1:3,5),ch10
++    call wrtout(ab_out,message,'COLL')
++
++    write(message, '(a,3es18.10,a)' )&
++&   '  AFTER  acell  =',acell(1:3),ch10
++    call wrtout(ab_out,message,'COLL')
++
++    call xredxcart(5,-1,rprimd,v_cart,v_red)  ! cartesian -> reduced
++    write(message, '(5(a,3es18.10,a))' )&
++&   '  AFTER  v_red = ',v_red(1:3,1),ch10,&
++&   '                 ',v_red(1:3,2),ch10,&
++&   '                 ',v_red(1:3,3),ch10,&
++&   '                 ',v_red(1:3,4),ch10,&
++&   '                 ',v_red(1:3,5),ch10
++    call wrtout(ab_out,message,'COLL')
++
++    do i=1,3
++      xred(i,1) = v_red(i,1)         ! A
++    enddo
++
++    do i=1,3
++      xred(i,2) = v_red(i,2)+0.5d0   ! B
++    enddo
++
++    xred(1,3) = v_red(1,3)
++    xred(2,3) = v_red(2,3)+0.5d0     ! O
++    xred(3,3) = v_red(3,3)+0.5d0
++
++    xred(1,4) = v_red(1,4)+0.5d0
++    xred(2,4) = v_red(2,4)           ! P
++    xred(3,4) = v_red(3,4)+0.5d0
++
++    xred(1,5) = v_red(1,5)+0.5d0
++    xred(2,5) = v_red(2,5)+0.5d0     ! Q
++    xred(3,5) = v_red(3,5)
++
++! transfer xred, acell, and rprim to vin 
++    option=1
++    call xfpack(acell,acell0,results_gs%fred,dtset%natom,ndim,&
++&  dtset%nsym,optcell,option,rprim,rprimd0,&
++&  dtset%strtarget,results_gs%strten,dtset%symrel,ucvol,ucvol0,vin,vout,xred)
++    write(message, '(5(a,3es18.10,a))' )&
++&   '  AFTER  vin    =',vin(1:3),ch10,&
++&   '                 ',vin(4:6),ch10,&
++&   '                 ',vin(7:9),ch10,&
++&   '                 ',vin(10:12),ch10,&
++&   '                 ',vin(13:15),ch10
++    call wrtout(ab_out,message,'COLL')
++
++!!! hasitaka end   THIS SHOULD BE IMPLEMENTED IN Src_5common/xfpack.f
++
+ !   Previous atomic forces
+     vout_prev(:)=vout(:)
+ 
+@@ -609,3 +818,82 @@
+ 
+ end subroutine brdmin
+ !!***
++
++
++subroutine perovskite_remove_translation(vin,rprimd,natom,vincart,translation)
++  use defs_basis
++  implicit none
++  character*500 :: message
++  integer  :: i,j,natom
++  real(dp) :: vin(*)
++  real(dp) :: rprimd(3,3)
++  real(dp) :: sutehenni(3)
++  real(dp) :: translation(3)
++  real(dp) :: vincart(15),vinred(15)
++
++   write(message, '(3(a,3es18.10,a))' )&
++&   '  rprimd=',rprimd(1:3,1),ch10,&
++&   '         ',rprimd(1:3,2),ch10,&
++&   '         ',rprimd(1:3,3),ch10
++   call wrtout(ab_out,message,'COLL')
++
++   sutehenni(1) = ( vin(1)+(vin(4)-0.5d0)+ vin(7)       +(vin(10)-0.5d0)+(vin(13)-0.5d0) ) / 5.0d0
++   sutehenni(2) = ( vin(2)+(vin(5)-0.5d0)+(vin(8)-0.5d0)+ vin(11)       +(vin(14)-0.5d0) ) / 5.0d0
++   sutehenni(3) = ( vin(3)+(vin(6)-0.5d0)+(vin(9)-0.5d0)+(vin(12)-0.5d0)+ vin(15)        ) / 5.0d0
++
++  do i=1,3
++     translation(i) = 0.0d0
++     do j=1,3
++        translation(i) =  translation(i) + rprimd(j,i)*sutehenni(j)
++     enddo
++  enddo
++
++  write(message,'(a,f21.16,a,f21.16,a,f21.16,a)') 'translation_x =', translation(1), &
++&  'translation_y =', translation(2), 'translation_z =', translation(3), ' is removed.'
++  call wrtout(ab_out,message,'COLL')
++
++   do i=1,3
++      vinred(i)    =  vin(i)             - sutehenni(i)
++      vinred(i+3)  = (vin(i+3)  - 0.5d0) - sutehenni(i)
++      vinred(i+6)  = (vin(i+6)  - 0.5d0) - sutehenni(i)
++      vinred(i+9)  = (vin(i+9)  - 0.5d0) - sutehenni(i)
++      vinred(i+12) = (vin(i+12) - 0.5d0) - sutehenni(i)
++      if(i==1) then
++        vinred(i+6)  = vinred(i+6)  + 0.5d0
++      else if(i==2) then
++        vinred(i+9)  = vinred(i+9)  + 0.5d0
++      else if(i==3) then
++        vinred(i+12) = vinred(i+12) + 0.5d0
++      endif
++   enddo
++
++   do i=1,3
++     vincart(i)    = 0.0d0
++     vincart(i+3)  = 0.0d0
++     vincart(i+6)  = 0.0d0
++     vincart(i+9)  = 0.0d0
++     vincart(i+12) = 0.0d0
++     do j=1,3
++        vincart(i)    = vincart(i)    + rprimd(j,i) * vinred(j)
++        vincart(i+3)  = vincart(i+3)  + rprimd(j,i) * vinred(j+3)
++        vincart(i+6)  = vincart(i+6)  + rprimd(j,i) * vinred(j+6)
++        vincart(i+9)  = vincart(i+9)  + rprimd(j,i) * vinred(j+9)
++        vincart(i+12) = vincart(i+12) + rprimd(j,i) * vinred(j+12)
++     enddo
++   enddo
++
++ end subroutine perovskite_remove_translation
++
++
++subroutine perovskite_displacement_u(vincart,u)
++  use defs_basis
++  implicit none
++  integer :: i 
++  real(dp) :: vincart(15),u(3)
++  
++  do i=1,3
++    u(i) = sqrt(vincart(i)**2+vincart(i+3)**2+vincart(i+6)**2+vincart(i+9)**2+vincart(i+12)**2)
++  enddo
++
++end subroutine perovskite_displacement_u
++

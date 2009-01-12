@@ -1,0 +1,49 @@
+=begin
+= Parameters in feram
+This document describes how to determine parameters for the effective Hamiltonian in the feram code.
+
+You may find latest version of this document in:
+
+== List of required free software
+ * ABNINT http://www.abinit.org/about/
+ * GNUPLOT http://www.gnuplot.info/
+ * Ruby http://www.ruby-lang.org/
+
+== Equilibrium lattice constant a0
+
+== Elastic constants B11, B12 and B44
+
+
+== Patch for ABINIT
+ % tar zxf abinit-5.6.4.tar.gz 
+ % cd abinit-5.6.4
+ % mkdir x86_64-Linux-mpif90-gfortran-4.3.2-O3-static-perovskite-xyz
+ % cd x86_64-Linux-mpif90-gfortran-4.3.2-O3-static-perovskite-xyz/
+ % env CC=gcc FC=mpif90 FCFLAGS=-O3 ../configure --enable-mpi
+ % cd src/21drive/
+ % cp ../../../src/21drive/brdmin.F90 .
+ % patch -p0 < SOMEWERE/brdmin.patch
+ % cd ../..
+ % make abinip abinis
+ % cd src/main
+ % mv abinis abinis-perovskite-xyz
+ % mv abinip abinip-perovskite-xyz
+
+
+=end
+#
+# for ulmul.rb
+#
+require 'rubygems'
+require 'ulmul'
+u=Ulmul.new()
+u.subs_rules << [/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2']
+u.subs_rules << [/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2']
+
+u.parse(ARGF)
+puts u.html(["style.css"],[],"Takeshi Nishimatsu")
+
+# Local variables:
+#   mode: RD
+#   compile-command: "ruby parameters.txt parameters.txt > parameters.xhtml"
+# End:
