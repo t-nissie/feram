@@ -1,7 +1,7 @@
 #!/bin/sh
 mpdtrace || mpdboot
 mpirun -np 4 ./abinip < perovskite-B1112.files > perovskite-B1112.log
-echo $PWD $0 | mail -s `basename $PWD` t-nissie-antoine@softbank.ne.jp
+echo $PWD $0 | mail -s `basename $PWD` takeshi@example.com
 
 sed -n '/after computation/,$p' perovskite-B1112.out | egrep  'acell[1-9] '  > tmp.acell
 sed -n '/after computation/,$p' perovskite-B1112.out | egrep 'etotal[1-9] '  | paste tmp.acell - > perovskite-B1112.dat1
