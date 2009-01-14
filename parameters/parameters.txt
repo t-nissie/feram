@@ -13,9 +13,15 @@ You may find latest version of this document in:
 
 == Elastic constants B11, B12 and B44
 
+== Fourth-order parameters P_alpha and P_gamma
+We determine the potential surface of ABO3 with the method described in [T. Hashimoto,
+T. Nishimatsu, H. Mizuseki, Y. Kawazoe, A. Sasaki and Y. Ikeda: Jpn. J. Appl. Phys. 43,
+6785-6792 (2004) http://dx.doi.org/10.1143/JJAP.43.6785 ].
 
-== Patch for ABINIT
- % tar zxf abinit-5.6.4.tar.gz 
+=== Patch for ABINIT
+We apply a patch to abinit, rename from abinip to abinip-xyz, then use it.
+This brdmin.patch is applicable to both abinit-5.4.4 and abinit-5.6.4.
+ % tar zxf abinit-5.6.4.tar.gz
  % cd abinit-5.6.4
  % mkdir x86_64-Linux-mpif90-gfortran-4.3.2-O3-static-perovskite-xyz
  % cd x86_64-Linux-mpif90-gfortran-4.3.2-O3-static-perovskite-xyz/
@@ -26,8 +32,8 @@ You may find latest version of this document in:
  % cd ../..
  % make abinip abinis
  % cd src/main
- % mv abinis abinis-perovskite-xyz
- % mv abinip abinip-perovskite-xyz
+ % mv abinis abinis-xyz
+ % mv abinip abinip-xyz
 
 
 =end
@@ -37,6 +43,7 @@ You may find latest version of this document in:
 require 'rubygems'
 require 'ulmul'
 u=Ulmul.new()
+u.subs_rules << [/(brdmin\.patch)/, '<a href="\1">\1</a>\2']
 u.subs_rules << [/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2']
 u.subs_rules << [/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2']
 
