@@ -6,14 +6,71 @@ You may find latest version of this document in:
 
 == List of required free software
  * ABNINT http://www.abinit.org/about/
+ * MPICH2 http://www.mcs.anl.gov/research/projects/mpich2/ (I always use abinip compiled with mpif90 of MPICH2).
  * GNUPLOT http://www.gnuplot.info/
  * Ruby http://www.ruby-lang.org/
 
 == Equilibrium lattice constant a0
+With BaTiO3-first-principles/perovskite-a0.in and BaTiO3-first-principles/perovskite-a0.files,
+you can determine the equilibrium lattice constant a0.
+Execute abinip with
+ % mpirun -np 4 ./abinip < perovskite-a0.files > perovskite-a0.log
+or
+ % ./perovskite-a0.nqs
+where BaTiO3-first-principles/perovskite-a0.nqs is a script for the NQS (Network Queueing System).
+With this calculation, we determine that
+ a0 = 3.93889 [Angstrom] = 7.4434230817 [Bohr].
 
 == Elastic constants B11, B12 and B44
+With
+BaTiO3-first-principles/perovskite-B1112.in,
+BaTiO3-first-principles/perovskite-B1112.files,
+BaTiO3-first-principles/perovskite-B1112.nqs and
+BaTiO3-first-principles/perovskite-B1112.gp  files,
+you can determine elastic constants B11 and B12.
+Note that the previous result a0=7.4434230817 is used in perovskite-B1112.in.
+ % ./perovskite-B1112.nqs   # perovskite-B1112.dat1 and perovskite-B1112.dat1 will be made.
+ % ./perovskite-B1112.gp
+       :
+ DATASET 1 -- 9
+ a0 = 7.44367705834865 [Bohr] = 3.93902424522369 [Angstrom]
+ Emin = -3587.62653743933 [eV]
+ B = 198.3731723213 [GPa]
+ DATASET 10 -- 19
+ a0 = 7.44488276198593 [Bohr] = 3.93966227610851 [Angstrom]
+ Emin = -3587.62645739219 [eV]
+ B11 = 135.65444137921 [eV]
+ C11 = 355.618857879458 [GPa]
+ Compute B12
+ B12 = 45.6799849026358 [eV]
+ C12 = 119.75032954222 [GPa]
+ % gv perovskite-B1112.eps
 
-== Fourth-order parameters P_alpha and P_gamma
+You can also check a value of B11-B12 with  files of
+BaTiO3-first-principles/perovskite-B11-12.in,
+BaTiO3-first-principles/perovskite-B11-12.files,
+BaTiO3-first-principles/perovskite-B11-12.nqs,
+BaTiO3-first-principles/perovskite-B11-12.delta and
+BaTiO3-first-principles/perovskite-B11-12.gp as follows:
+ % ./perovskite-B11-12.nqs   # perovskite-B11-12.dat will be made.
+ % ./perovskite-B11-12.gp
+       :
+ B11-B12 = 91.4501181590075 [eV]
+ % gv perovskite-B11-12.eps
+
+B44 can be calculated with
+BaTiO3-first-principles/perovskite-B44.in,
+BaTiO3-first-principles/perovskite-B44.files,
+BaTiO3-first-principles/perovskite-B44.nqs,
+BaTiO3-first-principles/perovskite-B44.delta and
+BaTiO3-first-principles/perovskite-B44.gp  files as follows:
+ % ./perovskite-B44.nqs   # perovskite-B44.dat will be made.
+ % ./perovskite-B44.gp
+       :
+ B44 = 51.2027422625369 [eV]
+ % gv perovskite-B44.eps
+
+== Fourth-order parameters P_alpha and P_gamma and coupling constants B1xx, B1yy and B4yz
 We determine the potential surface of ABO3 with the method described in [T. Hashimoto,
 T. Nishimatsu, H. Mizuseki, Y. Kawazoe, A. Sasaki and Y. Ikeda: Jpn. J. Appl. Phys. 43,
 6785-6792 (2004) http://dx.doi.org/10.1143/JJAP.43.6785 ].
@@ -35,6 +92,22 @@ This brdmin.patch is applicable to both abinit-5.4.4 and abinit-5.6.4.
  % mv abinis abinis-xyz
  % mv abinip abinip-xyz
 
+=== Input file generator
+Generate input files with each ruby script in the directory BaTiO3-first-principles.
+ % ./perovskite-optcell0-001.rb   # => perovskite-optcell0-001.in
+ % ./perovskite-optcell0-111.rb   # => perovskite-optcell0-111.in
+ % ./perovskite-optcell2-001.rb   # => perovskite-optcell2-001.in
+ % ./perovskite-optcell2-110.rb   # => perovskite-optcell2-110.in
+ % ./perovskite-optcell2-111.rb   # => perovskite-optcell2-111.in
+
+=== Computation
+
+
+
+
+
+== Author of this document
+Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 
 =end
 #
@@ -43,7 +116,8 @@ This brdmin.patch is applicable to both abinit-5.4.4 and abinit-5.6.4.
 require 'rubygems'
 require 'ulmul'
 u=Ulmul.new()
-u.subs_rules << [/(brdmin\.patch)/, '<a href="\1">\1</a>\2']
+u.subs_rules << [/(BaTiO3-first-principles\/\S*\.(in|files|nqs|rb|delta|gp))/, '<a href="\1">\1</a>']
+u.subs_rules << [/(brdmin\.patch)/, '<a href="\1">\1</a>']
 u.subs_rules << [/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2']
 u.subs_rules << [/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2']
 
@@ -52,5 +126,5 @@ puts u.html(["style.css"],[],"Takeshi Nishimatsu")
 
 # Local variables:
 #   mode: RD
-#   compile-command: "ruby parameters.txt parameters.txt > parameters.xhtml"
+#   compile-command: "ruby parameters.txt parameters.txt > parameters.html"
 # End:
