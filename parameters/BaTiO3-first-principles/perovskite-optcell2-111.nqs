@@ -1,0 +1,7 @@
+#!/bin/sh
+mpdtrace || mpdboot
+mpirun -np 4 ./abinip-xyz < perovskite-optcell2-111.files > perovskite-optcell2-111.log
+
+echo 'u_x=,u_y=,u_z=   0.00000000   0.00000000   0.00000000' > perovskite-optcell2-111.tmp
+grep 'u_z=' perovskite-optcell2-111.out >>  perovskite-optcell2-111.tmp
+grep -h 'etotal' perovskite-optcell2-000.out perovskite-optcell2-111.out | paste perovskite-optcell2-111.tmp - > perovskite-optcell2-111.dat

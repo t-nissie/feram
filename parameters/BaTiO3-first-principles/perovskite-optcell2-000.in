@@ -1,0 +1,43 @@
+optcell 2
+ionmov 2
+ntime 15
+
+prtwf 0
+prtden 0
+
+ecut 43.0
+ecutsm 3.0
+dilatmx 1.2
+ixc 3
+
+acell 3*7.4434230817
+
+rprim  1 0 0
+       0 1 0
+       0 0 1
+
+#Definition of the atom types
+ntypat 3
+znucl 56 22 8
+
+#Definition of the atoms
+natom 5
+typat 1*1 1*2 3*3
+
+#Definition of the k-point grid
+kptopt 1
+ngkpt  8 8 8
+nshiftk 1
+shiftk 0.5 0.5 0.5
+
+#Definition of the SCF procedure
+nstep 45
+toldfe 1.0d-10
+diemac 12.0
+
+xred
+    0.0 0.0 0.0
+    0.5 0.5 0.5
+    0.0 0.5 0.5
+    0.5 0.0 0.5
+    0.5 0.5 0.0

@@ -95,16 +95,32 @@ This brdmin.patch is applicable to both abinit-5.4.4 and abinit-5.6.4.
 === Input file generator
 Generate input files with each ruby script in the directory BaTiO3-first-principles.
  % ./perovskite-optcell0-001.rb   # => perovskite-optcell0-001.in
+ % ./perovskite-optcell0-110.rb   # => perovskite-optcell0-110.in
  % ./perovskite-optcell0-111.rb   # => perovskite-optcell0-111.in
  % ./perovskite-optcell2-001.rb   # => perovskite-optcell2-001.in
  % ./perovskite-optcell2-110.rb   # => perovskite-optcell2-110.in
  % ./perovskite-optcell2-111.rb   # => perovskite-optcell2-111.in
 
 === Computation
+ % ./vskite-optcell0-000.nqs
+ % ./vskite-optcell0-001.nqs
+ % ./vskite-optcell0-110.nqs
+ % ./vskite-optcell0-111.nqs
+ % ./vskite-optcell2-000.nqs
+ % ./vskite-optcell2-001.nqs
+ % ./vskite-optcell2-110.nqs
+ % ./vskite-optcell2-111.nqs
 
+=== P_alpha and P_gamma
+ % ./perovskite-optcell0.gp
+       :
+ P_alpha = 100.597972157939 [eV/Angstrom^4]
+ P_gamma = -144.196360458033 [eV/Angstrom^4]
+ % gv perovskite-optcell0.eps
 
-
-
+=== B1xx, B1yy and B4yz
+ % ./perovskite-optcell2.gp
+NOT YET.
 
 == Author of this document
 Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
