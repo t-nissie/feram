@@ -122,6 +122,17 @@ Generate input files with each ruby script in the directory BaTiO3-first-princip
  % ./perovskite-optcell2.gp
 NOT YET.
 
+
+=== Self interaction P_kappa2 and nearest neighbor interactions j_1, ..., j_7
+We determine self interaction P_kappa2 and nearest neighbor interactions j_1, ..., j_7 from
+force constant matrices at the Gamma, X, M and R points and at the center of the Sigma axis.
+
+=== Effective charge Z*
+
+
+
+
+
 == Author of this document
 Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 
