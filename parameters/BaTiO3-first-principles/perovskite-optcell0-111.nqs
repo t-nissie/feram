@@ -4,4 +4,4 @@ mpirun -np 4 ./abinip-xyz < perovskite-optcell0-111.files > perovskite-optcell0-
 
 echo 'u_x=,u_y=,u_z=   0.00000000   0.00000000   0.00000000' > perovskite-optcell0-111.tmp
 grep 'u_z=' perovskite-optcell0-111.out >>  perovskite-optcell0-111.tmp
-grep -h 'etotal' perovskite-optcell0-000.out perovskite-optcell0-111.out | paste perovskite-optcell0-111.tmp - > perovskite-optcell0-111.dat
+grep -h 'etotal' perovskite-a0.out perovskite-optcell0-111.out | paste perovskite-optcell0-111.tmp - > perovskite-optcell0-111.dat
