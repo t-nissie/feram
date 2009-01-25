@@ -1,3 +1,0 @@
-#!/bin/sh
-mpdtrace || mpdboot
-mpirun -np 4 ./abinip < perovskite-optcell0-000.files > perovskite-optcell0-000.log
