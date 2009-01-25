@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 ##
-E_0 = -1.3184285199E+02
+E_0 = -1.3184285821E+02
 
 BOHR=0.52917720859
 HARTREE=27.2116
@@ -33,7 +33,7 @@ plot        'perovskite-optcell0-001.dat' using (sqrt($2**2+$3**2+$4**2)*BOHR):(
 
 print 'P_alpha = ',   alpha, ' [eV/Angstrom^4]'
 print 'P_gamma = ', P_gamma, ' [eV/Angstrom^4]'
-            
+
 #Local variables:
 #  compile-command: "gnuplot perovskite-optcell0.gp"
 #End:
