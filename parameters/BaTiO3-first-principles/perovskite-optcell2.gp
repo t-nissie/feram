@@ -1,12 +1,11 @@
 #!/usr/bin/env gnuplot
 ##
-E_0 = -1.3184285700E+02
+E_0 = -1.3184285821E+02
 
 a0 = 7.4434230817
 B11 = 135.613652996909
 B12 =  45.734101469876
 B44 =  51.202683759012
-denominator = (B11-B12)*(B11+2*B12)
 
 P_alpha = 93.3748737880548
 P_gamma = -133.80460557674
@@ -22,8 +21,8 @@ set encoding iso_8859_1
 set multiplot
 
 #set rmargin 13.5
-set format y '%.3f'
-set xtics 0.05
+set format y '%.4f'
+set xtics 0.02
 set xlabel '{/Times-Italic u} [\305]'
 
 set size 1,0.5
@@ -35,8 +34,8 @@ fit f_xx(x) 'perovskite-optcell2-110.dat' using (sqrt($2**2+$3**2+$4**2)*BOHR):(
 fit f_xy(x) 'perovskite-optcell2-110.dat' using (sqrt($2**2+$3**2+$4**2)*BOHR):($8*$14/a0*2) via a_xy
 fit f_zz(x) 'perovskite-optcell2-110.dat' using (sqrt($2**2+$3**2+$4**2)*BOHR):($10/a0-1)    via a_zz
 
-B1xx = (-a_xx*4*denominator*B11+a_zz*2*denominator*(B11-B12)) / (B11-B12) / (B11+2*B12)
-B1yy = -20 #(-a_xx*4*denominator*B12-a_zz*2*denominator*B11      ) / (B11-B12) / (B11+2*B12)
+B1xx = -a_xx*4*B11+a_zz*2*(B11-2*B12)
+B1yy = -a_xx*4*B12-a_zz*2*B11
 B4yz = -2 * B44 * a_xy
 B = B11 + 2*B12
 mu_t = (B11-B12) / 2
@@ -59,14 +58,14 @@ plot 'perovskite-optcell2-110.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):(
      f_zz(x) title 'quadratic fit' w l lt 2 lw 2
 
 set origin 0.0, 0.0
-set key -0.03,0.0048 spacing 1.4
+set key -0.03,0.0028 spacing 1.4
 set ylabel '{/Times-Italic E}_{tot} - {/Times-Italic E}_{0} [eV]'
-set yrange [-0.001:0.005]
-plot 'perovskite-optcell2-001.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):(($6-E_0)*HARTREE) title '[001]' w p ps 2 lt 1,\
+set yrange [-0.001:0.003]
+plot 'perovskite-optcell2-001.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):(($6-E_0)*HARTREE) title '[001]' w p ps 1 lt 1,\
      kappa*x**2 + alpha_p*x**4             title '{/Symbol k}{/Times-Italic u}^2+{/Symbol a\242}{/Times-Italic u}^4' w l lt 1,\
-     'perovskite-optcell2-110.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):(($6-E_0)*HARTREE) title '[110]' w p ps 2 lt 2,\
+     'perovskite-optcell2-110.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):(($6-E_0)*HARTREE) title '[110]' w p ps 1 lt 2,\
      kappa*x**2 + (alpha_p+gamma_p/4)*x**4 title '{/Symbol k}{/Times-Italic u}^2+({/Symbol a\242}+{/Symbol g\242}/4){/Times-Italic u}^4' w l lt 2,\
-     'perovskite-optcell2-111.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):(($6-E_0)*HARTREE) title '[111]' w p ps 2 lt 3,\
+     'perovskite-optcell2-111.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):(($6-E_0)*HARTREE) title '[111]' w p ps 1 lt 3,\
      kappa*x**2 + (alpha_p+gamma_p/3)*x**4 title '{/Symbol k}{/Times-Italic u}^2+({/Symbol a\242}+{/Symbol g\242}/3){/Times-Italic u}^4' w l lt 3
 
 print 'B1xx = ',   B1xx, ' [eV/Angstrom^2]'
