@@ -21,7 +21,7 @@ prtden 0
 
 ecut 43.0
 ecutsm 3.0
-#{ "dilatmx 1.2"  if optcell!=0 }
+dilatmx 1.1
 ixc 3
 
 acell 3*7.4434230817

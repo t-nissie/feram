@@ -4,9 +4,9 @@ direction_x=1
 direction_y=1
 direction_z=0
 ndtset=20
-stepA = 0.0002
-stepB = 0.0008
-stepO =-0.0004
+stepA = 0.00018
+stepB = 0.00072
+stepO =-0.00036
 
 fname = "perovskite-optcell#{optcell}-#{direction_x}#{direction_y}#{direction_z}.in"
 
@@ -21,7 +21,7 @@ prtden 0
 
 ecut 43.0
 ecutsm 3.0
-#{ "dilatmx 1.2"  if optcell!=0 }
+dilatmx 1.1
 ixc 3
 
 acell 3*7.4434230817
