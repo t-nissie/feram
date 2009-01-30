@@ -1,0 +1,74 @@
+/* -*-CSS-*-
+ * style.css for README.html of feram
+ * Time-stamp: <2008-11-14 15:03:27 takeshi>
+ * Author: Takeshi NISHIMATSU
+ */
+body
+{
+  color:       black;
+  font-family: verdana, arial, helvetica, sans-serif;
+}
+
+h1, h2, h3, h4, h6
+{
+  font-family: verdana, arial, helvetica, sans-serif;
+}
+
+h1
+{
+  color:            #dd0000;
+  background-color: #fff0f0;
+}
+
+h2
+{
+  border-top:       red 5px solid;
+  border-bottom:    red 1px solid;
+  padding-left:     8px;
+  background-color: #fff0f0;
+}
+
+h3
+{
+  border-top:    red 2px solid;
+  border-bottom: red 1px solid;
+  padding-left:  4px;
+}
+
+h4
+{
+  border-top:    red 1px solid;
+  padding-left:  4px;
+  background-color: #fff0f0;
+}
+
+h5
+{
+  font-size:     larger;
+  font-family:   courier, verdana, arial, helvetica, sans-serif;
+  padding-top:   10px;
+  color:         darkred;
+}
+
+pre
+{
+  font-family:      monospace, courier, verdana, arial, helvetica, sans-serif;
+  padding-right:    0.5em;
+  padding-left:     0.5em;
+  padding-top:      0.1ex;
+  padding-bottom:   0.1ex;
+  margin-left:      0.5em;
+  margin-right:     1.0em;
+  white-space:      pre;
+  color:            darkred;
+  background-color: #f3f3f3;
+}
+
+div.figure img { width:50%;
+                 margin-left:auto;
+                 margin-right:auto;
+                 display: block;}
+
+div.figure div.caption { width:60%;
+                         margin-left:auto;
+                         margin-right:auto;}
