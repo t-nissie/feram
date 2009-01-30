@@ -33,6 +33,7 @@ set origin 0.0,0.5
 set yrange [-0.01:0.05]
 set xlabel "{/Times-Italic V} [\305^3]"
 set xtics 1
+set label 1 '(a)' at 59.2,0.0 font "Times-Roman, 36"
 plot 'perovskite-B1112.dat1' using (($2*BOHR)**3):($7*HARTREE_IN_EV-Emin) t 'calculated data' w p pt 1 ps 2 lw 3,\
       Etot(x)-Emin t 'equation of state' w l lt 1 lw 3
 
@@ -40,6 +41,7 @@ set origin 0.0,0.0
 set yrange [-0.005:0.020]
 set xlabel "{/Times-Italic e_{xx}}"
 set xtics 0.01
+set label 1 '(b)' at -0.0185,-0.001 font "Times-Roman, 36"
 plot 'perovskite-B1112.dat2' using (($4-a0)/a0):($7*HARTREE_IN_EV-Emin11) t 'calculated data' w p lt 2 pt 2 ps 2 lw 3,\
      B11/2*x**2 t 'quadratic fitting' w l lt 2 lw 3
 
@@ -62,6 +64,11 @@ B12 = (3*B0*a0_Angstrom**3-B11)/2
 print 'B12 = ', B12, ' [eV]'
 C12 = B12 / a0_Angstrom**3 * 160.22
 print 'C12 = ', C12, ' [GPa]'
+
+#set nomultiplot
+#set output
+#!gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r90x90 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q perovskite-B1112.eps | \
+                                                  pnmcrop -white | cjpeg -quality 90 > perovskite-B1112.jpg
 
 #Local variables:
 #  compile-command: "gnuplot perovskite-B1112.gp"

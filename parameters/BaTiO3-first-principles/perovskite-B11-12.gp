@@ -5,6 +5,7 @@ HARTREE_IN_EV = 27.21138386
 set encoding iso_8859_1
 set terminal postscript portrait enhanced "Times-Roman" color 24
 set output "perovskite-B11-12.eps"
+set size 1.0,0.5
 
 Etot(x) = 3.0/4*B11_12 * x**2 + Emin
 # initial values
@@ -24,8 +25,10 @@ plot 'perovskite-B11-12.dat' using  ($1):($3*HARTREE_IN_EV-Emin) t 'calculated d
      3.0/4*B11_12 * x**2 t 'quadratic fitting' w l lt 2 lw 3
 
 print 'B11-B12 = ', B11_12, ' [eV]'
-#C11_12 = B11_12 / a0_Angstrom**3 * 160.22
-#print 'C_11-C_12 = ', C11_12, ' [GPa]'
+
+#set output
+#!gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r90x90 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q perovskite-B11-12.eps | \
+#                                                  pnmcrop -white | cjpeg -quality 90 > perovskite-B11-12.jpg
 
 #Local variables:
 #  compile-command: "gnuplot perovskite-B11-12.gp"

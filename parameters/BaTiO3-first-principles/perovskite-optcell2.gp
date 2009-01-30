@@ -50,6 +50,7 @@ gamma_p = P_gamma + (nu_t**2/mu_t-nu_r**2/mu_r)/2
 set origin 0.0, 0.5
 set key left
 set ylabel 'strain'
+set label 1 '(a)' at 0.01,-0.002 font "Times-Roman, 36"
 plot 'perovskite-optcell2-110.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):($8*$13/a0-1) title '{/Times-Italic e_{xx}}' w p lt 2 ps 2 pt 4,\
      f_xx(x) title 'quadratic fit' w l lt 2 lw 2,\
      'perovskite-optcell2-110.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):($8*$14/a0*2) title '{/Times-Italic e_{xy}}' w p lt 2 ps 2 pt 6,\
@@ -61,6 +62,7 @@ set origin 0.0, 0.0
 set key -0.03,0.0028 spacing 1.4
 set ylabel '{/Times-Italic E}_{tot} - {/Times-Italic E}_{0} [eV]'
 set yrange [-0.001:0.003]
+set label 1 '(b)' at 0.01,-0.0006 font "Times-Roman, 36"
 plot 'perovskite-optcell2-001.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):(($6-E_0)*HARTREE) title '[001]' w p ps 1 lt 1,\
      kappa*x**2 + alpha_p*x**4             title '{/Symbol k}{/Times-Italic u}^2+{/Symbol a\242}{/Times-Italic u}^4' w l lt 1,\
      'perovskite-optcell2-110.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):(($6-E_0)*HARTREE) title '[110]' w p ps 1 lt 2,\
@@ -71,6 +73,11 @@ plot 'perovskite-optcell2-001.dat'        using (sqrt($2**2+$3**2+$4**2)*BOHR):(
 print 'B1xx = ',   B1xx, ' [eV/Angstrom^2]'
 print 'B1yy = ',   B1yy, ' [eV/Angstrom^2]'
 print 'B4yz = ',   B4yz, ' [eV/Angstrom^2]'
+
+#set nomultiplot
+#set output
+#!gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r90x90 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q perovskite-optcell2.eps | \
+#                                                  pnmcrop -white | cjpeg -quality 90 > perovskite-optcell2.jpg
 
 #Local variables:
 #  compile-command: "gnuplot perovskite-optcell2.gp 2>&1 | tail -3"

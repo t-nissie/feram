@@ -6,7 +6,8 @@ You may find latest version of this document in:
 
 == List of required free software
  * ABNINT http://www.abinit.org/about/
- * MPICH2 http://www.mcs.anl.gov/research/projects/mpich2/ (I always use abinip compiled with mpif90 of MPICH2).
+ * gfortran http://gcc.gnu.org/
+ * MPICH2 http://www.mcs.anl.gov/research/projects/mpich2/ (I always use abinip compiled with gfortran and MPICH2 (mpif90)).
  * GNUPLOT http://www.gnuplot.info/
  * Ruby http://www.ruby-lang.org/
 
@@ -45,6 +46,10 @@ Note that the previous result a0=7.4434230817 is used in perovskite-B1112.in.
  B12 = 45.6799849026358 [eV]
  C12 = 119.75032954222 [GPa]
  % gv perovskite-B1112.eps
+Fig. 1 BaTiO3-first-principles/perovskite-B1112.jpg
+  (a) Calculated volume V dependence of Etot-E_0.
+  (b) Strain e_xx dependence of Etot-E_0.
+/Fig.
 
 You can also check a value of B11-B12 with  files of
 BaTiO3-first-principles/perovskite-B11-12.in,
@@ -57,6 +62,10 @@ BaTiO3-first-principles/perovskite-B11-12.gp as follows:
        :
  B11-B12 = 91.4501181590075 [eV]
  % gv perovskite-B11-12.eps
+Fig. 1 BaTiO3-first-principles/perovskite-B11-12.jpg
+  Quadratic fitting of calculated strain dependence of Etot-E_0.
+  From the centrosymmetric cubic structure, constraint-tetragonal strain is applied.
+/Fig.
 
 B44 can be calculated with
 BaTiO3-first-principles/perovskite-B44.in,
@@ -69,6 +78,13 @@ BaTiO3-first-principles/perovskite-B44.gp  files as follows:
        :
  B44 = 51.2027422625369 [eV]
  % gv perovskite-B44.eps
+Fig. 1 BaTiO3-first-principles/perovskite-B44.jpg
+  Quadratic fitting of calculated strain dependence of Etot-E_0.
+  From the centrosymmetric cubic structure, rhombohedral strain is applied.
+/Fig.
+
+
+
 
 == Fourth-order parameters P_alpha and P_gamma and coupling constants B1xx, B1yy and B4yz
 We determine the potential surface of ABO3 with the method described in [T. Hashimoto,
@@ -76,7 +92,7 @@ T. Nishimatsu, H. Mizuseki, Y. Kawazoe, A. Sasaki and Y. Ikeda: Jpn. J. Appl. Ph
 6785-6792 (2004) http://dx.doi.org/10.1143/JJAP.43.6785 ].
 
 === Patch for ABINIT
-We apply a patch to abinit, rename from abinip to abinip-xyz, then use it.
+We apply an original patch to ABINIT, rename from abinip to abinip-xyz, then use it.
 This brdmin.patch is applicable to both abinit-5.4.4 and abinit-5.6.4.
  % tar zxf abinit-5.6.4.tar.gz
  % cd abinit-5.6.4
@@ -102,36 +118,151 @@ Generate input files with each ruby script in the directory BaTiO3-first-princip
  % ./perovskite-optcell2-111.rb   # => perovskite-optcell2-111.in
 
 === Computation
- % ./vskite-optcell0-000.nqs
  % ./vskite-optcell0-001.nqs
  % ./vskite-optcell0-110.nqs
  % ./vskite-optcell0-111.nqs
- % ./vskite-optcell2-000.nqs
  % ./vskite-optcell2-001.nqs
  % ./vskite-optcell2-110.nqs
  % ./vskite-optcell2-111.nqs
 
 === P_alpha and P_gamma
+Actually, the calculation of perovskite-optcell0-110 is not necessary to
+determine P_alpha and P_gamma. But it can be a good test case.
+In BaTiO3-first-principles/perovskite-optcell0.gp, previously determined
+E_0 (total energy of the centro-symmetric structure) should be written.
+
  % ./perovskite-optcell0.gp
        :
  P_alpha = 100.597972157939 [eV/Angstrom^4]
  P_gamma = -144.196360458033 [eV/Angstrom^4]
  % gv perovskite-optcell0.eps
+Fig. 1 BaTiO3-first-principles/perovskite-optcell0.jpg
+  Etot-E_0 are fitted with 4th order functions of atomic displacement amplitude u
+  for the displacement directions of [001] and [111] under the strain-less constrain.
+  For the [110] direction, the function with determined parameters is plotted.
+/Fig.
 
 === B1xx, B1yy and B4yz
+Actually, only perovskite-optcell2-110 is necessary to determine B1xx,
+B1yy and B4yz. But you can trace the double-well potentials of
+perovskite-optcell2-001 and perovskite-optcell2-111 with the newly
+determined parameters. Previously determined parameters should be written
+in BaTiO3-first-principles/perovskite-optcell2.gp.
  % ./perovskite-optcell2.gp
-NOT YET.
+       :
+ B1xx = -200.130628238104 [eV/Angstrom^2]
+ B1yy = -9.98081371670229 [eV/Angstrom^2]
+ B4yz = -11.4817370450679 [eV/Angstrom^2]
+ % gv perovskite-optcell2.eps
+Fig. 1 BaTiO3-first-principles/perovskite-optcell2.jpg
+  (a) Strains are fitted with quadratic functions of atomic displacement amplitude u
+  for the displacement directions of [110].
+  (b) 4th order u function Etot(u)-E_0 with determined parameters is plotted.
+/Fig.
+
+== Self interaction P_kappa2 and nearest neighbor interactions j1, ..., j7
+We determine self interaction P_kappa2 and short range interactions j1, ..., j7 in the
+way described in [W. Zhong and David Vanderbilt and Karin M. Rabe: Phys. Rev. B vol.52
+pp.6301-6312 (1995)]. First, we should note an erratum of TABLE I in that article:
+
+ incorrect: (e) k2+j2-2j4+4j6
+ correct:   (e) k2-j2-2j4+4j6
+
+In this document, we use the force constant matrices (in the other words, interaction force
+constants, see [Xavier Gonze and Chngyol Lee: Phys. Rev B vol.55, pp.10355-10368 (1997)])
+and their eigenvalues calculated with the linear response method. So, we do NOT move ions
+explicitly.
+
+=== Input files
+In [W. Zhong and David Vanderbilt and Karin M. Rabe: Phys. Rev. B vol.52 pp.6301-6312
+(1995)], seven polarization modes, (a)-(g), are defined. Corresponding k-points and
+modes are indicated in Fig.???. Therefore, we have to calculate force constant matrices
+at the Gamma, X, M and R points and at the center of the Sigma axis. Input fies are
+BaTiO3-first-principles/force-constant-matrix/perovskite-Gamma.in,
+BaTiO3-first-principles/force-constant-matrix/perovskite-M.in,
+BaTiO3-first-principles/force-constant-matrix/perovskite-R.in,
+BaTiO3-first-principles/force-constant-matrix/perovskite-Sigma.in and
+BaTiO3-first-principles/force-constant-matrix/perovskite-X.in.
+We also prepare BaTiO3-first-principles/force-constant-matrix/Makefile.
+
+=== Execution
+Each job takes 3 days with 2 GHz CPU and up to 4 GB memory.
+Please adjust the number of jobs in the option for make.
+ % make -n      # Print the commands that would be executed, but do not execute them.
+ % make -j 4    # Execute jobs up to 4.
+
+=== Diagonalization
+Let's find the eigenvalues.
 
 
-=== Self interaction P_kappa2 and nearest neighbor interactions j_1, ..., j_7
-We determine self interaction P_kappa2 and nearest neighbor interactions j_1, ..., j_7 from
-force constant matrices at the Gamma, X, M and R points and at the center of the Sigma axis.
-
-=== Effective charge Z*
+=== Convert from the set of eigenvalues to P_kappa2 and j1, ..., j7
+DDB2short
 
 
+== Effective charge Z_star
+You can find the Born effective charges for each atom in the
+file of BaTiO3-first-principles/force-constant-matrix/perovskite-Gamma.out.
+There are two ways of calculations of effective charges,
+(from electric field response) and (from phonon response).
+They must have similar values.
+ % less perovskite-Gamma.out
+       :
+  Effective charges, in cartesian coordinates,
+  (from electric field response)
+       :
+    1    1   3    7         0.0000000000         0.0000000000
+    2    1   3    7         0.0000000000         0.0000000000
+    3    1   3    7         2.7733243489         0.0000000000
+    1    2   3    7         0.0000000000         0.0000000000
+    2    2   3    7         0.0000000000         0.0000000000
+    3    2   3    7         7.3056371739         0.0000000000
+    1    3   3    7         0.0000000000         0.0000000000
+    2    3   3    7         0.0000000000         0.0000000000
+    3    3   3    7        -2.1680389415         0.0000000000
+    1    4   3    7         0.0000000000         0.0000000000
+    2    4   3    7         0.0000000000         0.0000000000
+    3    4   3    7        -2.1680389415         0.0000000000
+    1    5   3    7         0.0000000000         0.0000000000
+    2    5   3    7         0.0000000000         0.0000000000
+    3    5   3    7        -5.7523023000         0.0000000000
+       :
 
+You can also find the eigenvector of the Gamma_15 soft mode when you
+diagonalize the force constant matrix.
+ % tail -324 perovskite-Gamma_o_DS3_DDB | ./diagonalize15x15
+       :
+  1  -0.567101     0.237 -0.000  0.001     0.788 -0.000  0.002    -0.460  0.000 -0.001    -0.237  0.000 -0.001    -0.237  0.000 -0.001
+  2  -0.567101    -0.001 -0.000  0.237    -0.002 -0.000  0.788     0.001  0.000 -0.237     0.001  0.000 -0.237     0.001  0.000 -0.460
+  3  -0.567097    -0.000 -0.237 -0.000    -0.000 -0.788 -0.000     0.000  0.237  0.000     0.000  0.460  0.000     0.000  0.237  0.000
+       :
 
+From these values, you can determine the Born effective charges of the
+soft mode.
+ Z_star = 10.09
+ = 2.7733243489 *  0.237
+  +7.3056371739 *  0.788
+  -2.1680389415 * -0.237
+  -2.1680389415 * -0.237
+  -5.7523023000 * -0.460
+
+It should be mentioned that, in the case of BaTiO3,  the eigenvector of the
+Gamma_15 soft mode and the direction to the minimum are similar.
+ % ./perovskite-tetragonal.nqs   # full optimization in tetragonal
+ % sed -n '/after computation/,$p' perovskite-tetragonal.out | grep -A 4 'xred'
+       xred    0.0000000000E+00  0.0000000000E+00  3.2845524333E-03
+               5.0000000000E-01  5.0000000000E-01  5.0987532714E-01
+               0.0000000000E+00  5.0000000000E-01  4.9651372167E-01
+               5.0000000000E-01  0.0000000000E+00  4.9651372167E-01
+               5.0000000000E-01  5.0000000000E-01 -6.1873229230E-03
+Thus, with normalization,
+         0.251
+         0.755
+ xi_z = -0.267
+        -0.267
+        -0.473
+is the direction. In the case of PbTiO3, the direction to the minimum may be a
+better choice than the eigenvector of the Gamma_15 soft mode to determine the
+Z_star.
 
 == Author of this document
 Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
@@ -143,7 +274,7 @@ Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 require 'rubygems'
 require 'ulmul'
 u=Ulmul.new()
-u.subs_rules << [/(BaTiO3-first-principles\/\S*\.(in|files|nqs|rb|delta|gp))/, '<a href="\1">\1</a>']
+u.subs_rules << [/(BaTiO3-first-principles\/\S*(in|files|nqs|rb|delta|gp|out|Makefile))/, '<a href="\1">\1</a>']
 u.subs_rules << [/(brdmin\.patch)/, '<a href="\1">\1</a>']
 u.subs_rules << [/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2']
 u.subs_rules << [/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2']

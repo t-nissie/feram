@@ -8,6 +8,7 @@ HARTREE=27.2116
 set terminal postscript portrait enhanced color 'Times-Roman,18'
 set output 'perovskite-optcell0.eps'
 set encoding iso_8859_1
+set size 1.0,0.5
 
 set format y '%.4f'
 set xtics 0.02
@@ -33,6 +34,11 @@ plot        'perovskite-optcell0-001.dat' using (sqrt($2**2+$3**2+$4**2)*BOHR):(
 print 'P_alpha = ',   alpha, ' [eV/Angstrom^4]'
 print 'P_gamma = ', P_gamma, ' [eV/Angstrom^4]'
 print 'average kappa = ', (kappa001+kappa111)/2, ' [eV/Angstrom^2]'
+
+#set output
+#!gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r90x90 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q perovskite-optcell0.eps | \
+#                                                  pnmcrop -white | cjpeg -quality 90 > perovskite-optcell0.jpg
+
 #Local variables:
 #  compile-command: "gnuplot perovskite-optcell0.gp"
 #End:
