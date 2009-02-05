@@ -1,11 +1,11 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2008-12-19 14:29:59 takeshi>
+dnl Time-stamp: <2009-02-05 14:55:54 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.61)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.08.01],[takeshi{at}physics.rutgers.edu],[feram])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.08.02],[takeshi{at}physics.rutgers.edu],[feram])
 AC_CONFIG_SRCDIR(src/feram.F)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
@@ -129,5 +129,6 @@ AC_CONFIG_FILES([Makefile
              doc/Makefile
    libblaslapack/Makefile
  libbuilt_in_fft/Makefile
+      parameters/Makefile
              src/Makefile])
 AC_OUTPUT

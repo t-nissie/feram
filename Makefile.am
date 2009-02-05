@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2008-10-15 16:03:23 takeshi>
+# Time-stamp: <2009-02-05 15:01:44 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -14,6 +14,7 @@ EXTRA_DIST = doc \
              style.css \
              utils \
              old-examples \
+             parameters \
              animations \
              logo.eps \
              logo.jpg \
@@ -38,7 +39,8 @@ README.html:  README style.css
 
 dist-hook:
 	rm -rf `find $(distdir) -type d -name .svn`
-	cd $(distdir)/doc      && $(MAKE)
+	cd $(distdir)/doc        && $(MAKE)
+	cd $(distdir)/parameters && $(MAKE)
 
 .PHONY: snapshot
 snapshot:

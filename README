@@ -393,7 +393,7 @@ Fig. 5 doc/figures/epit-vs-free-hysteresis-box.jpg
 
 == Copying
 === feram
-Copyright (C) 2007-2009 Takeshi Nishimatsu
+Copyright © 2007-2009 by Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
@@ -401,6 +401,9 @@ You can copy, modify and redistribute feram,
 but only under the conditions described in
 the GNU General Public License (the "GPL").
 For more detail, see COPYING.
+
+You can make a DONATION to Takeshi Nishimatsu through
+Tohoku University http://www.rpip.tohoku.ac.jp/kensui/kifukin.html (in Japanese).
 
 The author is grateful if you would kindly refer the
 name of this program and cite our articles,
@@ -437,11 +440,12 @@ Authors and/or publishers of the papers have their copyrights for the following 
    Jpn. J. Appl. Phys. 33, 1959 (1994)].
 
 === pseudopotentials
-Three LDA (Teter "extended norm-conserving") pseudopotential files are downloaded from
+Four LDA (Teter "extended norm-conserving") pseudopotential files are downloaded from
 http://www.abinit.org/Psps/?text=../Psps/LDA_EX/lda . They are distributed under GPL.
- src/10-example-PbTiO3-DDB2short/82pb.960808c.mod
- src/10-example-PbTiO3-DDB2short/22ti.psp.mod
- src/10-example-PbTiO3-DDB2short/8o.phoney.mod
+ 56ba.psp.mod
+ 82pb.960808c.mod
+ 22ti.psp.mod
+ 8o.phoney.mod
 
 == Author
 Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)

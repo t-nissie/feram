@@ -264,6 +264,13 @@ is the direction. In the case of PbTiO3, the direction to the minimum may be a
 better choice than the eigenvector of the Gamma_15 soft mode to determine the
 Z_star.
 
+== Effective mass mass_amu
+The effective mass for dipole is also determined from the eigenvector
+of the Gamma_15 soft mode (or the direction to the minimum).
+ mass_amu = 42.619 = 137.327*0.237**2 + 47.867*0.788**2 + 15.9994*(0.237**2+0.237**2+0.460**2)
+
+
+
 == Author of this document
 Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 
