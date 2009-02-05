@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram/parameters/
-# Time-stamp: <2009-02-05 14:54:34 takeshi>
+# Time-stamp: <2009-02-05 18:09:02 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 srcdir = @srcdir@
@@ -19,6 +19,10 @@ sourceforge: favicon.ico parameters.html parameters.txt style.css brdmin.patch
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in
 	cd .. && ./config.status parameters/$@
+
+%.jpg: %.eps
+	gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r90x90 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q $< | \
+	pnmcrop -white | pnmrotate -90 | cjpeg -quality 90 > $@
 
 clean:
 	rm -rf *.aux *.bbl *.blg *.dvi *.log *.ps *.pdf config.log

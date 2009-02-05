@@ -27,9 +27,9 @@ With
 BaTiO3-first-principles/perovskite-B1112.in,
 BaTiO3-first-principles/perovskite-B1112.files,
 BaTiO3-first-principles/perovskite-B1112.nqs and
-BaTiO3-first-principles/perovskite-B1112.gp  files,
+BaTiO3-first-principles/perovskite-B1112.gp files,
 you can determine elastic constants B11 and B12.
-Note that the previous result a0=7.4434230817 is used in perovskite-B1112.in.
+Note that the previous result a0=7.4434230817 is used in BaTiO3-first-principles/perovskite-B1112.in.
  % ./perovskite-B1112.nqs   # perovskite-B1112.dat1 and perovskite-B1112.dat1 will be made.
  % ./perovskite-B1112.gp
        :
@@ -176,7 +176,15 @@ explicitly.
 === Input files
 In [W. Zhong and David Vanderbilt and Karin M. Rabe: Phys. Rev. B vol.52 pp.6301-6312
 (1995)], seven polarization modes, (a)-(g), are defined. Corresponding k-points and
-modes are indicated in Fig.???. Therefore, we have to calculate force constant matrices
+modes are indicated in Fig.??.
+Fig. 1 a2f.jpg
+  Dipole-dipole interaction energy per unit cell for a simple cubic lattice.
+  Dispersion relations E(k) are plotted along principal axes in the first Brillouin zone.
+  The LO-TO splitting at the Gamma point is not corrected.
+/Fig.
+
+
+Therefore, we have to calculate force constant matrices
 at the Gamma, X, M and R points and at the center of the Sigma axis. Input fies are
 BaTiO3-first-principles/force-constant-matrix/perovskite-Gamma.in,
 BaTiO3-first-principles/force-constant-matrix/perovskite-M.in,
