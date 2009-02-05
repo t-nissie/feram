@@ -29,7 +29,7 @@ plot        'perovskite-optcell0-001.dat' using (sqrt($2**2+$3**2+$4**2)*BOHR):(
             'perovskite-optcell0-110.dat' using (sqrt($2**2+$3**2+$4**2)*BOHR):(($6-E_0)*HARTREE) title '[110]' with p lt 2 ps 2,\
             (alpha+1.0/4*P_gamma)*x**4 + (kappa001+kappa111)/2*x**2 title '{/Symbol k}{/Times-Italic u}^2+({/Symbol a}+{/Symbol g}/4){/Times-Italic u}^4' w l lt 2 lw 2,\
             'perovskite-optcell0-111.dat' using (sqrt($2**2+$3**2+$4**2)*BOHR):(($6-E_0)*HARTREE) title '[111]' with p lt 3 ps 2,\
-            f111(x) title '4th order func.' w l lt 3 lw 2
+            f111(x) title '4th order func.' w l lt 3 lw 2, -0.2931*x**2
 
 print 'P_alpha = ',   alpha, ' [eV/Angstrom^4]'
 print 'P_gamma = ', P_gamma, ' [eV/Angstrom^4]'

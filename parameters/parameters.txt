@@ -138,7 +138,7 @@ E_0 (total energy of the centro-symmetric structure) should be written.
  % gv perovskite-optcell0.eps
 Fig. 1 BaTiO3-first-principles/perovskite-optcell0.jpg
   Etot-E_0 are fitted with 4th order functions of atomic displacement amplitude u
-  for the displacement directions of [001] and [111] under the strain-less constrain.
+  for the displacement directions [001] and [111] under the strain-less constrain.
   For the [110] direction, the function with determined parameters is plotted.
 /Fig.
 
@@ -156,7 +156,7 @@ in BaTiO3-first-principles/perovskite-optcell2.gp.
  % gv perovskite-optcell2.eps
 Fig. 1 BaTiO3-first-principles/perovskite-optcell2.jpg
   (a) Strains are fitted with quadratic functions of atomic displacement amplitude u
-  for the displacement directions of [110].
+  for the displacement directions [110].
   (b) 4th order u function Etot(u)-E_0 with determined parameters is plotted.
 /Fig.
 
@@ -180,10 +180,10 @@ modes are indicated in Fig.??.
 Fig. 1 a2f.jpg
   Dipole-dipole interaction energy per unit cell for a simple cubic lattice.
   Dispersion relations E(k) are plotted along principal axes in the first Brillouin zone.
-  The LO-TO splitting at the Gamma point is not corrected.
+  The LO-TO splitting at the Gamma point is not corrected. Differences between
+  calculated interaction energies and these pure dipole-dipole interaction energy (values
+  are written in the figure) are the short range interaction, i.e., P_kappa2 and j1, ..., j7.
 /Fig.
-
-
 Therefore, we have to calculate force constant matrices
 at the Gamma, X, M and R points and at the center of the Sigma axis. Input fies are
 BaTiO3-first-principles/force-constant-matrix/perovskite-Gamma.in,
@@ -195,20 +195,47 @@ We also prepare BaTiO3-first-principles/force-constant-matrix/Makefile.
 
 === Execution
 Each job takes 3 days with 2 GHz CPU and up to 4 GB memory.
-Please adjust the number of jobs in the option for make.
+Adjust the number of jobs in the option for make command according to your computer resources.
+ % cd BaTiO3-first-principles/force-constant-matrix/
  % make -n      # Print the commands that would be executed, but do not execute them.
  % make -j 4    # Execute jobs up to 4.
 
 === Diagonalization
 Let's find the eigenvalues.
-
+ % make diagonalize
+ tail -324 perovskite-Gamma_o_DS3_DDB | ./diagonalize15x15
+      :
+  1  -0.567101     0.237 -0.000  0.001     0.788 -0.000  0.002    -0.460  0.000 -0.001    -0.237  0.000 -0.001    -0.237  0.000 -0.001
+  2  -0.567101    -0.001 -0.000  0.237    -0.002 -0.000  0.788     0.001  0.000 -0.237     0.001  0.000 -0.237     0.001  0.000 -0.460
+  3  -0.567097    -0.000 -0.237 -0.000    -0.000 -0.788 -0.000     0.000  0.237  0.000     0.000  0.460  0.000     0.000  0.237  0.000
+  4  -0.016426     0.436 -0.000 -0.005     0.416 -0.000 -0.005     0.466 -0.000 -0.006     0.458 -0.000 -0.006     0.458 -0.000 -0.006
+  5  -0.016426    -0.005  0.000 -0.436    -0.005  0.000 -0.416    -0.006  0.000 -0.458    -0.006  0.000 -0.458    -0.006  0.000 -0.466
+  6  -0.016425     0.000  0.436  0.000     0.000  0.416  0.000     0.000  0.458  0.000     0.000  0.466  0.000     0.000  0.458  0.000
+  7   2.776185     0.000  0.000 -0.000     0.000  0.000 -0.000    -0.000 -0.707  0.003    -0.001 -0.000 -0.003     0.001  0.707 -0.000
+  8   2.776185     0.000 -0.000 -0.000    -0.000 -0.000  0.000    -0.000  0.003  0.707     0.000  0.000 -0.707    -0.000 -0.003 -0.000
+  9   2.776185     0.000  0.000 -0.000    -0.000  0.000  0.000     0.000 -0.001 -0.000     0.707 -0.000  0.000    -0.707  0.001  0.000
+ 10   5.412414    -0.000 -0.858 -0.000     0.000  0.393  0.000    -0.000  0.234  0.000     0.000 -0.009  0.000     0.000  0.234 -0.000
+ 11   5.412419    -0.858  0.000  0.002     0.393 -0.000 -0.001    -0.009 -0.000 -0.000     0.234  0.000 -0.000     0.234 -0.000  0.000
+ 12   5.412419     0.002 -0.000  0.858    -0.001  0.000 -0.393     0.000  0.000 -0.234    -0.000 -0.000 -0.234    -0.000  0.000  0.009
+ 13   8.264379     0.000  0.135 -0.000    -0.000 -0.227  0.000    -0.000  0.424 -0.000     0.000 -0.756 -0.000     0.000  0.424  0.000
+ 14   8.264379    -0.003 -0.000 -0.135     0.005  0.000  0.227     0.015 -0.000 -0.424    -0.009  0.000 -0.424    -0.009 -0.000  0.756
+ 15   8.264379    -0.135  0.000  0.003     0.227 -0.000 -0.005     0.756  0.000  0.009    -0.424 -0.000  0.009    -0.424  0.000 -0.015
+ tail -225 perovskite-M_o_DS1_DDB     | ./diagonalize15x15
+      :
 
 === Convert from the set of eigenvalues to P_kappa2 and j1, ..., j7
+Select seven eigenvalues corresponding to the (a)-(g), according to the
+eigenvectors. There is a difficulty in this selection, because we employ
+coarse-graining and reduce the number of freedom from 15 to 6 per unit cell.
+There may be no 1-to-1 correspondence. Edit an input file
+BaTiO3-first-principles/force-constant-matrix/DDB2short.in for the
+DDB2shor program.
+
 DDB2short
 
 
 == Effective charge Z_star
-You can find the Born effective charges for each atom in the
+You can find the calculated Born effective charges for each atom in the
 file of BaTiO3-first-principles/force-constant-matrix/perovskite-Gamma.out.
 There are two ways of calculations of effective charges,
 (from electric field response) and (from phonon response).
