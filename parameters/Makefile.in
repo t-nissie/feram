@@ -1,0 +1,24 @@
+# -*-Makefile-*- for feram/parameters/
+# Time-stamp: <2009-02-05 14:54:34 takeshi>
+# Author: Takeshi NISHIMATSU
+##
+srcdir = @srcdir@
+VPATH = @srcdir@
+SOURCEFORGE_FERAM=web.sourceforge.net:/home/groups/l/lo/loto/htdocs/feram
+
+all: parameters.html
+
+%.html: %.txt
+	ruby $< $< > $@
+
+sf: sourceforge
+sourceforge: favicon.ico parameters.html parameters.txt style.css brdmin.patch
+	scp    $^                      $(SOURCEFORGE_FERAM)/parameters/
+	scp -r BaTiO3-first-principles $(SOURCEFORGE_FERAM)/parameters/
+
+.PRECIOUS: Makefile
+Makefile: $(srcdir)/Makefile.in
+	cd .. && ./config.status parameters/$@
+
+clean:
+	rm -rf *.aux *.bbl *.blg *.dvi *.log *.ps *.pdf config.log
