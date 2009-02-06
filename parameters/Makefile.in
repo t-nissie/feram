@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram/parameters/
-# Time-stamp: <2009-02-05 18:09:02 takeshi>
+# Time-stamp: <2009-02-06 09:46:56 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 srcdir = @srcdir@
@@ -13,8 +13,22 @@ all: parameters.html
 
 sf: sourceforge
 sourceforge: favicon.ico parameters.html parameters.txt style.css brdmin.patch
-	scp    $^                      $(SOURCEFORGE_FERAM)/parameters/
-	scp -r BaTiO3-first-principles $(SOURCEFORGE_FERAM)/parameters/
+	scp $^                              $(SOURCEFORGE_FERAM)/parameters/
+	scp BaTiO3-first-principles/*.in    $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/
+	scp BaTiO3-first-principles/*.rb    $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/
+	scp BaTiO3-first-principles/*.jpg   $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/
+	scp BaTiO3-first-principles/*.nqs   $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/
+	scp BaTiO3-first-principles/*.dat*  $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/
+	scp BaTiO3-first-principles/*.delta $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/
+	scp BaTiO3-first-principles/*.files $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/
+	scp BaTiO3-first-principles/force-constant-matrix/Makefile\
+                                            $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/force-constant-matrix/
+	scp BaTiO3-first-principles/force-constant-matrix/diagonalized-results.txt\
+                                            $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/force-constant-matrix/
+	scp BaTiO3-first-principles/force-constant-matrix/*.files\
+                                            $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/force-constant-matrix/
+	scp BaTiO3-first-principles/force-constant-matrix/*.in\
+                                            $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/force-constant-matrix/
 
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in
