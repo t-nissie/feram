@@ -3,7 +3,7 @@
 E_0 = -1.3184285821E+02
 
 BOHR=0.52917720859
-HARTREE=27.2116
+HARTREE=27.21138386
 
 set terminal postscript portrait enhanced color 'Times-Roman,18'
 set output 'perovskite-optcell0.eps'

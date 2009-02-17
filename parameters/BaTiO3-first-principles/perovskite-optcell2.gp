@@ -13,7 +13,7 @@ kappa = -0.293062714445983
 
 
 BOHR=0.52917720859
-HARTREE=27.2116
+HARTREE=27.21138386
 
 set terminal postscript portrait enhanced color 'Times-Roman,18'
 set output 'perovskite-optcell2.eps'

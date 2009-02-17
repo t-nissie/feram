@@ -133,8 +133,9 @@ E_0 (total energy of the centro-symmetric structure) should be written.
 
  % ./perovskite-optcell0.gp
        :
- P_alpha = 100.597972157939 [eV/Angstrom^4]
- P_gamma = -144.196360458033 [eV/Angstrom^4]
+ P_alpha = 93.3741321173992 [eV/Angstrom^4]
+ P_gamma = -133.803542775308 [eV/Angstrom^4]
+ average kappa = -0.29306038666757 [eV/Angstrom^2]
  % gv perovskite-optcell0.eps
 Fig. 1 BaTiO3-first-principles/perovskite-optcell0.jpg
   Etot-E_0 are fitted with 4th order functions of atomic displacement amplitude u
@@ -304,6 +305,25 @@ The effective mass for dipole is also determined from the eigenvector
 of the Gamma_15 soft mode (or the direction to the minimum).
  mass_amu = 42.619 = 137.327*0.237**2 + 47.867*0.788**2 + 15.9994*(0.237**2+0.237**2+0.460**2)
 
+
+== epsilon_inf
+ % less perovskite-Gamma.out
+       :
+  Dielectric tensor, in cartesian coordinates,
+     j1       j2             matrix element
+  dir pert dir pert     real part    imaginary part
+  
+   1    7   1    7         8.5342243492         0.0000000000
+   1    7   2    7         0.0000000000         0.0000000000
+   1    7   3    7         0.0000000000         0.0000000000
+  
+   2    7   1    7         0.0000000000         0.0000000000
+   2    7   2    7         8.5342243492         0.0000000000
+   2    7   3    7         0.0000000000         0.0000000000
+  
+   3    7   1    7         0.0000000000         0.0000000000
+   3    7   2    7         0.0000000000         0.0000000000
+   3    7   3    7         8.5342243492         0.0000000000
 
 
 == Author of this document
