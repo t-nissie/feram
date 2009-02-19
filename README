@@ -441,7 +441,7 @@ Authors and/or publishers of the papers have their copyrights for the following 
    Jpn. J. Appl. Phys. 33, 1959 (1994)].
 
 === pseudopotentials
-Four LDA (Teter "extended norm-conserving") pseudopotential files are downloaded from
+Four Teter's "extended norm-conserving" LDA pseudopotential files are downloaded from
 http://www.abinit.org/Psps/?text=../Psps/LDA_EX/lda . They are distributed under GPL.
  56ba.psp.mod
  82pb.960808c.mod

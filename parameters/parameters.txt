@@ -158,7 +158,8 @@ in BaTiO3-first-principles/perovskite-optcell2.gp.
 Fig. 1 BaTiO3-first-principles/perovskite-optcell2.jpg
   (a) Strains are fitted with quadratic functions of atomic displacement amplitude u
   for the displacement directions [110].
-  (b) 4th order u function Etot(u)-E_0 with determined parameters is plotted.
+  (b) 4th order u functions Etot(u)-E_0 with determined parameters are plotted
+  for [001], [110] and [111] distortions. They have good agreements with calculated values.
 /Fig.
 
 == Self interaction P_kappa2 and nearest neighbor interactions j1, ..., j7
@@ -306,7 +307,8 @@ of the Gamma_15 soft mode (or the direction to the minimum).
  mass_amu = 42.619 = 137.327*0.237**2 + 47.867*0.788**2 + 15.9994*(0.237**2+0.237**2+0.460**2)
 
 
-== epsilon_inf
+== Optical dielectric constant epsilon_inf
+Optical dielectric constant tensor was automatically calculated in the previous phonon calculation.
  % less perovskite-Gamma.out
        :
   Dielectric tensor, in cartesian coordinates,
