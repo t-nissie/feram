@@ -1,11 +1,11 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2008-10-15 15:58:09 takeshi>
+# Time-stamp: <2009-02-20 15:48:01 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
-bin_PROGRAMS = feram diagonalize15x15 DDB2short
+bin_PROGRAMS = feram diagonalize15x15 DDB2short frozen_phonon_Gamma
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -49,6 +49,10 @@ diagonalize15x15_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
 DDB2short_SOURCES = DDB2short.F msg.F param_module.F
 DDB2short_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
 DDB2short_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
+
+frozen_phonon_Gamma_SOURCES = frozen_phonon_Gamma.F
+frozen_phonon_Gamma_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
+frozen_phonon_Gamma_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
 
 CLEANFILES = *.mod *.ps *.pdf
 EXTRA_DIST = define.h \
@@ -117,7 +121,7 @@ mirror.o fft.o:                 param_module.o
 dipole-dipole-long-range.o:     param_module.o         define.h fft.o
 dipole-dipole-short-range.o:    param_module.o                  fft.o
 dVddi-dipole-dipole.o: energy_module.o param_module.o coord_module.o          fft.o
-print-eigenvalues.o:                            define.h
+print-eigenvalues.o DDB2short.o frozen_phonon_Gamma.o: define.h
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:
