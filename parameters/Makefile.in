@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram/parameters/
-# Time-stamp: <2009-02-06 09:46:56 takeshi>
+# Time-stamp: <2009-02-23 20:37:02 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 srcdir = @srcdir@
@@ -12,7 +12,7 @@ all: parameters.html
 	ruby $< $< > $@
 
 sf: sourceforge
-sourceforge: favicon.ico parameters.html parameters.txt style.css brdmin.patch
+sourceforge: favicon.ico parameters.html parameters.txt style.css brdmin.patch a2f.jpg
 	scp $^                              $(SOURCEFORGE_FERAM)/parameters/
 	scp BaTiO3-first-principles/*.in    $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/
 	scp BaTiO3-first-principles/*.rb    $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/
