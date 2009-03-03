@@ -1,0 +1,9 @@
+#!/bin/sh
+mpdtrace || mpdboot
+mpirun -np 4 ./abinip < perovskite-frozen-phonon-X.files > perovskite-frozen-phonon-X.log
+
+sed -n '/after computation/,$p' perovskite-frozen-phonon-X.out | grep acell > perovskite-frozen-phonon-X.dat
+
+for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+    tail -36 perovskite-frozen-phonon-X_o_DS"$i"_DDB >> perovskite-frozen-phonon-X.dat
+done
