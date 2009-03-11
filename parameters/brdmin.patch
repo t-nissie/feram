@@ -1,7 +1,7 @@
---- brdmin.F90.orig	2007-10-15 13:19:26.000000000 +0900
-+++ brdmin.F90	2009-01-13 19:08:16.968566990 +0900
-@@ -229,6 +229,12 @@
-  real(dp) :: rprimd(3,3)
+--- brdmin.F90.original	2009-01-13 19:23:17.890540548 +0900
++++ brdmin.F90	2009-01-27 10:49:37.487093775 +0900
+@@ -230,6 +230,12 @@
+  real(dp) :: rprimd0(3,3)
   real(dp),allocatable :: fred_corrected(:,:),hessin(:,:),vin(:),vin_prev(:)
   real(dp),allocatable :: vout(:),vout_prev(:),xcart(:,:)
 + integer :: i,j,jdim                                                 ! hasitaka
@@ -13,7 +13,7 @@
  
  !***************************************************************************
  !Beginning of executable session
-@@ -252,6 +258,7 @@
+@@ -253,6 +259,7 @@
  
   allocate(fred_corrected(3,dtset%natom),xcart(3,dtset%natom))
   allocate(vin(ndim),vout(ndim),vin_prev(ndim),vout_prev(ndim))
@@ -21,7 +21,7 @@
   allocate(hessin(ndim,ndim))
  
  !Compute dimensional primitive translations rprimd, then metric tensor gmet
-@@ -310,11 +317,215 @@
+@@ -311,11 +318,215 @@
      etotal_prev=results_gs%etotal
      vin_prev(:)=vin(:)
  
@@ -238,7 +238,22 @@
  !   Previous atomic forces
      vout_prev(:)=vout(:)
  
-@@ -609,3 +820,82 @@
+@@ -542,9 +753,11 @@
+   end if
+   call fconv(results_gs%fcart,dtset%iatfix,iexit,itime,dtset%natom,dtset%ntime,&
+ &  optcell,dtset%strfact,dtset%strtarget,results_gs%strten,dtset%tolmxf)
+-  if (iexit/=0) then
+-   exit
+-  end if
++!!!takeshi
++!  if (iexit/=0) then
++!   exit
++!  end if
++!!!takeshi
+ 
+ ! Store xred, and eventual acell and rprim in vin
+   option=1
+@@ -610,3 +823,82 @@
  
  end subroutine brdmin
  !!***
