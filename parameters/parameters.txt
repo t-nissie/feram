@@ -1,26 +1,31 @@
 =begin
 = Parameters in feram
-This document describes how to determine parameters for the effective Hamiltonian in the feram code.
+This document describes how to determine parameters for the
+effective Hamiltonian in the feram code http://loto.sourceforge.net/feram/ .
+First, we determine the parameters from the first principles for BaTiO3.
+However, simulations with the parameters from non-empirical LDA calculations
+underestimate transition temperatures. Therefore, second, we semi-empirically
+determine the parameters to reproduce transition temperatures.
 
-You may find latest version of this document in:
+You may find latest version of this document in http://loto.sourceforge.net/feram/parameters/ .
 
-== List of required free software
+== List of required free or open software
  * ABNINT http://www.abinit.org/about/
  * gfortran http://gcc.gnu.org/
- * MPICH2 http://www.mcs.anl.gov/research/projects/mpich2/ (I always use abinip compiled with gfortran and MPICH2 (mpif90)).
+ * An implementation of MPI-2, i.e., MPICH2 http://www.mcs.anl.gov/research/projects/mpich2/ ,
+   Open MPI http://www.open-mpi.org/ , etc.
  * GNUPLOT http://www.gnuplot.info/
  * Ruby http://www.ruby-lang.org/
 
 == Equilibrium lattice constant a0
 With BaTiO3-first-principles/perovskite-a0.in and BaTiO3-first-principles/perovskite-a0.files,
-you can determine the equilibrium lattice constant a0.
-Execute abinip with
+you can determine the equilibrium lattice constant a0. For example, execute abinip with
  % mpirun -np 4 ./abinip < perovskite-a0.files > perovskite-a0.log
 or
  % ./perovskite-a0.nqs
 where BaTiO3-first-principles/perovskite-a0.nqs is a script for the NQS (Network Queueing System).
 With this calculation, we determine that
- a0 = 3.93889 [Angstrom] = 7.4434230817 [Bohr].
+ a0 = 3.93813 [Angstrom] = 7.4419883555 [Bohr].
 
 == Elastic constants B11, B12 and B44
 With
@@ -29,29 +34,31 @@ BaTiO3-first-principles/perovskite-B1112.files,
 BaTiO3-first-principles/perovskite-B1112.nqs and
 BaTiO3-first-principles/perovskite-B1112.gp files,
 you can determine elastic constants B11 and B12.
-Note that the previous result a0=7.4434230817 is used in BaTiO3-first-principles/perovskite-B1112.in.
+Note that the previous result a0=7.4419883555 [Bohr] is used in
+BaTiO3-first-principles/perovskite-B1112.in.
  % ./perovskite-B1112.nqs   # perovskite-B1112.dat1 and perovskite-B1112.dat1 will be made.
  % ./perovskite-B1112.gp
        :
  DATASET 1 -- 9
- a0 = 7.44367705834865 [Bohr] = 3.93902424522369 [Angstrom]
- Emin = -3587.62653743933 [eV]
- B = 198.3731723213 [GPa]
+ a0 = 7.44212363843752 [Bohr] = 3.9382022108118 [Angstrom]
+ Emin = -3587.99776010204 [eV]
+ B = 198.790813850445 [GPa]
  DATASET 10 -- 19
- a0 = 7.44488276198593 [Bohr] = 3.93966227610851 [Angstrom]
- Emin = -3587.62645739219 [eV]
- B11 = 135.65444137921 [eV]
- C11 = 355.618857879458 [GPa]
+ a0 = 7.44352042173142 [Bohr] = 3.93894135669587 [Angstrom]
+ Emin = -3587.99773869677 [eV]
+ B11 = 135.496966169601 [eV]
+ C11 = 355.428512301292 [GPa]
  Compute B12
- B12 = 45.6799849026358 [eV]
- C12 = 119.75032954222 [GPa]
- % gv perovskite-B1112.eps
+ B12 = 45.9264947808815 [eV]
+ C12 = 120.471964625021 [GPa]
+
 Fig. 1 BaTiO3-first-principles/perovskite-B1112.jpg
+  Fig. 1.
   (a) Calculated volume V dependence of Etot-E_0.
   (b) Strain e_xx dependence of Etot-E_0.
 /Fig.
 
-You can also check a value of B11-B12 with  files of
+You can also check a value of B11-B12 with files of
 BaTiO3-first-principles/perovskite-B11-12.in,
 BaTiO3-first-principles/perovskite-B11-12.files,
 BaTiO3-first-principles/perovskite-B11-12.nqs,
@@ -60,10 +67,10 @@ BaTiO3-first-principles/perovskite-B11-12.gp as follows:
  % ./perovskite-B11-12.nqs   # perovskite-B11-12.dat will be made.
  % ./perovskite-B11-12.gp
        :
- B11-B12 = 91.4501181590075 [eV]
+ B11-B12 = 91.6975260285724 [eV]
  % gv perovskite-B11-12.eps
-Fig. 1 BaTiO3-first-principles/perovskite-B11-12.jpg
-  Quadratic fitting of calculated strain dependence of Etot-E_0.
+Fig. 2 BaTiO3-first-principles/perovskite-B11-12.jpg
+  Fig. 2. Quadratic fitting of calculated strain dependence of Etot-E_0.
   From the centrosymmetric cubic structure, constraint-tetragonal strain is applied.
 /Fig.
 
@@ -76,14 +83,12 @@ BaTiO3-first-principles/perovskite-B44.gp  files as follows:
  % ./perovskite-B44.nqs   # perovskite-B44.dat will be made.
  % ./perovskite-B44.gp
        :
- B44 = 51.2027422625369 [eV]
+ B44 = 51.2750883179845 [eV]
  % gv perovskite-B44.eps
-Fig. 1 BaTiO3-first-principles/perovskite-B44.jpg
-  Quadratic fitting of calculated strain dependence of Etot-E_0.
+Fig. 3 BaTiO3-first-principles/perovskite-B44.jpg
+  Fig. 3. Quadratic fitting of calculated strain dependence of Etot-E_0.
   From the centrosymmetric cubic structure, rhombohedral strain is applied.
 /Fig.
-
-
 
 
 == Fourth-order parameters P_alpha and P_gamma and coupling constants B1xx, B1yy and B4yz
@@ -93,11 +98,11 @@ T. Nishimatsu, H. Mizuseki, Y. Kawazoe, A. Sasaki and Y. Ikeda: Jpn. J. Appl. Ph
 
 === Patch for ABINIT
 We apply an original patch to ABINIT, rename from abinip to abinip-xyz, then use it.
-This brdmin.patch is applicable to both abinit-5.4.4 and abinit-5.6.4.
- % tar zxf abinit-5.6.4.tar.gz
- % cd abinit-5.6.4
- % mkdir x86_64-Linux-mpif90-gfortran-4.3.2-O3-static-perovskite-xyz
- % cd x86_64-Linux-mpif90-gfortran-4.3.2-O3-static-perovskite-xyz/
+This brdmin.patch is applicable to abinit-5.6.5.
+ % tar zxf abinit-5.6.5.tar.gz
+ % cd abinit-5.6.5
+ % mkdir x86_64-Linux-mpif90-gfortran-4.3.3-O3-perovskite-xyz
+ % cd x86_64-Linux-mpif90-gfortran-4.3.3-O3-perovskite-xyz/
  % env CC=gcc FC=mpif90 FCFLAGS=-O3 ../configure --enable-mpi
  % cd src/21drive/
  % cp ../../../src/21drive/brdmin.F90 .
@@ -118,12 +123,12 @@ Generate input files with each ruby script in the directory BaTiO3-first-princip
  % ./perovskite-optcell2-111.rb   # => perovskite-optcell2-111.in
 
 === Computation
- % ./vskite-optcell0-001.nqs
- % ./vskite-optcell0-110.nqs
- % ./vskite-optcell0-111.nqs
- % ./vskite-optcell2-001.nqs
- % ./vskite-optcell2-110.nqs
- % ./vskite-optcell2-111.nqs
+ % ./perovskite-optcell0-001.nqs
+ % ./perovskite-optcell0-110.nqs
+ % ./perovskite-optcell0-111.nqs
+ % ./perovskite-optcell2-001.nqs
+ % ./perovskite-optcell2-110.nqs
+ % ./perovskite-optcell2-111.nqs
 
 === P_alpha and P_gamma
 Actually, the calculation of perovskite-optcell0-110 is not necessary to
@@ -133,12 +138,12 @@ E_0 (total energy of the centro-symmetric structure) should be written.
 
  % ./perovskite-optcell0.gp
        :
- P_alpha = 93.3741321173992 [eV/Angstrom^4]
- P_gamma = -133.803542775308 [eV/Angstrom^4]
- average kappa = -0.29306038666757 [eV/Angstrom^2]
+ P_alpha = 97.2018664031588 [eV/Angstrom^4]
+ P_gamma = -140.106921118426 [eV/Angstrom^4]
+ average kappa = -0.284319690289374 [eV/Angstrom^2]
  % gv perovskite-optcell0.eps
-Fig. 1 BaTiO3-first-principles/perovskite-optcell0.jpg
-  Etot-E_0 are fitted with 4th order functions of atomic displacement amplitude u
+Fig. 4 BaTiO3-first-principles/perovskite-optcell0.jpg
+  Fig. 4. Etot-E_0 are fitted with 4th order functions of atomic displacement amplitude u
   for the displacement directions [001] and [111] under the strain-less constrain.
   For the [110] direction, the function with determined parameters is plotted.
 /Fig.
@@ -151,11 +156,12 @@ determined parameters. Previously determined parameters should be written
 in BaTiO3-first-principles/perovskite-optcell2.gp.
  % ./perovskite-optcell2.gp
        :
- B1xx = -200.130628238104 [eV/Angstrom^2]
- B1yy = -9.98081371670229 [eV/Angstrom^2]
- B4yz = -11.4817370450679 [eV/Angstrom^2]
+ B1xx = -208.738728846023 [eV/Angstrom^2]
+ B1yy = -11.3402211966456 [eV/Angstrom^2]
+ B4yz = -11.4924700676748 [eV/Angstrom^2]
  % gv perovskite-optcell2.eps
-Fig. 1 BaTiO3-first-principles/perovskite-optcell2.jpg
+Fig. 5 BaTiO3-first-principles/perovskite-optcell2.jpg
+  Fig. 5.
   (a) Strains are fitted with quadratic functions of atomic displacement amplitude u
   for the displacement directions [110].
   (b) 4th order u functions Etot(u)-E_0 with determined parameters are plotted
@@ -170,17 +176,17 @@ pp.6301-6312 (1995)]. First, we should note an erratum of TABLE I in that articl
  incorrect: (e) k2+j2-2j4+4j6
  correct:   (e) k2-j2-2j4+4j6
 
-In this document, we use the force constant matrices (in the other words, interaction force
-constants, see [Xavier Gonze and Chngyol Lee: Phys. Rev B vol.55, pp.10355-10368 (1997)])
-and their eigenvalues calculated with the linear response method. So, we do NOT move ions
-explicitly.
+In this document, we use the interatomic force constant (IFC) matrices (See
+[Xavier Gonze and Chngyol Lee: Phys. Rev B vol.55, pp.10355-10368 (1997)
+http://dx.doi.org/10.1103/PhysRevB.55.10355 ]) and their eigenvalues
+calculated with the linear response method. Hence, we do NOT move ions explicitly.
 
 === Input files
 In [W. Zhong and David Vanderbilt and Karin M. Rabe: Phys. Rev. B vol.52 pp.6301-6312
-(1995)], seven polarization modes, (a)-(g), are defined. Corresponding k-points and
-modes are indicated in Fig.??.
-Fig. 1 a2f.jpg
-  Dipole-dipole interaction energy per unit cell for a simple cubic lattice.
+(1995) http://dx.doi.org/10.1103/PhysRevB.52.6301 ], seven polarization modes, (a)-(g),
+are defined. Corresponding k-points and modes are indicated in Fig.6.
+Fig. 6 a2f.jpg
+  Fig. 6. Dipole-dipole interaction energy per unit cell for a simple cubic lattice.
   Dispersion relations E(k) are plotted along principal axes in the first Brillouin zone.
   The LO-TO splitting at the Gamma point is not corrected. Differences between
   calculated interaction energies and these pure dipole-dipole interaction energy (values
@@ -205,25 +211,80 @@ Adjust the number of jobs in the option for make command according to your compu
 === Diagonalization
 Let's find the eigenvalues.
  % make diagonalize
- tail -324 perovskite-Gamma_o_DS3_DDB | ./diagonalize15x15
+ ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
       :
-  1  -0.567101     0.237 -0.000  0.001     0.788 -0.000  0.002    -0.460  0.000 -0.001    -0.237  0.000 -0.001    -0.237  0.000 -0.001
-  2  -0.567101    -0.001 -0.000  0.237    -0.002 -0.000  0.788     0.001  0.000 -0.237     0.001  0.000 -0.237     0.001  0.000 -0.460
-  3  -0.567097    -0.000 -0.237 -0.000    -0.000 -0.788 -0.000     0.000  0.237  0.000     0.000  0.460  0.000     0.000  0.237  0.000
-  4  -0.016426     0.436 -0.000 -0.005     0.416 -0.000 -0.005     0.466 -0.000 -0.006     0.458 -0.000 -0.006     0.458 -0.000 -0.006
-  5  -0.016426    -0.005  0.000 -0.436    -0.005  0.000 -0.416    -0.006  0.000 -0.458    -0.006  0.000 -0.458    -0.006  0.000 -0.466
-  6  -0.016425     0.000  0.436  0.000     0.000  0.416  0.000     0.000  0.458  0.000     0.000  0.466  0.000     0.000  0.458  0.000
-  7   2.776185     0.000  0.000 -0.000     0.000  0.000 -0.000    -0.000 -0.707  0.003    -0.001 -0.000 -0.003     0.001  0.707 -0.000
-  8   2.776185     0.000 -0.000 -0.000    -0.000 -0.000  0.000    -0.000  0.003  0.707     0.000  0.000 -0.707    -0.000 -0.003 -0.000
-  9   2.776185     0.000  0.000 -0.000    -0.000  0.000  0.000     0.000 -0.001 -0.000     0.707 -0.000  0.000    -0.707  0.001  0.000
- 10   5.412414    -0.000 -0.858 -0.000     0.000  0.393  0.000    -0.000  0.234  0.000     0.000 -0.009  0.000     0.000  0.234 -0.000
- 11   5.412419    -0.858  0.000  0.002     0.393 -0.000 -0.001    -0.009 -0.000 -0.000     0.234  0.000 -0.000     0.234 -0.000  0.000
- 12   5.412419     0.002 -0.000  0.858    -0.001  0.000 -0.393     0.000  0.000 -0.234    -0.000 -0.000 -0.234    -0.000  0.000  0.009
- 13   8.264379     0.000  0.135 -0.000    -0.000 -0.227  0.000    -0.000  0.424 -0.000     0.000 -0.756 -0.000     0.000  0.424  0.000
- 14   8.264379    -0.003 -0.000 -0.135     0.005  0.000  0.227     0.015 -0.000 -0.424    -0.009  0.000 -0.424    -0.009 -0.000  0.756
- 15   8.264379    -0.135  0.000  0.003     0.227 -0.000 -0.005     0.756  0.000  0.009    -0.424 -0.000  0.009    -0.424  0.000 -0.015
- tail -225 perovskite-M_o_DS1_DDB     | ./diagonalize15x15
+ acell =    3.93813   3.93813   3.93813 [Angstrom]
+ eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)
+  1  -0.598140    -0.217  0.000  0.003    -0.752  0.000  0.010     0.488 -0.000 -0.004     0.273 -0.000 -0.004     0.273 -0.000 -0.007
+  2  -0.598140     0.003 -0.000  0.217     0.010 -0.000  0.752    -0.007  0.000 -0.273    -0.004  0.000 -0.273    -0.004  0.000 -0.488
+  3  -0.598138     0.000  0.217 -0.000     0.000  0.752 -0.000    -0.000 -0.273  0.000    -0.000 -0.489  0.000    -0.000 -0.273  0.000
+  4   0.014240     0.001  0.000 -0.455     0.001  0.000 -0.469     0.001  0.000 -0.439     0.001  0.000 -0.439     0.001  0.000 -0.433
+  5   0.014240     0.455 -0.000  0.001     0.469 -0.000  0.001     0.433 -0.000  0.001     0.439 -0.000  0.001     0.439 -0.000  0.001
+  6   0.014255    -0.000 -0.455 -0.000    -0.000 -0.469 -0.000    -0.000 -0.439 -0.000    -0.000 -0.433 -0.000    -0.000 -0.439 -0.000
+  7   4.915802    -0.000 -0.000  0.000    -0.000  0.000  0.000     0.000  0.707 -0.000     0.000  0.000  0.000    -0.000 -0.707  0.000
+  8   4.915802    -0.000  0.000 -0.000    -0.000 -0.000  0.000     0.000 -0.000 -0.707     0.000 -0.000  0.707    -0.000  0.000 -0.000
+  9   4.915802    -0.000  0.000 -0.000    -0.000 -0.000  0.000     0.000 -0.000  0.000     0.707 -0.000 -0.000    -0.707  0.000 -0.000
+ 10   9.599304    -0.000  0.854 -0.000     0.000 -0.407  0.000    -0.000 -0.230  0.000     0.000  0.010  0.000     0.000 -0.230 -0.000
+ 11   9.599323     0.009  0.000  0.854    -0.005 -0.000 -0.407     0.000 -0.000 -0.230    -0.003  0.000 -0.230    -0.003 -0.000  0.010
+ 12   9.599323     0.854  0.000 -0.009    -0.407 -0.000  0.005     0.010 -0.000  0.003    -0.230  0.000  0.003    -0.230 -0.000 -0.000
+ 13  14.562046     0.000 -0.000  0.131    -0.001  0.000 -0.222    -0.003 -0.000  0.424     0.002  0.000  0.424     0.002 -0.000 -0.758
+ 14  14.562046    -0.131 -0.000  0.000     0.222  0.000 -0.001     0.758 -0.000  0.002    -0.424  0.000  0.002    -0.424 -0.000 -0.003
+ 15  14.562048    -0.000  0.131  0.000     0.000 -0.222 -0.000     0.000  0.424  0.000    -0.000 -0.758  0.000    -0.000  0.424 -0.000
+ ./diagonalize15x15 < perovskite-X_o_DS1_DDB
+ acell =    3.93813   3.93813   3.93813 [Angstrom]
+ eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)
+  1   0.666778     0.000  0.000  0.000    -0.000 -0.795  0.000     0.000  0.000  0.000    -0.000  0.482 -0.000    -0.000  0.368 -0.000
+  2   0.666844    -0.000  0.000 -0.000     0.000 -0.000 -0.795    -0.000  0.000  0.000     0.000  0.000  0.368     0.000  0.000  0.482
+  3   3.411123     0.000  0.000  0.000     0.000  0.000 -0.574     0.000  0.000 -0.000     0.000  0.000 -0.716    -0.000  0.000 -0.398
+  4   3.411171    -0.000 -0.000 -0.000     0.000  0.574  0.000    -0.000 -0.000 -0.000     0.000  0.398  0.000     0.000  0.716  0.000
+  5   5.994207    -0.000 -0.021 -0.705     0.000 -0.000 -0.000    -0.000 -0.021 -0.709    -0.000 -0.000 -0.000     0.000 -0.000 -0.000
+  6   5.994207    -0.000 -0.705  0.021    -0.000 -0.000 -0.000     0.000 -0.709  0.021    -0.000 -0.000 -0.000    -0.000 -0.000  0.000
+  7   6.596721     0.000  0.000 -0.000     0.000 -0.000  0.000     0.000 -0.000 -0.000     0.707 -0.000  0.000    -0.707  0.000 -0.000
+  8   6.942539    -0.000 -0.000  0.000     0.359 -0.000  0.000    -0.000 -0.000 -0.000     0.660  0.000  0.000     0.660 -0.000 -0.000
+  9   7.839055    -0.000  0.013  0.709    -0.000 -0.000 -0.000    -0.000 -0.013 -0.705    -0.000 -0.000  0.000    -0.000 -0.000  0.000
+ 10   7.839055    -0.000  0.709 -0.013     0.000 -0.000 -0.000    -0.000 -0.705  0.013    -0.000  0.000 -0.000     0.000 -0.000  0.000
+ 11  12.021427     0.930  0.000  0.000    -0.000  0.000  0.000     0.369 -0.000 -0.000     0.000 -0.000 -0.000     0.000  0.000  0.000
+ 12  12.758436     0.000  0.000  0.000    -0.000 -0.000 -0.199     0.000 -0.000 -0.000    -0.000 -0.000  0.593    -0.000  0.000 -0.780
+ 13  12.758454    -0.000  0.000  0.000     0.000 -0.199  0.000    -0.000 -0.000  0.000     0.000 -0.780 -0.000     0.000  0.593  0.000
+ 14  30.377420    -0.369  0.000  0.000    -0.000  0.000  0.000     0.930 -0.000  0.000     0.000  0.000  0.000     0.000 -0.000  0.000
+ 15  37.027427     0.000  0.000 -0.000    -0.933 -0.000 -0.000    -0.000 -0.000 -0.000     0.254 -0.000 -0.000     0.254  0.000  0.000
       :
+
+Here, confirm that average kappa = -0.284320 [eV/Angstrom^2] calculated by
+perovskite-optcell0.gp is the approximately half value of the soft mode
+eigenvalues -0.598140 [eV/Angstrom^2] at the Gamma point.
+
+You can also check them with frozen phonon calculations at the Gamma and X points.
+ % ./perovskite-frozen-phonon-Gamma.nqs
+ % feram-X.YY.ZZ/src/frozen_phonon_Gamma
+ a0 =   3.9381305 [Angstrom]
+ eigenvalues [eV/Angstrom^2] and eigenvectors of force_constant_matrix
+ 1  -0.598355  -0.2215  -0.7571   0.2684   0.2684   0.4834
+ 2   0.007923   0.4520   0.4611   0.4422   0.4422   0.4381
+ 3   4.913700  -0.0000  -0.0000   0.7071  -0.7071   0.0000
+ 4   9.596764   0.8541  -0.4064  -0.2293  -0.2293   0.0095
+ 5  14.559819  -0.1307   0.2214  -0.4240  -0.4240   0.7578
+ % ./perovskite-frozen-phonon-X.nqs
+ % feram-X.YY.ZZ/src/frozen_phonon_X
+ acell =   7.8762610  3.9381305  3.9381305 [Angstrom]
+      :
+ eigenvalues [eV/Angstrom^2] and eigenvectors of force_constant_matrix
+  1   0.664811     0.000 -0.000 -0.000     0.000 -0.796  0.000     0.000  0.000 -0.000     0.000  0.481 -0.000     0.000  0.367 -0.000
+  2   0.664814    -0.000  0.000 -0.000     0.000  0.000  0.796    -0.000  0.000 -0.000     0.000 -0.000 -0.367     0.000 -0.000 -0.481
+  3   3.401996     0.000 -0.000  0.000    -0.000  0.571  0.000     0.000 -0.000  0.000    -0.000  0.400  0.000    -0.000  0.717  0.000
+  4   3.402218     0.000  0.000  0.000    -0.000  0.000 -0.571     0.000  0.000  0.000    -0.000  0.000 -0.717    -0.000  0.000 -0.400
+  5   5.993014     0.000  0.704 -0.000     0.000  0.000 -0.000     0.000  0.710 -0.000     0.000  0.000  0.000    -0.000  0.000  0.000
+  6   5.993047     0.000 -0.000 -0.704     0.000 -0.000 -0.000     0.000 -0.000 -0.710     0.000 -0.000  0.000     0.000 -0.000 -0.000
+  7   6.594438     0.000  0.000 -0.000    -0.000 -0.000  0.000     0.000  0.000 -0.000    -0.707 -0.000  0.000     0.707 -0.000 -0.000
+  8   6.937443     0.000  0.000 -0.000    -0.360 -0.000  0.000     0.000 -0.000 -0.000    -0.660  0.000  0.000    -0.660 -0.000 -0.000
+  9   7.838036     0.000  0.710  0.000     0.000  0.000  0.000     0.000 -0.704 -0.000    -0.000  0.000 -0.000     0.000  0.000  0.000
+ 10   7.838111    -0.000 -0.000  0.710    -0.000 -0.000  0.000    -0.000  0.000 -0.704    -0.000  0.000  0.000    -0.000 -0.000 -0.000
+ 11  12.022476    -0.930 -0.000  0.000     0.000  0.000  0.000    -0.368 -0.000  0.000     0.000  0.000  0.000     0.000  0.000  0.000
+ 12  12.756908     0.000  0.000 -0.000     0.000 -0.000 -0.198     0.000 -0.000 -0.000     0.000 -0.000  0.593     0.000  0.000 -0.781
+ 13  12.757200     0.000  0.000 -0.000     0.000 -0.198  0.000     0.000  0.000 -0.000    -0.000 -0.781 -0.000    -0.000  0.593  0.000
+ 14  30.381306    -0.368  0.000 -0.000    -0.000 -0.000 -0.000     0.930  0.000 -0.000    -0.000 -0.000 -0.000    -0.000 -0.000 -0.000
+ 15  37.008298     0.000 -0.000  0.000     0.933  0.000  0.000     0.000  0.000  0.000    -0.254  0.000 -0.000    -0.254 -0.000  0.000
+
 
 === Convert from the set of eigenvalues to P_kappa2 and j1, ..., j7
 Select seven eigenvalues corresponding to the (a)-(g), according to the
