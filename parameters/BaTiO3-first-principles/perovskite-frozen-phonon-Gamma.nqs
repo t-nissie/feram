@@ -1,5 +1,5 @@
 #!/bin/sh
-mpdtrace || mpdboot
+# mpdtrace || mpdboot
 mpirun -np 4 ./abinip < perovskite-frozen-phonon-Gamma.files > perovskite-frozen-phonon-Gamma.log
 
 sed -n '/after computation/,$p' perovskite-frozen-phonon-Gamma.out | grep acell > perovskite-frozen-phonon-Gamma.dat

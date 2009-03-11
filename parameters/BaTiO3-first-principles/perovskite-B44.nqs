@@ -1,5 +1,5 @@
 #!/bin/sh
-mpdtrace || mpdboot
+# mpdtrace || mpdboot
 mpirun -np 4 ./abinip < perovskite-B44.files > perovskite-B44.log
 echo $PWD $0 | mail -s `basename $PWD` takeshi@example.com
 

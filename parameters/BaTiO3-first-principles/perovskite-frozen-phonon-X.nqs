@@ -1,5 +1,5 @@
 #!/bin/sh
-mpdtrace || mpdboot
+# mpdtrace || mpdboot
 mpirun -np 4 ./abinip < perovskite-frozen-phonon-X.files > perovskite-frozen-phonon-X.log
 
 sed -n '/after computation/,$p' perovskite-frozen-phonon-X.out | grep acell > perovskite-frozen-phonon-X.dat

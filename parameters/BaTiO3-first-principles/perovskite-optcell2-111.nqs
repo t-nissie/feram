@@ -1,5 +1,5 @@
 #!/bin/sh
-mpdtrace || mpdboot
+# mpdtrace || mpdboot
 mpirun -np 4 ./abinip-xyz < perovskite-optcell2-111.files > perovskite-optcell2-111.log
 
 echo 'u_x=,u_y=,u_z=   0.00000000   0.00000000   0.00000000' > perovskite-optcell2-111.tmp

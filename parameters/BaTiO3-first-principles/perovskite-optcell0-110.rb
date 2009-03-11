@@ -19,12 +19,12 @@ prtwf 1
 getwfk -1
 prtden 0
 
-ecut 43.0
+ecut 63.0
 ecutsm 3.0
 dilatmx 1.1
 ixc 3
 
-acell 3*7.4434230817
+acell 3*7.4419883555
 
 rprim  1 0 0
        0 1 0
