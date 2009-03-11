@@ -1,8 +1,10 @@
 ! diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2009-02-27 17:11:16 t-nissie>
+! Time-stamp: <2009-03-10 18:00:30 t-nissie>
 ! Author: Takeshi NISHIMATSU
-! Usage: tail -225 SOMEWHERE1/perovskite_o_DS5_DDB | SOMEWHERE2/diagonalize15x15
+! Usage: ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
 !!
+#include "define.h"
+
 program diagonalize15x15
   implicit none
   integer, parameter :: N_ATOM = 5
@@ -19,8 +21,30 @@ program diagonalize15x15
   real*8    rwork(LWORK)                       ! for LAPACK zheev
   real*8    eigenvalues(N_FREEDOM)
   real*8    tmp_r, tmp_i
-  character(len=50) :: fmt_eigen
+  real*8    acell(3)
+  character(len=50)  :: fmt_eigen
+  character(len=50) ::  c0, c1, c2, c3
+  character(len=200) :: str
   logical   all_real
+
+  do
+     read(5, '(a)', IOSTAT=io) str
+     read(str, *, IOSTAT=io) c0, c1, c2, c3
+     if (index(c0,'acell').ne.0) then
+        read(c1,*) acell(1)
+        read(c2,*) acell(2)
+        read(c3,*) acell(3)
+        acell = acell * BOHR_RADIUS
+        write(6,'(a,3f10.5,a)') 'acell = ', acell, ' [Angstrom]'
+     end if
+     if (index(c0,'****')    .ne.0 .and. &
+         index(c1,'Database').ne.0       ) exit
+  end do
+
+  read(5, '(a)', IOSTAT=io) str
+  read(5, '(a)', IOSTAT=io) str
+  read(5, '(a)', IOSTAT=io) str
+  read(5, '(a)', IOSTAT=io) str
 
   all_real = .true.
   do
@@ -29,25 +53,22 @@ program diagonalize15x15
      if (io.ne.0) exit
      if (I<=N_ATOM .and. J<=N_ATOM) then
         !write(6,'(4i4,2i5,2f15.9)') alpha, I, beta, J, 3*(I-1)+alpha, 3*(J-1)+beta , tmp_r, tmp_i
-        Force_Matrix_real_symmetric(3*(I-1)+alpha, 3*(J-1)+beta) = tmp_r
-        Force_Matrix_Hermetian(     3*(I-1)+alpha, 3*(J-1)+beta) = cmplx(tmp_r,tmp_i)
+        Force_Matrix_real_symmetric(3*(I-1)+alpha, 3*(J-1)+beta) = tmp_r              * HARTREE_IN_EV / acell(alpha) / acell(beta)
+        Force_Matrix_Hermetian(     3*(I-1)+alpha, 3*(J-1)+beta) = cmplx(tmp_r,tmp_i) * HARTREE_IN_EV / acell(alpha) / acell(beta)
         if ( abs(tmp_i) > 1.0d-4 ) all_real = .false.
      end if
   end do
 
   if (all_real) then
-     !LAPACK dsyev(JOBZ, UPLO, N,         A,                        LDA,       W,           WORK,  LWORK, INFO)
+     !LAPACK dsyev(JOBZ, UPLO, N,         A,                           LDA,       W,           WORK,  LWORK, INFO)
      call    dsyev('V',  'L',  N_FREEDOM, Force_Matrix_real_symmetric, N_FREEDOM, eigenvalues, rwork, LWORK, info)
      write(fmt_eigen,'(a,i3,a)') '(i2,f11.6,', N_ATOM, '(f10.3,f7.3,f7.3))'
+     write(6,'(a)') 'eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)'
      do j=1,N_FREEDOM
         write(6,fmt_eigen) j, eigenvalues(j), (Force_Matrix_real_symmetric(i,j), i=1,N_FREEDOM)
      end do
-     !write(6,'(a)') 'eigenvalues [eV/Angstrom^2] and eigenvectors of the force constant matrix at the Gamma point for BaTiO3 (a0=3.93889 [Angstrom])'
-     !do j=1,N_FREEDOM
-     !   write(6,fmt_eigen) j, eigenvalues(j)*27.21138386/3.93889**2, (Force_Matrix_real_symmetric(i,j), i=1,N_FREEDOM)
-     !end do
   else
-     !LAPACK zheev(JOBZ,UPLO,N,        A,                  LXL,      W,          WORK,LWORK,RWORK,INFO)
+     !LAPACK zheev(JOBZ,UPLO,N,        A,                     LDA,      W,          WORK,LWORK,RWORK,INFO)
      call    zheev('V', 'L', N_FREEDOM,Force_Matrix_Hermetian,N_FREEDOM,eigenvalues,work,LWORK,rwork,info)
      write(fmt_eigen,'(a,i3,a)') "(i2,f11.6,", N_ATOM, "((f8.2,f5.2)(f6.2,f5.2)(f6.2,f5.2)))"
      do j=1,N_FREEDOM
@@ -57,5 +78,5 @@ program diagonalize15x15
 end program diagonalize15x15
 
 !local variables:
-!  compile-command: "make -k diagonalize15x15 && tail -324 10example-PbTiO3-DDB2short/perovskite-Gamma_o_DS3_DDB | ./diagonalize15x15"
+!  compile-command: "make -k diagonalize15x15 && ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB"
 !End:
