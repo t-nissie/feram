@@ -1,5 +1,5 @@
 ! DDB2short.F -*-f90-*-
-! Time-stamp: <2009-01-02 13:10:47 takeshi>
+! Time-stamp: <2009-03-13 22:10:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -71,13 +71,13 @@ program DDB2short
                  4.0d0, -4.0d0, -4.0d0,  4.0d0,  4.0d0, -4.0d0,  0.0d0,  1.0d0, &
                  0.0d0,  0.0d0,  0.0d0,  0.0d0,  0.0d0,  0.0d0, -4.0d0, -2.0d0/),(/8,8/))
 
-  b(1) = p%DDB_a * HARTREE_IN_EV / p%a0**2  -  ( -4.188790 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(a) 4*pi/3
-  b(2) = p%DDB_b * HARTREE_IN_EV / p%a0**2  -  (  9.687445 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(b)
-  b(3) = p%DDB_c * HARTREE_IN_EV / p%a0**2  -  ( -4.843723 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(c)
-  b(4) = p%DDB_d * HARTREE_IN_EV / p%a0**2  -  ( -5.353578 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(d)
-  b(5) = p%DDB_e * HARTREE_IN_EV / p%a0**2  -  (  2.676787 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(e)
-  b(6) = p%DDB_f * HARTREE_IN_EV / p%a0**2  -  (  0.0      * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(f)
-  b(7) = p%DDB_g * HARTREE_IN_EV / p%a0**2  -  (  5.864529 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(g)
+  b(1) = p%DDB_a  -  ( -4.188790 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(a) 4*pi/3
+  b(2) = p%DDB_b  -  (  9.687445 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(b)
+  b(3) = p%DDB_c  -  ( -4.843723 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(c)
+  b(4) = p%DDB_d  -  ( -5.353578 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(d)
+  b(5) = p%DDB_e  -  (  2.676787 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(e)
+  b(6) = p%DDB_f  -  (  0.0      * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(f)
+  b(7) = p%DDB_g  -  (  5.864529 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(g)
   b(8) = 0.0d0
 
   b(:) = 0.5d0 * b(:)
