@@ -19,10 +19,10 @@ You may find latest version of this document in http://loto.sourceforge.net/fera
 
 == Equilibrium lattice constant a0
 With BaTiO3-first-principles/perovskite-a0.in and BaTiO3-first-principles/perovskite-a0.files,
-you can determine the equilibrium lattice constant a0. For example, execute abinip with
+we can determine the equilibrium lattice constant a0. For example, execute abinip with
  % mpirun -np 4 ./abinip < perovskite-a0.files > perovskite-a0.log
 or
- % ./perovskite-a0.nqs
+ % sh perovskite-a0.nqs
 where BaTiO3-first-principles/perovskite-a0.nqs is a script for the NQS (Network Queueing System).
 With this calculation, we determine that
  a0 = 3.93813 [Angstrom] = 7.4419883555 [Bohr].
@@ -33,11 +33,12 @@ BaTiO3-first-principles/perovskite-B1112.in,
 BaTiO3-first-principles/perovskite-B1112.files,
 BaTiO3-first-principles/perovskite-B1112.nqs and
 BaTiO3-first-principles/perovskite-B1112.gp files,
-you can determine elastic constants B11 and B12.
+we can determine elastic constants B11 and B12.
 Note that the previous result a0=7.4419883555 [Bohr] is used in
 BaTiO3-first-principles/perovskite-B1112.in.
- % ./perovskite-B1112.nqs   # perovskite-B1112.dat1 and perovskite-B1112.dat1 will be made.
- % ./perovskite-B1112.gp
+ % emacs perovskite-B1112.in   # Write a0 for the acell parameter.
+ % sh perovskite-B1112.nqs      # perovskite-B1112.dat1 and perovskite-B1112.dat1 will be made.
+ % gnuplot perovskite-B1112.gp
        :
  DATASET 1 -- 9
  a0 = 7.44212363843752 [Bohr] = 3.9382022108118 [Angstrom]
@@ -58,14 +59,15 @@ Fig. 1 BaTiO3-first-principles/perovskite-B1112.jpg
   (b) Strain e_xx dependence of Etot-E_0.
 /Fig.
 
-You can also check a value of B11-B12 with files of
+We can also check a value of B11-B12 with files of
 BaTiO3-first-principles/perovskite-B11-12.in,
 BaTiO3-first-principles/perovskite-B11-12.files,
 BaTiO3-first-principles/perovskite-B11-12.nqs,
 BaTiO3-first-principles/perovskite-B11-12.delta and
 BaTiO3-first-principles/perovskite-B11-12.gp as follows:
- % ./perovskite-B11-12.nqs   # perovskite-B11-12.dat will be made.
- % ./perovskite-B11-12.gp
+ % emacs perovskite-B11-12.in   # Write a0 for the acell parameter.
+ % sh perovskite-B11-12.nqs     # perovskite-B11-12.dat will be made.
+ % gnuplot perovskite-B11-12.gp
        :
  B11-B12 = 91.6975260285724 [eV]
  % gv perovskite-B11-12.eps
@@ -80,8 +82,9 @@ BaTiO3-first-principles/perovskite-B44.files,
 BaTiO3-first-principles/perovskite-B44.nqs,
 BaTiO3-first-principles/perovskite-B44.delta and
 BaTiO3-first-principles/perovskite-B44.gp  files as follows:
- % ./perovskite-B44.nqs   # perovskite-B44.dat will be made.
- % ./perovskite-B44.gp
+ % emacs perovskite-B44in   # Write a0 for the acell parameter.
+ % sh perovskite-B44.nqs    # perovskite-B44.dat will be made.
+ % gnuplot perovskite-B44.gp
        :
  B44 = 51.2750883179845 [eV]
  % gv perovskite-B44.eps
@@ -115,20 +118,21 @@ This brdmin.patch is applicable to abinit-5.6.5.
 
 === Input file generator
 Generate input files with each ruby script in the directory BaTiO3-first-principles.
- % ./perovskite-optcell0-001.rb   # => perovskite-optcell0-001.in
- % ./perovskite-optcell0-110.rb   # => perovskite-optcell0-110.in
- % ./perovskite-optcell0-111.rb   # => perovskite-optcell0-111.in
- % ./perovskite-optcell2-001.rb   # => perovskite-optcell2-001.in
- % ./perovskite-optcell2-110.rb   # => perovskite-optcell2-110.in
- % ./perovskite-optcell2-111.rb   # => perovskite-optcell2-111.in
+ % emacs perovskite-optcell*.rb      # Write a0 for the acell parameter.
+ % ruby perovskite-optcell0-001.rb   # => perovskite-optcell0-001.in
+ % ruby perovskite-optcell0-110.rb   # => perovskite-optcell0-110.in
+ % ruby perovskite-optcell0-111.rb   # => perovskite-optcell0-111.in
+ % ruby perovskite-optcell2-001.rb   # => perovskite-optcell2-001.in
+ % ruby perovskite-optcell2-110.rb   # => perovskite-optcell2-110.in
+ % ruby perovskite-optcell2-111.rb   # => perovskite-optcell2-111.in
 
 === Computation
- % ./perovskite-optcell0-001.nqs
- % ./perovskite-optcell0-110.nqs
- % ./perovskite-optcell0-111.nqs
- % ./perovskite-optcell2-001.nqs
- % ./perovskite-optcell2-110.nqs
- % ./perovskite-optcell2-111.nqs
+ % sh perovskite-optcell0-001.nqs   # results in perovskite-optcell0-001.dat
+ % sh perovskite-optcell0-110.nqs   # results in perovskite-optcell0-110.dat
+ % sh perovskite-optcell0-111.nqs   # results in perovskite-optcell0-111.dat
+ % sh perovskite-optcell2-001.nqs   # results in perovskite-optcell2-001.dat
+ % sh perovskite-optcell2-110.nqs   # results in perovskite-optcell2-110.dat
+ % sh perovskite-optcell2-111.nqs   # results in perovskite-optcell2-111.dat
 
 === P_alpha and P_gamma
 Actually, the calculation of perovskite-optcell0-110 is not necessary to
@@ -136,7 +140,8 @@ determine P_alpha and P_gamma. But it can be a good test case.
 In BaTiO3-first-principles/perovskite-optcell0.gp, previously determined
 E_0 (total energy of the centro-symmetric structure) should be written.
 
- % ./perovskite-optcell0.gp
+ % emacs perovskite-optcell0.gp
+ % gnuplot perovskite-optcell0.gp
        :
  P_alpha = 97.2018664031588 [eV/Angstrom^4]
  P_gamma = -140.106921118426 [eV/Angstrom^4]
@@ -150,11 +155,12 @@ Fig. 4 BaTiO3-first-principles/perovskite-optcell0.jpg
 
 === B1xx, B1yy and B4yz
 Actually, only perovskite-optcell2-110 is necessary to determine B1xx,
-B1yy and B4yz. But you can trace the double-well potentials of
+B1yy and B4yz. But we can trace the double-well potentials of
 perovskite-optcell2-001 and perovskite-optcell2-111 with the newly
 determined parameters. Previously determined parameters should be written
 in BaTiO3-first-principles/perovskite-optcell2.gp.
- % ./perovskite-optcell2.gp
+ % emacs perovskite-optcell2.gp
+ % gnuplot perovskite-optcell2.gp
        :
  B1xx = -208.738728846023 [eV/Angstrom^2]
  B1yy = -11.3402211966456 [eV/Angstrom^2]
@@ -168,18 +174,14 @@ Fig. 5 BaTiO3-first-principles/perovskite-optcell2.jpg
   for [001], [110] and [111] distortions. They have good agreements with calculated values.
 /Fig.
 
-== Self interaction P_kappa2 and nearest neighbor interactions j1, ..., j7
-We determine self interaction P_kappa2 and short range interactions j1, ..., j7 in the
-way described in [W. Zhong and David Vanderbilt and Karin M. Rabe: Phys. Rev. B vol.52
-pp.6301-6312 (1995)]. First, we should note an erratum of TABLE I in that article:
 
- incorrect: (e) k2+j2-2j4+4j6
- correct:   (e) k2-j2-2j4+4j6
-
-In this document, we use the interatomic force constant (IFC) matrices (See
+== Response-function calculations
+We perform some response-function calculations with ABINIT (RF calculations,
+See http://www.abinit.org/Infos_v5.6/tutorial/lesson_rf1.html and
 [Xavier Gonze and Chngyol Lee: Phys. Rev B vol.55, pp.10355-10368 (1997)
-http://dx.doi.org/10.1103/PhysRevB.55.10355 ]) and their eigenvalues
-calculated with the linear response method. Hence, we do NOT move ions explicitly.
+http://dx.doi.org/10.1103/PhysRevB.55.10355 ]) to determine optical dielectric
+constant epsilon_inf, effective charge Z_star, effective  mass mass_amu,
+self interaction P_kappa2, and short range interactions j1, ..., j7.
 
 === Input files
 In [W. Zhong and David Vanderbilt and Karin M. Rabe: Phys. Rev. B vol.52 pp.6301-6312
@@ -192,27 +194,49 @@ Fig. 6 a2f.jpg
   calculated interaction energies and these pure dipole-dipole interaction energy (values
   are written in the figure) are the short range interaction, i.e., P_kappa2 and j1, ..., j7.
 /Fig.
-Therefore, we have to calculate force constant matrices
-at the Gamma, X, M and R points and at the center of the Sigma axis. Input fies are
+We calculate interatomic force constant (IFC) matrices at the Gamma, X, M and
+R points and at the center of the Sigma axis. Input fies are
 BaTiO3-first-principles/force-constant-matrix/perovskite-Gamma.in,
 BaTiO3-first-principles/force-constant-matrix/perovskite-M.in,
 BaTiO3-first-principles/force-constant-matrix/perovskite-R.in,
 BaTiO3-first-principles/force-constant-matrix/perovskite-Sigma.in and
 BaTiO3-first-principles/force-constant-matrix/perovskite-X.in.
+Write determined a0 for the acell parameters in each .in file.
 We also prepare BaTiO3-first-principles/force-constant-matrix/Makefile.
 
 === Execution
-Each job takes 3 days with 2 GHz CPU and up to 4 GB memory.
-Adjust the number of jobs in the option for make command according to your computer resources.
+Each job takes around 7 days with 2 GHz CPUs and up to 4 GB memory.
+Adjust the number of jobs for the -j option for make command according
+to your computer resources.
  % cd BaTiO3-first-principles/force-constant-matrix/
  % make -n      # Print the commands that would be executed, but do not execute them.
  % make -j 4    # Execute jobs up to 4.
 
-=== Diagonalization
-Let's find the eigenvalues.
- % make diagonalize
- ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
-      :
+=== Optical dielectric constant epsilon_inf
+Optical dielectric constant tensor is calculated in the perovskite-Gamma.in calculation.
+ % less perovskite-Gamma.out
+       :
+  Dielectric tensor, in cartesian coordinates,
+     j1       j2             matrix element
+  dir pert dir pert     real part    imaginary part
+
+   1    7   1    7         8.5342243492         0.0000000000
+   1    7   2    7         0.0000000000         0.0000000000
+   1    7   3    7         0.0000000000         0.0000000000
+
+   2    7   1    7         0.0000000000         0.0000000000
+   2    7   2    7         8.5342243492         0.0000000000
+   2    7   3    7         0.0000000000         0.0000000000
+
+   3    7   1    7         0.0000000000         0.0000000000
+   3    7   2    7         0.0000000000         0.0000000000
+   3    7   3    7         8.5342243492         0.0000000000
+
+=== Analysis of the perovskite-Gamma.in calculation
+Output file perovskite-Gamma_o_DS3_DDB have the IFC matrix at the Gamma point.
+We can read this file and diagonalize the IFC matirx with src/diagonalize15x15.F
+program.
+ % ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
  acell =    3.93813   3.93813   3.93813 [Angstrom]
  eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)
   1  -0.598140    -0.217  0.000  0.003    -0.752  0.000  0.010     0.488 -0.000 -0.004     0.273 -0.000 -0.004     0.273 -0.000 -0.007
@@ -230,31 +254,12 @@ Let's find the eigenvalues.
  13  14.562046     0.000 -0.000  0.131    -0.001  0.000 -0.222    -0.003 -0.000  0.424     0.002  0.000  0.424     0.002 -0.000 -0.758
  14  14.562046    -0.131 -0.000  0.000     0.222  0.000 -0.001     0.758 -0.000  0.002    -0.424  0.000  0.002    -0.424 -0.000 -0.003
  15  14.562048    -0.000  0.131  0.000     0.000 -0.222 -0.000     0.000  0.424  0.000    -0.000 -0.758  0.000    -0.000  0.424 -0.000
- ./diagonalize15x15 < perovskite-X_o_DS1_DDB
- acell =    3.93813   3.93813   3.93813 [Angstrom]
- eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)
-  1   0.666778     0.000  0.000  0.000    -0.000 -0.795  0.000     0.000  0.000  0.000    -0.000  0.482 -0.000    -0.000  0.368 -0.000
-  2   0.666844    -0.000  0.000 -0.000     0.000 -0.000 -0.795    -0.000  0.000  0.000     0.000  0.000  0.368     0.000  0.000  0.482
-  3   3.411123     0.000  0.000  0.000     0.000  0.000 -0.574     0.000  0.000 -0.000     0.000  0.000 -0.716    -0.000  0.000 -0.398
-  4   3.411171    -0.000 -0.000 -0.000     0.000  0.574  0.000    -0.000 -0.000 -0.000     0.000  0.398  0.000     0.000  0.716  0.000
-  5   5.994207    -0.000 -0.021 -0.705     0.000 -0.000 -0.000    -0.000 -0.021 -0.709    -0.000 -0.000 -0.000     0.000 -0.000 -0.000
-  6   5.994207    -0.000 -0.705  0.021    -0.000 -0.000 -0.000     0.000 -0.709  0.021    -0.000 -0.000 -0.000    -0.000 -0.000  0.000
-  7   6.596721     0.000  0.000 -0.000     0.000 -0.000  0.000     0.000 -0.000 -0.000     0.707 -0.000  0.000    -0.707  0.000 -0.000
-  8   6.942539    -0.000 -0.000  0.000     0.359 -0.000  0.000    -0.000 -0.000 -0.000     0.660  0.000  0.000     0.660 -0.000 -0.000
-  9   7.839055    -0.000  0.013  0.709    -0.000 -0.000 -0.000    -0.000 -0.013 -0.705    -0.000 -0.000  0.000    -0.000 -0.000  0.000
- 10   7.839055    -0.000  0.709 -0.013     0.000 -0.000 -0.000    -0.000 -0.705  0.013    -0.000  0.000 -0.000     0.000 -0.000  0.000
- 11  12.021427     0.930  0.000  0.000    -0.000  0.000  0.000     0.369 -0.000 -0.000     0.000 -0.000 -0.000     0.000  0.000  0.000
- 12  12.758436     0.000  0.000  0.000    -0.000 -0.000 -0.199     0.000 -0.000 -0.000    -0.000 -0.000  0.593    -0.000  0.000 -0.780
- 13  12.758454    -0.000  0.000  0.000     0.000 -0.199  0.000    -0.000 -0.000  0.000     0.000 -0.780 -0.000     0.000  0.593  0.000
- 14  30.377420    -0.369  0.000  0.000    -0.000  0.000  0.000     0.930 -0.000  0.000     0.000  0.000  0.000     0.000 -0.000  0.000
- 15  37.027427     0.000  0.000 -0.000    -0.933 -0.000 -0.000    -0.000 -0.000 -0.000     0.254 -0.000 -0.000     0.254  0.000  0.000
-      :
 
 Here, confirm that average kappa = -0.284320 [eV/Angstrom^2] calculated by
-perovskite-optcell0.gp is the approximately half value of the soft mode
-eigenvalues -0.598140 [eV/Angstrom^2] at the Gamma point.
+perovskite-optcell0.gp is the approximately half value of the Gamma_15 soft
+mode eigenvalues -0.598140 [eV/Angstrom^2] at the Gamma point.
 
-You can also check them with frozen phonon calculations at the Gamma and X points.
+We can also check them with frozen phonon calculations at the Gamma.
  % ./perovskite-frozen-phonon-Gamma.nqs
  % feram-X.YY.ZZ/src/frozen_phonon_Gamma
  a0 =   3.9381305 [Angstrom]
@@ -264,6 +269,57 @@ You can also check them with frozen phonon calculations at the Gamma and X point
  3   4.913700  -0.0000  -0.0000   0.7071  -0.7071   0.0000
  4   9.596764   0.8541  -0.4064  -0.2293  -0.2293   0.0095
  5  14.559819  -0.1307   0.2214  -0.4240  -0.4240   0.7578
+
+It should also be mentioned that, in the case of BaTiO3, the eigenvector of the
+Gamma_15 soft mode and the direction to the minimum are similar.
+ % sh perovskite-tetragonal.nqs   # full optimization in tetragonal
+ % sed -n '/after computation/,$p' perovskite-tetragonal.out | grep -A 4 'xred'
+       xred    0.0000000000E+00  0.0000000000E+00  3.2125004562E-03
+               5.0000000000E-01  5.0000000000E-01  5.0966444353E-01
+               0.0000000000E+00  5.0000000000E-01  4.9659175896E-01
+               5.0000000000E-01  0.0000000000E+00  4.9659175896E-01
+               5.0000000000E-01  5.0000000000E-01 -6.0604619126E-03
+#(    3.2125004562E-03
+#  (- 5.0966444353E-01 0.5)
+#  (- 4.9659175896E-01 0.5)
+#  (- 4.9659175896E-01 0.5)
+#    -6.0604619126E-03 )
+Thus, with normalization,
+         0.???
+         0.???
+ xi_z = -0.???
+        -0.???
+        -0.???
+is the direction to the minimum.
+
+
+
+ In the case of PbTiO3, the direction to the minimum may be a
+better choice than the eigenvector of the Gamma_15 soft mode to determine the
+Z_star.
+
+
+=== Self interaction P_kappa2 and nearest neighbor interactions j1, ..., j7
+First, we should note an erratum of TABLE I in [W. Zhong and David Vanderbilt and
+Karin M. Rabe: Phys. Rev. B vol.52 pp.6301-6312 (1995)].
+
+ incorrect: (e) k2+j2-2j4+4j6
+ correct:   (e) k2-j2-2j4+4j6
+
+In this document, we use the interatomic force constant (IFC) matrices (See
+) and their eigenvalues
+calculated with the linear response method. Hence, we do NOT move ions explicitly.
+
+Convert from the set of eigenvalues to P_kappa2 and j1, ..., j7
+
+Select seven eigenvalues corresponding to the (a)-(g), according to the
+eigenvectors. There is a difficulty in this selection, because we employ
+coarse-graining and reduce the number of freedom from 15 to 6 per unit cell.
+There may be no 1-to-1 correspondence. Edit an input file
+BaTiO3-first-principles/force-constant-matrix/DDB2short.in for the
+DDB2shor program.
+
+
  % ./perovskite-frozen-phonon-X.nqs
  % feram-X.YY.ZZ/src/frozen_phonon_X
  acell =   7.8762610  3.9381305  3.9381305 [Angstrom]
@@ -286,19 +342,12 @@ You can also check them with frozen phonon calculations at the Gamma and X point
  15  37.008298     0.000 -0.000  0.000     0.933  0.000  0.000     0.000  0.000  0.000    -0.254  0.000 -0.000    -0.254 -0.000  0.000
 
 
-=== Convert from the set of eigenvalues to P_kappa2 and j1, ..., j7
-Select seven eigenvalues corresponding to the (a)-(g), according to the
-eigenvectors. There is a difficulty in this selection, because we employ
-coarse-graining and reduce the number of freedom from 15 to 6 per unit cell.
-There may be no 1-to-1 correspondence. Edit an input file
-BaTiO3-first-principles/force-constant-matrix/DDB2short.in for the
-DDB2shor program.
 
 DDB2short
 
 
 == Effective charge Z_star
-You can find the calculated Born effective charges for each atom in the
+We can find the calculated Born effective charges for each atom in the
 file of BaTiO3-first-principles/force-constant-matrix/perovskite-Gamma.out.
 There are two ways of calculations of effective charges,
 (from electric field response) and (from phonon response).
@@ -325,7 +374,7 @@ They must have similar values.
     3    5   3    7        -5.7523023000         0.0000000000
        :
 
-You can also find the eigenvector of the Gamma_15 soft mode when you
+We can also find the eigenvector of the Gamma_15 soft mode when we
 diagonalize the force constant matrix.
  % tail -324 perovskite-Gamma_o_DS3_DDB | ./diagonalize15x15
        :
@@ -334,7 +383,7 @@ diagonalize the force constant matrix.
   3  -0.567097    -0.000 -0.237 -0.000    -0.000 -0.788 -0.000     0.000  0.237  0.000     0.000  0.460  0.000     0.000  0.237  0.000
        :
 
-From these values, you can determine the Born effective charges of the
+From these values, we can determine the Born effective charges of the
 soft mode.
  Z_star = 10.09
  = 2.7733243489 *  0.237
@@ -343,24 +392,6 @@ soft mode.
   -2.1680389415 * -0.237
   -5.7523023000 * -0.460
 
-It should be mentioned that, in the case of BaTiO3,  the eigenvector of the
-Gamma_15 soft mode and the direction to the minimum are similar.
- % ./perovskite-tetragonal.nqs   # full optimization in tetragonal
- % sed -n '/after computation/,$p' perovskite-tetragonal.out | grep -A 4 'xred'
-       xred    0.0000000000E+00  0.0000000000E+00  3.2845524333E-03
-               5.0000000000E-01  5.0000000000E-01  5.0987532714E-01
-               0.0000000000E+00  5.0000000000E-01  4.9651372167E-01
-               5.0000000000E-01  0.0000000000E+00  4.9651372167E-01
-               5.0000000000E-01  5.0000000000E-01 -6.1873229230E-03
-Thus, with normalization,
-         0.251
-         0.755
- xi_z = -0.267
-        -0.267
-        -0.473
-is the direction. In the case of PbTiO3, the direction to the minimum may be a
-better choice than the eigenvector of the Gamma_15 soft mode to determine the
-Z_star.
 
 == Effective mass mass_amu
 The effective mass for dipole is also determined from the eigenvector
@@ -368,25 +399,7 @@ of the Gamma_15 soft mode (or the direction to the minimum).
  mass_amu = 42.619 = 137.327*0.237**2 + 47.867*0.788**2 + 15.9994*(0.237**2+0.237**2+0.460**2)
 
 
-== Optical dielectric constant epsilon_inf
-Optical dielectric constant tensor was automatically calculated in the previous phonon calculation.
- % less perovskite-Gamma.out
-       :
-  Dielectric tensor, in cartesian coordinates,
-     j1       j2             matrix element
-  dir pert dir pert     real part    imaginary part
-  
-   1    7   1    7         8.5342243492         0.0000000000
-   1    7   2    7         0.0000000000         0.0000000000
-   1    7   3    7         0.0000000000         0.0000000000
-  
-   2    7   1    7         0.0000000000         0.0000000000
-   2    7   2    7         8.5342243492         0.0000000000
-   2    7   3    7         0.0000000000         0.0000000000
-  
-   3    7   1    7         0.0000000000         0.0000000000
-   3    7   2    7         0.0000000000         0.0000000000
-   3    7   3    7         8.5342243492         0.0000000000
+
 
 
 == Author of this document
