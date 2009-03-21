@@ -1,11 +1,11 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2009-02-26 14:56:17 t-nissie>
+# Time-stamp: <2009-03-21 18:49:54 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
-bin_PROGRAMS = feram diagonalize15x15 DDB2short frozen_phonon_Gamma frozen_phonon_X
+bin_PROGRAMS = feram diagonalize15x15 displacement DDB2short frozen_phonon_Gamma frozen_phonon_X
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -45,6 +45,8 @@ feram_DEPENDENCIES =   ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
 diagonalize15x15_SOURCES = diagonalize15x15.F
 diagonalize15x15_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
 diagonalize15x15_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
+
+displacement_SOURCES = displacement.F
 
 DDB2short_SOURCES = DDB2short.F msg.F param_module.F
 DDB2short_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
