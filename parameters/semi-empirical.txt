@@ -61,7 +61,7 @@ eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force 
  5  13.639128  -0.2121   0.3617  -0.4185  -0.4185   0.6884
 
  % ../../src/displacement < perovskite-tetragonal.out
- xred     0.000  0.000  0.000  0.000  0.000     0.000  0.000  0.000  0.000  0.000     0.251  0.755 -0.266 -0.266 -0.474
+ xred     0.000  0.000  0.000  0.000  0.000     0.000  0.000  0.000  0.000  0.000    ???????????????????????
 
 === Effective charge Z_star and effective mass mass_amu
  % less perovskite-Gamma.out

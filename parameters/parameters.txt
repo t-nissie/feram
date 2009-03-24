@@ -233,10 +233,30 @@ Optical dielectric constant tensor is calculated in the perovskite-Gamma.in calc
    3    7   2    7         0.0000000000         0.0000000000
    3    7   3    7         8.5342243492         0.0000000000
 
-=== Analysis of the perovskite-Gamma.in calculation
-Output file perovskite-Gamma_o_DS3_DDB have the IFC matrix at the Gamma point.
-We can read this file and diagonalize the IFC matirx with src/diagonalize15x15.F
-program.
+=== Analysis of the soft mode
+The direction to the minimum can be calculated with input files of
+BaTiO3-first-principles/perovskite-tetragonal.in,
+BaTiO3-first-principles/perovskite-tetragonal.files and
+BaTiO3-first-principles/perovskite-tetragonal.nqs.
+The program src/displacement.F help you to calculate the normalized vector.
+ % sh perovskite-tetragonal.nqs   # full optimization in tetragonal
+ % sed -n '/after computation/,$p' perovskite-tetragonal.out | grep -A 4 'xred'
+       xred    0.0000000000E+00  0.0000000000E+00  3.2125004562E-03
+               5.0000000000E-01  5.0000000000E-01  5.0966444353E-01
+               0.0000000000E+00  5.0000000000E-01  4.9659175896E-01
+               5.0000000000E-01  0.0000000000E+00  4.9659175896E-01
+               5.0000000000E-01  5.0000000000E-01 -6.0604619126E-03
+ % ../../src/displacement < perovskite-tetragonal.out
+ xred     0.000  0.000  0.000  0.000  0.000     0.000  0.000  0.000  0.000  0.000     0.251  0.755 -0.266 -0.266 -0.474
+In the case of BaTiO3, this "direction to the minimum" and the eigenvector
+of the Gamma_15 soft mode are similar. In the case of PbTiO3, they may be
+defferent from each other. We use this "direction to the minimum" for
+determination of effective charge Z_star and the effective mass in the
+both cases.
+
+Let us check the Gamma_15 soft mode. Output file perovskite-Gamma_o_DS3_DDB
+have the IFC matrix at the Gamma point. We can read this file and diagonalize
+the IFC matirx with src/diagonalize15x15.F program.
  % ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
  acell =    3.93813   3.93813   3.93813 [Angstrom]
  eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)
@@ -271,26 +291,6 @@ We can also check them with frozen phonon calculations at the Gamma.
  4   9.596764   0.8541  -0.4064  -0.2293  -0.2293   0.0095
  5  14.559819  -0.1307   0.2214  -0.4240  -0.4240   0.7578
 
-It should also be mentioned that, in the case of BaTiO3, the eigenvector of the
-Gamma_15 soft mode and the direction to the minimum are similar. The direction
-to the minimum can be calculated with input files of
-BaTiO3-first-principles/perovskite-tetragonal.in,
-BaTiO3-first-principles/perovskite-tetragonal.files and
-BaTiO3-first-principles/perovskite-tetragonal.nqs.
-The program src/displacement.F may help you to calculate the normalized vector.
- % sh perovskite-tetragonal.nqs   # full optimization in tetragonal
- % sed -n '/after computation/,$p' perovskite-tetragonal.out | grep -A 4 'xred'
-       xred    0.0000000000E+00  0.0000000000E+00  3.2125004562E-03
-               5.0000000000E-01  5.0000000000E-01  5.0966444353E-01
-               0.0000000000E+00  5.0000000000E-01  4.9659175896E-01
-               5.0000000000E-01  0.0000000000E+00  4.9659175896E-01
-               5.0000000000E-01  5.0000000000E-01 -6.0604619126E-03
- % ../../src/displacement < perovskite-tetragonal.out
- xred     0.000  0.000  0.000  0.000  0.000     0.000  0.000  0.000  0.000  0.000     0.251  0.755 -0.266 -0.266 -0.474
-
-In the case of PbTiO3, the direction to the minimum may be a
-better choice than the eigenvector of the Gamma_15 soft mode to determine the
-effective charge Z_star and the effective mass.
 
 === Effective charge Z_star and effective mass mass_amu
 We can find the calculated Born effective charges for each atom in the
@@ -320,33 +320,36 @@ They must have similar values.
     3    5   3    7        -5.7451118975         0.0000000000
        :
 
-Now, using the eigenvector of the Gamma_15 soft mode, which was calculated
-in the previous section, we determin the effective charge Z_star and the
+Now, using the direction to the minimum, which was calculated in the
+previous section, we determin the effective charge Z_star and the
 effective mass mass_amu.
 
  Z_star = 10.09
- = 2.7740722677 *  0.217
-  +7.3100651121 *  0.752
-  -2.1687283338 * -0.273
-  -2.1687283338 * -0.273
-  -5.7451118975 * -0.488
+ = 2.7740722677 *  0.251
+  +7.3100651121 *  0.755
+  -2.1687283338 * -0.266
+  -2.1687283338 * -0.266
+  -5.7451118975 * -0.474
 
- mass_amu = 39.73 = 137.327*0.217**2 + 47.867*0.752**2 + 15.9994*(0.273**2+0.273**2+0.488**2)
+ mass_amu = 41.80 = 137.327*0.251**2 + 47.867*0.755**2 + 15.9994*(0.266**2+0.266**2+0.474**2)
 
 === Self interaction P_kappa2 and nearest neighbor interactions j1, ..., j7
-First, we should note an erratum of TABLE I in [W. Zhong and David Vanderbilt and
+First, we should point out two errata of TABLE I in [W. Zhong, David Vanderbilt and
 Karin M. Rabe: Phys. Rev. B vol.52 pp.6301-6312 (1995)].
 
  incorrect: (e) k2+j2-2j4+4j6
  correct:   (e) k2-j2-2j4+4j6
 
+ incorrect: (g) k2/2+j1-2j5-4j7
+ correct:   (g) k2  +j1-2j5-4j7
+
 Let's see the eigenvalues and eigenvectors at each k-point.
- % ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
+ 0.00 0.00 0.00 % ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
  acell =    3.93813   3.93813   3.93813 [Angstrom]
  eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)
-  1  -0.598140    -0.217  0.000  0.003    -0.752  0.000  0.010     0.488 -0.000 -0.004     0.273 -0.000 -0.004     0.273 -0.000 -0.007
-  2  -0.598140     0.003 -0.000  0.217     0.010 -0.000  0.752    -0.007  0.000 -0.273    -0.004  0.000 -0.273    -0.004  0.000 -0.488
-  3  -0.598138     0.000  0.217 -0.000     0.000  0.752 -0.000    -0.000 -0.273  0.000    -0.000 -0.489  0.000    -0.000 -0.273  0.000
+  1a -0.598140    -0.217  0.000  0.003    -0.752  0.000  0.010     0.488 -0.000 -0.004     0.273 -0.000 -0.004     0.273 -0.000 -0.007
+  2a -0.598140     0.003 -0.000  0.217     0.010 -0.000  0.752    -0.007  0.000 -0.273    -0.004  0.000 -0.273    -0.004  0.000 -0.488
+  3a -0.598138     0.000  0.217 -0.000     0.000  0.752 -0.000    -0.000 -0.273  0.000    -0.000 -0.489  0.000    -0.000 -0.273  0.000
   4   0.014240     0.001  0.000 -0.455     0.001  0.000 -0.469     0.001  0.000 -0.439     0.001  0.000 -0.439     0.001  0.000 -0.433
   5   0.014240     0.455 -0.000  0.001     0.469 -0.000  0.001     0.433 -0.000  0.001     0.439 -0.000  0.001     0.439 -0.000  0.001
   6   0.014255    -0.000 -0.455 -0.000    -0.000 -0.469 -0.000    -0.000 -0.439 -0.000    -0.000 -0.433 -0.000    -0.000 -0.439 -0.000
@@ -359,11 +362,11 @@ Let's see the eigenvalues and eigenvectors at each k-point.
  13  14.562046     0.000 -0.000  0.131    -0.001  0.000 -0.222    -0.003 -0.000  0.424     0.002  0.000  0.424     0.002 -0.000 -0.758
  14  14.562046    -0.131 -0.000  0.000     0.222  0.000 -0.001     0.758 -0.000  0.002    -0.424  0.000  0.002    -0.424 -0.000 -0.003
  15  14.562048    -0.000  0.131  0.000     0.000 -0.222 -0.000     0.000  0.424  0.000    -0.000 -0.758  0.000    -0.000  0.424 -0.000
- % ./diagonalize15x15 < perovskite-X_o_DS1_DDB
+ 0.50 0.00 0.00 % ./diagonalize15x15 < perovskite-X_o_DS1_DDB
  acell =    3.93813   3.93813   3.93813 [Angstrom]
  eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)
-  1   0.666778     0.000  0.000  0.000    -0.000 -0.795  0.000     0.000  0.000  0.000    -0.000  0.482 -0.000    -0.000  0.368 -0.000
-  2   0.666844    -0.000  0.000 -0.000     0.000 -0.000 -0.795    -0.000  0.000  0.000     0.000  0.000  0.368     0.000  0.000  0.482
+  1c  0.666778     0.000  0.000  0.000    -0.000 -0.795  0.000     0.000  0.000  0.000    -0.000  0.482 -0.000    -0.000  0.368 -0.000
+  2c  0.666844    -0.000  0.000 -0.000     0.000 -0.000 -0.795    -0.000  0.000  0.000     0.000  0.000  0.368     0.000  0.000  0.482
   3   3.411123     0.000  0.000  0.000     0.000  0.000 -0.574     0.000  0.000 -0.000     0.000  0.000 -0.716    -0.000  0.000 -0.398
   4   3.411171    -0.000 -0.000 -0.000     0.000  0.574  0.000    -0.000 -0.000 -0.000     0.000  0.398  0.000     0.000  0.716  0.000
   5   5.994207    -0.000 -0.021 -0.705     0.000 -0.000 -0.000    -0.000 -0.021 -0.709    -0.000 -0.000 -0.000     0.000 -0.000 -0.000
@@ -376,11 +379,11 @@ Let's see the eigenvalues and eigenvectors at each k-point.
  12  12.758436     0.000  0.000  0.000    -0.000 -0.000 -0.199     0.000 -0.000 -0.000    -0.000 -0.000  0.593    -0.000  0.000 -0.780
  13  12.758454    -0.000  0.000  0.000     0.000 -0.199  0.000    -0.000 -0.000  0.000     0.000 -0.780 -0.000     0.000  0.593  0.000
  14  30.377420    -0.369  0.000  0.000    -0.000  0.000  0.000     0.930 -0.000  0.000     0.000  0.000  0.000     0.000 -0.000  0.000
- 15  37.027427     0.000  0.000 -0.000    -0.933 -0.000 -0.000    -0.000 -0.000 -0.000     0.254 -0.000 -0.000     0.254  0.000  0.000
- % ./diagonalize15x15 < perovskite-M_o_DS1_DDB
+ 15b 37.027427     0.000  0.000 -0.000    -0.933 -0.000 -0.000    -0.000 -0.000 -0.000     0.254 -0.000 -0.000     0.254  0.000  0.000
+ 0.50 0.50 0.00 % ./diagonalize15x15 < perovskite-M_o_DS1_DDB
  acell =    3.93813   3.93813   3.93813 [Angstrom]
  eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)
-  1   1.251159    -0.000  0.000  0.000    -0.000 -0.000  0.952     0.000 -0.000 -0.000    -0.000  0.000 -0.000    -0.000 -0.000 -0.306
+  1d  1.251159    -0.000  0.000  0.000    -0.000 -0.000  0.952     0.000 -0.000 -0.000    -0.000  0.000 -0.000    -0.000 -0.000 -0.306
   2   2.777966     0.000  0.000 -0.000     0.000  0.000  0.000     0.000  0.707 -0.000    -0.707 -0.000  0.000     0.000  0.000  0.000
   3   4.475110    -0.000  0.509  0.000     0.370 -0.000  0.000     0.000 -0.000  0.000     0.000 -0.000 -0.000     0.777 -0.000 -0.000
   4   4.475135    -0.509 -0.000 -0.000    -0.000 -0.370 -0.000     0.000  0.000  0.000    -0.000 -0.000 -0.000    -0.000 -0.777 -0.000
@@ -393,9 +396,9 @@ Let's see the eigenvalues and eigenvectors at each k-point.
  11  11.592722    -0.000 -0.000  0.000    -0.000 -0.000  0.000     0.707  0.000  0.000     0.000 -0.707 -0.000     0.000  0.000  0.000
  12  13.306640     0.000 -0.000  0.000     0.000 -0.000 -0.000     0.000 -0.707 -0.000    -0.707 -0.000  0.000    -0.000  0.000 -0.000
  13  32.860162     0.000  0.000 -0.000    -0.000 -0.000 -0.000     0.707  0.000 -0.000     0.000  0.707 -0.000     0.000  0.000 -0.000
- 14  35.331155     0.000 -0.395 -0.000     0.903 -0.000 -0.000     0.000  0.000 -0.000     0.000  0.000 -0.000    -0.171  0.000 -0.000
- 15  35.331162    -0.395 -0.000 -0.000     0.000  0.903 -0.000     0.000 -0.000  0.000    -0.000  0.000  0.000    -0.000 -0.171 -0.000
- % ./diagonalize15x15 < perovskite-R_o_DS1_DDB
+ 14e 35.331155     0.000 -0.395 -0.000     0.903 -0.000 -0.000     0.000  0.000 -0.000     0.000  0.000 -0.000    -0.171  0.000 -0.000
+ 15e 35.331162    -0.395 -0.000 -0.000     0.000  0.903 -0.000     0.000 -0.000  0.000    -0.000  0.000  0.000    -0.000 -0.171 -0.000
+ 0.50 0.50 0.50 % ./diagonalize15x15 < perovskite-R_o_DS1_DDB
  acell =    3.93813   3.93813   3.93813 [Angstrom]
  eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)
   1   2.077394    -0.000  0.000 -0.000     0.000 -0.000  0.000    -0.000 -0.032  0.004     0.032  0.000 -0.706    -0.004  0.706  0.000
@@ -409,11 +412,11 @@ Let's see the eigenvalues and eigenvectors at each k-point.
   9  11.356950    -0.377  0.325  0.000     0.000  0.000  0.000    -0.000 -0.000 -0.400    -0.000  0.000  0.465    -0.400  0.465  0.000
  10  11.356950    -0.325 -0.377  0.000    -0.000  0.000  0.000    -0.000 -0.000  0.465    -0.000  0.000  0.400     0.465  0.400  0.000
  11  11.356963    -0.000 -0.000 -0.497    -0.000 -0.000  0.000     0.000  0.613  0.000     0.613 -0.000  0.000     0.000  0.000 -0.000
- 12  30.233134    -0.000 -0.000 -0.000     0.696 -0.507 -0.508     0.000  0.000  0.000     0.000  0.000  0.000     0.000  0.000  0.000
- 13  30.233134     0.000  0.000 -0.000     0.000  0.707 -0.707    -0.000  0.000 -0.000     0.000 -0.000 -0.000    -0.000  0.000 -0.000
- 14  30.233134     0.000 -0.000 -0.000     0.718  0.492  0.493    -0.000  0.000  0.000     0.000 -0.000 -0.000     0.000 -0.000 -0.000
+ 12f 30.233134    -0.000 -0.000 -0.000     0.696 -0.507 -0.508     0.000  0.000  0.000     0.000  0.000  0.000     0.000  0.000  0.000
+ 13f 30.233134     0.000  0.000 -0.000     0.000  0.707 -0.707    -0.000  0.000 -0.000     0.000 -0.000 -0.000    -0.000  0.000 -0.000
+ 14f 30.233134     0.000 -0.000 -0.000     0.718  0.492  0.493    -0.000  0.000  0.000     0.000 -0.000 -0.000     0.000 -0.000 -0.000
  15  35.953901     0.000 -0.000 -0.000     0.000  0.000  0.000     0.577  0.000  0.000     0.000  0.577 -0.000     0.000 -0.000  0.577
- % ./diagonalize15x15 < perovskite-Sigma_o_DS1_DDB
+ 0.25 0.25 0.00 % ./diagonalize15x15 < perovskite-Sigma_o_DS1_DDB
  acell =    3.93813   3.93813   3.93813 [Angstrom]
   1   0.634171    0.00 0.00 -0.00-0.00  0.20 0.00    0.00 0.00  0.00-0.00 -0.00 0.88    0.00 0.00 -0.00-0.00 -0.10-0.10    0.00 0.00 -0.00-0.00 -0.10-0.10    0.00 0.00  0.00-0.00  0.00-0.38
   2   2.081012    0.32 0.00 -0.32 0.00 -0.00 0.00   -0.00 0.26 -0.00-0.26  0.00-0.00    0.16 0.16 -0.29-0.29 -0.00-0.00    0.29 0.29 -0.16-0.16 -0.00-0.00   -0.00 0.33  0.00-0.33 -0.00-0.00
@@ -429,7 +432,7 @@ Let's see the eigenvalues and eigenvectors at each k-point.
  12  12.889479    0.00 0.00  0.00 0.00 -0.05 0.00   -0.00 0.00  0.00-0.00  0.00 0.21   -0.00-0.00 -0.00-0.00 -0.30-0.30   -0.00-0.00  0.00 0.00 -0.30-0.30   -0.00 0.00  0.00-0.00  0.00 0.77
  13  19.804891    0.08 0.00  0.08-0.00  0.00 0.00    0.00 0.33 -0.00 0.33 -0.00-0.00    0.37 0.37 -0.17-0.17  0.00 0.00   -0.17-0.17  0.37 0.37  0.00 0.00    0.00-0.24  0.00-0.24 -0.00-0.00
  14  21.072458    0.34 0.00 -0.34 0.00  0.00-0.00   -0.00-0.57 -0.00 0.57 -0.00-0.00   -0.13-0.13 -0.05-0.05  0.00 0.00    0.05 0.05  0.13 0.13  0.00 0.00   -0.00 0.15  0.00-0.15 -0.00-0.00
- 15  44.329437   -0.20-0.00 -0.20 0.00 -0.00-0.00    0.00-0.49  0.00-0.49  0.00 0.00    0.31 0.31  0.08 0.08 -0.00-0.00    0.08 0.08  0.31 0.31 -0.00-0.00   -0.00 0.09 -0.00 0.09  0.00 0.00
+ 15g 44.329437   -0.20-0.00 -0.20 0.00 -0.00-0.00    0.00-0.49  0.00-0.49  0.00 0.00    0.31 0.31  0.08 0.08 -0.00-0.00    0.08 0.08  0.31 0.31 -0.00-0.00   -0.00 0.09 -0.00 0.09  0.00 0.00
 
 Here, only one eigenvalue at the Gamma point is negative. This is because
 the lattice constant a_0 determined from first principles is too small.
