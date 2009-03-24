@@ -1,11 +1,11 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2009-03-21 18:49:54 takeshi>
+# Time-stamp: <2009-03-24 22:57:26 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
-bin_PROGRAMS = feram diagonalize15x15 displacement DDB2short frozen_phonon_Gamma frozen_phonon_X
+bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j frozen_phonon_Gamma frozen_phonon_X
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -48,9 +48,9 @@ diagonalize15x15_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
 
 displacement_SOURCES = displacement.F
 
-DDB2short_SOURCES = DDB2short.F msg.F param_module.F
-DDB2short_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
-DDB2short_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
+eigenvalues2j_SOURCES = eigenvalues2j.F msg.F param_module.F
+eigenvalues2j_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
+eigenvalues2j_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
 
 frozen_phonon_Gamma_SOURCES = frozen_phonon_Gamma.F
 frozen_phonon_Gamma_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
@@ -127,7 +127,7 @@ mirror.o fft.o:                 param_module.o
 dipole-dipole-long-range.o:     param_module.o         define.h fft.o
 dipole-dipole-short-range.o:    param_module.o                  fft.o
 dVddi-dipole-dipole.o: energy_module.o param_module.o coord_module.o          fft.o
-print-eigenvalues.o DDB2short.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
+print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:
