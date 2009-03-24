@@ -1,5 +1,5 @@
 ! DDB2short.F -*-f90-*-
-! Time-stamp: <2009-03-13 22:10:24 takeshi>
+! Time-stamp: <2009-03-24 01:27:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -62,7 +62,7 @@ program DDB2short
      call  make_Param(p)
   end do
 
-  A = reshape((/ 1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  0.5d0,  0.0d0, &
+  A = reshape((/ 1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  0.0d0, &
                  2.0d0,  2.0d0,  0.0d0, -2.0d0,  0.0d0, -2.0d0,  1.0d0,  0.0d0, &
                  1.0d0, -1.0d0,  1.0d0,  1.0d0, -1.0d0, -1.0d0,  0.0d0,  0.0d0, &
                  4.0d0, -4.0d0,  0.0d0, -4.0d0,  0.0d0,  4.0d0,  0.0d0,  0.0d0, &
