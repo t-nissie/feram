@@ -1,5 +1,5 @@
 ! displacement.F -*-f90-*-
-! Time-stamp: <2009-04-17 11:05:22 takeshi>
+! Time-stamp: <2009-04-17 16:00:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: ./displacement < perovskite.out
 !!
@@ -14,6 +14,7 @@ program displacement
   do
      read(5, '(a)', IOSTAT=io) str
      if (index(str,'after computation').ne.0) exit
+     if (io.ne.0) stop 'displacement: Could not find "after computation"'
   end do
 
   do
@@ -41,12 +42,12 @@ subroutine xred2displacement(xred_dataset,xred)
                                                          0.5d0,0.0d0,0.5d0, &
                                                          0.5d0,0.5d0,0.0d0/),(/3,5/))
   integer :: i
-  real*8  :: norm, translation
+  real*8  :: norm, translation(3)
 
   disp = xred - centrosymmetric
   do i=1,3
-     translation = sum(disp(i,:))/5
-     disp(i,:) = disp(i,:) - translation
+     translation(i) = sum(disp(i,:))/5
+     disp(i,:) = disp(i,:) - translation(i)
      norm = sum(disp(i,:)*disp(i,:))
      if (norm>1.0d-30) then
         norm = sqrt(norm)
@@ -55,7 +56,12 @@ subroutine xred2displacement(xred_dataset,xred)
      end if
      normalized_disp(i,:) = disp(i,:)/norm
   end do
-  write(6,'(a7,5f7.3,2(f10.3,4f7.3))') xred_dataset, normalized_disp(1,:), normalized_disp(2,:), normalized_disp(3,:)
+  write(6,'(a7,5f7.3,2(f10.3,4f7.3),a,3f13.9)')&
+       xred_dataset,&
+       normalized_disp(1,:),&
+       normalized_disp(2,:),&
+       normalized_disp(3,:),&
+       '    removed translations:', translation(:)
 end subroutine xred2displacement
 
 
