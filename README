@@ -61,12 +61,8 @@ Pronunciation of "feram": Ef-Ee-RaMu
  * Fortran 90 compiler
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
    * Intel Fortran Compiler for GNU/Linux (ifort, version 10.0.025 or higher)  http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
+   * PGI Fortran (pgf95, version 8.0-3 or higher) http://www.pgroup.com/
    * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server  http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
-
-===  Notice on PGI Fortran
-It is found that feram compiled with PGI Fortran 7.0 is slow.
-We are currently working on this problem.
-PGI Fortran (pgf95): http://www.pgroup.com/
 
 === Preferables
  * gnuplot (version 4.2 or higher)

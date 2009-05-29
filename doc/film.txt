@@ -233,7 +233,7 @@ Fig. 1 figures/perovskite-contours.jpg
 
 == Coarse-graining
  * Real perovskite-like system has $15N+6$ degree of freedom
-   * $N$ unit cells in supercell
+   * $N$ unit cells in a supercell
    * 5 atoms per unit cell
    * Each atom can move along 3 directions
    * 6 components of strain

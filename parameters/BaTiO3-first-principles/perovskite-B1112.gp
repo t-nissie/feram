@@ -68,7 +68,7 @@ print 'C12 = ', C12, ' [GPa]'
 #set nomultiplot
 #set output
 #!gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r90x90 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q perovskite-B1112.eps | \
-                                                  pnmcrop -white | cjpeg -quality 90 > perovskite-B1112.jpg
+#                                                  pnmcrop -white | cjpeg -quality 90 > perovskite-B1112.jpg
 
 #Local variables:
 #  compile-command: "gnuplot perovskite-B1112.gp"
