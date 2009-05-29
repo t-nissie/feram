@@ -9,20 +9,20 @@ The +z-polarized and &minus;z-polarized sites are
 denoted by red open squares and blue filled squares, respectively.
 Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
  * (a) l=15, d=1
-   * heating-up   epit-40x40-L015-D1-5.0GPa-heating-animation.gif
-   * cooling-down epit-40x40-L015-D1-5.0GPa-cooling-animation.gif
+   * heating-up   http://ftp.aip.org/epaps/phys_rev_b/E-PRBMDO-78-004830/epit-40x40-L015-D1-5.0GPa-heating-animation.gif
+   * cooling-down http://ftp.aip.org/epaps/phys_rev_b/E-PRBMDO-78-004830/epit-40x40-L015-D1-5.0GPa-cooling-animation.gif
  * (b) l=31, d=1
-   * heating-up   epit-40x40-L031-D1-5.0GPa-heating-animation.gif
-   * cooling-down epit-40x40-L031-D1-5.0GPa-cooling-animation.gif
+   * heating-up   http://ftp.aip.org/epaps/phys_rev_b/E-PRBMDO-78-004830/epit-40x40-L031-D1-5.0GPa-heating-animation.gif
+   * cooling-down http://ftp.aip.org/epaps/phys_rev_b/E-PRBMDO-78-004830/epit-40x40-L031-D1-5.0GPa-cooling-animation.gif
  * (c) l=127, d=1
-   * heating-up   epit-40x40-L127-D1-5.0GPa-heating-animation.gif
-   * cooling-down epit-40x40-L127-D1-5.0GPa-cooling-animation.gif
+   * heating-up   http://ftp.aip.org/epaps/phys_rev_b/E-PRBMDO-78-004830/epit-40x40-L127-D1-5.0GPa-heating-animation.gif
+   * cooling-down http://ftp.aip.org/epaps/phys_rev_b/E-PRBMDO-78-004830/epit-40x40-L127-D1-5.0GPa-cooling-animation.gif
  * (d) l=255, d=1
-   * heating-up   epit-40x40-L255-D1-5.0GPa-heating-animation.gif
-   * cooling-down epit-40x40-L255-D1-5.0GPa-cooling-animation.gif
+   * heating-up   http://ftp.aip.org/epaps/phys_rev_b/E-PRBMDO-78-004830/epit-40x40-L255-D1-5.0GPa-heating-animation.gif
+   * cooling-down http://ftp.aip.org/epaps/phys_rev_b/E-PRBMDO-78-004830/epit-40x40-L255-D1-5.0GPa-cooling-animation.gif
  * (e) l=32, d=0
-   * heating-up   epit-40x40-L032-D0-5.0GPa-heating-animation.gif
-   * cooling-down epit-40x40-L032-D0-5.0GPa-cooling-animation.gif
+   * heating-up   http://ftp.aip.org/epaps/phys_rev_b/E-PRBMDO-78-004830/epit-40x40-L032-D0-5.0GPa-heating-animation.gif
+   * cooling-down http://ftp.aip.org/epaps/phys_rev_b/E-PRBMDO-78-004830/epit-40x40-L032-D0-5.0GPa-cooling-animation.gif
 
 =end
 #
@@ -31,8 +31,6 @@ Used supercell sizes are Lx&times;Ly&times;Lz = 40&times;40&times;2(l+d) .
 require 'rubygems'
 require 'ulmul'
 u=Ulmul.new(1..0)
-u.subs_rules << [  /(heating-up)\s*(\S*\/?\.gif)(\s|$)/,'<a href="\2">\1</a>\3']
-u.subs_rules << [/(cooling-down)\s*(\S*\/?\.gif)(\s|$)/,'<a href="\2">\1</a>\3']
 
 u.parse(ARGF)
 puts u.html(["style.css"],[],"Takeshi Nishimatsu")
