@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2008-10-14 20:17:12 takeshi>
+! Time-stamp: <2009-05-31 14:27:18 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -12,13 +12,16 @@ subroutine initialize_dipoR(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer ix, iy, iz, alpha, ios, dummy_x, dummy_y, dummy_z
-  !integer sign
   real*8 normal_dist
+  character (len=120) :: message
+  character (len=120) :: restart_fn
   external normal_dist
   call msg(6, __FILE__, __LINE__, 'BEGIN', '')
-  open(unit=UNIT_SYSTEM, file='restart.coord', status='old', action='read', iostat=ios)
+  write(restart_fn,'(a,a)') trim(p%filename), '.restart'
+  open(unit=UNIT_SYSTEM, file=restart_fn, status='old', action='read', iostat=ios)
   if (ios.eq.0) then
-     call msg(6, __FILE__, __LINE__, 'FILE: ', 'restart.coord was found.')
+     write(message,'(a,a)') trim(restart_fn), ' was found.'
+     call msg(6, __FILE__, __LINE__, 'FILE: ', message)
      do iz = 0, p%Lz-1
         do iy = 0, p%Ly-1
            do ix = 0, p%Lx-1
@@ -30,7 +33,8 @@ subroutine initialize_dipoR(p,c,e)
      end do
      close(UNIT_SYSTEM)
   else
-     call msg(6, __FILE__, __LINE__, 'FILE: ', 'restart.coord was NOT found.')
+     write(message,'(a,a)') trim(restart_fn), ' was NOT found.'
+     call msg(6, __FILE__, __LINE__, 'FILE: ', message)
      do alpha = 1, 3
         do iz = 0, p%Lz-1
            do iy = 0, p%Ly-1
