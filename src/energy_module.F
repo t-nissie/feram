@@ -1,8 +1,9 @@
 ! energy.F -*-f90-*-
-! Time-stamp: <2008-08-08 13:33:19 takeshi>
+! Time-stamp: <2009-06-15 10:10:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
+  implicit none
   type Energy_type
                               ! calculated in
      real*8 dipo_kinetic      ! leapfrog.F or nose-poincare.F, initialize in initialize_dipoR.F

@@ -1,9 +1,10 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2009-03-23 19:59:02 takeshi>
+! Time-stamp: <2009-06-15 10:11:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
 module Param_module
+  implicit none
   type Param_type
      !=== Parameters initially given by user =============================
      !--- Unit in use ---------------------------------

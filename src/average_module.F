@@ -1,10 +1,11 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2008-10-09 11:13:17 takeshi>
+! Time-stamp: <2009-06-15 10:09:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
 module Average_module
   use Energy_module
+  implicit none
   type Average_type
      type(Energy_type) energy    
      real*8 e2

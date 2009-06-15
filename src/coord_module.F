@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2008-10-14 20:31:57 takeshi>
+! Time-stamp: <2009-06-15 10:07:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,6 +9,7 @@
 #include "define.h"
 
 module Coord_module
+  implicit none
   type Coord_type
 #  if defined(SR11000)
 #    define allocated associated
