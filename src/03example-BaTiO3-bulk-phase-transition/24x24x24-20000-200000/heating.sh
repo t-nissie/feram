@@ -1,23 +1,23 @@
 #!/bin/sh
-# cooling.sh
-# Time-stamp: <2009-07-23 13:09:06 takeshi>
+# heating.sh
+# Time-stamp: <2009-07-24 16:58:56 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
-rm -f cooling.avg
+rm -f heating.avg
 
-temperature_start=350
-temperature_goal=170
-temperature_step=-5
+temperature_start=170
+temperature_goal=350
+temperature_step=5
 
-n_thermalize=40000
-n_average=10000
+n_thermalize=20000
+n_average=200000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
 temperature=$temperature_start
-while [ `perl -e "print $temperature >= $temperature_goal || 0"` = "1" ] ; do
+while [ `perl -e "print $temperature <= $temperature_goal || 0"` = "1" ] ; do
     i=`expr $i + 1`
-    filename=cooling`printf '%.3d' $i`-"$temperature"K
+    filename=heating`printf '%.3d' $i`-"$temperature"K
     cat > $filename <<-EOF
 	#--- Method, Temperature, and mass ---------------
 	method = 'md'
@@ -28,7 +28,7 @@ while [ `perl -e "print $temperature >= $temperature_goal || 0"` = "1" ] ; do
 	
 	#--- System geometry -----------------------------
 	bulk_or_film = 'bulk'
-	L = 16 16 16
+	L = 24 24 24
 	a0 =  3.94         latice constant a0 [Angstrom]
 	#--- Time step -----------------------------------
 	dt = 0.002 [pico second]
@@ -55,8 +55,8 @@ while [ `perl -e "print $temperature >= $temperature_goal || 0"` = "1" ] ; do
 	B4yz =   -7.75 [eV/Angstrom^2]
 	
 	#--- Dipole --------------------------------------
-	init_dipo_avg = 0.0   0.0   0.0    [Angstrom]  # Average   of initial dipole displacements
-	init_dipo_dev = 0.03  0.03  0.03   [Angstrom]  # Deviation of initial dipole displacements
+	init_dipo_avg = 0.1   0.1   0.1    [Angstrom]  # Average   of initial dipole displacements
+	init_dipo_dev = 0.02  0.02  0.02   [Angstrom]  # Deviation of initial dipole displacements
 	Z_star        = 9.956
 	epsilon_inf   = 5.24
 EOF
@@ -65,8 +65,8 @@ EOF
     if [ -r "$prev_coord" ]; then
         ln -sf "$prev_coord" $filename.restart
     fi
-    OMP_NUM_THREADS=6 ../../feram $filename > /dev/null
+    ../../feram $filename > /dev/null
     prev_coord=$filename.`printf '%.7d' $n_coord_freq`.coord
-    cat $filename.avg >> cooling.avg
+    cat $filename.avg >> heating.avg
     temperature=`perl -e "print $temperature + $temperature_step"`
 done
