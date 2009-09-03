@@ -214,6 +214,10 @@ Fig. 1 figures/perovskite-contours.jpg
   Coupling between atomic displacements and strains. After [T. Hashimoto, T. Nishimatsu et al.: Jpn. J. Appl. Phys. <b>43</b>, 6785 (2004)].
 /Fig.
 
+Eq. 1
+    u_{\alpha}^2 = \{v_{\alpha}^A\}^2 + \{v_{\alpha}^B\}^2 + \{v_{\alpha}^{\rm O_{I}}\}^2 + \{v_{\alpha}^{\rm O_{II}}\}^2 + \{v_{\alpha}^{\rm O_{III}}\}^2
+/Eq.
+
 
 # The origin of electric polarization of perovskite type ferroelectrics ABO3 is its Soft-mode displacement.
 # And the atomic displacement is strongly coupled with strains.
@@ -227,6 +231,11 @@ Fig. 1 figures/perovskite-contours.jpg
 # In this paper, I described how to trace this valley line automatically with first-principles calculations.
 # This is very useful to construct the effective Hamiltonian.
 
+
+== Potential surface of the zone-center distortion for BaTiO<sub>3</sub>
+Fig. 1 figures/comp-bto-thick.jpg
+  Calculated potential surfaces of the zone-center distortion for BaTiO<sub>3</sub> with various $E_{\rm xc}$.
+/Fig.
 
 
 
@@ -597,6 +606,10 @@ Fig. 1 figures/proposal2.gif
 == Applied external electric field
 Fig. 1 figures/step.jpg
   Schematic illustrations of triangle-wave electric field used to measure ferroelectric hysteresis loops experimentally (inset) and in the present simulations.
+/Fig.
+
+Fig. 1 figures/external-E-field-hysteresis-loop.jpg
+  Latest version of feram can apply smooth triangle-wave electric field.
 /Fig.
 
 
