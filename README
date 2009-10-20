@@ -260,9 +260,14 @@ Elastic Coupling
  B4yz =   -7.75 [eV/Angstrom^2]
 
 ===== init_dipo_avg, init_dipo_dev
-Initial dipole settings
- init_dipo_avg = 0.00 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
- init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements
+Initial dipole settings. If you have four dipoles and
+ init_dipo_avg = 0.10 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
+ init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements,
+the dipoles may be
+ 0.09  0.01  0.02
+ 0.11 -0.02  0.01
+ 0.08  0.02 -0.03
+ 0.12 -0.01  0.00 .
 
 ===== Z_star
 Effective charge per site.
