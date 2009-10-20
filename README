@@ -336,9 +336,11 @@ src/plot.gp can plot the energies:
 
 === foo123.avg
 Averages for each temperature.
+Please see the end of src/average_module.F.
 
 === foo123.hl
 In the case of method = 'hl', a simulation of hysteresis loop, one .hl file will be created instead of a .avg file.
+Please see src/hysteresis_loop.F.
 
 === foo123.tttKnnnnnnn.coord
 Snapshot of dipoles at ttt Kelvin and nnnnnnn-th iteration.
