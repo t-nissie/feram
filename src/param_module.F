@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2009-06-15 10:11:00 takeshi>
+! Time-stamp: <2009-11-05 16:53:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -63,6 +63,7 @@ module Param_module
      !--- Elastic Coupling ----------------------------
      real*8 B1xx, B1yy, B4yz
      !--- Dipole --------------------------------------
+     integer random_seed_array(MAX_RANDOM_SEED_SIZE)
      real*8  init_dipo_avg(3) ! Average   of initial dipole displacements
      real*8  init_dipo_dev(3) ! Deviation of initial dipole displacements
      real*8  k_stripe(3)      ! wave number of striped domain structure in 2*pi/a_0 unit
@@ -119,6 +120,9 @@ contains
     p%P_k2     = 0.0d0
     p%P_k3     = 0.0d0
     p%P_k4     = 0.0d0
+    p%random_seed_array(:) = 0
+    p%init_dipo_avg(:) = 0.00d0
+    p%init_dipo_dev(:) = 0.05d0
     p%n_coord_freq           = huge(1)   ! maximum integer
     p%kappa = 0.0d0
     p%plot_dispersion = .false.
@@ -209,6 +213,8 @@ contains
           read(str,*) dmy1, dmy2, p%B1yy
        case('B4yz')
           read(str,*) dmy1, dmy2, p%B4yz
+       case('random_seed_array')
+          read(str,*) dmy1, dmy2, (p%random_seed_array(i),i=1,8)
        case('init_dipo_avg')
           read(str,*) dmy1, dmy2, (p%init_dipo_avg(i),i=1,3)
        case('init_dipo_dev')

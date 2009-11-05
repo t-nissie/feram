@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2009-05-31 14:27:18 t-nissie>
+! Time-stamp: <2009-11-05 16:43:11 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -12,6 +12,7 @@ subroutine initialize_dipoR(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer ix, iy, iz, alpha, ios, dummy_x, dummy_y, dummy_z
+  integer random_seed_size
   real*8 normal_dist
   character (len=120) :: message
   character (len=120) :: restart_fn
@@ -35,6 +36,9 @@ subroutine initialize_dipoR(p,c,e)
   else
      write(message,'(a,a)') trim(restart_fn), ' was NOT found.'
      call msg(6, __FILE__, __LINE__, 'FILE: ', message)
+     call random_seed(size=random_seed_size)
+     if (random_seed_size>MAX_RANDOM_SEED_SIZE) stop 'STOP at subroutine initialize_dipoR(); random_seed_size>MAX_RANDOM_SEED_SIZE'
+     call random_seed(put=p%random_seed_array(1:random_seed_size))
      do alpha = 1, 3
         do iz = 0, p%Lz-1
            do iy = 0, p%Ly-1
