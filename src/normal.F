@@ -1,5 +1,5 @@
 ! normal.F   -*-f90-*-
-! Time-stamp: <2005-11-17 16:27:37 t-nissie>
+! Time-stamp: <2009-11-06 16:26:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Reference: Haruhiko Okumura: C-gengo niyoru saishin algorithm jiten
 !            (New Algorithm handbook in C language) (Gijyutsu hyouron
@@ -25,10 +25,10 @@ real*8 function std_normal_dist()
      sw = .false.
      call random_number(x)
      t = sqrt(-2 * log(1 - x(1)))
-     u = 2 * M_PI * x(2)
+     u = M_2PI * x(2)
      std_normal_dist = t * cos(u)
   else
-     sw = .true.   
+     sw = .true.
      std_normal_dist = t * sin(u)
   end if
 end function std_normal_dist
