@@ -1,7 +1,7 @@
 %!PS-Adobe-3.0 EPSF-3.0
-%%BoundingBox: -1 665 592 780
+%%BoundingBox: -1 663 592 780
 %%Title: CoarseGraining
-%%CreationDate: Thu Oct 18 16:01:46 2007
+%%CreationDate: Fri Jan 29 13:07:06 2010
 %%Creator: Tgif-4.1.45-QPL written by William Chia-Wei Cheng (bill.cheng@acm.org)
 %%ProducedBy: (unknown)
 %%Pages: 1
@@ -9,7 +9,7 @@
 %%EndComments
 %%BeginProlog
 
-/tgifdict 85 dict def
+/tgifdict 88 dict def
 tgifdict begin
 
 /tgifellipsedict 6 dict def
@@ -112,6 +112,14 @@ tgifarrowtipdict /mtrx matrix put
 /pat30 <fefdfbf7efdfbf7f> def
 /pat31 <7cf8f1e3c78f1f3e> def
 
+/TGMAX
+ { exch dup 3 1 roll exch dup 3 1 roll gt { pop } { exch pop } ifelse
+ } def
+/TGMIN
+ { exch dup 3 1 roll exch dup 3 1 roll lt { pop } { exch pop } ifelse
+ } def
+/TGSW { stringwidth pop } def
+
 /bd { bind def } bind def
 
 /GS { gsave } bd
@@ -165,7 +173,7 @@ end
 %%EndProlog
 %%Page: 1 1
 
-%%PageBoundingBox: -1 665 592 780
+%%PageBoundingBox: -1 663 592 780
 tgifdict begin
 /tgifsavedpage save def
 
@@ -912,12 +920,57 @@ GS
    S
 GR
 
+% TEXT
+NP
+0.000 0.000 1.000 RG
+   GS
+      1 W
+      605 155 M
+      GS
+            0.000 1.000 0.000 RG
+            /Times-BoldItalic FF [56 0 0 -56 0 0] MS
+            (u) SH
+            0.000 1.000 0.000 RG
+            /Times-Roman FF [56 0 0 -56 0 0] MS
+            (\() SH
+            0.000 1.000 0.000 RG
+            /Times-BoldItalic FF [56 0 0 -56 0 0] MS
+            (R) SH
+            0.000 1.000 0.000 RG
+            /Times-Roman FF [56 0 0 -56 0 0] MS
+            (\)) SH
+      GR
+   GR
+
+% TEXT
+NP
+0.000 0.000 1.000 RG
+   GS
+      1 W
+      635 290 M
+      GS
+            0 SG
+            /Times-BoldItalic FF [56 0 0 -56 0 0] MS
+            (w) SH
+            0 SG
+            /Times-Roman FF [56 0 0 -56 0 0] MS
+            (\() SH
+            0 SG
+            /Times-BoldItalic FF [56 0 0 -56 0 0] MS
+            (R) SH
+            0 SG
+            /Times-Roman FF [56 0 0 -56 0 0] MS
+            (\)) SH
+      GR
+   GR
+
 GR
 tgifsavedpage restore
 end
 showpage
 
 %%Trailer
-%MatchingCreationDate: Thu Oct 18 16:01:46 2007
-%%DocumentFonts: 
+%MatchingCreationDate: Fri Jan 29 13:07:06 2010
+%%DocumentFonts: Times-Roman
+%%+ Times-BoldItalic
 %%EOF
