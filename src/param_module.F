@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2009-11-05 16:53:49 takeshi>
+! Time-stamp: <2010-02-25 18:26:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -32,6 +32,7 @@ module Param_module
      !--- Method, Temperature, and mass ---------------
      character(len=3) :: method ! 'md' for MD in the canonical ensemble using the Nose-Poincare thermostat, 'lf' for MD in the
      real*8 GPa          ! [GPa]            microcanonical ensemble using the leap-frog method, or 'mc' for Monte Carlo method
+     real*8 MPa_K        ! [MPa/K]   effective pressure for thermal expansion
      real*8 kelvin       ! [K]
      real*8 mass_dipo    ! [eV Angstrom^-2 ps^2]
      real*8 Q_Nose       ! [eV ps^2]
@@ -106,6 +107,8 @@ contains
     call msg(6, __FILE__, __LINE__, 'BEGIN', ': read_Param().')
 
     ! Default parameters
+    p%GPa    = 0.0d0
+    p%MPa_K  = 0.0d0
     p%kelvin = 0.0d0
     p%temperature_eV = 0.0d0
     p%bulk_or_film = 'bulk'
@@ -153,6 +156,8 @@ contains
           read(str,*) dmy1, dmy2, p%method
        case('GPa')
           read(str,*) dmy1, dmy2, p%GPa
+       case('MPa_K')
+          read(str,*) dmy1, dmy2, p%MPa_K
        case('kelvin')
           read(str,*) dmy1, dmy2, p%kelvin
           p%temperature_eV = p%kelvin / KELVIN_EV

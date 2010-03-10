@@ -93,7 +93,7 @@ feram runs on 1 node (16 CPUs) of SR11000 effectively.
  % cd feram-X.YY.ZZ
  % mkdir SR11000-xf90
  % cd SR11000-xf90
- % env FC=xf90 ../configure --host=SR11000
+ % ../configure FC=xf90 --host=SR11000
  % make
 Because SR11000 and its Fortran compiler cannot treat command arguments,
 you have to specify input file(s) in FILES file. For example,
@@ -106,14 +106,14 @@ you have to specify input file(s) in FILES file. For example,
 ==== x86_64 GNU/Linux
 On x86_64, i.e. AMD64 and Intel 64, feram may be compiled with gfortran,
 Intel Fortran (ifort), and PGI Fortran (pgf95). For example,
- $ FC=gfortran ../configure
+ $ ../configure FC=gfortran
 If FFTW3 was installed other than in /usr/lib and /usr/include or /usr/local/lib
 and /usr/local/include, you have to specify the directories with LDFLAGS and CPPFLAGS
 environment variables.
- $ FC=ifort LDFLAGS=-L/home/t-nissie/x86_64-Linux/lib CPPFLAGS=-I/home/t-nissie/x86_64-Linux/include ../configure
+ $ ../configure FC=ifort LDFLAGS=-L/home/t-nissie/x86_64-Linux/lib CPPFLAGS=-I/home/t-nissie/x86_64-Linux/include
 
 ==== rupc05
- $ FC=pgf95 LDFLAGS=-L/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/lib CPPFLAGS=-I/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/include ../configure
+ $ ../configure FC=pgf95 LDFLAGS=-L/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/lib CPPFLAGS=-I/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/include
  $ make
  $ cd examples/BaTiO3-bulk-16x16x16-local.field-new-format/
  $ OMP_NUM_THREADS=6 ../../pgf95/src/feram foo123 > feram.log
@@ -124,7 +124,7 @@ On IA-64, feram may be compiled with gfortran or Intel Fortran (ifort). For exam
  % cd feram-X.YY.ZZ
  % mkdir appc-FFTW3/
  % cd appc-FFTW3/
- % env FC=ifort LDFLAGS=-L/home/t-nissie/ia64-Linux/lib CPPFLAGS=-I/home/t-nissie/ia64-Linux/include ../configure
+ % ../configure FC=ifort LDFLAGS=-L/home/t-nissie/ia64-Linux/lib CPPFLAGS=-I/home/t-nissie/ia64-Linux/include
  % cd src
  % make
 
