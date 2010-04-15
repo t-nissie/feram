@@ -1,0 +1,26 @@
+How to create gif animation
+
+feramを実行
+↓
+たくさんの .coord ファイルができる
+（圧縮してあるものを１つ添付）
+↓
+slicer.rb でたくさんの .eps ファイル (Encapsulated PostScript file) に変換
+https://loto.svn.sourceforge.net/svnroot/loto/feram/trunk/src/slicer.rb
+例：
+$ slicer.rb cooling.030K0050000.coord 7
+（cooling.030K0050000-slice-z007.eps ができる）
+↓
+gsなどを使ってたくさんの.gifファイルに変換
+↓
+たくさんの.gifをgifsicleで結合してgifアニメーションに
+http://www.lcdf.org/gifsicle/
+
+=== animation.sh ====================================
+ #!/bin/sh
+ ##
+ for f in *.coord; do
+     ../slicer40x40.rb $f 32 0
+     gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r90x90 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q `basename $f .coord`-slice.eps | pnmcrop -white | pnmcrop -black | ppmtogif > `basename $f .coord`-slice.gif
+ done
+=====================================================
