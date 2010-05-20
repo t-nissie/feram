@@ -207,9 +207,12 @@ Specifies the structure of the system.
 System size, L_x, L_y and L_z. They must be equal or larger than 4.
  L = 32 32 4
 
-===== gap
-Gap for the thin film.
- gap = 1
+===== gap_thickness
+Thickness of the dead layers for the thin film.
+ gap_thickness = 1
+
+===== gap_dipole_u
+ gap_dipole_u = 0.0 0.0 0.16
 
 ===== a0
 Lattice constant for the perovskite ferroelectrics in Angstrom unit.
