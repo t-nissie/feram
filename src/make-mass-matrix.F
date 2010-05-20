@@ -1,5 +1,5 @@
 ! make-mass-matrix.F -*-f90-*-
-! Time-stamp: <2007-06-20 16:43:43 t-nissie>
+! Time-stamp: <2010-05-20 11:49:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -14,27 +14,27 @@ subroutine make_mass_matrix(p,c)
   integer iz
   !--- END of variable definitions -------------------
 
-  ! In the case of FILM of film_thickness = 7, gap = 1
+  ! In the case of FILM of film_thickness = 7, gap_thickness = 1
   !  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
   !  g  f  f  f  f  f  f  f  g  f  f  f  f  f  f  f
-  ! In the case of FILM of film_thickness = 5, gap = 3
+  ! In the case of FILM of film_thickness = 5, gap_thickness = 3
   !  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
   !  g  g  f  f  f  f  f  g  g  g  f  f  f  f  f  g
-  ! In the case of FILM of film_thickness = 3, gap = 5
+  ! In the case of FILM of film_thickness = 3, gap_thickness = 5
   !  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
   !  g  g  g  f  f  f  g  g  g  g  g  f  f  f  g  g
 
   c%m_inv(:,:,:,:) = 1.0d0 / p%mass_dipo
-  if (p%gap.eq.0) return
+  if (p%gap_thickness.eq.0) return
 
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-     do iz = 0, p%gap/2
+     do iz = 0, p%gap_thickness/2
         c%m_inv(:,:,iz                       ,:) = LARGE_MASS_INV
-        c%m_inv(:,:,iz+p%film_thickness+p%gap,:) = LARGE_MASS_INV
+        c%m_inv(:,:,iz+p%film_thickness+p%gap_thickness,:) = LARGE_MASS_INV
      end do
-     do iz = p%film_thickness+(p%gap+1)/2, p%film_thickness+p%gap-1
+     do iz = p%film_thickness+(p%gap_thickness+1)/2, p%film_thickness+p%gap_thickness-1
         c%m_inv(:,:,iz                       ,:) = LARGE_MASS_INV
-        c%m_inv(:,:,iz+p%film_thickness+p%gap,:) = LARGE_MASS_INV
+        c%m_inv(:,:,iz+p%film_thickness+p%gap_thickness,:) = LARGE_MASS_INV
      end do
   end if
 

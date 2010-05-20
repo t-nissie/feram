@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2009-06-15 10:09:52 takeshi>
+! Time-stamp: <2010-05-20 11:49:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -50,10 +50,10 @@ contains
 
     if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
        do alpha = 1, 3
-          if (p%gap.eq.0) then
+          if (p%gap_thickness.eq.0) then
              u_tmp(alpha) = SUM(c%dipoR(:,:,0:p%film_thickness-1,alpha))
           else
-             u_tmp(alpha) = SUM(c%dipoR(:,:,(p%gap+1)/2:p%gap/2+p%film_thickness,alpha))
+             u_tmp(alpha) = SUM(c%dipoR(:,:,(p%gap_thickness+1)/2:p%gap_thickness/2+p%film_thickness,alpha))
           end if
        end do
     else

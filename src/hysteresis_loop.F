@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2008-11-01 17:47:39 takeshi>
+! Time-stamp: <2010-05-20 11:49:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -74,10 +74,10 @@ subroutine hysteresis_loop(p,c)
      if (i_step>=p%n_thermalize .and. mod(i_step,p%n_coord_freq)==0) then
         if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
            do alpha = 1, 3
-              if (p%gap.eq.0) then
+              if (p%gap_thickness.eq.0) then
                  u(alpha) = SUM(c%dipoR(:,:,0:p%film_thickness-1,alpha))
               else
-                 u(alpha) = SUM(c%dipoR(:,:,(p%gap+1)/2:p%gap/2+p%film_thickness,alpha))
+                 u(alpha) = SUM(c%dipoR(:,:,(p%gap_thickness+1)/2:p%gap_thickness/2+p%film_thickness,alpha))
               end if
            end do
            u(:) = u(:) / (p%Lx*p%Ly*p%film_thickness)

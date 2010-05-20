@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2010-03-19 18:11:38 takeshi>
+! Time-stamp: <2010-05-20 17:35:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -38,7 +38,8 @@ module Param_module
      !--- System geometry -----------------------------
      character(len=4) :: bulk_or_film
      integer Lx, Ly, Lz ! Integer
-     integer gap        ! 1, 3, 5, 7, ...
+     integer gap_thickness        ! 1, 3, 5, 7, ...
+     real*8  gap_dipole_u(3)
      real*8 a0          ! lattice constant [Angstrom]
      real*8 epi_strain
      !--- Time step -----------------------------------
@@ -135,7 +136,8 @@ contains
     p%DDB_f = 0.0d0
     p%DDB_g = 0.0d0
     p%k_stripe = 0.0d0
-    p%gap = 0
+    p%gap_thickness = 0
+    p%gap_dipole_u(:) = 0.0d0
 
     ! Read parameters from the imput file
     line_number = 0
@@ -170,8 +172,10 @@ contains
           end if
        case('L')
           read(str,*) dmy1, dmy2, p%Lx, p%Ly, p%Lz
-       case('gap')
-          read(str,*) dmy1, dmy2, p%gap
+       case('gap_thickness')
+          read(str,*) dmy1, dmy2, p%gap_thickness
+       case('gap_dipole_u')
+          read(str,*) dmy1, dmy2, p%gap_dipole_u
        case('a0')
           read(str,*) dmy1, dmy2, p%a0
        case('epi_strain')
@@ -265,7 +269,7 @@ contains
     type(Param_type),intent(inout) :: p
     call msg(6, __FILE__, __LINE__, 'BEGIN', ': make_Param().')
 
-    p%film_thickness = p%Lz/2-p%gap
+    p%film_thickness = p%Lz/2-p%gap_thickness
     p%N = p%Lx * p%Ly * p%Lz
     p%dt_2 = p%dt / 2
     p%n_freedom = 3 * p%N
