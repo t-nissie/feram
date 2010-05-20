@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # hysteresis.gp
-# Time-stamp: <2008-10-15 12:30:15 takeshi>
+# Time-stamp: <2010-05-20 17:46:11 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 #set encoding iso_8859_1
@@ -26,7 +26,7 @@ plot 0 title '' w l lt 9,\
      'hysteresis.hl' using (-$4*100000.0):(-$13*c) notitle w l lt 2 
 
 set output
-!ps2pdf -sPAPERSIZE=letter hysteresis.eps > hysteresis.pdf
+!ps2pdf -sPAPERSIZE=a4 hysteresis.eps > hysteresis.pdf
 
 #Local variables:
 #  compile-command: "gnuplot hysteresis.gp && kill -HUP `pgrep gv`"
