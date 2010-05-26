@@ -203,12 +203,12 @@ Fig. 1 figures/BaTiO3-abc-T-dependence.jpg
 /Fig.
 
 == Summary
- * LDA calculations under certain negative pressures and GGA~(Wu and Cohen)\\
-   calculations are capable of yielding accurate total-energy surfaces of zone-center\\
+ * LDA calculations under certain negative pressures and GGA (Wu and Cohen)
+   calculations are capable of yielding accurate total-energy surfaces of zone-center
    distortions.
  * New set of parameters of effective Hamiltonian for BaTiO$_3$.
  * Effect of thermal expansion cannot be ignored
-   to reproduce properties in the whole range of temperature ($30-450$~K).
+   to reproduce properties in the whole range of temperature ($30-450$ K).
 
 =end
 #
