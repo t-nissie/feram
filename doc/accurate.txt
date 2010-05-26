@@ -1,0 +1,228 @@
+=begin
+= Accurate total-energy surfaces for zone-center distortions of BaTiO<sub>3</sub>, PbTiO<sub>3</sub> and SrTiO<sub>3</sub>
+Takeshi Nishimatsu
+
+
+http://loto.sourceforge.net/feram/
+
+CLICK anywhere to go to the next page.
+
+# I entitled my talk "Accurate total-energy surfaces for zone-center distortions of BaTiO3, PbTiO3 and SrTiO3"
+# This study is done by my original MD code, feram.
+# You can download the code from here.
+
+
+== How to use Slidy
+This presentation is written with Slidy http://www.w3.org/Talks/Tools/Slidy/ .
+Use Firefox web browser.
+ * Advance to next slide with mouse click or [Space]
+ * Move forward/backward between slides with [Left], [Right], [Pg Up] and [Pg Dn] keys
+ * [Home] key for first slide, [End] key for last slide
+ * The [C] key for an automatically generated table of contents (or click on "contents" on the toolbar)
+ * Function [F11] toggles between the full screen mode and the normal mode
+ * [F] key toggles the display of the tool bar below.
+ * [A] key toggles the presentation mode and the printing mode
+ * [S] and [B] keys can control the size of fonts
+
+
+== Classification of insulators by their dielectric properties
+Fig. 1 figures/classification.jpg
+  All insulators can be classified by their dielectric properties.
+  All insulators are dielectrics.
+  Some of them are piezoelectrics.
+  Some of them are pyroelectrics.
+  Some of them are ferroelectrics,
+  though difference between pyroelectrics and ferroelectrics is controversial.
+  Especially, perovskite-type ferroelectrics based on BaTiO3 and Pb(Zr$_{(1-x)}$Ti$_x$)O$_3$ (PZT)
+  have good properties of all of them for applications.
+/Fig.
+
+== What is ferroelectric?
+Fig. 1 figures/ferroelectrics.jpg
+  Spontaneous polarization of ferroelectrics
+  can have some directions according to their crystal structures.
+  Therefore, the spontaneous polarization can be
+  switchable by an external electric field,
+  the $P$-$E$ curve has hysteresis,
+  and finite-size ferroelectrics exhibit domain structures.
+  Fferroelectrics also have phase transitions and
+  large piezoelectricity and inverse-piezoelectricity.
+/Fig.
+
+
+== Procedure of Molecular dynamics simulations of ferroelectrics
+ * Target ferroelectrics = BaTiO3.
+ * Investigate it with first-principles calculation.
+   * Construct an effective Hamiltonian with 25 parameters.
+   * Using ABINIT http://www.abinit.org/ with an original patch.
+   * Limitted small cell size, 1-8 unit cells.
+   * Only properties under zero Kelvin can be calculated.
+ * Molecular dynamics (MD) simulation with the first-principles-based effective Hamiltonian.
+   * Original feram code http://loto.sf.net/feram/ .
+   * Realistic system size (up to 100 nm).
+   * Realistic time span ($>$ 1 ns).
+   * Various conditions: temperature, pressure, bulk or thin-film, externally applied electric field
+
+
+== Molecular dynamics simulations of ferroelectrics with feram code
+Fig. 1 ../logo.jpg
+/Fig.
+ * Scientific features
+   * Molecular dynamics (MD) simulation with first-principles-based effective Hamiltonian
+   * $AB$O<sub>3</sub>-type perovskite ferroelectrics and relaxors
+   * Uses supercell; ($AB$O<sub>3</sub>)$_N$, $N=32\times 32\times 512$ $\Rightarrow$ 2,621,440 atoms
+   * Coarse-graining; reduction of the number of degree of freedom
+   * Long-range dipole-dipole interaction is treated in reciprocal-space; k-locality of the force matrix
+   * Applications:
+     * Phase transition of bulk ferroelectrics
+     * Capacitor, <b>ferroelectric thin film</b> is sandwiched between short-circuited electrodes
+
+Eq. 1
+    H^{\rm eff}
+    = \frac{M^*_{\rm dipole}}{2} \sum_{\bm{R},\alpha}\dot{u}_\alpha^2(\bm{R})
+    + \frac{M^*_{\rm acoustic}}{2}\sum_{\bm{R},\alpha}\dot{w}_\alpha^2(\bm{R})
+    + V^{\rm self}(\{\bm{u}\})+V^{\rm dpl}(\{\bm{u}\})+V^{\rm short}(\{\bm{u}\})
+    + V^{\rm elas,\,homo}(\eta_1,...,\eta_6)+V^{\rm elas,\,inho}(\{\bm{w}\})
+    + V^{\rm coup,\,homo}(\{\bm{u}\}, \eta_1,...,\eta_6)+V^{\rm coup,\,inho}(\{\bm{u}\}, \{\bm{w}\})
+    - Z^*\sum_{\bm{R}} \mathscr{E} \cdot \bm{u}(\bm{R})
+/Eq.
+
+Fig. 1 figures/arrows.jpg
+  Snapshot of the supercell. Strengths and directions of $\{\bm{u}(\bm{R})\}$
+  are indicated with arrows. red and blue colors represent $+z$-polarized and $-z$-polarized sites.
+/Fig.
+
+ * Technical features
+   * Fast
+     * FFTW library version 3  http://www.FFTW.org/
+     * Parallelized with OpenMP http://www.OpenMP.org/
+   * Multi-platform
+     * Linux PC
+     * HITACHI SR11000 Super Technical Server
+     * SONY PLAYSTATION3 (ongoing)
+   * Object oriented programming (OOP) in Fortran 95
+   * GNU autotools  http://www.gnu.org/software/autoconf/
+   * Free software (GPLv3) http://loto.sf.net/feram/
+
+# Other features of feram program are:
+# Its Molecular dynamics (MD) simulation uses first-principles-based effective Hamiltonian.
+# It can simulate ABO3-type perovskite ferroelectrics and relaxors
+# It can use big size of supercell up to 32x32x512. It corresponds to 2,621,440 atoms.
+# It can do such a huge calculation because it employs some kind of Coarse-graining that
+# reduces the number of degree of freedom of the system.
+# and because Long-range dipole-dipole interaction is treated
+# in reciprocal-space using k-locality of the force matrix
+#
+# Using this program, you can simulate
+# Phase transition of bulk ferroelectrics and properties of
+# capacitors in which ferroelectric thin film is sandwiched between short-circuited electrodes.
+# Today, I will mainly show you our study of ferroelectric thin films.
+#
+# This program is fast, because it uses a fast FFT library and
+# it is parallelized with OpenMP.
+# I usually use normal Linux personal computers.
+# But you can also use feram on some supercomputers.
+# You can freely download feram from this site.
+
+
+== Background and Purpose of this study
+=== Background of this study
+ * LDA underestimate lattice constants slightly (1-2%)
+ * Double-well total-energy surfaces for zone-center distortions of
+   $AB$O$_3$ perovskite-type ferroelectrics are shallower
+   than the depths expected from their observed transition
+   temperatures ($T_{\rm C}=403 \rm{K}=0.0347 {\rm eV}$ for BaTiO$_3$).
+ * Wu and Cohen introduced a new accurate GGA
+   and obtained good agreement between calculated and experimentally observed lattice
+   constants.
+
+=== Purpose of this study
+ * Calculate accurate total-energy surfaces for zone-center distortions of BaTiO$_3$, PbTiO$_3$ and SrTiO$_3$
+   with GGA (Wu and Cohen).
+ * Construct new set of parameters for effective Hamiltonian of BaTiO$_3$
+ * Perform new MD simulation of  BaTiO$_3$
+
+
+
+
+== Soft-mode displacements of perovskite type ferroelectrics <em>AB</em>O<sub>3</sub>
+# [King-Smith and Vanderbilt: Phys. Rev. B <b>49</b> 5828 (1994)] Parametrization of coupling between soft-mode displacement and strains.
+
+Fig. 1 figures/perovskite-contours.jpg
+  Coupling between atomic displacements and strains. After [T. Hashimoto, T. Nishimatsu et al.: Jpn. J. Appl. Phys. <b>43</b>, 6785 (2004)].
+/Fig.
+
+Eq. 1
+    u_{\alpha}^2 = \{v_{\alpha}^A\}^2 + \{v_{\alpha}^B\}^2 + \{v_{\alpha}^{\rm O_{I}}\}^2 + \{v_{\alpha}^{\rm O_{II}}\}^2 + \{v_{\alpha}^{\rm O_{III}}\}^2
+/Eq.
+
+
+
+== Calculated total-energy surfaces soft-mode displacements of perovskite type ferroelectrics BaTiO<sub>3</sub>
+Fig. 1 figures/BaTiO3WuCohenGGA/BaTiO3WuCohenGGA.jpg
+/Fig.
+
+
+
+
+== Total-energy surfaces of the zone-center distortion for BaTiO<sub>3</sub>
+Fig. 1 figures/comp-bto.jpg
+  Calculated total-energy surfaces of the zone-center distortion for BaTiO$_3$ with various $E_{\rm xc}$.
+/Fig.
+
+== Total-energy surfaces of the zone-center distortion for PbTiO<sub>3</sub>
+Fig. 1 figures/comp-pto.jpg
+  Calculated total-energy surfaces of the zone-center distortion for PbTiO$_3$ with various $E_{\rm xc}$.
+/Fig.
+
+== Total-energy surfaces of the zone-center distortion for SrTiO<sub>3</sub>
+Fig. 1 figures/comp-sto.jpg
+  Calculated total-energy surfaces of the zone-center distortion for SrTiO$_3$ with various $E_{\rm xc}$.
+/Fig.
+
+
+== Comparison of calculated equilibrium cubic lattice constants <em>a</em><sub>0</sub>
+Fig. 1 figures/a0.jpg
+/Fig.
+
+
+
+== Heating-up and Cooling-down MD simulations
+Fig. 1 figures/compare-p.jpg
+  Heating-up and Cooling-down MD simulations under
+  (a) constant negative pressure and (b) $T$-dependent negative pressure to simulate thermal expansion.
+/Fig.
+
+== Experimentally observed lattice parameters for BaTiO<sub>3</sub>
+Fig. 1 figures/BaTiO3-abc-T-dependence.jpg
+  Experimentally observed lattice parameters as functions of temperature,
+  after [H. E. Kay and P. Vousden: Philos. Mag. <b>40</b>, 1019  (1949)].
+  The relatively weak first-order nature of the cubic-to-tetragonal phase
+  transition can be compared with the first-order tetragonal-to-orthorhombic
+  and orthorhombic-to-rhombohedral phase transitions.
+/Fig.
+
+== Summary
+ * LDA calculations under certain negative pressures and GGA~(Wu and Cohen)\\
+   calculations are capable of yielding accurate total-energy surfaces of zone-center\\
+   distortions.
+ * New set of parameters of effective Hamiltonian for BaTiO$_3$.
+ * Effect of thermal expansion cannot be ignored
+   to reproduce properties in the whole range of temperature ($30-450$~K).
+
+=end
+#
+# for ulmul.rb
+#
+require 'rubygems'
+require 'ulmul'
+u=Ulmul.new(1..0)
+u.subs_rules << [  /(heating-up)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
+u.subs_rules << [/(cooling-down)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
+u.parse(ARGF)
+puts u.html(["feram-presentation.css"],["ulmul-slidy.js"],"Takeshi Nishimatsu","en")
+
+# Local variables:
+#   mode: RD
+#   compile-command: "ruby accurate.txt accurate.txt > accurate.xhtml"
+# End:
