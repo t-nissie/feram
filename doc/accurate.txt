@@ -45,7 +45,7 @@ Fig. 1 figures/ferroelectrics.jpg
   switchable by an external electric field,
   the $P$-$E$ curve has hysteresis,
   and finite-size ferroelectrics exhibit domain structures.
-  Fferroelectrics also have phase transitions and
+  Ferroelectrics also have phase transitions and
   large piezoelectricity and inverse-piezoelectricity.
 /Fig.
 
@@ -55,7 +55,7 @@ Fig. 1 figures/ferroelectrics.jpg
  * Investigate it with first-principles calculation.
    * Construct an effective Hamiltonian with 25 parameters.
    * Using ABINIT http://www.abinit.org/ with an original patch.
-   * Limitted small cell size, 1-8 unit cells.
+   * Limited small cell size, 1-8 unit cells.
    * Only properties under zero Kelvin can be calculated.
  * Molecular dynamics (MD) simulation with the first-principles-based effective Hamiltonian.
    * Original feram code http://loto.sf.net/feram/ .
