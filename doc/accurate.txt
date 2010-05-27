@@ -216,7 +216,7 @@ Fig. 1 figures/BaTiO3-abc-T-dependence.jpg
 #
 require 'rubygems'
 require 'ulmul'
-u=Ulmul.new(1..0)
+u=Ulmul.new(1..0,'ulmul2xhtml')
 u.subs_rules << [  /(heating-up)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
 u.subs_rules << [/(cooling-down)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
 u.parse(ARGF)
