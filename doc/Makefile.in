@@ -1,5 +1,5 @@
 # -*-Makefile-*- for loto/doc
-# Time-stamp: <2008-12-27 12:55:48 takeshi>
+# Time-stamp: <2010-05-28 10:04:38 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 srcdir = @srcdir@
@@ -12,9 +12,9 @@ all: feram-presentation.xhtml film.xhtml
 	ruby $< $< > $@
 
 sf: sourceforge
-sourceforge: favicon.ico feram-presentation.css feram-presentation.txt feram-presentation.xhtml film.txt film.xhtml slidy.js
-	scp    $^      $(SOURCEFORGE_FERAM)/doc/
-	scp -r figures $(SOURCEFORGE_FERAM)/doc/
+sourceforge: favicon.ico feram-presentation.css feram-presentation.txt feram-presentation.xhtml film.txt film.xhtml ulmul-slidy.js
+	scp    $^            $(SOURCEFORGE_FERAM)/doc/
+	scp -r figures/*.jpg $(SOURCEFORGE_FERAM)/doc/figures/
 
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in
