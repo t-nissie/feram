@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2010-05-20 11:49:29 takeshi>
+! Time-stamp: <2010-07-18 17:14:44 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -20,6 +20,7 @@ subroutine hysteresis_loop(p,c)
        "('TIME_STEP ',i8,3f16.12,' -----------------------------------------------------')"
   character (len=150) :: message
   character (len=120) :: fn_hl
+  character (len=120) :: fn_system
   !--- END of variable definitions -------------------
   call msg(6, __FILE__, __LINE__, 'BEGIN', ': MD')
 
@@ -40,13 +41,12 @@ subroutine hysteresis_loop(p,c)
 !   write(message,"('strain',6e13.5)") c%strain(:)
 !   call msg_ez(6,message)
 
-
   write(fn_hl,'(a,a)') trim(p%filename), '.hl'
   open(unit=UNIT_HL,file=fn_hl, status='REPLACE')
 
   E_field_add(:) = 0.0d0
 
-  do i_step = 1, p%n_thermalize+p%n_average
+  do i_step = p%hysteresis_loop_continue, p%n_thermalize+p%n_average
      if (i_step>=p%n_thermalize) then
         E_field_add = -2*p%external_E_field*(i_step-p%n_thermalize)/p%n_average
         do iz = 0, p%Lz-1
@@ -85,9 +85,11 @@ subroutine hysteresis_loop(p,c)
            u(:) = dble(c%dipoK(0,0,0,:))
            u(:) = u(:) / p%N
         end if
-        write(UNIT_HL,"(f6.1,3f16.12,9e13.5)") &
-             p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
+        write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5)") &
+             i_step,p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
         call flush(UNIT_HL)
+        write(fn_system,'(a,a,i10.10,a)') trim(p%filename),'.',i_step,'.coord'
+        call write_system(p,c,fn_system)
      end if
   end do
 

@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2010-05-20 17:35:37 takeshi>
+! Time-stamp: <2010-07-18 17:13:59 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -49,6 +49,7 @@ module Param_module
      integer n_coord_freq  ! frequency for writing out the coordinates
      !!--- External electric field ---------------------
      real*8    external_E_field(3)  ! External electric field [V/Angstrom]
+     integer   hysteresis_loop_continue
      !--- On-site (Polynomial of order 6) -------------
      real*8 P_kappa2    ! P_6(u) = kappa2*u^2 + alpha*u^4
      real*8 P_alpha     !  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
@@ -114,6 +115,7 @@ contains
     p%defect_position(1)  = -1    ; p%defect_position(2)  = -1    ; p%defect_position(3)  = -1
     p%defect_u(1)         = 0.0d0 ; p%defect_u(2)         = 0.0d0 ; p%defect_u(3)         = 0.0d0
     p%external_E_field(:) = 0.0d0
+    p%hysteresis_loop_continue = 1
     p%P_kappa2 = 0.0d0
     p%P_alpha  = 0.0d0
     p%P_gamma  = 0.0d0
@@ -190,6 +192,8 @@ contains
           read(str,*) dmy1, dmy2, p%n_coord_freq
        case('external_E_field')
           read(str,*) dmy1, dmy2, p%external_E_field(1), p%external_E_field(2), p%external_E_field(3)
+       case('hysteresis_loop_continue')
+          read(str,*) dmy1, dmy2, p%hysteresis_loop_continue
        case('P_kappa2')
           read(str,*) dmy1, dmy2, p%P_kappa2
        case('P_alpha')
