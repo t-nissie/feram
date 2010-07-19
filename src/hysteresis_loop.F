@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2010-07-18 17:14:44 t-nissie>
+! Time-stamp: <2010-07-19 16:46:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -19,8 +19,8 @@ subroutine hysteresis_loop(p,c)
   character(120), parameter :: fmt_time_step = &
        "('TIME_STEP ',i8,3f16.12,' -----------------------------------------------------')"
   character (len=150) :: message
-  character (len=120) :: fn_hl
-  character (len=120) :: fn_system
+  character (len=120) :: fn_hl, fn_system
+  !character (len=126) :: bzip2_command
   !--- END of variable definitions -------------------
   call msg(6, __FILE__, __LINE__, 'BEGIN', ': MD')
 
@@ -88,8 +88,11 @@ subroutine hysteresis_loop(p,c)
         write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5)") &
              i_step,p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
         call flush(UNIT_HL)
-        write(fn_system,'(a,a,i10.10,a)') trim(p%filename),'.',i_step,'.coord'
+        !write(fn_system,'(a,a,i10.10,a)') trim(p%filename), '.', i_step, '.coord'
+        write(fn_system,'(a,a)') trim(p%filename), '.coord'
         call write_system(p,c,fn_system)
+        !write(bzip2_command,'(a,a)') 'bzip2 ', trim(fn_system)
+        !call system(bzip2_command)
      end if
   end do
 

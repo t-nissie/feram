@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2009-06-15 10:07:28 takeshi>
+! Time-stamp: <2010-07-19 16:51:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -93,7 +93,7 @@ contains
     integer ix,iy,iz,i
 
     call msg(6, __FILE__, __LINE__, 'BEGIN', '')
-    open(unit=UNIT_SYSTEM,file=fn)
+    open(unit=UNIT_SYSTEM, file=fn, status='replace')
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
           do ix = 0, p%Lx-1
