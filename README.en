@@ -12,8 +12,6 @@ http://sourceforge.net/projects/loto/files/feram/ .
 == What is feram?
 feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
 
-Pronunciation of "feram": Ef-Ee-RaMu
-
 === Features and keywords
 ==== In Physics
  * Molecular dynamics (MD) simulation with a first-principles-based model Hamiltonian
@@ -39,6 +37,10 @@ Pronunciation of "feram": Ef-Ee-RaMu
  * Subversion repository at https://loto.svn.sourceforge.net/svnroot/loto/feram
 
 === References
+ * Takeshi Nishimatsu, Masaya Iwamoto, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
+   "First-principles accurate total-energy surfaces for polar structural distortions
+    of BaTiO3, PbTiO3, and SrTiO3: consequences to structural transition temperatures",
+    arXiv:1007.1127 (2010).
  * Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and David Vanderbilt:
    "Fast molecular-dynamics simulation for ferroelectric thin-film capacitors using a
    first-principles effective Hamiltonian", Phys. Rev. B, vol.78, p.104104 (2008)
@@ -300,6 +302,14 @@ Position and u of a defect.
  defect_position = 16 16 16
  defect_u = 0.0 0.0 0.0
 
+
+=== .restart input file
+If you executed feram with a parameter file "cooling002-345K" as
+ $ feram cooling002-345K
+feram searchs for the "cooling002-345K.restart" file an an
+initial configurations. If there is no such file, feram
+starts from a random configurations.
+
 === ionic.configuration file
 (Not implemented yet.)
 This file is required for the calculation of the local field.
@@ -315,7 +325,6 @@ This file is required for the calculation of the local field.
     :
 
 Position must be given in the unit of a0.
-
 
 === local.field input file
  0  0  0   0.1 -0.1 0.7
@@ -416,14 +425,14 @@ the GNU General Public License (the "GPL").
 For more detail, see COPYING.
 
 You can make a DONATION to Takeshi Nishimatsu through
-Tohoku University http://www.rpip.tohoku.ac.jp/kensui/kifukin.html (in Japanese).
+Tohoku University http://www.rpip.tohoku.ac.jp/main/kihukin.html (in Japanese).
 
 The author is grateful if you would kindly refer the
 name of this program and cite our articles,
 [Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and
 David Vanderbilt: Phys. Rev. B 78 (2008) 104104] and [Jaita Paul,
 Takeshi Nishimatsu, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
-Phys. Rev. Lett. 99 (2007) 077601] in your papers.
+Phys. Rev. Lett. 99 (2007) 077601], in your papers.
 
 === BLAS and LAPACK
 Files under the directory libblaslapack are coming from BLAS and LAPACK
