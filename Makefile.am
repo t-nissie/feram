@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2010-08-18 15:53:56 takeshi>
+# Time-stamp: <2010-08-18 16:02:07 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -26,8 +26,9 @@ SNAPSHOT_NAME=$(PACKAGE)-$(VERSION)_`date +"%Y-%m-%d_%H"`
 SOURCEFORGE_FERAM=web.sourceforge.net:/home/groups/l/lo/loto/htdocs/feram
 
 sf: sourceforge
-sourceforge: index.en.html README.en index.ja.html README.ja COPYING style.css favicon.ico logo.jpg
+sourceforge: index.en.html README.en index.ja.html README.ja COPYING style.css favicon.ico logo.jpg index.var dot.htaccess
 	scp $<                            $(SOURCEFORGE_FERAM)/index.html
+	scp dot.htaccess                  $(SOURCEFORGE_FERAM)/.htaccess
 	scp $^                            $(SOURCEFORGE_FERAM)
 	scp libblaslapack/COPYING         $(SOURCEFORGE_FERAM)/libblaslapack
 	cd  doc && $(MAKE) sourceforge

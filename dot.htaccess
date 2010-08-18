@@ -1,0 +1,2 @@
+AddHandler type-map .var
+DirectoryIndex index.var index.html index.en.html index.ja.html

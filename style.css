@@ -1,57 +1,50 @@
 /* -*-CSS-*-
  * style.css for README.html of feram
- * Time-stamp: <2010-05-28 10:10:59 takeshi>
+ * Time-stamp: <2010-08-18 16:40:25 takeshi>
  * Author: Takeshi NISHIMATSU
  */
-body
-{
+body {
   color:       black;
   font-family: verdana, arial, helvetica, sans-serif;
 }
 
-h1, h2, h3, h4, h6
-{
+h1, h2, h3, h4, h6 {
   font-family: verdana, arial, helvetica, sans-serif;
 }
 
-h1
-{
+h1 {
   color:            #dd0000;
   background-color: #fff0f0;
+  font-size:        240%;
 }
 
-h2
-{
+h2 {
   border-top:       red 5px solid;
   border-bottom:    red 1px solid;
   padding-left:     8px;
   background-color: #fff0f0;
 }
 
-h3
-{
+h3 {
   border-top:    red 2px solid;
   border-bottom: red 1px solid;
   padding-left:  4px;
 }
 
-h4
-{
+h4 {
   border-top:    red 1px solid;
   padding-left:  4px;
   background-color: #fff0f0;
 }
 
-h5
-{
+h5 {
   font-size:     larger;
   font-family:   courier, verdana, arial, helvetica, sans-serif;
   padding-top:   10px;
   color:         darkred;
 }
 
-pre
-{
+pre {
   font-family:      monospace, courier, verdana, arial, helvetica, sans-serif;
   padding-right:    0.5em;
   padding-left:     0.5em;
@@ -64,16 +57,25 @@ pre
   background-color: #f3f3f3;
 }
 
-figure img { width:50%;
-                 margin-left:auto;
-                 margin-right:auto;
-                 display: block;}
+div.figure img {
+    width:50%;
+    margin-left:auto;
+    margin-right:auto;
+    display: block;
+}
 
-figure figcaption { width:60%;
+div.figure div.figcaption {
+    width: 60%;
     margin-left: auto;
     margin-right: auto;
     display: block;
 }
 
-div.navi { text-align: right;
-	   margin-right: 1.0em; }
+div.navi {
+ text-align: right;
+ margin-right: 1.0em;
+}
+
+div.contents {
+    margin-left: 10%;
+}
