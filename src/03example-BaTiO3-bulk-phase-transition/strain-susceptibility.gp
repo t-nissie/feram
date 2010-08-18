@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # strain-susceptibility.gp
-# Time-stamp: <2008-07-03 09:52:58 t-nissie>
+# Time-stamp: <2010-08-18 18:15:37 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set terminal postscript port enhanced color dashed "Times-Roman" 20
@@ -21,12 +21,12 @@ set format x ''
 set key left
 set yrange [0.008:0.022]
 set ylabel 'strain'
-plot 'heating24x24x24-20000-200000/heating.avg' using 1:5 t 'heating' w l lt 1 lw 2,\
-     'heating24x24x24-20000-200000/heating.avg' using 1:6 t ''        w l lt 1 lw 2,\
-     'heating24x24x24-20000-200000/heating.avg' using 1:7 t ''        w l lt 1 lw 2,\
-     'cooling24x24x24-20000-200000/cooling.avg' using 1:5 t 'cooling' w l lt 3 lw 2,\
-     'cooling24x24x24-20000-200000/cooling.avg' using 1:6 t ''        w l lt 3 lw 2,\
-     'cooling24x24x24-20000-200000/cooling.avg' using 1:7 t ''        w l lt 3 lw 2
+plot '24x24x24-20000-200000/heating.avg' using 1:5 t 'heating' w l lt 1 lw 2,\
+     '24x24x24-20000-200000/heating.avg' using 1:6 t ''        w l lt 1 lw 2,\
+     '24x24x24-20000-200000/heating.avg' using 1:7 t ''        w l lt 1 lw 2,\
+     '24x24x24-20000-200000/cooling.avg' using 1:5 t 'cooling' w l lt 3 lw 2,\
+     '24x24x24-20000-200000/cooling.avg' using 1:6 t ''        w l lt 3 lw 2,\
+     '24x24x24-20000-200000/cooling.avg' using 1:7 t ''        w l lt 3 lw 2
 
 set format y '%.0f'
 
@@ -50,9 +50,9 @@ set yrange [0:20000]
 
 set origin 0,0.36
 set label 1 at 320, 17000 'heating'
-plot 'heating24x24x24-20000-200000/heating.avg' using 1:(C*($14-N*$11**2)/$1) title '{/Symbol e}_{xx}' with l, \
-     'heating24x24x24-20000-200000/heating.avg' using 1:(C*($15-N*$12**2)/$1) title '{/Symbol e}_{yy}' with l, \
-     'heating24x24x24-20000-200000/heating.avg' using 1:(C*($16-N*$13**2)/$1) title '{/Symbol e}_{zz}' with l
+plot '24x24x24-20000-200000/heating.avg' using 1:(C*($14-N*$11**2)/$1) title '{/Symbol e}_{xx}' with l, \
+     '24x24x24-20000-200000/heating.avg' using 1:(C*($15-N*$12**2)/$1) title '{/Symbol e}_{yy}' with l, \
+     '24x24x24-20000-200000/heating.avg' using 1:(C*($16-N*$13**2)/$1) title '{/Symbol e}_{zz}' with l
 
 set xlabel '{/Times-Italic T} [K]'
 set format x '%.0f'
@@ -60,14 +60,14 @@ set format x '%.0f'
 set size 1.0,0.383
 set origin 0,0.005
 set label 1 at 320, 17000 'cooling'
-plot 'cooling24x24x24-20000-200000/cooling.avg' using 1:(C*($14-N*$11**2)/$1) title '{/Symbol e}_{xx}' with l, \
-     'cooling24x24x24-20000-200000/cooling.avg' using 1:(C*($15-N*$12**2)/$1) title '{/Symbol e}_{yy}' with l, \
-     'cooling24x24x24-20000-200000/cooling.avg' using 1:(C*($16-N*$13**2)/$1) title '{/Symbol e}_{zz}' with l
+plot '24x24x24-20000-200000/cooling.avg' using 1:(C*($14-N*$11**2)/$1) title '{/Symbol e}_{xx}' with l, \
+     '24x24x24-20000-200000/cooling.avg' using 1:(C*($15-N*$12**2)/$1) title '{/Symbol e}_{yy}' with l, \
+     '24x24x24-20000-200000/cooling.avg' using 1:(C*($16-N*$13**2)/$1) title '{/Symbol e}_{zz}' with l
 
 set nomultiplot
 set output
 !ps2pdf -sPAPERSIZE=letter strain-susceptibility.eps > strain-susceptibility.pdf
 
 #Local variables:
-#  compile-command: "gnuplot strain-susceptibility.gp && kill -HUP `pgrep gv`"
+#  compile-command: "gnuplot strain-susceptibility.gp"
 #End:
