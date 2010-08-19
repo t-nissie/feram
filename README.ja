@@ -7,7 +7,14 @@
 http://www.rpip.tohoku.ac.jp/main/kihukin.html
 
 
-== References
+== ホームページとダウンロード
+feramのホームページは http://loto.sourceforge.net/feram/ です。
+
+最新のtar.gzパッケージ (feram-X.YY.ZZ.tar.gz) を
+http://sourceforge.net/projects/loto/files/feram/
+からダウンロードすることができます。
+
+== 参考文献
  * Takeshi Nishimatsu, Masaya Iwamoto, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
    "First-principles accurate total-energy surfaces for polar structural distortions
     of BaTiO3, PbTiO3, and SrTiO3: consequences to structural transition temperatures",
@@ -28,7 +35,7 @@ http://www.rpip.tohoku.ac.jp/main/kihukin.html
    Appl. Phys. Lett., vol.93, p.242905 (2008).
 
 
-== Copying
+== ソフトウエアの再配布について
 === feram
 Copyright © 2007-2010 by Takeshi Nishimatsu
 
@@ -47,12 +54,12 @@ David Vanderbilt: Phys. Rev. B 78 (2008) 104104] and [Jaita Paul,
 Takeshi Nishimatsu, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
 Phys. Rev. Lett. 99 (2007) 077601], in your papers.
 
-=== BLAS and LAPACK
+=== BLASとLAPACK
 Files under the directory libblaslapack are coming from BLAS and LAPACK
 packages http://www.netlib.org/lapack/ .  See libblaslapack/COPYING.
 
-=== Cited figures
-Authors and/or publishers of the papers have their copyrights for the following cited figures.
+=== 引用した図版
+feramのドキュメントで引用した下記の図版についてはその作者または出版社が著作権を持っています
  * doc/figures/BaTiO3-abc-T-dependence.eps and doc/figures/BaTiO3-abc-T-dependence.jpg
    are cited from [H. E. Kay and P. Vousden: Philos. Mag. 40, 1019  (1949)].
  * doc/figures/Fong.jpg and doc/figures/FongScience.eps are cited from
@@ -74,21 +81,22 @@ Authors and/or publishers of the papers have their copyrights for the following 
    [Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya. and Masaki Daimon:
    Jpn. J. Appl. Phys. 33, 1959 (1994)].
 
-=== pseudopotentials
-Four Teter's "extended norm-conserving" LDA pseudopotential files are downloaded from
-http://www.abinit.org/Psps/?text=../Psps/LDA_EX/lda . They are distributed under GPL.
+=== 擬ポテンシャル
+Teter's "extended norm-conserving" LDA 擬ポテンシャル４つは
+http://www.abinit.org/downloads/psp-links/psp-links/lda_ex
+からのものです。これらはGPLの下で再配布可能です。
  56ba.psp.mod
  82pb.960808c.mod
  22ti.psp.mod
  8o.phoney.mod
 
 
-== Author
+== 作者
 西松 毅 (t-nissie{at}imr.tohoku.ac.jp)
 
 
-== Acknowledgements
-This project is/was partially supported by:
+== おしらせ
+ご支援に感謝します：
  * Jawaharlal Nehru Centre for Advanced Scientific Research (JNCASR)  http://www.jncasr.ac.in/
  * Department of Physics and Astronomy, Rutgers University  http://www.physics.rutgers.edu/
  * 文部科学省  http://www.mext.go.jp/
