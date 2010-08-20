@@ -16,6 +16,19 @@ o Imprement Nose:JPhysSocJpn:70:p75-77:2001
 
 o dVddi_... -> dV_du_...
 
+o foo-bar.F -> foo_bar.F
+
+o dipole-dipole-long-range.F の
+  if (p%kappa<=0.0d0) then
+     p%kappa = sqrt(M_PI) / p%a0 / (dble(p%Lx*p%Ly*p%Lz))**(1.0d0/6)
+  end if
+  を param_module.F に移す。
+  いくつかのファイルの
+  type(Param_type), intent(inout)  :: p
+  を
+  type(Param_type), intent(in)  :: p
+  にできる。
+
 o  call dipoFFT(p,c)
    call  dVddi_dipole_dipole(p,c,e)
    call     dVddi_unharmonic(p,c,e)
@@ -32,7 +45,7 @@ o 力の計算の部分をsubroutineにして、leapfrog をもう一度動く�
 
 o TEST UNIT
 
-o gfortranに新しく導入される-Mオプションの活用。
+o gfortranに新しく導入される-Mオプションの活用。makedepf90でも。
 
 o Use msg() in write_Param() of param_module.F.
 
@@ -45,6 +58,8 @@ o refactoring nose-poincare.F and energy.F
 o 3 node parallelization
 
 o replace DSYEV().
+
+o -parallel for ifort
 
 o use autoconf and make configure
 
@@ -78,7 +93,7 @@ o mass_acoustic, mass_strain なんか関係がある
 
 o 3-dimensional hedgehog plot (`with vec` is not available for splot of GNUPLOT)
 
-o interfaceぶん
+o interface文
 
 o initial spin configuration をつくる program をわける？
 
