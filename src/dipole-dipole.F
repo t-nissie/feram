@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2010-08-19 19:37:47 takeshi>
+! Time-stamp: <2010-09-14 18:51:32 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -8,7 +8,7 @@ subroutine dipole_dipole(p,c)
   use Coord_module
   implicit none
   !--- arguments -------------------------------------
-  type(Param_type), intent(inout) :: p
+  type(Param_type), intent(in)    :: p
   type(Coord_type), intent(inout) :: c
   !--- allocatable arrays ----------------------------
   real*8,     allocatable ::  long_range(:,:,:,:,:)

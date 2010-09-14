@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2010-07-18 17:13:59 t-nissie>
+! Time-stamp: <2010-09-14 18:50:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -277,11 +277,9 @@ contains
     p%N = p%Lx * p%Ly * p%Lz
     p%dt_2 = p%dt / 2
     p%n_freedom = 3 * p%N
-    !  if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-    !   p%n_freedom = 3 * p%Lx * p%Ly * p%film_thickness * 2
-    !else
-    !   p%n_freedom = 3 * p%N
-    !end if
+    if (p%kappa<=0.0d0) then
+       p%kappa = sqrt(M_PI) / p%a0 / (dble(p%N))**(1.0d0/6)
+    end if
     p%unit_cell_volume = p%a0 ** 3
     p%pNa03 = p%GPa *0.01d0 / ELEMENTARY_CHARGE * p%N * p%unit_cell_volume
     call msg(6, __FILE__, __LINE__, 'END',   ':   make_Param().')
@@ -302,6 +300,8 @@ contains
     write(str,'(a,i7)')     'N of degree of freedom    =', p%n_freedom
     call msg_ez(6,str)
     write(str,'(a,f11.7)')  'unit_cell_volume          =', p%unit_cell_volume
+    call msg_ez(6,str)
+    write(str,'(a,f10.4)')  'kappa for Ewald sum = ', p%kappa
     call msg_ez(6,str)
 
     !=== BEGIN: write parameters for gnuplot ============================

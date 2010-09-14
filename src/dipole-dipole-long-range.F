@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2008-04-17 18:48:32 takeshi>
+! Time-stamp: <2010-09-14 18:51:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -7,7 +7,7 @@ subroutine dipole_dipole_long_range(p,long_range)
   use Param_module
   implicit none
   !--- arguments -------------------------------------
-  type(Param_type), intent(inout)  :: p
+  type(Param_type), intent(in)     :: p
   real*8,           intent(out)    :: long_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3) !"/2" See fft.F!
   !--- local -----------------------------------------
   real*8,     allocatable :: TMPreal(:,:,:,:,:)
@@ -24,10 +24,6 @@ subroutine dipole_dipole_long_range(p,long_range)
   external B_decay,C_decay
   !--- END of variable definitions -------------------
 
-  if (p%kappa<=0.0d0) then
-     p%kappa = sqrt(M_PI) / p%a0 / (dble(p%Lx*p%Ly*p%Lz))**(1.0d0/6)
-  end if
-  write(message,'(a,f10.4)') ': p%kappa = ', p%kappa
   call msg(6, __FILE__, __LINE__, 'BEGIN', message)
 
   four_pi_over_unit_cell_volume  = 4 * M_PI / p%a0**3
