@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2010-09-14 18:51:03 takeshi>
+! Time-stamp: <2010-09-14 20:03:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -18,13 +18,11 @@ subroutine dipole_dipole_long_range(p,long_range)
   integer  max_x, max_y, max_z
   real*8   k(3), kG(3), kGkG
   real*8   r(3), n(3), rn(3), rnrn, rn_norm
-  character(50)            :: message
   !--- decay functions -------------------------------
   real*8   B_decay,C_decay
   external B_decay,C_decay
   !--- END of variable definitions -------------------
-
-  call msg(6, __FILE__, __LINE__, 'BEGIN', message)
+  call msg(6, __FILE__, __LINE__, 'BEGIN', '')
 
   four_pi_over_unit_cell_volume  = 4 * M_PI / p%a0**3
   two_pi_over_a                  = 2 * M_PI / p%a0
