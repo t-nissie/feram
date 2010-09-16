@@ -44,17 +44,20 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  * Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and David Vanderbilt:
    "Fast molecular-dynamics simulation for ferroelectric thin-film capacitors using a
    first-principles effective Hamiltonian", Phys. Rev. B, vol.78, p.104104 (2008)
+   doi:10.1103/PhysRevB.78.104104.
  * R. D. King-Smith and David Vanderbilt: "First-principles investigation of
-   ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
+   ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49,
+   pp.5828-5844 (1994) doi:10.1103/PhysRevB.49.5828.
  * U.V. Waghmare, E. J. Cockayne, and B. P. Burton: "Ferroelectric Phase Transitions
    in Nano-scale Chemically Ordered PbSc0.5Nb0.5O3 using a First-principles Model
-   Hamiltonian", Ferroelectrics vol.291, p.187 (2003).
+   Hamiltonian", Ferroelectrics vol.291, p.187 (2003) doi:10.1080/00150190390222682.
  * Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare:
-   "Ferroelectric Phase Transitions in Ultra-thin Films of BaTiO3", Phys. Rev. Lett.,
-   vol.99, p.077601 (2007).
+   "Ferroelectric Phase Transitions in Ultra-thin Films of BaTiO3",
+   Phys. Rev. Lett., vol.99, p.077601 (2007) doi:10.1103/PhysRevLett.99.077601.
  * Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare:
    "Polarization switching in epitaxial films of BaTiO3: A molecular dynamics study",
-   Appl. Phys. Lett., vol.93, p.242905 (2008).
+   Appl. Phys. Lett., vol.93, p.242905 (2008) doi:10.1063/1.3040326.
+
 
 == Install
 === Requirements
@@ -499,14 +502,14 @@ u.subs_rules << [/(\S*\/?\.pdf)(\s|$)/,              '<a href="\1">\1</a>\2']
 u.subs_rules << [/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2']
 u.subs_rules << [/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2']
 u.subs_rules << [/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>']
-u.subs_rules << [/(INSTALL\S*)(\s|$)/,               '<a href="\1">\1</a>\2']
-u.subs_rules << [/(README\S*)(\s|$)/,                '<a href="\1">\1</a>\2']
-u.subs_rules << [/(ulmul\S*)(\s|$)/,                 '<a href="\1">\1</a>\2']
-u.subs_rules << [/(slidy\.js)/,                      '<a href="\1">\1</a>\2']
-u.subs_rules << [/(style\.css)/,                     '<a href="\1">\1</a>\2']
 u.subs_rules << [/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2']
+u.subs_rules << [/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.']
+u.subs_rules << [/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ']
 u.subs_rules << [/&package_id/,              '&amp;package_id']
-u.subs_rules << [/SourceForge.net/,          '<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" /></a>']
+u.subs_rules << [/SourceForge.net/,          '
+<a href="http://sourceforge.net">
+  <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" />
+</a>']
 
 u.parse(ARGF)
 puts u.html(["style.css"],[],"Takeshi Nishimatsu","en")
