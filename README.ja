@@ -2,6 +2,7 @@
 = feram: ペロブスカイト型強誘電体の高速分子動力学シミュレーション
 
 日本語のドキュメントは準備中です。
+英語のドキュメントindex.en.htmlまたはREADME.enをご覧ください。
 
 ご寄附を頂けると、質問への回答が早く得られる場合があります:
 http://www.rpip.tohoku.ac.jp/main/kihukin.html
@@ -33,6 +34,15 @@ http://sourceforge.net/projects/loto/files/feram/
  * Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare:
    "Polarization switching in epitaxial films of BaTiO3: A molecular dynamics study",
    Appl. Phys. Lett., vol.93, p.242905 (2008).
+
+
+== メーリングリスト
+ * 説明: loto, feram, compasses についてのディスカッションとアナウンス
+ * 購読: https://lists.sourceforge.net/lists/listinfo/loto-feram-compasses-ml
+ * アドレス: loto-feram-compasses-ml{at}lists.sourceforge.net
+ * 公開: あなたが投稿したメーリングリスト記事はネット上に公開されます
+ * 言語: 英語
+ * 管理者: 西松毅
 
 
 == ソフトウエアの再配布について
@@ -122,7 +132,8 @@ u.subs_rules << [/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2']
 u.subs_rules << [/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2']
 u.subs_rules << [/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>']
 u.subs_rules << [/(INSTALL\S*)(\s|$)/,               '<a href="\1">\1</a>\2']
-u.subs_rules << [/(README\S*)(\s|$)/,                '<a href="\1">\1</a>\2']
+u.subs_rules << [/(README\.en)/,                     '<a href="\1">\1</a>']
+u.subs_rules << [/(index\.en\.html)/,                '<a href="\1">\1</a>']
 u.subs_rules << [/(ulmul\S*)(\s|$)/,                 '<a href="\1">\1</a>\2']
 u.subs_rules << [/(slidy\.js)/,                      '<a href="\1">\1</a>\2']
 u.subs_rules << [/(style\.css)/,                     '<a href="\1">\1</a>\2']
