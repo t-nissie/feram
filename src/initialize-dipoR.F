@@ -1,6 +1,8 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2009-11-05 16:43:11 takeshi>
+! Time-stamp: <2010-10-09 22:41:53 takeshi>
 ! Author: Takeshi NISHIMATSU
+! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
+! Parents: hysteresis_loop.F or molecular-dynamics.F
 !!
 #include "define.h"
 subroutine initialize_dipoR(p,c,e)
@@ -55,11 +57,7 @@ subroutine initialize_dipoR(p,c,e)
      c%dipoP(:,:,:,:) = 0.0d0
   end if
 
-  ! deffect and mirror dipoR
-  if (p%defect_position(1).ge.0) then
-     c%dipoR(p%defect_position(1),p%defect_position(2),p%defect_position(3),:) = p%defect_u(:)
-     c%m_inv(p%defect_position(1),p%defect_position(2),p%defect_position(3),:) = LARGE_MASS_INV
-  end if
+  call read_defects_u(p,c)   ! Prepares fixed u for defects and c%m_inv(:,:,:,:).
 
   call mirror_force_mirror(p,c,e)
 !   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then

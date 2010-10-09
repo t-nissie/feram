@@ -1,5 +1,5 @@
 ! feram.F -*-f90-*-
-! Time-stamp: <2008-10-14 12:17:27 takeshi>
+! Time-stamp: <2010-10-09 22:34:35 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -66,7 +66,7 @@ program feram
      call write_Param(p)
      call alloc_Coord(p,c)
      call  potentials(p,c)
-     call make_mass_matrix(p,c)
+     !Instead, read_defects_u(p,c) is called in initialize_dipoR()! call make_mass_matrix(p,c)
 
      if (p%method.eq.'md ' .or. p%method.eq.'lf ') then
         call molecular_dynamics(p,c)
