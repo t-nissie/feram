@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2010-09-14 18:50:37 takeshi>
+! Time-stamp: <2010-10-09 22:59:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -72,8 +72,6 @@ module Param_module
      real*8 Z_star        ! Born effective charge
      real*8 epsilon_inf   ! relative dielectric constant of core ions
      real*8 kappa         ! arbitrary kappa for dipole-dipole-long-range.F
-     integer defect_position(3)
-     real*8  defect_u(3)
      logical plot_dispersion
      !--- DDB2short -----------------------------------
      real*8 DDB_a
@@ -112,8 +110,6 @@ contains
     p%kelvin = 0.0d0
     p%temperature_eV = 0.0d0
     p%bulk_or_film = 'bulk'
-    p%defect_position(1)  = -1    ; p%defect_position(2)  = -1    ; p%defect_position(3)  = -1
-    p%defect_u(1)         = 0.0d0 ; p%defect_u(2)         = 0.0d0 ; p%defect_u(3)         = 0.0d0
     p%external_E_field(:) = 0.0d0
     p%hysteresis_loop_continue = 1
     p%P_kappa2 = 0.0d0
@@ -236,10 +232,6 @@ contains
           read(str,*) dmy1, dmy2, p%epsilon_inf
        case('kappa')
           read(str,*) dmy1, dmy2, p%kappa
-       case('defect_position')
-          read(str,*) dmy1, dmy2, p%defect_position(1), p%defect_position(2), p%defect_position(3)
-       case('defect_u')
-          read(str,*) dmy1, dmy2, p%defect_u(1), p%defect_u(2), p%defect_u(3)
        case('plot_dispersion')
           read(str,*) dmy1, dmy2, p%plot_dispersion
        case('DDB_a')

@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2010-10-09 22:41:53 takeshi>
+! Time-stamp: <2010-10-09 22:48:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -70,11 +70,6 @@ subroutine initialize_dipoR(p,c,e)
 !   call         dVddi_E_field(p,c,e)
 !   call  optimize_homo_strain(p,c,e)
 !   call  optimize_inho_strain(p,c,e)
-
-!   ! deffect
-!   if (p%defect_position(1).ge.0) then
-!      c%dVddi(p%defect_position(1),p%defect_position(2),p%defect_position(3),:) = 0.0d0
-!   end if
 
 !   ! mirror dVddi
 !   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then

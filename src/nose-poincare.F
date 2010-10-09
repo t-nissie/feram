@@ -1,6 +1,8 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2008-10-14 20:16:28 takeshi>
+! Time-stamp: <2010-10-09 22:54:52 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
+! Description:
+! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
 ! ref_1: Stephen D. Bond, Benedict J. Leimkuhler and Brian B. Laird:
 !         J. Comput. Phys. Vol.151 p.114 (1999)
 !!
@@ -32,27 +34,6 @@ subroutine nose_poincare(p,c,e)
   !call msg(6, __FILE__, __LINE__, 'dipoR', ' is updated.')
 
   call mirror_force_mirror(p,c,e)
-!   ! deffect and mirror dipoR
-!   if (p%defect_position(1).ge.0) then
-!      c%dipoR(p%defect_position(1),p%defect_position(2),p%defect_position(3),:) = p%defect_u(:)
-!   end if
-!   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-!      call mirror(p, c%dipoR)
-!   end if
-
-!   call dipoFFT(p,c)
-!   call  dVddi_dipole_dipole(p,c,e)
-!   call     dVddi_unharmonic(p,c,e)
-!   call        dVddi_E_field(p,c,e)
-!   call optimize_homo_strain(p,c,e)   ! It calls dVddi_homo_coupling().
-!   call optimize_inho_strain(p,c,e)
-!   ! deffect and mirror dVddi
-!   if (p%defect_position(1).ge.0) then
-!      c%dVddi(p%defect_position(1),p%defect_position(2),p%defect_position(3),:) = 0.0d0
-!   end if
-!   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-!      call mirror(p, c%dVddi)
-!   end if
 
   ! e%dipo_kinetic was already calculated.
   call Nose_Poincare_Hamiltonian(p,c,e)
