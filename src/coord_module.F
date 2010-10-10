@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2010-10-10 17:17:05 takeshi>
+! Time-stamp: <2010-10-10 17:49:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -25,7 +25,7 @@ module Coord_module
     !real*8,     pointer     :: acouR(:,:,:,:)   => null()
      real*8,     pointer     :: inhomo_K(:,:,:, :,:)       => null()
      real*8,     pointer     :: inhomo_coup2_K(:,:,:, :,:) => null()
-     logical,    pointer     :: defects_p(:,:,:) => null()
+     logical,    pointer     :: sum_p(:,:,:) => null()
 #  else
      real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
@@ -39,12 +39,13 @@ module Coord_module
     !real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
      real*8,     allocatable :: inhomo_K(:,:,:, :,:)       ! FTed potential
      real*8,     allocatable :: inhomo_coup2_K(:,:,:, :,:) ! FTed potential
-     logical,    allocatable :: defects_p(:,:,:) ! initialized in read_defects_u.F
+     logical,    allocatable :: sum_p(:,:,:) ! .true. if the u(R) is not defect nor mirrored film. This array will be initialized in read_defects_u.F
 #  endif
      real*8                 strain(6)
      real*8                 homogeneous(6,6)
      real*8                 homogeneous_coupling_2(6,6)
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
+     integer                n_sum_p
   end type Coord_type
 
 contains
@@ -82,9 +83,9 @@ contains
     allocate(     c%inhomo_K(0:p%Lx/2,0:p%Ly-1,0:p%Lz-1, 3,3))
     if (allocated(c%inhomo_coup2_K)) deallocate(c%inhomo_coup2_K)
     allocate(     c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1,0:p%Lz-1, 3,6))
-    !--- defects_p --------------------------
-    if (allocated(c%defects_p)) deallocate(c%defects_p)
-    allocate(c%defects_p(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    !--- sum_p ------------------------------
+    if (allocated(c%sum_p)) deallocate(c%sum_p)
+    allocate(c%sum_p(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     !--- end --------------------------------
     call msg(6, __FILE__, __LINE__, 'END', ':   alloc_Coord().')
   end subroutine alloc_Coord

@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2010-05-20 11:49:29 takeshi>
+! Time-stamp: <2010-10-10 17:45:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -48,17 +48,21 @@ contains
     avg%dipo_kinetic_true = avg%dipo_kinetic_true + e%dipo_kinetic/c%s_Nose**2
     avg%strain(:)         = avg%strain(:)         + c%strain(:)
 
-    if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-       do alpha = 1, 3
-          if (p%gap_thickness.eq.0) then
-             u_tmp(alpha) = SUM(c%dipoR(:,:,0:p%film_thickness-1,alpha))
-          else
-             u_tmp(alpha) = SUM(c%dipoR(:,:,(p%gap_thickness+1)/2:p%gap_thickness/2+p%film_thickness,alpha))
-          end if
-       end do
-    else
-       u_tmp(:) = dble(c%dipoK(0,0,0,:))
-    end if
+
+    do alpha = 1, 3
+       u_tmp(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
+    end do
+!     if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
+!        do alpha = 1, 3
+!           if (p%gap_thickness.eq.0) then
+!              u_tmp(alpha) = SUM(c%dipoR(:,:,0:p%film_thickness-1,alpha))
+!           else
+!              u_tmp(alpha) = SUM(c%dipoR(:,:,(p%gap_thickness+1)/2:p%gap_thickness/2+p%film_thickness,alpha))
+!           end if
+!        end do
+!     else
+!        u_tmp(:) = dble(c%dipoK(0,0,0,:))
+!     end if
 
     avg%u(:) = avg%u(:) + u_tmp(:)
     avg%uu(1) = avg%uu(1) + u_tmp(1)**2

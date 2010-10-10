@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2010-10-10 17:27:36 takeshi>
+! Time-stamp: <2010-10-10 18:22:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -18,7 +18,7 @@ subroutine read_defects_u(p,c)
   call msg(6, __FILE__, __LINE__, 'BEGIN', '')
 
   c%m_inv(:,:,:,:) = 1.0d0 / p%mass_dipo
-  c%defects_p(:,:,:) = .true.
+  c%sum_p(:,:,:) = .true.
 
   open(unit=UNIT_DEFECTS_U, file='defects.u', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
@@ -33,7 +33,7 @@ subroutine read_defects_u(p,c)
         if (ios.eq.0) then
            c%dipoR(ix, iy, iz, :) = u(:)
            c%m_inv(ix, iy, iz, :) = LARGE_MASS_INV
-           c%defects_p(ix, iy, iz) = .false.
+           c%sum_p(ix, iy, iz) = .false.
         else
            write(6,'("defects.u:",i5,":there is something wrong:",a)') line_number, trim(str)
            call msg(6, __FILE__, __LINE__, 'STOP', 'there is something wrong in the defects.u file.')
@@ -46,9 +46,17 @@ subroutine read_defects_u(p,c)
   end if
 
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-     c%defects_p(:,:,(p%Lz+1)/2:p%Lz-1) = .false.     ! Examples:  Lz=7 -> 4:6,  Lz=8 -> 4:7
+     c%sum_p(:,:,(p%Lz+1)/2:p%Lz-1) = .false.     ! Examples:  Lz=7 -> 4:6,  Lz=8 -> 4:7
   end if
-  ! Here, we may have to count the number of free dipoles.
+
+  c%n_sum_p = 0
+  do iz = 0, p%Lz-1
+     do iy = 0, p%Ly-1
+        do ix = 0, p%Lx-1
+           if (c%sum_p(ix,iy,iz)) c%n_sum_p = c%n_sum_p + 1
+        end do
+     end do
+  end do
 
   call msg(6, __FILE__, __LINE__, 'END', '')
 end subroutine read_defects_u
