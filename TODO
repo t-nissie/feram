@@ -22,6 +22,8 @@ o UNIT_SYSTEM の整理
 
 o mirror_force_mirror.F の最後の力のミラーが必要かどうか。必然的に対称になっているはず。
 
+o read_defects_u.F: we may have to count the number of free dipoles.
+
 o dipole-dipole-long-range.F の
   if (p%kappa<=0.0d0) then
      p%kappa = sqrt(M_PI) / p%a0 / (dble(p%Lx*p%Ly*p%Lz))**(1.0d0/6)
