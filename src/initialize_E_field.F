@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2007-12-13 10:55:16 takeshi>
+! Time-stamp: <2010-10-10 19:36:05 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -60,7 +60,7 @@ subroutine initialize_E_field(p,c)
 
   !=== Mirror ===================================================================
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-     call mirror(p, c%E_field)
+     call mirror(p,c, c%E_field)
   end if
 
   call msg(6, __FILE__, __LINE__, 'END', '')

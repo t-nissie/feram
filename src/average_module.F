@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2010-10-10 17:45:42 takeshi>
+! Time-stamp: <2010-10-10 19:44:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -52,17 +52,6 @@ contains
     do alpha = 1, 3
        u_tmp(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
     end do
-!     if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-!        do alpha = 1, 3
-!           if (p%gap_thickness.eq.0) then
-!              u_tmp(alpha) = SUM(c%dipoR(:,:,0:p%film_thickness-1,alpha))
-!           else
-!              u_tmp(alpha) = SUM(c%dipoR(:,:,(p%gap_thickness+1)/2:p%gap_thickness/2+p%film_thickness,alpha))
-!           end if
-!        end do
-!     else
-!        u_tmp(:) = dble(c%dipoK(0,0,0,:))
-!     end if
 
     avg%u(:) = avg%u(:) + u_tmp(:)
     avg%uu(1) = avg%uu(1) + u_tmp(1)**2
@@ -77,10 +66,12 @@ contains
 
   end subroutine add_to_Average
 
-  subroutine divide_and_write_Average(p,avg)
+  subroutine divide_and_write_Average(p,c,avg)
     use Param_module
+    use Coord_module
     implicit none
     type(Param_type),   intent(in)    :: p
+    type(Coord_type),   intent(in)    :: c
     type(Average_type), intent(inout) :: avg
     character (len=120)               :: fn_avg
     real*8                            :: kelvin
@@ -95,8 +86,8 @@ contains
     avg%strain(:) = avg%strain(:) / p%n_average
 
     if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-       avg%u(:)  = avg%u(:)  / p%n_average / (p%Lx*p%Ly*p%film_thickness)
-       avg%uu(:) = avg%uu(:) / p%n_average / (p%Lx*p%Ly*p%film_thickness)
+       avg%u(:)  = avg%u(:)  / p%n_average / c%n_sum_p
+       avg%uu(:) = avg%uu(:) / p%n_average / c%n_sum_p
     else
        avg%u(:)  = avg%u(:)  / p%n_average / p%N
        avg%uu(:) = avg%uu(:) / p%n_average / p%N
