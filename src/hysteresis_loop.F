@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2010-07-19 16:46:51 takeshi>
+! Time-stamp: <2010-10-10 18:29:41 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -72,19 +72,10 @@ subroutine hysteresis_loop(p,c)
      call write_Energy(p,c,e,6)
 
      if (i_step>=p%n_thermalize .and. mod(i_step,p%n_coord_freq)==0) then
-        if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-           do alpha = 1, 3
-              if (p%gap_thickness.eq.0) then
-                 u(alpha) = SUM(c%dipoR(:,:,0:p%film_thickness-1,alpha))
-              else
-                 u(alpha) = SUM(c%dipoR(:,:,(p%gap_thickness+1)/2:p%gap_thickness/2+p%film_thickness,alpha))
-              end if
-           end do
-           u(:) = u(:) / (p%Lx*p%Ly*p%film_thickness)
-        else
-           u(:) = dble(c%dipoK(0,0,0,:))
-           u(:) = u(:) / p%N
-        end if
+        do alpha = 1, 3
+           u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
+        end do
+        u(:) = u(:) / c%n_sum_p
         write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5)") &
              i_step,p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
         call flush(UNIT_HL)
