@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2009-03-24 22:57:26 takeshi>
+# Time-stamp: <2010-10-10 16:35:40 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -27,7 +27,7 @@ feram_SRCS = average_module.F \
 	initialize_E_field.F \
 	initialize-dipoR.F \
 	leapfrog.F \
-	make-mass-matrix.F \
+	read_defects_u.F \
 	mirror.F \
 	mirror_force_mirror.F \
 	molecular-dynamics.F \
@@ -115,9 +115,10 @@ energy_module.o: param_module.o coord_module.o
 optimize-homo-strain.o:energy_module.o param_module.o coord_module.o cholesky_d.o
 optimize-inho-strain.o:energy_module.o param_module.o coord_module.o cholesky_z.o
 molecular-dynamics.o:  energy_module.o param_module.o coord_module.o average_module.o
-dipoFFT.o elastic.o dVddi-homo-coupling.o dVddi-unharmonic.o make-mass-matrix.o potential.o:\
+dipoFFT.o elastic.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
                                 param_module.o coord_module.o
-initialize_E_field.o:           param_module.o coord_module.o define.h
+initialize_E_field.o read_defects_u.o:\
+                                param_module.o coord_module.o define.h
 initialize-dipoR.o average_module.o:\
                                 param_module.o coord_module.o energy_module.o define.h
 nose-poincare.o leapfrog.o mirror_force_mirror.o:\

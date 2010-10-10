@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2010-10-09 22:52:28 takeshi>
+! Time-stamp: <2010-10-10 16:41:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -14,6 +14,7 @@ subroutine mirror_force_mirror(p,c,e)
   ! mirror
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
      call mirror(p, c%dipoR)
+     call mirror(p, c%m_inv)
   end if
 
   ! force
@@ -24,7 +25,7 @@ subroutine mirror_force_mirror(p,c,e)
   call optimize_homo_strain(p,c,e)   ! It calls dVddi_homo_coupling().
   call optimize_inho_strain(p,c,e)
 
-  ! mirror
+  ! mirror (Maybe, it is not necessary.)
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
      call mirror(p, c%dVddi)
   end if
