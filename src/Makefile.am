@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2010-10-10 16:35:40 takeshi>
+# Time-stamp: <2010-10-10 19:29:23 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -115,7 +115,7 @@ energy_module.o: param_module.o coord_module.o
 optimize-homo-strain.o:energy_module.o param_module.o coord_module.o cholesky_d.o
 optimize-inho-strain.o:energy_module.o param_module.o coord_module.o cholesky_z.o
 molecular-dynamics.o:  energy_module.o param_module.o coord_module.o average_module.o
-dipoFFT.o elastic.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
+mirror.o dipoFFT.o elastic.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
                                 param_module.o coord_module.o
 initialize_E_field.o read_defects_u.o:\
                                 param_module.o coord_module.o define.h
@@ -124,7 +124,7 @@ initialize-dipoR.o average_module.o:\
 nose-poincare.o leapfrog.o mirror_force_mirror.o:\
                                 param_module.o coord_module.o energy_module.o
 coord_module.o:                 param_module.o         define.h
-mirror.o fft.o:                 param_module.o
+fft.o:                          param_module.o
 dipole-dipole-long-range.o:     param_module.o         define.h fft.o
 dipole-dipole-short-range.o:    param_module.o                  fft.o
 dVddi-dipole-dipole.o: energy_module.o param_module.o coord_module.o          fft.o
