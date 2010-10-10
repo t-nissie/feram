@@ -300,11 +300,6 @@ If
  plot_dispersion = .true.
 data files for plotting dispersion relation will be written. Default is .false..
 
-===== defect_position, defect_u
-Position and u of a defect.
- defect_position = 16 16 16
- defect_u = 0.0 0.0 0.0
-
 
 === .restart input file
 If you executed feram with a parameter file "cooling002-345K" as
@@ -312,6 +307,17 @@ If you executed feram with a parameter file "cooling002-345K" as
 feram searchs for the "cooling002-345K.restart" file an an
 initial configurations. If there is no such file, feram
 starts from a random configurations.
+
+=== defects.u input file
+The defects.u input file gives positions and fiexed dipole moments u
+for simulations of defects and dead layers.
+ 0  0  0   0.1 -0.1  0.7
+ 1  0  0   0.1  0.1  0.7
+ 2  0  0   0.1  0.2  0.7
+    :
+ position_x position_y position_z    fixed_u_x fixed_u_y fixed_u_z [Angstrom]
+    :
+
 
 === ionic.configuration file
 (Not implemented yet.)
@@ -334,11 +340,9 @@ Position must be given in the unit of a0.
  1  0  0   0.1  0.1 0.7
  2  0  0   0.1  0.2 0.7
     :
-    :
  position_x position_y position_z    E_local_x E_local_y E_local_z [V/Angstrom]
     :
-    :
- Lx Ly Lz   0.1  0.2 0.7
+ Lx-1       Ly-1       Lz-1          0.1       0.2       0.7
 
 If feram cannot find both ionic.configuration and local.field,
 it will set local.field to ZERO.
