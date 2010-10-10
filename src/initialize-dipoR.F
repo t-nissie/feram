@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2010-10-09 22:48:42 takeshi>
+! Time-stamp: <2010-10-10 19:34:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -60,21 +60,6 @@ subroutine initialize_dipoR(p,c,e)
   call read_defects_u(p,c)   ! Prepares fixed u for defects and c%m_inv(:,:,:,:).
 
   call mirror_force_mirror(p,c,e)
-!   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-!      call mirror(p, c%dipoR)
-!   end if
-
-!   call dipoFFT(p,c)
-!   call   dVddi_dipole_dipole(p,c,e)
-!   call      dVddi_unharmonic(p,c,e)
-!   call         dVddi_E_field(p,c,e)
-!   call  optimize_homo_strain(p,c,e)
-!   call  optimize_inho_strain(p,c,e)
-
-!   ! mirror dVddi
-!   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-!      call mirror(p, c%dVddi)
-!   end if
 
   c%s_Nose  = 1.0d0   ! s0
   c%pi_Nose = 0.0d0   ! pi0
