@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2010-10-10 18:22:34 takeshi>
+! Time-stamp: <2010-10-10 20:08:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -35,8 +35,8 @@ subroutine read_defects_u(p,c)
            c%m_inv(ix, iy, iz, :) = LARGE_MASS_INV
            c%sum_p(ix, iy, iz) = .false.
         else
-           write(6,'("defects.u:",i5,":there is something wrong:",a)') line_number, trim(str)
-           call msg(6, __FILE__, __LINE__, 'STOP', 'there is something wrong in the defects.u file.')
+           call msg(6, 'defects.u', line_number, 'There is something wrong in this line: ', trim(str))
+           call msg(6, __FILE__, __LINE__, 'STOP: ', 'there is something wrong in the defects.u file.')
            stop
         end if
      end do
