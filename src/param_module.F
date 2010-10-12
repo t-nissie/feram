@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2010-10-10 18:17:29 takeshi>
+! Time-stamp: <2010-10-09 22:59:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -38,6 +38,8 @@ module Param_module
      !--- System geometry -----------------------------
      character(len=4) :: bulk_or_film
      integer Lx, Ly, Lz ! Integer
+     integer gap_thickness        ! 1, 3, 5, 7, ...
+     real*8  gap_dipole_u(3)
      real*8 a0          ! lattice constant [Angstrom]
      real*8 epi_strain
      !--- Time step -----------------------------------
@@ -80,6 +82,7 @@ module Param_module
      real*8 DDB_f
      real*8 DDB_g
      !=== Parameters to be calculated from above =========================
+     integer film_thickness
      integer N
      real*8 dt_2
      integer n_freedom
@@ -131,6 +134,8 @@ contains
     p%DDB_f = 0.0d0
     p%DDB_g = 0.0d0
     p%k_stripe = 0.0d0
+    p%gap_thickness = 0
+    p%gap_dipole_u(:) = 0.0d0
 
     ! Read parameters from the imput file
     line_number = 0
@@ -165,6 +170,10 @@ contains
           end if
        case('L')
           read(str,*) dmy1, dmy2, p%Lx, p%Ly, p%Lz
+       case('gap_thickness')
+          read(str,*) dmy1, dmy2, p%gap_thickness
+       case('gap_dipole_u')
+          read(str,*) dmy1, dmy2, p%gap_dipole_u
        case('a0')
           read(str,*) dmy1, dmy2, p%a0
        case('epi_strain')
@@ -256,6 +265,7 @@ contains
     type(Param_type),intent(inout) :: p
     call msg(6, __FILE__, __LINE__, 'BEGIN', ': make_Param().')
 
+    p%film_thickness = p%Lz/2-p%gap_thickness
     p%N = p%Lx * p%Ly * p%Lz
     p%dt_2 = p%dt / 2
     p%n_freedom = 3 * p%N
@@ -273,6 +283,8 @@ contains
     character (len=100) :: fn
     character (len=300) :: str
     call msg(6, __FILE__, __LINE__, 'BEGIN', ': write_Param(), Parameters for convenience.')
+    write(str,'(a,i7)')     'film_thickness            =', p%film_thickness
+    call msg_ez(6,str)
     write(str,'(a,i7)')     'N = Lx * Ly * Lz          =', p%N
     call msg_ez(6,str)
     write(str,'(a,f11.7)')  'delta_t / 2               =', p%dt_2
