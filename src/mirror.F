@@ -1,18 +1,16 @@
 ! mirror.F -*-f90-*-
-! Time-stamp: <2010-10-10 19:27:32 takeshi>
+! Time-stamp: <2010-10-12 20:18:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
-subroutine mirror(p,c, dipo)
+subroutine mirror(p, dipo)
   use Param_module
-  use Coord_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type),   intent(in)    :: p
-  type(Coord_type),   intent(in)    :: c
   real*8 :: dipo(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3)
   integer iz
   call msg(6, __FILE__, __LINE__, 'BEGIN', '')
-  if (c%sum_p(0,0,0).or.c%sum_p(1,1,0).or.c%sum_p(2,2,0)) then ! There is no dead layers.
+  if (p%gap_id==0) then ! There is no dead layers.
      do iz = 0, p%Lz/2-1
         dipo(:,:,p%Lz-1-iz,1) = -dipo(:,:,iz,1)
         dipo(:,:,p%Lz-1-iz,2) = -dipo(:,:,iz,2)

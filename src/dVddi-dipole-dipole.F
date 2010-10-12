@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2010-10-10 19:33:24 takeshi>
+! Time-stamp: <2010-10-12 20:16:40 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_dipole_dipole(p,c,e)
@@ -39,7 +39,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
   c%dVddi(:,:,:,:) = c%dVddi(:,:,:,:) / p%N
 
   !if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') thenx
-  !   call mirror(p,c, c%dVddi)
+  !   call mirror(p, c%dVddi)
   !end if
 
   e%dipole_dipole = SUM( c%dipoR(:,:,:,:) * c%dVddi(:,:,:,:) ) / 2
