@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2010-10-10 20:08:03 takeshi>
+! Time-stamp: <2010-10-12 20:04:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -45,8 +45,20 @@ subroutine read_defects_u(p,c)
      call msg(6, __FILE__, __LINE__, 'FILE: ', 'defects.u was NOT found. No defects was created.')
   end if
 
-  if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
+  if (p%gap_id>0) then
      c%sum_p(:,:,(p%Lz+1)/2:p%Lz-1) = .false.     ! Examples:  Lz=7 -> 4:6,  Lz=8 -> 4:7
+     c%dipoR(:, :, 0, 1) = p%gap_dipole_u(1)
+     c%dipoR(:, :, 0, 2) = p%gap_dipole_u(2)
+     c%dipoR(:, :, 0, 3) = p%gap_dipole_u(3)
+     c%m_inv(:, :, 0, :) = LARGE_MASS_INV
+     c%sum_p(:, :, 0)    = .false.
+     if (p%gap_id.eq.2) then
+        c%dipoR(:, :, p%Lz/2, 1) = p%gap_dipole_u(1)
+        c%dipoR(:, :, p%Lz/2, 2) = p%gap_dipole_u(2)
+        c%dipoR(:, :, p%Lz/2, 3) = p%gap_dipole_u(3)
+        c%m_inv(:, :, p%Lz/2, :) = LARGE_MASS_INV
+        c%sum_p(:, :, p%Lz/2)    = .false.
+     end if
   end if
 
   c%n_sum_p = 0
