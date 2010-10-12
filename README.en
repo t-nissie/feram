@@ -212,8 +212,10 @@ Specifies the structure of the system.
 System size, L_x, L_y and L_z. They must be equal or larger than 4.
  L = 32 32 4
 
-===== gap_thickness
-Thickness of the dead layers for the thin film.
+===== gap_id
+0: There is no dead layer.
+1: Single dead layer is on the bottom electrode.
+2: There are dead layers both on the bottom and top electrodes.
  gap_thickness = 1
 
 ===== gap_dipole_u
