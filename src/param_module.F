@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2010-10-09 22:59:01 takeshi>
+! Time-stamp: <2010-10-12 19:38:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -38,7 +38,7 @@ module Param_module
      !--- System geometry -----------------------------
      character(len=4) :: bulk_or_film
      integer Lx, Ly, Lz ! Integer
-     integer gap_thickness        ! 1, 3, 5, 7, ...
+     integer gap_id     ! 0, 1, 2
      real*8  gap_dipole_u(3)
      real*8 a0          ! lattice constant [Angstrom]
      real*8 epi_strain
@@ -82,7 +82,6 @@ module Param_module
      real*8 DDB_f
      real*8 DDB_g
      !=== Parameters to be calculated from above =========================
-     integer film_thickness
      integer N
      real*8 dt_2
      integer n_freedom
@@ -134,7 +133,7 @@ contains
     p%DDB_f = 0.0d0
     p%DDB_g = 0.0d0
     p%k_stripe = 0.0d0
-    p%gap_thickness = 0
+    p%gap_id = 0
     p%gap_dipole_u(:) = 0.0d0
 
     ! Read parameters from the imput file
@@ -170,8 +169,8 @@ contains
           end if
        case('L')
           read(str,*) dmy1, dmy2, p%Lx, p%Ly, p%Lz
-       case('gap_thickness')
-          read(str,*) dmy1, dmy2, p%gap_thickness
+       case('gap_id')
+          read(str,*) dmy1, dmy2, p%gap_id
        case('gap_dipole_u')
           read(str,*) dmy1, dmy2, p%gap_dipole_u
        case('a0')
@@ -265,7 +264,6 @@ contains
     type(Param_type),intent(inout) :: p
     call msg(6, __FILE__, __LINE__, 'BEGIN', ': make_Param().')
 
-    p%film_thickness = p%Lz/2-p%gap_thickness
     p%N = p%Lx * p%Ly * p%Lz
     p%dt_2 = p%dt / 2
     p%n_freedom = 3 * p%N
@@ -274,6 +272,18 @@ contains
     end if
     p%unit_cell_volume = p%a0 ** 3
     p%pNa03 = p%GPa *0.01d0 / ELEMENTARY_CHARGE * p%N * p%unit_cell_volume
+
+    if (p%bulk_or_film.eq.'bulk') then
+       if (p%gap_id.ne.0) then
+          call msg(6, __FILE__, __LINE__, 'STOP: ', 'In the case of bulk calculation, gap_id must be 0.')
+          stop
+       end if
+    else
+       if (mod(p%Lz,2).ne.mod(p%gap_id,2)) then
+          call msg(6, __FILE__, __LINE__, 'STOP: ', 'In the case of film or epit calculation, mod(Lz,2)==mod(gap_id,2)')
+          stop
+       end if
+    end if
     call msg(6, __FILE__, __LINE__, 'END',   ':   make_Param().')
   end subroutine make_Param
 
@@ -283,8 +293,6 @@ contains
     character (len=100) :: fn
     character (len=300) :: str
     call msg(6, __FILE__, __LINE__, 'BEGIN', ': write_Param(), Parameters for convenience.')
-    write(str,'(a,i7)')     'film_thickness            =', p%film_thickness
-    call msg_ez(6,str)
     write(str,'(a,i7)')     'N = Lx * Ly * Lz          =', p%N
     call msg_ez(6,str)
     write(str,'(a,f11.7)')  'delta_t / 2               =', p%dt_2
