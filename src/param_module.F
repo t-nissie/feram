@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2010-10-12 19:38:34 takeshi>
+! Time-stamp: <2010-10-12 20:40:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -280,7 +280,8 @@ contains
        end if
     else
        if (mod(p%Lz,2).ne.mod(p%gap_id,2)) then
-          call msg(6, __FILE__, __LINE__, 'STOP: ', 'In the case of film or epit calculation, mod(Lz,2)==mod(gap_id,2)')
+          call msg(6, __FILE__, __LINE__, 'STOP: ', &
+               'In the case of film or epit calculation, mod(Lz,2)==mod(gap_id,2)')
           stop
        end if
     end if
