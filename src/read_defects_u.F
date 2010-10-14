@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2010-10-12 20:04:28 takeshi>
+! Time-stamp: <2010-10-14 15:29:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -32,7 +32,7 @@ subroutine read_defects_u(p,c)
         read(str,*,IOSTAT=ios) ix, iy, iz, u(:)
         if (ios.eq.0) then
            c%dipoR(ix, iy, iz, :) = u(:)
-           c%m_inv(ix, iy, iz, :) = LARGE_MASS_INV
+           c%m_inv(ix, iy, iz, :) = 0.0d0   ! 1/infinity
            c%sum_p(ix, iy, iz) = .false.
         else
            call msg(6, 'defects.u', line_number, 'There is something wrong in this line: ', trim(str))
@@ -50,13 +50,13 @@ subroutine read_defects_u(p,c)
      c%dipoR(:, :, 0, 1) = p%gap_dipole_u(1)
      c%dipoR(:, :, 0, 2) = p%gap_dipole_u(2)
      c%dipoR(:, :, 0, 3) = p%gap_dipole_u(3)
-     c%m_inv(:, :, 0, :) = LARGE_MASS_INV
+     c%m_inv(:, :, 0, :) = 0.0d0   ! 1/infinity
      c%sum_p(:, :, 0)    = .false.
      if (p%gap_id.eq.2) then
         c%dipoR(:, :, p%Lz/2, 1) = p%gap_dipole_u(1)
         c%dipoR(:, :, p%Lz/2, 2) = p%gap_dipole_u(2)
         c%dipoR(:, :, p%Lz/2, 3) = p%gap_dipole_u(3)
-        c%m_inv(:, :, p%Lz/2, :) = LARGE_MASS_INV
+        c%m_inv(:, :, p%Lz/2, :) = 0.0d0   ! 1/infinity
         c%sum_p(:, :, p%Lz/2)    = .false.
      end if
   end if

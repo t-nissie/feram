@@ -22,5 +22,3 @@
 #define HARTREE_BOHR   14.399644d0 /* = e_Hartree [eV] * r_Bohr [Angstrom] = 27.21138386 * 0.5291772083 [eV Amgstrom] */
 #define KELVIN_EV      11604.45d0  /* [K] */
 #define ELEMENTARY_CHARGE 1.60217653d0 /* x 10^-19 C */
-
-#define LARGE_MASS_INV 0.0000000001d0
