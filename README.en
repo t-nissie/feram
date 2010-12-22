@@ -306,7 +306,7 @@ data files for plotting dispersion relation will be written. Default is .false..
 === .restart input file
 If you executed feram with a parameter file "cooling002-345K" as
  $ feram cooling002-345K
-feram searchs for the "cooling002-345K.restart" file an an
+feram searchs for the "cooling002-345K.restart" file as an
 initial configurations. If there is no such file, feram
 starts from a random configurations.
 
