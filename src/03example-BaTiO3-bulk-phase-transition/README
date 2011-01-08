@@ -1,1 +1,3 @@
 Read ../../doc/fluctuation-susceptibility.pdf
+Then, read strain-susceptibility.gp carefully and execute it as
+ $ gnuplot strain-susceptibility.gp
