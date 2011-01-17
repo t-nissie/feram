@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # hysteresis.gp
-# Time-stamp: <2010-05-20 17:46:11 takeshi>
+# Time-stamp: <2011-01-17 09:38:10 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 #set encoding iso_8859_1
@@ -21,9 +21,9 @@ vertical_line=sprintf("< (echo 0 %.2f; echo 0 %.2f)", -maxy, maxy)
 set title 'hysteresis loop'
 plot 0 title '' w l lt 9,\
      vertical_line title '' w l lt 9,\
-     'hysteresis.hl' using ( $4*100000.0):( $13*c)\
+     'hysteresis.hl' using ( $5*100000.0):( $14*c)\
      title 'epit 16{/Symbol \264}16{/Symbol \264}({/Times-Italic l}=4, {/Times-Italic d}=0), {/Times-Italic T} = 175 K' w l lt 2,\
-     'hysteresis.hl' using (-$4*100000.0):(-$13*c) notitle w l lt 2 
+     'hysteresis.hl' using (-$5*100000.0):(-$14*c) notitle w l lt 2 
 
 set output
 !ps2pdf -sPAPERSIZE=a4 hysteresis.eps > hysteresis.pdf
