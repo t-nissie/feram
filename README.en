@@ -240,6 +240,11 @@ snapshot is taken at the end of the MD at each temperature.
  n_average    = 10000
  n_coord_freq = 50000
 
+===== n_hysteresis_loop_continue
+You can restart and continue a hysteresis-loop calculation from the
+n_hysteresis_loop_continue-th iteration.
+ n_hysteresis_loop_continue = 20000
+
 ===== external_E_field
 Vector of the external electric field in the unit of [V/Angstrom].
  external_E_field = 0.00 0.00 -0.01
