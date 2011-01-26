@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2010-10-10 19:29:23 takeshi>
+# Time-stamp: <2011-01-26 12:56:33 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -71,12 +71,7 @@ inhomo-K.gp \
 plot.gp \
 slicer.rb \
 splot.gp \
-01example-BaTiO3-epit-hysteresis-loop \
 03example-BaTiO3-bulk-phase-transition \
-07example-BaTiO3-epit-32x32-L004-D0-5.0GPa-0.01-350-500K \
-08example-BaTiO3-dispersion \
-09example-BaTiO3-bulk-leap-frog \
-10example-PbTiO3-DDB2short \
 11example-BaTiO3-new-hysteresis-loop
 
 ../libblaslapack/libblaslapack.a:
@@ -150,6 +145,3 @@ pdf: feram.pdf coord_module.pdf param_module.pdf
 #	diff -u -w param.read_dummy $(INPUT_FILE) ; true
 #	egrep "write.*'!" $< | cut -b 21- | sed "s/'$$//" > param.write_dummy
 #	diff -u -w param.read_dummy param.write_dummy
-
-dist-hook:
-	cd $(distdir)/01example-BaTiO3-epit-hysteresis-loop && $(MAKE) clean

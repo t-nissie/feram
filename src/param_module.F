@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2010-10-12 20:40:52 takeshi>
+! Time-stamp: <2011-01-26 12:26:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -73,6 +73,7 @@ module Param_module
      real*8 epsilon_inf   ! relative dielectric constant of core ions
      real*8 kappa         ! arbitrary kappa for dipole-dipole-long-range.F
      logical plot_dispersion
+     logical write_each_system
      !--- DDB2short -----------------------------------
      real*8 DDB_a
      real*8 DDB_b
@@ -125,6 +126,7 @@ contains
     p%n_coord_freq           = huge(1)   ! maximum integer
     p%kappa = 0.0d0
     p%plot_dispersion = .false.
+    p%write_each_system = .false.
     p%DDB_a = 0.0d0
     p%DDB_b = 0.0d0
     p%DDB_c = 0.0d0
@@ -233,6 +235,8 @@ contains
           read(str,*) dmy1, dmy2, p%kappa
        case('plot_dispersion')
           read(str,*) dmy1, dmy2, p%plot_dispersion
+       case('write_each_system')
+          read(str,*) dmy1, dmy2, p%write_each_system
        case('DDB_a')
           read(str,*) dmy1, dmy2, p%DDB_a
        case('DDB_b')
