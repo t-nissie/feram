@@ -8,7 +8,7 @@ Q_Nose = 0.05
 #--- System geometry -----------------------------
 bulk_or_film = 'epit'
 L = 16 16 8
-gap_thickness = 0
+gap_id = 0
 gap_dipole_u = 0.0 0.0 0.0
 a0 =  3.94         latice constant a0 [Angstrom]
 epi_strain = -0.01
@@ -17,6 +17,7 @@ dt = 0.001 [pico second]
 n_thermalize =   20000
 n_average    = 4000000
 n_coord_freq =   10000
+write_each_system = .false.
 
 #--- External electric field ---------------------
 external_E_field = 0.00 0.00 -0.02
