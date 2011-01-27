@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2011-01-26 16:59:43 takeshi>
+! Time-stamp: <2011-01-27 12:22:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -71,22 +71,25 @@ subroutine hysteresis_loop(p,c)
 
      call write_Energy(p,c,e,6)
 
-     if (i_step>=p%n_thermalize .and. mod(i_step,p%n_coord_freq)==0) then
-        do alpha = 1, 3
-           u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
-        end do
-        u(:) = u(:) / c%n_sum_p
-        write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5)") &
-             i_step,p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
-        call flush(UNIT_HL)
-        if (p%write_each_system) then
-           write(fn_system,'(a,a,i10.10,a)') trim(p%filename), '.', i_step, '.coord'
-        else
+
+     if (i_step>=p%n_thermalize) then
+        if (mod(i_step-p%n_thermalize, p%n_hl_freq) == 0) then
+           do alpha = 1, 3
+              u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
+           end do
+           u(:) = u(:) / c%n_sum_p
+           write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5)") &
+                i_step,p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
+           call flush(UNIT_HL)
            write(fn_system,'(a,a)') trim(p%filename), '.coord'
+           call write_system(p,c,fn_system)
         end if
-        call write_system(p,c,fn_system)
-        !write(bzip2_command,'(a,a)') 'bzip2 ', trim(fn_system)
-        !call system(bzip2_command)
+        if (mod(i_step-p%n_thermalize, p%n_coord_freq) == 0) then
+           write(fn_system,'(a,a,i10.10,a)') trim(p%filename), '.', i_step, '.coord'
+           call write_system(p,c,fn_system)
+           !write(bzip2_command,'(a,a)') 'bzip2 ', trim(fn_system)
+           !call system(bzip2_command)
+        end if
      end if
   end do
 

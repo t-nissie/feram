@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2011-01-26 16:43:31 takeshi>
+! Time-stamp: <2011-01-27 12:30:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -47,9 +47,10 @@ module Param_module
      integer n_thermalize
      integer n_average
      integer n_coord_freq  ! frequency for writing out the coordinates
+     integer n_hl_freq     ! frequency for writing to .hl file
+     integer n_hysteresis_loop_continue
      !!--- External electric field ---------------------
      real*8    external_E_field(3)  ! External electric field [V/Angstrom]
-     integer   n_hysteresis_loop_continue
      !--- On-site (Polynomial of order 6) -------------
      real*8 P_kappa2    ! P_6(u) = kappa2*u^2 + alpha*u^4
      real*8 P_alpha     !  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
@@ -73,7 +74,6 @@ module Param_module
      real*8 epsilon_inf   ! relative dielectric constant of core ions
      real*8 kappa         ! arbitrary kappa for dipole-dipole-long-range.F
      logical plot_dispersion
-     logical write_each_system
      !--- DDB2short -----------------------------------
      real*8 DDB_a
      real*8 DDB_b
@@ -110,8 +110,14 @@ contains
     p%kelvin = 0.0d0
     p%temperature_eV = 0.0d0
     p%bulk_or_film = 'bulk'
-    p%external_E_field(:) = 0.0d0
+
+    p%n_thermalize =  10000
+    p%n_average    = 100000
+    p%n_coord_freq = huge(1)   ! Maximum integer. Do not write system by default.
+    p%n_hl_freq    =  10000
     p%n_hysteresis_loop_continue = 1
+
+    p%external_E_field(:) = 0.0d0
     p%P_kappa2 = 0.0d0
     p%P_alpha  = 0.0d0
     p%P_gamma  = 0.0d0
@@ -123,10 +129,8 @@ contains
     p%random_seed_array(:) = 0
     p%init_dipo_avg(:) = 0.00d0
     p%init_dipo_dev(:) = 0.05d0
-    p%n_coord_freq           = huge(1)   ! maximum integer
     p%kappa = 0.0d0
     p%plot_dispersion = .false.
-    p%write_each_system = .false.
     p%DDB_a = 0.0d0
     p%DDB_b = 0.0d0
     p%DDB_c = 0.0d0
@@ -187,6 +191,8 @@ contains
           read(str,*) dmy1, dmy2, p%n_average
        case('n_coord_freq')
           read(str,*) dmy1, dmy2, p%n_coord_freq
+       case('n_hl_freq')
+          read(str,*) dmy1, dmy2, p%n_hl_freq
        case('external_E_field')
           read(str,*) dmy1, dmy2, p%external_E_field(1), p%external_E_field(2), p%external_E_field(3)
        case('n_hysteresis_loop_continue')
@@ -235,8 +241,6 @@ contains
           read(str,*) dmy1, dmy2, p%kappa
        case('plot_dispersion')
           read(str,*) dmy1, dmy2, p%plot_dispersion
-       case('write_each_system')
-          read(str,*) dmy1, dmy2, p%write_each_system
        case('DDB_a')
           read(str,*) dmy1, dmy2, p%DDB_a
        case('DDB_b')
