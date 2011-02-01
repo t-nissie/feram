@@ -7,8 +7,8 @@ Q_Nose = 0.05
 
 #--- System geometry -----------------------------
 bulk_or_film = 'epit'
-L = 16 16 81
-gap_id = 1
+L = 16 16 82
+gap_id = 2
 gap_dipole_u = 0.0 0.0 0.0
 a0 =  3.94         latice constant a0 [Angstrom]
 epi_strain = -0.01

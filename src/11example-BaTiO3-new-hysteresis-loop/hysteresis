@@ -1,13 +1,13 @@
 #--- Method, Temperature, and mass ---------------
 method = 'hl'
 GPa = -5.0
-kelvin = 175
+kelvin = 150
 mass_amu = 39.0
 Q_Nose = 0.05
 
 #--- System geometry -----------------------------
 bulk_or_film = 'epit'
-L = 16 16 8
+L = 16 16 80
 gap_id = 0
 gap_dipole_u = 0.0 0.0 0.0
 a0 =  3.94         latice constant a0 [Angstrom]
@@ -15,12 +15,12 @@ epi_strain = -0.01
 #--- Time step -----------------------------------
 dt = 0.001 [pico second]
 n_thermalize =   20000
-n_average    = 4000000
-n_coord_freq =   10000
-write_each_system = .false.
+n_average    = 3000000
+n_hl_freq    =   10000
+n_coord_freq =  100000
 
 #--- External electric field ---------------------
-external_E_field = 0.00 0.00 -0.02
+external_E_field = 0.00 0.00 -0.03
 
 #--- On-site (Polynomial of order 4) -------------
 P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
