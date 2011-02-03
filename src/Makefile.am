@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-01-26 12:56:33 takeshi>
+# Time-stamp: <2011-02-03 13:50:19 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -66,13 +66,15 @@ cross-section-dVddi.sh \
 cross-section-p.sh \
 cross-section-q.sh \
 decay-test.gp \
+defects-maker.rb \
 epit.gp \
 inhomo-K.gp \
 plot.gp \
 slicer.rb \
 splot.gp \
 03example-BaTiO3-bulk-phase-transition \
-11example-BaTiO3-new-hysteresis-loop
+11example-BaTiO3-new-hysteresis-loop \
+15example-BaTiO3-defects
 
 ../libblaslapack/libblaslapack.a:
 	cd ../libblaslapack && $(MAKE)
