@@ -24,17 +24,6 @@ o mirror_force_mirror.F の最後の力のミラーが必要かどうか。必�
 
 o read_defects_u.F: we may have to count the number of free dipoles.
 
-o dipole-dipole-long-range.F の
-  if (p%kappa<=0.0d0) then
-     p%kappa = sqrt(M_PI) / p%a0 / (dble(p%Lx*p%Ly*p%Lz))**(1.0d0/6)
-  end if
-  を param_module.F に移す。
-  いくつかのファイルの
-  type(Param_type), intent(inout)  :: p
-  を
-  type(Param_type), intent(in)  :: p
-  にできる。
-
 o  call dipoFFT(p,c)
    call  dVddi_dipole_dipole(p,c,e)
    call     dVddi_unharmonic(p,c,e)

@@ -179,8 +179,9 @@ Followings are currently available tags alphabetically ordered.
 'mc' is for a Monte Carlo simulation, but it is NOT IMPLEMENTED YET.
 
  method = 'hl'
-'hl' is for a simulation of hysteresis loop. In this case, tags of n_average and external_E_field have special meanings.
-foo.hl file will be created.
+'hl' is for a simulation of hysteresis loop.
+In this case, tags of n_average and external_E_field have special meanings.
+.hl file,e.g. foo.hl, will be created.
 See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
 Fig. 1 doc/figures/external-E-field-hysteresis-loop.jpg
   Special meanings of n_average and external_E_field,
@@ -284,12 +285,6 @@ the dipoles may be
  0.08  0.02 -0.03
  0.12 -0.01  0.00 .
 
-===== random_seed_array
-Eight integers of a seed state for system's pseudorandom number generator.
-If "call random_seed(size=random_seed_size)" returns random_seed_size larger than 8,
-larger array padded with 0 will be used.
- random_seed_array = 1 2 4 3 5 6 7 8
-
 ===== Z_star
 Effective charge per site.
  Z_star     = 9.956
@@ -315,9 +310,15 @@ feram searchs for the "cooling002-345K.restart" file as an
 initial configurations. If there is no such file, feram
 starts from a random configurations.
 
-=== defects.u input file
-The defects.u input file gives positions and fiexed dipole moments u
-for simulations of defects and dead layers.
+=== .defects input file
+If you executed feram with a parameter file "cooling002-345K" as
+ $ feram cooling002-345K
+feram searchs for the "cooling002-345K.defects" file as
+information of defects. If there is no such file, feram
+do not introduce defects.
+
+The .defects input file gives positions and fiexed dipole moments u
+for simulations of defects in ferroelectrics.
  0  0  0   0.1 -0.1  0.7
  1  0  0   0.1  0.1  0.7
  2  0  0   0.1  0.2  0.7
@@ -325,6 +326,7 @@ for simulations of defects and dead layers.
  position_x position_y position_z    fixed_u_x fixed_u_y fixed_u_z [Angstrom]
     :
 
+Use src/defects-maker.rb to make this .defects file.
 
 === ionic.configuration file
 (Not implemented yet.)
@@ -374,8 +376,8 @@ Please see the end of src/average_module.F.
 In the case of method = 'hl', a simulation of hysteresis loop, one .hl file will be created instead of a .avg file.
 Please see src/hysteresis_loop.F.
 
-=== foo123.tttKnnnnnnn.coord
-Snapshot of dipoles at ttt Kelvin and nnnnnnn-th iteration.
+=== foo123.nnnnnnnnnn.coord
+Snapshot of dipoles at ttt Kelvin and nnnnnnnnnn-th iteration.
 This file can be visualized with slice.rb (Ruby script) and
 cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
 (Bourne Shell scripts). cross-section-p.sh and cross-section-dVddi.sh
@@ -429,7 +431,7 @@ Fig. 5 doc/figures/epit-vs-free-hysteresis-box.jpg
 
 == Copying
 === feram
-Copyright © 2007-2010 by Takeshi Nishimatsu
+Copyright © 2007-2011 by Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
