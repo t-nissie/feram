@@ -166,7 +166,7 @@ You must put ' = ', space-equal-space, between tag and value(s) as:
  tag = -2.0 -3.0 -4.0
  tag =  5.0  6.0  7.0
 
-Followings are currently available tags alphabetically ordered.
+Followings are currently available tags.
 
 ===== method
  method = 'md'
@@ -198,6 +198,14 @@ Pressure in GPa unit.
 Temperature in Kelvin.
  kelvin = 100
 
+===== mass_amu
+Effective mass of u(R), the length of dipole on the unit cell R.
+In atomic mass unit.
+
+===== acoustic_mass_amu
+Effective mass of w(R), the acoustic displacement of the unit cell R.
+In atomic mass unit.
+
 ===== Q_Nose
 Q_Nose for Nose-Poincare thermostat.
  Q_Nose = 14.4
@@ -218,8 +226,10 @@ System size, L_x, L_y and L_z. They must be equal or larger than 4.
 1: Single dead layer is on the bottom electrode.
 2: There are dead layers both on the bottom and top electrodes.
  gap_id = 1
+Thickness of dead layer is always 1 unit cell.
 
 ===== gap_dipole_u
+Polarization of dead layer(s) in Angstrom unit.
  gap_dipole_u = 0.0 0.0 0.16
 
 ===== a0
@@ -227,6 +237,7 @@ Lattice constant for the perovskite ferroelectrics in Angstrom unit.
  a0 = 3.99
 
 ===== epi_strain
+Epitaxial strain.
  epi_strain = -0.01
 
 ===== dt

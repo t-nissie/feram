@@ -1,21 +1,21 @@
 =begin
 = feram: ペロブスカイト型強誘電体の高速分子動力学シミュレーション
 
-feramは強誘電体薄膜の高速分子動力学シミュレーターです。
+feramは強誘電体薄膜の高速分子動力学シミュレーターです．
 
-日本語のドキュメントは準備中です。
-英語のドキュメントindex.en.htmlまたはREADME.enをご覧ください。
+日本語のドキュメントは準備中です．
+英語のドキュメントindex.en.htmlまたはREADME.enをご覧ください．
 
-ご寄附を頂けると、質問への回答が早く得られる場合があります:
+ご寄附を頂けると，質問への回答が早く得られる場合があります:
 http://www.rpip.tohoku.ac.jp/main/kihukin.html
 
 
 == ホームページとダウンロード
-feramのホームページは http://loto.sourceforge.net/feram/ です。
+feramのホームページは http://loto.sourceforge.net/feram/ です．
 
 最新のtar.gzパッケージ (feram-X.YY.ZZ.tar.gz) を
 http://sourceforge.net/projects/loto/files/feram/
-からダウンロードすることができます。
+からダウンロードすることができます．
 
 == 参考文献
  * Takeshi Nishimatsu, Masaya Iwamoto, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
@@ -38,6 +38,254 @@ http://sourceforge.net/projects/loto/files/feram/
  * Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe and Umesh V. Waghmare:
    "Polarization switching in epitaxial films of BaTiO3: A molecular dynamics study",
    Appl. Phys. Lett., vol.93, p.242905 (2008) doi:10.1063/1.3040326.
+
+
+== インストール
+=== インストールに必要なもの
+ * GNU make （BSD make は使えません） http://www.gnu.org/software/make/
+ * FFTW3 library  http://www.fftw.org/
+ * Fortran 90 compiler
+   * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
+   * Intel Fortran Compiler for GNU/Linux (ifort, version 10.0.025 or higher)  http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
+   * PGI Fortran (pgf95, version 8.0-3 or higher) http://www.pgroup.com/
+   * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server  http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
+
+=== feramの使用と開発にあると便利なもの
+ * gnuplot (version 4.2 or higher)
+ * Ruby (version 1.8.6 or higher)
+ * autoconf (version 2.61 or higher)
+ * automake (version 1.10 higher)
+
+== 入力ファイル
+=== パラメータファイル
+feram用のパラメータファイルはコメント行と 'tag = value(s)' というタグ行
+からなるテキストファイルです．パラメータファイルのファイル名は任意です．
+それぞれのパラメータをどう決定するかは parameters/parameters.html
+に説明があります．
+
+==== コメント行
+'#' で始まる行はコメント行で，無視されます．
+空行も無視されます．
+ # This is a comment line.
+
+
+ # Here are two more
+ # comment lines.
+
+==== タグ行
+タグ行には前後がスペースで挟まれた等号 ' = ' が入っていなくてはいけません．
+次のとおり，その左にタグを右に設定値を置きます：
+ tag = 1.0
+
+ tag = -2.0 -3.0 -4.0
+ tag =  5.0  6.0  7.0
+
+以下に現在feramで利用可能なタグの一覧を示します．
+
+===== method
+ method = 'md'
+'md' is for a molecular-dynamics simulation in the canonical ensemble using the Nosé-Poincaré thermostat.
+
+ method = 'lf'
+'lf' is for a molecular-dynamics simulation in the microcanonical ensemble using the leap-frog method.
+
+ method = 'mc'
+'mc' is for a Monte Carlo simulation, but it is NOT IMPLEMENTED YET.
+
+ method = 'hl'
+'hl' is for a simulation of hysteresis loop.
+In this case, tags of n_average and external_E_field have special meanings.
+.hl file,e.g. foo.hl, will be created.
+See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
+Fig. 1 doc/figures/external-E-field-hysteresis-loop.jpg
+  Special meanings of n_average and external_E_field,
+  in the case of method = 'hl', a simulation of hysteresis loop.
+  After thermalization, the external electric field is gradually
+  altered from external_E_field to -external_E_field.
+/Fig.
+
+===== GPa
+圧力をGPa単位で．過小評価されるTcを負圧をかけることにより補正することがある．
+ GPa = -5.0
+
+===== kelvin
+温度．
+ kelvin = 100
+
+===== mass_amu
+Rにあるunit cellの双極子の長さu(R)の有効質量．
+atomic mass unitで．
+
+===== acoustic_mass_amu
+音響変位w(R)の有効質量．
+atomic mass unitで．
+
+===== Q_Nose
+能勢のQ．MD計算に必要なパラメータで，熱欲と系とのカップリングの強さを表す．
+ Q_Nose = 14.4
+
+===== bulk_or_film
+Specifies the structure of the system.
+'bulk' for infinitely periodic bulk
+'film' for free standing thin film.
+'epit' for epitaxially strained thin film.
+ bulk_or_film = 'epit'
+
+===== L
+System size, L_x, L_y and L_z. They must be equal or larger than 4.
+ L = 32 32 4
+
+===== gap_id
+0: dead layer はなし．
+1: 片側だけに dead layer がある．
+2: 両側に dead layers がある．
+ gap_id = 1
+dead layer の厚さは常に 1 unit cell．
+
+===== gap_dipole_u
+dead layerの分極．単位はu(R)と同じÅ．
+ gap_dipole_u = 0.0 0.0 0.16
+
+===== a0
+Lattice constant for the perovskite ferroelectrics in Angstrom unit.
+ a0 = 3.99
+
+===== epi_strain
+エピタキシャル歪み．
+ epi_strain = -0.01
+
+===== dt
+タイムステップの長さをピコ秒で．
+ dt = 0.002
+
+===== n_thermalize, n_average, n_coord_freq, n_hl_freq
+thermalizeにかけるステップ数，物理量の平均を取るのにかける
+ステップ数，.coordファイルを書き出す頻度，ヒステリシスループの
+計算のときに.hlファイルに書き出す頻度．
+ n_thermalize = 40000
+ n_average    = 10000
+ n_coord_freq = 50000
+ n_hl_freq    =  5000
+
+===== n_hysteresis_loop_continue
+You can restart and continue a hysteresis-loop calculation from the
+n_hysteresis_loop_continue-th iteration.
+ n_hysteresis_loop_continue = 20000
+
+===== external_E_field
+外部電場Eを[V/Angstrom]の単位で．
+methodが'md', 'lf', 'mc'のときはこの電場で一定．
+methodが'hl'のヒステリシスの計算ではn_averageステップの間に電場が+Eから-Eまで変化する．
+ external_E_field = 0.00 0.00 -0.01
+
+===== P_kappa2, P_alpha, P_gamma
+Coefficients for the 4-th order polynomial.
+ P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
+ P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+ P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
+
+===== P_k1, P_k2, P_k3
+Coefficients for the 6-th order part
+
+===== j
+Short-range inter-site interaction coefficients
+ j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
+
+===== B11, B12, B44
+Elastic Constants
+ B11 = 126.
+ B12 =  44.9
+ B44 =  50.3  [eV]
+
+===== B1xx, B1yy, B4yz
+Elastic Coupling
+ B1xx = -211.   [eV/Angstrom^2]
+ B1yy =  -19.3  [eV/Angstrom^2]
+ B4yz =   -7.75 [eV/Angstrom^2]
+
+===== init_dipo_avg, init_dipo_dev
+dipoleの初期状態の平均値とばらつき具合．
+２つの値が
+ init_dipo_avg = 0.10 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
+ init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements,
+のとき，４つの双極子があったら
+ 0.09  0.01  0.02
+ 0.11 -0.02  0.01
+ 0.08  0.02 -0.03
+ 0.12 -0.01  0.00
+などとなるだろう．
+
+====== Z_star
+unit cellあたりの有効電荷．単位はe．
+ Z_star     = 9.956
+
+===== epsilon_inf
+光学誘電率ε_∞．
+ epsilon_inf   = 5.24
+
+===== kappa
+This is for debug. You do not have to set this tag.
+Arbitrary kappa for Ewald summation in src/dipole-dipole-long-range.F.
+ kappa = 0.15
+
+===== plot_dispersion
+If
+ plot_dispersion = .true.
+data files for plotting dispersion relation will be written. Default is .false..
+
+
+=== .restart input file
+If you executed feram with a parameter file "cooling002-345K" as
+ $ feram cooling002-345K
+feram searchs for the "cooling002-345K.restart" file as an
+initial configurations. If there is no such file, feram
+starts from a random configurations.
+
+=== .defects input file
+If you executed feram with a parameter file "cooling002-345K" as
+ $ feram cooling002-345K
+feram searchs for the "cooling002-345K.defects" file as
+information of defects. If there is no such file, feram
+do not introduce defects.
+
+The .defects input file gives positions and fiexed dipole moments u
+for simulations of defects in ferroelectrics.
+ 0  0  0   0.1 -0.1  0.7
+ 1  0  0   0.1  0.1  0.7
+ 2  0  0   0.1  0.2  0.7
+    :
+ position_x position_y position_z    fixed_u_x fixed_u_y fixed_u_z [Angstrom]
+    :
+
+Use src/defects-maker.rb to make this .defects file.
+
+=== ionic.configuration file
+(Not implemented yet.)
+This file is required for the calculation of the local field.
+
+ 0.0 0.0 0.0   +3.0
+ 0.5 0.0 0.0   -2.0
+ 0.0 0.5 0.0   -2.0
+ 0.0 0.0 0.5   -2.0
+    :
+    :
+ position_x position_y position_z    effective_charge_of_the_ion
+    :
+    :
+
+Position must be given in the unit of a0.
+
+=== local.field input file
+ 0  0  0   0.1 -0.1 0.7
+ 1  0  0   0.1  0.1 0.7
+ 2  0  0   0.1  0.2 0.7
+    :
+ position_x position_y position_z    E_local_x E_local_y E_local_z [V/Angstrom]
+    :
+ Lx-1       Ly-1       Lz-1          0.1       0.2       0.7
+
+If feram cannot find both ionic.configuration and local.field,
+it will set local.field to ZERO.
 
 
 == メーリングリスト
@@ -98,7 +346,7 @@ feramのドキュメントで引用した下記の図版についてはその作
 === 擬ポテンシャル
 Teter's "extended norm-conserving" LDA 擬ポテンシャル４つは
 http://www.abinit.org/downloads/psp-links/psp-links/lda_ex
-からのものです。これらはGPLの下で再配布可能です。
+からのものです．これらはGPLの下で再配布可能です．
  56ba.psp.mod
  82pb.960808c.mod
  22ti.psp.mod
