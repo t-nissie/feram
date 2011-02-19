@@ -18,6 +18,10 @@ o dVddi_... -> dV_du_...
 
 o foo-bar.F -> foo_bar.F
 
+o p%mass_dipo の default value
+
+o p%mass_acou の導入
+
 o UNIT_SYSTEM の整理
 
 o mirror_force_mirror.F の最後の力のミラーが必要かどうか。必然的に対称になっているはず。
