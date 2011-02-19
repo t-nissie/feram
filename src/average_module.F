@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2010-10-10 19:44:09 takeshi>
+! Time-stamp: <2011-02-19 20:26:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -102,7 +102,7 @@ contains
     write(fn_avg,'(a,a)') trim(p%filename), '.avg'
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
 
-    write(UNIT_AVG,"(f6.1,3f9.5,27e13.5)")&
+    write(UNIT_AVG,"(f6.1,3f9.5,1(e15.5,5e13.5),1(e15.5,2e13.5),1(e15.5,5e13.5),1(1e15.5,11e13.5))")&
          kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
          avg%energy%dipo_kinetic    ,&
          avg%energy%dipole_dipole   ,&
