@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2011-01-27 12:30:37 takeshi>
+! Time-stamp: <2011-02-19 19:16:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -106,10 +106,18 @@ contains
     call msg(6, __FILE__, __LINE__, 'BEGIN', ': read_Param().')
 
     ! Default parameters
+    p%method = 'md'
     p%GPa    = 0.0d0
     p%kelvin = 0.0d0
-    p%temperature_eV = 0.0d0
+    p%Q_Nose = 0.1d0
     p%bulk_or_film = 'bulk'
+    p%Lx = 32
+    p%Ly = 32
+    p%Lz = 32
+    p%gap_id = 0
+    p%gap_dipole_u(:) = 0.0d0
+    p%a0 = 4.0d0
+    p%epi_strain = 0.0d0
 
     p%n_thermalize =  10000
     p%n_average    = 100000
@@ -139,8 +147,7 @@ contains
     p%DDB_f = 0.0d0
     p%DDB_g = 0.0d0
     p%k_stripe = 0.0d0
-    p%gap_id = 0
-    p%gap_dipole_u(:) = 0.0d0
+    p%temperature_eV = 0.0d0
 
     ! Read parameters from the imput file
     line_number = 0
