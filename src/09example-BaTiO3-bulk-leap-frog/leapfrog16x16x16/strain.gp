@@ -1,5 +1,5 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2008-10-10 17:37:45 takeshi>
+# Time-stamp: <2011-02-20 23:28:38 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 #set grid
@@ -10,7 +10,7 @@ set xlabel 'temperature [K]'
 set terminal postscript portrait enhanced color 'Times-Roman' 24
 set output 'strain.eps'
 set size 1.0,0.5
-set key 255,0.0215
+set key at 255,0.0215
 set title 'colorful leap frog'
 set format y '%.3f'
 set yrange [0.006:0.022]
