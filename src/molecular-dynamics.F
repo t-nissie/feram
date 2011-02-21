@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2011-02-21 14:14:52 takeshi>
+! Time-stamp: <2011-02-21 16:10:43 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -83,7 +83,8 @@ subroutine molecular_dynamics(p,c)
 
      call write_Energy(p,c,e,6)
 
-     if (i_step<=p%n_thermalize) cycle
+     if (i_step<=p%n_thermalize*4 .and. p%method.eq.'lf ') cycle
+     if (i_step<=p%n_thermalize   .and. p%method.ne.'lf ') cycle
 
      if (i_step.eq.p%n_thermalize+1) then
         call msg(6, __FILE__, __LINE__, 'AVERAGING', ' is started from this time step.')
