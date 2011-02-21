@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2011-02-19 20:26:12 takeshi>
+! Time-stamp: <2011-02-21 19:54:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -13,6 +13,7 @@ module Average_module
      real*8 strain(6)
      real*8 u(3)
      real*8 uu(6)
+     real*8 e_layer(0:10000)
   end type Average_type
 
 contains
@@ -27,6 +28,7 @@ contains
     avg%strain(:)         = 0.0d0
     avg%u(:)              = 0.0d0
     avg%uu(:)             = 0.0d0
+    avg%e_layer(:)        = 0.0d0
   end subroutine reset_Average
 
   subroutine add_to_Average(p,c,e,avg) ! We use p implicitly. Don't worry about compile warning on it.
@@ -48,6 +50,9 @@ contains
     avg%dipo_kinetic_true = avg%dipo_kinetic_true + e%dipo_kinetic/c%s_Nose**2
     avg%strain(:)         = avg%strain(:)         + c%strain(:)
 
+    if (p%method.eq.'lf ') then
+       avg%e_layer(0:p%Lz-1)   = avg%e_layer(0:p%Lz-1)   + c%e_layer(0:p%Lz-1)
+    end if
 
     do alpha = 1, 3
        u_tmp(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
@@ -74,7 +79,9 @@ contains
     type(Coord_type),   intent(in)    :: c
     type(Average_type), intent(inout) :: avg
     character (len=120)               :: fn_avg
+    character (len=200)               :: fn_T_layer
     real*8                            :: kelvin
+    integer                           :: i
 
     if (p%n_average.eq.0) return
 
@@ -95,6 +102,7 @@ contains
 
     if (p%method.eq.'lf ') then
        kelvin = avg%dipo_kinetic_true * 0.666666666666666666666666666667d0 * KELVIN_EV
+       avg%e_layer(0:p%Lz) = avg%e_layer(0:p%Lz) / p%n_average
     else
        kelvin = p%kelvin
     end if
@@ -118,5 +126,12 @@ contains
          avg%dipo_kinetic_true
 
     close(UNIT_AVG)
+
+    write(fn_T_layer,'(a,a)') trim(p%filename), '.T_layer'
+    open(UNIT=UNIT_T_LAYER,FILE=fn_T_layer)
+    do i=0,p%Lz-1
+       write(UNIT_T_LAYER,'(i9,f13.8)') i, avg%e_layer(i) / p%Lx / p%Ly * 0.666666666666666666666666666667d0 * KELVIN_EV
+    end do
+    close(UNIT_T_LAYER)
   end subroutine divide_and_write_Average
 end module Average_module
