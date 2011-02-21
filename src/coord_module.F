@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2010-10-10 17:49:02 takeshi>
+! Time-stamp: <2011-02-21 14:46:45 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -26,6 +26,7 @@ module Coord_module
      real*8,     pointer     :: inhomo_K(:,:,:, :,:)       => null()
      real*8,     pointer     :: inhomo_coup2_K(:,:,:, :,:) => null()
      logical,    pointer     :: sum_p(:,:,:) => null()
+     real*8,     pointer     :: e_layer(:)
 #  else
      real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
@@ -40,6 +41,7 @@ module Coord_module
      real*8,     allocatable :: inhomo_K(:,:,:, :,:)       ! FTed potential
      real*8,     allocatable :: inhomo_coup2_K(:,:,:, :,:) ! FTed potential
      logical,    allocatable :: sum_p(:,:,:) ! .true. if the u(R) is not defect nor mirrored film. This array will be initialized in read_defects_u.F
+     real*8,     allocatable :: e_layer(:)
 #  endif
      real*8                 strain(6)
      real*8                 homogeneous(6,6)
@@ -86,6 +88,9 @@ contains
     !--- sum_p ------------------------------
     if (allocated(c%sum_p)) deallocate(c%sum_p)
     allocate(c%sum_p(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    !--- e_layer for thermal conductivity----
+    if (allocated(c%e_layer)) deallocate(c%e_layer)
+    allocate(c%e_layer(0:p%Lz-1))
     !--- end --------------------------------
     call msg(6, __FILE__, __LINE__, 'END', ':   alloc_Coord().')
   end subroutine alloc_Coord
