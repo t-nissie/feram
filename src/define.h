@@ -3,6 +3,7 @@
 #define UNIT_AVG 10
 #define UNIT_HL 12
 #define UNIT_DEFECTS_U 14
+#define UNIT_T_LAYER 16
 #define N_CORRELATION 5
 #define MAX_RANDOM_SEED_SIZE 2048
 
