@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0
 %%Title: BaTiO3WuCohenGGA.eps
-%%Creator: gnuplot 4.2 patchlevel 4 
-%%CreationDate: Tue Sep  8 09:30:13 2009
+%%Creator: gnuplot 4.4 patchlevel 2
+%%CreationDate: Sat Feb 26 17:07:20 2011
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 554 770
 %%Orientation: Landscape
@@ -11,8 +11,8 @@
 /gnudict 256 dict def
 gnudict begin
 %
-% The following 6 true/false flags may be edited by hand if required
-% The unit line width may also be changed
+% The following true/false flags may be edited by hand if desired.
+% The unit line width and grayscale image gamma correction may also be changed.
 %
 /Color true def
 /Blacktext false def
@@ -21,9 +21,11 @@ gnudict begin
 /Landscape true def
 /Level1 false def
 /Rounded false def
+/ClipToBoundingBox false def
 /TransparentPatterns false def
 /gnulinewidth 5.000 def
 /userlinewidth gnulinewidth def
+/Gamma 1.0 def
 %
 /vshift -76 def
 /dl1 {
@@ -46,56 +48,24 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (BaTiO3WuCohenGGA.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 4.2 patchlevel 4 )
-  /Author (西松 毅)
+  /Creator (gnuplot 4.4 patchlevel 2)
+  /Author (takeshi)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Tue Sep  8 09:30:13 2009)
+  /CreationDate (Sat Feb 26 17:07:20 2011)
   /DOCINFO pdfmark
 end
 } ifelse
-/reencodeISO {
-dup dup findfont dup length dict begin
-{ 1 index /FID ne { def }{ pop pop } ifelse } forall
-currentdict /CharStrings known {
-	CharStrings /Idieresis known {
-		/Encoding ISOLatin1Encoding def } if
-} if
-currentdict end definefont
+/doclip {
+  ClipToBoundingBox {
+    newpath 50 50 moveto 554 50 lineto 554 770 lineto 50 770 lineto closepath
+    clip
+  } if
 } def
-/ISOLatin1Encoding [
-/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
-/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
-/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
-/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
-/space/exclam/quotedbl/numbersign/dollar/percent/ampersand/quoteright
-/parenleft/parenright/asterisk/plus/comma/minus/period/slash
-/zero/one/two/three/four/five/six/seven/eight/nine/colon/semicolon
-/less/equal/greater/question/at/A/B/C/D/E/F/G/H/I/J/K/L/M/N
-/O/P/Q/R/S/T/U/V/W/X/Y/Z/bracketleft/backslash/bracketright
-/asciicircum/underscore/quoteleft/a/b/c/d/e/f/g/h/i/j/k/l/m
-/n/o/p/q/r/s/t/u/v/w/x/y/z/braceleft/bar/braceright/asciitilde
-/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
-/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
-/.notdef/dotlessi/grave/acute/circumflex/tilde/macron/breve
-/dotaccent/dieresis/.notdef/ring/cedilla/.notdef/hungarumlaut
-/ogonek/caron/space/exclamdown/cent/sterling/currency/yen/brokenbar
-/section/dieresis/copyright/ordfeminine/guillemotleft/logicalnot
-/hyphen/registered/macron/degree/plusminus/twosuperior/threesuperior
-/acute/mu/paragraph/periodcentered/cedilla/onesuperior/ordmasculine
-/guillemotright/onequarter/onehalf/threequarters/questiondown
-/Agrave/Aacute/Acircumflex/Atilde/Adieresis/Aring/AE/Ccedilla
-/Egrave/Eacute/Ecircumflex/Edieresis/Igrave/Iacute/Icircumflex
-/Idieresis/Eth/Ntilde/Ograve/Oacute/Ocircumflex/Otilde/Odieresis
-/multiply/Oslash/Ugrave/Uacute/Ucircumflex/Udieresis/Yacute
-/Thorn/germandbls/agrave/aacute/acircumflex/atilde/adieresis
-/aring/ae/ccedilla/egrave/eacute/ecircumflex/edieresis/igrave
-/iacute/icircumflex/idieresis/eth/ntilde/ograve/oacute/ocircumflex
-/otilde/odieresis/divide/oslash/ugrave/uacute/ucircumflex/udieresis
-/yacute/thorn/ydieresis
-] def
 %
-% Gnuplot Prolog Version 4.2 (August 2006)
+% Gnuplot Prolog Version 4.4 (August 2010)
+%
+%/SuppressPDFMark true def
 %
 /M {moveto} bind def
 /L {lineto} bind def
@@ -105,6 +75,8 @@ currentdict end definefont
 /Z {closepath} bind def
 /C {setrgbcolor} bind def
 /f {rlineto fill} bind def
+/g {setgray} bind def
+/Gshow {show} def   % May be redefined later in the file to support UTF-8
 /vpt2 vpt 2 mul def
 /hpt2 hpt 2 mul def
 /Lshow {currentpoint stroke M 0 vshift R 
@@ -125,6 +97,7 @@ currentdict end definefont
 	dup 1 lt {pop 1} if 10 mul /udl exch def} def
 /PL {stroke userlinewidth setlinewidth
 	Rounded {1 setlinejoin 1 setlinecap} if} def
+3.8 setmiterlimit
 % Default Line colors
 /LCw {1 1 1} def
 /LCb {0 0 0} def
@@ -462,22 +435,66 @@ Level1 {Level1PatternFill} {Level2PatternFill} ifelse
 /Symbol-Oblique /Symbol findfont [1 0 .167 1 0 0] makefont
 dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
 currentdict end definefont pop
+%
+% Encoding for ISO-8859-1 (also called Latin1)
+%
+/reencodeISO {
+dup dup findfont dup length dict begin
+{ 1 index /FID ne { def }{ pop pop } ifelse } forall
+currentdict /CharStrings known {
+	CharStrings /Idieresis known {
+		/Encoding ISOLatin1Encoding def } if
+} if
+currentdict end definefont
+} def
+/ISOLatin1Encoding [
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/space/exclam/quotedbl/numbersign/dollar/percent/ampersand/quoteright
+/parenleft/parenright/asterisk/plus/comma/minus/period/slash
+/zero/one/two/three/four/five/six/seven/eight/nine/colon/semicolon
+/less/equal/greater/question/at/A/B/C/D/E/F/G/H/I/J/K/L/M/N
+/O/P/Q/R/S/T/U/V/W/X/Y/Z/bracketleft/backslash/bracketright
+/asciicircum/underscore/quoteleft/a/b/c/d/e/f/g/h/i/j/k/l/m
+/n/o/p/q/r/s/t/u/v/w/x/y/z/braceleft/bar/braceright/asciitilde
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/dotlessi/grave/acute/circumflex/tilde/macron/breve
+/dotaccent/dieresis/.notdef/ring/cedilla/.notdef/hungarumlaut
+/ogonek/caron/space/exclamdown/cent/sterling/currency/yen/brokenbar
+/section/dieresis/copyright/ordfeminine/guillemotleft/logicalnot
+/hyphen/registered/macron/degree/plusminus/twosuperior/threesuperior
+/acute/mu/paragraph/periodcentered/cedilla/onesuperior/ordmasculine
+/guillemotright/onequarter/onehalf/threequarters/questiondown
+/Agrave/Aacute/Acircumflex/Atilde/Adieresis/Aring/AE/Ccedilla
+/Egrave/Eacute/Ecircumflex/Edieresis/Igrave/Iacute/Icircumflex
+/Idieresis/Eth/Ntilde/Ograve/Oacute/Ocircumflex/Otilde/Odieresis
+/multiply/Oslash/Ugrave/Uacute/Ucircumflex/Udieresis/Yacute
+/Thorn/germandbls/agrave/aacute/acircumflex/atilde/adieresis
+/aring/ae/ccedilla/egrave/eacute/ecircumflex/edieresis/igrave
+/iacute/icircumflex/idieresis/eth/ntilde/ograve/oacute/ocircumflex
+/otilde/odieresis/divide/oslash/ugrave/uacute/ucircumflex/udieresis
+/yacute/thorn/ydieresis
+] def
 /MFshow {
    { dup 5 get 3 ge
      { 5 get 3 eq {gsave} {grestore} ifelse }
      {dup dup 0 get findfont exch 1 get scalefont setfont
      [ currentpoint ] exch dup 2 get 0 exch R dup 5 get 2 ne {dup dup 6
-     get exch 4 get {show} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
+     get exch 4 get {Gshow} {stringwidth pop 0 R} ifelse }if dup 5 get 0 eq
      {dup 3 get {2 get neg 0 exch R pop} {pop aload pop M} ifelse} {dup 5
      get 1 eq {dup 2 get exch dup 3 get exch 6 get stringwidth pop -2 div
      dup 0 R} {dup 6 get stringwidth pop -2 div 0 R 6 get
      show 2 index {aload pop M neg 3 -1 roll neg R pop pop} {pop pop pop
      pop aload pop M} ifelse }ifelse }ifelse }
      ifelse }
-   forall} bind def
+   forall} def
+/Gswidth {dup type /stringtype eq {stringwidth} {pop (n) stringwidth} ifelse} def
 /MFwidth {0 exch { dup 5 get 3 ge { 5 get 3 eq { 0 } { pop } ifelse }
  {dup 3 get{dup dup 0 get findfont exch 1 get scalefont setfont
-     6 get stringwidth pop add} {pop} ifelse} ifelse} forall} bind def
+     6 get Gswidth pop add} {pop} ifelse} ifelse} forall} def
 /MLshow { currentpoint stroke M
   0 exch R
   Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
@@ -495,6 +512,7 @@ end
 %%Page: 1 1
 gnudict begin
 gsave
+doclip
 50 50 translate
 0.100 0.100 scale
 90 rotate
@@ -504,174 +522,174 @@ newpath
 (Times-Roman) findfont 230 scalefont setfont
 1.000 UL
 LTb
-1587 736 M
+1265 736 M
 63 0 V
-5297 0 R
+5457 0 R
 -63 0 V
 stroke
-1449 736 M
+1127 736 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (-0.04)]
 ] -76.7 MRshow
 1.000 UL
 LTb
-1587 1240 M
+1265 1239 M
 63 0 V
-5297 0 R
+5457 0 R
 -63 0 V
 stroke
-1449 1240 M
+1127 1239 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (-0.02)]
 ] -76.7 MRshow
 1.000 UL
 LTb
-1587 1743 M
+1265 1743 M
 63 0 V
-5297 0 R
+5457 0 R
 -63 0 V
 stroke
-1449 1743 M
+1127 1743 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (0.00)]
 ] -76.7 MRshow
 1.000 UL
 LTb
-1587 2247 M
+1265 2246 M
 63 0 V
-5297 0 R
+5457 0 R
 -63 0 V
 stroke
-1449 2247 M
+1127 2246 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (0.02)]
 ] -76.7 MRshow
 1.000 UL
 LTb
-1587 2750 M
+1265 2750 M
 63 0 V
-5297 0 R
+5457 0 R
 -63 0 V
 stroke
-1449 2750 M
+1127 2750 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (0.04)]
 ] -76.7 MRshow
 1.000 UL
 LTb
-1587 3254 M
+1265 3253 M
 63 0 V
-5297 0 R
+5457 0 R
 -63 0 V
 stroke
-1449 3254 M
+1127 3253 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (0.06)]
 ] -76.7 MRshow
 1.000 UL
 LTb
-1587 3757 M
+1265 3756 M
 63 0 V
-5297 0 R
+5457 0 R
 -63 0 V
 stroke
-1449 3757 M
+1127 3756 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (0.08)]
 ] -76.7 MRshow
 1.000 UL
 LTb
-1587 4261 M
+1265 4260 M
 63 0 V
-5297 0 R
+5457 0 R
 -63 0 V
 stroke
-1449 4261 M
+1127 4260 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (0.10)]
 ] -76.7 MRshow
 1.000 UL
 LTb
-1587 4764 M
+1265 4763 M
 63 0 V
-5297 0 R
+5457 0 R
 -63 0 V
 stroke
-1449 4764 M
+1127 4763 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (0.12)]
 ] -76.7 MRshow
 1.000 UL
 LTb
-1587 736 M
+1265 736 M
 0 63 V
-0 3965 R
+0 3964 R
 0 -63 V
 stroke
-1587 506 M
+1265 506 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (-0.4)]
 ] -76.7 MCshow
 1.000 UL
 LTb
-2927 736 M
+2645 736 M
 0 63 V
-0 3965 R
+0 3964 R
 0 -63 V
 stroke
-2927 506 M
+2645 506 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (-0.2)]
 ] -76.7 MCshow
 1.000 UL
 LTb
-4267 736 M
+4025 736 M
 0 63 V
-0 3965 R
+0 3964 R
 0 -63 V
 stroke
-4267 506 M
+4025 506 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (0.0)]
 ] -76.7 MCshow
 1.000 UL
 LTb
-5607 736 M
+5405 736 M
 0 63 V
-0 3965 R
+0 3964 R
 0 -63 V
 stroke
-5607 506 M
+5405 506 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (0.2)]
 ] -76.7 MCshow
 1.000 UL
 LTb
-6947 736 M
+6785 736 M
 0 63 V
-0 3965 R
+0 3964 R
 0 -63 V
 stroke
-6947 506 M
+6785 506 M
 [ [(Times-Roman) 230.0 0.0 true true 0 (0.4)]
 ] -76.7 MCshow
 1.000 UL
 LTb
 1.000 UL
 LTb
-1587 4764 N
-0 -4028 V
-5360 0 V
-0 4028 V
--5360 0 V
+1265 4763 N
+0 -4027 V
+5520 0 V
+0 4027 V
+-5520 0 V
 Z stroke
 LCb setrgbcolor
-506 2750 M
-currentpoint gsave translate 90 rotate 0 0 moveto
+184 2749 M
+currentpoint gsave translate -270 rotate 0 0 moveto
 [ /Times-Italic reencodeISO def
 [(Times-Italic) 230.0 0.0 true true 0 (E)]
 [(Times-Roman) 230.0 0.0 true true 0 ( - )]
 [(Times-Italic) 230.0 0.0 true true 0 (E)]
-[(Times-Roman) 184.0 -69.0 true true 0 (0)]
+[(Times-Roman) 184.0 115.0 true true 0 (0)]
 [(Times-Roman) 230.0 0.0 true true 0 ( [eV])]
-] -53.7 MCshow
+] -99.7 MCshow
 grestore
 LTb
 LCb setrgbcolor
-4267 161 M
+4025 161 M
 [ [(Times-Italic) 230.0 0.0 true true 0 (u)]
 [(Times-Roman) 230.0 0.0 true true 0 ( [\305])]
 ] -76.7 MCshow
 LTb
 1.000 UP
-2056 3807 M
+1748 3807 M
 [ [(Times-Italic) 230.0 0.0 true true 0 (u)]
 XYsave
 [(Times-Roman) 184.0 115.0 true true 0 (2)]
@@ -722,7 +740,7 @@ XYrestore
 [(Times-Roman) 230.0 0.0 true true 0 (   })]
 [(Times-Roman) 184.0 115.0 true true 0 (2)]
 ] -76.7 MLshow
-2056 3354 M
+1748 3354 M
 [ [(Times-Italic) 230.0 0.0 true true 0 (u)]
 [(Times-Roman) 184.0 115.0 true true 0 (2)]
 [(Times-Roman) 230.0 0.0 true true 0 ( = )]
@@ -746,187 +764,199 @@ XYrestore
 ] -76.7 MLshow
 1.000 UL
 LTb
+% Begin plot #1
 3.000 UL
 LT0
-LTb
-2415 4586 M
+LCb setrgbcolor
+2093 4585 M
 [ [(Times-Roman) 230.0 0.0 true true 0 ([001])]
 ] -76.7 MRshow
 LT0
-2553 4586 M
+2231 4585 M
 615 0 V
-4267 1743 M
-113 -14 V
-114 -42 V
-114 -63 V
-114 -76 V
-115 -81 V
-116 -74 V
-117 -57 V
-119 -32 V
-119 -3 V
-121 31 V
-122 66 V
-124 102 V
-125 135 V
-126 168 V
-128 198 V
-130 225 V
-132 250 V
-134 272 V
-136 292 V
-139 309 V
-141 322 V
-81 188 V
+4025 1743 M
+117 -14 V
+117 -42 V
+117 -63 V
+118 -76 V
+118 -81 V
+120 -74 V
+120 -57 V
+122 -32 V
+123 -3 V
+125 31 V
+125 66 V
+128 101 V
+128 136 V
+131 168 V
+132 198 V
+133 225 V
+136 250 V
+138 272 V
+141 292 V
+142 308 V
+146 323 V
+83 187 V
+% End plot #1
+% Begin plot #2
 stroke
 LT1
-LTb
-2415 4356 M
+LCb setrgbcolor
+2093 4355 M
 [ [(Times-Roman) 230.0 0.0 true true 0 ([110])]
 ] -76.7 MRshow
 LT1
-2553 4356 M
+2231 4355 M
 615 0 V
-4267 1743 M
-171 -33 V
-171 -90 V
-172 -128 V
-173 -138 V
-174 -113 V
-175 -61 V
-177 14 V
-179 102 V
-181 197 V
-183 291 V
-186 384 V
-187 473 V
-191 560 V
-193 645 V
-167 619 V
+4025 1743 M
+176 -33 V
+176 -90 V
+177 -129 V
+178 -137 V
+180 -113 V
+180 -61 V
+183 14 V
+184 102 V
+186 197 V
+189 291 V
+191 384 V
+193 472 V
+196 560 V
+199 645 V
+172 619 V
+% End plot #2
+% Begin plot #3
 stroke
 LT2
-LTb
-2415 4126 M
+LCb setrgbcolor
+2093 4125 M
 [ [(Times-Roman) 230.0 0.0 true true 0 ([111])]
 ] -76.7 MRshow
 LT2
-2553 4126 M
+2231 4125 M
 615 0 V
-4267 1743 M
-85 -8 V
-85 -24 V
-85 -39 V
-85 -51 V
-86 -62 V
-85 -69 V
-86 -73 V
-85 -72 V
-86 -67 V
-86 -59 V
-86 -47 V
-87 -30 V
-87 -11 V
-87 11 V
-87 36 V
-88 61 V
-87 90 V
-89 118 V
-88 148 V
-89 178 V
-89 208 V
-90 238 V
-90 269 V
-91 299 V
-91 329 V
-91 359 V
-93 388 V
-92 419 V
-93 448 V
+4025 1743 M
+88 -8 V
+87 -24 V
+88 -39 V
+88 -51 V
+87 -62 V
+88 -69 V
+88 -73 V
+89 -72 V
+88 -68 V
+89 -59 V
+88 -46 V
+90 -30 V
+89 -11 V
+90 11 V
+89 36 V
+91 61 V
+90 90 V
+91 118 V
+91 148 V
+92 178 V
+92 208 V
+92 238 V
+93 269 V
+93 298 V
+94 329 V
+94 359 V
+95 389 V
+95 418 V
+96 448 V
 7 34 V
+% End plot #3
+% Begin plot #4
 stroke
 LT0
-4267 1743 M
--113 -14 V
--114 -42 V
--114 -63 V
--114 -76 V
--115 -81 V
--116 -74 V
--117 -57 V
--119 -32 V
--119 -3 V
--121 31 V
--122 66 V
--124 102 V
--125 135 V
--126 168 V
--128 198 V
--130 225 V
--132 250 V
--134 272 V
--136 292 V
--139 309 V
--141 322 V
--81 188 V
+4025 1743 M
+-117 -14 V
+-117 -42 V
+-117 -63 V
+-118 -76 V
+-118 -81 V
+-120 -74 V
+-120 -57 V
+-122 -32 V
+-123 -3 V
+-125 31 V
+-125 66 V
+-128 101 V
+-128 136 V
+-131 168 V
+-132 198 V
+-133 225 V
+-136 250 V
+-138 272 V
+-141 292 V
+-142 308 V
+-146 323 V
+-83 187 V
+% End plot #4
+% Begin plot #5
 stroke
 LT1
-4267 1743 M
--171 -33 V
--171 -90 V
-3753 1492 L
-3580 1354 L
-3406 1241 L
--175 -61 V
--177 14 V
--179 102 V
--181 197 V
--183 291 V
--186 384 V
--187 473 V
--191 560 V
--193 645 V
--167 619 V
+4025 1743 M
+-176 -33 V
+-176 -90 V
+3496 1491 L
+3318 1354 L
+3138 1241 L
+-180 -61 V
+-183 14 V
+-184 102 V
+-186 197 V
+-189 291 V
+-191 384 V
+-193 472 V
+-196 560 V
+-199 645 V
+-172 619 V
+% End plot #5
+% Begin plot #6
 stroke
 LT2
-4267 1743 M
--85 -8 V
--85 -24 V
--85 -39 V
--85 -51 V
--86 -62 V
--85 -69 V
--86 -73 V
--85 -72 V
--86 -67 V
--86 -59 V
--86 -47 V
--87 -30 V
--87 -11 V
--87 11 V
--87 36 V
--88 61 V
--87 90 V
--89 118 V
--88 148 V
--89 178 V
--89 208 V
--90 238 V
--90 269 V
--91 299 V
--91 329 V
--91 359 V
--93 388 V
--92 419 V
--93 448 V
+4025 1743 M
+-88 -8 V
+-87 -24 V
+-88 -39 V
+-88 -51 V
+-87 -62 V
+-88 -69 V
+-88 -73 V
+-89 -72 V
+-88 -68 V
+-89 -59 V
+-88 -46 V
+-90 -30 V
+-89 -11 V
+-90 11 V
+-89 36 V
+-91 61 V
+-90 90 V
+-91 118 V
+-91 148 V
+-92 178 V
+-92 208 V
+-92 238 V
+-93 269 V
+-93 298 V
+-94 329 V
+-94 359 V
+-95 389 V
+-95 418 V
+-96 448 V
 -7 34 V
+% End plot #6
 stroke
 1.000 UL
 LTb
-1587 4764 N
-0 -4028 V
-5360 0 V
-0 4028 V
--5360 0 V
+1265 4763 N
+0 -4027 V
+5520 0 V
+0 4027 V
+-5520 0 V
 Z stroke
 1.000 UP
 1.000 UL

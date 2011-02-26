@@ -16,7 +16,7 @@ set ytics    0.02
 set yrange [-0.04:0.12]
 set key left
 set xlabel '{/Times-Italic u} [\305]'
-set ylabel '{/Times-Italic E} - {/Times-Italic E}_0 [eV]'
+set ylabel '{/Times-Italic E} - {/Times-Italic E}^0 [eV]'
 
 set label 1 at -0.33,0.082 '{/Times-Italic u}^@2_{/Symbol a} = \{{/Times-Italic v^@A}_{/Symbol a}\}^2 + \{{/Times-Italic v^@B}_{/Symbol a}\}^2 +  \{{/Times-Italic v}^@{O_I}_{/Symbol a} \}^2 + \{{/Times-Italic v}^@{O_{II}}_{/Symbol a}  \}^2 + \{{/Times-Italic v}^@{O_{III}}_{/Symbol a}   \}^2'
 set label 2 at -0.33,0.064 '{/Times-Italic u}^2 = {/Times-Italic u_@x}^2 + {/Times-Italic u_@y}^2 + {/Times-Italic u_@z}^2'
