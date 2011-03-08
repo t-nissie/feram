@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2011-03-08 17:55:27 takeshi>
+! Time-stamp: <2011-03-08 18:25:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -36,7 +36,9 @@ subroutine leapfrog(p,c,e,i_step)
 
   c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt_2 * c%dVddi(:,:,:,:)
   c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt   * c%dipoP(:,:,:,:) * c%M_inv(:,:,:,:)
+#if defined(DETAILED_MESSAGES)
   call msg(6, __FILE__, __LINE__, 'dipoR', ' is updated.')
+#endif
 
   call mirror_force_mirror(p,c,e)
 
