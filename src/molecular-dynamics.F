@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2011-03-08 16:50:44 takeshi>
+! Time-stamp: <2011-03-08 16:53:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -48,7 +48,9 @@ subroutine molecular_dynamics(p,c)
   call reset_Average(avg)
 
   do i_step = 1, p%n_thermalize+p%n_thermal_conductivity+p%n_average
+#   if defined(DETAILED_MESSAGES)
      write(message,fmt_time_step) i_step; call msg_ez(6,message)
+#   endif
 
      if (p%method.eq.'md ') then
         call nose_poincare(p,c,e)   ! H_Nose_Poincare == 0, always
