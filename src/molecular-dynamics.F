@@ -1,8 +1,11 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2011-02-21 20:01:34 takeshi>
+! Time-stamp: <2011-03-08 16:40:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 # include "define.h"
 subroutine molecular_dynamics(p,c)
   use Param_module
@@ -31,6 +34,7 @@ subroutine molecular_dynamics(p,c)
   write(message,fmt_time_step) 0; call msg_ez(6,message)
   call initialize_E_field(p,c)
   call initialize_dipoR(p,c,e)
+  e%total = e%dipo_kinetic/c%s_Nose**2 + sum_potential_energies(e)
   call write_Energy(p,c,e,6)
   write(message,"('strain',6e13.5)") c%strain(:)
   call msg_ez(6,message)
@@ -64,24 +68,10 @@ subroutine molecular_dynamics(p,c)
      write(message,"('strain',6e13.5)") c%strain(:)
      call msg_ez(6,message)
 
-     !=== For debug =========================================================
-     write(message,'(a,3e15.7)') 'dipoR(0,0,4,i)=', (c%dipoR(0,0,4,i), i=1,3)
-     call msg_ez(6,message)
-
-     location = maxloc(c%dipoR)
-     write(message,'(a,3i4,i2,a,f15.7)') 'MAX dipoR = dipoR(', location, ') = ', &
-          c%dipoR(location(1),location(2),location(3),location(4))
-     call msg_ez(6,message)
-
-     location = minloc(c%dipoR)
-     write(message,'(a,3i4,i2,a,f15.7)') 'MIN dipoR = dipoR(', location, ') = ', &
-          c%dipoR(location(1),location(2),location(3),location(4))
-     call msg_ez(6,message)
-
-     write(message,'(a,3e15.7)') 'dVddi(0,0,4,i)=', (c%dVddi(0,0,4,i), i=1,3)
-     call msg_ez(6,message)
-
+     e%total = e%dipo_kinetic/c%s_Nose**2 + sum_potential_energies(e)
+#if defined(DETAILED_MESSAGES)
      call write_Energy(p,c,e,6)
+#endif
 
      if (i_step <= p%n_thermalize+p%n_thermal_conductivity) cycle
 
