@@ -1,11 +1,11 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-02-21 22:17:53 takeshi>
+dnl Time-stamp: <2011-03-08 15:32:26 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.61)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.14.00],[takeshi{at}physics.rutgers.edu],[feram])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.14.01],[takeshi{at}physics.rutgers.edu],[feram])
 AC_CONFIG_SRCDIR(src/feram.F)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
@@ -112,6 +112,17 @@ case "$host" in
         AC_MSG_ERROR([Unknown FFT library: $with_fft])
         ;;
     esac
+esac
+
+## Detailed message
+AC_ARG_ENABLE(detailed_messages,[AS_HELP_STRING([--disable-detailed-messages],[disable detailed messages (default enabled)])])
+case "$enable_detailed_messages" in
+  no)
+    AC_MSG_NOTICE([Detailed messages will NOT be printed.])
+    ;;
+  *)
+    AC_DEFINE([DETAILED_MESSAGES], [1], [Detailed messages will be printed.])
+    ;;
 esac
 
 ## fixed-form or free-form
