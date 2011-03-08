@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2011-01-27 12:22:15 takeshi>
+! Time-stamp: <2011-03-08 16:39:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -37,6 +37,7 @@ subroutine hysteresis_loop(p,c)
   call initialize_dipoR(p,c,e)
   write(message,fmt_time_step) 0, p%external_E_field
   call msg_ez(6,message)
+  e%total = e%dipo_kinetic + sum_potential_energies(e)
   call write_Energy(p,c,e,6)
 !   write(message,"('strain',6e13.5)") c%strain(:)
 !   call msg_ez(6,message)
@@ -69,6 +70,7 @@ subroutine hysteresis_loop(p,c)
      c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) * sqrt(target_kinetic_energy/e%dipo_kinetic)
      !e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
 
+     e%total = e%dipo_kinetic + sum_potential_energies(e)
      call write_Energy(p,c,e,6)
 
 
