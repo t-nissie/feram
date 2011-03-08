@@ -1,5 +1,5 @@
 ! energy.F -*-f90-*-
-! Time-stamp: <2009-06-15 10:10:08 takeshi>
+! Time-stamp: <2011-03-08 16:33:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -89,7 +89,6 @@ contains
     character(45) message
     !--- END of variable definitions -------------------
 
-    e%total = e%dipo_kinetic/c%s_Nose**2 + sum_potential_energies(e)
     write(message,fmt) 'dipo_kinetic   ', e%dipo_kinetic/c%s_Nose**2/p%N
                                                                  call msg_ez(fd,message)
     write(message,fmt) 'dipole_dipole  ', e%dipole_dipole/p%N;   call msg_ez(fd,message)
