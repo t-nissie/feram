@@ -1,8 +1,9 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2007-06-08 14:34:53 t-nissie>
+! Time-stamp: <2011-03-04 17:48:20 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
+!UINLINE cholesky_z.f
 #include "define.h"
 subroutine optimize_inho_strain(p,c,e)
   !$use omp_lib
