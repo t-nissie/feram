@@ -1,7 +1,10 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2011-02-21 19:54:24 takeshi>
+! Time-stamp: <2011-03-08 16:17:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "define.h"
 module Average_module
   use Energy_module
@@ -66,9 +69,10 @@ contains
     avg%uu(5) = avg%uu(5) + u_tmp(3)*u_tmp(1)
     avg%uu(6) = avg%uu(6) + u_tmp(1)*u_tmp(2)
 
+#if defined(DETAILED_MESSAGES)
     write(message,"('u=',3e13.5)") u_tmp(:)
     call msg_ez(6,message)
-
+#endif
   end subroutine add_to_Average
 
   subroutine divide_and_write_Average(p,c,avg)
