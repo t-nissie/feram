@@ -1,7 +1,10 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2011-02-21 20:08:05 takeshi>
+! Time-stamp: <2011-03-08 17:55:27 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 subroutine leapfrog(p,c,e,i_step)
   use Param_module
   use Coord_module
@@ -15,7 +18,9 @@ subroutine leapfrog(p,c,e,i_step)
   integer Lz_1_4
   integer Lz_3_4
   integer i
+#if defined(DETAILED_MESSAGES)
   call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+#endif
 
   Lx_Ly_delta_e = p%Lx * p%Ly * p%delta_e
   Lz_1_4 = p%Lz/4
@@ -37,5 +42,7 @@ subroutine leapfrog(p,c,e,i_step)
 
   c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt_2 * c%dVddi(:,:,:,:)
   e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
+#if defined(DETAILED_MESSAGES)
   call msg(6, __FILE__, __LINE__, 'END', ': dipoP is updated at this end.')
+#endif
 end subroutine leapfrog
