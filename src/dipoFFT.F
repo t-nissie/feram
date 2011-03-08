@@ -1,7 +1,10 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2008-03-24 16:12:14 takeshi>
+! Time-stamp: <2011-03-08 16:22:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 subroutine dipoFFT(p,c)
   use Param_module
   use Coord_module
@@ -9,8 +12,9 @@ subroutine dipoFFT(p,c)
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
 
+#if defined(DETAILED_MESSAGES)
   call msg(6, __FILE__, __LINE__, 'BEGIN', ': dipoR -> dipoK, didiR, didiK')
-
+#endif
   call fft_r2c(p, c%dipoR, c%dipoK, 3)
 
   c%didiR(:,:,:,1) = c%dipoR(:,:,:,1) * c%dipoR(:,:,:,1)
@@ -22,6 +26,8 @@ subroutine dipoFFT(p,c)
 
   call fft_r2c(p, c%didiR, c%didiK, 6)
 
+#if defined(DETAILED_MESSAGES)
   call msg(6, __FILE__, __LINE__, 'END', &
        & ': didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.')
+#endif
 end subroutine dipoFFT
