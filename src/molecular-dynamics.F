@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2011-03-08 16:53:09 takeshi>
+! Time-stamp: <2011-03-08 16:58:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -77,9 +77,9 @@ subroutine molecular_dynamics(p,c)
 
      if (i_step <= p%n_thermalize+p%n_thermal_conductivity) cycle
 
-     if (i_step.eq.p%n_thermalize+1) then
-        call msg(6, __FILE__, __LINE__, 'AVERAGING', ' is started from this time step.')
-     end if
+     !if (i_step.eq.p%n_thermalize+1) then
+     !   call msg(6, __FILE__, __LINE__, 'AVERAGING', ' is started from this time step.')
+     !end if
 
      call add_to_Average(p,c,e,avg)
   end do
