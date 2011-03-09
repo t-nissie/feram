@@ -38,6 +38,9 @@ o  call dipoFFT(p,c)
 
 o libbuilt_in_fft 128 256, libbuilt_in_fft -> libminimal_fft
 
+o fft.F、SR11000用 HZFT7M()の代わりにHDFZ7M()とHZFD7M()とを使うようにして、
+  さらに２度目の呼び出しから係数の計算などを省くようにする。
+
 o Makefile.am の依存関係。make -j でデバグできる。
 
 o 力の計算の部分をsubroutineにして、leapfrog をもう一度動くようにする。
