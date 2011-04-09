@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 =begin
 = feram: ペロブスカイト型強誘電体の高速分子動力学シミュレーション
 
@@ -20,8 +21,8 @@ http://sourceforge.net/projects/loto/files/feram/
 == 参考文献
  * Takeshi Nishimatsu, Masaya Iwamoto, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
    "First-principles accurate total-energy surfaces for polar structural distortions
-    of BaTiO3, PbTiO3, and SrTiO3: consequences to structural transition temperatures",
-    Phys. Rev. B, vol.82, p.134106 (2010) doi:10.1103/PhysRevB.82.134106.
+   of BaTiO3, PbTiO3, and SrTiO3: consequences to structural transition temperatures",
+   Phys. Rev. B, vol.82, p.134106 (2010) doi:10.1103/PhysRevB.82.134106.
  * Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and David Vanderbilt:
    "Fast molecular-dynamics simulation for ferroelectric thin-film capacitors using a
    first-principles effective Hamiltonian", Phys. Rev. B, vol.78, p.104104 (2008)
@@ -94,15 +95,15 @@ feram用のパラメータファイルはコメント行と 'tag = value(s)' と
 
  method = 'hl'
 'hl' is for a simulation of hysteresis loop.
-In this case, tags of n_average and external_E_field have special meanings.
+In this case, tags of n_average and external_E_field have special meanings (see Fig:external).
 .hl file,e.g. foo.hl, will be created.
 See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
-Fig. 1 doc/figures/external-E-field-hysteresis-loop.jpg
+\Fig:external doc/figures/external-E-field-hysteresis-loop.jpg
   Special meanings of n_average and external_E_field,
   in the case of method = 'hl', a simulation of hysteresis loop.
   After thermalization, the external electric field is gradually
   altered from external_E_field to -external_E_field.
-/Fig.
+/Fig:external
 
 ===== GPa
 圧力をGPa単位で．過小評価されるTcを負圧をかけることにより補正することがある．
@@ -299,7 +300,7 @@ it will set local.field to ZERO.
 
 == ソフトウエアの再配布について
 === feram
-Copyright © 2007-2010 by Takeshi Nishimatsu
+Copyright © 2007-2011 by Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
@@ -374,28 +375,48 @@ http://loto.sourceforge.net/feram/ is hosted by SourceForge.net .
 #
 require 'rubygems'
 require 'ulmul'
-u=Ulmul.new(2..3,'ulmul2xhtml')
-u.subs_rules << [/logo\.jpg/, '<img src="logo.jpg" alt="feram logo mark" />']
-u.subs_rules << [/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2']
-u.subs_rules << [/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?\.F)(\s|$)/,                '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?\.pdf)(\s|$)/,              '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2']
-u.subs_rules << [/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>']
-u.subs_rules << [/(README\.en)/,                     '<a href="\1">\1</a>']
-u.subs_rules << [/(index\.en\.html)/,                '<a href="\1">\1</a>']
-u.subs_rules << [/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2']
-u.subs_rules << [/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.']
-u.subs_rules << [/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ']
-u.subs_rules << [/&package_id/,              '&amp;package_id']
-u.subs_rules << [/SourceForge.net/,          '
+$MAX_TABLE_OF_CONTENTS = 3
+Itemize::ITEMIZE_INITIATOR  =   '<ul>'
+Itemize::ITEMIZE_TERMINATOR =  '</ul>'
+Itemize::ITEM_INITIATOR     =   '<li>'
+Itemize::ITEM_TERMINATOR    =  '</li>'
+Ulmul::PARAGRAPH_INITIATOR  =    '<p>'
+Ulmul::PARAGRAPH_TERMINATOR =   '</p>'
+Ulmul::VERBATIM_INITIATOR   =  '<pre>'
+Ulmul::VERBATIM_TERMINATOR  = '</pre>'
+class Ulmul
+  include HTML
+  include HTML5
+end
+u=Ulmul.new()
+u.subs_rules = lambda{|s|
+  s.
+  gsub(/&/,'&amp;').
+  gsub(/</,'&lt;').
+  gsub(/>/,'&gt;').
+  gsub(/logo\.jpg/, '<img src="logo.jpg" alt="feram logo mark" />').
+  gsub(/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2').
+  gsub(/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?\.F)(\s|$)/,                '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?\.pdf)(\s|$)/,              '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
+  gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').  
+  gsub(/(README\.en)/,                     '<a href="\1">\1</a>').  
+  gsub(/(index\.en\.html)/,                '<a href="\1">\1</a>').  
+  gsub(/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2').
+  gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
+  gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').
+  gsub(/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ').
+  gsub(/SourceForge\.net/,'
 <a href="http://sourceforge.net">
   <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" />
-</a>']
+</a>')
+# gsub(/\$(.*?)\$/){|s| Regexp.last_match[1].to_mathml}       # There is no equation in this document.
+}
 
 u.parse(ARGF)
-puts u.html(["style.css"],[],"Takeshi Nishimatsu","ja")
+puts u.file(["style.css"],[],"Takeshi Nishimatsu","ja")
 
 # Local variables:
 #   mode: RD
