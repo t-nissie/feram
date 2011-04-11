@@ -98,6 +98,7 @@ feram用のパラメータファイルはコメント行と 'tag = value(s)' と
 In this case, tags of n_average and external_E_field have special meanings (see Fig:external).
 .hl file,e.g. foo.hl, will be created.
 See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
+
 \Fig:external doc/figures/external-E-field-hysteresis-loop.jpg
   Special meanings of n_average and external_E_field,
   in the case of method = 'hl', a simulation of hysteresis loop.
@@ -401,9 +402,9 @@ u.subs_rules = lambda{|s|
   gsub(/(\S*\/?\.pdf)(\s|$)/,              '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
-  gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').  
-  gsub(/(README\.en)/,                     '<a href="\1">\1</a>').  
-  gsub(/(index\.en\.html)/,                '<a href="\1">\1</a>').  
+  gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').
+  gsub(/(README\.en)/,                     '<a href="\1">\1</a>').
+  gsub(/(index\.en\.html)/,                '<a href="\1">\1</a>').
   gsub(/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2').
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').

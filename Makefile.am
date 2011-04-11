@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2010-08-19 16:08:07 takeshi>
+# Time-stamp: <2011-04-11 14:26:29 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -36,7 +36,7 @@ logo.jpg: logo.eps
 	 | pnmcrop -white | cjpeg -quality 80 > $@
 
 index.%.html: README.%
-	ruby $< $< | sed -e 's%</h1>%</h1><div class="navi">[<a href="index.en.html">English</a>/<a href="index.ja.html">Japanese</a>]</div>%' > $@
+	ruby -I ~/ruby/ulmul/trunk/lib $< $< | sed -e 's%</h1>%</h1><div class="navi">[<a href="index.en.html">English</a>/<a href="index.ja.html">Japanese</a>]</div>%' > $@
 
 dist-hook:
 	rm -rf `find $(distdir) -type d -name .svn`

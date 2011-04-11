@@ -39,7 +39,7 @@ o  call dipoFFT(p,c)
 o libbuilt_in_fft 128 256, libbuilt_in_fft -> libminimal_fft
 
 o fft.F、SR11000用 HZFT7M()の代わりにHDFZ7M()とHZFD7M()とを使うようにして、
-  さらに２度目の呼び出しから係数の計算などを省くようにする。
+  さらに２度目の呼び出しから係数の計算などを省くようにする。要configure.acの変更。
 
 o Makefile.am の依存関係。make -j でデバグできる。
 

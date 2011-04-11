@@ -39,8 +39,8 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
 === References
  * Takeshi Nishimatsu, Masaya Iwamoto, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
    "First-principles accurate total-energy surfaces for polar structural distortions
-    of BaTiO3, PbTiO3, and SrTiO3: consequences to structural transition temperatures",
-    Phys. Rev. B, vol.82, p.134106 (2010) doi:10.1103/PhysRevB.82.134106.
+   of BaTiO3, PbTiO3, and SrTiO3: consequences to structural transition temperatures",
+   Phys. Rev. B, vol.82, p.134106 (2010) doi:10.1103/PhysRevB.82.134106.
  * Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and David Vanderbilt:
    "Fast molecular-dynamics simulation for ferroelectric thin-film capacitors using a
    first-principles effective Hamiltonian", Phys. Rev. B, vol.78, p.104104 (2008)
@@ -179,16 +179,18 @@ Followings are currently available tags.
 'mc' is for a Monte Carlo simulation, but it is NOT IMPLEMENTED YET.
 
  method = 'hl'
+ method = 'hl'
 'hl' is for a simulation of hysteresis loop.
-In this case, tags of n_average and external_E_field have special meanings.
+In this case, tags of n_average and external_E_field have special meanings (see Fig:external).
 .hl file,e.g. foo.hl, will be created.
 See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
-Fig. 1 doc/figures/external-E-field-hysteresis-loop.jpg
+
+\Fig:external doc/figures/external-E-field-hysteresis-loop.jpg
   Special meanings of n_average and external_E_field,
   in the case of method = 'hl', a simulation of hysteresis loop.
   After thermalization, the external electric field is gradually
   altered from external_E_field to -external_E_field.
-/Fig.
+/Fig:external
 
 ===== GPa
 Pressure in GPa unit.
@@ -410,25 +412,25 @@ calculations and the other calculations.
 
 == Examples
 === Energies vs MD step in cooling simulation
-Fig. 2 doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
+\Fig:MD doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
   Energies vs MD steps in cooling simulation.
-/Fig.
-=== Temperature dependence of strain and susceptibility of bulk BaTiO<sub>3</sub>
-Fig. 3 doc/figures/strain-susceptibility.jpg
+/Fig:MD
+=== Temperature dependence of strain and susceptibility of bulk BaTiO3
+\Fig:strain doc/figures/strain-susceptibility.jpg
   Temperature dependence of three components of strain and relative
-  dielectric constant of bulk BaTiO<sub>3</sub>. Three phase transitions
+  dielectric constant of bulk BaTiO3. Three phase transitions
   are clearly seen. Susceptibilities are calculated from fluctuations of dipoles.
-/Fig.
-=== Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>
-Fig. 4 doc/figures/bulk-two-box.jpg
-  Temperature dependence of hysteresis loops for bulk BaTiO<sub>3</sub>.
+/Fig:strain
+=== Temperature dependence of hysteresis loops for bulk BaTiO3
+\Fig:epit doc/figures/bulk-two-box.jpg
+  Temperature dependence of hysteresis loops for bulk BaTiO3.
   The phase transition from paraelectric phase to ferroelectric phase is clearly seen.
-/Fig.
-=== Hysteresis loops for epitaxially constrained and "free" BaTiO<sub>3</sub> film capacitors
-Fig. 5 doc/figures/epit-vs-free-hysteresis-box.jpg
+/Fig:epit
+=== Hysteresis loops for epitaxially constrained and "free" BaTiO3 film capacitors
+\Fig:epit-vs-free doc/figures/epit-vs-free-hysteresis-box.jpg
   Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and
   (b) "free" films of various thickness <i>l</i> and with dead layer <i>d</i> at 100 K.
-/Fig.
+/Fig:epit-vs-free
 
 == Mailing list
  * Description: Discussions and announcements of loto, feram and compasses programs
@@ -517,26 +519,48 @@ http://loto.sourceforge.net/feram/ is hosted by SourceForge.net .
 #
 require 'rubygems'
 require 'ulmul'
-u=Ulmul.new(2..3,'ulmul2xhtml')
-u.subs_rules << [/logo\.jpg/, '<img src="logo.jpg" alt="feram logo mark" />']
-u.subs_rules << [/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2']
-u.subs_rules << [/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?\.F)(\s|$)/,                '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?\.pdf)(\s|$)/,              '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2']
-u.subs_rules << [/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2']
-u.subs_rules << [/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>']
-u.subs_rules << [/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2']
-u.subs_rules << [/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.']
-u.subs_rules << [/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ']
-u.subs_rules << [/&package_id/,              '&amp;package_id']
-u.subs_rules << [/SourceForge.net/,          '
+$MAX_TABLE_OF_CONTENTS = 3
+Itemize::ITEMIZE_INITIATOR  =   '<ul>'
+Itemize::ITEMIZE_TERMINATOR =  '</ul>'
+Itemize::ITEM_INITIATOR     =   '<li>'
+Itemize::ITEM_TERMINATOR    =  '</li>'
+Ulmul::PARAGRAPH_INITIATOR  =    '<p>'
+Ulmul::PARAGRAPH_TERMINATOR =   '</p>'
+Ulmul::VERBATIM_INITIATOR   =  '<pre>'
+Ulmul::VERBATIM_TERMINATOR  = '</pre>'
+class Ulmul
+  include HTML
+  include HTML5
+end
+u=Ulmul.new()
+u.subs_rules = lambda{|s|
+  s.
+  gsub(/&/,'&amp;').
+  gsub(/</,'&lt;').
+  gsub(/>/,'&gt;').
+  gsub(/logo\.jpg/, '<img src="logo.jpg" alt="feram logo mark" />').
+  gsub(/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2').
+  gsub(/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?\.F)(\s|$)/,                '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?\.pdf)(\s|$)/,              '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
+  gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').
+  gsub(/BaTiO3/,                           '<sub>3</sub>').
+  gsub(/(index\.en\.html)/,                '<a href="\1">\1</a>').
+  gsub(/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2').
+  gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
+  gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').
+  gsub(/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ').
+  gsub(/SourceForge\.net/,'
 <a href="http://sourceforge.net">
   <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" />
-</a>']
+</a>')
+# gsub(/\$(.*?)\$/){|s| Regexp.last_match[1].to_mathml}       # There is no equation in this document.
+}
 
 u.parse(ARGF)
-puts u.html(["style.css"],[],"Takeshi Nishimatsu","en")
+puts u.file(["style.css"],[],"Takeshi Nishimatsu","en")
 
 # Local variables:
 #   mode: RD
