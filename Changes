@@ -1,0 +1,5 @@
+= Changes for feram
+== 0.14.02
+ * In src/fft.F, HZFT7M() is replaced with HDFZ7M() and HZFD7M() for SR11000.
+
+== 0.14.01
