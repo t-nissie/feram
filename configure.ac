@@ -1,11 +1,11 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-03-08 15:32:26 takeshi>
+dnl Time-stamp: <2011-04-21 21:12:50 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.61)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.14.01],[takeshi{at}physics.rutgers.edu],[feram])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.14.02],[takeshi{at}physics.rutgers.edu],[feram])
 AC_CONFIG_SRCDIR(src/feram.F)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
@@ -83,7 +83,7 @@ case "$host" in
     AC_DEFINE([SR11000], [1], [HITACHI SR11000 Series Super Technical Server])
     AC_MSG_NOTICE([We use MATRIX/MPP (matmpp) library of SR11000.])
     LDFLAGS="$LDFLAGS -L/opt/hitachi/matmpp/lib"
-    AC_CHECK_LIB(matmpp, HZFT7M,,
+    AC_CHECK_LIB(matmpp, HDFZ7M,,
                  AC_MSG_ERROR([You need MATRIX/MPP (matmpp) library. See config.log.]))
     ;;
   *)
