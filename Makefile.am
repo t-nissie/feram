@@ -1,12 +1,11 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2011-04-11 14:26:29 takeshi>
+# Time-stamp: <2011-04-22 08:47:23 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
 SUBDIRS = src libblaslapack libbuilt_in_fft
-EXTRA_DIST = doc \
-             README.en \
+EXTRA_DIST = README.en \
              index.en.html \
              README.ja \
              index.ja.html \
@@ -14,7 +13,6 @@ EXTRA_DIST = doc \
              ChangeLog \
              00MEMO \
              style.css \
-             parameters \
              animations \
              logo.eps \
              logo.jpg \
@@ -29,7 +27,7 @@ sourceforge: index.en.html README.en index.ja.html README.ja COPYING style.css f
 	scp dot.htaccess                  $(SOURCEFORGE_FERAM)/.htaccess
 	scp $^                            $(SOURCEFORGE_FERAM)
 	scp libblaslapack/COPYING         $(SOURCEFORGE_FERAM)/libblaslapack
-	cd  doc && $(MAKE) sourceforge
+#	cd  doc && $(MAKE) sourceforge
 
 logo.jpg: logo.eps
 	gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r120x120 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q $< \
@@ -40,8 +38,8 @@ index.%.html: README.%
 
 dist-hook:
 	rm -rf `find $(distdir) -type d -name .svn`
-	cd $(distdir)/doc        && $(MAKE)
-	cd $(distdir)/parameters && $(MAKE)
+#	cd $(distdir)/doc        && $(MAKE)
+#	cd $(distdir)/parameters && $(MAKE)
 
 .PHONY: snapshot
 snapshot:
