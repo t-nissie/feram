@@ -801,11 +801,42 @@ Fig. 1 ../logo.jpg
 #
 require 'rubygems'
 require 'ulmul'
-u=Ulmul.new(1..0,'ulmul2xhtml')
-u.subs_rules << [  /(heating-up)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
-u.subs_rules << [/(cooling-down)\s*(\S*\/?\.gif)(\s|$)/,'<a href="../animations/\2">\1</a>\3']
+$MAX_TABLE_OF_CONTENTS = 2
+Itemize::ITEMIZE_INITIATOR  =   '<ul>'
+Itemize::ITEMIZE_TERMINATOR =  '</ul>'
+Itemize::ITEM_INITIATOR     =   '<li>'
+Itemize::ITEM_TERMINATOR    =  '</li>'
+Ulmul::PARAGRAPH_INITIATOR  =    '<p>'
+Ulmul::PARAGRAPH_TERMINATOR =   '</p>'
+Ulmul::VERBATIM_INITIATOR   =  '<pre>'
+Ulmul::VERBATIM_TERMINATOR  = '</pre>'
+class Ulmul
+  include HTML
+  include HTML5
+end
+u=Ulmul.new()
+u.subs_rules = lambda{|s|
+  s.
+  gsub(/&/,'&amp;').
+  gsub(/</,'&lt;').
+  gsub(/>/,'&gt;').
+  gsub(/logo\.jpg/, '<img src="logo.jpg" alt="feram logo mark" />').
+  gsub(/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2').
+  gsub(/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?\.F)(\s|$)/,                '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?\.pdf)(\s|$)/,              '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
+  gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
+  gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').
+  gsub(/BaTiO3/,                           '<sub>3</sub>').
+  gsub(/(index\.en\.html)/,                '<a href="\1">\1</a>').
+  gsub(/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2').
+  gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
+  gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').
+  gsub(/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ')}
+
 u.parse(ARGF)
-puts u.html(["feram-presentation.css"],["ulmul-slidy.js"],"Takeshi Nishimatsu","en")
+puts u.file(["feram-presentation.css"],["ulmul-slidy.js"],"Takeshi Nishimatsu","en")
 
 # Local variables:
 #   mode: RD
