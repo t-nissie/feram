@@ -108,6 +108,9 @@ you have to specify input file(s) in FILES file. For example,
  baz
 1st line: number of input file(s). 2nd- line filename(s).
 
+For performance monitor
+ % ../configure FC=xf90 FCFLAGS='-64 -O3 -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -loglist -pmfunc -pmpar' --host=SR11000 --disable-detailed-messages
+
 ==== x86_64 GNU/Linux
 On x86_64, i.e. AMD64 and Intel 64, feram may be compiled with gfortran,
 Intel Fortran (ifort), and PGI Fortran (pgf95). For example,
