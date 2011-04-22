@@ -72,6 +72,8 @@ o (coord を かきだし はじめる ところ おわる ところ AVERAGE の
 
 o p, q, qdot にして, いつmassで割るか考える.
 
+o detailed_messages -> verbose, in configure.ac, README.en and source code
+
 o dipoA_dipole_dipole() を dipoA = dipoA + dipoA_dipole_dipole に.
 
 o Q_nose must be a function of T, N and delta_t. AUTOMATIC determination.
