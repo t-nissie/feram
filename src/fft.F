@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-04-21 18:06:17 t-nissie>
+! Time-stamp: <2011-04-24 12:01:40 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -135,71 +135,41 @@ subroutine dfftw_plan_dft_r2c_3d(plan, Nx, Ny, Nz, r, c, flags)
   implicit none
   integer*8, intent(in) :: plan
   integer,   intent(in) :: Nx, Ny, Nz
-  integer,   save       :: Nx_last=0, Ny_last=0, Nz_last=0
   real*8,    intent(in) :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
   complex*16,intent(out):: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
   integer,   intent(in) :: flags
-  integer,   save       :: ip1(3), ip2(3), ip3(3), ndim1, nwk1, nwk2
-  integer               :: iopt(2)
-  integer,   parameter  :: NWKW  = 5
-  integer,   parameter  :: IPARA = 16
-  complex*16,save       :: tb1(2048), tb2(2048), tb3(2048)
-  complex*16,allocatable:: wk1(:), wk2(:)
-  integer               :: ier, ix, iy, iz
-
-  if (mod(Nx,2).ne.0) stop 'fft.F:150: Nx must be an even number.'
-
-  iopt(1)=1
-
-  if (Nx.ne.Nx_last .or. Ny.ne.Ny_last .or. Nz.ne.Nz_last) then
-     call n2pqr(Nx, ip1)
-     call n2pqr(Ny, ip2)
-     call n2pqr(Nz, ip3)
-     ndim1 = Nx+2
-     nwk1 = (Nx/2+NWKW)*(Ny+NWKW)*(Nz+NWKW) + 100
-     nwk2 = (Nx/2+NWKW)*MAX(Ny+NWKW,Nz+NWKW)*IPARA + 100
-     iopt(2)=1
-     Nx_last=Nx
-     Ny_last=Ny
-     Nz_last=Nz
-  else
-     iopt(2)=2
-  end if
-
-  allocate(wk1(nwk1), wk2(nwk2))
-
-  do iz = 0, Nz-1
-     do iy = 0, Ny-1
-        do ix = 0, Nx/2-1
-           c(ix,iy,iz) = cmplx(r(2*ix,iy,iz),r(2*ix+1,iy,iz))
-        end do
-     end do
-  end do
-
-  call HDFZ7M(c, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,IPARA, ier)
-
-  deallocate(wk1,wk2)
+  call matrix_mpp_fft(1, Nx, Ny, Nz, r, c)
 end subroutine dfftw_plan_dft_r2c_3d
 
 subroutine dfftw_plan_dft_c2r_3d(plan, Nx, Ny, Nz, c, r, flags)
   implicit none
   integer*8, intent(in) :: plan
   integer,   intent(in) :: Nx, Ny, Nz
-  integer,   save       :: Nx_last=0, Ny_last=0, Nz_last=0
   complex*16            :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
   real*8,    intent(out):: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
   integer,   intent(in) :: flags
+  call matrix_mpp_fft(2, Nx, Ny, Nz, r, c)
+end subroutine dfftw_plan_dft_c2r_3d
+
+subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
+  implicit none
+  integer,   intent(in) :: iopt1
+  integer,   intent(in) :: Nx, Ny, Nz
+  integer,   save       :: Nx_last=0, Ny_last=0, Nz_last=0
+  real*8                :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
+  complex*16            :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
   integer,   save       :: ip1(3), ip2(3), ip3(3), ndim1, nwk1, nwk2
   integer               :: iopt(2)
   integer,   parameter  :: NWKW  = 5
-  integer,   parameter  :: IPARA = 16
+  integer,   parameter  :: IPARA = 8
   complex*16,save       :: tb1(2048), tb2(2048), tb3(2048)
   complex*16,allocatable:: wk1(:), wk2(:)
   integer               :: ier, ix, iy, iz
 
-  iopt(1)=2
+  iopt(1)=iopt1
 
   if (Nx.ne.Nx_last .or. Ny.ne.Ny_last .or. Nz.ne.Nz_last) then
+     if (mod(Nx,2).ne.0) stop 'fft.F:150: Nx must be an even number.'
      call n2pqr(Nx, ip1)
      call n2pqr(Ny, ip2)
      call n2pqr(Nz, ip3)
@@ -216,20 +186,29 @@ subroutine dfftw_plan_dft_c2r_3d(plan, Nx, Ny, Nz, c, r, flags)
 
   allocate(wk1(nwk1), wk2(nwk2))
 
-  call HZFD7M(c, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,IPARA, ier)
-
-
-  do iz = 0, Nz-1
-     do iy = 0, Ny-1
-        do ix = 0, Nx/2-1
-           r(2*ix  ,iy,iz) =  dble(c(ix,iy,iz))
-           r(2*ix+1,iy,iz) = aimag(c(ix,iy,iz))
+  if (iopt1==1) then
+     do iz = 0, Nz-1
+        do iy = 0, Ny-1
+           do ix = 0, Nx/2-1
+              c(ix,iy,iz) = cmplx(r(2*ix,iy,iz),r(2*ix+1,iy,iz))
+           end do
         end do
      end do
-  end do
+     call HDFZ7M(c, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,IPARA, ier)
+  else
+     call HZFD7M(c, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,IPARA, ier)
+     do iz = 0, Nz-1
+        do iy = 0, Ny-1
+           do ix = 0, Nx/2-1
+              r(2*ix  ,iy,iz) =  dble(c(ix,iy,iz))
+              r(2*ix+1,iy,iz) = aimag(c(ix,iy,iz))
+           end do
+        end do
+     end do
+  end if
 
   deallocate(wk1,wk2)
-end subroutine dfftw_plan_dft_c2r_3d
+end subroutine matrix_mpp_fft
 #endif
 !
 
