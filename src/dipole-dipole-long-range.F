@@ -1,7 +1,8 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2010-09-14 20:03:14 takeshi>
+! Time-stamp: <2011-04-25 10:27:26 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
+!UINLINE decay-functions.f
 #include "define.h"
 subroutine dipole_dipole_long_range(p,long_range)
   use Param_module

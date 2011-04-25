@@ -1,5 +1,5 @@
-! decay-functions.F -*-f90-*-
-! Time-stamp: <2005-11-22 11:21:12 t-nissie>
+! decay-functions.f -*-f90-*-
+! Time-stamp: <2011-04-25 10:26:55 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !
 !OPTION FORM(FREE)
