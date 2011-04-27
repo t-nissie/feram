@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2011-03-08 16:58:51 takeshi>
+! Time-stamp: <2011-04-27 14:15:02 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -19,8 +19,7 @@ subroutine molecular_dynamics(p,c)
   !--- local -----------------------------------------
   type(Energy_type) :: e
   type(Average_type) :: avg
-  integer i_step, i
-  integer location(4)
+  integer i_step
   character(120), parameter :: fmt_time_step = &
   & "('TIME_STEP ',i7,' ---------------------------------------------------------------------------------')"
   character (len=120) :: message
