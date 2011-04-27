@@ -1,5 +1,5 @@
-! energy.F -*-f90-*-
-! Time-stamp: <2011-04-27 13:46:16 t-nissie>
+! energy_module.F -*-f90-*-
+! Time-stamp: <2011-04-27 14:59:10 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -138,37 +138,30 @@ contains
     type(Param_type),  intent(in)    :: p
     type(Coord_type),  intent(in)    :: c
     type(Energy_type), intent(inout) :: e
-    complex*16  acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)
+    complex*16,        intent(in)    :: acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)
     !--- local -----------------------------------------
-    integer alpha,beta, ix,iy,iz
+    real*8  :: tmp1,tmp2,tmp3,tmpS
+    integer :: alpha,beta, iy,iz
     !--- END of variable definitions -------------------
-
-    e%inho_strain = 0.0d0
+    tmpS = 0.0d0
+    !NOT SO EFFECTIVE omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
     do alpha = 1,3
        do beta = 1,3
           do iz = 0, p%Lz-1
              do iy = 0, p%Ly-1
-                !-----------------------------------------------------------------
-                ix = 0
-                e%inho_strain = e%inho_strain + dble( conjg(acouK(alpha,ix,iy,iz)) * &
-                     &    c%inhomo_K(ix,iy,iz,alpha,beta) * acouK(beta, ix,iy,iz)) / 2
-                !-----------------------------------------------------------------
-                do ix = 1, p%Lx/2-1
-                   e%inho_strain = e%inho_strain+dble(conjg(acouK(alpha,ix,iy,iz)) * &
-                        & c%inhomo_K(ix,iy,iz,alpha,beta) * acouK(beta, ix,iy,iz))
-                end do
-                !-----------------------------------------------------------------
-                ix=p%Lx/2
-                e%inho_strain = e%inho_strain + dble( conjg(acouK(alpha,ix,iy,iz)) * &
-                     &    c%inhomo_K(ix,iy,iz,alpha,beta) * acouK(beta, ix,iy,iz)) / 2
-                !-----------------------------------------------------------------
+                tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_K(0,         iy,iz,alpha,beta) &
+                     &                                                * acouK(beta, 0,         iy,iz)) / 2
+                tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_K(1:p%Lx/2-1,iy,iz,alpha,beta) &
+                     &                                                * acouK(beta, 1:p%Lx/2-1,iy,iz)) )
+                tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_K(  p%Lx/2,  iy,iz,alpha,beta) &
+                     &                                                * acouK(beta,   p%Lx/2,  iy,iz)) / 2
+                tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
           end do
        end do
     end do
-
-    e%inho_strain = e%inho_strain / p%N    ! Do NOT divide it by 2 here.
-                                           ! It has been already devided.
+    !NOT SO EFFECTIVE omp end parallel do
+    e%inho_strain = tmpS / p%N    ! Do NOT divide it by 2 here. It has been already devided.
   end subroutine inhomogeneous_strain_energy
 
   subroutine inhomogeneous_coupling_energy(p,c,e,acouK)
