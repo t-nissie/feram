@@ -100,13 +100,6 @@ feram runs on 1 node (16 CPUs) of SR11000 effectively.
  % cd SR11000-xf90
  % ../configure FC=xf90 --host=SR11000
  % make
-Because SR11000 and its Fortran compiler cannot treat command arguments,
-you have to specify input file(s) in FILES file. For example,
- 3
- foo
- bar
- baz
-1st line: number of input file(s). 2nd- line filename(s).
 
 For performance monitor
  % ../configure FC=xf90 FCFLAGS='-64 -O3 -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -loglist -pmfunc -pmpar' --host=SR11000 --disable-detailed-messages
