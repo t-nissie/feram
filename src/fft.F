@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-04-24 12:01:40 t-nissie>
+! Time-stamp: <2011-04-27 18:00:06 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -158,13 +158,13 @@ subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
   integer,   save       :: Nx_last=0, Ny_last=0, Nz_last=0
   real*8                :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
   complex*16            :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
-  integer,   save       :: ip1(3), ip2(3), ip3(3), ndim1, nwk1, nwk2
+  integer,   save       :: ip1(3), ip2(3), ip3(3), ndim1, nwk1, nwk2, ipara
   integer               :: iopt(2)
   integer,   parameter  :: NWKW  = 5
-  integer,   parameter  :: IPARA = 8
   complex*16,save       :: tb1(2048), tb2(2048), tb3(2048)
   complex*16,allocatable:: wk1(:), wk2(:)
   integer               :: ier, ix, iy, iz
+  character(len=10)     :: ipara_s
 
   iopt(1)=iopt1
 
@@ -174,8 +174,11 @@ subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
      call n2pqr(Ny, ip2)
      call n2pqr(Nz, ip3)
      ndim1 = Nx+2
+     ipara = $NUMTHRD()
+     write(ipara_s,'(i8)') ipara
+     call msg(6, __FILE__, __LINE__, 'ipara = ', ipara_s)
      nwk1 = (Nx/2+NWKW)*(Ny+NWKW)*(Nz+NWKW) + 100
-     nwk2 = (Nx/2+NWKW)*MAX(Ny+NWKW,Nz+NWKW)*IPARA + 100
+     nwk2 = (Nx/2+NWKW)*MAX(Ny+NWKW,Nz+NWKW)*ipara + 100
      iopt(2)=1
      Nx_last=Nx
      Ny_last=Ny
@@ -194,9 +197,9 @@ subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
            end do
         end do
      end do
-     call HDFZ7M(c, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,IPARA, ier)
+     call HDFZ7M(c, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,ipara, ier)
   else
-     call HZFD7M(c, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,IPARA, ier)
+     call HZFD7M(c, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,ipara, ier)
      do iz = 0, Nz-1
         do iy = 0, Ny-1
            do ix = 0, Nx/2-1
