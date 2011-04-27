@@ -1,5 +1,5 @@
 ! energy.F -*-f90-*-
-! Time-stamp: <2011-04-25 15:17:45 t-nissie>
+! Time-stamp: <2011-04-27 13:46:16 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -179,28 +179,30 @@ contains
     type(Param_type),  intent(in)    :: p
     type(Coord_type),  intent(in)    :: c
     type(Energy_type), intent(inout) :: e
-    real*8      tmp1,tmp2,tmp3
-    complex*16  acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)
+    complex*16,        intent(in)    :: acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)
     !--- local -----------------------------------------
-    integer i, alpha, iy,iz
+    real*8  :: tmp1,tmp2,tmp3,tmpS
+    integer :: i, alpha, iy,iz
     !--- END of variable definitions -------------------
-
-    e%inho_coupling = 0.0d0
-    !$omp parallel do private(tmp1,tmp2,tmp3) reduction(+:e%inho_coupling)
+    tmpS = 0.0d0
+    !NOT SO EFFECTIVE omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
     do i = 1,6
        do alpha = 1,3
           do iz = 0, p%Lz-1
              do iy = 0, p%Ly-1
-                tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) * c%didiK(0,         iy,iz,i) ) / 2
-                tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) * c%didiK(1:p%Lx/2-1,iy,iz,i) ) )
-                tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) * c%didiK(  p%Lx/2,  iy,iz,i) ) / 2
-                e%inho_coupling = e%inho_coupling + tmp1 + tmp2 + tmp3
+                tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) &
+                     &                                                          * c%didiK(0,         iy,iz,i) ) / 2
+                tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) &
+                     &                                                          * c%didiK(1:p%Lx/2-1,iy,iz,i) ) )
+                tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) &
+                     &                                                          * c%didiK(  p%Lx/2,  iy,iz,i) ) / 2
+                tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
           end do
        end do
     end do
-    !$omp end parallel do
-    e%inho_coupling = e%inho_coupling * 2 / p%N
+    !NOT SO EFFECTIVE omp end parallel do
+    e%inho_coupling = tmpS * 2 / p%N
   end subroutine inhomogeneous_coupling_energy
 
   subroutine dipole_E_field_energy(p,c,e)
