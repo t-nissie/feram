@@ -1,5 +1,5 @@
 ! decay-functions.f -*-f90-*-
-! Time-stamp: <2011-04-25 14:06:36 t-nissie>
+! Time-stamp: <2011-04-28 08:45:46 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !
 !OPTION FORM(FREE)
@@ -20,7 +20,7 @@ end function Crr
 
 real*8 function C_decay(r,rr,kappa)
   implicit none
-  real*8 r,rr,kappa,Crr
+  real*8 r,rr,kappa,Crr,derfc
   real*8, parameter :: M_2_SQRTPI = 1.12837916709551257390d0
   Crr=3*derfc(kappa*r)/(r*rr) + M_2_SQRTPI * kappa * exp(-kappa**2*rr) * (2*kappa**2+3/rr)
   C_decay=Crr/rr
