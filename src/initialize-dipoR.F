@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2010-10-10 19:34:03 takeshi>
+! Time-stamp: <2011-04-28 10:12:48 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -9,16 +9,15 @@ subroutine initialize_dipoR(p,c,e)
   use Param_module
   use Coord_module
   use Energy_module
+  use marsaglia_tsang_uni64_module
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer ix, iy, iz, alpha, ios, dummy_x, dummy_y, dummy_z
-  integer random_seed_size
-  real*8 normal_dist
+  real*8 dmy
   character (len=120) :: message
   character (len=120) :: restart_fn
-  external normal_dist
   call msg(6, __FILE__, __LINE__, 'BEGIN', '')
   write(restart_fn,'(a,a)') trim(p%filename), '.restart'
   open(unit=UNIT_SYSTEM, file=restart_fn, status='old', action='read', iostat=ios)
@@ -38,9 +37,7 @@ subroutine initialize_dipoR(p,c,e)
   else
      write(message,'(a,a)') trim(restart_fn), ' was NOT found.'
      call msg(6, __FILE__, __LINE__, 'FILE: ', message)
-     call random_seed(size=random_seed_size)
-     if (random_seed_size>MAX_RANDOM_SEED_SIZE) stop 'STOP at subroutine initialize_dipoR(); random_seed_size>MAX_RANDOM_SEED_SIZE'
-     call random_seed(put=p%random_seed_array(1:random_seed_size))
+     dmy = uni64(p%seed(1), p%seed(2))
      do alpha = 1, 3
         do iz = 0, p%Lz-1
            do iy = 0, p%Ly-1
