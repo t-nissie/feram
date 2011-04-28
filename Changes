@@ -1,5 +1,9 @@
 = Changes for feram
-== 0.14.02
+== 0.14.03
+ * New tag seed, two integers for Marsaglia-Tsang 64-bit uiniversal RNG (random number generator).
+   Now, we start to use built-in RNG. "feram foo bar" and "feram bar foo" must have same results.
+
  * In src/fft.F, HZFT7M() is replaced with HDFZ7M() and HZFD7M() for SR11000.
+   ipara = $NUMTHRD() is also employed.
 
 == 0.14.01
