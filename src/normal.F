@@ -1,5 +1,5 @@
 ! normal.F   -*-f90-*-
-! Time-stamp: <2009-11-06 16:26:52 takeshi>
+! Time-stamp: <2011-04-28 09:24:11 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Reference: Haruhiko Okumura: C-gengo niyoru saishin algorithm jiten
 !            (New Algorithm handbook in C language) (Gijyutsu hyouron
@@ -10,6 +10,7 @@
 ! N(mu,sigma^2) normal-distributed random number generator
 ! N(mu,sigma^2) = N(0,1)*sigma + mu
 real*8 function normal_dist(mu,sigma)
+  implicit none
   real*8 mu, sigma
   real*8 std_normal_dist
   external std_normal_dist
@@ -18,6 +19,7 @@ end function normal_dist
 
 ! N(0,1) standard-normal-distributed random number generator
 real*8 function std_normal_dist()
+  implicit none
   logical, save :: sw = .true.
   real*8,  save :: t, u
   real*8        :: x(2)
