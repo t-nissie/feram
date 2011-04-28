@@ -1,11 +1,11 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-02-04 21:21:44 takeshi>
+# Time-stamp: <2011-04-28 10:57:21 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
-bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j frozen_phonon_Gamma frozen_phonon_X
+bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j frozen_phonon_Gamma frozen_phonon_X marsaglia_tsang_uni64_check
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -28,6 +28,7 @@ feram_SRCS = average_module.F \
 	initialize-dipoR.F \
 	leapfrog.F \
 	read_defects_u.F \
+	marsaglia_tsang_uni64_module.f \
 	mirror.F \
 	mirror_force_mirror.F \
 	molecular-dynamics.F \
@@ -59,6 +60,9 @@ frozen_phonon_Gamma_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
 frozen_phonon_X_SOURCES = frozen_phonon_X.F
 frozen_phonon_X_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
 frozen_phonon_X_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
+
+marsaglia_tsang_uni64_check_SOURCES = marsaglia_tsang_uni64_check.f marsaglia_tsang_uni64_module.f
+TESTS = marsaglia_tsang_uni64_check
 
 CLEANFILES = *.mod *.ps *.pdf
 EXTRA_DIST = define.h \
@@ -117,7 +121,7 @@ mirror.o dipoFFT.o elastic.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.
 initialize_E_field.o read_defects_u.o:\
                                 param_module.o coord_module.o define.h
 initialize-dipoR.o average_module.o:\
-                                param_module.o coord_module.o energy_module.o define.h
+                                param_module.o coord_module.o energy_module.o marsaglia_tsang_uni64_module.o define.h
 nose-poincare.o leapfrog.o mirror_force_mirror.o:\
                                 param_module.o coord_module.o energy_module.o
 coord_module.o:                 param_module.o         define.h
