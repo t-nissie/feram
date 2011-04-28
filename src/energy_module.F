@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2011-04-27 14:59:10 t-nissie>
+! Time-stamp: <2011-04-27 21:00:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -149,12 +149,9 @@ contains
        do beta = 1,3
           do iz = 0, p%Lz-1
              do iy = 0, p%Ly-1
-                tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_K(0,         iy,iz,alpha,beta) &
-                     &                                                * acouK(beta, 0,         iy,iz)) / 2
-                tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_K(1:p%Lx/2-1,iy,iz,alpha,beta) &
-                     &                                                * acouK(beta, 1:p%Lx/2-1,iy,iz)) )
-                tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_K(  p%Lx/2,  iy,iz,alpha,beta) &
-                     &                                                * acouK(beta,   p%Lx/2,  iy,iz)) / 2
+                tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_K(0,         iy,iz,alpha,beta) * acouK(beta, 0,         iy,iz)) / 2
+                tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_K(1:p%Lx/2-1,iy,iz,alpha,beta) * acouK(beta, 1:p%Lx/2-1,iy,iz)) )
+                tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_K(  p%Lx/2,  iy,iz,alpha,beta) * acouK(beta,   p%Lx/2,  iy,iz)) / 2
                 tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
           end do
@@ -183,12 +180,9 @@ contains
        do alpha = 1,3
           do iz = 0, p%Lz-1
              do iy = 0, p%Ly-1
-                tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) &
-                     &                                                          * c%didiK(0,         iy,iz,i) ) / 2
-                tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) &
-                     &                                                          * c%didiK(1:p%Lx/2-1,iy,iz,i) ) )
-                tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) &
-                     &                                                          * c%didiK(  p%Lx/2,  iy,iz,i) ) / 2
+                tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) * c%didiK(0,         iy,iz,i) ) / 2
+                tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) * c%didiK(1:p%Lx/2-1,iy,iz,i) ) )
+                tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) * c%didiK(  p%Lx/2,  iy,iz,i) ) / 2
                 tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
           end do
