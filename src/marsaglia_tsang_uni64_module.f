@@ -1,11 +1,15 @@
 ! marsaglia_tsang_uni64_module.f -*-f90-*-
 ! Marsaglia-Tsang 64-bit uiniversal RNG
 ! It does not use global variable.
-! Time-stamp: <2011-04-28 11:00:24 t-nissie>
+! Time-stamp: <2011-04-28 18:49:02 t-nissie>
 ! Author:     Takeshi NISHIMATSU
 ! Reference1: George Marsaglia and Wai Wan Tsang: "The 64-bit universal RNG",
 !             Statistics & Probability Letters, Vol. 66, pp. 183-187 (2004),
-!             doi:10.1016/j.spl.2003.11.001.
+!             doi:10.1016/j.spl.2003.11.001. Note that a part of code in the
+!             bottom of p.186, "y=(8888*x)%65579;" should be replaced by
+!             "y=(8888*y)%65579;". Consequently, 5 values of "The correct output"
+!             in p.187 are incorrect. See http://sci4um.com/about16220-asc.html
+!             and marsaglia_tsang_uni64_check.f.
 ! Reference2: Haruhiko Okumura: C-gengo niyoru saishin algorithm jiten
 !             (New Algorithm handbook in C language) (Gijyutsu hyouron
 !             sha, Tokyo, 1991) [in Japanese]
