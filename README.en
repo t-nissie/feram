@@ -284,15 +284,25 @@ Elastic Coupling
  B1yy =  -19.3  [eV/Angstrom^2]
  B4yz =   -7.75 [eV/Angstrom^2]
 
+===== seed
+Two integers for Marsaglia-Tsang 64-bit uiniversal RNG (random number generator).
+ seed = 123384 8984847
+
 ===== init_dipo_avg, init_dipo_dev
-Initial dipole settings. If you have four dipoles and
- init_dipo_avg = 0.10 0.00 0.00   [Angstrom]  # Average   of initial dipole displacements
- init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation of initial dipole displacements,
+Values for initial random setting of dipoles.
+The normal-distributed random number generator N(mu,sigma^2) is used.
+
+For example, if you only have four dipoles and
+ init_dipo_avg = 0.10 0.00 0.00   [Angstrom]  # Average (mu)      of initial dipole displacements
+ init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Dneviation (sigma) of initial dipole displacements,
 the dipoles may be
  0.09  0.01  0.02
  0.11 -0.02  0.01
  0.08  0.02 -0.03
  0.12 -0.01  0.00 .
+
+If there is a .restart file in the same directory,
+there values are not used and the .restart file will be read.
 
 ===== Z_star
 Effective charge per site.
