@@ -6,4 +6,8 @@
  * In src/fft.F, HZFT7M() is replaced with HDFZ7M() and HZFD7M() for SR11000.
    ipara = $NUMTHRD() is also employed.
 
+ * src/eigenvalues2j.F
+   incorrect: call write_kappa2_and_j_i('     j_1 =', b(0))
+   correct:   call write_kappa2_and_j_i('     j_1 =', b(1))
+
 == 0.14.01
