@@ -1,5 +1,5 @@
 ! eigenvalues2j.F -*-f90-*-
-! Time-stamp: <2009-03-25 00:14:09 takeshi>
+! Time-stamp: <2011-04-30 18:16:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -106,7 +106,7 @@ program eigenvalues2j
      call DGESV( 8, 1, A,  8, IPIV, b, 8, INFO )
   end if
 
-  call write_kappa2_and_j_i('     j_1 =', b(0))
+  call write_kappa2_and_j_i('     j_1 =', b(1))
   call write_kappa2_and_j_i('     j_2 =', b(2))
   call write_kappa2_and_j_i('     j_3 =', b(3))
   call write_kappa2_and_j_i('     j_4 =', b(4))
