@@ -1,8 +1,24 @@
 ! marsaglia_tsang_uni64_module.f -*-f90-*-
-! Marsaglia-Tsang 64-bit uiniversal RNG
+! Marsaglia-Tsang 64-bit universal RNG
 ! It does not use global variable.
-! Time-stamp: <2011-04-28 18:49:02 t-nissie>
+! Time-stamp: <2011-05-01 20:46:36 takeshi>
 ! Author:     Takeshi NISHIMATSU
+! Usage:      See marsaglia_tsang_uni64_check.f for example.
+!             (1) Set two integers for seeds. It will return 1.0d0.
+!                 dmy = uni64(123456789,987654321)   ! dmy will be 1.0d0.
+!             (2) Use unit64() function without any arguments.
+!                 It will return [0.0,1.0) double precision random number again and again.
+!                 r1 = uni64()
+!                 r2 = uni64()
+!                       :
+!             (3) To reset seeds and internal variables, call uni64() with new seeds.
+!                 It will return 2.0d0,  3.0d0,  4.0d0, ...
+!                 dmy = uni64(375149579,887142154)   ! dmy will be 2.0d0.
+!                 r1 = uni64()
+!                 r2 = uni64()
+!                       :
+!                 dmy = uni64(459842894,586734952)   ! dmy will be 3.0d0.
+!             (x) Note that uni64() is THREAD-UNSAFE.
 ! Reference1: George Marsaglia and Wai Wan Tsang: "The 64-bit universal RNG",
 !             Statistics & Probability Letters, Vol. 66, pp. 183-187 (2004),
 !             doi:10.1016/j.spl.2003.11.001. Note that a part of code in the
