@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-05-02 07:54:26 takeshi>
+# Time-stamp: <2011-05-02 08:27:43 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -95,9 +95,6 @@ cholesky_d.f: cholesky_z.f
 
 # crosssection: crosssection.gp
 # 	gnuplot $<
-
-# hensachi: hensachi.o normal.o
-# 	$(FC) $(FFLAGS) -o $@ $^ $(LIBS)
 
 # decay-test: decay-test.o decay-functions.o
 # 	$(FC) $(FFLAGS) -o $@ $^
