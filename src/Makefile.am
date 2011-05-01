@@ -1,11 +1,11 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-04-28 10:57:21 t-nissie>
+# Time-stamp: <2011-05-02 07:34:30 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
-bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j frozen_phonon_Gamma frozen_phonon_X marsaglia_tsang_uni64_check
+bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j frozen_phonon_Gamma frozen_phonon_X marsaglia_tsang_uni64_checker
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -33,7 +33,6 @@ feram_SRCS = average_module.F \
 	mirror_force_mirror.F \
 	molecular-dynamics.F \
 	msg.F \
-	normal.F \
 	nose-poincare.F \
 	optimize-homo-strain.F \
 	optimize-inho-strain.F \
@@ -61,8 +60,8 @@ frozen_phonon_X_SOURCES = frozen_phonon_X.F
 frozen_phonon_X_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
 frozen_phonon_X_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
 
-marsaglia_tsang_uni64_check_SOURCES = marsaglia_tsang_uni64_check.f marsaglia_tsang_uni64_module.f
-TESTS = marsaglia_tsang_uni64_check
+marsaglia_tsang_uni64_checker_SOURCES = marsaglia_tsang_uni64_checker.F marsaglia_tsang_uni64_module.f
+TESTS = marsaglia_tsang_uni64_checker
 
 CLEANFILES = *.mod *.ps *.pdf
 EXTRA_DIST = define.h \
@@ -107,7 +106,7 @@ cholesky_d.f: cholesky_z.f
 # 	gnuplot $<
 
 feram.o: param_module.o coord_module.o
-normal.o decay-functions.o param_module.o:             define.h
+decay-functions.o param_module.o:             define.h
 feram.o potentials.o dipole-dipole.o:\
                                 param_module.o coord_module.o define.h
 initialize-dipoR.o dVddi-unharmonic.o leapfrog.o \
