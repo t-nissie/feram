@@ -1,12 +1,12 @@
 ! marsaglia_tsang_uni64_check.F -*-f90-*-
-! Time-stamp: <2011-05-02 07:48:42 takeshi>
+! Time-stamp: <2011-05-02 08:19:31 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program marsaglia_tsang_uni64_check
   use marsaglia_tsang_uni64_module
   implicit none
   integer           :: i, j
-  integer           :: flr, hist(100)
+  integer           :: near, hist(100)
   real*8            :: x
   real*8, parameter :: r(5) = (/&
        5534819329886631.0d0, &
@@ -15,8 +15,6 @@ program marsaglia_tsang_uni64_check
        6938004922860200.0d0, &
        3518398318353033.0d0/)
   character(len=100), parameter :: f = '(a, ":", i2, ": expected: x = ", e24.17, ",   but was: x = ", e24.17)'
-
-  hist(1:100) = 0
 
   do j=1,2
      write (6,'("j =", i2)') j
@@ -41,10 +39,11 @@ program marsaglia_tsang_uni64_check
         write(6,f) __FILE__, __LINE__, dble(j*2), x
         stop 1
      end if
-     do i=1,5000000
+     hist(1:100) = 0
+     do i=1,10000000
         x=normal_dist(50.0d0,10.0d0)
-        flr=floor(x)
-        if (1<=flr .and. flr<=100) hist(flr) = hist(flr) + 1
+        near=nint(x)
+        if (1<=near .and. near<=100) hist(near) = hist(near) + 1
      end do
   end do
 
