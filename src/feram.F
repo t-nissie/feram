@@ -1,25 +1,12 @@
 ! feram.F -*-f90-*-
-! Time-stamp: <2010-10-09 22:34:35 takeshi>
+! Time-stamp: <2011-05-06 15:58:42 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
 
-#if defined(SR11000)
-   function command_argument_count()
-     implicit none
-     integer command_argument_count
-     open(9, file='FILES')!, status='old', action='read')
-     read(9,*) command_argument_count
-   end function command_argument_count
-   subroutine get_command_argument(i,a)
-     implicit none
-     integer i
-     character (len=*) a
-     read(9,*) a
-   end subroutine get_command_argument
-#elif defined(__PGI)
+#if defined(__PGI) || defined(SR11000)
 #  define command_argument_count iargc
 #  define get_command_argument getarg
 #endif
@@ -27,12 +14,11 @@
 program feram
   use Param_module
   use Coord_module
-  !$use omp_lib
   implicit none
   type(Param_type) :: p
   type(Coord_type) :: c
   character(70) message
-  integer i, fd, argn, command_argument_count!, nthreads,info
+  integer i, fd, argn, command_argument_count
 
   write(message,'(a,a)') ': Version ', PACKAGE_VERSION
   call msg(6, __FILE__, __LINE__, 'BEGIN', message)
