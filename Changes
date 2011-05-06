@@ -1,5 +1,5 @@
 = Changes for feram
-== 0.14.03
+== 0.14.04
  * New tag seed, two integers for Marsaglia-Tsang 64-bit uiniversal RNG (random number generator).
    Now, we start to use built-in RNG. "feram foo bar" and "feram bar foo" must have same results.
 
@@ -9,5 +9,9 @@
  * src/eigenvalues2j.F
    incorrect: call write_kappa2_and_j_i('     j_1 =', b(0))
    correct:   call write_kappa2_and_j_i('     j_1 =', b(1))
+
+ * src/feram.F
+   SR11000 can also use iargc() and getarg().
+   We do not need FILES file for SR11000 anymore!
 
 == 0.14.01
