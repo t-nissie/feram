@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2011-03-08 18:25:29 takeshi>
+! Time-stamp: <2011-05-26 13:01:13 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -34,7 +34,9 @@ subroutine leapfrog(p,c,e,i_step)
      c%dipoP(:,:,Lz_3_4,:) = c%dipoP(:,:,Lz_3_4,:) * sqrt((c%e_layer(Lz_3_4)-Lx_Ly_delta_e)/c%e_layer(Lz_3_4))
   end if
 
+!POPTION COALESCING(2)
   c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt_2 * c%dVddi(:,:,:,:)
+!POPTION COALESCING(2)
   c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt   * c%dipoP(:,:,:,:) * c%M_inv(:,:,:,:)
 #if defined(DETAILED_MESSAGES)
   call msg(6, __FILE__, __LINE__, 'dipoR', ' is updated.')
@@ -42,7 +44,9 @@ subroutine leapfrog(p,c,e,i_step)
 
   call mirror_force_mirror(p,c,e)
 
+!POPTION COALESCING(2)
   c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt_2 * c%dVddi(:,:,:,:)
+!POPTION COALESCING(2)
   e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
 #if defined(DETAILED_MESSAGES)
   call msg(6, __FILE__, __LINE__, 'END', ': dipoP is updated at this end.')

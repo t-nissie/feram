@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-03-04 17:48:20 takeshi>
+! Time-stamp: <2011-05-26 12:57:03 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -81,6 +81,7 @@ subroutine optimize_inho_strain(p,c,e)
   !$omp end parallel do
   call fft_c2r(p, inhoK, inhoR, 6)
 
+!POPTION COALESCING(2)
   inhoR(:,:,:,:) = inhoR(:,:,:,:) / p%N
 
   !--- inhoR -> inhomogeneous coupling part of dVddi -------------------
