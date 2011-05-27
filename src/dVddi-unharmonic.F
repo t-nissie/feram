@@ -1,5 +1,5 @@
 ! dVddi-unharmonic.F   -*-f90-*-
-! Time-stamp: <2008-12-19 14:30:23 takeshi>
+! Time-stamp: <2011-05-27 15:09:14 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_unharmonic(p,c,e)
@@ -51,6 +51,7 @@ subroutine dVddi_unharmonic(p,c,e)
   end do
 
   e%unharmonic = 0.0d0
+!POPTION PSUM(e%unharmonic)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1
