@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2011-04-27 21:00:57 t-nissie>
+! Time-stamp: <2011-05-27 20:01:17 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -145,10 +145,11 @@ contains
     !--- END of variable definitions -------------------
     tmpS = 0.0d0
     !NOT SO EFFECTIVE omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
-    do alpha = 1,3
-       do beta = 1,3
-          do iz = 0, p%Lz-1
-             do iy = 0, p%Ly-1
+!POPTION PSUM(tmpS)
+    do iz = 0, p%Lz-1
+       do iy = 0, p%Ly-1
+          do alpha = 1,3
+             do beta = 1,3
                 tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_K(0,         iy,iz,alpha,beta) * acouK(beta, 0,         iy,iz)) / 2
                 tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_K(1:p%Lx/2-1,iy,iz,alpha,beta) * acouK(beta, 1:p%Lx/2-1,iy,iz)) )
                 tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_K(  p%Lx/2,  iy,iz,alpha,beta) * acouK(beta,   p%Lx/2,  iy,iz)) / 2
@@ -176,10 +177,11 @@ contains
     !--- END of variable definitions -------------------
     tmpS = 0.0d0
     !NOT SO EFFECTIVE omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
-    do i = 1,6
-       do alpha = 1,3
-          do iz = 0, p%Lz-1
-             do iy = 0, p%Ly-1
+!POPTION PSUM(tmpS)
+    do iz = 0, p%Lz-1
+       do iy = 0, p%Ly-1
+          do i = 1,6
+             do alpha = 1,3
                 tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) * c%didiK(0,         iy,iz,i) ) / 2
                 tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) * c%didiK(1:p%Lx/2-1,iy,iz,i) ) )
                 tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) * c%didiK(  p%Lx/2,  iy,iz,i) ) / 2
@@ -205,6 +207,7 @@ contains
     !--- END of variable definitions -------------------
 
     e%dipole_E_field = 0.0d0
+!POPTION PSUM(e%dipole_E_field)
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
           do ix = 0, p%Lx-1
