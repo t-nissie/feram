@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2011-05-26 12:58:52 t-nissie>
+! Time-stamp: <2011-05-28 16:51:43 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_dipole_dipole(p,c,e)
@@ -18,10 +18,10 @@ subroutine dVddi_dipole_dipole(p,c,e)
   !call msg(6, __FILE__, __LINE__, 'BEGIN', ': calc dVddi, calc e%dipo_dipo')
   allocate(dipoT(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3)) !"/2" See fft.F!
   !$omp parallel do private(iz,iy,ix,alpha)
-  do alpha = 1,3
-     do iz=0, p%Lz-1
-        do iy=0, p%Ly-1
-           do ix=0, p%Lx/2
+  do iz=0, p%Lz-1
+     do iy=0, p%Ly-1
+        do ix=0, p%Lx/2
+           do alpha = 1,3
               dipoT(ix,iy,iz,alpha) = sum(c%dipoI(ix,iy,iz,alpha,:)*c%dipoK(ix,iy,iz,:))
            end do
         end do
