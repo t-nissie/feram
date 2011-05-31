@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2011-03-08 16:39:01 takeshi>
+! Time-stamp: <2011-05-31 11:30:01 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -59,9 +59,11 @@ subroutine hysteresis_loop(p,c)
         end do
      end if
 
+#   if defined(DETAILED_MESSAGES)
      call msg_ez(6,'')
      write(message,fmt_time_step) i_step, p%external_E_field+E_field_add
      call msg_ez(6,message)
+#   endif
 
      c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
      call mirror_force_mirror(p,c,e)
@@ -71,7 +73,9 @@ subroutine hysteresis_loop(p,c)
      !e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
 
      e%total = e%dipo_kinetic + sum_potential_energies(e)
+#   if defined(DETAILED_MESSAGES)
      call write_Energy(p,c,e,6)
+#   endif
 
 
      if (i_step>=p%n_thermalize) then
