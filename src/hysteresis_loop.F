@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2011-05-31 11:30:01 t-nissie>
+! Time-stamp: <2011-05-31 12:19:36 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -65,10 +65,13 @@ subroutine hysteresis_loop(p,c)
      call msg_ez(6,message)
 #   endif
 
+!POPTION COALESCING(2)
      c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
      call mirror_force_mirror(p,c,e)
+!POPTION COALESCING(2)
      c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt * c%dVddi(:,:,:,:)
      e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
+!POPTION COALESCING(2)
      c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) * sqrt(target_kinetic_energy/e%dipo_kinetic)
      !e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
 
