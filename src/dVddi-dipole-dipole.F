@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2011-06-05 15:30:57 takeshi>
+! Time-stamp: <2011-06-05 16:15:18 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_dipole_dipole(p,c,e)
@@ -19,9 +19,9 @@ subroutine dVddi_dipole_dipole(p,c,e)
   allocate(dipoT(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3)) !"/2" See fft.F!
   !$omp parallel do private(iz,iy,ix,alpha)
   do iz=0, p%Lz-1
-     do iy=0, p%Ly-1
-        do ix=0, p%Lx/2
-           do alpha = 1,3
+     do alpha = 1,3
+        do iy=0, p%Ly-1
+           do ix=0, p%Lx/2
               dipoT(ix,iy,iz,alpha) = sum(c%dipoI(ix,iy,iz,alpha,:)*c%dipoK(ix,iy,iz,:))
            end do
         end do
@@ -38,9 +38,8 @@ subroutine dVddi_dipole_dipole(p,c,e)
   !=== e%dipole_dipole = SUM( c%dipoR(:,:,:,:) * c%dVddi(:,:,:,:) ) / 2 ===========
   e%dipole_dipole = 0.0d0
 !POPTION PSUM(e%dipole_dipole)
-!POPTION COALESCING(2)
-  do alpha = 1,3
-     do iz=0, p%Lz-1
+  do iz=0, p%Lz-1
+     do alpha = 1,3
         do iy=0, p%Ly-1
            do ix=0, p%Lx-1
               e%dipole_dipole = e%dipole_dipole + c%dipoR(ix,iy,iz,alpha) * c%dVddi(ix,iy,iz,alpha)
