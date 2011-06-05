@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2011-06-05 15:09:47 takeshi>
+! Time-stamp: <2011-06-05 16:39:14 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -73,7 +73,22 @@ subroutine hysteresis_loop(p,c)
      call mirror_force_mirror(p,c,e)
 !POPTION COALESCING(2)
      c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt * c%dVddi(:,:,:,:)
-     e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
+
+     !=== e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2 ===========
+     e%dipo_kinetic = 0.0d0
+!POPTION PSUM(e%dipo_kinetic)
+     do iz=0, p%Lz-1
+        do alpha = 1,3
+           do iy=0, p%Ly-1
+              do ix=0, p%Lx-1
+                 e%dipo_kinetic = e%dipo_kinetic + c%dipoP(ix,iy,iz,alpha) * c%dipoP(ix,iy,iz,alpha) * c%m_inv(ix,iy,iz,alpha)
+              end do
+           end do
+        end do
+     end do
+     e%dipo_kinetic = e%dipo_kinetic / 2
+     !==================================================================================================
+
 !POPTION COALESCING(2)
      c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) * sqrt(target_kinetic_energy/e%dipo_kinetic)
      !e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
