@@ -1,7 +1,10 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2011-05-31 12:19:36 t-nissie>
+! Time-stamp: <2011-06-05 15:09:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 # include "define.h"
 subroutine hysteresis_loop(p,c)
   use Param_module
