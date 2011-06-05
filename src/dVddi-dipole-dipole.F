@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2011-05-28 16:51:43 t-nissie>
+! Time-stamp: <2011-06-05 15:30:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_dipole_dipole(p,c,e)
@@ -34,7 +34,23 @@ subroutine dVddi_dipole_dipole(p,c,e)
   !if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') thenx
   !   call mirror(p, c%dVddi)
   !end if
-  e%dipole_dipole = SUM( c%dipoR(:,:,:,:) * c%dVddi(:,:,:,:) ) / 2
+
+  !=== e%dipole_dipole = SUM( c%dipoR(:,:,:,:) * c%dVddi(:,:,:,:) ) / 2 ===========
+  e%dipole_dipole = 0.0d0
+!POPTION PSUM(e%dipole_dipole)
+!POPTION COALESCING(2)
+  do alpha = 1,3
+     do iz=0, p%Lz-1
+        do iy=0, p%Ly-1
+           do ix=0, p%Lx-1
+              e%dipole_dipole = e%dipole_dipole + c%dipoR(ix,iy,iz,alpha) * c%dVddi(ix,iy,iz,alpha)
+           end do
+        end do
+     end do
+  end do
+  e%dipole_dipole = e%dipole_dipole / 2
+  !================================================================================
+
   deallocate(dipoT)
   !call msg(6, __FILE__, __LINE__, 'END', '')
 end subroutine dVddi_dipole_dipole
