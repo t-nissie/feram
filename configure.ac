@@ -1,11 +1,11 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-06-05 17:55:45 takeshi>
+dnl Time-stamp: <2011-06-09 12:13:45 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.61)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.14.07],[takeshi{at}physics.rutgers.edu],[feram])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.14.08],[takeshi{at}physics.rutgers.edu],[feram])
 AC_CONFIG_SRCDIR(src/feram.F)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
@@ -45,9 +45,9 @@ case "$FC" in
     fi
     ;;
   ifort)
-    test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -assume bscc -warn all"
+    test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -warn all"
     if test "$enable_openmp" != "no"; then
-      FCFLAGS="$FCFLAGS -openmp"
+      FCFLAGS="$FCFLAGS -openmp -parallel"
     fi
     ;;
   pgf*)
@@ -90,12 +90,17 @@ case "$host" in
     AC_ARG_WITH(fft,[AS_HELP_STRING([--with-fft=ARG],[FFT library.
                                      ARG must be one of
                                      fftw3 (default, fast),
+                                     mkl (Intel MKL, FFTW3 wrappers to Intel MKL functions),
                                      acml (AMD Core Math Library, slow), or
-                                     no (use the built-in minimal FFT, slow)])])
+                                     no (use the built-in minimal FFT, slow).])])
     case "$with_fft" in
       fftw* | yes | "")
         AC_CHECK_LIB(fftw3, dfftw_execute,,
                      AC_MSG_ERROR([You need FFTW library. See config.log.]))
+        ;;
+      mkl)
+        AC_CHECK_LIB(mkl_core, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
+                     AC_MSG_ERROR([You need Intel Math Kernel Library (MKL). See config.log.]),[-lmkl_intel_thread -lmkl_gf_lp64])
         ;;
       acml*)
         if test "$enable_openmp" == "no"; then
