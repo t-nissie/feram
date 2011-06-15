@@ -1,10 +1,11 @@
 ! feram_mpi.F -*-f90-*-
-! Time-stamp: <2011-06-15 16:24:42 takeshi>
+! Time-stamp: <2011-06-15 19:03:25 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
+#include "define.h"
 
 #if defined(__PGI) || defined(SR11000)
 #  define command_argument_count iargc
@@ -16,7 +17,7 @@ program feram_mpi
   include 'mpif.h'
   integer i, argn, command_argument_count
   integer i_error, my_mpi_rank, n_mpi_threads
-  character(len=100) :: fn
+  character(len=FILE_NAME_LEN) :: fn
 
   call MPI_INIT(i_error)
   call MPI_COMM_RANK(MPI_COMM_WORLD, my_mpi_rank,   i_error)
@@ -31,9 +32,7 @@ program feram_mpi
 
   do i = my_mpi_rank+1, argn, n_mpi_threads
      call get_command_argument(i,fn)
-     open(unit=8,file=fn,status='replace')
-     write(8,*) my_mpi_rank, trim(fn)
-     close(unit=8)
+     call feram_common(fn)
   end do
 
 call MPI_FINALIZE(i_error)
