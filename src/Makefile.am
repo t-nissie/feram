@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-06-15 19:42:53 takeshi>
+# Time-stamp: <2011-06-15 21:03:42 takeshin>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -104,7 +104,7 @@ cholesky_d.f: cholesky_z.f
 # 	gnuplot $<
 
 feram_mpi$(EXEEXT): feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
-	mpif90 $(AM_FFLAGS) $(FFLAGS) -c feram_mpi.F
+	mpif90 $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
 	mpif90 $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(feram_LDADD) $(LIBS)
 
 feram.o: param_module.o coord_module.o
