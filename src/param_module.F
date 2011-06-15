@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2011-04-28 11:13:51 t-nissie>
+! Time-stamp: <2011-06-15 19:01:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -93,20 +93,20 @@ module Param_module
      real*8 pNa03 ![eV]
      real*8 temperature_eV
      !=== etc ============================================================
-     character(len=100) :: filename
+     character(len=FILE_NAME_LEN) :: filename
   end type Param_type
 
 contains
-  subroutine read_Param(p,fd)
+  subroutine read_Param(p)
     implicit none
     type(Param_type),intent(inout) :: p
-    integer,         intent(in)    :: fd
     character (len=300) str
     character (len=30)  name, dmy1, dmy2
     integer io, line_number, i
     real*8 mass_amu
 
-    call msg(6, __FILE__, __LINE__, 'BEGIN', ': read_Param().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': read_Param().')
+    open(UNIT_INPUT, FILE=p%filename, STATUS='OLD')
 
     ! Default parameters
     p%method = 'md'
@@ -158,12 +158,12 @@ contains
     ! Read parameters from the imput file
     line_number = 0
     do
-       read(fd, '(a)', IOSTAT=io) str
+       read(UNIT_INPUT, '(a)', IOSTAT=io) str
        if (io.ne.0) exit
        line_number = line_number + 1
        read(str,*,IOSTAT=io) name   ! extract name of a parameter
        if (io.ne.0 .or. name(1:1).eq.'#') then
-          call msg_ez(6,str)
+          call msg_ez(UNIT_LOG,str)
           cycle
        end if
 
@@ -276,18 +276,17 @@ contains
           write(6,'(a,a,i3,a,a)') trim(p%filename),':', line_number, ':', trim(str)
           stop ': Input error: No such parameter'
        end select
-       call msg_ez(6,str)
+       call msg_ez(UNIT_LOG,str)
     end do
+    close(UNIT_INPUT)
 
-    close(fd)
-
-    call msg(6, __FILE__, __LINE__, 'END', ':   read_Param().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ':   read_Param().')
   end subroutine read_Param
 
   subroutine make_Param(p)
     implicit none
     type(Param_type),intent(inout) :: p
-    call msg(6, __FILE__, __LINE__, 'BEGIN', ': make_Param().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': make_Param().')
 
     p%N = p%Lx * p%Ly * p%Lz
     p%dt_2 = p%dt / 2
@@ -300,17 +299,17 @@ contains
 
     if (p%bulk_or_film.eq.'bulk') then
        if (p%gap_id.ne.0) then
-          call msg(6, __FILE__, __LINE__, 'STOP: ', 'In the case of bulk calculation, gap_id must be 0.')
+          call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP: ', 'In the case of bulk calculation, gap_id must be 0.')
           stop
        end if
     else
        if (mod(p%Lz,2).ne.mod(p%gap_id,2)) then
-          call msg(6, __FILE__, __LINE__, 'STOP: ', &
+          call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP: ', &
                'In the case of film or epit calculation, mod(Lz,2)==mod(gap_id,2)')
           stop
        end if
     end if
-    call msg(6, __FILE__, __LINE__, 'END',   ':   make_Param().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   ':   make_Param().')
   end subroutine make_Param
 
   subroutine write_Param(p)
@@ -318,17 +317,17 @@ contains
     type(Param_type),intent(in) :: p
     character (len=100) :: fn
     character (len=300) :: str
-    call msg(6, __FILE__, __LINE__, 'BEGIN', ': write_Param(), Parameters for convenience.')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': write_Param(), Parameters for convenience.')
     write(str,'(a,i7)')     'N = Lx * Ly * Lz          =', p%N
-    call msg_ez(6,str)
+    call msg_ez(UNIT_LOG,str)
     write(str,'(a,f11.7)')  'delta_t / 2               =', p%dt_2
-    call msg_ez(6,str)
+    call msg_ez(UNIT_LOG,str)
     write(str,'(a,i7)')     'N of degree of freedom    =', p%n_freedom
-    call msg_ez(6,str)
+    call msg_ez(UNIT_LOG,str)
     write(str,'(a,f11.7)')  'unit_cell_volume          =', p%unit_cell_volume
-    call msg_ez(6,str)
+    call msg_ez(UNIT_LOG,str)
     write(str,'(a,f10.4)')  'kappa for Ewald sum = ', p%kappa
-    call msg_ez(6,str)
+    call msg_ez(UNIT_LOG,str)
 
     !=== BEGIN: write parameters for gnuplot ============================
     write(fn,'(a,a)') trim(p%filename),'.param'
@@ -352,9 +351,9 @@ contains
 &                                  'epsilon_inf =', p%epsilon_inf
 
     close(UNIT_SYSTEM)
-    call msg(6, __FILE__, __LINE__, 'FILE: ', fn)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', fn)
     !=== END: write parameters for gnuplot ==============================
 
-    call msg(6, __FILE__, __LINE__, 'END',   ':   write_Param().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   ':   write_Param().')
   end subroutine write_Param
 end module Param_module
