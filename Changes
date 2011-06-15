@@ -1,6 +1,10 @@
 = Changes for feram
 == 0.15.00
- * feram does not read from stdin anymore. Log goes foo.log, not stdout.
+ * feram_mpi.F, MPI job parallel. You can "make feram_mpi".
+
+ * feram does not read from stdin anymore.
+
+ * Log goes to foo.log, not to stdout anymore.
 
 == 0.14.06
  * New tag seed, two integers for Marsaglia-Tsang 64-bit uiniversal RNG (random number generator).
