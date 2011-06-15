@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-05-02 08:27:43 takeshi>
+# Time-stamp: <2011-06-15 19:42:53 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -22,6 +22,7 @@ feram_SRCS = average_module.F \
 	dipole-dipole.F \
 	elastic.F \
 	feram.F \
+	feram_common.F \
 	fft.F \
 	hysteresis_loop.F \
 	initialize_E_field.F \
@@ -101,6 +102,10 @@ cholesky_d.f: cholesky_z.f
 
 # decay-test.ps: decay-test.gp decay-test feram.out
 # 	gnuplot $<
+
+feram_mpi$(EXEEXT): feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
+	mpif90 $(AM_FFLAGS) $(FFLAGS) -c feram_mpi.F
+	mpif90 $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(feram_LDADD) $(LIBS)
 
 feram.o: param_module.o coord_module.o
 decay-functions.o param_module.o:             define.h
