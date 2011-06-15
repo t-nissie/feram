@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2011-04-27 14:15:02 t-nissie>
+! Time-stamp: <2011-06-15 19:16:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -25,18 +25,18 @@ subroutine molecular_dynamics(p,c)
   character (len=120) :: message
   character (len=120) :: fn
   !--- END of variable definitions -------------------
-  call msg(6, __FILE__, __LINE__, 'BEGIN', ': MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': MD')
 
   write(message,'(f5.1,a)') p%kelvin, ' [K] BEGIN ========================================================'
-  call msg(6, __FILE__, __LINE__, 'T = ', message)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
 
-  write(message,fmt_time_step) 0; call msg_ez(6,message)
+  write(message,fmt_time_step) 0; call msg_ez(UNIT_LOG,message)
   call initialize_E_field(p,c)
   call initialize_dipoR(p,c,e)
   e%total = e%dipo_kinetic/c%s_Nose**2 + sum_potential_energies(e)
-  call write_Energy(p,c,e,6)
+  call write_Energy(p,c,e,UNIT_LOG)
   !write(message,"('strain',6e13.5)") c%strain(:)
-  !call msg_ez(6,message)
+  !call msg_ez(UNIT_LOG,message)
 
 
   c%H0 = 0.0d0
@@ -48,7 +48,7 @@ subroutine molecular_dynamics(p,c)
 
   do i_step = 1, p%n_thermalize+p%n_thermal_conductivity+p%n_average
 #   if defined(DETAILED_MESSAGES)
-     write(message,fmt_time_step) i_step; call msg_ez(6,message)
+     write(message,fmt_time_step) i_step; call msg_ez(UNIT_LOG,message)
 #   endif
 
      if (p%method.eq.'md ') then
@@ -67,25 +67,25 @@ subroutine molecular_dynamics(p,c)
      end if
 
      !write(message,"('strain',6e13.5)") c%strain(:)
-     !call msg_ez(6,message)
+     !call msg_ez(UNIT_LOG,message)
 
      e%total = e%dipo_kinetic/c%s_Nose**2 + sum_potential_energies(e)
 #if defined(DETAILED_MESSAGES)
-     call write_Energy(p,c,e,6)
+     call write_Energy(p,c,e,UNIT_LOG)
 #endif
 
      if (i_step <= p%n_thermalize+p%n_thermal_conductivity) cycle
 
      !if (i_step.eq.p%n_thermalize+1) then
-     !   call msg(6, __FILE__, __LINE__, 'AVERAGING', ' is started from this time step.')
+     !   call msg(UNIT_LOG, __FILE__, __LINE__, 'AVERAGING', ' is started from this time step.')
      !end if
 
      call add_to_Average(p,c,e,avg)
   end do
 
   write(message,'(f5.1,a)') p%kelvin, ' [K] END =========================================================='
-  call msg(6, __FILE__, __LINE__, 'T = ', message)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
   call divide_and_write_Average(p,c,avg)
 
-  call msg(6, __FILE__, __LINE__, 'END', ': MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ': MD')
 end subroutine molecular_dynamics

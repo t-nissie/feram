@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2007-12-15 11:55:39 takeshi>
+! Time-stamp: <2011-06-15 18:30:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -17,7 +17,7 @@ subroutine elastic(p,c)
   integer, parameter :: ki(3,3) = reshape((/0,3,2, 3,0,1, 2,1,0/),(/3,3/))
   character (len=100) :: fn
   !--- END of variable definitions -------------------
-  call msg(6, __FILE__, __LINE__, 'BEGIN', ': make elastic constant matrix.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': make elastic constant matrix.')
 
   ! homogeneous -----------------------------------
   c%homogeneous(:,:) = 0.0d0
@@ -89,7 +89,7 @@ subroutine elastic(p,c)
   if (p%plot_dispersion) then
      write(fn,'(a,a)') trim(p%filename),'.inhomo-K.dat'
      call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%inhomo_K, fn)
-     call msg(6, __FILE__, __LINE__, 'FILE: ',fn)
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ',fn)
   end if
 
   ! inhomo_coup2_K -----------------------------
@@ -120,5 +120,5 @@ subroutine elastic(p,c)
   end do
   !write(6,'(6f10.5)') ((c%inhomo_coup2_K(1,1,1, alpha,i), i=1,6), alpha=1,3)
 
-  call msg(6, __FILE__, __LINE__, 'END',   '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '')
 end subroutine elastic

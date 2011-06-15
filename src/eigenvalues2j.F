@@ -1,5 +1,5 @@
 ! eigenvalues2j.F -*-f90-*-
-! Time-stamp: <2011-04-30 18:16:57 takeshi>
+! Time-stamp: <2011-06-15 18:31:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -40,7 +40,7 @@ program eigenvalues2j
   character(len=110) :: message
 
   write(message,'(a,a)') ': Version ', PACKAGE_VERSION
-  call msg(6, __FILE__, __LINE__, 'BEGIN', message)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', message)
 
   argn = command_argument_count()
 
@@ -58,7 +58,7 @@ program eigenvalues2j
         call get_command_argument(i,p%filename)
         open(fd, FILE=p%filename, STATUS='OLD')
      end if
-     call msg(6, __FILE__, __LINE__, 'FILENAME: ', trim(p%filename))
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME: ', trim(p%filename))
 
      call  read_Param(p,fd)
      call  make_Param(p)
@@ -115,15 +115,15 @@ program eigenvalues2j
   call write_kappa2_and_j_i('     j_7 =', b(7))
   call write_kappa2_and_j_i('P_kappa2 =', b(0))
   write(message,'(a,7f9.5,a)') 'j = ', b(1:7), '    [eV/Angstrom^2]'
-  call msg_ez(6, message)
+  call msg_ez(UNIT_LOG, message)
   write(message,'(a,f9.5,a)') 'a0          = ', p%a0, '    [Angstrom]'
-  call msg_ez(6, message)
+  call msg_ez(UNIT_LOG, message)
   write(message,'(a,f9.5)')   'Z_star      = ', p%Z_star
-  call msg_ez(6, message)
+  call msg_ez(UNIT_LOG, message)
   write(message,'(a,f9.5)')   'epsilon_inf = ', p%epsilon_inf
-  call msg_ez(6, message)
+  call msg_ez(UNIT_LOG, message)
 
-  call msg(6, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end program eigenvalues2j
 
 subroutine write_kappa2_and_j_i(str,c)
@@ -133,7 +133,7 @@ subroutine write_kappa2_and_j_i(str,c)
   character(len=30), parameter :: fmt_short = '(a,f16.10,a,f16.10,a)'
   character(len=80)            :: message
   write(message,fmt_short) str, c, ' [eV/Angstrom^2] =', c * BOHR_RADIUS**2 / HARTREE_IN_EV, ' [Hartree/Bohr^2]'
-  call msg_ez(6, message)
+  call msg_ez(UNIT_LOG, message)
 end subroutine write_kappa2_and_j_i
 
 !local variables:

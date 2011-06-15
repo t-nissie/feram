@@ -1,10 +1,11 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2011-05-26 13:01:13 t-nissie>
+! Time-stamp: <2011-06-15 19:04:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
+#include "define.h"
 subroutine leapfrog(p,c,e,i_step)
   use Param_module
   use Coord_module
@@ -19,7 +20,7 @@ subroutine leapfrog(p,c,e,i_step)
   integer Lz_3_4
   integer i
 #if defined(DETAILED_MESSAGES)
-  call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 #endif
 
   Lx_Ly_delta_e = p%Lx * p%Ly * p%delta_e
@@ -39,7 +40,7 @@ subroutine leapfrog(p,c,e,i_step)
 !POPTION COALESCING(2)
   c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt   * c%dipoP(:,:,:,:) * c%M_inv(:,:,:,:)
 #if defined(DETAILED_MESSAGES)
-  call msg(6, __FILE__, __LINE__, 'dipoR', ' is updated.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', ' is updated.')
 #endif
 
   call mirror_force_mirror(p,c,e)
@@ -49,6 +50,6 @@ subroutine leapfrog(p,c,e,i_step)
 !POPTION COALESCING(2)
   e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
 #if defined(DETAILED_MESSAGES)
-  call msg(6, __FILE__, __LINE__, 'END', ': dipoP is updated at this end.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ': dipoP is updated at this end.')
 #endif
 end subroutine leapfrog

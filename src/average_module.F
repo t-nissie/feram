@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2011-03-08 16:17:24 takeshi>
+! Time-stamp: <2011-06-15 18:31:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -71,7 +71,7 @@ contains
 
 #if defined(DETAILED_MESSAGES)
     write(message,"('u=',3e13.5)") u_tmp(:)
-    call msg_ez(6,message)
+    call msg_ez(UNIT_LOG,message)
 #endif
   end subroutine add_to_Average
 

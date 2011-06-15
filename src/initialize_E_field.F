@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2010-10-12 20:17:06 takeshi>
+! Time-stamp: <2011-06-15 18:30:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -13,13 +13,13 @@ subroutine initialize_E_field(p,c)
   character(110) message
   real*8 normal_dist
   external normal_dist
-  call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
   c%E_field(:,:,:,:) = 0.0d0
 
   open(unit=UNIT_SYSTEM, file='local.field', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
-     call msg(6, __FILE__, __LINE__, 'FILE: ', 'local.field was found.')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', 'local.field was found.')
      do iz = 0, p%Lz-1
         do iy = 0, p%Ly-1
            do ix = 0, p%Lx-1
@@ -30,7 +30,7 @@ subroutine initialize_E_field(p,c)
      end do
      close(UNIT_SYSTEM)
   else
-     call msg(6, __FILE__, __LINE__, 'FILE: ', 'local.field was NOT found.')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', 'local.field was NOT found.')
      open(unit=UNIT_SYSTEM, file='ionic.configuration', status='old', action='read', iostat=ios)
      if (ios.eq.0) then
         stop ': Not implemented: Ewald sum for calculating the local field is not implemented yet.'
@@ -48,7 +48,7 @@ subroutine initialize_E_field(p,c)
        p%external_E_field(3).ne.0.0d0 ) then
      write(message,'(a,3f9.5,a)') 'external_ E_field(:)=', p%external_E_field(:), &
           ' [V/Angstrom] is added to E_field'
-     call msg(6, __FILE__, __LINE__, 'NOTICE: ', message)
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'NOTICE: ', message)
      do iz = 0, p%Lz-1
         do iy = 0, p%Ly-1
            do ix = 0, p%Lx-1
@@ -63,5 +63,5 @@ subroutine initialize_E_field(p,c)
      call mirror(p, c%E_field)
   end if
 
-  call msg(6, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine initialize_E_field

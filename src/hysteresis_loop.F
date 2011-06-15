@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2011-06-05 16:39:14 t-nissie>
+! Time-stamp: <2011-06-15 19:16:44 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -25,25 +25,25 @@ subroutine hysteresis_loop(p,c)
   character (len=120) :: fn_hl, fn_system
   !character (len=126) :: bzip2_command
   !--- END of variable definitions -------------------
-  call msg(6, __FILE__, __LINE__, 'BEGIN', ': MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': MD')
 
   allocate(E_field_initial(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
 !
 
   target_kinetic_energy = p%kelvin * 1.5d0 * p%N / KELVIN_EV
   write(message,'(f5.1,a)') p%kelvin, ' [K] BEGIN ================================================'
-  call msg(6, __FILE__, __LINE__, 'T = ', message)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
 
 
   call initialize_E_field(p,c)
   E_field_initial = c%E_field
   call initialize_dipoR(p,c,e)
   write(message,fmt_time_step) 0, p%external_E_field
-  call msg_ez(6,message)
+  call msg_ez(UNIT_LOG,message)
   e%total = e%dipo_kinetic + sum_potential_energies(e)
-  call write_Energy(p,c,e,6)
+  call write_Energy(p,c,e,UNIT_LOG)
 !   write(message,"('strain',6e13.5)") c%strain(:)
-!   call msg_ez(6,message)
+!   call msg_ez(UNIT_LOG,message)
 
   write(fn_hl,'(a,a)') trim(p%filename), '.hl'
   open(unit=UNIT_HL,file=fn_hl, status='REPLACE')
@@ -63,9 +63,9 @@ subroutine hysteresis_loop(p,c)
      end if
 
 #   if defined(DETAILED_MESSAGES)
-     call msg_ez(6,'')
+     call msg_ez(UNIT_LOG,'')
      write(message,fmt_time_step) i_step, p%external_E_field+E_field_add
-     call msg_ez(6,message)
+     call msg_ez(UNIT_LOG,message)
 #   endif
 
 !POPTION COALESCING(2)
@@ -95,7 +95,7 @@ subroutine hysteresis_loop(p,c)
 
      e%total = e%dipo_kinetic + sum_potential_energies(e)
 #   if defined(DETAILED_MESSAGES)
-     call write_Energy(p,c,e,6)
+     call write_Energy(p,c,e,UNIT_LOG)
 #   endif
 
 
@@ -123,8 +123,8 @@ subroutine hysteresis_loop(p,c)
   close(UNIT_HL)
 
   write(message,'(f5.1,a)') p%kelvin, ' [K] END =================================================='
-  call msg(6, __FILE__, __LINE__, 'T = ', message)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
 
   deallocate(E_field_initial)
-  call msg(6, __FILE__, __LINE__, 'END', ': MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ': MD')
 end subroutine hysteresis_loop

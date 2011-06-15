@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2011-04-25 10:27:26 t-nissie>
+! Time-stamp: <2011-06-15 18:30:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 !UINLINE decay-functions.f
@@ -23,7 +23,7 @@ subroutine dipole_dipole_long_range(p,long_range)
   real*8   B_decay,C_decay
   external B_decay,C_decay
   !--- END of variable definitions -------------------
-  call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
   four_pi_over_unit_cell_volume  = 4 * M_PI / p%a0**3
   two_pi_over_a                  = 2 * M_PI / p%a0
@@ -135,5 +135,5 @@ subroutine dipole_dipole_long_range(p,long_range)
 
   long_range(:,:,:,:,:) = long_range(:,:,:,:,:) &
        &               * (HARTREE_BOHR * p%Z_star**2 / p%epsilon_inf)
-  call msg(6, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine dipole_dipole_long_range

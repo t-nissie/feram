@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-04-27 18:00:06 t-nissie>
+! Time-stamp: <2011-06-15 18:30:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -176,7 +176,7 @@ subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
      ndim1 = Nx+2
      ipara = $NUMTHRD()
      write(ipara_s,'(i8)') ipara
-     call msg(6, __FILE__, __LINE__, 'ipara = ', ipara_s)
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'ipara = ', ipara_s)
      nwk1 = (Nx/2+NWKW)*(Ny+NWKW)*(Nz+NWKW) + 100
      nwk2 = (Nx/2+NWKW)*MAX(Ny+NWKW,Nz+NWKW)*ipara + 100
      iopt(2)=1

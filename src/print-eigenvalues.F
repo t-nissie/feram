@@ -1,5 +1,5 @@
 ! print-eigenvalues.F -*-f90-*-
-! Time-stamp: <2007-05-22 10:15:40 t-nissie>
+! Time-stamp: <2011-06-15 18:30:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -13,7 +13,7 @@ subroutine print_eigenvalues(Lx, Ly, Lz, phi, filename)
   integer ix, iy, iz
   real*8  len
   !--- END of variable definitions -------------------
-  call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   open(unit=UNIT_SYSTEM, file=filename)
   if (Lx.eq.Ly .and. Ly.eq.Lz) then
      ! Gamma  -Delta-  X  -Z-  M  -Sigma-  Gamma  -Lambda-  R  -S-  X  -S-  R  -T-  M
@@ -70,8 +70,8 @@ subroutine print_eigenvalues(Lx, Ly, Lz, phi, filename)
      call print_eigenvalues_sub(Lx, Ly, Lz, phi, ix, iy, iz, UNIT_SYSTEM, len)
   end if
   close(UNIT_SYSTEM)
-  call msg(6, __FILE__, __LINE__, 'FILE: ', filename)
-  call msg(6, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', filename)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine print_eigenvalues
 
 subroutine print_eigenvalues_sub(Lx, Ly, Lz, phi, ix, iy, iz, unit, len)

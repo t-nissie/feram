@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2011-02-02 16:02:04 takeshi>
+! Time-stamp: <2011-06-15 18:30:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -16,7 +16,7 @@ subroutine read_defects_u(p,c)
   integer ix, iy, iz, ios, line_number
   real*8  u(3)
   character (len=200) :: fn
-  call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
   c%m_inv(:,:,:,:) = 1.0d0 / p%mass_dipo
   c%sum_p(:,:,:) = .true.
@@ -37,15 +37,15 @@ subroutine read_defects_u(p,c)
            c%m_inv(ix, iy, iz, :) = 0.0d0   ! 1/infinity
            c%sum_p(ix, iy, iz) = .false.
         else
-           call msg(6, trim(fn), line_number, 'There is something wrong in this line: ', trim(str))
-           call msg(6, __FILE__, __LINE__, 'STOP: ', 'there is something wrong in the .defects file.')
+           call msg(UNIT_LOG, trim(fn), line_number, 'There is something wrong in this line: ', trim(str))
+           call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP: ', 'there is something wrong in the .defects file.')
            stop 1
         end if
      end do
-     call msg(6, __FILE__, __LINE__, trim(fn), ' is found and read successfully.')
+     call msg(UNIT_LOG, __FILE__, __LINE__, trim(fn), ' is found and read successfully.')
      close(UNIT_DEFECTS_U)
   else
-     call msg(6, __FILE__, __LINE__, 'FILE: ', ' .defects file was NOT found. No defects was created.')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', ' .defects file was NOT found. No defects was created.')
   end if
 
   if (p%gap_id>0) then
@@ -73,5 +73,5 @@ subroutine read_defects_u(p,c)
      end do
   end do
 
-  call msg(6, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine read_defects_u

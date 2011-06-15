@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2011-04-28 10:12:48 t-nissie>
+! Time-stamp: <2011-06-15 18:30:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -18,12 +18,12 @@ subroutine initialize_dipoR(p,c,e)
   real*8 dmy
   character (len=120) :: message
   character (len=120) :: restart_fn
-  call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   write(restart_fn,'(a,a)') trim(p%filename), '.restart'
   open(unit=UNIT_SYSTEM, file=restart_fn, status='old', action='read', iostat=ios)
   if (ios.eq.0) then
      write(message,'(a,a)') trim(restart_fn), ' was found.'
-     call msg(6, __FILE__, __LINE__, 'FILE: ', message)
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', message)
      do iz = 0, p%Lz-1
         do iy = 0, p%Ly-1
            do ix = 0, p%Lx-1
@@ -36,7 +36,7 @@ subroutine initialize_dipoR(p,c,e)
      close(UNIT_SYSTEM)
   else
      write(message,'(a,a)') trim(restart_fn), ' was NOT found.'
-     call msg(6, __FILE__, __LINE__, 'FILE: ', message)
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', message)
      dmy = uni64(p%seed(1), p%seed(2))
      do alpha = 1, 3
         do iz = 0, p%Lz-1
@@ -63,5 +63,5 @@ subroutine initialize_dipoR(p,c,e)
   e%dipo_kinetic    = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
   e%H_Nose_Poincare = 0.0d0
 
-  call msg(6, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine initialize_dipoR

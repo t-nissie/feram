@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2011-02-21 14:46:45 takeshi>
+! Time-stamp: <2011-06-15 18:30:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -56,7 +56,7 @@ contains
     implicit none
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
-    call msg(6, __FILE__, __LINE__, 'BEGIN', ': alloc_Coord().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': alloc_Coord().')
     !--- m_inv ------------------------------
     if (allocated(c%m_inv)) deallocate(c%m_inv)
     allocate(c%m_inv(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
@@ -92,7 +92,7 @@ contains
     if (allocated(c%e_layer)) deallocate(c%e_layer)
     allocate(c%e_layer(0:p%Lz-1))
     !--- end --------------------------------
-    call msg(6, __FILE__, __LINE__, 'END', ':   alloc_Coord().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ':   alloc_Coord().')
   end subroutine alloc_Coord
 
   subroutine write_system(p,c,fn)
@@ -103,7 +103,7 @@ contains
     character(len=*) :: fn
     integer ix,iy,iz,i
 
-    call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
     open(unit=UNIT_SYSTEM, file=fn, status='replace')
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
@@ -116,8 +116,8 @@ contains
        end do
     end do
     close(UNIT_SYSTEM)
-    call msg(6, __FILE__, __LINE__, 'FILE: ', fn)
-    call msg(6, __FILE__, __LINE__, 'END', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', fn)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   end subroutine write_system
 
   subroutine write_fft(p,c,fn)
@@ -128,7 +128,7 @@ contains
     character(len=*) :: fn
     integer ix,iy,yy
 
-    call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
     open(unit=UNIT_SYSTEM,file=fn)
     do iy= -p%Ly/2, p%Ly/2
        if (iy<0) then
@@ -142,8 +142,8 @@ contains
        write(UNIT_SYSTEM,*) ''
     end do
     close(UNIT_SYSTEM)
-    call msg(6, __FILE__, __LINE__, 'FILE: ', fn)
-    call msg(6, __FILE__, __LINE__, 'END', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', fn)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   end subroutine write_fft
 
 end module Coord_module

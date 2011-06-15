@@ -1,10 +1,11 @@
 ! mirror.F -*-f90-*-
-! Time-stamp: <2011-03-08 16:24:47 takeshi>
+! Time-stamp: <2011-06-15 19:04:32 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
+#include "define.h"
 subroutine mirror(p, dipo)
   use Param_module
   implicit none
@@ -13,7 +14,7 @@ subroutine mirror(p, dipo)
   real*8 :: dipo(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3)
   integer iz
 #if defined(DETAILED_MESSAGES)
-  call msg(6, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 #endif
   if (p%gap_id==0) then ! There is no dead layers.
      do iz = 0, p%Lz/2-1
@@ -29,6 +30,6 @@ subroutine mirror(p, dipo)
      end do
   end if
 #if defined(DETAILED_MESSAGES)
-  call msg(6, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 #endif
 end subroutine mirror
