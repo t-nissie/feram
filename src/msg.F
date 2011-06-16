@@ -1,5 +1,5 @@
 ! msg.F -*-f90-*-
-! Time-stamp: <2007-05-22 10:15:59 t-nissie>
+! Time-stamp: <2011-06-16 11:27:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine msg(fd, filename, line, begin_or_end, message)
@@ -24,11 +24,11 @@ subroutine msg(fd, filename, line, begin_or_end, message)
         level(fd) = level(fd) - 1
      end if
      if (level(fd).gt.0) then
-        write(fmt,'(a,i3.3,a)') '(', indent*level(fd), 'x,2a,i3,3a)'
+        write(fmt,'(a,i3.3,a)') '(', indent*level(fd), 'x,2a,i3,4a)'
      else
-        fmt =                                           '(2a,i3,3a)'
+        fmt =                                           '(2a,i3,4a)'
      end if
-     write(fd,fmt) filename, ':', line, ': ', begin_or_end, trim(message)
+     write(fd,fmt) filename, ':', line, ': ', begin_or_end, ': ', trim(message)
      if (begin_or_end.eq.'BEGIN') then
         level(fd) = level(fd) + 1
      end if
