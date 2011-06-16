@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2011-06-16 15:31:21 takeshi>
+! Time-stamp: <2011-06-16 17:48:22 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -18,6 +18,8 @@ subroutine feram_common(fn)
   write(fn_log,'(a,a)') trim(fn), '.log'
   open(unit=UNIT_LOG,file=fn_log,status='replace')
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
+  call date_and_time2message(message)
+  call msg_ez(UNIT_LOG, message)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'INPUT_FILENAME', fn)
 
   p%filename = fn
@@ -39,6 +41,8 @@ subroutine feram_common(fn)
      return
   end if
 
+  call date_and_time2message(message)
+  call msg_ez(UNIT_LOG, message)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   close(unit=UNIT_LOG)
 end subroutine feram_common
