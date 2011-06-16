@@ -1,28 +1,14 @@
 ! eigenvalues2j.F -*-f90-*-
-! Time-stamp: <2011-06-15 18:31:28 takeshi>
+! Time-stamp: <2011-06-16 13:25:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
-
 #include "define.h"
 
-#if defined(SR11000)
-   function command_argument_count()
-     implicit none
-     integer command_argument_count
-     open(9, file='FILES')!, status='old', action='read')
-     read(9,*) command_argument_count
-   end function command_argument_count
-   subroutine get_command_argument(i,a)
-     implicit none
-     integer i
-     character (len=*) a
-     read(9,*) a
-   end subroutine get_command_argument
-#elif defined(__PGI)
+#if defined(__PGI) || defined(SR11000)
 #  define command_argument_count iargc
 #  define get_command_argument getarg
 #endif
@@ -31,38 +17,24 @@ program eigenvalues2j
   use Param_module
   implicit none
   type(Param_type) :: p
-  integer i, fd, argn, command_argument_count, INFO, IPIV(8)
+  integer command_argument_count, INFO, IPIV(8)
   ! solve A*x=b
   real*8            :: A(8,8)
   real*8            :: Az(6,6)
   real*8            :: b(0:7) !kappa_2, j_1, j_2, j_3, j_4, j_5, j_6, j_7, j_8
   logical           :: j5j7zero
-  character(len=110) :: message
-
-  write(message,'(a,a)') ': Version ', PACKAGE_VERSION
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', message)
-
-  argn = command_argument_count()
-
-  if (argn.eq.0) then
-     argn = 1
-     fd = 5
-  else
-     fd = 7
-  end if
-
-  do i=1,argn
-     if (fd.eq.5) then
-        p%filename = 'stdin'
-     else
-        call get_command_argument(i,p%filename)
-        open(fd, FILE=p%filename, STATUS='OLD')
-     end if
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME: ', trim(p%filename))
-
-     call  read_Param(p,fd)
-     call  make_Param(p)
-  end do
+  character(len=110)           :: message
+  character(len=FILE_NAME_LEN) :: fn_log
+  if (command_argument_count().ne.1) stop 'eigenvalues2j.F:28: Only one input file is required.'
+  call get_command_argument(1,p%filename)
+  write(fn_log,'(a,a)') trim(p%filename), '.log'
+  open(unit=UNIT_LOG,file=fn_log,status='replace')
+  write(6,'(a,a)') trim(fn_log), ':1: In this file, there will be the calculated results.'
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'eigenvalues2j', &
+       & 'calculates coefficients j of short range interaction from eigenvalues if IFC matrices.')
+  call  read_Param(p)
+  call  make_Param(p)
 
   A = reshape((/ 1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  0.0d0, &
                  2.0d0,  2.0d0,  0.0d0, -2.0d0,  0.0d0, -2.0d0,  1.0d0,  0.0d0, &
@@ -80,7 +52,7 @@ program eigenvalues2j
                  2.0d0,  2.0d0, -2.0d0,  2.0d0, -2.0d0,  2.0d0, &
                  4.0d0, -4.0d0, -4.0d0,  4.0d0,  4.0d0, -4.0d0/),(/6,6/))
 
-  if (p%DDB_g.eq.0) then
+  if (p%DDB_g.eq.0.0d0) then
      j5j7zero = .true.
   else
      j5j7zero = .false.
@@ -123,7 +95,8 @@ program eigenvalues2j
   write(message,'(a,f9.5)')   'epsilon_inf = ', p%epsilon_inf
   call msg_ez(UNIT_LOG, message)
 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(fn_log))
+  close(unit=UNIT_LOG)
 end program eigenvalues2j
 
 subroutine write_kappa2_and_j_i(str,c)
@@ -137,5 +110,5 @@ subroutine write_kappa2_and_j_i(str,c)
 end subroutine write_kappa2_and_j_i
 
 !local variables:
-!  compile-command: "make -k eigenvalues2j && ./eigenvalues2j eigenvalues2j.in"
+!  compile-command: "make -k eigenvalues2j && ./eigenvalues2j eigenvalues2j.in && cat eigenvalues2j.in.log"
 !End:
