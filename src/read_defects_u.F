@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-16 15:34:48 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -38,14 +38,14 @@ subroutine read_defects_u(p,c)
            c%sum_p(ix, iy, iz) = .false.
         else
            call msg(UNIT_LOG, trim(fn), line_number, 'There is something wrong in this line: ', trim(str))
-           call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP: ', 'there is something wrong in the .defects file.')
+           call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'there is something wrong in the .defects file.')
            stop 1
         end if
      end do
      call msg(UNIT_LOG, __FILE__, __LINE__, trim(fn), ' is found and read successfully.')
      close(UNIT_DEFECTS_U)
   else
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', ' .defects file was NOT found. No defects was created.')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE_NOT_FOUND', '.defects file was NOT found. No defects was created.')
   end if
 
   if (p%gap_id>0) then

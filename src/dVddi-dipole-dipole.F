@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-16 14:58:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_dipole_dipole(p,c,e)
@@ -15,7 +15,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
   complex*16, allocatable :: dipoT(:,:,:,:)
   integer alpha, ix, iy, iz
   !--- END of variable definitions -------------------
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': calc dVddi, calc e%dipo_dipo')
+  !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'calc dVddi, calc e%dipo_dipo')
   allocate(dipoT(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3)) !"/2" See fft.F!
   !$omp parallel do private(iz,iy,ix,alpha)
   do iz=0, p%Lz-1

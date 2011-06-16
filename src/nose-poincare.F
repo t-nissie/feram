@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-16 15:29:26 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
@@ -31,7 +31,7 @@ subroutine nose_poincare(p,c,e)
   c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) &
        & + p%dt_2 * (1/c%s_Nose+1/s_Nose_old) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
                                                                             !(35d)
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', ' is updated.')
+  !call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'is updated.')
 
   call mirror_force_mirror(p,c,e)
 
@@ -48,5 +48,5 @@ subroutine nose_poincare(p,c,e)
   e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
   call Nose_Poincare_Hamiltonian(p,c,e)
 
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ': dipoP is updated at this end.')
+  !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
 end subroutine nose_poincare

@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-16 15:29:25 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
@@ -19,7 +19,7 @@ subroutine optimize_homo_strain(p,c,e)
   integer i
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
-  !     & ': Optimize homogeneous strain. Calculate related energies and accelerations.')
+  !     & 'Optimize homogeneous strain. Calculate related energies and accelerations.')
 
   !--- prepare homogeneous_coupling_2_uu ------------------------
   do i = 1, 6

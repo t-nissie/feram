@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-16 14:59:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -16,7 +16,7 @@ subroutine dipole_dipole(p,c)
   !--- local -----------------------------------------
   character (len=100) :: fn
   !--- END of variable definitions -------------------
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': construction of dipole-dipole interaction.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'construction of dipole-dipole interaction.')
 
   allocate( long_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!
   allocate(short_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!
@@ -36,5 +36,5 @@ subroutine dipole_dipole(p,c)
 
   deallocate( long_range)
   deallocate(short_range)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ': construction of dipole-dipole interaction.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'construction of dipole-dipole interaction.')
 end subroutine dipole_dipole

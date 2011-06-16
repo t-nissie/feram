@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2011-06-15 19:16:44 takeshi>
+! Time-stamp: <2011-06-16 15:00:40 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -25,7 +25,7 @@ subroutine hysteresis_loop(p,c)
   character (len=120) :: fn_hl, fn_system
   !character (len=126) :: bzip2_command
   !--- END of variable definitions -------------------
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'MD')
 
   allocate(E_field_initial(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
 !
@@ -126,5 +126,5 @@ subroutine hysteresis_loop(p,c)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
 
   deallocate(E_field_initial)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ': MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'MD')
 end subroutine hysteresis_loop

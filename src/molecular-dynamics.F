@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2011-06-15 19:16:58 takeshi>
+! Time-stamp: <2011-06-16 15:40:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -25,10 +25,10 @@ subroutine molecular_dynamics(p,c)
   character (len=120) :: message
   character (len=120) :: fn
   !--- END of variable definitions -------------------
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'MD')
 
-  write(message,'(f5.1,a)') p%kelvin, ' [K] BEGIN ========================================================'
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
+  write(message,'(a,f5.1,a)') 'T = ', p%kelvin, ' [K] BEGIN ========================================================'
+  call msg_ez(UNIT_LOG, message)
 
   write(message,fmt_time_step) 0; call msg_ez(UNIT_LOG,message)
   call initialize_E_field(p,c)
@@ -77,15 +77,15 @@ subroutine molecular_dynamics(p,c)
      if (i_step <= p%n_thermalize+p%n_thermal_conductivity) cycle
 
      !if (i_step.eq.p%n_thermalize+1) then
-     !   call msg(UNIT_LOG, __FILE__, __LINE__, 'AVERAGING', ' is started from this time step.')
+     !   call msg(UNIT_LOG, __FILE__, __LINE__, 'AVERAGING', 'is started from this time step.')
      !end if
 
      call add_to_Average(p,c,e,avg)
   end do
 
-  write(message,'(f5.1,a)') p%kelvin, ' [K] END =========================================================='
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
+  write(message,'(a,f5.1,a)') 'T = ', p%kelvin, ' [K] END =========================================================='
+  call msg_ez(UNIT_LOG, message)
   call divide_and_write_Average(p,c,avg)
 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ': MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'MD')
 end subroutine molecular_dynamics

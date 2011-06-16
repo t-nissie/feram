@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2011-06-16 13:35:46 takeshi>
+! Time-stamp: <2011-06-16 15:27:19 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -300,12 +300,12 @@ contains
 
     if (p%bulk_or_film.eq.'bulk') then
        if (p%gap_id.ne.0) then
-          call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP: ', 'In the case of bulk calculation, gap_id must be 0.')
+          call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'In the case of bulk calculation, gap_id must be 0.')
           stop
        end if
     else
        if (mod(p%Lz,2).ne.mod(p%gap_id,2)) then
-          call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP: ', &
+          call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', &
                'In the case of film or epit calculation, mod(Lz,2)==mod(gap_id,2)')
           stop
        end if
@@ -352,9 +352,9 @@ contains
 &                                  'epsilon_inf =', p%epsilon_inf
 
     close(UNIT_SYSTEM)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', fn)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME', fn)
     !=== END: write parameters for gnuplot ==============================
 
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   ':   write_Param().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '  write_Param().')
   end subroutine write_Param
 end module Param_module

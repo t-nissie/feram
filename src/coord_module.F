@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-16 14:57:45 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -56,7 +56,7 @@ contains
     implicit none
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': alloc_Coord().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
     !--- m_inv ------------------------------
     if (allocated(c%m_inv)) deallocate(c%m_inv)
     allocate(c%m_inv(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
@@ -92,7 +92,7 @@ contains
     if (allocated(c%e_layer)) deallocate(c%e_layer)
     allocate(c%e_layer(0:p%Lz-1))
     !--- end --------------------------------
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ':   alloc_Coord().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  alloc_Coord().')
   end subroutine alloc_Coord
 
   subroutine write_system(p,c,fn)
@@ -116,7 +116,7 @@ contains
        end do
     end do
     close(UNIT_SYSTEM)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', fn)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn)
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   end subroutine write_system
 
@@ -142,7 +142,7 @@ contains
        write(UNIT_SYSTEM,*) ''
     end do
     close(UNIT_SYSTEM)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', fn)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME', fn)
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   end subroutine write_fft
 

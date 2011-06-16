@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-16 15:29:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -27,7 +27,7 @@ subroutine optimize_inho_strain(p,c,e)
   integer i, alpha, ix,iy,iz
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
-  !     & ': Optimize inhomogeneous strain. Calculate related energies and accelerations.')
+  !     & 'Optimize inhomogeneous strain. Calculate related energies and accelerations.')
   allocate(acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" See fft.F!
   allocate(inhoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
   allocate(inhoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6)) !"/2" See fft.F!

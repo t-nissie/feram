@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-16 15:01:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -23,7 +23,7 @@ subroutine initialize_dipoR(p,c,e)
   open(unit=UNIT_SYSTEM, file=restart_fn, status='old', action='read', iostat=ios)
   if (ios.eq.0) then
      write(message,'(a,a)') trim(restart_fn), ' was found.'
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', message)
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', message)
      do iz = 0, p%Lz-1
         do iy = 0, p%Ly-1
            do ix = 0, p%Lx-1
@@ -36,7 +36,7 @@ subroutine initialize_dipoR(p,c,e)
      close(UNIT_SYSTEM)
   else
      write(message,'(a,a)') trim(restart_fn), ' was NOT found.'
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', message)
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', message)
      dmy = uni64(p%seed(1), p%seed(2))
      do alpha = 1, 3
         do iz = 0, p%Lz-1

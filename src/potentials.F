@@ -1,5 +1,5 @@
 ! potentials.F -*-f90-*-
-! Time-stamp: <2011-06-15 19:04:39 takeshi>
+! Time-stamp: <2011-06-16 15:27:36 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -9,8 +9,8 @@ subroutine potentials(p,c)
   implicit none
   type(Param_type), intent(in)    :: p
   type(Coord_type), intent(inout) :: c 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': construction of potentials.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'construction of potentials.')
   call dipole_dipole(p,c)
   call elastic(p,c)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   ': construction of potentials.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   'construction of potentials.')
 end subroutine potentials

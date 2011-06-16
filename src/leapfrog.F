@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2011-06-15 19:04:12 takeshi>
+! Time-stamp: <2011-06-16 15:02:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -40,7 +40,7 @@ subroutine leapfrog(p,c,e,i_step)
 !POPTION COALESCING(2)
   c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt   * c%dipoP(:,:,:,:) * c%M_inv(:,:,:,:)
 #if defined(DETAILED_MESSAGES)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', ' is updated.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'updated.')
 #endif
 
   call mirror_force_mirror(p,c,e)
@@ -50,6 +50,6 @@ subroutine leapfrog(p,c,e,i_step)
 !POPTION COALESCING(2)
   e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
 #if defined(DETAILED_MESSAGES)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ': dipoP is updated at this end.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
 #endif
 end subroutine leapfrog

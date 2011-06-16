@@ -1,5 +1,5 @@
 ! dVddi-unharmonic.F   -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-16 15:29:27 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_unharmonic(p,c,e)
@@ -19,7 +19,7 @@ subroutine dVddi_unharmonic(p,c,e)
   real*8          two_k2
   real*8         four_k2_two_k3
   !--- END of variable definitions -------------------
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': Calculate unharmonic part of force and energy.')
+  !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'Calculate unharmonic part of force and energy.')
 
   four_alpha_two_gamma = 4*p%P_alpha + 2*p%P_gamma
              two_gamma =               2*p%P_gamma

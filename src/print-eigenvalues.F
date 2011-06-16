@@ -1,5 +1,5 @@
 ! print-eigenvalues.F -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-16 15:27:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -70,7 +70,7 @@ subroutine print_eigenvalues(Lx, Ly, Lz, phi, filename)
      call print_eigenvalues_sub(Lx, Ly, Lz, phi, ix, iy, iz, UNIT_SYSTEM, len)
   end if
   close(UNIT_SYSTEM)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE: ', filename)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME', filename)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine print_eigenvalues
 
