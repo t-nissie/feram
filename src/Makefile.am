@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-06-15 21:03:42 takeshin>
+# Time-stamp: <2011-06-16 10:42:41 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -131,6 +131,7 @@ dipole-dipole-long-range.o:     param_module.o         define.h fft.o
 dipole-dipole-short-range.o:    param_module.o                  fft.o
 dVddi-dipole-dipole.o: energy_module.o param_module.o coord_module.o          fft.o
 print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
+eigenvalues2j.o: param_module.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:
