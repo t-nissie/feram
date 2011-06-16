@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2011-06-15 19:01:03 takeshi>
+! Time-stamp: <2011-06-16 13:35:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -105,8 +105,9 @@ contains
     integer io, line_number, i
     real*8 mass_amu
 
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': read_Param().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'read_Param().')
     open(UNIT_INPUT, FILE=p%filename, STATUS='OLD')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'INPUT_FILENAME', trim(p%filename))
 
     ! Default parameters
     p%method = 'md'
@@ -280,13 +281,13 @@ contains
     end do
     close(UNIT_INPUT)
 
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ':   read_Param().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  read_Param().')
   end subroutine read_Param
 
   subroutine make_Param(p)
     implicit none
     type(Param_type),intent(inout) :: p
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': make_Param().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'make_Param().')
 
     p%N = p%Lx * p%Ly * p%Lz
     p%dt_2 = p%dt / 2
@@ -309,7 +310,7 @@ contains
           stop
        end if
     end if
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   ':   make_Param().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '  make_Param().')
   end subroutine make_Param
 
   subroutine write_Param(p)
@@ -317,7 +318,7 @@ contains
     type(Param_type),intent(in) :: p
     character (len=100) :: fn
     character (len=300) :: str
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', ': write_Param(), Parameters for convenience.')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_Param(), Parameters for convenience.')
     write(str,'(a,i7)')     'N = Lx * Ly * Lz          =', p%N
     call msg_ez(UNIT_LOG,str)
     write(str,'(a,f11.7)')  'delta_t / 2               =', p%dt_2
