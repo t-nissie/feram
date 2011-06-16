@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-06-16 10:42:41 takeshi>
+# Time-stamp: <2011-06-16 17:41:39 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -15,6 +15,7 @@ feram_SRCS = average_module.F \
 	dVddi-homo-coupling.F \
 	dVddi-unharmonic.F \
 	dVddi_E_field.F \
+	date_and_time2message.F \
 	decay-functions.f \
 	dipoFFT.F \
 	dipole-dipole-long-range.F \
@@ -103,11 +104,11 @@ cholesky_d.f: cholesky_z.f
 # decay-test.ps: decay-test.gp decay-test feram.out
 # 	gnuplot $<
 
-feram_mpi$(EXEEXT): feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
+feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	mpif90 $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
 	mpif90 $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(feram_LDADD) $(LIBS)
 
-feram.o: param_module.o coord_module.o
+feram_common.o: param_module.o coord_module.o date_and_time2message.o
 decay-functions.o param_module.o:             define.h
 feram.o potentials.o dipole-dipole.o:\
                                 param_module.o coord_module.o define.h
