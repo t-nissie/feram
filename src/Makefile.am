@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-06-16 17:41:39 takeshi>
+# Time-stamp: <2011-06-18 21:06:58 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -104,6 +104,9 @@ cholesky_d.f: cholesky_z.f
 # decay-test.ps: decay-test.gp decay-test feram.out
 # 	gnuplot $<
 
+elastic.o: $(srcdir)/elastic.F
+	$(PPF77COMPILE:-Os=-O3) -c -o $@ $<
+
 feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	mpif90 $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
 	mpif90 $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(feram_LDADD) $(LIBS)
@@ -118,16 +121,15 @@ energy_module.o: param_module.o coord_module.o
 optimize-homo-strain.o:energy_module.o param_module.o coord_module.o cholesky_d.o
 optimize-inho-strain.o:energy_module.o param_module.o coord_module.o cholesky_z.o
 molecular-dynamics.o:  energy_module.o param_module.o coord_module.o average_module.o
-mirror.o dipoFFT.o elastic.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
+mirror.o dipoFFT.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
                                 param_module.o coord_module.o
-initialize_E_field.o read_defects_u.o:\
+initialize_E_field.o read_defects_u.o elastic.o:\
                                 param_module.o coord_module.o define.h
 initialize-dipoR.o average_module.o:\
                                 param_module.o coord_module.o energy_module.o marsaglia_tsang_uni64_module.o define.h
 nose-poincare.o leapfrog.o mirror_force_mirror.o:\
                                 param_module.o coord_module.o energy_module.o
-coord_module.o:                 param_module.o         define.h
-fft.o:                          param_module.o
+coord_module.o fft.o:           param_module.o         define.h
 dipole-dipole-long-range.o:     param_module.o         define.h fft.o
 dipole-dipole-short-range.o:    param_module.o                  fft.o
 dVddi-dipole-dipole.o: energy_module.o param_module.o coord_module.o          fft.o
