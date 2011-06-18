@@ -1,11 +1,11 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-06-15 20:34:29 takeshi>
+dnl Time-stamp: <2011-06-18 19:33:13 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.61)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.15.00],[takeshi{at}physics.rutgers.edu],[feram])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.15.01],[takeshi{at}physics.rutgers.edu],[feram])
 AC_CONFIG_SRCDIR(src/feram.F)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
@@ -57,8 +57,8 @@ case "$FC" in
     fi
     ;;
   xf90)
-    test -n "$FCFLAGS" || FCFLAGS="-64 -O3 -parallel=4\
-      -uinline=2 -mathinline -COMOUT -exclamation=option -loglist"
+    test -n "$FCFLAGS" || FCFLAGS="-64 -Os -parallel=4\
+      -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist"
     ;;
   *xlf*)
     AC_MSG_ERROR([C preprocessor invoked from IBM XL Fortran cannot process comment lines in define.h and config.h properly, so far.])
