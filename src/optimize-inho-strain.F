@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-06-18 17:59:06 t-nissie>
+! Time-stamp: <2011-06-18 18:58:45 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -81,9 +81,6 @@ subroutine optimize_inho_strain(p,c,e)
   !$omp end parallel do
   call fft_c2r(p, inhoK, inhoR, 6)
 
-!POPTION COALESCING(2)
-  inhoR(:,:,:,:) = inhoR(:,:,:,:) * p%Ninv
-
   !--- inhoR -> inhomogeneous coupling part of dVddi -------------------
   !$omp parallel do private(iz,iy,ix,i,eta_B_over_2m)
   do iz = 0, p%Lz-1
@@ -91,7 +88,12 @@ subroutine optimize_inho_strain(p,c,e)
         do ix = 0, p%Lx-1
            do i = 1, 6
               eta_B_over_2m(i) = &
-                   & SUM( inhoR(ix,iy,iz,:) * c%homogeneous_coupling_2(:,i) )
+                   &   inhoR(ix,iy,iz,1) * p%Ninv * c%homogeneous_coupling_2(1,i) &
+                   & + inhoR(ix,iy,iz,2) * p%Ninv * c%homogeneous_coupling_2(2,i) &
+                   & + inhoR(ix,iy,iz,3) * p%Ninv * c%homogeneous_coupling_2(3,i) &
+                   & + inhoR(ix,iy,iz,4) * p%Ninv * c%homogeneous_coupling_2(4,i) &
+                   & + inhoR(ix,iy,iz,5) * p%Ninv * c%homogeneous_coupling_2(5,i) &
+                   & + inhoR(ix,iy,iz,6) * p%Ninv * c%homogeneous_coupling_2(6,i)
            end do
            c%dVddi(ix,iy,iz,1) = &
          & c%dVddi(ix,iy,iz,1) + 2 * eta_B_over_2m(1) * c%dipoR(ix,iy,iz,1) &
