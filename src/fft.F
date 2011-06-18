@@ -1,10 +1,11 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-06-15 18:30:34 takeshi>
+! Time-stamp: <2011-06-18 20:28:36 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
+#include "define.h"
 
 subroutine fft_r2c_3x3upper(p,r,c)
   use Param_module
