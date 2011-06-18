@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2011-06-18 17:58:53 t-nissie>
+! Time-stamp: <2011-06-18 19:17:58 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -176,21 +176,21 @@ contains
     integer :: i, alpha, iy,iz
     !--- END of variable definitions -------------------
     tmpS = 0.0d0
-    !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
+    do i = 1,6
+       do alpha = 1,3
+          !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
 !POPTION PSUM(tmpS)
-    do iz = 0, p%Lz-1
-       do iy = 0, p%Ly-1
-          do i = 1,6
-             do alpha = 1,3
+          do iz = 0, p%Lz-1
+             do iy = 0, p%Ly-1
                 tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) * c%didiK(0,         iy,iz,i) ) / 2
                 tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) * c%didiK(1:p%Lx/2-1,iy,iz,i) ) )
                 tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) * c%didiK(  p%Lx/2,  iy,iz,i) ) / 2
                 tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
           end do
+          !$omp end parallel do
        end do
     end do
-    !$omp end parallel do
     e%inho_coupling = tmpS * 2 / p%N
   end subroutine inhomogeneous_coupling_energy
 
