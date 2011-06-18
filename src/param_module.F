@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2011-06-16 15:27:19 takeshi>
+! Time-stamp: <2011-06-18 17:56:13 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -87,6 +87,7 @@ module Param_module
      real*8 DDB_g
      !=== Parameters to be calculated from above =========================
      integer N
+     real*8 Ninv
      real*8 dt_2
      integer n_freedom
      real*8 unit_cell_volume
@@ -290,6 +291,7 @@ contains
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'make_Param().')
 
     p%N = p%Lx * p%Ly * p%Lz
+    p%Ninv = 1.0d0 / p%N
     p%dt_2 = p%dt / 2
     p%n_freedom = 3 * p%N
     if (p%kappa<=0.0d0) then
@@ -320,6 +322,8 @@ contains
     character (len=300) :: str
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_Param(), Parameters for convenience.')
     write(str,'(a,i7)')     'N = Lx * Ly * Lz          =', p%N
+    call msg_ez(UNIT_LOG,str)
+    write(str,'(a,e15.7)')  'Ninv = 1/N                =', p%Ninv
     call msg_ez(UNIT_LOG,str)
     write(str,'(a,f11.7)')  'delta_t / 2               =', p%dt_2
     call msg_ez(UNIT_LOG,str)

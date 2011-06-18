@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2011-06-15 18:31:28 takeshi>
+! Time-stamp: <2011-06-18 17:58:38 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -91,8 +91,8 @@ contains
 
     avg%energy = div_energy(avg%energy, p%n_average)
     avg%energy = div_energy(avg%energy, p%N)
-    avg%e2                = avg%e2                / p%n_average / p%N
-    avg%dipo_kinetic_true = avg%dipo_kinetic_true / p%n_average / p%N
+    avg%e2                = avg%e2                / p%n_average * p%Ninv
+    avg%dipo_kinetic_true = avg%dipo_kinetic_true / p%n_average * p%Ninv
 
     avg%strain(:) = avg%strain(:) / p%n_average
 
@@ -100,8 +100,8 @@ contains
        avg%u(:)  = avg%u(:)  / p%n_average / c%n_sum_p
        avg%uu(:) = avg%uu(:) / p%n_average / c%n_sum_p
     else
-       avg%u(:)  = avg%u(:)  / p%n_average / p%N
-       avg%uu(:) = avg%uu(:) / p%n_average / p%N
+       avg%u(:)  = avg%u(:)  / p%n_average * p%Ninv
+       avg%uu(:) = avg%uu(:) / p%n_average * p%Ninv
     end if
 
     if (p%method.eq.'lf ') then

@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2011-06-16 14:58:02 takeshi>
+! Time-stamp: <2011-06-18 17:58:45 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_dipole_dipole(p,c,e)
@@ -30,7 +30,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
   !$omp end parallel do
   call fft_c2r(p, dipoT, c%dVddi, 3)
 !POPTION COALESCING(2)
-  c%dVddi(:,:,:,:) = c%dVddi(:,:,:,:) / p%N
+  c%dVddi(:,:,:,:) = c%dVddi(:,:,:,:) * p%Ninv
   !if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') thenx
   !   call mirror(p, c%dVddi)
   !end if

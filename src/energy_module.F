@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2011-06-10 15:58:45 takeshin>
+! Time-stamp: <2011-06-18 17:58:53 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -89,20 +89,20 @@ contains
     character(45) message
     !--- END of variable definitions -------------------
 
-    write(message,fmt) 'dipo_kinetic   ', e%dipo_kinetic/c%s_Nose**2/p%N
+    write(message,fmt) 'dipo_kinetic   ', e%dipo_kinetic/c%s_Nose**2*p%Ninv
                                                                  call msg_ez(fd,message)
-    write(message,fmt) 'dipole_dipole  ', e%dipole_dipole/p%N;   call msg_ez(fd,message)
-    write(message,fmt) 'dipole_E_field ', e%dipole_E_field/p%N;  call msg_ez(fd,message)
-    write(message,fmt) 'unharmonic     ', e%unharmonic/p%N;      call msg_ez(fd,message)
-    write(message,fmt) 'homo_strain    ', e%homo_strain/p%N;     call msg_ez(fd,message)
-    write(message,fmt) 'homo_coupling  ', e%homo_coupling/p%N;   call msg_ez(fd,message)
-    write(message,fmt) 'inho_strain    ', e%inho_strain/p%N;     call msg_ez(fd,message)
-    write(message,fmt) 'inho_coupling  ', e%inho_coupling/p%N;   call msg_ez(fd,message)
+    write(message,fmt) 'dipole_dipole  ', e%dipole_dipole*p%Ninv;   call msg_ez(fd,message)
+    write(message,fmt) 'dipole_E_field ', e%dipole_E_field*p%Ninv;  call msg_ez(fd,message)
+    write(message,fmt) 'unharmonic     ', e%unharmonic*p%Ninv;      call msg_ez(fd,message)
+    write(message,fmt) 'homo_strain    ', e%homo_strain*p%Ninv;     call msg_ez(fd,message)
+    write(message,fmt) 'homo_coupling  ', e%homo_coupling*p%Ninv;   call msg_ez(fd,message)
+    write(message,fmt) 'inho_strain    ', e%inho_strain*p%Ninv;     call msg_ez(fd,message)
+    write(message,fmt) 'inho_coupling  ', e%inho_coupling*p%Ninv;   call msg_ez(fd,message)
     call msg_ez(fd,'--------------------------------------------')
-    write(message,fmt) 'total_energy   ', e%total/p%N;           call msg_ez(fd,message)
+    write(message,fmt) 'total_energy   ', e%total*p%Ninv;           call msg_ez(fd,message)
 
     if (p%method.eq.'md ') then
-       write(message,fmt) 'H_Nose_Poincare', e%H_Nose_Poincare/p%N; call msg_ez(fd,message)
+       write(message,fmt) 'H_Nose_Poincare', e%H_Nose_Poincare*p%Ninv; call msg_ez(fd,message)
        write(message,'(a7,f14.8,a9,f14.8)') 's_Nose=', c%s_Nose, ' pi_Nose=', c%pi_Nose
        call msg_ez(fd,message)
     end if
@@ -159,7 +159,7 @@ contains
        end do
     end do
     !$omp end parallel do
-    e%inho_strain = tmpS / p%N    ! Do NOT divide it by 2 here. It has been already devided.
+    e%inho_strain = tmpS * p%Ninv    ! Do NOT divide it by 2 here. It has been already devided.
   end subroutine inhomogeneous_strain_energy
 
   subroutine inhomogeneous_coupling_energy(p,c,e,acouK)
