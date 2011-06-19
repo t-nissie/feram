@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-06-18 21:06:58 t-nissie>
+# Time-stamp: <2011-06-19 11:32:08 takeshin>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -125,10 +125,11 @@ mirror.o dipoFFT.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
                                 param_module.o coord_module.o
 initialize_E_field.o read_defects_u.o elastic.o:\
                                 param_module.o coord_module.o define.h
-initialize-dipoR.o average_module.o:\
-                                param_module.o coord_module.o energy_module.o marsaglia_tsang_uni64_module.o define.h
-nose-poincare.o leapfrog.o mirror_force_mirror.o:\
+initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
+nose-poincare.o leapfrog.o mirror_force_mirror.o dVddi_E_field.o:\
                                 param_module.o coord_module.o energy_module.o
+hysteresis_loop.o average_module.o:\
+                                param_module.o coord_module.o energy_module.o define.h
 coord_module.o fft.o:           param_module.o         define.h
 dipole-dipole-long-range.o:     param_module.o         define.h fft.o
 dipole-dipole-short-range.o:    param_module.o                  fft.o
