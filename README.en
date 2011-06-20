@@ -78,13 +78,14 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
 === Quick compilation
  $ tar zxf feram-X.YY.ZZ.tar.gz
  $ cd feram-X.YY.ZZ
- $ mkdir Linux-i686-gfortran-4.2.2
- $ cd Linux-i686-gfortran-4.2.2
+ $ mkdir Linux-i686-gfortran-4.3.5
+ $ cd Linux-i686-gfortran-4.3.5
  $ ../configure --help
  $ ../configure
  $ cd src
  $ make
- $ ls -l feram
+ $ make feram_mpi   # OPTIONAL
+ $ ls -l feram*
  $ cp -r ../../src/01example-BaTiO3-epit-hysteresis-loop .
  $ cd 01example-BaTiO3-epit-hysteresis-loop
  $ ./externalE.sh         # test run
