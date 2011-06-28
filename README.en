@@ -61,12 +61,12 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
 
 == Install
 === Requirements
- * GNU make (You cannot use BSD make.)  http://www.gnu.org/software/make/
+ * GNU make  http://www.gnu.org/software/make/ (You cannot use *BSD make.)
  * FFTW3 library  http://www.fftw.org/
  * Fortran 90 compiler
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
-   * Intel Fortran Compiler for GNU/Linux (ifort, version 10.0.025 or higher)  http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
-   * PGI Fortran (pgf95, version 8.0-3 or higher) http://www.pgroup.com/
+   * Intel Fortran Compiler (ifort; version 11.1 and later) with
+     Intel Math Kernel Library (MKL; version 10.2 and later) http://software.intel.com/en-us/articles/intel-compilers/
    * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server  http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
 
 === Preferables
@@ -93,6 +93,18 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  $ gv hysteresis.gp       # preview
 
 === Available platforms and compilers
+==== Intel Fortran Compiler with the Intel MKL FFTW wrappers
+ $ tar zxf feram-X.YY.ZZ.tar.gz
+ $ cd feram-X.YY.ZZ
+ $ mkdir ifort-11.1
+ $ cd ifort-11.1
+ $ ../configure --help
+ $ ../configure FC=ifort --with-fft=mkl
+ $ cd src
+ $ make
+ $ make -j 4        # Parallel make
+ $ make feram_mpi   # OPTIONAL
+
 ==== HITACHI SR11000 with xf90 (super1 in IMR)
 feram runs on 1 node (16 CPUs) of SR11000 effectively.
  % tar zxf feram-X.YY.ZZ.tar.gz
@@ -100,6 +112,7 @@ feram runs on 1 node (16 CPUs) of SR11000 effectively.
  % mkdir SR11000-xf90
  % cd SR11000-xf90
  % ../configure FC=xf90 --host=SR11000
+ % cd src
  % make
 
 For performance monitor

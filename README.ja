@@ -43,11 +43,12 @@ http://sourceforge.net/projects/loto/files/feram/
 
 == インストール
 === インストールに必要なもの
- * GNU make （BSD make は使えません） http://www.gnu.org/software/make/
+ * GNU make  http://www.gnu.org/software/make/ （*BSD make などではコンパイルできません）
  * FFTW3 library  http://www.fftw.org/
  * Fortran 90 compiler
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
-   * Intel Fortran Compiler for GNU/Linux (ifort, version 10.0.025 or higher)  http://www.intel.com/cd/software/products/asmo-na/eng/compilers/flin/index.htm
+   * Intel Fortran Compiler (ifort; version 11.1 and later) with
+     Intel Math Kernel Library (MKL; version 10.2 and later) http://software.intel.com/en-us/articles/intel-compilers/
    * PGI Fortran (pgf95, version 8.0-3 or higher) http://www.pgroup.com/
    * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server  http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
 
