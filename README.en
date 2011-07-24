@@ -220,6 +220,8 @@ In atomic mass unit.
 
 ===== Q_Nose
 Q_Nose for Nose-Poincare thermostat.
+For large system and high temperatur, use large value.
+For Small system and low  temperatur, use small value.
  Q_Nose = 14.4
 
 ===== bulk_or_film
