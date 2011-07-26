@@ -125,6 +125,8 @@ atomic mass unitで．
 
 ===== Q_Nose
 能勢のQ．MD計算に必要なパラメータで，熱欲と系とのカップリングの強さを表す．
+大きなsupercell，高温には大きな値を，
+小さなsupercell，低温には小さな値を使う．
  Q_Nose = 14.4
 
 ===== bulk_or_film
