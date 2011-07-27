@@ -284,6 +284,9 @@ Coefficients for the 4-th order polynomial.
 ===== P_k1, P_k2, P_k3
 Coefficients for the 6-th order part
 
+===== P_k4
+Coefficient for u^8
+
 ===== j
 Short-range inter-site interaction coefficients
  j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]

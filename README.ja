@@ -85,26 +85,27 @@ feram用のパラメータファイルはコメント行と 'tag = value(s)' と
 以下に現在feramで利用可能なタグの一覧を示します．
 
 ===== method
+シミュレーションの方法を指定します．
  method = 'md'
-'md' is for a molecular-dynamics simulation in the canonical ensemble using the Nosé-Poincaré thermostat.
+'md'を指定すると能勢−ポアンカレのサーモスタットを使ったカノニカルアンサンブルでの分子動力学シミュレーションを行います．
 
  method = 'lf'
-'lf' is for a molecular-dynamics simulation in the microcanonical ensemble using the leap-frog method.
+'lf'を指定すると蛙飛び (leapfrog) 法を使ったミクロカノニカルアンサンブルでの分子動力学シミュレーションを行います．
 
  method = 'mc'
-'mc' is for a Monte Carlo simulation, but it is NOT IMPLEMENTED YET.
+'mc'を指定するとモンテカルロシミュレーションを行います． まだインプリメントされていません．
 
  method = 'hl'
-'hl' is for a simulation of hysteresis loop.
-In this case, tags of n_average and external_E_field have special meanings (see Fig:external).
-.hl file,e.g. foo.hl, will be created.
-See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
+'hl'を指定すると外部電場を変化させながらヒステリシスループ (hysteresis loop) のシミュレーションを行います．
+この場合，n_averageタグとexternal_E_fieldタグが特別な意味を持ちます (see Fig:external)．
+.hlファイル，例えばfoo.hlが作られるでしょう．
+ディレクトリ src/11example-BaTiO3-new-hysteresis-loop/ に例があります．
 
 \Fig:external doc/figures/external-E-field-hysteresis-loop.jpg
-  Special meanings of n_average and external_E_field,
-  in the case of method = 'hl', a simulation of hysteresis loop.
-  After thermalization, the external electric field is gradually
-  altered from external_E_field to -external_E_field.
+  ヒステリシスループ (hysteresis loop) のシミュレーション method = 'hl' のときの
+  n_averageタグとexternal_E_fieldタグの特別な意味．
+  n_thermalizeステップの恒温化の後，n_averageステップをかけて外部電場を
+  external_E_fieldから-external_E_fieldまでゆっくり変化させてゆきます．
 /Fig:external
 
 ===== GPa
@@ -130,10 +131,10 @@ atomic mass unitで．
  Q_Nose = 14.4
 
 ===== bulk_or_film
-Specifies the structure of the system.
-'bulk' for infinitely periodic bulk
-'film' for free standing thin film.
-'epit' for epitaxially strained thin film.
+システムの構造を指定します．
+'bulk' は無限に周期的なバルクです．
+'film' は「自由な」薄膜キャパシタです．電極は短絡されています．
+'epit' はエピタキシャル歪みを伴った薄膜キャパシタです．これも電極は短絡されています．
  bulk_or_film = 'epit'
 
 ===== L
@@ -152,7 +153,7 @@ dead layerの分極．単位はu(R)と同じÅ．
  gap_dipole_u = 0.0 0.0 0.16
 
 ===== a0
-Lattice constant for the perovskite ferroelectrics in Angstrom unit.
+ペロブスカイト強誘電体の立方晶の格子定数をÅで指定します．
  a0 = 3.99
 
 ===== epi_strain
@@ -184,26 +185,29 @@ methodが'hl'のヒステリシスの計算ではn_averageステップの間に�
  external_E_field = 0.00 0.00 -0.01
 
 ===== P_kappa2, P_alpha, P_gamma
-Coefficients for the 4-th order polynomial.
+4次の多項式の係数．
  P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
  P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
  P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
 
 ===== P_k1, P_k2, P_k3
-Coefficients for the 6-th order part
+6次の項の係数．
+
+===== P_k4
+u^8の係数．
 
 ===== j
-Short-range inter-site interaction coefficients
+短距離相互作用の係数．
  j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
 
 ===== B11, B12, B44
-Elastic Constants
+弾性定数 B11=C11*a0^3 [eV]．
  B11 = 126.
  B12 =  44.9
  B44 =  50.3  [eV]
 
 ===== B1xx, B1yy, B4yz
-Elastic Coupling
+歪みとuとのカップリング係数．
  B1xx = -211.   [eV/Angstrom^2]
  B1yy =  -19.3  [eV/Angstrom^2]
  B4yz =   -7.75 [eV/Angstrom^2]
@@ -229,15 +233,15 @@ unit cellあたりの有効電荷．単位はe．
  epsilon_inf   = 5.24
 
 ===== kappa
-This is for debug. You do not have to set this tag.
-Arbitrary kappa for Ewald summation in src/dipole-dipole-long-range.F.
+この値は自動的に最適な値に設定されるので，ユーザが指定する必要はない．デバッグのために用いる．
+src/dipole-dipole-long-range.Fで双極子のエワルト和に使われる任意のκである．
  kappa = 0.15
 
 ===== plot_dispersion
-If
+もし
  plot_dispersion = .true.
-data files for plotting dispersion relation will be written. Default is .false..
-
+が指定されたなら，分散関係のプロットのためのデータファイルが書き出される．
+デフォルトは.false.である．
 
 === .restart input file
 If you executed feram with a parameter file "cooling002-345K" as
