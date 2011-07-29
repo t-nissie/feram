@@ -1,6 +1,6 @@
 #!/bin/sh
 # cross-section-q.sh
-# Time-stamp: <2006-02-01 18:07:52 t-nissie>
+# Time-stamp: <2011-07-29 12:51:40 takeshi>
 # Author: Takeshi NISHIMATSU
 # Usage: ./cross-section-X.sh coord-file [FACTOR] [CONST_Alpha] [Alpha] [ratio] [max_z]
 #  (X=q, p, dVddi; Alpha=x,y,z)
@@ -23,15 +23,15 @@ BASENAME=`basename $1 .coord`
 
 case "$0" in
     *cross-section-q.sh)
-	PSFILE=$BASENAME-q
+	EPSFILE=$BASENAME-q
 	COLOR='$6'
 	FACTOR=5.0 ;;
     *cross-section-p.sh)
-	PSFILE=$BASENAME-p
+	EPSFILE=$BASENAME-p
 	COLOR='$9'
 	FACTOR=0.2 ;;
     *cross-section-dVddi.sh)
-	PSFILE=$BASENAME-dVddi
+	EPSFILE=$BASENAME-dVddi
 	COLOR='$12'
 	FACTOR=0.5 ;;
 esac
@@ -120,14 +120,14 @@ else
     YRANGE="[-0.5:L$LV-0.5]"
 fi
 
-PSFILE=$PSFILE-$Alpha.ps
+EPSFILE=$EPSFILE-$Alpha.eps
 H_LABEL="'{/Times-Italic $LH}'"
 V_LABEL="'{/Times-Italic $LV}'"
 
 gnuplot <<EOF
 call 'param.gp'
 set terminal postscript portrait enhanced color solid 22
-set output '$PSFILE'
+set output '$EPSFILE'
 
 set xtics 0.5,1.0
 set ytics 0.5,1.0
