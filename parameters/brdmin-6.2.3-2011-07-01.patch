@@ -1,0 +1,272 @@
+--- ../../../src/95_drive/brdmin.F90	2010-09-05 00:14:28.000000000 +0900
++++ ./brdmin.F90	2011-06-26 09:36:39.000000000 +0900
+@@ -248,6 +248,7 @@
+ real(dp) :: rprimd0(3,3)
+ real(dp),allocatable :: hessin(:,:),vin(:),vin_prev(:)
+ real(dp),allocatable :: vout(:),vout_prev(:),xcart(:,:)
++real(dp),allocatable :: n(:)
+ type(macro_uj_type) :: dtpawuj(ndtpawuj)
+ 
+ !****************************************************************
+@@ -272,6 +273,7 @@
+ 
+   allocate(xcart(3,dtset%natom))
+   allocate(vin(ndim),vout(ndim),vin_prev(ndim),vout_prev(ndim))
++  allocate(n(ndim))
+   allocate(hessin(ndim,ndim))
+ 
+ !Compute dimensional primitive translations rprimd, then metric tensor gmet
+@@ -358,6 +360,8 @@
+ 
+    cycl_main=0
+ 
++   call perovskite_valley_line(itime,vin,rprimd,n)
++
+    if(itime>1) then
+      call status(itime,dtfil%filstat,iexit,level,'call scfcv    ')
+    end if
+@@ -365,7 +369,7 @@
+    call brdmin_init(acell, acell0, cycl_main, dtset,&
+ &   etotal_prev, hessin, itime, ndim, nxfh, results_gs,&
+ &   rprim, rprimd0, ucvol, ucvol0, vin, vin_prev, vout,&
+-&   vout_prev, xfhist, xred)
++&   vout_prev, xfhist, xred, n)
+ 
+ !  DEBUG (XRA AFTER PREDICTION)
+    if(DEBUG)then
+@@ -550,9 +554,8 @@
+    else
+      statusOut = "OK"
+    end if
+-   call fconv(results_gs%fcart, dtset%iatfix, iexit, itime, &
+-&   dtset%natom, dtset%ntime, optcell, dtset%strfact,&
+-&   dtset%strtarget, results_gs%strten, dtset%tolmxf)
++
++   if (itime>0) call fconv_perovskite(vin,vin_prev,iexit)
+ 
+    call brdmin_fin(acell, acell0, dtset, ndim, nxfh,&
+ &   results_gs, rprim, rprimd0, ucvol, ucvol0, vin,&
+@@ -607,7 +610,7 @@
+    end do
+   end do
+ 
+-  deallocate(hessin,vin,vin_prev,vout,vout_prev,xcart)
++  deallocate(hessin,vin,vin_prev,vout,vout_prev,xcart,n)
+ 
+ !XML output of the status
+   if (mpi_enreg%me == 0 .and. dtset%prtxml == 1) then
+@@ -629,3 +632,137 @@
+ 
+ end subroutine brdmin
+ !!***
++
++  subroutine perovskite_valley_line(itime,vin,rprimd,n)
++    use defs_basis
++    implicit none
++    integer,  intent(in)    :: itime
++    real(dp), intent(inout) :: vin(21)
++    real(dp), intent(in)    :: rprimd(3,3)
++    real(dp), intent(out)   :: n(21)
++    character*800 :: message
++    real(dp) ::    dsplcmnt(21)
++    real(dp) ::    dsplcart(15)
++    real(dp) :: translations(3)
++    real(dp) ::            u(3)
++    real(dp) ::            c
++    real(dp), save ::      u_reduced
++    real(dp), parameter :: centrosymmetric(21) = (/&
++         0.0d0,0.0d0,0.0d0, &
++         0.5d0,0.5d0,0.5d0, &
++         0.0d0,0.5d0,0.5d0, &
++         0.5d0,0.0d0,0.5d0, &
++         0.5d0,0.5d0,0.0d0, &
++         0.0d0,0.0d0,0.0d0, &
++         0.0d0,0.0d0,0.0d0/)
++
++    write(message, '(7(a,3f15.9,a))' )&
++         '  BEFORE vin    =',vin( 1: 3),ch10,&
++         '                 ',vin( 4: 6),ch10,&
++         '                 ',vin( 7: 9),ch10,&
++         '                 ',vin(10:12),ch10,&
++         '                 ',vin(13:15),ch10,&
++         '                 ',vin(16:18),ch10,&
++         '                 ',vin(19:21),ch10
++    call wrtout(ab_out,message,'COLL')
++
++    dsplcmnt(:) = vin(:) - centrosymmetric(:)
++
++    translations(1) = dsplcmnt(1) + dsplcmnt(4) + dsplcmnt(7) + dsplcmnt(10) + dsplcmnt(13)
++    translations(2) = dsplcmnt(2) + dsplcmnt(5) + dsplcmnt(8) + dsplcmnt(11) + dsplcmnt(14)
++    translations(3) = dsplcmnt(3) + dsplcmnt(6) + dsplcmnt(9) + dsplcmnt(12) + dsplcmnt(15)
++    translations(:) = translations(:) / 5.0d0
++    write(message, '(a,a,3f15.9)' ) ch10,'  translations  =',translations(1),translations(2),translations(3)
++    call wrtout(ab_out,message,'COLL')
++
++    ! remove translation from dsplcmnt
++    dsplcmnt( 1)=dsplcmnt( 1)-translations(1); dsplcmnt( 2)=dsplcmnt( 2)-translations(2); dsplcmnt( 3)=dsplcmnt( 3)-translations(3)
++    dsplcmnt( 4)=dsplcmnt( 4)-translations(1); dsplcmnt( 5)=dsplcmnt( 5)-translations(2); dsplcmnt( 6)=dsplcmnt( 6)-translations(3)
++    dsplcmnt( 7)=dsplcmnt( 7)-translations(1); dsplcmnt( 8)=dsplcmnt( 8)-translations(2); dsplcmnt( 9)=dsplcmnt( 9)-translations(3)
++    dsplcmnt(10)=dsplcmnt(10)-translations(1); dsplcmnt(11)=dsplcmnt(11)-translations(2); dsplcmnt(12)=dsplcmnt(12)-translations(3)
++    dsplcmnt(13)=dsplcmnt(13)-translations(1); dsplcmnt(14)=dsplcmnt(14)-translations(2); dsplcmnt(15)=dsplcmnt(15)-translations(3)
++
++    n(:)=0.0d0
++
++    if (itime==1) then
++       u_reduced = sqrt(sum(dsplcmnt(1:15)**2))
++       write(message,'(a,f18.13)') '  u_reduced=', u_reduced
++       call wrtout(ab_out,message,'COLL')
++    else
++       c = sqrt(sum(dsplcmnt(1:15)**2))
++       write(message,'(a,3f18.13)') '  c=', c
++       call wrtout(ab_out,message,'COLL')
++       n(1:15)=dsplcmnt(1:15)/c
++       write(message, '(a,7(a,3f15.9,a))' )&
++            ch10,&
++            '             n  =',n( 1: 3),ch10,&
++            '                 ',n( 4: 6),ch10,&
++            '                 ',n( 7: 9),ch10,&
++            '                 ',n(10:12),ch10,&
++            '                 ',n(13:15),ch10,&
++            '                 ',n(16:18),ch10,&
++            '                 ',n(19:21),ch10
++       call wrtout(ab_out,message,'COLL')
++
++       dsplcmnt(1:15)=dsplcmnt(1:15)*(u_reduced/c)
++
++       call xredxcart(5,1,rprimd,dsplcart,dsplcmnt)
++       write(message,'(a,f18.13)') '  u=', sqrt(sum(dsplcart(:)**2))
++       call wrtout(ab_out,message,'COLL')
++    end if
++
++    write(message, '(a,7(a,3f15.9,a))' )&
++         ch10,&
++         '  displacement  =',dsplcmnt( 1: 3),ch10,&
++         '                 ',dsplcmnt( 4: 6),ch10,&
++         '                 ',dsplcmnt( 7: 9),ch10,&
++         '                 ',dsplcmnt(10:12),ch10,&
++         '                 ',dsplcmnt(13:15),ch10,&
++         '                 ',dsplcmnt(16:18),ch10,&
++         '                 ',dsplcmnt(19:21),ch10
++    call wrtout(ab_out,message,'COLL')
++
++    vin(:) = centrosymmetric(:) + dsplcmnt(:)
++
++    call flush(ab_out)
++  end subroutine perovskite_valley_line
++
++
++  subroutine fconv_perovskite(vin,vin_prev,iexit)
++    use defs_basis
++    implicit none
++    real(dp), intent(in)  ::      vin(21)
++    real(dp), intent(in)  :: vin_prev(21)
++    integer,  intent(out) :: iexit
++    real(dp)              ::    diff2(21)
++    character*600         :: message
++    logical, save         :: prev = .false.
++    logical               :: current
++    diff2(:) = vin(:) - vin_prev(:)
++    diff2(:) = diff2(:)**2
++    write(message, '(a,7(a,3es15.7,a))' )&
++         ch10,&
++         '  diff2=',diff2( 1: 3),ch10,&
++         '        ',diff2( 4: 6),ch10,&
++         '        ',diff2( 7: 9),ch10,&
++         '        ',diff2(10:12),ch10,&
++         '        ',diff2(13:15),ch10,&
++         '        ',diff2(16:18),ch10,&
++         '        ',diff2(19:21),ch10
++    call wrtout(ab_out,message,'COLL')
++    if ( maxval(diff2(:)) < 1.0d-12 ) then
++       current=.true.
++    else
++       current=.false.
++    end if
++    if (prev.and.current) then
++       write(message, '(a,a,a)' ) ch10,' fconv_perovskite converged.',ch10
++       call wrtout(ab_out,message,'COLL')
++       call wrtout(06,  message,'COLL')
++       prev = .false.
++       iexit = 1
++    else
++       prev = current
++       iexit = 0
++    end if
++  end subroutine fconv_perovskite
+--- ../../../src/95_drive/brdmin_init.F90	2010-09-05 00:14:28.000000000 +0900
++++ ./brdmin_init.F90	2011-06-26 14:11:35.000000000 +0900
+@@ -48,7 +48,7 @@
+ subroutine brdmin_init(acell, acell0, cycl_main, dtset,&
+   & etotal_prev, hessin, itime, ndim, nxfh, results_gs,&
+   & rprim, rprimd0, ucvol, ucvol0, vin, vin_prev, vout,&
+-  & vout_prev, xfhist, xred)
++  & vout_prev, xfhist, xred, n)
+ 
+ ! define dp,sixth,third,etc...
+ use defs_basis
+@@ -87,12 +87,17 @@
+ real(dp),intent(inout) :: acell(:)
+ real(dp),intent(inout) :: acell0(:)
+ real(dp),intent(inout) :: xfhist(:,:,:,:)
++real(dp),intent(in)    :: n(:)
+ 
+ !Local variables-------------------------------
+ !scalars
+ integer :: iatom,idir,option,ixfh,idim,ii,kk,jj
+ logical :: DEBUG=.FALSE.
++real(dp):: lambda
+ !arrays
++real(dp),allocatable :: n_hessin(:),modified_vout(:)
++
++allocate(n_hessin(ndim),modified_vout(ndim))
+ 
+ !  If not initialisation time step
+ if(itime>1)then
+@@ -108,13 +113,17 @@
+ 
+     !      Previous cartesian coordinates
+     etotal_prev=results_gs%etotal
+-    vin_prev(:)=vin(:)
++    vin_prev(1:ndim)=vin(1:ndim)
++
++    !   modify vout(:) to find the vallay line of perovskite ABO3
++    n_hessin = matmul(n,hessin)
++    lambda = dot_product(n_hessin(1:ndim),vout(1:ndim))/dot_product(n_hessin(1:ndim),n(1:ndim))
++    modified_vout(1:ndim) = vout(1:ndim) - lambda * n(1:ndim)
+ 
+     !      New atomic cartesian coordinates are obtained from vin, 
+     !      hessin and vout
+-    do idim=1,ndim
+-      vin(:)=vin(:)-hessin(:,idim)*vout(idim)
+-    end do
++    vin(1:ndim) = vin(1:ndim) - matmul(hessin(1:ndim,1:ndim),modified_vout(1:ndim))*0.5d0
++    !   Change from 1.0 to 0.4--0.6 for small u when it is difficult to get convergence.
+ 
+     !      Previous atomic forces
+     vout_prev(:)=vout(:)
+@@ -246,5 +255,6 @@
+   & dtset%strtarget,results_gs%strten,dtset%symrel,ucvol,&
+   & ucvol0,vin,vout,xred)
+ 
++deallocate(n_hessin,modified_vout)
+ end subroutine brdmin_init
+ !!***
+--- ../../../src/95_drive/interfaces_95_drive.F90	2010-09-05 00:15:47.000000000 +0900
++++ ./interfaces_95_drive.F90	2011-06-24 15:27:44.000000000 +0900
+@@ -271,7 +271,7 @@
+  subroutine brdmin_init(acell, acell0, cycl_main, dtset,&  
+   &  etotal_prev, hessin, itime, ndim, nxfh, results_gs,&  
+   &  rprim, rprimd0, ucvol, ucvol0, vin, vin_prev, vout,&  
+-  &  vout_prev, xfhist, xred)
++  &  vout_prev, xfhist, xred, n)
+   use defs_basis
+   use defs_abitypes
+   use defs_datatypes
+@@ -296,6 +296,7 @@
+   real(dp),intent(inout) :: vout_prev(:)
+   real(dp),intent(inout) :: xfhist(:,:,:,:)
+   real(dp),intent(inout) :: xred(:,:)
++  real(dp),intent(in)    :: n(:)
+  end subroutine brdmin_init
+ end interface
+ 
