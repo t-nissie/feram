@@ -26,8 +26,8 @@ You may find latest version of this document in http://loto.sourceforge.net/fera
 
 == Equilibrium lattice constant a0
 With BaTiO3-first-principles/perovskite-a0.in and BaTiO3-first-principles/perovskite-a0.files,
-we can determine the equilibrium lattice constant a0. For example, execute abinip with
- % mpirun -np 4 ./abinip < perovskite-a0.files > perovskite-a0.log
+we can determine the equilibrium lattice constant a0. For example, execute abinit with
+ % mpirun -np 4 ./abinit < perovskite-a0.files > perovskite-a0.log
 or
  % sh perovskite-a0.nqs
 where BaTiO3-first-principles/perovskite-a0.nqs is a script for the NQS (Network Queueing System).
@@ -60,11 +60,10 @@ BaTiO3-first-principles/perovskite-B1112.in.
  B12 = 45.9264947808815 [eV]
  C12 = 120.471964625021 [GPa]
 
-Fig. 1 BaTiO3-first-principles/perovskite-B1112.jpg
-  Fig. 1.
+\Fig:B1112 BaTiO3-first-principles/perovskite-B1112.jpg
   (a) Calculated volume V dependence of Etot-E_0.
   (b) Strain e_xx dependence of Etot-E_0.
-/Fig.
+/Fig:B1112
 
 We can also check a value of B11-B12 with files of
 BaTiO3-first-principles/perovskite-B11-12.in,
@@ -78,10 +77,10 @@ BaTiO3-first-principles/perovskite-B11-12.gp as follows:
        :
  B11-B12 = 91.6975260285724 [eV]
  % gv perovskite-B11-12.eps
-Fig. 2 BaTiO3-first-principles/perovskite-B11-12.jpg
+\Fig:B11-12 BaTiO3-first-principles/perovskite-B11-12.jpg
   Fig. 2. Quadratic fitting of calculated strain dependence of Etot-E_0.
   From the centrosymmetric cubic structure, constraint-tetragonal strain is applied.
-/Fig.
+/Fig:B11-12
 
 B44 can be calculated with
 BaTiO3-first-principles/perovskite-B44.in,
@@ -95,10 +94,10 @@ BaTiO3-first-principles/perovskite-B44.gp  files as follows:
        :
  B44 = 51.2750883179845 [eV]
  % gv perovskite-B44.eps
-Fig. 3 BaTiO3-first-principles/perovskite-B44.jpg
+\Fig:B44 BaTiO3-first-principles/perovskite-B44.jpg
   Fig. 3. Quadratic fitting of calculated strain dependence of Etot-E_0.
   From the centrosymmetric cubic structure, rhombohedral strain is applied.
-/Fig.
+/Fig:B44
 
 
 == Fourth-order parameters P_alpha and P_gamma and coupling constants B1xx, B1yy and B4yz
@@ -107,21 +106,22 @@ T. Nishimatsu, H. Mizuseki, Y. Kawazoe, A. Sasaki and Y. Ikeda: Jpn. J. Appl. Ph
 6785-6792 (2004) http://dx.doi.org/10.1143/JJAP.43.6785 ].
 
 === Patch for ABINIT
-We apply an original patch to ABINIT, rename from abinip to abinip-xyz, then use it.
-This brdmin.patch is applicable to abinit-5.6.5.
- % tar zxf abinit-5.6.5.tar.gz
- % cd abinit-5.6.5
+We apply our original patch to ABINIT, rename from abinit to abinit-xyz, then use it.
+This brdmin-6.2.3-2011-07-01.patch is applicable to abinit-6.2.3.
+ % tar zxf abinit-6.2.3.tar.gz
+ % cd abinit-6.2.3
  % mkdir x86_64-Linux-mpif90-gfortran-4.3.3-O3-perovskite-xyz
  % cd x86_64-Linux-mpif90-gfortran-4.3.3-O3-perovskite-xyz/
- % env CC=gcc FC=mpif90 FCFLAGS=-O3 ../configure --enable-mpi
- % cd src/21drive/
+ % ../configure FC=mpif90 --enable-mpi --with-mpi-level=2 --disable-netcdf --disable-libxc --disable-etsf-io
+ % cd src/95_drive/
  % cp ../../../src/21drive/brdmin.F90 .
- % patch -p0 < SOMEWERE/brdmin.patch
+ % cp ../../../src/21drive/brdmin_init.F90 .
+ % cp ../../../src/21drive/interfaces_95_drive.F90 .
+ % patch -p0 < SOMEWERE/brdmin-6.2.3-2011-07-01.patch
  % cd ../..
- % make abinip abinis
+ % make
  % cd src/main
- % mv abinis abinis-xyz
- % mv abinip abinip-xyz
+ % mv abinit abinit-xyz
 
 === Input file generator
 Generate input files with each ruby script in the directory BaTiO3-first-principles.
@@ -154,11 +154,6 @@ E_0 (total energy of the centro-symmetric structure) should be written.
  P_gamma = -140.106921118426 [eV/Angstrom^4]
  average kappa = -0.284319690289374 [eV/Angstrom^2]
  % gv perovskite-optcell0.eps
-Fig. 4 BaTiO3-first-principles/perovskite-optcell0.jpg
-  Fig. 4. Etot-E_0 are fitted with 4th order functions of atomic displacement amplitude u
-  for the displacement directions [001] and [111] under the strain-less constrain.
-  For the [110] direction, the function with determined parameters is plotted.
-/Fig.
 
 === B1xx, B1yy and B4yz
 Actually, only perovskite-optcell2-110 is necessary to determine B1xx,
@@ -173,13 +168,12 @@ in BaTiO3-first-principles/perovskite-optcell2.gp.
  B1yy = -11.3402211966456 [eV/Angstrom^2]
  B4yz = -11.4924700676748 [eV/Angstrom^2]
  % gv perovskite-optcell2.eps
-Fig. 5 BaTiO3-first-principles/perovskite-optcell2.jpg
-  Fig. 5.
+\Fig:optcell2 BaTiO3-first-principles/perovskite-optcell2.jpg
   (a) Strains are fitted with quadratic functions of atomic displacement amplitude u
   for the displacement directions [110].
   (b) 4th order u functions Etot(u)-E_0 with determined parameters are plotted
   for [001], [110] and [111] distortions. They have good agreements with calculated values.
-/Fig.
+/Fig:optcell2
 
 
 == Response-function calculations
@@ -195,13 +189,20 @@ We do NOT move ions explicitly.
 In [W. Zhong and David Vanderbilt and Karin M. Rabe: Phys. Rev. B vol.52 pp.6301-6312
 (1995) http://dx.doi.org/10.1103/PhysRevB.52.6301 ], seven polarization modes, (a)-(g),
 are defined. Corresponding k-points and modes are indicated in Fig.6.
-Fig. 6 a2f.jpg
-  Fig. 6. Dipole-dipole interaction energy per unit cell for a simple cubic lattice.
-  Dispersion relations E(k) are plotted along principal axes in the first Brillouin zone.
-  The LO-TO splitting at the Gamma point is not corrected. Differences between
-  calculated interaction energies and these pure dipole-dipole interaction energy (values
-  are written in the figure) are the short range interaction, i.e., P_kappa2 and j1, ..., j7.
-/Fig.
+
+\Fig:IFC ../doc/figures/BaTiO3-000-dispersion-with-ifc/BaTiO3-000-dispersion-with-ifc.jpg
+  (A) Half of eigenvalues of the 3x3 long-range dipole-dipole interaction matrix Phi(k)
+      are plotted along symmetric axes in the the first Brillouin zone of the simple-cubic lattice.
+      Special points and k/(2pi)=(1/4, 1/4, 0) (the center of the Sigma axis) are
+      indicated with vertical dotted lines.
+      Tics in the unit of Z^2/epsilon/a^3 is placed in left side.
+      Tics in the unit of eV, in the case of the parameter set of [Takeshi Nishimatsu,
+      Masaya Iwamoto, Yoshiyuki Kawazoe, and Umesh V. Waghmare: Phys. Rev. B 82, 134106 (2010)]
+      is placed in right side.
+  (B) Half of eigenvalues of the calculated 15x15 inter-atomic force constant (IFC) matrix (dashed black lines).
+      Half of eigenvalues of the total (long-range + short-range) interaction matrix Phi^quad(k) (solid red line).
+/Fig:IFC
+
 We calculate interatomic force constant (IFC) matrices at the Gamma, X, M and
 R points and at the center of the Sigma axis. Input fies are
 BaTiO3-first-principles/force-constant-matrix/perovskite-Gamma.in,
@@ -461,17 +462,34 @@ Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 #
 # for ulmul.rb
 #
+#
+# for ulmul.rb
+#
 require 'rubygems'
 require 'ulmul'
+$MAX_TABLE_OF_CONTENTS = 3
+Itemize::ITEMIZE_INITIATOR  =   '<ul>'
+Itemize::ITEMIZE_TERMINATOR =  '</ul>'
+Itemize::ITEM_INITIATOR     =   '<li>'
+Itemize::ITEM_TERMINATOR    =  '</li>'
+Ulmul::PARAGRAPH_INITIATOR  =    '<p>'
+Ulmul::PARAGRAPH_TERMINATOR =   '</p>'
+Ulmul::VERBATIM_INITIATOR   =  '<pre>'
+Ulmul::VERBATIM_TERMINATOR  = '</pre>'
+class Ulmul
+  include HTML
+  include HTML5
+end
 u=Ulmul.new()
-u.subs_rules << [/(BaTiO3-first-principles\/\S*(in|files|nqs|rb|delta|gp|out|Makefile))/, '<a href="\1">\1</a>']
-u.subs_rules << [/(brdmin\.patch)/, '<a href="\1">\1</a>']
-u.subs_rules << [/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2']
-u.subs_rules << [/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2']
-u.subs_rules << [/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.']
+u.subs_rules = lambda{|s|
+  s.
+  gsub(/(BaTiO3-first-principles\/\S*(in|files|nqs|rb|delta|gp|out|Makefile))/, '<a href="\1">\1</a>').
+  gsub(/(brdmin-6\.2\.3-2011-07-01\.patch)/,                                    '<a href="\1">\1</a>').
+  gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
+  gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.')}
 
 u.parse(ARGF)
-puts u.html(["style.css"],[],"Takeshi Nishimatsu")
+puts u.file(["style.css"],[],"Takeshi Nishimatsu")
 
 # Local variables:
 #   mode: RD
