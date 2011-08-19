@@ -1,0 +1,56 @@
+[Atom]
+       Ba                 # chem symbol
+       13                 # norb: number of orbitals
+       100 2.00  -13.0   # reference configuration
+       200 2.00   -1.4   # reference configuration
+       210 6.00   -0.4   # reference configuration
+       300 2.00   -0.1   # reference configuration
+       310 6.00  -13.0   # reference configuration
+       320 10.00   -1.4   # reference configuration
+       400 2.00   -0.4   # reference configuration
+       410 6.00   -0.1   # reference configuration
+       420 10.00   -1.4   # reference configuration 
+       500 2.00   -0.1   # reference configuration       
+       510 6.00   -0.1   # reference configuration
+       520 0.00   -1.4   # reference configuration       
+       600 0.00    -1.0
+
+       [Pseudo]
+       4  1.85 1.78 1.83 1.81
+       opt
+    
+       [Optinfo]
+       7.07  10    # rc[a.u.]  Qc[sqrt(Ry)]  Nb
+       7.07  10    # rc[a.u.]  Qc[sqrt(Ry)]  Nb
+       7.07  10    # rc[a.u.]  Qc[sqrt(Ry)]  Nb
+       7.07  10
+      
+       [Configs]
+       3                 # number of valence configurations
+       #
+       500 2.00   -1.4   # test configuration
+       510 6.00   -0.4   # test configuration
+       520 0.00   -0.4   # test configuration     
+       600 0.00   -0.4	
+       #
+       500 2.00   -1.4   # test configuration
+       510 6.00   -0.4   # test configuration
+       520 0.00   -0.4   # test configuration
+       600 1.00   -0.4   
+       #
+       500 2.00   -1.4   # test configuration
+       510 6.00   -0.4   # test configuration
+       520 0.00   -0.4   # test configuration
+       600 2.00   -0.4  
+
+[XC]
+wcgga 
+
+[Relativity]
+ srl		 # nrl / srl / frl
+
+[KBdesign]
+s                 # local orbital 
+1                 # number of aug. operators
+au 0.1 1.68  2.05  # unit(gp or au)  left  right  height(Ry)
+

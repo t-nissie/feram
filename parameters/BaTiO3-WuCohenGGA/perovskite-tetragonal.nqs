@@ -1,0 +1,2 @@
+#!/bin/sh
+poe ./abinit < perovskite-tetragonal.files > perovskite-tetragonal.log

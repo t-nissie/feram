@@ -1,0 +1,2 @@
+#!/bin/sh
+poe ./abinit < perovskite-a0.files > perovskite-a0.log

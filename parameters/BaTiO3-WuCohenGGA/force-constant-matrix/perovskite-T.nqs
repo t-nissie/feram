@@ -1,0 +1,2 @@
+#!/bin/sh
+poe ../abinip < perovskite-T.files > perovskite-T.log

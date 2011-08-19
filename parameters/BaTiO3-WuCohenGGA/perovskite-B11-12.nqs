@@ -1,0 +1,4 @@
+#!/bin/sh
+poe ./abinit < perovskite-B11-12.files > perovskite-B11-12.log
+
+sed -n '/after computation/,$p' perovskite-B11-12.out | grep 'etotal' | paste perovskite-B11-12.delta - > perovskite-B11-12.dat

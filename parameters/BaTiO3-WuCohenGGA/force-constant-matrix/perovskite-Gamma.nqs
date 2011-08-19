@@ -1,0 +1,2 @@
+#!/bin/sh
+poe ../abinip < perovskite-Gamma.files > perovskite-Gamma.log

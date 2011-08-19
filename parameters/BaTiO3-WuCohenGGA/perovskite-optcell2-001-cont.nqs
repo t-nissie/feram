@@ -1,0 +1,2 @@
+#!/bin/sh
+poe ./abinit-xyz < perovskite-optcell2-001-cont.files > perovskite-optcell2-001-cont.log

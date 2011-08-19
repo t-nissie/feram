@@ -1,0 +1,29 @@
+eigenvalues2j.F: 43: BEGIN: Version 0.14.03
+  eigenvalues2j.F: 61: FILENAME: stdin
+  param_module.F:109: BEGIN: read_Param().
+    DDB_a = -3.812330
+    DDB_b = 34.256065
+    DDB_c = -2.844881
+    DDB_d = -2.285745
+    DDB_e = 32.665721
+    DDB_f = 27.741413
+    DDB_g =  0.0
+    a0          = 3.98596961387263
+    Z_star      = 10.33
+    epsilon_inf = 6.8691464565
+  param_module.F:284: END:   read_Param().
+  param_module.F:290: BEGIN: make_Param().
+  param_module.F:313: END:   make_Param().
+       j_1 =   -2.0840250430 [eV/Angstrom^2] =   -0.0214464062 [Hartree/Bohr^2]
+       j_2 =   -1.1290411983 [eV/Angstrom^2] =   -0.0116188029 [Hartree/Bohr^2]
+       j_3 =    0.6894579816 [eV/Angstrom^2] =    0.0070951143 [Hartree/Bohr^2]
+       j_4 =   -0.6113408159 [eV/Angstrom^2] =   -0.0062912216 [Hartree/Bohr^2]
+       j_5 =    0.0000000000 [eV/Angstrom^2] =    0.0000000000 [Hartree/Bohr^2]
+       j_6 =    0.2768966803 [eV/Angstrom^2] =    0.0028495045 [Hartree/Bohr^2]
+       j_7 =    0.0000000000 [eV/Angstrom^2] =    0.0000000000 [Hartree/Bohr^2]
+  P_kappa2 =    8.1460516421 [eV/Angstrom^2] =    0.0838298622 [Hartree/Bohr^2]
+  j =  -2.08403 -1.12904  0.68946 -0.61134  0.00000  0.27690  0.00000    [eV/Angstrom^2]
+  a0          =   3.98597    [Angstrom]
+  Z_star      =  10.33000
+  epsilon_inf =   6.86915
+eigenvalues2j.F:126: END

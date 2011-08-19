@@ -1,0 +1,1 @@
+/home/t-nissie/abinit/BaTiO3-phonon/BaTiO3-phonon-62-WuCohenGGA-0.0GPa-8x8x8-ecut60-dilatmx1.2-5.7.3-SR11000/

@@ -1,0 +1,2 @@
+#!/bin/sh
+poe ../abinip < perovskite-Lambda.files > perovskite-Lambda.log

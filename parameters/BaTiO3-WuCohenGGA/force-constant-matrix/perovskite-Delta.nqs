@@ -1,0 +1,2 @@
+#!/bin/sh
+poe ../abinip < perovskite-Delta.files > perovskite-Delta.log

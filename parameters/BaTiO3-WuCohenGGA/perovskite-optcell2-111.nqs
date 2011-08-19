@@ -1,0 +1,9 @@
+#!/bin/sh
+poe ./abinit-xyz < perovskite-optcell2-111.files > perovskite-optcell2-111.log
+
+echo '  u=   0.0000000000000' > perovskite-optcell2-111.tmp
+egrep 'u=|fconv_perovskite' perovskite-optcell2-111.out | grep -B 1 fconv_perovskite | grep 'u=' >>  perovskite-optcell2-111.tmp
+grep -h 'etotal' perovskite-a0.out perovskite-optcell2-111.out | paste perovskite-optcell2-111.tmp - > perovskite-optcell2-111.tmp2
+(for f in perovskite-a0.out perovskite-optcell2-111.out; do  sed -n '/after computation/,$p' $f | grep acell ; done) | paste perovskite-optcell2-111.tmp2 - > perovskite-optcell2-111.tmp3
+(echo '     rprim0   1.0 0.0 0.0' ; sed -n '/after computation/,$p' perovskite-optcell2-111.out | grep rprim) | paste perovskite-optcell2-111.tmp3 - > perovskite-optcell2-111.tmp4
+(grep ucvol perovskite-a0.out | tail -1 ; egrep 'ucvol|fconv_perovskite' perovskite-optcell2-111.out | grep -B 1 fconv_perovskite | grep 'ucvol') | paste perovskite-optcell2-111.tmp4 - > perovskite-optcell2-111.dat
