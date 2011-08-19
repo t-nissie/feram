@@ -3,12 +3,12 @@
 This document describes how to determine parameters for the
 effective Hamiltonian in the feram code http://loto.sourceforge.net/feram/ .
 We determine the parameters for BaTiO3 from first-principles calculations.
-Theories in background are writen in
+Theories in background are written in
 [Takeshi Nishimatsu, Masaya Iwamoto, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
 "First-principles accurate total-energy surfaces for polar structural distortions
 of BaTiO3, PbTiO3, and SrTiO3: consequences to structural transition temperatures",
 Phys. Rev. B, vol.82, p.134106 (2010) http://dx.doi.org/10.1103/PhysRevB.82.134106 ].
-Equations refered in this document are those ones in the PRB article.
+Equations referred in this document are those ones in the PRB article.
 
 You may find latest version of this document in http://loto.sourceforge.net/feram/parameters/ .
 
@@ -168,8 +168,8 @@ to the calculated data points within narrow range of u.
  % gv perovskite-optcell2.eps
 
 \Fig:optcell2 BaTiO3-WuCohenGGA/perovskite-optcell2.jpg
-  GNUPLOT dawing to determine polynomial coefficients P_* and coupling constants B1xx, B1yy and B4yz.
-  Filled points are sellected data in narrow ranges of u.
+  GNUPLOT drawing to determine polynomial coefficients P_* and coupling constants B1xx, B1yy and B4yz.
+  Filled points are selected data in narrow ranges of u.
 /Fig:optcell2
 
 
@@ -386,7 +386,7 @@ They must be identical within some error.
 
 The direction of the Gamma_15 soft mode and
 The direction to the minimum are not same in principle.
-Using one of them, we determin the effective charge
+Using one of them, we determine the effective charge
 Z_star and the effective mass mass_amu.
 
  Z_star = 10.33 =
