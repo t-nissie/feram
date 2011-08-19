@@ -11,6 +11,7 @@ Phys. Rev. B, vol.82, p.134106 (2010) http://dx.doi.org/10.1103/PhysRevB.82.1341
 Equations referred in this document are those ones in the PRB article.
 
 You may find latest version of this document in http://loto.sourceforge.net/feram/parameters/ .
+You can also find this document and input files in the feram source package, feram-X.YY.ZZ.tar.gz.
 
 == List of required free or open source software
  * ABNINT http://www.abinit.org/about/
@@ -149,6 +150,7 @@ It is quite difficult to express the total-energy surfaces
 even with up to 8th order polynomial in wide range of u.
 Therefore, we fit Eqs. (14a)--(14c) only
 to the calculated data points within narrow range of u.
+E0, a0, B11, B12, and B44 must be written in BaTiO3-WuCohenGGA/perovskite-optcell2.gp.
 
  % emacs perovskite-optcell2-001-narrow.dat   # narrow range of u of perovskite-optcell2-001.dat
  % emacs perovskite-optcell2-110-narrow.dat   # narrow range of u of perovskite-optcell2-110.dat
@@ -359,6 +361,7 @@ file of BaTiO3-WuCohenGGA/force-constant-matrix/perovskite-Gamma.out.
 There are two ways of calculations of effective charges,
 (from electric field response) and (from phonon response).
 They must be identical within some error.
+
  % less perovskite-Gamma.out
        :
    Effective charges, in cartesian coordinates,
@@ -399,8 +402,9 @@ Z_star and the effective mass mass_amu.
  mass_amu = 38.24 = 137.327*0.166**2 + 47.867*0.770**2 + 15.9994*(2*0.202**2 +0.546**2)
 
 === Self interaction P_kappa2 and nearest neighbor interactions j1, ..., j7
- We select eigenvalues and make BaTiO3-WuCohenGGA/force-constant-matrix/eigenvalues2j.in.
- Using feram-X.YY.ZZ/src/eigenvalues2j.F, we can calculate P_kappa2 and j1, ..., j7.
+We select eigenvalues and make BaTiO3-WuCohenGGA/force-constant-matrix/eigenvalues2j.in.
+Using feram-X.YY.ZZ/src/eigenvalues2j.F, we can calculate P_kappa2 and j1, ..., j7.
+
  % cat eigenvalues2j.in
  DDB_a = -3.812330
  DDB_b = 34.256065
