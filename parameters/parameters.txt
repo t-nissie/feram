@@ -223,6 +223,7 @@ BaTiO3-WuCohenGGA/force-constant-matrix/perovskite-R.in,
 BaTiO3-WuCohenGGA/force-constant-matrix/perovskite-Sigma.in and
 BaTiO3-WuCohenGGA/force-constant-matrix/perovskite-X.in.
 Write determined a0 for the acell parameters in each .in file.
+Adding "rfasr 1" in the input files may be a good idea.
 First, we need results of the Gamma point, perovskite-Gamma_o_DS1_WFK,
 then we can calculate other points.
  % ./abinit < perovskite-Gamma.files > perovskite-Gamma.log
