@@ -66,7 +66,7 @@ http://sourceforge.net/projects/loto/files/feram/
  $ mkdir Linux-i686-gfortran-4.3.5
  $ cd Linux-i686-gfortran-4.3.5
  $ ../configure --help
- $ ../configure
+ $ ../configure --disable-detailed-messages
  $ cd src
  $ make
  $ make feram_mpi   # OPTIONAL
@@ -341,15 +341,14 @@ feram が feram foo123 と実行されたなら
 すなわち，foo123.avg, foo123.320K0050000.coord,
 foo123.dipole-dipole-long.dat などです．
 
-=== 標準出力 (stdout)
-feram は標準出力 stdout にイテレーション毎にエネルギーを書き出します．
+=== foo123.log
+feramは.logファイルにイテレーション毎にエネルギーを書き出します．
 デバッグのときに src/plot.gp を使ってプロットしてみるのもよいでしょう．
-ふだんは /dev/null に捨ててしまってかまいません．
-configureの時に--disable-detailed-messagesオプションでこの標準出力に
-書き出す量を少なくすると実行が高速化されます．
+configureの時に--disable-detailed-messagesオプションで
+この出力に書き出す量を少なくするとができます．!!!!!重要!!!!!
+そうすると実行も高速化されます．
  $ feram foo123 > feram.log
  $ gnuplot plot.gp
- $ feram foo123 > /dev/null
 
 === foo123.avg
 n_thermalizeイテレーションの恒温化の後，

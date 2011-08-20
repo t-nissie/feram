@@ -81,7 +81,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  $ mkdir Linux-i686-gfortran-4.3.5
  $ cd Linux-i686-gfortran-4.3.5
  $ ../configure --help
- $ ../configure
+ $ ../configure --disable-detailed-messages
  $ cd src
  $ make
  $ make feram_mpi   # OPTIONAL
@@ -401,13 +401,12 @@ filenames of output files are starting from 'foo123',
 e.g. foo123.avg, foo123.320K0050000.coord,
 foo123.dipole-dipole-long.dat, etc.
 
-=== Standard output (stdout)
-To stdout, feram reports the energies of every iterations.
+=== foo123.log
+To foo123.log, feram reports the energies of every iterations.
 For debugging, src/plot.gp can plot the energies.
-Usually, you can throw away the stdout to /dev/null .
- $ feram foo123 > feram.log
+Use --disable-detailed-messages for configure to suppress this huge output.     !!!!!IMPORTANT!!!!!
+ $ feram foo123
  $ gnuplot plot.gp
- $ feram foo123 > /dev/null
 
 === foo123.avg
 After n_thermalize iterations of thermalization,

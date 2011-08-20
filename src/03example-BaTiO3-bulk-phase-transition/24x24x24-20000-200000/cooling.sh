@@ -1,6 +1,6 @@
 #!/bin/sh
 # cooling.sh
-# Time-stamp: <2011-02-01 18:28:49 takeshi>
+# Time-stamp: <2011-08-20 22:49:06 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f cooling.avg
@@ -65,7 +65,7 @@ EOF
     if [ -r "$prev_coord" ]; then
         ln -sf "$prev_coord" $filename.restart
     fi
-    ../../feram $filename > /dev/null
+    ../../feram $filename
     prev_coord=$filename.`printf '%.10d' $n_coord_freq`.coord
     cat $filename.avg >> cooling.avg
     temperature=`perl -e "print $temperature + $temperature_step"`
