@@ -1,3 +1,0 @@
-#!/bin/sh
-# mpdtrace || mpdboot
-mpirun -np 4 ./abinip < perovskite-tetragonal.files > perovskite-tetragonal.log
