@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-06-20 11:40:46 t-nissie>
+# Time-stamp: <2011-08-20 21:35:45 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -78,6 +78,7 @@ plot.gp \
 slicer.rb \
 splot.gp \
 03example-BaTiO3-bulk-phase-transition \
+10example-PbTiO3-DDB2short \
 11example-BaTiO3-new-hysteresis-loop \
 15example-BaTiO3-new-param-defects
 
