@@ -52,11 +52,36 @@ http://sourceforge.net/projects/loto/files/feram/
    * PGI Fortran (pgf95, version 8.0-3 or higher) http://www.pgroup.com/
    * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server  http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
 
-=== feramの使用と開発にあると便利なもの
+=== feramの使用にあると便利なもの
  * gnuplot (version 4.2 or higher)
  * Ruby (version 1.8.6 or higher)
+
+=== feramの開発にあると便利なもの
  * autoconf (version 2.61 or higher)
  * automake (version 1.10 higher)
+
+=== 簡単なインストール方法
+ $ tar zxf feram-X.YY.ZZ.tar.gz
+ $ cd feram-X.YY.ZZ
+ $ mkdir Linux-i686-gfortran-4.3.5
+ $ cd Linux-i686-gfortran-4.3.5
+ $ ../configure --help
+ $ ../configure
+ $ cd src
+ $ make
+ $ make feram_mpi   # OPTIONAL
+ $ ls -l feram*
+ $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
+ $ cd 11example-BaTiO3-new-hysteresis-loop
+ $ ../feram hysteresis    # テスト実行
+ $ gnuplot hysteresis.gp  # ヒステリシス・ループのプロット
+ $ gv hysteresis.eps      # プロットをプレビュー
+
+=== configureのオプションの例
+ $ ../configure FC=ifort --with-fft=mkl
+ $ ../configure FC=xf90 --host=SR11000 --disable-detailed-messages
+ $ ../configure FC=gfortran
+ $ ../configure FC=ifort LDFLAGS=-L/home/hitomi/Linux/lib CPPFLAGS=-I/home/hitomi/Linux/include
 
 == 入力ファイル
 === パラメータファイル
@@ -69,8 +94,8 @@ feram用のパラメータファイルはコメント行と 'tag = value(s)' と
 '#' で始まる行はコメント行で，無視されます．
 空行も無視されます．
  # This is a comment line.
-
-
+ 
+ 
  # Here are two more
  # comment lines.
 
@@ -78,7 +103,7 @@ feram用のパラメータファイルはコメント行と 'tag = value(s)' と
 タグ行には前後がスペースで挟まれた等号 ' = ' が入っていなくてはいけません．
 次のとおり，その左にタグを右に設定値を置きます：
  tag = 1.0
-
+ 
  tag = -2.0 -3.0 -4.0
  tag =  5.0  6.0  7.0
 
@@ -93,7 +118,7 @@ feram用のパラメータファイルはコメント行と 'tag = value(s)' と
 'lf'を指定すると蛙飛び (leapfrog) 法を使ったミクロカノニカルアンサンブルでの分子動力学シミュレーションを行います．
 
  method = 'mc'
-'mc'を指定するとモンテカルロシミュレーションを行います． まだインプリメントされていません．
+'mc'を指定するとモンテカルロシミュレーションを行います．まだインプリメントされていません．
 
  method = 'hl'
 'hl'を指定すると外部電場を変化させながらヒステリシスループ (hysteresis loop) のシミュレーションを行います．
@@ -123,6 +148,7 @@ atomic mass unitで．
 ===== acoustic_mass_amu
 音響変位w(R)の有効質量．
 atomic mass unitで．
+まだインプリメントされていません．
 
 ===== Q_Nose
 能勢のQ．MD計算に必要なパラメータで，熱欲と系とのカップリングの強さを表す．
@@ -174,8 +200,9 @@ thermalizeにかけるステップ数，物理量の平均を取るのにかけ�
  n_hl_freq    =  5000
 
 ===== n_hysteresis_loop_continue
-You can restart and continue a hysteresis-loop calculation from the
-n_hysteresis_loop_continue-th iteration.
+ヒステリシスループ (hysteresis loop) のシミュレーションを
+n_hysteresis_loop_continue回目のイテレーションから
+再開することができます．
  n_hysteresis_loop_continue = 20000
 
 ===== external_E_field
@@ -212,6 +239,12 @@ u^8の係数．
  B1yy =  -19.3  [eV/Angstrom^2]
  B4yz =   -7.75 [eV/Angstrom^2]
 
+===== seed
+疑似乱数生成器 (RNG) のための２つの整数の種を指定します．
+Marsaglia-Tsang 64-bit uiniversal RNG が使われています．
+ seed = 143456789 987654321
+デフォルトの値は123456789 987654321です．
+
 ===== init_dipo_avg, init_dipo_dev
 dipoleの初期状態の平均値とばらつき具合．
 ２つの値が
@@ -222,7 +255,9 @@ dipoleの初期状態の平均値とばらつき具合．
  0.11 -0.02  0.01
  0.08  0.02 -0.03
  0.12 -0.01  0.00
-などとなるだろう．
+などとなるだろう．.restartファイルが見つからない場合に限り
+init_dipo_avgタグとinit_dipo_devタグとで指定される初期状態が
+疑似乱数を使って作られます．
 
 ====== Z_star
 unit cellあたりの有効電荷．単位はe．
@@ -244,11 +279,13 @@ src/dipole-dipole-long-range.Fで双極子のエワルト和に使われる任�
 デフォルトは.false.である．
 
 === .restart input file
-If you executed feram with a parameter file "cooling002-345K" as
+feramを次のようにパラメータ・ファイル "cooling002-345K" を引数として
  $ feram cooling002-345K
-feram searchs for the "cooling002-345K.restart" file as an
-initial configurations. If there is no such file, feram
-starts from a random configurations.
+と実行すると，feramは "cooling002-345K.restart" ファイルを探して，
+見つかればそれを初期状態として用います．.restartファイルの書式は
+.coordファイルと同じです．.restartファイルが見つからない場合は
+init_dipo_avgタグとinit_dipo_devタグとで指定される初期状態が
+疑似乱数を使って作られます．
 
 === .defects input file
 If you executed feram with a parameter file "cooling002-345K" as
@@ -295,6 +332,70 @@ Position must be given in the unit of a0.
 
 If feram cannot find both ionic.configuration and local.field,
 it will set local.field to ZERO.
+
+
+
+== 出力ファイル
+feram が feram foo123 と実行されたなら
+出力ファイルは foo123. で始まります．
+すなわち，foo123.avg, foo123.320K0050000.coord,
+foo123.dipole-dipole-long.dat などです．
+
+=== 標準出力 (stdout)
+feram は標準出力 stdout にイテレーション毎にエネルギーを書き出します．
+デバッグのときに src/plot.gp を使ってプロットしてみるのもよいでしょう．
+ふだんは /dev/null に捨ててしまってかまいません．
+configureの時に--disable-detailed-messagesオプションでこの標準出力に
+書き出す量を少なくすると実行が高速化されます．
+ $ feram foo123 > feram.log
+ $ gnuplot plot.gp
+ $ feram foo123 > /dev/null
+
+=== foo123.avg
+n_thermalizeイテレーションの恒温化の後，
+物性値の平均がn_averageイテレーションに渡って計算されます．
+例えば温度を変えた入力ファイルで複数の計算をして，
+それらの.avgファイルをまとめてプロットすれば
+物性値の温度依存性を見ることができます．
+.avgファイルの詳しい内容は src/average_module.F の最後を見て下さい．
+
+=== foo123.hl
+ヒステリシスループのシミュレーションの method = 'hl' の
+ときには，n_hl_freqイテレーション毎に.hlファイルに物性値が
+書き出されます．.avgファイルは作られません．
+詳細は src/hysteresis_loop.F を見て下さい．
+
+=== foo123.nnnnnnnnnn.coord
+n_coord_freqイテレーション毎に個のファイルに系のスナップショットが記録されます．
+nnnnnnnnnnがイテレーションです．このファイルは src/slice.rb (Ruby script) や
+cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
+(Bourne Shell scripts) で可視化することができます．停電や時間切れなどで
+計算が止まってしまった場合には，このファイルを.restartファイルとして計算を
+再開することができます．
+
+
+== シミュレーションの例
+=== 降温シミュレーションでの各種エネルギー対MDステップのグラフ
+\Fig:MD doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
+  50,000 MDMDステップ毎に段階的に降温するシミュレーション．
+  各種エネルギー対MDステップ．
+/Fig:MD
+=== バルクBaTiO3の歪みと誘電率の温度依存性
+\Fig:strain doc/figures/strain-susceptibility.jpg
+  バルクBaTiO3の歪みと誘電率の温度依存性．３回の相転移が見える．
+  誘電率は双極子の揺らぎ (fluctuation) から計算している．
+  ディレクトリ feram-X.YY.ZZ/src/03example-BaTiO3-bulk-phase-transition/ を見よ．
+/Fig:strain
+=== バルクBaTiO3のヒステリシスループの温度依存性
+\Fig:epit doc/figures/bulk-two-box.jpg
+  バルクBaTiO3のヒステリシスループの温度依存性．
+  常誘電→強誘電の相転移がわかる．
+/Fig:epit
+=== Hysteresis loops for epitaxially constrained and "free" BaTiO3 film capacitors
+\Fig:epit-vs-free doc/figures/epit-vs-free-hysteresis-box.jpg
+  Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and
+  (b) "free" films of various thickness l and with dead layer d at 100 K.
+/Fig:epit-vs-free
 
 
 == メーリングリスト
@@ -351,16 +452,6 @@ feramのドキュメントで引用した下記の図版についてはその作
  * doc/figures/TsurumiFig3.eps and doc/figures/TsurumiFig3.jpg are cited from
    [Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya. and Masaki Daimon:
    Jpn. J. Appl. Phys. 33, 1959 (1994)].
-
-=== 擬ポテンシャル
-Teter's "extended norm-conserving" LDA 擬ポテンシャル４つは
-http://www.abinit.org/downloads/psp-links/psp-links/lda_ex
-からのものです．これらはGPLの下で再配布可能です．
- 56ba.psp.mod
- 82pb.960808c.mod
- 22ti.psp.mod
- 8o.phoney.mod
-
 
 == 作者
 西松 毅 (t-nissie{at}imr.tohoku.ac.jp)
