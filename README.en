@@ -86,11 +86,11 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  $ make
  $ make feram_mpi   # OPTIONAL
  $ ls -l feram*
- $ cp -r ../../src/01example-BaTiO3-epit-hysteresis-loop .
- $ cd 01example-BaTiO3-epit-hysteresis-loop
- $ ./externalE.sh         # test run
+ $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
+ $ cd 11example-BaTiO3-new-hysteresis-loop
+ $ ../feram hysteresis    # テスト実行
  $ gnuplot hysteresis.gp  # plot a hysteresis loop
- $ gv hysteresis.gp       # preview
+ $ gv hysteresis.eps      # preview
 
 === Available platforms and compilers
 ==== Intel Fortran Compiler with the Intel MKL FFTW wrappers
@@ -164,15 +164,15 @@ How to determine the parameters is described in parameters/parameters.html.
 Lines beginning with '#' are ignored.
 Blank lines are also ignored.
  # This is a comment line.
-
-
+ 
+ 
  # Here are two more
  # comment lines.
 
 ==== Tags
 You must put ' = ', space-equal-space, between tag and value(s) as:
  tag = 1.0
-
+ 
  tag = -2.0 -3.0 -4.0
  tag =  5.0  6.0  7.0
 
@@ -217,6 +217,7 @@ In atomic mass unit.
 ===== acoustic_mass_amu
 Effective mass of w(R), the acoustic displacement of the unit cell R.
 In atomic mass unit.
+It is NOT IMPLEMENTED YET.
 
 ===== Q_Nose
 Q_Nose for Nose-Poincare thermostat.
@@ -402,20 +403,28 @@ foo123.dipole-dipole-long.dat, etc.
 
 === Standard output (stdout)
 To stdout, feram reports the energies of every iterations.
-src/plot.gp can plot the energies:
+For debugging, src/plot.gp can plot the energies.
+Usually, you can throw away the stdout to /dev/null .
  $ feram foo123 > feram.log
  $ gnuplot plot.gp
+ $ feram foo123 > /dev/null
 
 === foo123.avg
-Averages for each temperature.
+After n_thermalize iterations of thermalization,
+feram averages properties for n_average iterations.
+For example, by combining .avg files of some
+calculations altering temperature (kelvin tag),
+you can see temperature dependence of properties.
 Please see the end of src/average_module.F.
 
 === foo123.hl
-In the case of method = 'hl', a simulation of hysteresis loop, one .hl file will be created instead of a .avg file.
+In the case of method = 'hl', a simulation of hysteresis loop,
+one .hl file will be created instead of a .avg file.
+In .hl file, properties will be recorded in every n_hl_freq iterations.
 Please see src/hysteresis_loop.F.
 
 === foo123.nnnnnnnnnn.coord
-Snapshot of dipoles at ttt Kelvin and nnnnnnnnnn-th iteration.
+Snapshot of dipoles at nnnnnnnnnn-th iteration.
 This file can be visualized with slice.rb (Ruby script) and
 cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
 (Bourne Shell scripts). cross-section-p.sh and cross-section-dVddi.sh
@@ -454,8 +463,9 @@ calculations and the other calculations.
 === Hysteresis loops for epitaxially constrained and "free" BaTiO3 film capacitors
 \Fig:epit-vs-free doc/figures/epit-vs-free-hysteresis-box.jpg
   Calculated hysteresis loops for capacitors with (a) epitaxially constrained films, and
-  (b) "free" films of various thickness <i>l</i> and with dead layer <i>d</i> at 100 K.
+  (b) "free" films of various thickness l and with dead layer d at 100 K.
 /Fig:epit-vs-free
+
 
 == Mailing list
  * Description: Discussions and announcements of loto, feram and compasses programs
@@ -515,13 +525,6 @@ Authors and/or publishers of the papers have their copyrights for the following 
    [Takaaki Tsurumi, Kouji Soejima, Toshio Kamiya. and Masaki Daimon:
    Jpn. J. Appl. Phys. 33, 1959 (1994)].
 
-=== pseudopotentials
-Four Teter's "extended norm-conserving" LDA pseudopotential files are coming from
-http://www.abinit.org/downloads/psp-links/psp-links/lda_ex . They are distributed under GPL.
- 56ba.psp.mod
- 82pb.960808c.mod
- 22ti.psp.mod
- 8o.phoney.mod
 
 == Author
 Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
