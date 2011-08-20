@@ -1,12 +1,14 @@
 = Changes for feram
-== 0.15.00
+== 0.15.01 (public release)
+ * README.ja, a Japanese document is ready.
+
  * feram_mpi.F, MPI job parallel. You can "make feram_mpi".
 
  * feram does not read from stdin anymore.
 
  * Log goes to foo.log, not to stdout anymore.
 
-== 0.14.06
+== 0.14.06 (private release)
  * New tag seed, two integers for Marsaglia-Tsang 64-bit uiniversal RNG (random number generator).
    Now, we start to use built-in RNG. "feram foo bar" and "feram bar foo" must have same results.
 
@@ -24,4 +26,6 @@
  * dVddi-unharmonic.F and energy_module.F
    Add PSUM() directives for SR11000.
 
-== 0.14.01
+ * Start to write Changes.
+
+== 0.13.05 (public release)
