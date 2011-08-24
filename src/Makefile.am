@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-08-24 17:11:26 takeshi>
+# Time-stamp: <2011-08-24 17:15:11 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -23,7 +23,6 @@ feram_SRCS = average_module.F \
 	dipole-dipole.F \
 	elastic.F \
 	feram.F \
-	feram_mpi.F \
 	feram_common.F \
 	fft.F \
 	hysteresis_loop.F \
@@ -78,6 +77,7 @@ inhomo-K.gp \
 plot.gp \
 slicer.rb \
 splot.gp \
+feram_mpi.F \
 03example-BaTiO3-bulk-phase-transition \
 10example-PbTiO3-DDB2short \
 11example-BaTiO3-new-hysteresis-loop \
