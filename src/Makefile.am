@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-08-20 21:35:45 takeshi>
+# Time-stamp: <2011-08-24 17:11:26 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -23,6 +23,7 @@ feram_SRCS = average_module.F \
 	dipole-dipole.F \
 	elastic.F \
 	feram.F \
+	feram_mpi.F \
 	feram_common.F \
 	fft.F \
 	hysteresis_loop.F \
