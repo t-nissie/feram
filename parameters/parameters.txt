@@ -88,7 +88,7 @@ BaTiO3-WuCohenGGA/perovskite-B11-12.gp as follows:
  % gv perovskite-B11-12.eps
 
 \Fig:B11-12 BaTiO3-WuCohenGGA/perovskite-B11-12.jpg
-  Fig. 2. Quadratic fitting of calculated strain dependence of Etot-E_0.
+  Quadratic fitting of calculated strain dependence of Etot-E_0.
   From the centrosymmetric cubic structure, constraint-tetragonal strain is applied.
 /Fig:B11-12
 
@@ -105,7 +105,7 @@ BaTiO3-WuCohenGGA/perovskite-B44.gp  files as follows:
  B44 = 49.2408864348646 [eV]
  % gv perovskite-B44.eps
 \Fig:B44 BaTiO3-WuCohenGGA/perovskite-B44.jpg
-  Fig. 3. Quadratic fitting of calculated strain dependence of Etot-E_0.
+  Quadratic fitting of calculated strain dependence of Etot-E_0.
   From the centrosymmetric cubic structure, rhombohedral strain is applied.
 /Fig:B44
 
@@ -235,11 +235,12 @@ then we can calculate other points.
 === Eigenvalues and eigenvectors of IFC matrices
 Using feram-X.YY.ZZ/src/diagonalize15x15.F,
 eigenvalues and eigenvectors of IFC matrices
-of each k-point are calculated. Dashed lines in
-Fig:IFC (B) is a plot of the eigenvalues of
+of each k-point are calculated. Dashed lines
+in Fig:IFC (B) is a plot of the eigenvalues of
 IFC matrices along symmetric axes in the
-first Brillouin zone. Sorry, but this document
-does not explain how to plot it.
+first Brillouin zone.
+How to plot eigenvalues of IFC matrices is described in
+http://forum.abinit.org/viewtopic.php?f=12&t=1273 .
 
  % ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
  acell =    3.98596   3.98596   3.98596 [Angstrom]
@@ -496,12 +497,15 @@ end
 u=Ulmul.new()
 u.subs_rules = lambda{|s|
   s.
+  gsub(/&/,'&amp;').
+  gsub(/</,'&lt;').
+  gsub(/>/,'&gt;').
   gsub(/(BaTiO3-WuCohenGGA\/\S*(in|files|nqs|rb|delta|gp|out|fhi|param|Makefile))/, '<a href="\1">\1</a>').
-  gsub(/(brdmin-6\.2\.3-2011-07-01\.patch)/,                                    '<a href="\1">\1</a>').
+  gsub(/(brdmin-6\.2\.3-2011-07-01\.patch)/,                                        '<a href="\1">\1</a>').
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2')}
 
 u.parse(ARGF)
-puts u.file(["style.css"],[],"Takeshi Nishimatsu")
+puts u.file(stylesheets=["style.css"],javascripts=[],name="Takeshi Nishimatsu",language="en")
 
 # Local variables:
 #   mode: RD
