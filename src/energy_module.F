@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2011-06-18 19:17:58 t-nissie>
+! Time-stamp: <2011-08-29 12:41:32 z48325w>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -82,7 +82,7 @@ contains
     !--- arguments -------------------------------------
     type(Param_type),  intent(in)    :: p
     type(Coord_type),  intent(inout) :: c
-    type(Energy_type), intent(out)   :: e
+    type(Energy_type), intent(inout) :: e
     integer fd
     !--- local -----------------------------------------
     character(30), parameter :: fmt = "(a15,f18.12,' [eV/u.c.]')"
