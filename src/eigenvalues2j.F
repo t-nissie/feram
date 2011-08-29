@@ -1,5 +1,5 @@
 ! eigenvalues2j.F -*-f90-*-
-! Time-stamp: <2011-06-16 13:25:33 takeshi>
+! Time-stamp: <2011-08-29 14:26:27 z48325w>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -8,7 +8,7 @@
 #endif
 #include "define.h"
 
-#if defined(__PGI) || defined(SR11000)
+#if defined(__PGI) || defined(SR11000) || defined(__sparc)
 #  define command_argument_count iargc
 #  define get_command_argument getarg
 #endif
