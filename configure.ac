@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-06-18 19:33:13 t-nissie>
+dnl Time-stamp: <2011-08-29 11:59:34 z48325w>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -59,6 +59,12 @@ case "$FC" in
   xf90)
     test -n "$FCFLAGS" || FCFLAGS="-64 -Os -parallel=4\
       -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist"
+    ;;
+  frt)
+    test -n "$FCFLAGS" || FCFLAGS="-Kimpact"
+    if test "$enable_openmp" != "no"; then
+      FCFLAGS="$FCFLAGS"
+    fi
     ;;
   *xlf*)
     AC_MSG_ERROR([C preprocessor invoked from IBM XL Fortran cannot process comment lines in define.h and config.h properly, so far.])
@@ -132,13 +138,15 @@ esac
 
 ## fixed-form or free-form
 FCFLAGS_FIXEDFORM=$FCFLAGS
-AC_FC_FREEFORM()
 case "$FC" in
-  g95)
-    FCFLAGS="$FCFLAGS -ffree-line-length-huge"
+  g95|gfortran)
+    FCFLAGS="$FCFLAGS -ffree-form -ffree-line-length-huge"
     ;;
-  gfortran)
-    FCFLAGS="$FCFLAGS -ffree-line-length-none"
+  frt)
+    FCFLAGS="$FCFLAGS -Free"
+    ;;
+  *)
+    AC_FC_FREEFORM()
     ;;
 esac
 
