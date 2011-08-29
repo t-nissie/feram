@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-08-29 11:59:34 z48325w>
+dnl Time-stamp: <2011-08-29 12:37:44 z48325w>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -61,9 +61,9 @@ case "$FC" in
       -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist"
     ;;
   frt)
-    test -n "$FCFLAGS" || FCFLAGS="-Kimpact"
+    test -n "$FCFLAGS" || FCFLAGS="-Kimpact -Am"
     if test "$enable_openmp" != "no"; then
-      FCFLAGS="$FCFLAGS"
+      FCFLAGS="$FCFLAGS -KOMP"
     fi
     ;;
   *xlf*)
