@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-08-29 12:37:44 z48325w>
+dnl Time-stamp: <2011-08-29 21:06:43 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -140,7 +140,7 @@ esac
 FCFLAGS_FIXEDFORM=$FCFLAGS
 case "$FC" in
   g95|gfortran)
-    FCFLAGS="$FCFLAGS -ffree-form -ffree-line-length-huge"
+    FCFLAGS="$FCFLAGS -ffree-form -ffree-line-length-none"
     ;;
   frt)
     FCFLAGS="$FCFLAGS -Free"
