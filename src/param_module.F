@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2011-08-27 18:49:22 takeshi>
+! Time-stamp: <2011-09-04 21:01:55 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -100,17 +100,18 @@ module Param_module
   end type Param_type
 
 contains
-  subroutine read_Param(p)
+  subroutine read_Param(p,fn)
     implicit none
     type(Param_type),intent(inout) :: p
+    character(len=*),intent(in)    :: fn
     character (len=300) str
     character (len=30)  name, dmy1, dmy2
     integer io, line_number, i
     real*8 mass_amu
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'read_Param().')
-    open(UNIT_INPUT, FILE=p%filename, STATUS='OLD')
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'INPUT_FILENAME', trim(p%filename))
+    open(UNIT_INPUT, FILE=fn, STATUS='OLD')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'INPUT_FILENAME', trim(fn))
 
     ! Default parameters
     p%method = 'md'
@@ -188,7 +189,7 @@ contains
        case('bulk_or_film')
           read(str,*) dmy1, dmy2, p%bulk_or_film
           if (p%bulk_or_film.ne.'bulk' .and. p%bulk_or_film.ne.'film' .and. p%bulk_or_film.ne.'epit')  then
-             write(6,'(a,a,i3,a,a)') trim(p%filename),':', line_number, ':', trim(str)
+             write(6,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
              stop ': Input error: bulk_or_film must be bulk, film or epit.'
           end if
        case('L')
@@ -280,7 +281,7 @@ contains
        case('DDB_g')
           read(str,*) dmy1, dmy2, p%DDB_g
        case default
-          write(6,'(a,a,i3,a,a)') trim(p%filename),':', line_number, ':', trim(str)
+          write(6,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
           stop ': Input error: No such parameter'
        end select
        call msg_ez(UNIT_LOG,str)
