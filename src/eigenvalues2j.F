@@ -1,5 +1,5 @@
 ! eigenvalues2j.F -*-f90-*-
-! Time-stamp: <2011-08-29 14:26:27 z48325w>
+! Time-stamp: <2011-09-04 21:02:48 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -33,7 +33,7 @@ program eigenvalues2j
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'eigenvalues2j', &
        & 'calculates coefficients j of short range interaction from eigenvalues if IFC matrices.')
-  call  read_Param(p)
+  call  read_Param(p,p%filename)
   call  make_Param(p)
 
   A = reshape((/ 1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  1.0d0,  0.0d0, &
