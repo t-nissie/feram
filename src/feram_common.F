@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2011-06-16 17:48:22 takeshi>
+! Time-stamp: <2011-09-04 21:07:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -14,16 +14,24 @@ subroutine feram_common(fn)
   type(Coord_type) :: c
   character(len=FILE_NAME_LEN), intent(in) :: fn
   character(len=FILE_NAME_LEN)             :: fn_log
+  integer                                  :: fn_len_trim
   character(len=70) :: message
-  write(fn_log,'(a,a)') trim(fn), '.log'
+
+  fn_len_trim = len_trim(fn)
+  if (fn_len_trim-5 .eq. index(fn,'.feram',back=.true.)) then
+     p%filename = fn(1:fn_len_trim-6)
+  else
+     p%filename = fn
+  end if
+
+  fn_log = trim(p%filename) // '.log'
   open(unit=UNIT_LOG,file=fn_log,status='replace')
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
   call date_and_time2message(message)
   call msg_ez(UNIT_LOG, message)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'INPUT_FILENAME', fn)
 
-  p%filename = fn
-  call  read_Param(p)
+  call  read_Param(p,fn)
   call  make_Param(p)
   call write_Param(p)
   call alloc_Coord(p,c)
