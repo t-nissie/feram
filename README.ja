@@ -280,6 +280,19 @@ feramを次のようにパラメータ・ファイル "cooling002-345K" を引�
 init_dipo_avgタグとinit_dipo_devタグとで指定される初期状態が
 疑似乱数を使って作られます．
 
+=== .localfield input file
+feramを次のようにパラメータ・ファイル "cooling002-345K" を引数として
+ $ feram cooling002-345K
+と実行すると，feramは "cooling002-345K.localfield" ファイルを探して，
+見つかればそのファイルの中で指定されたサイトに指定された局所場をかけます。
+.localfieldファイルの書式は
+  4  6 13   0.00 0.00 0.10
+    :
+ ix iy iz   Ex   Ey   Ez
+    :
+局所場の単位は V/Angstrom　です。このファイルが見つからない場合、
+局所場はもちろんどこのサイトでも０になります。
+
 === .defects input file
 If you executed feram with a parameter file "cooling002-345K" as
  $ feram cooling002-345K
@@ -314,17 +327,6 @@ This file is required for the calculation of the local field.
 
 Position must be given in the unit of a0.
 
-=== local.field input file
- 0  0  0   0.1 -0.1 0.7
- 1  0  0   0.1  0.1 0.7
- 2  0  0   0.1  0.2 0.7
-    :
- position_x position_y position_z    E_local_x E_local_y E_local_z [V/Angstrom]
-    :
- Lx-1       Ly-1       Lz-1          0.1       0.2       0.7
-
-If feram cannot find both ionic.configuration and local.field,
-it will set local.field to ZERO.
 
 
 
@@ -358,7 +360,7 @@ n_thermalizeイテレーションの恒温化の後，
 詳細は src/hysteresis_loop.F を見て下さい．
 
 === foo123.nnnnnnnnnn.coord
-n_coord_freqイテレーション毎に個のファイルに系のスナップショットが記録されます．
+n_coord_freqイテレーション毎にこのファイルに系のスナップショットが記録されます．
 nnnnnnnnnnがイテレーションです．このファイルは src/slice.rb (Ruby script) や
 cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
 (Bourne Shell scripts) で可視化することができます．停電や時間切れなどで
