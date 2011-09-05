@@ -1,5 +1,7 @@
 o extract dependency automatically in src/
 
+o Error messages to stderr.
+
 o Copyright
 
 o Examples
