@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2011-06-16 15:01:30 takeshi>
+! Time-stamp: <2011-09-05 11:43:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -9,25 +9,36 @@ subroutine initialize_E_field(p,c)
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
-  integer ix, iy, iz, ios, dummy_x, dummy_y, dummy_z
-  character(110) message
-  real*8 normal_dist
+  integer ix, iy, iz, ios, line_number
+  character (len=300):: str
+  character (len=1)  :: tmp
+  character(len=110) :: message
+  real*8             :: normal_dist, local_E_field(3)
   external normal_dist
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
   c%E_field(:,:,:,:) = 0.0d0
 
-  open(unit=UNIT_SYSTEM, file='local.field', status='old', action='read', iostat=ios)
+  open(unit=UNIT_SYSTEM, file=(trim(p%filename)//'.localfield'), status='old', action='read', iostat=ios)
   if (ios.eq.0) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', 'local.field was found.')
-     do iz = 0, p%Lz-1
-        do iy = 0, p%Ly-1
-           do ix = 0, p%Lx-1
-              read(UNIT_SYSTEM,*) dummy_x, dummy_y, dummy_z, &
-                   c%E_field(ix,iy,iz,1),c%E_field(ix,iy,iz,2),c%E_field(ix,iy,iz,3)
-           end do
-        end do
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.localfield was found.')
+     line_number = 0
+     do
+        read(UNIT_SYSTEM, '(a)', IOSTAT=ios) str
+        if (ios.ne.0) exit
+        line_number = line_number + 1
+        read(str,*,IOSTAT=ios) tmp
+        if (ios.ne.0 .or. tmp.eq.'#') cycle
+        read(str,*,IOSTAT=ios) ix, iy, iz, local_E_field(:)
+        if (ios.eq.0) then
+           c%E_field(ix,iy,iz,:) = local_E_field(:)
+        else
+           call msg(UNIT_LOG, trim(p%filename)//'.localfield', line_number, 'There is something wrong in this line: ', trim(str))
+           call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'there is something wrong in '//trim(p%filename)//'.localfield')
+           stop 1
+        end if
      end do
+     call msg(UNIT_LOG, __FILE__, __LINE__, trim(p%filename)//'.localfield', ' is found and read successfully.')
      close(UNIT_SYSTEM)
   else
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', 'local.field was NOT found.')
