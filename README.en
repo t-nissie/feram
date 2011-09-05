@@ -383,17 +383,18 @@ This file is required for the calculation of the local field.
 
 Position must be given in the unit of a0.
 
-=== local.field input file
- 0  0  0   0.1 -0.1 0.7
- 1  0  0   0.1  0.1 0.7
- 2  0  0   0.1  0.2 0.7
+=== .localfield input file
+If you executed feram with a parameter file "cooling002-345K" as
+ $ feram cooling002-345K
+feram searchs for the "cooling002-345K.localfield" file as
+information of local exectric field. Format of .localfield file is:
+  4  6 13   0.00 0.00 0.10
     :
- position_x position_y position_z    E_local_x E_local_y E_local_z [V/Angstrom]
+ ix iy iz   Ex   Ey   Ez
     :
- Lx-1       Ly-1       Lz-1          0.1       0.2       0.7
-
-If feram cannot find both ionic.configuration and local.field,
-it will set local.field to ZERO.
+The unit of local field is V/Angstrom.
+If feram cannot find both ionic.configuration and .localfield,
+it will set the local field to ZERO for all sites.
 
 == Output files
 If you execute the feram like `feram foo123`,
