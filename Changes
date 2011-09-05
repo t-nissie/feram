@@ -1,4 +1,9 @@
 = Changes for feram
+== 0.16.0x
+ * Use foo.localfield file instead of local.field.
+
+ * You can use both foo and foo.feram for the input parameter file.
+
 == 0.15.01 (public release)
  * README.ja, a Japanese document is ready.
 
