@@ -1,3 +1,7 @@
+ToDo
+
+o Quit to use libblaslapack/
+
 o extract dependency automatically in src/
 
 o Error messages to stderr.
@@ -5,6 +9,8 @@ o Error messages to stderr.
 o Copyright
 
 o Examples
+
+o When n_hysteresis_loop_continue is given, the .hl file must no REPLACEd, must be APPENDed.
 
 o FILENAME.avgの出力の見直し polarization -> <u_z> とか
 
