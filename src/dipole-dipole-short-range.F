@@ -1,5 +1,5 @@
 ! dipole-dipole-short-range.F -*-f90-*-
-! Time-stamp: <2011-06-15 19:02:40 takeshi>
+! Time-stamp: <2011-09-13 15:39:45 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -74,21 +74,21 @@ subroutine dipole_dipole_short_range(p,short_range)
      end do
   end do
 
-  write(message,fmt) 'TMPreal(   0,0,0,1,1) = P_kappa2 = ', TMPreal(     0,0,0,1,1)
+  write(message,fmt) 'TMPreal(   0,0,0,1,1) = 2P_kappa2 = ', TMPreal(     0,0,0,1,1)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) 'TMPreal(Lx-1,0,0,3,3) = j(1)     = ', TMPreal(p%Lx-1,0,0,3,3)
+  write(message,fmt) 'TMPreal(Lx-1,0,0,3,3) =  j(1)     = ', TMPreal(p%Lx-1,0,0,3,3)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) 'TMPreal(   0,0,1,3,3) = j(2)     = ', TMPreal(     0,0,1,3,3)
+  write(message,fmt) 'TMPreal(   0,0,1,3,3) =  j(2)     = ', TMPreal(     0,0,1,3,3)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) 'TMPreal(   1,0,1,3,3) = j(3)     = ', TMPreal(     1,0,1,3,3)
+  write(message,fmt) 'TMPreal(   1,0,1,3,3) =  j(3)     = ', TMPreal(     1,0,1,3,3)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) 'TMPreal(   1,1,0,3,3) = j(4)     = ', TMPreal(     1,1,0,3,3)
+  write(message,fmt) 'TMPreal(   1,1,0,3,3) =  j(4)     = ', TMPreal(     1,1,0,3,3)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) 'TMPreal(   1,0,1,3,1) = j(5)     = ', TMPreal(     1,0,1,3,1)
+  write(message,fmt) 'TMPreal(   1,0,1,3,1) =  j(5)     = ', TMPreal(     1,0,1,3,1)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) 'TMPreal(   1,1,1,3,3) = j(6)     = ', TMPreal(     1,1,1,3,3)
+  write(message,fmt) 'TMPreal(   1,1,1,3,3) =  j(6)     = ', TMPreal(     1,1,1,3,3)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) 'TMPreal(   1,1,1,3,1) = j(7)     = ', TMPreal(     1,1,1,3,1)
+  write(message,fmt) 'TMPreal(   1,1,1,3,1) =  j(7)     = ', TMPreal(     1,1,1,3,1)
   call msg_ez(UNIT_LOG, message)
 
   write(message,fmt) '(a) Gamma = ', p%P_kappa2+2*p%j(1)+p%j(2)+4*p%j(3)+2*p%j(4)+4*p%j(6)
