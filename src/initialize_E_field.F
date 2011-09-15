@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2011-09-05 11:43:09 takeshi>
+! Time-stamp: <2011-09-15 19:29:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -38,7 +38,8 @@ subroutine initialize_E_field(p,c)
            stop 1
         end if
      end do
-     call msg(UNIT_LOG, __FILE__, __LINE__, trim(p%filename)//'.localfield', ' is found and read successfully.')
+     call       msg(UNIT_LOG, trim(p%filename)//'.localfield', line_number, 'EOF', 'reached.')
+     call       msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.localfield was found and read successfully.')
      close(UNIT_SYSTEM)
   else
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', 'local.field was NOT found.')
