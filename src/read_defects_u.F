@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2011-09-05 10:11:14 takeshi>
+! Time-stamp: <2011-09-15 19:14:18 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -40,7 +40,8 @@ subroutine read_defects_u(p,c)
            stop 1
         end if
      end do
-     call msg(UNIT_LOG, __FILE__, __LINE__, trim(p%filename)//'.defects', ' is found and read successfully.')
+     call       msg(UNIT_LOG, trim(p%filename)//'.defects', line_number, 'EOF', 'reached.')
+     call       msg(UNIT_LOG, __FILE__, __LINE__, 'DEFECTS', 'were read successfully.')
      close(UNIT_DEFECTS_U)
   else
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE_NOT_FOUND', '.defects file was NOT found. No defects was created.')
