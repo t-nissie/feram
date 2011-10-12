@@ -1,0 +1,5 @@
+This 15example-BaTiO3-new-param-defects
+is not a good example. In feram-0.16.01,
+you cannot use .defects file with
+bulk_or_film = 'epit'. Please wait for
+future update.
