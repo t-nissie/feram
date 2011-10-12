@@ -79,7 +79,9 @@ http://sourceforge.net/projects/loto/files/feram/
 == 入力ファイル
 === パラメータファイル
 feram用のパラメータファイルはコメント行と 'tag = value(s)' というタグ行
-からなるテキストファイルです．パラメータファイルのファイル名は任意です．
+からなるテキストファイルです．パラメータファイルのファイル名を
+foo123 または foo123.feram とした場合、出力ファイルは
+foo123.log, foo123.cood, ... などとなります。
 それぞれのパラメータをどう決定するかは parameters/parameters.html
 に説明があります．
 
