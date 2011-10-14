@@ -1,0 +1,4 @@
+# @$-s /bin/sh
+# @$-q f4 -e hysteresis.stderr -o hysteresis.stdout -lp 4
+cd $QSUB_WORKDIR
+PARALLEL=4 OMP_NUM_THREADS=4 ../feram hysteresis
