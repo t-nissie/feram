@@ -131,7 +131,7 @@ environment variables.
  $ ../configure FC=pgf95 LDFLAGS=-L/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/lib CPPFLAGS=-I/home/takeshi/x86_64-Linux/fftw3-pgcc-pgcpp-pgf77/include
  $ make
  $ cd examples/BaTiO3-bulk-16x16x16-local.field-new-format/
- $ OMP_NUM_THREADS=6 ../../pgf95/src/feram foo123 > feram.log
+ $ OMP_NUM_THREADS=3 ../../pgf95/src/feram foo123.feram &
 
 ==== IA-64 GNU/Linux (appc in IMR)
 On IA-64, feram may be compiled with gfortran or Intel Fortran (ifort). For example:
@@ -148,10 +148,8 @@ On x86 32-bit GNU/Linux, feram may be compiled with gfortran and Intel Fortran (
 and PGI Fortran (pgf95).
 
 == Execution
-feram can read parameters from the standard input (stdin)
-as well as from the file(s) given by the argument(s).
- $ feram < input_file
- $ feram foo bar baz
+feram reads parameter files specified as command-line arguments.
+ $ feram foo.feram bar.feram baz.feram
 
 == Input files
 === parameter file
@@ -195,7 +193,7 @@ Followings are currently available tags.
  method = 'hl'
 'hl' is for a simulation of hysteresis loop.
 In this case, tags of n_average and external_E_field have special meanings (see Fig:external).
-.hl file,e.g. foo.hl, will be created.
+.hl file,e.g. foo123.hl, will be created.
 See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
 
 \Fig:external doc/figures/external-E-field-hysteresis-loop.jpg
@@ -346,16 +344,16 @@ data files for plotting dispersion relation will be written. Default is .false..
 
 
 === .restart input file
-If you executed feram with a parameter file "cooling002-345K" as
- $ feram cooling002-345K
-feram searchs for the "cooling002-345K.restart" file as an
+If you executed feram with a parameter file "foo123.feram" as
+ $ feram foo123.feram
+feram searchs for the "foo123.restart" file as an
 initial configurations. If there is no such file, feram
 starts from a random configurations.
 
 === .defects input file
-If you executed feram with a parameter file "cooling002-345K" as
- $ feram cooling002-345K
-feram searchs for the "cooling002-345K.defects" file as
+If you executed feram with a parameter file "foo123.feram" as
+ $ feram foo123.feram
+feram searchs for the "foo123.defects" file as
 information of defects. If there is no such file, feram
 do not introduce defects.
 
@@ -369,6 +367,19 @@ for simulations of defects in ferroelectrics.
     :
 
 Use src/defects-maker.rb to make this .defects file.
+
+=== .localfield input file
+If you executed feram with a parameter file "foo123.feram" as
+ $ feram foo123.feram
+feram searchs for the "foo123.localfield" file as
+information of local exectric field. Format of .localfield file is:
+  4  6 13   0.00 0.00 0.10
+    :
+ ix iy iz   Ex   Ey   Ez
+    :
+The unit of local field is V/Angstrom.
+If feram cannot find both ionic.configuration and .localfield,
+it will set the local field to ZERO for all sites.
 
 === ionic.configuration file
 (Not implemented yet.)
@@ -386,21 +397,8 @@ This file is required for the calculation of the local field.
 
 Position must be given in the unit of a0.
 
-=== .localfield input file
-If you executed feram with a parameter file "cooling002-345K" as
- $ feram cooling002-345K
-feram searchs for the "cooling002-345K.localfield" file as
-information of local exectric field. Format of .localfield file is:
-  4  6 13   0.00 0.00 0.10
-    :
- ix iy iz   Ex   Ey   Ez
-    :
-The unit of local field is V/Angstrom.
-If feram cannot find both ionic.configuration and .localfield,
-it will set the local field to ZERO for all sites.
-
 == Output files
-If you execute the feram like `feram foo123`,
+If you execute the feram like `feram foo123.feram`,
 filenames of output files are starting from 'foo123',
 e.g. foo123.avg, foo123.320K0050000.coord,
 foo123.dipole-dipole-long.dat, etc.
@@ -409,7 +407,7 @@ foo123.dipole-dipole-long.dat, etc.
 To foo123.log, feram reports the energies of every iterations.
 For debugging, src/plot.gp can plot the energies.
 Use --disable-detailed-messages for configure to suppress this huge output.     !!!!!IMPORTANT!!!!!
- $ feram foo123
+ $ feram foo123.feram
  $ gnuplot plot.gp
 
 === foo123.avg
