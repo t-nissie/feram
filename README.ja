@@ -274,18 +274,35 @@ src/dipole-dipole-long-range.Fで双極子のエワルト和に使われる任�
 デフォルトは.false.である．
 
 === .restart input file
-feramを次のようにパラメータ・ファイル "cooling002-345K" を引数として
- $ feram cooling002-345K
-と実行すると，feramは "cooling002-345K.restart" ファイルを探して，
+feramを次のようにパラメータ・ファイル "foo123.feram" を引数として
+ $ feram foo123.feram
+と実行すると，feramは "foo123.restart" ファイルを探して，
 見つかればそれを初期状態として用います．.restartファイルの書式は
 .coordファイルと同じです．.restartファイルが見つからない場合は
 init_dipo_avgタグとinit_dipo_devタグとで指定される初期状態が
 疑似乱数を使って作られます．
 
+=== .defects input file
+feramを次のようにパラメータ・ファイル "foo123.feram" を引数として
+ $ feram foo123.feram
+と実行すると，feramは "foo123.defects" ファイルを探して，
+見つかればそこに指定された双極子u(R)を固定します．
+このファイルが見つからない場合，上記のような「格子欠陥」は導入されません．
+
+.defects 入力ファイルの書式は
+  0  4  0   0.1  0.1  0.3
+  4  6 13   0.0  0.0  0.3
+    :
+ ix iy iz   u_x  u_z  u_z
+    :
+と固定するu(R)の位置とベクトルを順に１行ずつ書きます．
+
+src/defects-maker.rb はこの .defects 入力ファイルを作るのに便利です．
+
 === .localfield input file
-feramを次のようにパラメータ・ファイル "cooling002-345K" を引数として
- $ feram cooling002-345K
-と実行すると，feramは "cooling002-345K.localfield" ファイルを探して，
+feramを次のようにパラメータ・ファイル "foo123.feram" を引数として
+ $ feram foo123.feram
+と実行すると，feramは "foo123.localfield" ファイルを探して，
 見つかればそのファイルの中で指定されたサイトに指定された局所場をかけます。
 .localfieldファイルの書式は
   4  6 13   0.00 0.00 0.10
@@ -294,24 +311,6 @@ feramを次のようにパラメータ・ファイル "cooling002-345K" を引�
     :
 局所場の単位は V/Angstrom　です。このファイルが見つからない場合、
 局所場はもちろんどこのサイトでも０になります。
-
-=== .defects input file
-If you executed feram with a parameter file "cooling002-345K" as
- $ feram cooling002-345K
-feram searchs for the "cooling002-345K.defects" file as
-information of defects. If there is no such file, feram
-do not introduce defects.
-
-The .defects input file gives positions and fiexed dipole moments u
-for simulations of defects in ferroelectrics.
- 0  0  0   0.1 -0.1  0.7
- 1  0  0   0.1  0.1  0.7
- 2  0  0   0.1  0.2  0.7
-    :
- position_x position_y position_z    fixed_u_x fixed_u_y fixed_u_z [Angstrom]
-    :
-
-Use src/defects-maker.rb to make this .defects file.
 
 === ionic.configuration file
 (Not implemented yet.)
@@ -330,10 +329,8 @@ This file is required for the calculation of the local field.
 Position must be given in the unit of a0.
 
 
-
-
 == 出力ファイル
-feram が feram foo123 と実行されたなら
+feram が feram foo123.feram と実行されたなら
 出力ファイルは foo123. で始まります．
 すなわち，foo123.avg, foo123.320K0050000.coord,
 foo123.dipole-dipole-long.dat などです．
@@ -343,8 +340,8 @@ feramは.logファイルにイテレーション毎にエネルギーを書き�
 デバッグのときに src/plot.gp を使ってプロットしてみるのもよいでしょう．
 configureの時に--disable-detailed-messagesオプションで
 この出力に書き出す量を少なくするとができます．!!!!!重要!!!!!
-そうすると実行も高速化されます．
- $ feram foo123 > feram.log
+そうすると実行も高速化されることもあります．
+ $ feram foo123.feram
  $ gnuplot plot.gp
 
 === foo123.avg
