@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-10-14 18:21:42 z48325w>
+! Time-stamp: <2011-10-14 20:17:37 z48325w>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -222,9 +222,18 @@ subroutine dfftw_plan_dft_r2c_3d(plan, Nx, Ny, Nz, r, c, flags)
   integer*8, intent(in) :: plan
   integer,   intent(in) :: Nx, Ny, Nz
   real*8,    intent(in) :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
-  complex*16,intent(out):: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
+! complex*16,intent(out):: c(0:Nx/2,         0:Ny-1, 0:Nz-1) !CAUTION "/2"!
+  real*8,    intent(out):: c(0:2*(Nx/2+1)-1, 0:Ny-1, 0:Nz-1)
   integer,   intent(in) :: flags
-  call DM_V2DRCF(X, K, N1, N2, ISIN=1, ISN=1, ICON)
+  integer ix, iy, iz, icon
+  do iz = 0, Nz-1
+     do iy = 0, Ny-1
+        do ix = 0, Nx-1
+           c(ix,iy,iz) = r(ix,iy,iz)
+        end do
+     end do
+  end do
+  call DM_V3DRCF(c, 2*(Nx/2+1), Nx, Ny, Nz, 1,  1, ICON)
 end subroutine dfftw_plan_dft_r2c_3d
 
 subroutine dfftw_plan_dft_c2r_3d(plan, Nx, Ny, Nz, c, r, flags)
@@ -234,7 +243,19 @@ subroutine dfftw_plan_dft_c2r_3d(plan, Nx, Ny, Nz, c, r, flags)
   complex*16            :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
   real*8,    intent(out):: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
   integer,   intent(in) :: flags
-  call DM_V2DRCF(X, K, N1, N2, ISIN=1, ISN=-1, ICON)
+  integer ix, iy, iz, icon
+  call DM_V3DRCF(c, 2*(Nx/2+1), Nx, Ny, Nz, 1, -1, ICON)
+  do iz = 0, Nz-1
+     do iy = 0, Ny-1
+        do ix = 0, Nx-1
+           if (mod(ix,2)==0) then
+              r(ix,iy,iz) =  dble(c(ix/2,iy,iz))
+           else
+              r(ix,iy,iz) = aimag(c(ix/2,iy,iz))
+           end if
+        end do
+     end do
+  end do
 end subroutine dfftw_plan_dft_c2r_3d
 #endif
 !
