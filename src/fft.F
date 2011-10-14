@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-06-18 20:28:36 t-nissie>
+! Time-stamp: <2011-10-14 18:21:42 z48325w>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -213,6 +213,29 @@ subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
 
   deallocate(wk1,wk2)
 end subroutine matrix_mpp_fft
+#endif
+!
+
+#if defined(__sparc)
+subroutine dfftw_plan_dft_r2c_3d(plan, Nx, Ny, Nz, r, c, flags)
+  implicit none
+  integer*8, intent(in) :: plan
+  integer,   intent(in) :: Nx, Ny, Nz
+  real*8,    intent(in) :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
+  complex*16,intent(out):: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
+  integer,   intent(in) :: flags
+  call DM_V2DRCF(X, K, N1, N2, ISIN=1, ISN=1, ICON)
+end subroutine dfftw_plan_dft_r2c_3d
+
+subroutine dfftw_plan_dft_c2r_3d(plan, Nx, Ny, Nz, c, r, flags)
+  implicit none
+  integer*8, intent(in) :: plan
+  integer,   intent(in) :: Nx, Ny, Nz
+  complex*16            :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
+  real*8,    intent(out):: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
+  integer,   intent(in) :: flags
+  call DM_V2DRCF(X, K, N1, N2, ISIN=1, ISN=-1, ICON)
+end subroutine dfftw_plan_dft_c2r_3d
 #endif
 !
 
