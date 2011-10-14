@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-10-12 10:37:42 takeshi>
+dnl Time-stamp: <2011-10-14 21:05:03 z48325w>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -61,7 +61,7 @@ case "$FC" in
       -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist"
     ;;
   frt)
-    test -n "$FCFLAGS" || FCFLAGS="-Kimpact -Am"
+    test -n "$FCFLAGS" || FCFLAGS="-Kparallel -Am -SSL2"
     if test "$enable_openmp" != "no"; then
       FCFLAGS="$FCFLAGS -KOMP"
     fi
@@ -97,6 +97,7 @@ case "$host" in
                                      ARG must be one of
                                      fftw3 (default, fast),
                                      mkl (Intel MKL, FFTW3 wrappers to Intel MKL functions),
+                                     ssl2 (Fujitsu SSL II),
                                      acml (AMD Core Math Library, slow), or
                                      no (use the built-in minimal FFT, slow).])])
     case "$with_fft" in
@@ -107,6 +108,8 @@ case "$host" in
       mkl)
         AC_CHECK_LIB(mkl_core, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
                      AC_MSG_ERROR([You need Intel Math Kernel Library (MKL). See config.log.]),[-lmkl_intel_thread -lmkl_gf_lp64])
+        ;;
+      ssl2)
         ;;
       acml*)
         if test "$enable_openmp" == "no"; then
