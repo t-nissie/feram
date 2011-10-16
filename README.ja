@@ -59,7 +59,7 @@ http://sourceforge.net/projects/loto/files/feram/
  $ mkdir Linux-i686-gfortran-4.3.5
  $ cd Linux-i686-gfortran-4.3.5
  $ ../configure --help
- $ ../configure --disable-detailed-messages
+ $ ../configure
  $ cd src
  $ make
  $ make feram_mpi   # OPTIONAL
@@ -72,7 +72,7 @@ http://sourceforge.net/projects/loto/files/feram/
 
 === configureのオプションの例
  $ ../configure FC=ifort --with-fft=mkl
- $ ../configure FC=xf90 --host=SR11000 --disable-detailed-messages
+ $ ../configure FC=xf90 --host=SR11000
  $ ../configure FC=gfortran
  $ ../configure FC=ifort LDFLAGS=-L/home/hitomi/Linux/lib CPPFLAGS=-I/home/hitomi/Linux/include
 
@@ -103,6 +103,18 @@ foo123.log, foo123.cood, ... などとなります。
  tag =  5.0  6.0  7.0
 
 以下に現在feramで利用可能なタグの一覧を示します．
+
+===== verbose
+.logファイル（詳細は「出力ファイル」の項を参照）に出力するメッセージの量を指定します．
+
+ verbose = 0
+0のとき，.logファイルは作られません（未実装）．
+
+ verbose = 1
+1（デフォルト値）のとき，.logファイルには最小限のメッセージのみが出力されます．
+
+ verbose = 2
+2のとき，.logファイルにはイテレーション毎にメッセージが出力されます．.logファイルのサイズは巨大になります．
 
 ===== method
 シミュレーションの方法を指定します．
@@ -336,11 +348,16 @@ feram が feram foo123.feram と実行されたなら
 foo123.dipole-dipole-long.dat などです．
 
 === foo123.log
-feramは.logファイルにイテレーション毎にエネルギーを書き出します．
-デバッグのときに src/plot.gp を使ってプロットしてみるのもよいでしょう．
-configureの時に--disable-detailed-messagesオプションで
-この出力に書き出す量を少なくするとができます．!!!!!重要!!!!!
-そうすると実行も高速化されることもあります．
+feramは.logファイルにイテレーション毎にエネルギーを書き出します．ただし
+
+verbose = 0 のとき，.logファイルは作られません（未実装）．
+
+verbose = 1 （デフォルト値）のとき，.logファイルには最小限のメッセージのみが出力されます．
+
+verbose = 2 のとき，.logファイルにはイテレーション毎にメッセージが出力されます．
+
+デバッグのために verbose = 2 にして実行し，
+出力された foo123.log を src/plot.gp でプロットしてみるのもよいでしょう．
  $ feram foo123.feram
  $ gnuplot plot.gp
 

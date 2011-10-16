@@ -81,7 +81,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  $ mkdir Linux-i686-gfortran-4.3.5
  $ cd Linux-i686-gfortran-4.3.5
  $ ../configure --help
- $ ../configure --disable-detailed-messages
+ $ ../configure
  $ cd src
  $ make
  $ make feram_mpi   # OPTIONAL
@@ -116,7 +116,7 @@ feram runs on 1 node (16 CPUs) of SR11000 effectively.
  % make
 
 For performance monitor
- % ../configure FC=xf90 FCFLAGS='-64 -O3 -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -loglist -pmfunc -pmpar' --host=SR11000 --disable-detailed-messages
+ % ../configure FC=xf90 FCFLAGS='-64 -O3 -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -loglist -pmfunc -pmpar' --host=SR11000
 
 ==== x86_64 GNU/Linux
 On x86_64, i.e. AMD64 and Intel 64, feram may be compiled with gfortran,
@@ -178,6 +178,20 @@ You must put ' = ', space-equal-space, between tag and value(s) as:
  tag =  5.0  6.0  7.0
 
 Followings are currently available tags.
+
+===== verbose
+verbose tag determines how much messages will be written to the .log file.
+(Details of .log file is described below.)
+
+ verbose = 0
+(NOT IMPLEMENTED YET) .log file will not be created.
+
+ verbose = 1
+1 is the default value for verbose tag.
+Minimum messages will be written to the .log file.
+
+ verbose = 2
+When 2 is given for verbose tag, messages will be written to .log file in every iterations.
 
 ===== method
  method = 'md'
@@ -404,9 +418,17 @@ e.g. foo123.avg, foo123.320K0050000.coord,
 foo123.dipole-dipole-long.dat, etc.
 
 === foo123.log
-To foo123.log, feram reports the energies of every iterations.
-For debugging, src/plot.gp can plot the energies.
-Use --disable-detailed-messages for configure to suppress this huge output.     !!!!!IMPORTANT!!!!!
+To foo123.log, feram reports the energies of each iteration.
+"verbose" tag determines how much messages will be written to the .log file.
+
+"verbose = 0" (NOT IMPLEMENTED YET). The .log file will not be created.
+
+"verbose = 1" is the default value for verbose tag.
+Minimum messages will be written to the .log file.
+
+"verbose = 2". feram reports the energies of EVERY iterations.
+
+For debugging, using "verbose = 2", src/plot.gp can plot the energies.
  $ feram foo123.feram
  $ gnuplot plot.gp
 

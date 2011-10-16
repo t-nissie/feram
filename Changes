@@ -1,4 +1,7 @@
 = Changes for feram
+== 0.17.01 (public release)
+ * verbose tag.
+
 == 0.16.01 (public release)
  * Use foo.localfield file instead of local.field.
 
@@ -12,8 +15,6 @@
  * feram does not read from stdin anymore.
 
  * Log goes to foo.log, not to stdout anymore.
-   Use --disable-detailed-messages for configure                  !!!!!IMPORTANT!!!!!
-   to suppress this huge output.
 
 == 0.14.06 (private release)
  * New tag seed, two integers for Marsaglia-Tsang 64-bit uiniversal RNG (random number generator).

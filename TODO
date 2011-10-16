@@ -80,8 +80,6 @@ o (coord を かきだし はじめる ところ おわる ところ AVERAGE の
 
 o p, q, qdot にして, いつmassで割るか考える.
 
-o detailed_messages -> verbose, in configure.ac, README.en and source code
-
 o src/hysteresis_loop.F DETAILED_MESSAGES
 
 o dipoA_dipole_dipole() を dipoA = dipoA + dipoA_dipole_dipole に.
@@ -160,3 +158,5 @@ x Lz_periodic -> Lz      change mirror.f
 
 x fft.F、SR11000用 HZFT7M()の代わりにHDFZ7M()とHZFD7M()とを使うようにして、
   さらに２度目の呼び出しから係数の計算などを省くようにする。要configure.acの変更。
+
+x detailed_messages -> verbose, in configure.ac, README.en and source code
