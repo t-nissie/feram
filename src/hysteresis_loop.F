@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2011-06-16 15:00:40 takeshi>
+! Time-stamp: <2011-10-17 04:23:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -62,11 +62,11 @@ subroutine hysteresis_loop(p,c)
         end do
      end if
 
-#   if defined(DETAILED_MESSAGES)
-     call msg_ez(UNIT_LOG,'')
-     write(message,fmt_time_step) i_step, p%external_E_field+E_field_add
-     call msg_ez(UNIT_LOG,message)
-#   endif
+     if (p%verbose>=2) then
+        call msg_ez(UNIT_LOG,'')
+        write(message,fmt_time_step) i_step, p%external_E_field+E_field_add
+        call msg_ez(UNIT_LOG,message)
+     end if
 
 !POPTION COALESCING(2)
      c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
@@ -94,10 +94,9 @@ subroutine hysteresis_loop(p,c)
      !e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
 
      e%total = e%dipo_kinetic + sum_potential_energies(e)
-#   if defined(DETAILED_MESSAGES)
-     call write_Energy(p,c,e,UNIT_LOG)
-#   endif
-
+     if (p%verbose>=2) then
+        call write_Energy(p,c,e,UNIT_LOG)
+     end if
 
      if (i_step>=p%n_thermalize) then
         if (mod(i_step-p%n_thermalize, p%n_hl_freq) == 0) then

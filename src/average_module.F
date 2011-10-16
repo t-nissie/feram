@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2011-06-18 17:58:38 t-nissie>
+! Time-stamp: <2011-10-17 04:20:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -69,10 +69,10 @@ contains
     avg%uu(5) = avg%uu(5) + u_tmp(3)*u_tmp(1)
     avg%uu(6) = avg%uu(6) + u_tmp(1)*u_tmp(2)
 
-#if defined(DETAILED_MESSAGES)
-    write(message,"('u=',3e13.5)") u_tmp(:)
-    call msg_ez(UNIT_LOG,message)
-#endif
+    if (p%verbose>=2) then
+       write(message,'("u=",3e13.5)') u_tmp(:)
+       call msg_ez(UNIT_LOG,message)
+    end if
   end subroutine add_to_Average
 
   subroutine divide_and_write_Average(p,c,avg)

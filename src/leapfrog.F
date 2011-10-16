@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2011-06-16 15:02:08 takeshi>
+! Time-stamp: <2011-10-17 04:24:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -19,9 +19,9 @@ subroutine leapfrog(p,c,e,i_step)
   integer Lz_1_4
   integer Lz_3_4
   integer i
-#if defined(DETAILED_MESSAGES)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
-#endif
+  if (p%verbose>=2) then
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+  end if
 
   Lx_Ly_delta_e = p%Lx * p%Ly * p%delta_e
   Lz_1_4 = p%Lz/4
@@ -39,9 +39,9 @@ subroutine leapfrog(p,c,e,i_step)
   c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt_2 * c%dVddi(:,:,:,:)
 !POPTION COALESCING(2)
   c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt   * c%dipoP(:,:,:,:) * c%M_inv(:,:,:,:)
-#if defined(DETAILED_MESSAGES)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'updated.')
-#endif
+  if (p%verbose>=2) then
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'updated.')
+  end if
 
   call mirror_force_mirror(p,c,e)
 
@@ -49,7 +49,7 @@ subroutine leapfrog(p,c,e,i_step)
   c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt_2 * c%dVddi(:,:,:,:)
 !POPTION COALESCING(2)
   e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
-#if defined(DETAILED_MESSAGES)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
-#endif
+  if (p%verbose>=2) then
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
+  end if
 end subroutine leapfrog

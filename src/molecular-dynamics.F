@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2011-09-24 07:13:14 t-nissie>
+! Time-stamp: <2011-10-17 04:26:11 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -47,9 +47,9 @@ subroutine molecular_dynamics(p,c)
   call reset_Average(avg)
 
   do i_step = 1, p%n_thermalize+p%n_thermal_conductivity+p%n_average
-#   if defined(DETAILED_MESSAGES)
-     write(message,fmt_time_step) i_step; call msg_ez(UNIT_LOG,message)
-#   endif
+     if (p%verbose>=2) then
+        write(message,fmt_time_step) i_step; call msg_ez(UNIT_LOG,message)
+     end if
 
      if (p%method.eq.'md ') then
         call nose_poincare(p,c,e)   ! H_Nose_Poincare == 0, always
@@ -70,9 +70,9 @@ subroutine molecular_dynamics(p,c)
      !call msg_ez(UNIT_LOG,message)
 
      e%total = e%dipo_kinetic/c%s_Nose**2 + sum_potential_energies(e)
-#if defined(DETAILED_MESSAGES)
-     call write_Energy(p,c,e,UNIT_LOG)
-#endif
+     if (p%verbose>=2) then
+        call write_Energy(p,c,e,UNIT_LOG)
+     end if
 
      if (i_step <= p%n_thermalize+p%n_thermal_conductivity) cycle
 
