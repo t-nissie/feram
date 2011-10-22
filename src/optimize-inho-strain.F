@@ -1,9 +1,8 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-10-22 20:15:09 takeshi>
+! Time-stamp: <2011-10-22 20:21:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
-!UINLINE cholesky_z.f
 #include "define.h"
 subroutine optimize_inho_strain(p,c,e)
   !$use omp_lib
@@ -18,9 +17,6 @@ subroutine optimize_inho_strain(p,c,e)
   !--- local -----------------------------------------
   real*8 k(3), eta_B_over_2m(6), G(3,3), G_inv(3)
   complex*16                         acouK_tmp(3)
-  !complex*16 acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)  ! Causes SEGV if stack is shorted.
-  !real*8     inhoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6)
-  !complex*16 inhoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6)  !"/2" See fft.F!
   complex*16, allocatable :: acouK(:,:,:,:)
   real*8,     allocatable :: inhoR(:,:,:,:)
   complex*16, allocatable :: inhoK(:,:,:,:)
