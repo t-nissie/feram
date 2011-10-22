@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2011-06-16 14:57:45 takeshi>
+! Time-stamp: <2011-10-22 14:45:13 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -23,7 +23,7 @@ module Coord_module
      real*8,     pointer     :: didiR(:,:,:,:)   => null()
      complex*16, pointer     :: didiK(:,:,:,:)   => null()
     !real*8,     pointer     :: acouR(:,:,:,:)   => null()
-     real*8,     pointer     :: inhomo_K(:,:,:, :,:)       => null()
+     real*8,     pointer     :: inhomo_K(:,:, :,:,:)       => null()
      real*8,     pointer     :: inhomo_coup2_K(:,:,:, :,:) => null()
      logical,    pointer     :: sum_p(:,:,:) => null()
      real*8,     pointer     :: e_layer(:)
@@ -38,7 +38,7 @@ module Coord_module
      real*8,     allocatable :: didiR(:,:,:,:)   ! 6 kind of dipoR*dipoR
      complex*16, allocatable :: didiK(:,:,:,:)   ! 6 kind of dipoR*dipoR
     !real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
-     real*8,     allocatable :: inhomo_K(:,:,:, :,:)       ! FTed potential
+     real*8,     allocatable :: inhomo_K(:,:, :,:,:)       ! FTed potential
      real*8,     allocatable :: inhomo_coup2_K(:,:,:, :,:) ! FTed potential
      logical,    allocatable :: sum_p(:,:,:) ! .true. if the u(R) is not defect nor mirrored film. This array will be initialized in read_defects_u.F
      real*8,     allocatable :: e_layer(:)
@@ -82,7 +82,7 @@ contains
     !allocate(     c%acouR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
     !--- inhomogeneous ----------------------
     if (allocated(c%inhomo_K)) deallocate(c%inhomo_K)
-    allocate(     c%inhomo_K(0:p%Lx/2,0:p%Ly-1,0:p%Lz-1, 3,3))
+    allocate(     c%inhomo_K(3,3, 0:p%Lx/2,0:p%Ly-1,0:p%Lz-1))
     if (allocated(c%inhomo_coup2_K)) deallocate(c%inhomo_coup2_K)
     allocate(     c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1,0:p%Lz-1, 3,6))
     !--- sum_p ------------------------------
