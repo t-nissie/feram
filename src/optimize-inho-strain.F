@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-10-22 14:55:14 takeshi>
+! Time-stamp: <2011-10-22 16:43:22 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -39,7 +39,7 @@ subroutine optimize_inho_strain(p,c,e)
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx/2
            if (ix.ne.0 .or. iy.ne.0 .or. iz.ne.0) then
-              inhomo_K_tmp(:,:) = c%inhomo_K(:,:,ix,iy,iz)
+              inhomo_K_tmp(:,:) = c%inhomo_K(ix,iy,iz,:,:)
               do alpha = 1, 3
                  acouK_tmp(alpha) = &
                       & - SUM(c%inhomo_coup2_K(ix,iy,iz,alpha,:) * c%didiK(ix,iy,iz,:))
