@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-06-18 18:58:45 t-nissie>
+! Time-stamp: <2011-10-22 14:55:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -38,17 +38,21 @@ subroutine optimize_inho_strain(p,c,e)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx/2
-              inhomo_K_tmp(:,:) = c%inhomo_K(ix,iy,iz,:,:)
+           if (ix.ne.0 .or. iy.ne.0 .or. iz.ne.0) then
+              inhomo_K_tmp(:,:) = c%inhomo_K(:,:,ix,iy,iz)
               do alpha = 1, 3
                  acouK_tmp(alpha) = &
                       & - SUM(c%inhomo_coup2_K(ix,iy,iz,alpha,:) * c%didiK(ix,iy,iz,:))
               end do
               call cholesky_z(3, inhomo_K_tmp, G, acouK_tmp)
               acouK(:,ix,iy,iz) = acouK_tmp(:)
+           end if
         end do
      end do
   end do
   !$omp end parallel do
+
+  acouK(1:3,0,0,0) = 0.0d0
 
   ! Linear equations for acouK,
   !    inhomo_K(1:3,1:3) * acouK(1:3) = - inhomo_coup2_K(1:3,1:6) * c%didiK(1:6) ,
