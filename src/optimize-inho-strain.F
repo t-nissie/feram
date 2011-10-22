@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-10-22 18:44:33 takeshi>
+! Time-stamp: <2011-10-22 20:15:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -16,7 +16,7 @@ subroutine optimize_inho_strain(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   !--- local -----------------------------------------
-  real*8 k(3), eta_B_over_2m(6) !, inhomo_K_tmp(3,3), G(3,3)
+  real*8 k(3), eta_B_over_2m(6), G(3,3), G_inv(3)
   complex*16                         acouK_tmp(3)
   !complex*16 acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)  ! Causes SEGV if stack is shorted.
   !real*8     inhoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6)
@@ -34,8 +34,8 @@ subroutine optimize_inho_strain(p,c,e)
   allocate(inhoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6)) !"/2" See fft.F!
 
   !--- optimize inhomogeneous strain -----------------------------------
-!POPTION PARALLEL,TLOCAL(acouK_tmp)
-  !$omp parallel do private(iz,iy,ix,alpha,beta,acouK_tmp,tmp)
+!POPTION PARALLEL,TLOCAL(acouK_tmp,tmp,G,G_inv)
+  !$omp parallel do private(iz,iy,ix,alpha,beta,acouK_tmp,tmp,G,G_inv)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx/2
@@ -44,22 +44,26 @@ subroutine optimize_inho_strain(p,c,e)
                  acouK_tmp(alpha) = &
                       & - SUM(c%inhomo_coup2_K(ix,iy,iz,alpha,:) * c%didiK(ix,iy,iz,:))
               end do
+              !
+              G(1:3,1:3) = c%inhomo_K_G(1:3,1:3, ix,iy,iz)
+              G_inv(1:3) = c%inhomo_K_G(1:3,4,   ix,iy,iz)
               ! See [2] of cholesky_d.f
               do alpha = 1, 3
                  tmp = (0.0d0,0.0d0)
                  do beta = 1, alpha-1
-                    tmp = tmp + c%inhomo_K_G(alpha,beta, ix,iy,iz)*acouK_tmp(beta)
+                    tmp = tmp + G(alpha,beta)*acouK_tmp(beta)
                  end do
-                 acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * c%inhomo_K_G_inv(alpha, ix,iy,iz)
+                 acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * G_inv(alpha)
               end do
               ! See [3] of cholesky_d.f
               do alpha = 3, 1, -1
                  tmp = (0.0d0,0.0d0)
                  do beta = alpha+1, 3
-                    tmp = tmp + acouK_tmp(beta)*c%inhomo_K_G(beta,alpha, ix,iy,iz)
+                    tmp = tmp + acouK_tmp(beta)*G(beta,alpha)
                  end do
-                 acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * c%inhomo_K_G_inv(alpha, ix,iy,iz)
+                 acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * G_inv(alpha)
               end do
+              !
               acouK(:,ix,iy,iz) = acouK_tmp(:)
            end if
         end do

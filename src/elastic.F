@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2011-10-22 17:38:12 takeshi>
+! Time-stamp: <2011-10-22 19:55:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -100,11 +100,11 @@ subroutine elastic(p,c)
               do beta = 1, 3
                  c%inhomo_K_G(beta,beta, ix,iy,iz) = &
                       & sqrt( c%inhomo_K(ix,iy,iz, beta,beta)  - SUM(c%inhomo_K_G(beta, 1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) )
-                 c%inhomo_K_G_inv(beta, ix,iy,iz) = 1.0d0/c%inhomo_K_G(beta,beta, ix,iy,iz)
+                 c%inhomo_K_G(beta,4, ix,iy,iz) = 1.0d0/c%inhomo_K_G(beta,beta, ix,iy,iz)
                  do alpha = beta+1, 3
                     c%inhomo_K_G(alpha,beta, ix,iy,iz) = &
                          & ( c%inhomo_K(ix,iy,iz, alpha,beta) - SUM(c%inhomo_K_G(alpha,1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) ) &
-                         & * c%inhomo_K_G_inv(beta, ix,iy,iz)
+                         & * c%inhomo_K_G(beta,4, ix,iy,iz)
                  end do
               end do
            end if
