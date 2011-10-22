@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2011-10-22 14:45:49 takeshi>
+! Time-stamp: <2011-06-16 14:59:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -57,25 +57,26 @@ subroutine elastic(p,c)
   ! See equation (A1) and (A2) of ref_1
 !
   ! inhomo_K --------------------------------------
-  do iz = 0, p%Lz-1
-     k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
-     k(3) = k(3) * M_2PI / p%a0
-     do iy = 0, p%Ly-1
-        k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
-        k(2) = k(2) * M_2PI / p%a0
-        do ix = 0, p%Lx/2
-           k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-           do beta = 1, 3
-              other1 = mod(beta+1,3)+1
-              other2 = mod(beta,  3)+1
-              do alpha = 1, 3
+  do beta = 1, 3
+     other1 = mod(beta+1,3)+1
+     other2 = mod(beta,  3)+1
+     !write(6,'(a,3i2)') 'beta, other1, other2', beta, other1, other2
+     do alpha = 1, 3
+        do iz = 0, p%Lz-1
+           k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
+           k(3) = k(3) * M_2PI / p%a0
+           do iy = 0, p%Ly-1
+              k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
+              k(2) = k(2) * M_2PI / p%a0
+              do ix = 0, p%Lx/2
+                 k(1) = dble(ix) / p%Lx * M_2PI / p%a0
                  if (alpha.eq.beta) then
-                    c%inhomo_K(alpha,beta, ix,iy,iz) = &
+                    c%inhomo_K(ix,iy,iz, alpha,beta) = &
                          & p%B11 * k(alpha ) * k(alpha ) + &
                          & p%B44 * k(other1) * k(other1) + &
                          & p%B44 * k(other2) * k(other2)
                  else
-                    c%inhomo_K(alpha,beta, ix,iy,iz) = &
+                    c%inhomo_K(ix,iy,iz, alpha,beta) = &
                          & p%B12 * k(alpha ) * k( beta ) + &
                          & p%B44 * k(alpha ) * k( beta )
                  end if
