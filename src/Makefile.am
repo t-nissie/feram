@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-08-24 17:15:11 takeshi>
+# Time-stamp: <2011-10-22 18:04:40 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -9,7 +9,6 @@ bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j frozen_phonon_G
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
-	cholesky_z.f \
 	cholesky_d.f \
 	dVddi-dipole-dipole.F \
 	dVddi-homo-coupling.F \
@@ -88,9 +87,6 @@ feram_mpi.F \
 
 ../libbuilt_in_fft/libbuilt_in_fft.a:
 	cd ../libbuilt_in_fft && $(MAKE)
-
-cholesky_d.f: cholesky_z.f
-	sed -e 's/complex\*16/real*8/' -e 's/_z/_d/' $< > $@
 
 # all: plot.ps # 300K0000000.ps decay-test.ps
 

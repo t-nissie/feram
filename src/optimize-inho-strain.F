@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-10-22 16:43:22 takeshi>
+! Time-stamp: <2011-10-22 18:44:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -16,7 +16,7 @@ subroutine optimize_inho_strain(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   !--- local -----------------------------------------
-  real*8 k(3), eta_B_over_2m(6), inhomo_K_tmp(3,3), G(3,3)
+  real*8 k(3), eta_B_over_2m(6) !, inhomo_K_tmp(3,3), G(3,3)
   complex*16                         acouK_tmp(3)
   !complex*16 acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)  ! Causes SEGV if stack is shorted.
   !real*8     inhoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6)
@@ -24,7 +24,8 @@ subroutine optimize_inho_strain(p,c,e)
   complex*16, allocatable :: acouK(:,:,:,:)
   real*8,     allocatable :: inhoR(:,:,:,:)
   complex*16, allocatable :: inhoK(:,:,:,:)
-  integer i, alpha, ix,iy,iz
+  complex*16 tmp
+  integer i, alpha,beta, ix,iy,iz
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
   !     & 'Optimize inhomogeneous strain. Calculate related energies and accelerations.')
@@ -33,18 +34,32 @@ subroutine optimize_inho_strain(p,c,e)
   allocate(inhoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6)) !"/2" See fft.F!
 
   !--- optimize inhomogeneous strain -----------------------------------
-!POPTION PARALLEL,TLOCAL(inhomo_K_tmp,acouK_tmp,G)
-  !$omp parallel do private(iz,iy,ix,alpha,inhomo_K_tmp,acouK_tmp,G)
+!POPTION PARALLEL,TLOCAL(acouK_tmp)
+  !$omp parallel do private(iz,iy,ix,alpha,beta,acouK_tmp,tmp)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx/2
            if (ix.ne.0 .or. iy.ne.0 .or. iz.ne.0) then
-              inhomo_K_tmp(:,:) = c%inhomo_K(ix,iy,iz,:,:)
               do alpha = 1, 3
                  acouK_tmp(alpha) = &
                       & - SUM(c%inhomo_coup2_K(ix,iy,iz,alpha,:) * c%didiK(ix,iy,iz,:))
               end do
-              call cholesky_z(3, inhomo_K_tmp, G, acouK_tmp)
+              ! See [2] of cholesky_d.f
+              do alpha = 1, 3
+                 tmp = (0.0d0,0.0d0)
+                 do beta = 1, alpha-1
+                    tmp = tmp + c%inhomo_K_G(alpha,beta, ix,iy,iz)*acouK_tmp(beta)
+                 end do
+                 acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * c%inhomo_K_G_inv(alpha, ix,iy,iz)
+              end do
+              ! See [3] of cholesky_d.f
+              do alpha = 3, 1, -1
+                 tmp = (0.0d0,0.0d0)
+                 do beta = alpha+1, 3
+                    tmp = tmp + acouK_tmp(beta)*c%inhomo_K_G(beta,alpha, ix,iy,iz)
+                 end do
+                 acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * c%inhomo_K_G_inv(alpha, ix,iy,iz)
+              end do
               acouK(:,ix,iy,iz) = acouK_tmp(:)
            end if
         end do
@@ -57,7 +72,7 @@ subroutine optimize_inho_strain(p,c,e)
   ! Linear equations for acouK,
   !    inhomo_K(1:3,1:3) * acouK(1:3) = - inhomo_coup2_K(1:3,1:6) * c%didiK(1:6) ,
   ! are solved for all k-points.
-  ! * inhomo_K is positive definite real symmetric matrix
+  ! * inhomo_K is positive definite real symmetric matrix. See cholesky_d.f.
 
   !--- calculate some emergies -----------------------------------------
   call inhomogeneous_strain_energy(p,c,e,acouK)
