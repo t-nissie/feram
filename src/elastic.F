@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2011-06-16 14:59:47 takeshi>
+! Time-stamp: <2011-10-22 17:38:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -91,6 +91,27 @@ subroutine elastic(p,c)
      call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%inhomo_K, fn)
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME',fn)
   end if
+
+  c%inhomo_K_G(:,:, :,:,:)=0.0d0
+  do iz = 0, p%Lz-1
+     do iy = 0, p%Ly-1
+        do ix = 0, p%Lx/2
+           if (ix.ne.0 .or. iy.ne.0 .or. iz.ne.0) then
+              do beta = 1, 3
+                 c%inhomo_K_G(beta,beta, ix,iy,iz) = &
+                      & sqrt( c%inhomo_K(ix,iy,iz, beta,beta)  - SUM(c%inhomo_K_G(beta, 1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) )
+                 c%inhomo_K_G_inv(beta, ix,iy,iz) = 1.0d0/c%inhomo_K_G(beta,beta, ix,iy,iz)
+                 do alpha = beta+1, 3
+                    c%inhomo_K_G(alpha,beta, ix,iy,iz) = &
+                         & ( c%inhomo_K(ix,iy,iz, alpha,beta) - SUM(c%inhomo_K_G(alpha,1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) ) &
+                         & * c%inhomo_K_G_inv(beta, ix,iy,iz)
+                 end do
+              end do
+           end if
+        end do
+     end do
+  end do
+
 
   ! inhomo_coup2_K -----------------------------
   k(0) = 0.0d0
