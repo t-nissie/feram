@@ -1,5 +1,9 @@
 = Changes for feram
-== 0.17.01 (public release)
+== 0.17.01
+ * coord_module.F: inhomo_K_G(:,:, :,:,:),
+   inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
+
+== 0.17.00
  * verbose tag.
 
 == 0.16.01 (public release)
