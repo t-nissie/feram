@@ -1,10 +1,14 @@
 = Changes for feram
 == 0.17.01
- * coord_module.F: inhomo_K_G(:,:, :,:,:),
+ * optimize-inho-strain.F, coord_module.F: Introduced inhomo_K_G(:,:, :,:,:),
    inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
+   It speeds up 10% for large system.
+
+ * cholesky_z.f: Deleted. We do not use it anymore.
 
 == 0.17.00
- * verbose tag.
+ * verbose tag. verbose = 0, 1, or 2.
+   Now, you cannot use --disable-detailed-messages configure option.
 
 == 0.16.01 (public release)
  * Use foo.localfield file instead of local.field.
