@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2011-10-22 19:55:29 takeshi>
+! Time-stamp: <2011-10-24 11:15:54 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -36,6 +36,22 @@ subroutine elastic(p,c)
   c%homogeneous(2,1) = p%B12*p%N
   c%homogeneous(3,1) = p%B12*p%N
   c%homogeneous(3,2) = p%B12*p%N
+
+  do beta = 1, 6
+     c%homogeneous_G(beta,beta) = &
+          & sqrt( c%homogeneous(beta,beta)  - SUM(c%homogeneous_G(beta, 1:beta-1)*c%homogeneous_G(beta,1:beta-1)) )
+     c%homogeneous_G_inv(beta) = 1.0d0/c%homogeneous_G(beta,beta)
+     do alpha = beta+1, 6
+        c%homogeneous_G(alpha,beta) = &
+             & (  c%homogeneous(alpha,beta) - SUM(c%homogeneous_G(alpha,1:beta-1)*c%homogeneous_G(beta,1:beta-1)) ) &
+             & * c%homogeneous_G_inv(beta)
+     end do
+  end do
+  ! write(6,'(6f15.7)') c%homogeneous
+  ! write(6,*)
+  ! write(6,'(6f15.7)') (c%homogeneous_G(i,:), i=1,6)
+  ! write(6,*)
+  ! write(6,'(6f15.7)') c%homogeneous_G_inv
 
   ! homogeneous_coupling_2 ------------------------
   c%homogeneous_coupling_2(:,:) = 0.0d0
