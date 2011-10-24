@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2011-10-24 11:15:54 takeshi>
+! Time-stamp: <2011-10-24 12:29:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -12,7 +12,7 @@ subroutine elastic(p,c)
   type(Param_type), intent(in)    :: p
   type(Coord_type), intent(inout) :: c
   !--- local -----------------------------------------
-  integer ix,iy,iz, alpha,beta, i, other1, other2
+  integer ix,iy,iz, alpha,beta, i,j, other1, other2
   real*8  k(0:3)
   integer, parameter :: ki(3,3) = reshape((/0,3,2, 3,0,1, 2,1,0/),(/3,3/))
   character (len=100) :: fn
@@ -37,14 +37,14 @@ subroutine elastic(p,c)
   c%homogeneous(3,1) = p%B12*p%N
   c%homogeneous(3,2) = p%B12*p%N
 
-  do beta = 1, 6
-     c%homogeneous_G(beta,beta) = &
-          & sqrt( c%homogeneous(beta,beta)  - SUM(c%homogeneous_G(beta, 1:beta-1)*c%homogeneous_G(beta,1:beta-1)) )
-     c%homogeneous_G_inv(beta) = 1.0d0/c%homogeneous_G(beta,beta)
-     do alpha = beta+1, 6
-        c%homogeneous_G(alpha,beta) = &
-             & (  c%homogeneous(alpha,beta) - SUM(c%homogeneous_G(alpha,1:beta-1)*c%homogeneous_G(beta,1:beta-1)) ) &
-             & * c%homogeneous_G_inv(beta)
+  do j = 1, 6
+     c%homogeneous_G(j,j) = &
+          & sqrt( c%homogeneous(j,j) - SUM(c%homogeneous_G(j,1:j-1)*c%homogeneous_G(j,1:j-1)) )
+     c%homogeneous_G_inv(j) = 1.0d0/c%homogeneous_G(j,j)
+     do i = j+1, 6
+        c%homogeneous_G(i,j) = &
+             & (  c%homogeneous(i,j) - SUM(c%homogeneous_G(i,1:j-1)*c%homogeneous_G(j,1:j-1)) ) &
+             & * c%homogeneous_G_inv(j)
      end do
   end do
   ! write(6,'(6f15.7)') c%homogeneous
