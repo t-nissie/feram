@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2011-06-16 15:29:26 takeshi>
+! Time-stamp: <2011-10-24 17:52:41 t-nissie>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
@@ -17,6 +17,7 @@ subroutine nose_poincare(p,c,e)
   real*8 CB, s_Nose_old, delta_H
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
+!POPTION COALESCING(2)
   c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - (p%dt_2*c%s_Nose) * c%dVddi(:,:,:,:) !(35a)
   e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
   CB = p%n_freedom*p%temperature_eV*(1.0d0+log(c%s_Nose)) &
@@ -28,6 +29,7 @@ subroutine nose_poincare(p,c,e)
   s_Nose_old = c%s_Nose
   c%s_Nose  = c%s_Nose * ( 1.0d0 + p%dt_2*c%pi_Nose/p%Q_Nose ) / & 
                        & ( 1.0d0 - p%dt_2*c%pi_Nose/p%Q_Nose )         !(35c)
+!POPTION COALESCING(2)
   c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) &
        & + p%dt_2 * (1/c%s_Nose+1/s_Nose_old) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
                                                                             !(35d)
@@ -42,6 +44,7 @@ subroutine nose_poincare(p,c,e)
        & + p%dt_2*(2*e%dipo_kinetic/c%s_Nose**2 - p%n_freedom*p%temperature_eV) &
        & - p%dt_2*delta_H                                              !(35e)
 
+!POPTION COALESCING(2)
   c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - (p%dt_2*c%s_Nose) * c%dVddi(:,:,:,:)
                                                                             !(35f)
   ! calculate e%dipo_kinetic and e%H_Nose_Poincare for write_Energy()
