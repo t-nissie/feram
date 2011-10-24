@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-06-16 15:29:25 takeshi>
+! Time-stamp: <2011-10-24 12:27:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
@@ -15,8 +15,8 @@ subroutine optimize_homo_strain(p,c,e)
   type(Energy_type), intent(out)   :: e
   !--- local -----------------------------------------
   real*8 homogeneous_coupling_2_uu(6)
-  real*8 lower_triangular(6,6)
-  integer i
+  real*8 tmp
+  integer i,j
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
   !     & 'Optimize homogeneous strain. Calculate related energies and accelerations.')
@@ -42,11 +42,21 @@ subroutine optimize_homo_strain(p,c,e)
      c%strain(6) = 0.0d0
   else
      c%strain(:) = -homogeneous_coupling_2_uu(:) !!!minus!!!
-     !call DPOSV('U', 6, 1, homogeneous_tmp, 6, c%strain, 6, info)
-     call cholesky_d(6, c%homogeneous(:,:), lower_triangular, c%strain)
-     ! Solving a real system of linear equation
-     !      B * strain = - homogeneous_coupling_2 * uu .
-     ! See equation (A1) and (A2) of ref_1.
+     do i = 1, 6
+        tmp = 0.0d0
+        do j = 1, i-1
+           tmp = tmp + c%homogeneous_G(i,j)*c%strain(j)
+        end do
+        c%strain(i) = (c%strain(i)-tmp) * c%homogeneous_G_inv(i)
+     end do
+     ! [3]
+     do i = 6, 1, -1
+        tmp = 0.0d0
+        do j = i+1, 6
+           tmp = tmp + c%strain(j)*c%homogeneous_G(j,i)
+        end do
+        c%strain(i) = (c%strain(i)-tmp) * c%homogeneous_G_inv(i)
+     end do
   end if
 
   !--- compute homogeneous strain energy ------------------------

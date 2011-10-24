@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-10-23 20:32:33 takeshi>
+# Time-stamp: <2011-10-24 12:30:21 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -9,7 +9,6 @@ bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j frozen_phonon_G
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
-	cholesky_d.f \
 	dVddi-dipole-dipole.F \
 	dVddi-homo-coupling.F \
 	dVddi-unharmonic.F \
@@ -117,7 +116,7 @@ feram.o potentials.o dipole-dipole.o:\
 initialize-dipoR.o dVddi-unharmonic.o leapfrog.o \
 optimize-homo-strain.o:energy_module.o param_module.o coord_module.o
 energy_module.o: param_module.o coord_module.o
-optimize-homo-strain.o:energy_module.o param_module.o coord_module.o cholesky_d.o
+optimize-homo-strain.o:energy_module.o param_module.o coord_module.o
 optimize-inho-strain.o:energy_module.o param_module.o coord_module.o
 molecular-dynamics.o:  energy_module.o param_module.o coord_module.o average_module.o
 mirror.o dipoFFT.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
