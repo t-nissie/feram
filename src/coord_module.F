@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2011-10-22 20:07:22 takeshi>
+! Time-stamp: <2011-10-24 10:31:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -48,6 +48,8 @@ module Coord_module
 #  endif
      real*8                 strain(6)
      real*8                 homogeneous(6,6)
+     real*8                 homogeneous_G(6,6)
+     real*8                 homogeneous_G_inv(6)
      real*8                 homogeneous_coupling_2(6,6)
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
