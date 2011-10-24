@@ -1,12 +1,19 @@
 = Changes for feram
-== 0.17.01
- * optimize-inho-strain.F, coord_module.F: Introduced inhomo_K_G(:,:, :,:,:),
-   inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
-   It speeds up 10% for large system.
+== 0.17.02 ()
+ * optimize-homo-strain.F, coord_module.F, elastic.F:
+   Introduced homogeneous_G(1:6,1:6) and homogeneous_G_inv(1:6).
+   It speeds up 10% for large MDs.
 
  * cholesky_z.f: Deleted. We do not use it anymore.
 
-== 0.17.00
+== 0.17.01 (not released)
+ * optimize-inho-strain.F, coord_module.F: Introduced inhomo_K_G(:,:, :,:,:),
+   inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
+   It speeds up 10% for large systems.
+
+ * cholesky_z.f: Deleted. We do not use it anymore.
+
+== 0.17.00 (not released)
  * verbose tag. verbose = 0, 1, or 2.
    Now, you cannot use --disable-detailed-messages configure option.
 
