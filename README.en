@@ -72,6 +72,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
 === Preferables
  * gnuplot (version 4.2 or higher)
  * Ruby (version 1.8.6 or higher)
+ * jot (Every Linux distributions are presenting jot packages. Or, find its source athena-jot_9.0.orig.tar.gz in the Net.)
  * autoconf (version 2.61 or higher)
  * automake (version 1.10 higher)
 
@@ -322,6 +323,11 @@ Elastic Coupling
 ===== seed
 Two integers for Marsaglia-Tsang 64-bit uiniversal RNG (random number generator).
  seed = 123384 8984847
+Its default values are 123456789 987654321.
+It may be a good idea to generate the seed with jot(1) command.
+ $ jot -r 2 1 2147483648
+ 639779840
+ 1297280417
 
 ===== init_dipo_avg, init_dipo_dev
 Values for initial random setting of dipoles.

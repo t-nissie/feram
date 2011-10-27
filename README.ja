@@ -48,6 +48,7 @@ http://sourceforge.net/projects/loto/files/feram/
 === feramの使用にあると便利なもの
  * gnuplot (version 4.2 or higher)
  * Ruby (version 1.8.6 or higher)
+ * jot（たいていのLinuxディストリビューションにはjotパッケージがあります。ソースathena-jot_9.0.orig.tar.gzもネットに見つかります。）
 
 === feramの開発にあると便利なもの
  * autoconf (version 2.61 or higher)
@@ -251,6 +252,10 @@ u^8の係数．
 Marsaglia-Tsang 64-bit uiniversal RNG が使われています．
  seed = 143456789 987654321
 デフォルトの値は123456789 987654321です．
+次のようにjot(1)を使って種を生成するのもよいでしょう．
+ $ jot -r 2 1 2147483648
+ 639779840
+ 1297280417
 
 ===== init_dipo_avg, init_dipo_dev
 dipoleの初期状態の平均値とばらつき具合．
