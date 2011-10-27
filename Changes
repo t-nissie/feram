@@ -1,5 +1,5 @@
 = Changes for feram
-== 0.17.02 ()
+== 0.17.03 (public release)
  * optimize-homo-strain.F, coord_module.F, elastic.F:
    Introduced homogeneous_G(1:6,1:6) and homogeneous_G_inv(1:6).
    It speeds up 10% for large MDs.
