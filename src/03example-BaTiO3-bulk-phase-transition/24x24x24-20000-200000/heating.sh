@@ -1,24 +1,19 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2011-08-20 22:49:14 takeshi>
+# Time-stamp: <2011-10-27 09:15:29 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
-
-temperature_start=170
-temperature_goal=350
-temperature_step=5
 
 n_thermalize=20000
 n_average=200000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
-temperature=$temperature_start
-while [ `perl -e "print $temperature <= $temperature_goal || 0"` = "1" ] ; do
+for temperature in `jot - 170 350  5` ; do
     i=`expr $i + 1`
     filename=heating`printf '%.3d' $i`-"$temperature"K
-    cat > $filename <<-EOF
+    cat > $filename.feram <<-EOF
 	#--- Method, Temperature, and mass ---------------
 	method = 'md'
 	GPa = -5.0
@@ -55,18 +50,17 @@ while [ `perl -e "print $temperature <= $temperature_goal || 0"` = "1" ] ; do
 	B4yz =   -7.75 [eV/Angstrom^2]
 	
 	#--- Dipole --------------------------------------
+	seed = 1242914819 1957271599
 	init_dipo_avg = 0.1   0.1   0.1    [Angstrom]  # Average   of initial dipole displacements
 	init_dipo_dev = 0.02  0.02  0.02   [Angstrom]  # Deviation of initial dipole displacements
 	Z_star        = 9.956
 	epsilon_inf   = 5.24
 EOF
-    #echo 1 > FILES
-    #echo $filename >> FILES
     if [ -r "$prev_coord" ]; then
         ln -sf "$prev_coord" $filename.restart
     fi
-    ../../feram $filename
+    ../../feram $filename.feram
+    #rm -f $prev_coord $filename.restart
     prev_coord=$filename.`printf '%.10d' $n_coord_freq`.coord
     cat $filename.avg >> heating.avg
-    temperature=`perl -e "print $temperature + $temperature_step"`
 done
