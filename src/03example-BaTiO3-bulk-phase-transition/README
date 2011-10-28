@@ -3,8 +3,8 @@ Cooling-down and heating-up simulations
 Example shell scripts cooling.sh and heating.sh
 are in 24x24x24-20000-200000 subdirectory.
 You need jot(1) command to use it.
-The shell scripts takes 2--3 days with 4 core 2 GHz machine
-and 1 day with 1 node of SR11000.
+The shell scripts takes 1 day with 4 core 2 GHz machine
+and 4 hours with 1 node of SR11000.
 
 Read ../../doc/fluctuation-susceptibility.pdf .
 Then, read strain-susceptibility.gp carefully and execute it as
