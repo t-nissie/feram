@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2011-08-29 12:41:32 z48325w>
+! Time-stamp: <2011-11-03 21:46:53 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -193,29 +193,3 @@ contains
     end do
     e%inho_coupling = tmpS * 2 / p%N
   end subroutine inhomogeneous_coupling_energy
-
-  subroutine dipole_E_field_energy(p,c,e)
-    use Param_module
-    use Coord_module
-    implicit none
-    !--- arguments -------------------------------------
-    type(Param_type),  intent(in)    :: p
-    type(Coord_type),  intent(in)    :: c
-    type(Energy_type), intent(inout) :: e
-    !--- local -----------------------------------------
-    integer ix,iy,iz
-    !--- END of variable definitions -------------------
-
-    e%dipole_E_field = 0.0d0
-!POPTION PSUM(e%dipole_E_field)
-    do iz = 0, p%Lz-1
-       do iy = 0, p%Ly-1
-          do ix = 0, p%Lx-1
-             e%dipole_E_field = e%dipole_E_field + sum(c%dipoR(ix,iy,iz,:)*c%E_field(ix,iy,iz,:))
-          end do
-       end do
-    end do
-    e%dipole_E_field = - p%Z_star * e%dipole_E_field
-
-  end subroutine dipole_E_field_energy
-end module Energy_module
