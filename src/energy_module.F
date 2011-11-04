@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2011-11-03 21:46:53 takeshi>
+! Time-stamp: <2011-11-04 10:14:59 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -193,3 +193,4 @@ contains
     end do
     e%inho_coupling = tmpS * 2 / p%N
   end subroutine inhomogeneous_coupling_energy
+end module Energy_module
