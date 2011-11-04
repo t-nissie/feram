@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2011-11-04 11:15:37 t-nissie>
+! Time-stamp: <2011-11-04 17:21:10 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -24,6 +24,7 @@ subroutine mirror_force_mirror(p,c,e)
   if (p%E_field_always_zero) then   ! This was "call dVddi_E_field(p,c,e)".
      e%dipole_E_field = 0.0d0
   else
+!POPTION COALESCING(2)
      c%dVddi(:,:,:,:) = c%dVddi(:,:,:,:) - p%Z_star*c%E_field(:,:,:,:)
      e%dipole_E_field = - p%Z_star * sum(c%dipoR(:,:,:,:)*c%E_field(:,:,:,:))
   end if
