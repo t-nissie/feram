@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2011-09-15 19:29:34 takeshi>
+! Time-stamp: <2011-11-04 11:16:09 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -7,7 +7,7 @@ subroutine initialize_E_field(p,c)
   use Param_module
   use Coord_module
   implicit none
-  type(Param_type),  intent(in)    :: p
+  type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c
   integer ix, iy, iz, ios, line_number
   character (len=300):: str
@@ -22,6 +22,7 @@ subroutine initialize_E_field(p,c)
   open(unit=UNIT_SYSTEM, file=(trim(p%filename)//'.localfield'), status='old', action='read', iostat=ios)
   if (ios.eq.0) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.localfield was found.')
+     p%E_field_always_zero = .false.
      line_number = 0
      do
         read(UNIT_SYSTEM, '(a)', IOSTAT=ios) str

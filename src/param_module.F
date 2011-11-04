@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2011-09-04 21:01:55 takeshi>
+! Time-stamp: <2011-11-04 10:58:13 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -95,6 +95,7 @@ module Param_module
      real*8 unit_cell_volume
      real*8 pNa03 ![eV]
      real*8 temperature_eV
+     logical E_field_always_zero 
      !=== etc ============================================================
      character(len=FILE_NAME_LEN) :: filename
   end type Param_type
@@ -160,6 +161,7 @@ contains
     p%DDB_g = 0.0d0
     p%k_stripe = 0.0d0
     p%temperature_eV = 0.0d0
+    p%E_field_always_zero = .true.
 
     ! Read parameters from the imput file
     line_number = 0
@@ -176,6 +178,7 @@ contains
        select case(TRIM(name))
        case('method')
           read(str,*) dmy1, dmy2, p%method
+          if (p%method.eq.'hl') p%E_field_always_zero = .false.
        case('GPa')
           read(str,*) dmy1, dmy2, p%GPa
        case('kelvin')
