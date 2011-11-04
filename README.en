@@ -117,7 +117,7 @@ feram runs on 1 node (16 CPUs) of SR11000 effectively.
  % make
 
 For performance monitor
- % ../configure FC=xf90 FCFLAGS='-64 -O3 -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -loglist -pmfunc -pmpar' --host=SR11000
+ % ../configure FC=xf90 FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -loglist -pmfunc -pmpar' --host=SR11000
 
 ==== x86_64 GNU/Linux
 On x86_64, i.e. AMD64 and Intel 64, feram may be compiled with gfortran,
