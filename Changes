@@ -1,6 +1,7 @@
 = Changes for feram
-== 0.17.0? (public release?)
- * Speed up around -Z* \sum_R E.u(R).
+== 0.17.04 (private release)
+ * Speed up around -Z* \sum_R E(R).u(R) in mirror_force_mirror.F
+   with p%E_field_always_zero.
 
 == 0.17.03 (public release)
  * optimize-homo-strain.F, coord_module.F, elastic.F:
