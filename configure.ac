@@ -1,11 +1,11 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-11-07 15:01:01 takeshi>
+dnl Time-stamp: <2011-11-08 01:03:31 z48325w>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.61)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.17.05],[takeshi{at}physics.rutgers.edu],[feram])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.17.06],[t-nissie{at}imr.tohoku.ac.jp],[feram])
 AC_CONFIG_SRCDIR(src/feram.F)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
@@ -28,11 +28,12 @@ AC_ARG_ENABLE(openmp,[AS_HELP_STRING([--disable-openmp],[disable OpenMP (default
 ## Checks for Fortran compilers.
 FCFLAGS_PRESERVE=$FCFLAGS
 AC_LANG(Fortran)
-AC_PROG_FC(gfortran ifort pgf95 g95 xf90)
+AC_PROG_FC(gfortran ifort pgf95 g95 xf90 frt)
 FCFLAGS=$FCFLAGS_PRESERVE
    # Restore FCFLAGS, because AC_PROG_FC() sets FCFLAGS to '-g -O2', '-O2' or '-g' undesirably.
 
-## Desired FCFLAGS are:
+## FCFLAGS and MPIFC:
+AC_ARG_VAR(MPIFC, [MPI Fortran compiler command])
 case "$FC" in
   g95)
     test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -ffast-math -funroll-loops -pipe"
@@ -59,12 +60,14 @@ case "$FC" in
   xf90)
     test -n "$FCFLAGS" || FCFLAGS="-64 -Os -parallel=4\
       -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist"
+    test -n "$MPIFC" || MPIFC=xmpif90
     ;;
   frt)
-    test -n "$FCFLAGS" || FCFLAGS="-Kparallel,fast -Am -SSL2"
+    test -n "$FCFLAGS" || FCFLAGS="-Kimpact -Am -SSL2"
     if test "$enable_openmp" != "no"; then
       FCFLAGS="$FCFLAGS -KOMP"
     fi
+    test -n "$MPIFC" || MPIFC=mpifrt
     ;;
   *xlf*)
     AC_MSG_ERROR([C preprocessor invoked from IBM XL Fortran cannot process comment lines in define.h and config.h properly, so far.])
@@ -73,6 +76,7 @@ case "$FC" in
     test -n "$FCFLAGS" || FCFLAGS="-O2"
     ;;
 esac
+test -n "$MPIFC" || MPIFC=mpif90
 
 ## AR and RANLIB
 if test "$host" == SR11000; then
