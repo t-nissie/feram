@@ -89,7 +89,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  $ ls -l feram*
  $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
  $ cd 11example-BaTiO3-new-hysteresis-loop
- $ ../feram hysteresis    # テスト実行
+ $ ../feram hysteresis    # test run
  $ gnuplot hysteresis.gp  # plot a hysteresis loop
  $ gv hysteresis.eps      # preview
 
@@ -115,9 +115,19 @@ feram runs on 1 node (16 CPUs) of SR11000 effectively.
  % ../configure FC=xf90 --host=SR11000
  % cd src
  % make
-
 For performance monitor
  % ../configure FC=xf90 FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -loglist -pmfunc -pmpar' --host=SR11000
+
+==== Fujitsu FX1
+ % tar zxf feram-X.YY.ZZ.tar.gz
+ % cd feram-X.YY.ZZ
+ % mkdir FX1
+ % cd FX1
+ % ../configure FC=frt --with-fft=ssl2
+ % cd src
+ % make
+ % make feram_mpi   # OPTIONAL
+
 
 ==== x86_64 GNU/Linux
 On x86_64, i.e. AMD64 and Intel 64, feram may be compiled with gfortran,
