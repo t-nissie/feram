@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-11-07 11:39:53 takeshi>
+# Time-stamp: <2011-11-08 00:31:08 z48325w>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -106,9 +106,9 @@ elastic.o: $(srcdir)/elastic.F
 	$(PPF77COMPILE:-Os=-O3) -c -o $@ $<
 
 feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
-	mpif90 $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
-	       $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
-	mpif90 $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(feram_LDADD) $(LIBS)
+	$(MPIFC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	         $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
+	$(MPIFC) $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(feram_LDADD) $(LIBS)
 
 feram_common.o: param_module.o coord_module.o date_and_time2message.o
 decay-functions.o param_module.o:             define.h
