@@ -1,4 +1,7 @@
 = Changes for feram
+== 0.17.05 (private release)
+ * sum() is removed from mirror_force_mirror.F.
+
 == 0.17.04 (private release)
  * Speed up around -Z* \sum_R E(R).u(R) in mirror_force_mirror.F
    with p%E_field_always_zero.
