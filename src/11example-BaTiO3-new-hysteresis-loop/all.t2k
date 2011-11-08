@@ -1,0 +1,18 @@
+#!/bin/sh
+#% -S /bin/sh
+#% -N all.t2k
+#% -o all.t2k.stdout -e all.t2k.stderr
+#% -P NANOGC0
+#% -H 2
+#% -T 24:00:00
+#% -cwd
+#% -MVA
+. /opt/Modules/init/bash
+module load intel mkl mvapich2-151/intel
+module list
+export NNODES=2
+export OMP_NUM_THREADS=8
+export PROCESS_PER_NODE=2
+export NPROCS=$(($NNODES * $PROCESS_PER_NODE))
+/opt/sge/mpi/make_hostfile.sh $PROCESS_PER_NODE > ${JOB_ID}_hostfile
+mpirun_rsh -np $NPROCS -hostfile ${JOB_ID}_hostfile OMP_NUM_THREADS=$OMP_NUM_THREADS /work/SAMPLES/env-openmp-mva2.sh ../feram_mpi hysteresis_d0.feram hysteresis_d1_backwrd.feram hysteresis_d1_forward.feram hysteresis_d2.feram
