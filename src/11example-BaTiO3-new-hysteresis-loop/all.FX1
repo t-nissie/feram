@@ -1,0 +1,6 @@
+# @$-q f16 -e hysteresis.stderr -o hysteresis.stdout -lp 4 -lP 4 -cp 24:00:00
+cd $QSUB_WORKDIR
+setenv PARALLEL 4 
+setenv OMP_NUM_THREADS 4
+setenv FLIB_FASTOMP TRUE
+mpiexec -n 4 ../feram_mpi hysteresis_d0.feram hysteresis_d1_backwrd.feram hysteresis_d1_forward.feram hysteresis_d2.feram
