@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-11-08 01:03:31 z48325w>
+dnl Time-stamp: <2011-11-09 16:04:45 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -60,7 +60,7 @@ case "$FC" in
   xf90)
     test -n "$FCFLAGS" || FCFLAGS="-64 -Os -parallel=4\
       -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist"
-    test -n "$MPIFC" || MPIFC=xmpif90
+    test -n "$MPIFC" || MPIFC=mpixf90
     ;;
   frt)
     test -n "$FCFLAGS" || FCFLAGS="-Kimpact -Am -SSL2"
