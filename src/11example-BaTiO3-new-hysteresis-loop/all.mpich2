@@ -1,0 +1,5 @@
+#!/bin/sh
+# For a machine which has 8 cores.
+##
+mpdtrace || mpdboot
+OMP_NUM_THREADS=2 mpirun -np 4 ../feram_mpi hysteresis_d0.feram hysteresis_d1_backwrd.feram hysteresis_d1_forward.feram hysteresis_d2.feram
