@@ -1,22 +1,24 @@
 feram-X.YY.ZZ/trunk/src/11example-BaTiO3-new-hysteresis-loop/
 Table of Timing
-----------------------------------------------
-computer   elapse [sec]        d0    d1    d2
-----------------------------------------------
+-----------------------------------------------
+computer   elapse [sec]         d0    d1    d2
+-----------------------------------------------
 feram-0.17.06 ifort-11.1.069
-AMD8356 2.3GHz 1/2node=8core 37738 37579 40026
+ AMD8356 2.3GHz 1/2node=8core 37738 37579 40026
 feram-0.17.06 frt-8.1
-FX1     2.5GHz   1node=4core 42130 32307 35607
+ FX1     2.5GHz   1node=4core 42130 32307 35607
 feram-0.17.06 gfortran-4.3.5
-AMD275  1.8GHz 1/2node=2core  
+ AMD275  1.8GHz 1/2node=2core       76738
 feram-0.17.06 ifort-12.0.4.191
-AMD275  1.8GHz   1node=4core 
+ AMD275  1.8GHz   1node=4core 51938 50179 57925
 feram-0.17.06 xf90-V01-05-/G
-SR11000 2.3GHz  1node=16core 
-----------------------------------------------
+ SR11000 2.3GHz  1node=16core  4969  5261  5646
+-----------------------------------------------
 2011-11-09 .../f/loto/feram/trunk/feram-0.17.06-rev977-ifort-11.1.069-mkl/src/zzz11example/
 2011-11-08 ~/f/feram/feram-0.17.06/FX1/src/zzz11example-BaTiO3-new-hysteresis-loop-all/
 2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/x86_64-Linux-gfortran-4.3.5-appb/src/zzz11example2/
 2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/x86_64-Linux-ifort-12.0.4-appb01/src/zzz11example/
 2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/SR11000/src/zzz11example/
 
+Currently, I am using FFTW3 in some wrong ways.
+I have to fix it for Intel and AMD machines.
