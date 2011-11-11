@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-11-09 16:04:45 takeshi>
+dnl Time-stamp: <2011-11-11 22:26:56 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -28,7 +28,7 @@ AC_ARG_ENABLE(openmp,[AS_HELP_STRING([--disable-openmp],[disable OpenMP (default
 ## Checks for Fortran compilers.
 FCFLAGS_PRESERVE=$FCFLAGS
 AC_LANG(Fortran)
-AC_PROG_FC(gfortran ifort pgf95 g95 xf90 frt)
+AC_PROG_FC(gfortran ifort pgf95 g95 xf90 frt openf95)
 FCFLAGS=$FCFLAGS_PRESERVE
    # Restore FCFLAGS, because AC_PROG_FC() sets FCFLAGS to '-g -O2', '-O2' or '-g' undesirably.
 
@@ -41,6 +41,12 @@ case "$FC" in
   gfortran)
     test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -ffast-math -funroll-loops -pipe\
       -ffpe-trap=zero,overflow"
+    if test "$enable_openmp" != "no"; then
+      FCFLAGS="$FCFLAGS -fopenmp"
+    fi
+    ;;
+  openf95)
+    test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -ffast-math"
     if test "$enable_openmp" != "no"; then
       FCFLAGS="$FCFLAGS -fopenmp"
     fi
@@ -140,6 +146,9 @@ case "$FC" in
     ;;
   frt)
     FCFLAGS="$FCFLAGS -Free"
+    ;;
+  openf95)
+    FCFLAGS="$FCFLAGS -freeform"
     ;;
   *)
     AC_FC_FREEFORM()
