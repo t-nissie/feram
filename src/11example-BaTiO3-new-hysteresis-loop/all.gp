@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # all.gp
-# Time-stamp: <2011-11-10 13:11:36 t-nissie>
+# Time-stamp: <2011-11-13 11:08:19 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 #set encoding iso_8859_1
@@ -18,7 +18,7 @@ set xtics 1000
 c=1.6e3*9.956/3.94**3
 vertical_line=sprintf("< (echo 0 %.2f; echo 0 %.2f)", -maxy, maxy)
 
-set title 'hysteresis loop, {/Times-Italic T} = 175 K'
+set title 'hysteresis loop, {/Times-Italic T} = 150 K'
 plot 0 title '' w l lt 9,\
      vertical_line title '' w l lt 9,\
      'hysteresis_d0.hl' using ( $5*100000.0):( $14*c)\
