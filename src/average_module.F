@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2011-10-17 04:20:59 takeshi>
+! Time-stamp: <2011-11-13 10:28:43 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -107,6 +107,12 @@ contains
     if (p%method.eq.'lf ') then
        kelvin = avg%dipo_kinetic_true * 0.666666666666666666666666666667d0 * KELVIN_EV
        avg%e_layer(0:p%Lz) = avg%e_layer(0:p%Lz) / p%n_average
+       write(fn_T_layer,'(a,a)') trim(p%filename), '.T_layer'
+       open(UNIT=UNIT_T_LAYER,FILE=fn_T_layer)
+       do i=0,p%Lz-1
+          write(UNIT_T_LAYER,'(i9,f13.8)') i, avg%e_layer(i) / p%Lx / p%Ly * 0.666666666666666666666666666667d0 * KELVIN_EV
+       end do
+       close(UNIT_T_LAYER)
     else
        kelvin = p%kelvin
     end if
@@ -130,12 +136,5 @@ contains
          avg%dipo_kinetic_true
 
     close(UNIT_AVG)
-
-    write(fn_T_layer,'(a,a)') trim(p%filename), '.T_layer'
-    open(UNIT=UNIT_T_LAYER,FILE=fn_T_layer)
-    do i=0,p%Lz-1
-       write(UNIT_T_LAYER,'(i9,f13.8)') i, avg%e_layer(i) / p%Lx / p%Ly * 0.666666666666666666666666666667d0 * KELVIN_EV
-    end do
-    close(UNIT_T_LAYER)
   end subroutine divide_and_write_Average
 end module Average_module
