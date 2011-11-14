@@ -458,7 +458,7 @@ Using feram-X.YY.ZZ/src/eigenvalues2j.F, we can calculate P_kappa2 and j1, ..., 
 
 \Fig:IFC ../doc/figures/BaTiO3-000-dispersion-with-ifc/BaTiO3-000-dispersion-with-ifc.jpg
   (A) Half of eigenvalues of the 3x3 long-range dipole-dipole interaction matrix Phi(k)
-      are plotted along symmetric axes in the the first Brillouin zone of the simple-cubic lattice.
+      are plotted along symmetric axes in the first Brillouin zone of the simple-cubic lattice.
       Special points and k/(2pi)=(1/4, 1/4, 0) (the center of the Sigma axis) are
       indicated with vertical dotted lines. Labels (a)--(g)
       corresponds to Eqs. (15a)--(15g), respectively.
