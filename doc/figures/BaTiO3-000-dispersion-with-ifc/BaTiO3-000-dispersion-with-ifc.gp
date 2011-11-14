@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # BaTiO3-000-dispersion-with-ifc.gp
-# Time-stamp: <2011-07-06 20:38:38 t-nissie>
+# Time-stamp: <2011-11-14 13:20:05 takeshi>
 # Author: Takeshi NISHIMATSU
 # Parameters from: /home/t-nissie/abinit/BaTiO3-phonon/BaTiO3-phonon-62-WuCohenGGA-0.0GPa-8x8x8-ecut60-dilatmx1.2-5.7.3-SR11000/zzz-parameters.txt
 #  Because
@@ -91,6 +91,7 @@ set label 8 '(B)' front at 0.07, 6.20 font "Times-Roman,22"
 set yrange [-1.0:6.5]
 
 
+# 97.1736 [Hatree/Bohr^2] => [eV/Angstrom^2]
 elevation=0.0
 plot 0 w l lt 2,\
 'perovskite.dat'                          using 4:(($5 *97.1736/2+elevation)/c) w l lt 2 lc 7 lw 1,\
