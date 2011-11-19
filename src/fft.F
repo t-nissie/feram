@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-11-13 15:47:56 takeshi>
+! Time-stamp: <2011-11-19 21:27:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -14,7 +14,7 @@ subroutine fft_r2c_3x3upper(p,r,c)
   real*8     :: r(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3, 3)
   complex*16 :: c(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3) !CAUTION "/2"!
   integer alpha, beta, ip
-  integer*8 plan(6)
+  integer*8, save :: plan(6)=0
 #if defined(HAVE_LIBFFTW3)
 # include "fftw3.f"
 #else
@@ -36,9 +36,6 @@ subroutine fft_r2c_3x3upper(p,r,c)
      call dfftw_execute(plan(ip))
   end do
   !$omp end parallel do
-  do ip = 1, 6
-     call dfftw_destroy_plan(plan(ip))
-  end do
 #endif
 
   c(:,:,:,2,1) = conjg(c(:,:,:,1,2))
@@ -55,7 +52,7 @@ subroutine fft_r2c(p,r,c,max_alpha)
   complex*16 :: c(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, *) !CAUTION "/2"!
   integer max_alpha
   integer alpha ! See info of FFTW, section of "Multi-Dimensional DFTs of Real Data"
-  integer*8 plan(max_alpha)
+  integer*8,save :: plan(6)=0   ! max_alpha will never be bigger than 6.
 #if defined(HAVE_LIBFFTW3)
 # include "fftw3.f"
 #else
@@ -71,9 +68,6 @@ subroutine fft_r2c(p,r,c,max_alpha)
      call dfftw_execute(plan(alpha))
   end do
   !$omp end parallel do
-  do alpha = 1, max_alpha
-     call dfftw_destroy_plan(plan(alpha))
-  end do
 #endif
 end subroutine fft_r2c
 
@@ -85,7 +79,7 @@ subroutine fft_c2r(p,c,r,max_alpha)
   real*8     :: r(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, *)
   integer max_alpha
   integer alpha ! See info of FFTW, section of "Multi-Dimensional DFTs of Real Data"
-  integer*8 plan(max_alpha)
+  integer*8,save :: plan(6)=0   ! max_alpha will never be bigger than 6.
 #if defined(HAVE_LIBFFTW3)
 # include "fftw3.f"
 #else
@@ -101,9 +95,6 @@ subroutine fft_c2r(p,c,r,max_alpha)
      call dfftw_execute(plan(alpha))
   end do
   !$omp end parallel do
-  do alpha = 1, max_alpha
-     call dfftw_destroy_plan(plan(alpha))
-  end do
 #endif
 end subroutine fft_c2r
 !
