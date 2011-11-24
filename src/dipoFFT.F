@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2011-10-17 04:22:07 takeshi>
+! Time-stamp: <2011-11-25 02:54:40 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -12,11 +12,20 @@ subroutine dipoFFT(p,c)
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
+  integer alpha
 
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dipoR -> dipoK, didiR, didiK')
   end if
+# if defined(HAVE_LIBFFTW3)
+  !$omp parallel do
+  do alpha = 1, 3
+     call dfftw_execute(c%plans_dipoR2C(alpha))
+  end do
+  !$omp end parallel do
+# else
   call fft_r2c(p, c%dipoR, c%dipoK, 3)
+# endif
 
   c%didiR(:,:,:,1) = c%dipoR(:,:,:,1) * c%dipoR(:,:,:,1)
   c%didiR(:,:,:,2) = c%dipoR(:,:,:,2) * c%dipoR(:,:,:,2)
@@ -25,7 +34,15 @@ subroutine dipoFFT(p,c)
   c%didiR(:,:,:,5) = c%dipoR(:,:,:,3) * c%dipoR(:,:,:,1)
   c%didiR(:,:,:,6) = c%dipoR(:,:,:,1) * c%dipoR(:,:,:,2)
 
+# if defined(HAVE_LIBFFTW3)
+  !$omp parallel do
+  do alpha = 1, 6
+     call dfftw_execute(c%plans_didiR2C(alpha))
+  end do
+  !$omp end parallel do
+# else
   call fft_r2c(p, c%didiR, c%didiK, 6)
+# endif
 
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', &
