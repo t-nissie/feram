@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2011-09-04 21:07:14 takeshi>
+! Time-stamp: <2011-11-25 00:04:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,6 +9,7 @@
 subroutine feram_common(fn)
   use Param_module
   use Coord_module
+  !$ use omp_lib
   implicit none
   type(Param_type) :: p
   type(Coord_type) :: c
@@ -16,6 +17,12 @@ subroutine feram_common(fn)
   character(len=FILE_NAME_LEN)             :: fn_log
   integer                                  :: fn_len_trim
   character(len=70) :: message
+
+# if defined(HAVE_LIBFFTW3)
+  integer :: ireturn
+  call dfftw_init_threads(ireturn)
+  call dfftw_plan_with_nthreads(OMP_GET_NUM_THREADS())
+# endif
 
   fn_len_trim = len_trim(fn)
   if (fn_len_trim-5 .eq. index(fn,'.feram',back=.true.)) then
@@ -38,6 +45,9 @@ subroutine feram_common(fn)
   call  potentials(p,c)
   !Instead, read_defects_u(p,c) is called in initialize_dipoR()! call make_mass_matrix(p,c)
 
+  call date_and_time2message(message)
+  call msg_ez(UNIT_LOG, trim(message)//' Ready for simulation!!!')
+
   if (p%method.eq.'md ' .or. p%method.eq.'lf ') then
      call molecular_dynamics(p,c)
   else if (p%method.eq.'hl ') then
@@ -53,4 +63,8 @@ subroutine feram_common(fn)
   call msg_ez(UNIT_LOG, message)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   close(unit=UNIT_LOG)
+
+# if defined(HAVE_LIBFFTW3)
+  call dfftw_cleanup_threads(ireturn)
+# endif
 end subroutine feram_common
