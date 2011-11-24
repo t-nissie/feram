@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2011-10-24 10:31:47 takeshi>
+! Time-stamp: <2011-11-25 03:13:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -53,6 +53,8 @@ module Coord_module
      real*8                 homogeneous_coupling_2(6,6)
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
+     integer*8              plans_dipoR2C(3)
+     integer*8              plans_didiR2C(6)
   end type Coord_type
 
 contains
@@ -61,6 +63,10 @@ contains
     implicit none
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
+#   if defined(HAVE_LIBFFTW3)
+    integer alpha
+#   include "fftw3.f"
+#   endif
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
     !--- m_inv ------------------------------
     if (allocated(c%m_inv)) deallocate(c%m_inv)
@@ -70,28 +76,50 @@ contains
     allocate(     c%dipoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
     if (allocated(c%dipoK)) deallocate(c%dipoK)
     allocate(     c%dipoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3)) !"/2" See fft.F!
+#   if defined(HAVE_LIBFFTW3)
+    do alpha = 1, 3
+       call dfftw_plan_dft_r2c_3d(c%plans_dipoR2C(alpha), p%Lx, p%Ly, p%Lz, &
+            & c%dipoR(0,0,0,alpha), c%dipoK(0,0,0,alpha), FFTW_EXHAUSTIVE)
+    end do
+#   endif
+
     if (allocated(c%dipoP)) deallocate(c%dipoP)
     allocate(     c%dipoP(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+
     if (allocated(c%dVddi)) deallocate(c%dVddi)
     allocate(     c%dVddi(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+
     if (allocated(c%E_field)) deallocate(c%E_field)
     allocate(     c%E_field(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+
     if (allocated(c%dipoI)) deallocate(c%dipoI)
     allocate(     c%dipoI(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!
+
     if (allocated(c%didiR)) deallocate(c%didiR)
     allocate(     c%didiR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
     if (allocated(c%didiK)) deallocate(c%didiK)
     allocate(     c%didiK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))    !"/2" See fft.F!
+#   if defined(HAVE_LIBFFTW3)
+    do alpha = 1, 6
+       call dfftw_plan_dft_r2c_3d(c%plans_didiR2C(alpha), p%Lx, p%Ly, p%Lz, &
+            & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha), FFTW_EXHAUSTIVE)
+    end do
+#   endif
+
     !--- acou -------------------------------
     !if (allocated(c%acouR)) deallocate(c%acouR)
     !allocate(     c%acouR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
     !--- inhomogeneous ----------------------
+
     if (allocated(c%inhomo_K)) deallocate(c%inhomo_K)
     allocate(     c%inhomo_K(0:p%Lx/2,0:p%Ly-1,0:p%Lz-1, 3,3))
+
     if (allocated(c%inhomo_K_G)) deallocate(c%inhomo_K_G)
     allocate(     c%inhomo_K_G(3,4, 0:p%Lx/2,0:p%Ly-1,0:p%Lz-1))
+
     if (allocated(c%inhomo_coup2_K)) deallocate(c%inhomo_coup2_K)
     allocate(     c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1,0:p%Lz-1, 3,6))
+
     !--- sum_p ------------------------------
     if (allocated(c%sum_p)) deallocate(c%sum_p)
     allocate(c%sum_p(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
