@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-11-11 22:26:56 takeshi>
+dnl Time-stamp: <2011-11-24 22:56:37 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -22,9 +22,6 @@ CPPFLAGS="$CPPFLAGS -I/usr/include -I/usr/local/include"
 ## Checks for some programs.
 AC_PROG_INSTALL
 
-## OpenMP
-AC_ARG_ENABLE(openmp,[AS_HELP_STRING([--disable-openmp],[disable OpenMP (default enabled)])])
-
 ## Checks for Fortran compilers.
 FCFLAGS_PRESERVE=$FCFLAGS
 AC_LANG(Fortran)
@@ -40,28 +37,16 @@ case "$FC" in
     ;;
   gfortran)
     test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -ffast-math -funroll-loops -pipe\
-      -ffpe-trap=zero,overflow"
-    if test "$enable_openmp" != "no"; then
-      FCFLAGS="$FCFLAGS -fopenmp"
-    fi
+      -ffpe-trap=zero,overflow -fopenmp"
     ;;
   openf95)
-    test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -ffast-math"
-    if test "$enable_openmp" != "no"; then
-      FCFLAGS="$FCFLAGS -fopenmp"
-    fi
+    test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -ffast-math -fopenmp"
     ;;
   ifort)
-    test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -warn all"
-    if test "$enable_openmp" != "no"; then
-      FCFLAGS="$FCFLAGS -openmp -openmp-report2 -parallel -par-report1"
-    fi
+    test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1"
     ;;
   pgf*)
-    test -n "$FCFLAGS" || FCFLAGS="-O3"
-    if test "$enable_openmp" != "no"; then
-      FCFLAGS="$FCFLAGS -mp"
-    fi
+    test -n "$FCFLAGS" || FCFLAGS="-O3 -mp"
     ;;
   xf90)
     test -n "$FCFLAGS" || FCFLAGS="-64 -Os -parallel=4\
@@ -69,10 +54,7 @@ case "$FC" in
     test -n "$MPIFC" || MPIFC=mpixf90
     ;;
   frt)
-    test -n "$FCFLAGS" || FCFLAGS="-Kimpact -Am -SSL2"
-    if test "$enable_openmp" != "no"; then
-      FCFLAGS="$FCFLAGS -KOMP"
-    fi
+    test -n "$FCFLAGS" || FCFLAGS="-Kimpact -Am -SSL2 -KOMP"
     test -n "$MPIFC" || MPIFC=mpifrt
     ;;
   *xlf*)
@@ -114,6 +96,8 @@ case "$host" in
       fftw* | yes | "")
         AC_CHECK_LIB(fftw3, dfftw_execute,,
                      AC_MSG_ERROR([You need FFTW library. See config.log.]))
+        AC_CHECK_LIB(fftw3_omp, dfftw_init_threads,,
+                     AC_MSG_ERROR([You need FFTW library compiled with --enable-openmp. See config.log.]))
         ;;
       mkl)
         AC_CHECK_LIB(mkl_core, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
@@ -122,11 +106,7 @@ case "$host" in
       ssl2)
         ;;
       acml*)
-        if test "$enable_openmp" == "no"; then
-          AC_CHECK_LIB(acml,    ZFFT3D,, AC_MSG_ERROR([You need ACML. See config.log.]))
-        else
-          AC_CHECK_LIB(acml_mp, ZFFT3D,, AC_MSG_ERROR([You need ACML. See config.log.]))
-        fi
+        AC_CHECK_LIB(acml_mp, ZFFT3D,, AC_MSG_ERROR([You need ACML. See config.log.]))
         ;;
       no)
         AC_DEFINE([BUILT_IN_FFT], [1], [Use the built-in minimal FFT])
