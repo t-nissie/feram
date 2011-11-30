@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2011-11-25 00:04:56 takeshi>
+! Time-stamp: <2011-11-30 21:00:51 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,19 +9,19 @@
 subroutine feram_common(fn)
   use Param_module
   use Coord_module
-  !$ use omp_lib
   implicit none
   type(Param_type) :: p
   type(Coord_type) :: c
   character(len=FILE_NAME_LEN), intent(in) :: fn
   character(len=FILE_NAME_LEN)             :: fn_log
   integer                                  :: fn_len_trim
+  integer                                  :: OMP_GET_MAX_THREADS
   character(len=70) :: message
 
 # if defined(HAVE_LIBFFTW3)
   integer :: ireturn
   call dfftw_init_threads(ireturn)
-  call dfftw_plan_with_nthreads(OMP_GET_NUM_THREADS())
+  call dfftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
 # endif
 
   fn_len_trim = len_trim(fn)
