@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2011-11-25 02:54:40 takeshi>
+! Time-stamp: <2011-11-30 20:54:38 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -18,11 +18,9 @@ subroutine dipoFFT(p,c)
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dipoR -> dipoK, didiR, didiK')
   end if
 # if defined(HAVE_LIBFFTW3)
-  !$omp parallel do
   do alpha = 1, 3
      call dfftw_execute(c%plans_dipoR2C(alpha))
   end do
-  !$omp end parallel do
 # else
   call fft_r2c(p, c%dipoR, c%dipoK, 3)
 # endif
@@ -35,11 +33,9 @@ subroutine dipoFFT(p,c)
   c%didiR(:,:,:,6) = c%dipoR(:,:,:,1) * c%dipoR(:,:,:,2)
 
 # if defined(HAVE_LIBFFTW3)
-  !$omp parallel do
   do alpha = 1, 6
      call dfftw_execute(c%plans_didiR2C(alpha))
   end do
-  !$omp end parallel do
 # else
   call fft_r2c(p, c%didiR, c%didiK, 6)
 # endif
