@@ -37,7 +37,9 @@ http://sourceforge.net/projects/loto/files/feram/
 == インストール
 === インストールに必要なもの
  * GNU make  http://www.gnu.org/software/make/ （*BSD make などではコンパイルできません）
- * FFTW3 library  http://www.fftw.org/
+ * FFTW3 library  http://www.fftw.org/ （IntelとAMDのマシン用．ライブラリは
+   --enable-openmp --enable-threads --enable-sse --enable-sse2 のオプションを付けてconfigureする．
+   Intel MKLにはFFTW3ラッパーがあるので，それが使えます．）
  * Fortran 90 compiler
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
    * Intel Fortran Compiler (ifort; version 11.1 and later) with
@@ -48,7 +50,7 @@ http://sourceforge.net/projects/loto/files/feram/
 === feramの使用にあると便利なもの
  * gnuplot (version 4.2 or higher)
  * Ruby (version 1.8.6 or higher)
- * jot（たいていのLinuxディストリビューションにはjotパッケージがあります。ソースathena-jot_9.0.orig.tar.gzもネットに見つかります。）
+ * jot（たいていのLinuxディストリビューションにはjotパッケージがあります．ソースathena-jot_9.0.orig.tar.gzもネットに見つかります．）
 
 === feramの開発にあると便利なもの
  * autoconf (version 2.61 or higher)
@@ -81,8 +83,8 @@ http://sourceforge.net/projects/loto/files/feram/
 === パラメータファイル
 feram用のパラメータファイルはコメント行と 'tag = value(s)' というタグ行
 からなるテキストファイルです．パラメータファイルのファイル名を
-foo123 または foo123.feram とした場合、出力ファイルは
-foo123.log, foo123.cood, ... などとなります。
+foo123 または foo123.feram とした場合，出力ファイルは
+foo123.log, foo123.cood, ... などとなります．
 それぞれのパラメータをどう決定するかは parameters/parameters.html
 に説明があります．
 
@@ -320,14 +322,14 @@ src/defects-maker.rb はこの .defects 入力ファイルを作るのに便利�
 feramを次のようにパラメータ・ファイル "foo123.feram" を引数として
  $ feram foo123.feram
 と実行すると，feramは "foo123.localfield" ファイルを探して，
-見つかればそのファイルの中で指定されたサイトに指定された局所場をかけます。
+見つかればそのファイルの中で指定されたサイトに指定された局所場をかけます．
 .localfieldファイルの書式は
   4  6 13   0.00 0.00 0.10
     :
  ix iy iz   Ex   Ey   Ez
     :
-局所場の単位は V/Angstrom　です。このファイルが見つからない場合、
-局所場はもちろんどこのサイトでも０になります。
+局所場の単位は V/Angstrom です．このファイルが見つからない場合，
+局所場はもちろんどこのサイトでも０になります．
 
 === ionic.configuration file
 (Not implemented yet.)
