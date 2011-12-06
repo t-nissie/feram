@@ -1,6 +1,12 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-11-13 15:47:56 takeshi>
+! Time-stamp: <2011-12-06 16:18:51 takeshi>
 ! Author: Takeshi NISHIMATSU
+! Architectures and Libraries:
+!    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
+!    Hitach MATRIX/MPP (SR11000)
+!    ACML (HAVE_LIBACML_MP)
+!    Fujitsu SSL2 (__sparc)
+!    Built in minimal FFT library (BUILT_IN_FFT)
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
@@ -56,25 +62,11 @@ subroutine fft_r2c(p,r,c,max_alpha)
   integer max_alpha
   integer alpha ! See info of FFTW, section of "Multi-Dimensional DFTs of Real Data"
   integer*8 plan(max_alpha)
-#if defined(HAVE_LIBFFTW3)
-# include "fftw3.f"
-#else
-# define FFTW_ESTIMATE 0
-#endif
+
   do alpha = 1, max_alpha
      call dfftw_plan_dft_r2c_3d(plan(alpha), p%Lx, p%Ly, p%Lz, &
-          & r(0,0,0,alpha), c(0,0,0,alpha), FFTW_ESTIMATE)
+          & r(0,0,0,alpha), c(0,0,0,alpha), 0)
   end do
-#if defined(HAVE_LIBFFTW3)
-  !$omp parallel do
-  do alpha = 1, max_alpha
-     call dfftw_execute(plan(alpha))
-  end do
-  !$omp end parallel do
-  do alpha = 1, max_alpha
-     call dfftw_destroy_plan(plan(alpha))
-  end do
-#endif
 end subroutine fft_r2c
 
 subroutine fft_c2r(p,c,r,max_alpha)
