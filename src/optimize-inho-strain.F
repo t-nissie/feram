@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-10-22 20:42:52 takeshi>
+! Time-stamp: <2011-12-07 11:54:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -18,16 +18,12 @@ subroutine optimize_inho_strain(p,c,e)
   real*8                  :: k(3), eta_B_over_2m(6)
   complex*16              :: acouK_tmp(3)
   complex*16, allocatable :: acouK(:,:,:,:)
-  real*8,     allocatable :: inhoR(:,:,:,:)
-  complex*16, allocatable :: inhoK(:,:,:,:)
   complex*16              :: tmp
   integer                 :: i, alpha,beta, ix,iy,iz
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
   !     & 'Optimize inhomogeneous strain. Calculate related energies and accelerations.')
   allocate(acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" See fft.F!
-  allocate(inhoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
-  allocate(inhoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6)) !"/2" See fft.F!
 
   !--- optimize inhomogeneous strain -----------------------------------
   ! Linear equations for acouK,
@@ -71,7 +67,7 @@ subroutine optimize_inho_strain(p,c,e)
   call inhomogeneous_strain_energy(p,c,e,acouK)
   call inhomogeneous_coupling_energy(p,c,e,acouK)
 
-  !--- acouK -> inhoK -FFT-> inhoR (inho. strain in real space) --------
+  !--- acouK -> c%inhoK -FFT-> c%inhoR (inho. strain in real space) --------
   !$omp parallel do private(iz,iy,ix,k)
   do iz = 0, p%Lz-1
      k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
@@ -81,31 +77,38 @@ subroutine optimize_inho_strain(p,c,e)
         k(2) = k(2) * M_2PI / p%a0
         do ix = 0, p%Lx/2
            k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-           inhoK(ix,iy,iz,1) = k(1)*acouK(1,ix,iy,iz)
-           inhoK(ix,iy,iz,2) = k(2)*acouK(2,ix,iy,iz)
-           inhoK(ix,iy,iz,3) = k(3)*acouK(3,ix,iy,iz)
-           inhoK(ix,iy,iz,4) = k(3)*acouK(2,ix,iy,iz) + k(2)*acouK(3,ix,iy,iz)
-           inhoK(ix,iy,iz,5) = k(1)*acouK(3,ix,iy,iz) + k(3)*acouK(1,ix,iy,iz)
-           inhoK(ix,iy,iz,6) = k(2)*acouK(1,ix,iy,iz) + k(1)*acouK(2,ix,iy,iz)
+           c%inhoK(ix,iy,iz,1) = k(1)*acouK(1,ix,iy,iz)
+           c%inhoK(ix,iy,iz,2) = k(2)*acouK(2,ix,iy,iz)
+           c%inhoK(ix,iy,iz,3) = k(3)*acouK(3,ix,iy,iz)
+           c%inhoK(ix,iy,iz,4) = k(3)*acouK(2,ix,iy,iz) + k(2)*acouK(3,ix,iy,iz)
+           c%inhoK(ix,iy,iz,5) = k(1)*acouK(3,ix,iy,iz) + k(3)*acouK(1,ix,iy,iz)
+           c%inhoK(ix,iy,iz,6) = k(2)*acouK(1,ix,iy,iz) + k(1)*acouK(2,ix,iy,iz)
         end do
      end do
   end do
   !$omp end parallel do
-  call fft_c2r(p, inhoK, inhoR, 6)
 
-  !--- inhoR -> inhomogeneous coupling part of dVddi -------------------
+# if defined(HAVE_LIBFFTW3)
+  do alpha = 1, 6
+     call dfftw_execute(c%plans_inhoK2R(alpha))
+  end do
+# else
+  call fft_c2r(p, c%inhoK, c%inhoR, 6)
+# endif
+
+  !--- c%inhoR -> inhomogeneous coupling part of dVddi -------------------
   !$omp parallel do private(iz,iy,ix,i,eta_B_over_2m)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1
            do i = 1, 6
               eta_B_over_2m(i) = &
-                   &   inhoR(ix,iy,iz,1) * p%Ninv * c%homogeneous_coupling_2(1,i) &
-                   & + inhoR(ix,iy,iz,2) * p%Ninv * c%homogeneous_coupling_2(2,i) &
-                   & + inhoR(ix,iy,iz,3) * p%Ninv * c%homogeneous_coupling_2(3,i) &
-                   & + inhoR(ix,iy,iz,4) * p%Ninv * c%homogeneous_coupling_2(4,i) &
-                   & + inhoR(ix,iy,iz,5) * p%Ninv * c%homogeneous_coupling_2(5,i) &
-                   & + inhoR(ix,iy,iz,6) * p%Ninv * c%homogeneous_coupling_2(6,i)
+                   &   c%inhoR(ix,iy,iz,1) * p%Ninv * c%homogeneous_coupling_2(1,i) &
+                   & + c%inhoR(ix,iy,iz,2) * p%Ninv * c%homogeneous_coupling_2(2,i) &
+                   & + c%inhoR(ix,iy,iz,3) * p%Ninv * c%homogeneous_coupling_2(3,i) &
+                   & + c%inhoR(ix,iy,iz,4) * p%Ninv * c%homogeneous_coupling_2(4,i) &
+                   & + c%inhoR(ix,iy,iz,5) * p%Ninv * c%homogeneous_coupling_2(5,i) &
+                   & + c%inhoR(ix,iy,iz,6) * p%Ninv * c%homogeneous_coupling_2(6,i)
            end do
            c%dVddi(ix,iy,iz,1) = &
          & c%dVddi(ix,iy,iz,1) + 2 * eta_B_over_2m(1) * c%dipoR(ix,iy,iz,1) &
@@ -124,6 +127,6 @@ subroutine optimize_inho_strain(p,c,e)
   end do
   !$omp end parallel do
 
-  deallocate(acouK,inhoR,inhoK)
+  deallocate(acouK)
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine optimize_inho_strain

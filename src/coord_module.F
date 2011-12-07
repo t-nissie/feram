@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2011-11-25 03:13:56 takeshi>
+! Time-stamp: <2011-12-07 12:45:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -23,6 +23,8 @@ module Coord_module
      real*8,     pointer     :: didiR(:,:,:,:)   => null()
      complex*16, pointer     :: didiK(:,:,:,:)   => null()
     !real*8,     pointer     :: acouR(:,:,:,:)   => null()
+     real*8,     pointer     :: inhoR(:,:,:,:)   => null()
+     complex*16, pointer     :: inhoK(:,:,:,:)   => null()
      real*8,     pointer     :: inhomo_K(:,:,:, :,:)       => null()
      real*8,     pointer     :: inhomo_K_G(:,:, :,:,:)     => null()
      real*8,     pointer     :: inhomo_K_G_inv(:, :,:,:)   => null()
@@ -40,6 +42,8 @@ module Coord_module
      real*8,     allocatable :: didiR(:,:,:,:)   ! 6 kind of dipoR*dipoR
      complex*16, allocatable :: didiK(:,:,:,:)   ! 6 kind of dipoR*dipoR
     !real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
+     real*8,     allocatable :: inhoR(:,:,:,:)   ! Only used in optimize-inho-strain.F
+     complex*16, allocatable :: inhoK(:,:,:,:)   ! Only used in optimize-inho-strain.F
      real*8,     allocatable :: inhomo_K(:,:,:, :,:)       ! FTed potential
      real*8,     allocatable :: inhomo_K_G(:,:, :,:,:)     ! inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
      real*8,     allocatable :: inhomo_coup2_K(:,:,:, :,:) ! FTed potential
@@ -55,6 +59,7 @@ module Coord_module
      integer                n_sum_p
      integer*8              plans_dipoR2C(3)
      integer*8              plans_didiR2C(6)
+     integer*8              plans_inhoK2R(6)
   end type Coord_type
 
 contains
@@ -79,7 +84,7 @@ contains
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 3
        call dfftw_plan_dft_r2c_3d(c%plans_dipoR2C(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%dipoR(0,0,0,alpha), c%dipoK(0,0,0,alpha), FFTW_EXHAUSTIVE)
+            & c%dipoR(0,0,0,alpha), c%dipoK(0,0,0,alpha), FFTW_PATIENT)
     end do
 #   endif
 
@@ -102,14 +107,25 @@ contains
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 6
        call dfftw_plan_dft_r2c_3d(c%plans_didiR2C(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha), FFTW_EXHAUSTIVE)
+            & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha), FFTW_PATIENT)
     end do
 #   endif
 
     !--- acou -------------------------------
     !if (allocated(c%acouR)) deallocate(c%acouR)
     !allocate(     c%acouR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+
     !--- inhomogeneous ----------------------
+    if (allocated(c%inhoR)) deallocate(c%inhoR)
+    allocate(c%inhoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
+    if (allocated(c%inhoK)) deallocate(c%inhoK)
+    allocate(c%inhoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))
+#   if defined(HAVE_LIBFFTW3)
+    do alpha = 1, 6
+       call dfftw_plan_dft_c2r_3d(c%plans_inhoK2R(alpha), p%Lx, p%Ly, p%Lz, &
+            & c%inhoK(0,0,0,alpha), c%inhoR(0,0,0,alpha), FFTW_PATIENT)
+    end do
+#   endif
 
     if (allocated(c%inhomo_K)) deallocate(c%inhomo_K)
     allocate(     c%inhomo_K(0:p%Lx/2,0:p%Ly-1,0:p%Lz-1, 3,3))
