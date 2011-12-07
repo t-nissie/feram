@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2011-12-07 12:45:58 takeshi>
+! Time-stamp: <2011-12-07 13:50:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -18,6 +18,7 @@ module Coord_module
      complex*16, pointer     :: dipoK(:,:,:,:)   => null()
      real*8,     pointer     :: dipoP(:,:,:,:)   => null()
      real*8,     pointer     :: dVddi(:,:,:,:)   => null()
+     complex*16, pointer     :: dipoT(:,:,:,:)   => null()
      real*8,     pointer     :: E_field(:,:,:,:) => null()
      real*8,     pointer     :: dipoI(:,:,:,:,:) => null()
      real*8,     pointer     :: didiR(:,:,:,:)   => null()
@@ -37,6 +38,7 @@ module Coord_module
      complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoQ
      real*8,     allocatable :: dipoP(:,:,:,:)   ! Momenta
      real*8,     allocatable :: dVddi(:,:,:,:)   ! dV/dq for dipole
+     complex*16, allocatable :: dipoT(:,:,:,:)   ! Only used in dVddi_dipole_dipole.F
      real*8,     allocatable :: E_field(:,:,:,:) ! external and local electric field
      real*8,     allocatable :: dipoI(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8!!!
      real*8,     allocatable :: didiR(:,:,:,:)   ! 6 kind of dipoR*dipoR
@@ -60,6 +62,7 @@ module Coord_module
      integer*8              plans_dipoR2C(3)
      integer*8              plans_didiR2C(6)
      integer*8              plans_inhoK2R(6)
+     integer*8              plans_dipoT2dVddi(3)
   end type Coord_type
 
 contains
@@ -93,6 +96,14 @@ contains
 
     if (allocated(c%dVddi)) deallocate(c%dVddi)
     allocate(     c%dVddi(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    if (allocated(c%dipoT)) deallocate(c%dipoT)
+    allocate(c%dipoT(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
+#   if defined(HAVE_LIBFFTW3)
+    do alpha = 1, 3
+       call dfftw_plan_dft_c2r_3d(c%plans_dipoT2dVddi(alpha), p%Lx, p%Ly, p%Lz, &
+            & c%dipoT(0,0,0,alpha), c%dVddi(0,0,0,alpha), FFTW_PATIENT)
+    end do
+#   endif
 
     if (allocated(c%E_field)) deallocate(c%E_field)
     allocate(     c%E_field(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
