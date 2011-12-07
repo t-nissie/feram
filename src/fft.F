@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-12-06 16:18:51 takeshi>
+! Time-stamp: <2011-12-07 14:05:53 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -78,25 +78,10 @@ subroutine fft_c2r(p,c,r,max_alpha)
   integer max_alpha
   integer alpha ! See info of FFTW, section of "Multi-Dimensional DFTs of Real Data"
   integer*8 plan(max_alpha)
-#if defined(HAVE_LIBFFTW3)
-# include "fftw3.f"
-#else
-# define FFTW_ESTIMATE 0
-#endif
   do alpha = 1, max_alpha
      call dfftw_plan_dft_c2r_3d(plan(alpha), p%Lx, p%Ly, p%Lz, &
-          & c(0,0,0,alpha), r(0,0,0,alpha), FFTW_ESTIMATE)
+          & c(0,0,0,alpha), r(0,0,0,alpha), 0)
   end do
-#if defined(HAVE_LIBFFTW3)
-  !$omp parallel do
-  do alpha = 1, max_alpha
-     call dfftw_execute(plan(alpha))
-  end do
-  !$omp end parallel do
-  do alpha = 1, max_alpha
-     call dfftw_destroy_plan(plan(alpha))
-  end do
-#endif
 end subroutine fft_c2r
 !
 
