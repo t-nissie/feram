@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2011-06-18 17:58:45 t-nissie>
+! Time-stamp: <2011-12-07 13:56:27 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_dipole_dipole(p,c,e)
@@ -12,23 +12,29 @@ subroutine dVddi_dipole_dipole(p,c,e)
   type(Coord_type), intent(inout) :: c
   type(Energy_type), intent(out)  :: e
   !--- local -----------------------------------------
-  complex*16, allocatable :: dipoT(:,:,:,:)
   integer alpha, ix, iy, iz
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'calc dVddi, calc e%dipo_dipo')
-  allocate(dipoT(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3)) !"/2" See fft.F!
   !$omp parallel do private(iz,iy,ix,alpha)
   do iz=0, p%Lz-1
      do alpha = 1,3
         do iy=0, p%Ly-1
            do ix=0, p%Lx/2
-              dipoT(ix,iy,iz,alpha) = sum(c%dipoI(ix,iy,iz,alpha,:)*c%dipoK(ix,iy,iz,:))
+              c%dipoT(ix,iy,iz,alpha) = sum(c%dipoI(ix,iy,iz,alpha,:)*c%dipoK(ix,iy,iz,:))
            end do
         end do
      end do
   end do
   !$omp end parallel do
-  call fft_c2r(p, dipoT, c%dVddi, 3)
+
+# if defined(HAVE_LIBFFTW3)
+  do alpha = 1, 3
+     call dfftw_execute(c%plans_dipoT2dVddi(alpha))
+  end do
+# else
+  call fft_c2r(p, c%dipoT, c%dVddi, 3)
+# endif
+
 !POPTION COALESCING(2)
   c%dVddi(:,:,:,:) = c%dVddi(:,:,:,:) * p%Ninv
   !if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') thenx
@@ -50,6 +56,5 @@ subroutine dVddi_dipole_dipole(p,c,e)
   e%dipole_dipole = e%dipole_dipole / 2
   !================================================================================
 
-  deallocate(dipoT)
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine dVddi_dipole_dipole
