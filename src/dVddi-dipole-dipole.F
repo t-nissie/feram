@@ -1,7 +1,10 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2011-12-07 13:56:27 takeshi>
+! Time-stamp: <2011-12-09 12:36:21 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 subroutine dVddi_dipole_dipole(p,c,e)
   use Param_module
   use Coord_module

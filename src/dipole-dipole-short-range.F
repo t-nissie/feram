@@ -1,8 +1,11 @@
 ! dipole-dipole-short-range.F -*-f90-*-
-! Time-stamp: <2011-09-13 15:39:45 takeshi>
+! Time-stamp: <2011-12-09 12:37:21 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "define.h"
 subroutine dipole_dipole_short_range(p,short_range)
   use Param_module
