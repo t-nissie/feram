@@ -20,5 +20,4 @@ feram-0.17.06 xf90-V01-05-/G
 2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/x86_64-Linux-ifort-12.0.4-appb01/src/zzz11example/
 2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/SR11000/src/zzz11example/
 
-Currently, I am using FFTW3 in some wrong ways.
-I have to fix it for Intel and AMD machines.
+2011-12-13 ifort-12.1.1.256 /home/t-nissie/f/loto/feram/trunk/0.17.07-r1013-2011-12-13-appb-ifort/src/zzz11example/
