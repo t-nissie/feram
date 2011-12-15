@@ -119,7 +119,8 @@ feram runs on 1 node (16 CPUs) of SR11000 effectively.
  % cd src
  % make
 For performance monitor
- % ../configure FC=xf90 FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -loglist -pmfunc -pmpar' --host=SR11000
+ % ../configure FC=xf90 FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
+   -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -pmfunc -pmpar' --host=SR11000
 
 ==== Fujitsu FX1
  % tar zxf feram-X.YY.ZZ.tar.gz
