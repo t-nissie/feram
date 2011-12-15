@@ -5,14 +5,21 @@ computer   elapse [sec]         d0    d1    d2
 -----------------------------------------------
 feram-0.17.06 ifort-11.1.069
  AMD8356 2.3GHz 1/2node=8core 37738 37579 40026
+
 feram-0.17.06 frt-8.1
  FX1     2.5GHz   1node=4core 42130 32307 35607
+
 feram-0.17.06 gfortran-4.3.5
  AMD275  1.8GHz 1/2node=2core       76738
+
 feram-0.17.06 ifort-12.0.4.191
  AMD275  1.8GHz   1node=4core 51938 50179 57925
+
 feram-0.17.06 xf90-V01-05-/G
  SR11000 2.3GHz  1node=16core  4969  5261  5646
+
+feram-0.17.07-r1013 gfortran-4.3.5 FFTW-3.3.1-beta1
+ AMD275  1.8GHz   1node=4core 58670 52627 56879
 -----------------------------------------------
 2011-11-09 .../f/loto/feram/trunk/feram-0.17.06-rev977-ifort-11.1.069-mkl/src/zzz11example/
 2011-11-08 ~/f/feram/feram-0.17.06/FX1/src/zzz11example-BaTiO3-new-hysteresis-loop-all/
@@ -20,4 +27,4 @@ feram-0.17.06 xf90-V01-05-/G
 2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/x86_64-Linux-ifort-12.0.4-appb01/src/zzz11example/
 2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/SR11000/src/zzz11example/
 
-2011-12-13 ifort-12.1.1.256 /home/t-nissie/f/loto/feram/trunk/0.17.07-r1013-2011-12-13-appb-ifort/src/zzz11example/
+2011-12-14 /home/t-nissie/f/loto/feram/trunk/0.17.07-r1013-2011-12-13-appb-gfortran/src/zzz11example/
