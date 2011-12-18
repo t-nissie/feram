@@ -1,5 +1,5 @@
 ! diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2009-03-10 18:00:30 t-nissie>
+! Time-stamp: <2011-12-19 00:06:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
 !!
@@ -53,8 +53,8 @@ program diagonalize15x15
      if (io.ne.0) exit
      if (I<=N_ATOM .and. J<=N_ATOM) then
         !write(6,'(4i4,2i5,2f15.9)') alpha, I, beta, J, 3*(I-1)+alpha, 3*(J-1)+beta , tmp_r, tmp_i
-        Force_Matrix_real_symmetric(3*(I-1)+alpha, 3*(J-1)+beta) = tmp_r              * HARTREE_IN_EV / acell(alpha) / acell(beta)
-        Force_Matrix_Hermetian(     3*(I-1)+alpha, 3*(J-1)+beta) = cmplx(tmp_r,tmp_i) * HARTREE_IN_EV / acell(alpha) / acell(beta)
+        Force_Matrix_real_symmetric(3*(I-1)+alpha, 3*(J-1)+beta) = tmp_r                          * HARTREE_IN_EV / acell(alpha) / acell(beta)
+        Force_Matrix_Hermetian(     3*(I-1)+alpha, 3*(J-1)+beta) = cmplx(tmp_r,tmp_i,kind(0.0d0)) * HARTREE_IN_EV / acell(alpha) / acell(beta)
         if ( abs(tmp_i) > 1.0d-4 ) all_real = .false.
      end if
   end do
