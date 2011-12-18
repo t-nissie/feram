@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-12-07 14:05:53 takeshi>
+! Time-stamp: <2011-12-19 00:07:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -171,7 +171,7 @@ subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
      do iz = 0, Nz-1
         do iy = 0, Ny-1
            do ix = 0, Nx/2-1
-              c(ix,iy,iz) = cmplx(r(2*ix,iy,iz),r(2*ix+1,iy,iz))
+              c(ix,iy,iz) = cmplx(r(2*ix,iy,iz),r(2*ix+1,iy,iz),kind(0.0d0))
            end do
         end do
      end do
