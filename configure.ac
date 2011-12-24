@@ -1,13 +1,13 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-11-30 22:01:36 t-nissie>
+dnl Time-stamp: <2011-12-24 17:30:21 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.61)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.17.07],[t-nissie{at}imr.tohoku.ac.jp],[feram])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.17.50],[t-nissie{at}imr.tohoku.ac.jp],[feram])
 AC_CONFIG_SRCDIR(src/feram.F)
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([1.11.1 no-dist-gzip dist-xz tar-pax])
 AC_CONFIG_HEADERS([config.h])
 
 ## Some OS does not see /usr/local/lib.
@@ -144,7 +144,6 @@ AC_SUBST(LIBBUILT_IN_FFT_A)
 
 AC_CONFIG_FILES([Makefile
              doc/Makefile
-   libblaslapack/Makefile
  libbuilt_in_fft/Makefile
       parameters/Makefile
              src/Makefile])

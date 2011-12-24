@@ -1,10 +1,10 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2011-12-02 12:04:35 takeshi>
+# Time-stamp: <2011-12-24 17:28:52 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
-SUBDIRS = src libblaslapack libbuilt_in_fft
+SUBDIRS = src libbuilt_in_fft
 EXTRA_DIST = README.en \
              index.en.html \
              README.ja \
@@ -47,4 +47,4 @@ dist-hook:
 .PHONY: snapshot
 snapshot:
 	$(MAKE) dist distdir=$(SNAPSHOT_NAME)
-	mpack -s $(SNAPSHOT_NAME).tar.gz $(SNAPSHOT_NAME).tar.gz t_nissie@yahoo.co.jp
+	mpack -s $(SNAPSHOT_NAME).tar.xz $(SNAPSHOT_NAME).tar.xz takeshi@example.com

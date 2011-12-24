@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-11-08 00:31:08 z48325w>
+# Time-stamp: <2011-12-24 17:34:17 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -38,28 +38,24 @@ feram_SRCS = average_module.F \
 	potentials.F \
 	print-eigenvalues.F
 feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
-feram_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
-feram_DEPENDENCIES =   ../libblaslapack/libblaslapack.a $(LIBBUILT_IN_FFT_A)
+feram_LDADD = $(LDADD) $(LIBBUILT_IN_FFT_A)
+feram_DEPENDENCIES =   $(LIBBUILT_IN_FFT_A)
 
 diagonalize15x15_SOURCES = diagonalize15x15.F
-diagonalize15x15_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
-diagonalize15x15_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
+diagonalize15x15_LDADD = $(LDADD)
 
 displacement_SOURCES = displacement.F
 
 coord2deviation_SOURCES = coord2deviation.F
 
 eigenvalues2j_SOURCES = eigenvalues2j.F msg.F param_module.F
-eigenvalues2j_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
-eigenvalues2j_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
+eigenvalues2j_LDADD = $(LDADD)
 
 frozen_phonon_Gamma_SOURCES = frozen_phonon_Gamma.F
-frozen_phonon_Gamma_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
-frozen_phonon_Gamma_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
+frozen_phonon_Gamma_LDADD = $(LDADD)
 
 frozen_phonon_X_SOURCES = frozen_phonon_X.F
-frozen_phonon_X_LDADD = $(LDADD) ../libblaslapack/libblaslapack.a
-frozen_phonon_X_DEPENDENCIES =   ../libblaslapack/libblaslapack.a
+frozen_phonon_X_LDADD = $(LDADD)
 
 marsaglia_tsang_uni64_check_SOURCES = marsaglia_tsang_uni64_check.F marsaglia_tsang_uni64_module.f
 TESTS = marsaglia_tsang_uni64_check
@@ -81,9 +77,6 @@ feram_mpi.F \
 10example-PbTiO3-DDB2short \
 11example-BaTiO3-new-hysteresis-loop \
 15example-BaTiO3-new-param-defects
-
-../libblaslapack/libblaslapack.a:
-	cd ../libblaslapack && $(MAKE)
 
 ../libbuilt_in_fft/libbuilt_in_fft.a:
 	cd ../libbuilt_in_fft && $(MAKE)

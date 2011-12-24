@@ -80,7 +80,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  * automake (version 1.10 higher)
 
 === Quick compilation
- $ tar zxf feram-X.YY.ZZ.tar.gz
+ $ tar Jxf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir Linux-i686-gfortran-4.3.5
  $ cd Linux-i686-gfortran-4.3.5
@@ -98,7 +98,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
 
 === Available platforms and compilers
 ==== Intel Fortran Compiler with the Intel MKL FFTW wrappers
- $ tar zxf feram-X.YY.ZZ.tar.gz
+ $ tar Jxf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir ifort-11.1
  $ cd ifort-11.1
@@ -111,7 +111,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
 
 ==== HITACHI SR11000 with xf90 (super1 in IMR)
 feram runs on 1 node (16 CPUs) of SR11000 effectively.
- % tar zxf feram-X.YY.ZZ.tar.gz
+ % tar Jxf feram-X.YY.ZZ.tar.xz
  % cd feram-X.YY.ZZ
  % mkdir SR11000-xf90
  % cd SR11000-xf90
@@ -123,7 +123,7 @@ For performance monitor
    -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -pmfunc -pmpar' --host=SR11000
 
 ==== Fujitsu FX1
- % tar zxf feram-X.YY.ZZ.tar.gz
+ % tar Jxf feram-X.YY.ZZ.tar.xz
  % cd feram-X.YY.ZZ
  % mkdir FX1
  % cd FX1
@@ -150,7 +150,7 @@ environment variables.
 
 ==== IA-64 GNU/Linux (appc in IMR)
 On IA-64, feram may be compiled with gfortran or Intel Fortran (ifort). For example:
- % tar zxf feram-X.YY.ZZ.tar.gz
+ % tar Jxf feram-X.YY.ZZ.tar.xz
  % cd feram-X.YY.ZZ
  % mkdir appc-FFTW3/
  % cd appc-FFTW3/
@@ -540,10 +540,6 @@ name of this program and cite our articles,
 David Vanderbilt: Phys. Rev. B 78 (2008) 104104] and [Jaita Paul,
 Takeshi Nishimatsu, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
 Phys. Rev. Lett. 99 (2007) 077601], in your papers.
-
-=== BLAS and LAPACK
-Files under the directory libblaslapack are coming from BLAS and LAPACK
-packages http://www.netlib.org/lapack/ .  See libblaslapack/COPYING.
 
 === Cited figures
 Authors and/or publishers of the papers have their copyrights for the following cited figures.
