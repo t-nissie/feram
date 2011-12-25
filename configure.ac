@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-12-24 17:30:21 takeshi>
+dnl Time-stamp: <2011-12-25 16:55:18 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -48,7 +48,7 @@ case "$FC" in
   pgf*)
     test -n "$FCFLAGS" || FCFLAGS="-O3 -mp"
     ;;
-  xf90)
+  xf90|f90)
     test -n "$FCFLAGS" || FCFLAGS="-64 -Os -parallel=4\
       -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist"
     test -n "$MPIFC" || MPIFC=mpixf90
@@ -67,19 +67,22 @@ esac
 test -n "$MPIFC" || MPIFC=mpif90
 
 ## AR and RANLIB
-if test "$host" == SR11000; then
-  AR='ar -X64'
-  RANLIB='ranlib -X64'
-else
-  AR=ar
-  AC_PROG_RANLIB
-fi
+case "$host" in
+  SR1*)
+    AR='ar -X64'
+    RANLIB='ranlib -X64'
+    ;;
+  *)
+    AR=ar
+    AC_PROG_RANLIB
+    ;;
+esac
 
 ## FFT library
 case "$host" in
-  SR11000)
-    AC_DEFINE([SR11000], [1], [HITACHI SR11000 Series Super Technical Server])
-    AC_MSG_NOTICE([We use MATRIX/MPP (matmpp) library of SR11000.])
+  SR1*)
+    AC_DEFINE([HITACHI_SR], [1], [HITACHI SR11000 and SR16000])
+    AC_MSG_NOTICE([We use MATRIX/MPP (matmpp) library of HITACHI SR11000 or SR16000.])
     LDFLAGS="$LDFLAGS -L/opt/hitachi/matmpp/lib"
     AC_CHECK_LIB(matmpp, HDFZ7M,,
                  AC_MSG_ERROR([You need MATRIX/MPP (matmpp) library. See config.log.]))
@@ -117,6 +120,10 @@ case "$host" in
         ;;
     esac
 esac
+
+## BLAS
+
+## LAPACK
 
 ## fixed-form or free-form
 FCFLAGS_FIXEDFORM=$FCFLAGS

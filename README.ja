@@ -45,7 +45,8 @@ http://sourceforge.net/projects/loto/files/feram/
    * Intel Fortran Compiler (ifort; version 11.1 and later) with
      Intel Math Kernel Library (MKL; version 10.2 and later) http://software.intel.com/en-us/articles/intel-compilers/
    * PGI Fortran (pgf95, version 8.0-3 or higher) http://www.pgroup.com/
-   * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server  http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
+   * Fortran 90 (f90|xf90) for HITACHI SR11000 and SR16000
+   * Fortran 90 (frt) for Fujitsu machines: FX1, Kei and FX10.
 
 === feramの使用にあると便利なもの
  * gnuplot (version 4.2 or higher)

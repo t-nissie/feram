@@ -69,7 +69,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
    * Intel Fortran Compiler (ifort; version 11.1 and later) with
      Intel Math Kernel Library (MKL; version 10.2 and later) http://software.intel.com/en-us/articles/intel-compilers/
-   * Fortran 90 (xf90) for HITACHI SR11000 Series Super Technical Server  http://www.hitachi.co.jp/Prod/comp/hpc/SR_e/11ktop_e.html
+   * Fortran 90 (f90|xf90) for HITACHI SR11000 and SR16000
    * Fortran 90 (frt) for Fujitsu machines: FX1, Kei and FX10.
 
 === Preferables
@@ -109,8 +109,8 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  $ make -j 4        # Parallel make
  $ make feram_mpi   # OPTIONAL
 
-==== HITACHI SR11000 with xf90 (super1 in IMR)
-feram runs on 1 node (16 CPUs) of SR11000 effectively.
+==== HITACHI SR11000 or SR16000 with xf90 or f90
+feram runs on 1 node of SR11000 or SR16000 effectively.
  % tar Jxf feram-X.YY.ZZ.tar.xz
  % cd feram-X.YY.ZZ
  % mkdir SR11000-xf90
