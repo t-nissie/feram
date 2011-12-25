@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2011-11-07 10:10:49 t-nissie>
+! Time-stamp: <2011-12-25 17:13:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -31,7 +31,7 @@ subroutine mirror_force_mirror(p,c,e)
      c%dVddi(:,:,:,:) = c%dVddi(:,:,:,:) - p%Z_star*c%E_field(:,:,:,:)
      tmp_dipole_E_field = 0.0d0
 !POPTION COALESCING(2)
-     do alpha = 1, 3   ! SR11000's compiler is too fool to parallelize e%dipole_E_field = - p%Z_star * sum(c%dipoR(:,:,:,:)*c%E_field(:,:,:,:)).
+     do alpha = 1, 3   ! HITACHI_SR's compiler is too fool to parallelize e%dipole_E_field = - p%Z_star * sum(c%dipoR(:,:,:,:)*c%E_field(:,:,:,:)).
         do iz = 0, p%Lz-1
            do iy = 0, p%Ly-1
               do ix = 0, p%Lx-1

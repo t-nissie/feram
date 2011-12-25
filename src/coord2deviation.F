@@ -1,12 +1,12 @@
 ! coord2deviation.F -*-f90-*-
-! Time-stamp: <2011-11-01 11:37:25 t-nissie>
+! Time-stamp: <2011-12-25 17:14:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
 
-#if defined(__PGI) || defined(SR11000) || defined(__sparc)
+#if defined(__PGI) || defined(HITACHI_SR) || defined(__sparc)
 #  define command_argument_count iargc
 #  define get_command_argument getarg
 #endif

@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2011-12-07 13:50:46 takeshi>
+! Time-stamp: <2011-12-25 17:14:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -11,7 +11,7 @@
 module Coord_module
   implicit none
   type Coord_type
-#  if defined(SR11000)
+#  if defined(HITACHI_SR)
 #    define allocated associated
      real*8,     pointer     :: m_inv(:,:,:,:)   => null()
      real*8,     pointer     :: dipoR(:,:,:,:)   => null()

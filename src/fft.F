@@ -1,9 +1,9 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-12-19 00:07:49 takeshi>
+! Time-stamp: <2011-12-25 17:16:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
-!    Hitach MATRIX/MPP (SR11000)
+!    MATRIX/MPP of HITACHI SR11000 and SR16000 (HITACHI_SR)
 !    ACML (HAVE_LIBACML_MP)
 !    Fujitsu SSL2 (__sparc)
 !    Built in minimal FFT library (BUILT_IN_FFT)
@@ -85,7 +85,7 @@ subroutine fft_c2r(p,c,r,max_alpha)
 end subroutine fft_c2r
 !
 
-#if defined(SR11000)
+#if defined(HITACHI_SR)
 subroutine n2pqr(n,pqr)
   implicit none
   integer, intent(in)  :: n

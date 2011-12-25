@@ -1,5 +1,5 @@
 ! feram_mpi.F -*-f90-*-
-! Time-stamp: <2011-08-29 14:26:38 z48325w>
+! Time-stamp: <2011-12-25 17:14:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -7,7 +7,7 @@
 #endif
 #include "define.h"
 
-#if defined(__PGI) || defined(SR11000) || defined(__sparc)
+#if defined(__PGI) || defined(HITACHI_SR) || defined(__sparc)
 #  define command_argument_count iargc
 #  define get_command_argument getarg
 #endif
