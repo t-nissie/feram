@@ -115,12 +115,13 @@ feram runs on 1 node of SR11000 or SR16000 effectively.
  % cd feram-X.YY.ZZ
  % mkdir SR11000-xf90
  % cd SR11000-xf90
- % ../configure FC=xf90 --host=SR11000
+ % ../configure FC=xf90 LDFLAGS=-L/sysap/lib --host=SR11000
  % cd src
  % make
 For performance monitor
- % ../configure FC=xf90 FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
+ % ../configure FC=xf90 LDFLAGS=-L/sysap/lib FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
    -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -pmfunc -pmpar' --host=SR11000
+Note that libblas.a and liblapack.a must be in /sysap/lib/ or elsewhere.
 
 ==== Fujitsu FX1
  % tar Jxf feram-X.YY.ZZ.tar.xz
