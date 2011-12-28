@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-12-28 19:22:50 takeshi>
+dnl Time-stamp: <2011-12-28 20:07:01 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -122,26 +122,34 @@ case "$host" in
 esac
 
 ## LAPACK
-AC_ARG_WITH(blas,[AS_HELP_STRING([--with-blas=ARG],[BLAS library.
+AC_ARG_WITH(lapack,[AS_HELP_STRING([--with-lapack=ARG],[LAPACK library.
                                      ARG must be one of
-                                     blas (default),
+                                     lapack (default),
                                      mkl (Intel MKL),
+                                     ssl2 (Fujitsu SSL II),
                                      acml (AMD Core Math Library, slow).])])
-case "$with_fft" in
-  blas | yes | "")
+case "$with_lapack" in
+  lapack | yes | "")
     AC_CHECK_LIB(blas,  dsymv,,AC_MSG_ERROR([You need  BLAS  library. See config.log.]))
     AC_CHECK_LIB(lapack,dsyev,,AC_MSG_ERROR([You need LAPACK library. See config.log.]))
     ;;
   mkl)
-    AC_SEARCH_LIBS(dsyev,mkl_core,[LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
-                               AC_MSG_ERROR([You need Intel Math Kernel Library (MKL). See config.log.]),[-lmkl_intel_thread -lmkl_gf_lp64])
+    case "$LIBS" in
+      *mkl_gf_lp64*)
+        AC_MSG_NOTICE([lapack... It seems that MKL is already putted into LIBS.])
+        ;;
+      *)
+        AC_MSG_NOTICE([lapack... Put MKL into LIBS.])
+        LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"
+        ;;
+    esac
     ;;
   ssl2)
     ;;
   acml*)
     ;;
   *)
-    AC_MSG_ERROR([Unknown BLAS library: $with_fft])
+    AC_MSG_ERROR([Unknown LAPACK library: $with_lapack])
     ;;
 esac
 
