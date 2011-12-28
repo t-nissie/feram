@@ -76,9 +76,10 @@ http://sourceforge.net/projects/loto/files/feram/
 
 === configureのオプションの例
  $ ../configure FC=ifort --with-fft=mkl
- $ ../configure FC=xf90 --host=SR11000
+ $ ../configure FC=xf90 LDFLAGS=-L/sysap/lib --host=SR11000
  $ ../configure FC=gfortran
  $ ../configure FC=ifort LDFLAGS=-L/home/hitomi/Linux/lib CPPFLAGS=-I/home/hitomi/Linux/include
+ $ ../configure FC=frt --with-fft=ssl2 --with-lapack=ssl2
 
 == 入力ファイル
 === パラメータファイル

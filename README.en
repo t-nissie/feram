@@ -128,7 +128,7 @@ Note that libblas.a and liblapack.a must be in /sysap/lib/ or elsewhere.
  % cd feram-X.YY.ZZ
  % mkdir FX1
  % cd FX1
- % ../configure FC=frt --with-fft=ssl2
+ % ../configure FC=frt --with-fft=ssl2 --with-lapack=ssl2
  % cd src
  % make
  % make feram_mpi   # OPTIONAL
