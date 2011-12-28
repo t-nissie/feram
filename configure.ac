@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2011-12-25 16:55:18 takeshi>
+dnl Time-stamp: <2011-12-28 19:22:50 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -121,9 +121,29 @@ case "$host" in
     esac
 esac
 
-## BLAS
-
 ## LAPACK
+AC_ARG_WITH(blas,[AS_HELP_STRING([--with-blas=ARG],[BLAS library.
+                                     ARG must be one of
+                                     blas (default),
+                                     mkl (Intel MKL),
+                                     acml (AMD Core Math Library, slow).])])
+case "$with_fft" in
+  blas | yes | "")
+    AC_CHECK_LIB(blas,  dsymv,,AC_MSG_ERROR([You need  BLAS  library. See config.log.]))
+    AC_CHECK_LIB(lapack,dsyev,,AC_MSG_ERROR([You need LAPACK library. See config.log.]))
+    ;;
+  mkl)
+    AC_SEARCH_LIBS(dsyev,mkl_core,[LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
+                               AC_MSG_ERROR([You need Intel Math Kernel Library (MKL). See config.log.]),[-lmkl_intel_thread -lmkl_gf_lp64])
+    ;;
+  ssl2)
+    ;;
+  acml*)
+    ;;
+  *)
+    AC_MSG_ERROR([Unknown BLAS library: $with_fft])
+    ;;
+esac
 
 ## fixed-form or free-form
 FCFLAGS_FIXEDFORM=$FCFLAGS
