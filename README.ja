@@ -37,8 +37,8 @@ http://sourceforge.net/projects/loto/files/feram/
 == インストール
 === インストールに必要なもの
  * GNU make  http://www.gnu.org/software/make/ （*BSD make などではコンパイルできません）
- * FFTW3 library  http://www.fftw.org/ （IntelとAMDのマシン用．ライブラリは
-   --enable-openmp --enable-threads --enable-sse --enable-sse2 のオプションを付けてconfigureする．
+ * FFTW3 library  http://www.fftw.org/ （IntelとAMDのマシン用．FFTW3ライブラリは
+   --enable-openmp --enable-threads --enable-sse --enable-sse2 のオプションを付けてconfigureしてください．
    Intel MKLにはFFTW3ラッパーがあるので，それが使えます．）
  * Fortran 90 compiler
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
@@ -75,7 +75,7 @@ http://sourceforge.net/projects/loto/files/feram/
  $ gv hysteresis.eps      # プロットをプレビュー
 
 === configureのオプションの例
- $ ../configure FC=ifort --with-fft=mkl
+ $ ../configure FC=ifort --with-fft=mkl --with-lapack=mkl
  $ ../configure FC=xf90 LDFLAGS=-L/sysap/lib --host=SR11000
  $ ../configure FC=gfortran
  $ ../configure FC=ifort LDFLAGS=-L/home/hitomi/Linux/lib CPPFLAGS=-I/home/hitomi/Linux/include

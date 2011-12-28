@@ -63,7 +63,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
 === Requirements
  * GNU make  http://www.gnu.org/software/make/ (You cannot use *BSD make.)
  * FFTW3 library  http://www.fftw.org/ (For Intel and AMD machines.
-   Configure the library with options of --enable-openmp --enable-threads --enable-sse --enable-sse2.
+   Configure FFTW3 library with options of --enable-openmp --enable-threads --enable-sse --enable-sse2.
    Intel MKL contains FFTW3 wrappers.)
  * Fortran 90 compiler
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
@@ -103,7 +103,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  $ mkdir ifort-11.1
  $ cd ifort-11.1
  $ ../configure --help
- $ ../configure FC=ifort --with-fft=mkl
+ $ ../configure FC=ifort --with-fft=mkl --with-lapack=mkl
  $ cd src
  $ make
  $ make -j 4        # Parallel make
