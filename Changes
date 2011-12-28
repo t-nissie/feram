@@ -1,4 +1,7 @@
 = Changes for feram
+== 0.18.00
+ * Quit to use libblaslapack/.
+
 == 0.17.06 (private release)
  * Now you can use -Kimpact for Fujitsu FX1.
    Try "./configure FC=frt --with-fft=ssl2" on FX1.
