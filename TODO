@@ -1,6 +1,6 @@
 ToDo
 
-o Quit to use libblaslapack/
+o refactoring of fft.F
 
 o extract dependency automatically in src/
 
@@ -28,7 +28,7 @@ o foo-bar.F -> foo_bar.F
 
 o p%mass_dipo の default value
 
-o p%mass_acou の導入
+o p%acoustic_mass_amu の導入
 
 o UNIT_SYSTEM の整理
 
@@ -160,3 +160,6 @@ x fft.F、SR11000用 HZFT7M()の代わりにHDFZ7M()とHZFD7M()とを使うよ�
   さらに２度目の呼び出しから係数の計算などを省くようにする。要configure.acの変更。
 
 x detailed_messages -> verbose, in configure.ac, README.en and source code
+
+x Quit to use libblaslapack/
+
