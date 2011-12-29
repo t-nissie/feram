@@ -3,28 +3,47 @@ Table of Timing
 -----------------------------------------------
 computer   elapse [sec]         d0    d1    d2
 -----------------------------------------------
+feram-0.17.06 xf90-V01-05-/G
+ SR11000 2.3GHz  1node=16core  4969  5261  5646
+
+feram-0.17.06 ifort-12.0.4.191
+ AMD275  1.8GHz   1node=4core 51938 50179 57925
+
+feram-0.17.06 gfortran-4.3.5
+ AMD275  1.8GHz 1/2node=2core       76738
+
 feram-0.17.06 ifort-11.1.069
  AMD8356 2.3GHz 1/2node=8core 37738 37579 40026
 
 feram-0.17.06 frt-8.1
  FX1     2.5GHz   1node=4core 42130 32307 35607
-
-feram-0.17.06 gfortran-4.3.5
- AMD275  1.8GHz 1/2node=2core       76738
-
-feram-0.17.06 ifort-12.0.4.191
- AMD275  1.8GHz   1node=4core 51938 50179 57925
-
-feram-0.17.06 xf90-V01-05-/G
- SR11000 2.3GHz  1node=16core  4969  5261  5646
-
-feram-0.17.07-r1013 gfortran-4.3.5 FFTW-3.3.1-beta1
- AMD275  1.8GHz   1node=4core 58670 52627 56879
 -----------------------------------------------
+feram-0.18.00 xf90-V01-05-/G
+ SR11000 2.3GHz  1node=16core  5167  5658  5872
+
+feram-0.18.00 ifort-12.1.1.256
+ AMD275  1.8GHz   1node=4core 53392 52009 58590
+
+feram-0.18.00 gfortran-4.3.5 FFTW-3.3.1-beta1
+ AMD275  1.8GHz   1node=4core 58561 53262 56528
+
+feram-0.18.00 ifort-11.1.069
+ AMD8356 2.3GHz 1/2node=8core 
+
+feram-0.18.00 frt-8.1
+ FX1     2.5GHz   1node=4core       29690
+-----------------------------------------------
+
+feram-0.17.06
+2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/SR11000/src/zzz11example/
+2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/x86_64-Linux-ifort-12.0.4-appb01/src/zzz11example/
+2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/x86_64-Linux-gfortran-4.3.5-appb/src/zzz11example2/
 2011-11-09 .../f/loto/feram/trunk/feram-0.17.06-rev977-ifort-11.1.069-mkl/src/zzz11example/
 2011-11-08 ~/f/feram/feram-0.17.06/FX1/src/zzz11example-BaTiO3-new-hysteresis-loop-all/
-2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/x86_64-Linux-gfortran-4.3.5-appb/src/zzz11example2/
-2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/x86_64-Linux-ifort-12.0.4-appb01/src/zzz11example/
-2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/SR11000/src/zzz11example/
 
-2011-12-14 /home/t-nissie/f/loto/feram/trunk/0.17.07-r1013-2011-12-13-appb-gfortran/src/zzz11example/
+feram-0.18.00
+/home/t-nissie/feram/feram-h.50/zzz11example-SR11000/
+/home/t-nissie/feram/feram-h.50/zzz11example-ifort/
+/home/t-nissie/feram/feram-h.50/zzz11example-gfortran/
+.../work/NANOGC0/takeshin/f/feram/feram-0.17.50/ifort-11.1.069-mkl/src/11example-BaTiO3-new-hysteresis-loop/
+~/feram/feram-0.17.50/11example-BaTiO3-new-hysteresis-loop/
