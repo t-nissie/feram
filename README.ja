@@ -71,10 +71,13 @@ http://sourceforge.net/projects/loto/files/feram/
  $ make feram_mpi   # OPTIONAL
  $ ls -l feram*
  $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
- $ cd 11example-BaTiO3-new-hysteresis-loop
- $ ../feram hysteresis    # テスト実行
- $ gnuplot hysteresis.gp  # ヒステリシス・ループのプロット
- $ gv hysteresis.eps      # プロットをプレビュー
+ $ cd 11example-BaTiO3-new-hysteresis-loop 
+ $ ../feram hysteresis_d0.feram &         # テスト実行
+ $ ../feram hysteresis_d1_backwrd.feram & # １つに約１日かかる
+ $ ../feram hysteresis_d1_forward.feram &
+ $ ../feram hysteresis_d2.feram &
+ $ gnuplot all.gp  # ヒステリシス・ループのプロット
+ $ gv all.eps      # プロットをプレビュー
 
 === configureのオプションの例
  $ ../configure FC=ifort --with-fft=mkl --with-lapack=mkl

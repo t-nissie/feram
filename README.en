@@ -94,9 +94,12 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  $ ls -l feram*
  $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
  $ cd 11example-BaTiO3-new-hysteresis-loop
- $ ../feram hysteresis    # test run
- $ gnuplot hysteresis.gp  # plot a hysteresis loop
- $ gv hysteresis.eps      # preview
+ $ ../feram hysteresis_d0.feram &         # test run
+ $ ../feram hysteresis_d1_backwrd.feram & # 1day/1file
+ $ ../feram hysteresis_d1_forward.feram &
+ $ ../feram hysteresis_d2.feram &
+ $ gnuplot all.gp  # plot a hysteresis loop
+ $ gv all.eps      # preview
 
 === Available platforms and compilers
 ==== Intel Fortran Compiler with the Intel MKL FFTW wrappers
