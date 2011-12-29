@@ -47,6 +47,8 @@ http://sourceforge.net/projects/loto/files/feram/
    * PGI Fortran (pgf95, version 8.0-3 or higher) http://www.pgroup.com/
    * Fortran 90 (f90|xf90) for HITACHI SR11000 and SR16000
    * Fortran 90 (frt) for Fujitsu machines: FX1, Kei and FX10.
+ * tar (version 1.22 or higher)  http://www.gnu.org/software/tar/
+ * xz  http://tukaani.org/xz/
 
 === feramの使用にあると便利なもの
  * gnuplot (version 4.2 or higher)

@@ -71,6 +71,8 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
      Intel Math Kernel Library (MKL; version 10.2 and later) http://software.intel.com/en-us/articles/intel-compilers/
    * Fortran 90 (f90|xf90) for HITACHI SR11000 and SR16000
    * Fortran 90 (frt) for Fujitsu machines: FX1, Kei and FX10.
+ * tar (version 1.22 or higher)  http://www.gnu.org/software/tar/
+ * xz  http://tukaani.org/xz/
 
 === Preferables
  * gnuplot (version 4.2 or higher)
