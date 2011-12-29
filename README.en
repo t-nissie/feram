@@ -6,7 +6,7 @@ logo.jpg
 == Homepage and DOWNLOAD
 feram's homepage is http://loto.sourceforge.net/feram/ .
 
-You can download a tar ball of feram (feram-X.YY.ZZ.tar.gz) from
+You can download a tar ball of feram (feram-X.YY.ZZ.tar.xz) from
 http://sourceforge.net/projects/loto/files/feram/ .
 
 == What is feram?
@@ -63,7 +63,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
 === Requirements
  * GNU make  http://www.gnu.org/software/make/ (You cannot use *BSD make.)
  * FFTW3 library  http://www.fftw.org/ (For Intel and AMD machines.
-   Configure FFTW3 library with options of --enable-openmp --enable-threads --enable-sse --enable-sse2.
+   Configure FFTW3 library with options of --enable-openmp --enable-threads --enable-sse2.
    Intel MKL contains FFTW3 wrappers.)
  * Fortran 90 compiler
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
