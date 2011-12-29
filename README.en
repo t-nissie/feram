@@ -65,6 +65,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  * FFTW3 library  http://www.fftw.org/ (For Intel and AMD machines.
    Configure FFTW3 library with options of --enable-openmp --enable-threads --enable-sse2.
    Intel MKL contains FFTW3 wrappers.)
+ * BLAS and LAPACK libraries
  * Fortran 90 compiler
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
    * Intel Fortran Compiler (ifort; version 11.1 and later) with
