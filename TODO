@@ -1,6 +1,6 @@
 ToDo
 
-o refactoring of fft.F
+o Refactoring of fft.F. Rename it to fft_3d_module.F.
 
 o extract dependency automatically in src/
 
