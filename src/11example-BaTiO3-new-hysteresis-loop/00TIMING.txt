@@ -19,13 +19,13 @@ feram-0.17.06 frt-8.1
  FX1     2.5GHz   1node=4core 42130 32307 35607
 -----------------------------------------------
 feram-0.18.00 xf90-V01-05-/G
- SR11000 2.3GHz  1node=16core  5167  5658  5872  8790
+ SR11000 2.3GHz  1node=16core  5167  5658  5872   8790
 
 feram-0.18.00 ifort-12.1.1.256
- AMD275  1.8GHz   1node=4core 53392 52009 58590 79437
+ AMD275  1.8GHz   1node=4core 53392 52009 58590  79437
 
 feram-0.18.00 gfortran-4.3.5 FFTW-3.3.1-beta1
- AMD275  1.8GHz   1node=4core 58561 53262 56528 
+ AMD275  1.8GHz   1node=4core 58561 53262 56528 102742
 
 feram-0.18.00 ifort-11.1.069
  AMD8356 2.3GHz 1/2node=8core 
