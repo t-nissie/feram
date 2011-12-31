@@ -1,1 +1,2 @@
      % submit SC1 general -np 8 -J 08 -exec forward.SR11000.command
+     $ for i in 03 04 05 06 07 08 09 10 11 12 13 14 15 16; do submit SC1 general -np $i -J $i -exec forward.SR11000.command; done
