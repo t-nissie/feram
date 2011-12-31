@@ -1,5 +1,5 @@
 #-*-Makefile-*- for feram
-# Time-stamp: <2011-12-24 17:34:17 takeshi>
+# Time-stamp: <2011-12-31 15:31:11 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -76,7 +76,8 @@ feram_mpi.F \
 03example-BaTiO3-bulk-phase-transition \
 10example-PbTiO3-DDB2short \
 11example-BaTiO3-new-hysteresis-loop \
-15example-BaTiO3-new-param-defects
+15example-BaTiO3-new-param-defects \
+18example-benchmark
 
 ../libbuilt_in_fft/libbuilt_in_fft.a:
 	cd ../libbuilt_in_fft && $(MAKE)

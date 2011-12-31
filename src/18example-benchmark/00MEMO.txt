@@ -1,0 +1,1 @@
+     % submit SC1 general -np 8 -J 08 -exec forward.SR11000.command
