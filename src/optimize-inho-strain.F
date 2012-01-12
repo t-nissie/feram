@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-12-09 12:37:44 takeshi>
+! Time-stamp: <2012-01-12 12:03:10 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -91,13 +91,16 @@ subroutine optimize_inho_strain(p,c,e)
   end do
   !$omp end parallel do
 
-# if defined(HAVE_LIBFFTW3)
+#if defined(HAVE_LIBFFTW3)
   do alpha = 1, 6
      call dfftw_execute(c%plans_inhoK2R(alpha))
   end do
-# else
-  call fft_c2r(p, c%inhoK, c%inhoR, 6)
-# endif
+#else
+  do alpha = 1, 6
+     call matrix_mpp_fft(2, p%Lx, p%Ly, p%Lz, &
+          & c%inhoR(0,0,0,alpha), c%inhoK(0,0,0,alpha))
+  end do
+#endif
 
   !--- c%inhoR -> inhomogeneous coupling part of dVddi -------------------
   !$omp parallel do private(iz,iy,ix,i,eta_B_over_2m)

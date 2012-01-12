@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2011-11-30 20:54:38 t-nissie>
+! Time-stamp: <2012-01-12 11:47:42 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -17,13 +17,16 @@ subroutine dipoFFT(p,c)
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dipoR -> dipoK, didiR, didiK')
   end if
-# if defined(HAVE_LIBFFTW3)
+#if defined(HAVE_LIBFFTW3)
   do alpha = 1, 3
      call dfftw_execute(c%plans_dipoR2C(alpha))
   end do
-# else
-  call fft_r2c(p, c%dipoR, c%dipoK, 3)
-# endif
+#else
+  do alpha = 1, 3
+     call matrix_mpp_fft(1, p%Lx, p%Ly, p%Lz, &
+            & c%dipoR(0,0,0,alpha), c%dipoK(0,0,0,alpha))
+  end do
+#endif
 
   c%didiR(:,:,:,1) = c%dipoR(:,:,:,1) * c%dipoR(:,:,:,1)
   c%didiR(:,:,:,2) = c%dipoR(:,:,:,2) * c%dipoR(:,:,:,2)
@@ -32,13 +35,16 @@ subroutine dipoFFT(p,c)
   c%didiR(:,:,:,5) = c%dipoR(:,:,:,3) * c%dipoR(:,:,:,1)
   c%didiR(:,:,:,6) = c%dipoR(:,:,:,1) * c%dipoR(:,:,:,2)
 
-# if defined(HAVE_LIBFFTW3)
+#if defined(HAVE_LIBFFTW3)
   do alpha = 1, 6
      call dfftw_execute(c%plans_didiR2C(alpha))
   end do
-# else
-  call fft_r2c(p, c%didiR, c%didiK, 6)
-# endif
+#else
+  do alpha = 1, 6
+     call matrix_mpp_fft(1, p%Lx, p%Ly, p%Lz, &
+            & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha))
+  end do
+#endif
 
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', &

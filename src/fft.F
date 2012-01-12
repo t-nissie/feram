@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2011-12-25 17:16:17 takeshi>
+! Time-stamp: <2012-01-12 12:20:50 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -23,10 +23,6 @@ subroutine fft_r2c_3x3upper(p,r,c)
   integer*8 plan(6)
 #if defined(HAVE_LIBFFTW3)
 # include "fftw3.f"
-#else
-# define FFTW_ESTIMATE 0
-#endif
-
   ip = 0
   do beta = 1, 3
      do alpha = 1, beta
@@ -35,55 +31,24 @@ subroutine fft_r2c_3x3upper(p,r,c)
              & r(0,0,0,alpha,beta), c(0,0,0,alpha,beta), FFTW_ESTIMATE)
      end do
   end do
-
-#if defined(HAVE_LIBFFTW3)
-  !$omp parallel do
   do ip = 1, 6
      call dfftw_execute(plan(ip))
   end do
-  !$omp end parallel do
   do ip = 1, 6
      call dfftw_destroy_plan(plan(ip))
   end do
+#else
+  do beta = 1, 3
+     do alpha = 1, beta
+        call matrix_mpp_fft(1, p%Lx, p%Ly, p%Lz, &
+             & r(0,0,0,alpha,beta), c(0,0,0,alpha,beta))
+     end do
+  end do
 #endif
-
   c(:,:,:,2,1) = conjg(c(:,:,:,1,2))
   c(:,:,:,3,1) = conjg(c(:,:,:,1,3))
   c(:,:,:,3,2) = conjg(c(:,:,:,2,3))
 end subroutine fft_r2c_3x3upper
-!
-
-subroutine fft_r2c(p,r,c,max_alpha)
-  use Param_module
-  implicit none
-  type(Param_type) :: p
-  real*8     :: r(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, *)
-  complex*16 :: c(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, *) !CAUTION "/2"!
-  integer max_alpha
-  integer alpha ! See info of FFTW, section of "Multi-Dimensional DFTs of Real Data"
-  integer*8 plan(max_alpha)
-
-  do alpha = 1, max_alpha
-     call dfftw_plan_dft_r2c_3d(plan(alpha), p%Lx, p%Ly, p%Lz, &
-          & r(0,0,0,alpha), c(0,0,0,alpha), 0)
-  end do
-end subroutine fft_r2c
-
-subroutine fft_c2r(p,c,r,max_alpha)
-  use Param_module
-  implicit none
-  type(Param_type) :: p
-  complex*16 :: c(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, *) !CAUTION "/2"!
-  real*8     :: r(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, *)
-  integer max_alpha
-  integer alpha ! See info of FFTW, section of "Multi-Dimensional DFTs of Real Data"
-  integer*8 plan(max_alpha)
-  do alpha = 1, max_alpha
-     call dfftw_plan_dft_c2r_3d(plan(alpha), p%Lx, p%Ly, p%Lz, &
-          & c(0,0,0,alpha), r(0,0,0,alpha), 0)
-  end do
-end subroutine fft_c2r
-!
 
 #if defined(HITACHI_SR)
 subroutine n2pqr(n,pqr)
@@ -108,26 +73,6 @@ subroutine n2pqr(n,pqr)
   !write(6,'(i6,3(a,i2))') n, ' = 2**',pqr(1), ' + 3**',pqr(2), ' + 5**',pqr(3)
   if (tmp.ne.1) stop 'fft.F:132: STOP at subroutine n2pqr().'
 end subroutine n2pqr
-
-subroutine dfftw_plan_dft_r2c_3d(plan, Nx, Ny, Nz, r, c, flags)
-  implicit none
-  integer*8, intent(in) :: plan
-  integer,   intent(in) :: Nx, Ny, Nz
-  real*8,    intent(in) :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
-  complex*16,intent(out):: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
-  integer,   intent(in) :: flags
-  call matrix_mpp_fft(1, Nx, Ny, Nz, r, c)
-end subroutine dfftw_plan_dft_r2c_3d
-
-subroutine dfftw_plan_dft_c2r_3d(plan, Nx, Ny, Nz, c, r, flags)
-  implicit none
-  integer*8, intent(in) :: plan
-  integer,   intent(in) :: Nx, Ny, Nz
-  complex*16            :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
-  real*8,    intent(out):: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
-  integer,   intent(in) :: flags
-  call matrix_mpp_fft(2, Nx, Ny, Nz, r, c)
-end subroutine dfftw_plan_dft_c2r_3d
 
 subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
   implicit none

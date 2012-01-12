@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2011-12-09 12:36:21 takeshi>
+! Time-stamp: <2012-01-12 12:02:47 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -30,13 +30,16 @@ subroutine dVddi_dipole_dipole(p,c,e)
   end do
   !$omp end parallel do
 
-# if defined(HAVE_LIBFFTW3)
+#if defined(HAVE_LIBFFTW3)
   do alpha = 1, 3
      call dfftw_execute(c%plans_dipoT2dVddi(alpha))
   end do
-# else
-  call fft_c2r(p, c%dipoT, c%dVddi, 3)
-# endif
+#else
+  do alpha = 1, 3
+     call matrix_mpp_fft(2, p%Lx, p%Ly, p%Lz, &
+          & c%dVddi(0,0,0,alpha), c%dipoT(0,0,0,alpha))
+  end do
+#endif
 
 !POPTION COALESCING(2)
   c%dVddi(:,:,:,:) = c%dVddi(:,:,:,:) * p%Ninv
