@@ -1,5 +1,5 @@
 ! fft_3d_3x3upper_r2c.F -*-f90-*-
-! Time-stamp: <2012-01-12 16:24:32 t-nissie>
+! Time-stamp: <2012-01-12 17:40:33 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -43,4 +43,4 @@ subroutine fft_3d_3x3upper_r2c(p,r,c)
   c(:,:,:,2,1) = conjg(c(:,:,:,1,2))
   c(:,:,:,3,1) = conjg(c(:,:,:,1,3))
   c(:,:,:,3,2) = conjg(c(:,:,:,2,3))
-end subroutine fft_r2c_3x3upper
+end subroutine fft_3d_3x3upper_r2c
