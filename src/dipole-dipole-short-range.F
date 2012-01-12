@@ -1,5 +1,5 @@
 ! dipole-dipole-short-range.F -*-f90-*-
-! Time-stamp: <2011-12-09 12:37:21 takeshi>
+! Time-stamp: <2012-01-12 16:52:25 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -110,7 +110,7 @@ subroutine dipole_dipole_short_range(p,short_range)
   call msg_ez(UNIT_LOG, message)
                  !(e) in TABLE 1 of ref_1 is incorrect.
 
-  call fft_r2c_3x3upper(p, TMPreal, TMPcomplex)
+  call fft_3d_3x3upper_r2c(p, TMPreal, TMPcomplex)
   short_range(:,:,:,:,:) = dble(TMPcomplex(:,:,:,:,:))
   deallocate(TMPreal,TMPcomplex)
 

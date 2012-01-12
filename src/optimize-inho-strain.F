@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2012-01-12 12:03:10 t-nissie>
+! Time-stamp: <2012-01-12 15:36:59 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -97,7 +97,7 @@ subroutine optimize_inho_strain(p,c,e)
   end do
 #else
   do alpha = 1, 6
-     call matrix_mpp_fft(2, p%Lx, p%Ly, p%Lz, &
+     call fft_3d(.false., p%Lx, p%Ly, p%Lz, &
           & c%inhoR(0,0,0,alpha), c%inhoK(0,0,0,alpha))
   end do
 #endif

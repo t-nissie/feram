@@ -1,5 +1,5 @@
-#-*-Makefile-*- for feram
-# Time-stamp: <2011-12-31 15:31:11 t-nissie>
+# -*-Makefile-*- for feram
+# Time-stamp: <2012-01-12 17:12:50 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -22,6 +22,7 @@ feram_SRCS = average_module.F \
 	feram.F \
 	feram_common.F \
 	fft.F \
+	fft_3d_3x3upper_r2c.F \
 	hysteresis_loop.F \
 	initialize_E_field.F \
 	initialize-dipoR.F \
@@ -114,7 +115,7 @@ energy_module.o: param_module.o coord_module.o
 optimize-homo-strain.o:energy_module.o param_module.o coord_module.o
 optimize-inho-strain.o:energy_module.o param_module.o coord_module.o
 molecular-dynamics.o:  energy_module.o param_module.o coord_module.o average_module.o
-mirror.o dipoFFT.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
+mirror.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
                                 param_module.o coord_module.o
 initialize_E_field.o read_defects_u.o elastic.o:\
                                 param_module.o coord_module.o define.h
@@ -123,12 +124,15 @@ nose-poincare.o leapfrog.o mirror_force_mirror.o:\
                                 param_module.o coord_module.o energy_module.o
 hysteresis_loop.o average_module.o:\
                                 param_module.o coord_module.o energy_module.o define.h
-coord_module.o fft.o:           param_module.o         define.h
-dipole-dipole-long-range.o:     param_module.o         define.h fft.o
-dipole-dipole-short-range.o:    param_module.o                  fft.o
-dVddi-dipole-dipole.o: energy_module.o param_module.o coord_module.o          fft.o
+coord_module.o:                 param_module.o         define.h
+dipole-dipole-long-range.o:     param_module.o         define.h fft_3d_3x3upper_r2c.o
+dipole-dipole-short-range.o:    param_module.o                  fft_3d_3x3upper_r2c.o
+fft_3d_3x3upper_r2c.o:          param_module.o  fft.o  define.h
+dVddi-dipole-dipole.o: energy_module.o param_module.o coord_module.o fft.o
+dipoFFT.o:                             param_module.o coord_module.o fft.o define.h
 print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
 eigenvalues2j.o: param_module.o
+fft.o: define.h msg.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:

@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2012-01-12 12:02:47 t-nissie>
+! Time-stamp: <2012-01-12 15:32:16 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -36,7 +36,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
   end do
 #else
   do alpha = 1, 3
-     call matrix_mpp_fft(2, p%Lx, p%Ly, p%Lz, &
+     call fft_3d(.false., p%Lx, p%Ly, p%Lz, &
           & c%dVddi(0,0,0,alpha), c%dipoT(0,0,0,alpha))
   end do
 #endif

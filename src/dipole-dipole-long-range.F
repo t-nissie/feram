@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2011-12-09 12:37:12 takeshi>
+! Time-stamp: <2012-01-12 16:51:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 !UINLINE decay-functions.f
@@ -88,7 +88,7 @@ subroutine dipole_dipole_long_range(p,long_range)
   end do
   !--- END of real-space summation -------------------------
 
-  call fft_r2c_3x3upper(p, TMPreal, TMPcomplex)
+  call fft_3d_3x3upper_r2c(p, TMPreal, TMPcomplex)
   long_range(:,:,:,:,:) = dble(TMPcomplex(:,:,:,:,:))
   deallocate(TMPreal,TMPcomplex)
 !

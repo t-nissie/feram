@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-01-12 12:20:50 t-nissie>
+! Time-stamp: <2012-01-12 16:25:58 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -12,43 +12,6 @@
 #  include "config.h"
 #endif
 #include "define.h"
-
-subroutine fft_r2c_3x3upper(p,r,c)
-  use Param_module
-  implicit none
-  type(Param_type) :: p
-  real*8     :: r(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3, 3)
-  complex*16 :: c(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3) !CAUTION "/2"!
-  integer alpha, beta, ip
-  integer*8 plan(6)
-#if defined(HAVE_LIBFFTW3)
-# include "fftw3.f"
-  ip = 0
-  do beta = 1, 3
-     do alpha = 1, beta
-        ip = ip + 1
-        call dfftw_plan_dft_r2c_3d(plan(ip), p%Lx, p%Ly, p%Lz, &
-             & r(0,0,0,alpha,beta), c(0,0,0,alpha,beta), FFTW_ESTIMATE)
-     end do
-  end do
-  do ip = 1, 6
-     call dfftw_execute(plan(ip))
-  end do
-  do ip = 1, 6
-     call dfftw_destroy_plan(plan(ip))
-  end do
-#else
-  do beta = 1, 3
-     do alpha = 1, beta
-        call matrix_mpp_fft(1, p%Lx, p%Ly, p%Lz, &
-             & r(0,0,0,alpha,beta), c(0,0,0,alpha,beta))
-     end do
-  end do
-#endif
-  c(:,:,:,2,1) = conjg(c(:,:,:,1,2))
-  c(:,:,:,3,1) = conjg(c(:,:,:,1,3))
-  c(:,:,:,3,2) = conjg(c(:,:,:,2,3))
-end subroutine fft_r2c_3x3upper
 
 #if defined(HITACHI_SR)
 subroutine n2pqr(n,pqr)
@@ -74,9 +37,9 @@ subroutine n2pqr(n,pqr)
   if (tmp.ne.1) stop 'fft.F:132: STOP at subroutine n2pqr().'
 end subroutine n2pqr
 
-subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
+subroutine fft_3d(mode, Nx, Ny, Nz, r, c)
   implicit none
-  integer,   intent(in) :: iopt1
+  logical,   intent(in) :: mode
   integer,   intent(in) :: Nx, Ny, Nz
   integer,   save       :: Nx_last=0, Ny_last=0, Nz_last=0
   real*8                :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
@@ -89,10 +52,14 @@ subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
   integer               :: ier, ix, iy, iz
   character(len=10)     :: ipara_s
 
-  iopt(1)=iopt1
+  if (mode) then
+     iopt(1)=1
+  else
+     iopt(1)=2
+  end if
 
   if (Nx.ne.Nx_last .or. Ny.ne.Ny_last .or. Nz.ne.Nz_last) then
-     if (mod(Nx,2).ne.0) stop 'fft.F:173: Nx must be an even number.'
+     if (mod(Nx,2).ne.0) stop 'fft.F:95: Nx must be an even number.'
      call n2pqr(Nx, ip1)
      call n2pqr(Ny, ip2)
      call n2pqr(Nz, ip3)
@@ -112,7 +79,7 @@ subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
 
   allocate(wk1(nwk1), wk2(nwk2))
 
-  if (iopt1==1) then
+  if (mode) then
      do iz = 0, Nz-1
         do iy = 0, Ny-1
            do ix = 0, Nx/2-1
@@ -134,11 +101,16 @@ subroutine matrix_mpp_fft(iopt1, Nx, Ny, Nz, r, c)
   end if
 
   deallocate(wk1,wk2)
-end subroutine matrix_mpp_fft
+end subroutine fft_3d
 #endif
 !
 
 #if defined(__sparc)
+!        Nx          8   9
+!        Nx/2        4   4
+!    c(0:Nx/2)      10  10
+!     2*(Nx/2+1)-1   9   9
+! r(0:2*(Nx/2+1)-1) 10  10
 subroutine dfftw_plan_dft_r2c_3d(plan, Nx, Ny, Nz, r, c, flags)
   implicit none
   integer*8, intent(in) :: plan

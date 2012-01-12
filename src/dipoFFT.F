@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2012-01-12 11:47:42 t-nissie>
+! Time-stamp: <2012-01-12 15:33:41 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -23,7 +23,7 @@ subroutine dipoFFT(p,c)
   end do
 #else
   do alpha = 1, 3
-     call matrix_mpp_fft(1, p%Lx, p%Ly, p%Lz, &
+     call fft_3d(.true., p%Lx, p%Ly, p%Lz, &
             & c%dipoR(0,0,0,alpha), c%dipoK(0,0,0,alpha))
   end do
 #endif
@@ -41,7 +41,7 @@ subroutine dipoFFT(p,c)
   end do
 #else
   do alpha = 1, 6
-     call matrix_mpp_fft(1, p%Lx, p%Ly, p%Lz, &
+     call fft_3d(.true., p%Lx, p%Ly, p%Lz, &
             & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha))
   end do
 #endif
