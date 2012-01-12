@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-01-12 16:25:58 t-nissie>
+! Time-stamp: <2012-01-12 17:51:32 z48325w>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -111,46 +111,35 @@ end subroutine fft_3d
 !    c(0:Nx/2)      10  10
 !     2*(Nx/2+1)-1   9   9
 ! r(0:2*(Nx/2+1)-1) 10  10
-subroutine dfftw_plan_dft_r2c_3d(plan, Nx, Ny, Nz, r, c, flags)
+subroutine fft_3d(mode, Nx, Ny, Nz, r, c)
   implicit none
-  integer*8, intent(in) :: plan
-  integer,   intent(in) :: Nx, Ny, Nz
-  real*8,    intent(in) :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
-! complex*16,intent(out):: c(0:Nx/2,         0:Ny-1, 0:Nz-1) !CAUTION "/2"!
-  real*8,    intent(out):: c(0:2*(Nx/2+1)-1, 0:Ny-1, 0:Nz-1)
-  integer,   intent(in) :: flags
+  logical,   intent(in)    :: mode
+  integer,   intent(in)    :: Nx, Ny, Nz
+  real*8,    intent(inout) :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
+! complex*16,intent(out)   :: c(0:Nx/2,         0:Ny-1, 0:Nz-1) !CAUTION "/2"!
+  real*8,    intent(inout) :: c(0:2*(Nx/2+1)-1, 0:Ny-1, 0:Nz-1)
   integer ix, iy, iz, icon
-  do iz = 0, Nz-1
-     do iy = 0, Ny-1
-        do ix = 0, Nx-1
-           c(ix,iy,iz) = r(ix,iy,iz)
-        end do
-     end do
-  end do
-  call DM_V3DRCF(c, 2*(Nx/2+1), Nx, Ny, Nz, 1,  1, ICON)
-end subroutine dfftw_plan_dft_r2c_3d
 
-subroutine dfftw_plan_dft_c2r_3d(plan, Nx, Ny, Nz, c, r, flags)
-  implicit none
-  integer*8, intent(in) :: plan
-  integer,   intent(in) :: Nx, Ny, Nz
-  complex*16            :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
-  real*8,    intent(out):: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
-  integer,   intent(in) :: flags
-  integer ix, iy, iz, icon
-  call DM_V3DRCF(c, 2*(Nx/2+1), Nx, Ny, Nz, 1, -1, ICON)
-  do iz = 0, Nz-1
-     do iy = 0, Ny-1
-        do ix = 0, Nx-1
-           if (mod(ix,2)==0) then
-              r(ix,iy,iz) =  dble(c(ix/2,iy,iz))
-           else
-              r(ix,iy,iz) = aimag(c(ix/2,iy,iz))
-           end if
+  if (mode) then
+     do iz = 0, Nz-1
+        do iy = 0, Ny-1
+           do ix = 0, Nx-1
+              c(ix,iy,iz) = r(ix,iy,iz)
+           end do
         end do
      end do
-  end do
-end subroutine dfftw_plan_dft_c2r_3d
+     call DM_V3DRCF(c, 2*(Nx/2+1), Nx, Ny, Nz, 1,  1, ICON)
+  else
+     call DM_V3DRCF(c, 2*(Nx/2+1), Nx, Ny, Nz, 1, -1, ICON)
+     do iz = 0, Nz-1
+        do iy = 0, Ny-1
+           do ix = 0, Nx-1
+              r(ix,iy,iz) =  c(ix,iy,iz)
+           end do
+        end do
+     end do
+  end if
+end subroutine fft_3d
 #endif
 !
 
