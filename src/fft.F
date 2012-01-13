@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-01-12 17:51:32 z48325w>
+! Time-stamp: <2012-01-13 13:30:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -34,7 +34,7 @@ subroutine n2pqr(n,pqr)
      tmp=tmp/5
   end do
   !write(6,'(i6,3(a,i2))') n, ' = 2**',pqr(1), ' + 3**',pqr(2), ' + 5**',pqr(3)
-  if (tmp.ne.1) stop 'fft.F:132: STOP at subroutine n2pqr().'
+  if (tmp.ne.1) stop 'fft.F:37: STOP at subroutine n2pqr().'
 end subroutine n2pqr
 
 subroutine fft_3d(mode, Nx, Ny, Nz, r, c)
@@ -59,7 +59,7 @@ subroutine fft_3d(mode, Nx, Ny, Nz, r, c)
   end if
 
   if (Nx.ne.Nx_last .or. Ny.ne.Ny_last .or. Nz.ne.Nz_last) then
-     if (mod(Nx,2).ne.0) stop 'fft.F:95: Nx must be an even number.'
+     if (mod(Nx,2).ne.0) stop 'fft.F:62: Nx must be an even number.'
      call n2pqr(Nx, ip1)
      call n2pqr(Ny, ip2)
      call n2pqr(Nz, ip3)
