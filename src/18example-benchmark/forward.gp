@@ -1,4 +1,9 @@
 #!/usr/bin/env gnuplot
+# forward.gp: Plot results of forward.feram benchmark.
+# Author: Takeshi Nishimatsu
+# $Date$
+# $Rev$
+# $Author$
 ##
 set terminal postscript portrait enhanced color 24
 set output "forward.eps"
@@ -16,7 +21,7 @@ fit f_X5690(x) 'forward.X5690.dat' via t1_X5690,p_X5690
 
 set xrange [0:16]
 set xtics 4
-set lmargin 3
+set lmargin 9
 
 set origin 0.0,0.6
 set size 1.0,0.4
