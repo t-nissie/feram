@@ -30,7 +30,7 @@ set ylabel '{/Times-Italic t} [s]'
 plot 'forward.SR11000.dat' t 'SR11000'    w p lt 1,\
      f_SR11000(x)          t ''           w l lt 1,\
      'forward.X5690.dat'   t 'Xeon X5690' w p lt 2,\
-     f_X5690(x)            t ''           w l lt 2     
+     f_X5690(x)            t ''           w l lt 2
 
 set origin 0.0,0.0
 #set size square
@@ -39,6 +39,8 @@ set yrange [0:16]
 set xlabel '{/Times-Italic N}_{core}'
 set ylabel 'speed up'
 set key left
+p=0.7
 plot      x t 'ideal' w l lt 5,\
           'forward.SR11000.dat' using ($1):(t1_SR11000/$2)  t 'SR11000' w lp lt 1,\
-          'forward.X5690.dat'   using ($1):(t1_X5690/$2) t 'Xeon X5690' w lp lt 2
+          'forward.X5690.dat'   using ($1):(t1_X5690/$2) t 'Xeon X5690' w lp lt 2,\
+          1.0 / ((1-p)+p/x)                 t '{/Times-Italic p} = 0.7' w l  lt 3
