@@ -1,11 +1,11 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-01-19 18:32:47 takeshi>
+dnl Time-stamp: <2012-02-01 00:24:12 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.61)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.18.00],[t-nissie{at}imr.tohoku.ac.jp],[feram])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.18.01],[t-nissie{at}imr.tohoku.ac.jp],[feram])
 AC_CONFIG_SRCDIR(src/feram.F)
 AM_INIT_AUTOMAKE([1.11.1 no-dist-gzip dist-xz])
 AC_CONFIG_HEADERS([config.h])
