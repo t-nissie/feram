@@ -1,5 +1,5 @@
 ! dVddi-unharmonic.F   -*-f90-*-
-! Time-stamp: <2011-06-16 15:29:27 takeshi>
+! Time-stamp: <2012-02-22 12:46:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_unharmonic(p,c,e)
@@ -18,6 +18,7 @@ subroutine dVddi_unharmonic(p,c,e)
   real*8   six_k1_two_k2
   real*8          two_k2
   real*8         four_k2_two_k3
+  real*8 unharm0
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'Calculate unharmonic part of force and energy.')
 
@@ -27,35 +28,44 @@ subroutine dVddi_unharmonic(p,c,e)
          two_k2 =             2*p%P_k2
         four_k2_two_k3 =      4*p%P_k2 - 2*p%P_k3
 
-  do alpha = 1,3
-     ! 4th order
-     c%dVddi(:,:,:,alpha) = c%dVddi(:,:,:,alpha) + c%dipoR(:,:,:,alpha) * &
-          ( four_alpha_two_gamma * (c%didiR(:,:,:,1)+c%didiR(:,:,:,2)+c%didiR(:,:,:,3)) &
-                     - two_gamma *  c%didiR(:,:,:,alpha)                                )
-     ! 6th an 8th order
-     if (alpha==1) then
-        alpha1 = 2
-        alpha2 = 3
-     else if (alpha==2) then
-        alpha1 = 3
-        alpha2 = 1
-     else ! alpha==3
-        alpha1 = 1
-        alpha2 = 2
-     end if
-     c%dVddi(:,:,:,alpha) = c%dVddi(:,:,:,alpha) + c%dipoR(:,:,:,alpha) * &
-          ( six_k1_two_k2 * (c%didiR(:,:,:,1)+c%didiR(:,:,:,2)+c%didiR(:,:,:,3))**2 &
-               + 8*p%P_k4 * (c%didiR(:,:,:,1)+c%didiR(:,:,:,2)+c%didiR(:,:,:,3))**3 &
-                 - two_k2 *  c%didiR(:,:,:,alpha)**2 &
-                - four_k2_two_k3 * c%didiR(:,:,:,alpha1) * c%didiR(:,:,:,alpha2) )
-  end do
-
-  e%unharmonic = 0.0d0
-!POPTION PSUM(e%unharmonic)
+  !$omp parallel do private(iz, iy, ix, alpha, alpha1, alpha2) 
+  ! 4th order
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1
-           e%unharmonic = e%unharmonic &
+           do alpha = 1,3
+              c%dVddi(ix,iy,iz,alpha) = c%dVddi(ix,iy,iz,alpha) + c%dipoR(ix,iy,iz,alpha) * &
+                   ( four_alpha_two_gamma * (c%didiR(ix,iy,iz,1)+c%didiR(ix,iy,iz,2)+c%didiR(ix,iy,iz,3)) &
+                   - two_gamma *  c%didiR(ix,iy,iz,alpha)                                )
+              ! 6th an 8th order
+              if (alpha==1) then
+                 alpha1 = 2
+                 alpha2 = 3
+              else if (alpha==2) then
+                 alpha1 = 3
+                 alpha2 = 1
+              else ! alpha==3
+                 alpha1 = 1
+                 alpha2 = 2
+              end if
+              c%dVddi(ix,iy,iz,alpha) = c%dVddi(ix,iy,iz,alpha) + c%dipoR(ix,iy,iz,alpha) * &
+                   ( six_k1_two_k2 * (c%didiR(ix,iy,iz,1)+c%didiR(ix,iy,iz,2)+c%didiR(ix,iy,iz,3))**2 &
+                   + 8*p%P_k4 * (c%didiR(ix,iy,iz,1)+c%didiR(ix,iy,iz,2)+c%didiR(ix,iy,iz,3))**3 &
+                   - two_k2 *  c%didiR(ix,iy,iz,alpha)**2 &
+                   - four_k2_two_k3 * c%didiR(ix,iy,iz,alpha1) * c%didiR(ix,iy,iz,alpha2) )
+           end do
+        end do
+     end do
+  end do
+!$omp end parallel do
+
+  unharm0 = 0.0d0
+!POPTION PSUM(e%unharmonic)
+!$omp parallel do private(iz, iy, ix) reduction(+:unharm0)
+  do iz = 0, p%Lz-1
+     do iy = 0, p%Ly-1
+        do ix = 0, p%Lx-1
+           unharm0 = unharm0 & 
                 + p%P_alpha * ( c%didiR(ix,iy,iz,1) + &
                                 c%didiR(ix,iy,iz,2) + &
                                 c%didiR(ix,iy,iz,3) )**2 &
@@ -71,6 +81,7 @@ subroutine dVddi_unharmonic(p,c,e)
         end do
      end do
   end do
-
+!$omp end parallel do
+  e%unharmonic = unharm0
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine dVddi_unharmonic
