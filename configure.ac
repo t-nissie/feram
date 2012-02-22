@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-02-22 07:58:00 takeshi>
+dnl Time-stamp: <2012-02-22 13:19:31 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -98,9 +98,9 @@ case "$host" in
     case "$with_fft" in
       fftw* | yes | "")
         AC_CHECK_LIB(fftw3, dfftw_execute,,
-                     AC_MSG_ERROR([You need FFTW3 library, i.e. libfftw3. See config.log.]))
+                     [AC_MSG_ERROR([You need FFTW3 library, i.e. libfftw3. See config.log.])])
         AC_CHECK_LIB(fftw3_omp, dfftw_init_threads,,
-                     AC_MSG_ERROR([You need FFTW3 library compiled with --enable-openmp, i.e. libfftw3_omp. See config.log.]))
+                     [AC_MSG_ERROR([You need FFTW3 library compiled with --enable-openmp, i.e. libfftw3_omp. See config.log.])])
         ;;
       mkl)
         AC_CHECK_LIB(mkl_core, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
