@@ -1,5 +1,5 @@
 ! dVddi-unharmonic.F   -*-f90-*-
-! Time-stamp: <2012-02-22 12:46:39 takeshi>
+! Time-stamp: <2012-02-23 11:16:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_unharmonic(p,c,e)
@@ -28,34 +28,30 @@ subroutine dVddi_unharmonic(p,c,e)
          two_k2 =             2*p%P_k2
         four_k2_two_k3 =      4*p%P_k2 - 2*p%P_k3
 
-  !$omp parallel do private(iz, iy, ix, alpha, alpha1, alpha2) 
-  ! 4th order
+!$omp parallel do private(iz, alpha, alpha1, alpha2) 
   do iz = 0, p%Lz-1
-     do iy = 0, p%Ly-1
-        do ix = 0, p%Lx-1
-           do alpha = 1,3
-              c%dVddi(ix,iy,iz,alpha) = c%dVddi(ix,iy,iz,alpha) + c%dipoR(ix,iy,iz,alpha) * &
-                   ( four_alpha_two_gamma * (c%didiR(ix,iy,iz,1)+c%didiR(ix,iy,iz,2)+c%didiR(ix,iy,iz,3)) &
-                   - two_gamma *  c%didiR(ix,iy,iz,alpha)                                )
-              ! 6th an 8th order
-              if (alpha==1) then
-                 alpha1 = 2
-                 alpha2 = 3
-              else if (alpha==2) then
-                 alpha1 = 3
-                 alpha2 = 1
-              else ! alpha==3
-                 alpha1 = 1
-                 alpha2 = 2
-              end if
-              c%dVddi(ix,iy,iz,alpha) = c%dVddi(ix,iy,iz,alpha) + c%dipoR(ix,iy,iz,alpha) * &
-                   ( six_k1_two_k2 * (c%didiR(ix,iy,iz,1)+c%didiR(ix,iy,iz,2)+c%didiR(ix,iy,iz,3))**2 &
-                   + 8*p%P_k4 * (c%didiR(ix,iy,iz,1)+c%didiR(ix,iy,iz,2)+c%didiR(ix,iy,iz,3))**3 &
-                   - two_k2 *  c%didiR(ix,iy,iz,alpha)**2 &
-                   - four_k2_two_k3 * c%didiR(ix,iy,iz,alpha1) * c%didiR(ix,iy,iz,alpha2) )
-           end do
-        end do
-     end do
+  do alpha = 1,3
+     ! 4th order
+     c%dVddi(:,:,iz,alpha) = c%dVddi(:,:,iz,alpha) + c%dipoR(:,:,iz,alpha) * &
+          & ( four_alpha_two_gamma * (c%didiR(:,:,iz,1)+c%didiR(:,:,iz,2)+c%didiR(:,:,iz,3)) &
+          &            - two_gamma *  c%didiR(:,:,iz,alpha)                                  )
+     ! 6th an 8th order
+     if (alpha==1) then
+        alpha1 = 2
+        alpha2 = 3
+     else if (alpha==2) then
+        alpha1 = 3
+        alpha2 = 1
+     else ! alpha==3
+        alpha1 = 1
+        alpha2 = 2
+     end if
+     c%dVddi(:,:,iz,alpha) = c%dVddi(:,:,iz,alpha) + c%dipoR(:,:,iz,alpha) * &
+          ( six_k1_two_k2 * (c%didiR(:,:,iz,1)+c%didiR(:,:,iz,2)+c%didiR(:,:,iz,3))**2 &
+               + 8*p%P_k4 * (c%didiR(:,:,iz,1)+c%didiR(:,:,iz,2)+c%didiR(:,:,iz,3))**3 &
+                 - two_k2 *  c%didiR(:,:,iz,alpha)**2 &
+                - four_k2_two_k3 * c%didiR(:,:,iz,alpha1) * c%didiR(:,:,iz,alpha2) )
+  end do
   end do
 !$omp end parallel do
 
