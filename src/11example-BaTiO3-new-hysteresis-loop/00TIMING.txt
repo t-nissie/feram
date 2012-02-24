@@ -35,6 +35,9 @@ feram-0.18.00 frt-8.1
 
 feram-0.18.00 gfortran-4.6.1 FFTW-3.2.4
  Pentium 4 520 2.8GHz HT2core 87050 89582 99901
+
+feram-0.18.00 gfortran-4.4.4 FFTW-3.3.1-beta1
+ Xeon X5690 3.47GHz x2 12core  8165  8994  9582
 -----------------------------------------------
 feram-0.18.00 xf90-V01-05-/G *r1070 after refactoring*
  SR11000 2.3GHz  1node=16core  5098  5307  5762   8486
