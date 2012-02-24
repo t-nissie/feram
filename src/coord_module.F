@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-02-11 17:21:20 t-nissie>
+! Time-stamp: <2012-02-24 11:36:21 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -130,6 +130,12 @@ contains
 
     if (allocated(c%E_field)) deallocate(c%E_field)
     allocate(     c%E_field(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    !!!first touch
+    !$omp parallel do
+    do i = 0,p%Lz-1
+       c%E_field(:,:,i,:) = 0.0d0
+    end do
+    !$omp end parallel do
 
     if (allocated(c%dipoI)) deallocate(c%dipoI)
     allocate(     c%dipoI(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!

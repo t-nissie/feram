@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2011-12-25 17:13:51 takeshi>
+! Time-stamp: <2012-02-24 11:39:19 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -27,19 +27,27 @@ subroutine mirror_force_mirror(p,c,e)
   if (p%E_field_always_zero) then   ! This was "call dVddi_E_field(p,c,e)".
      e%dipole_E_field = 0.0d0
   else
-!POPTION COALESCING(2)
-     c%dVddi(:,:,:,:) = c%dVddi(:,:,:,:) - p%Z_star*c%E_field(:,:,:,:)
+!POPTION PARALLEL,TLOCAL(iz)
+!$omp parallel do
+     do iz = 0, p%Lz-1
+     c%dVddi(:,:,iz,:) = c%dVddi(:,:,iz,:) - p%Z_star*c%E_field(:,:,iz,:)
+     end do
+!$omp end parallel do
+
      tmp_dipole_E_field = 0.0d0
-!POPTION COALESCING(2)
-     do alpha = 1, 3   ! HITACHI_SR's compiler is too fool to parallelize e%dipole_E_field = - p%Z_star * sum(c%dipoR(:,:,:,:)*c%E_field(:,:,:,:)).
-        do iz = 0, p%Lz-1
-           do iy = 0, p%Ly-1
-              do ix = 0, p%Lx-1
+! HITACHI_SR's compiler is too fool to parallelize e%dipole_E_field = - p%Z_star * sum(c%dipoR(:,:,:,:)*c%E_field(:,:,:,:)).
+!POPTION PSUM(tmp_dipole_E_field)
+!$omp parallel do reduction(+:tmp_dipole_E_field)
+      do iz = 0, p%Lz-1
+         do iy = 0, p%Ly-1
+            do ix = 0, p%Lx-1
+              do alpha = 1, 3
                  tmp_dipole_E_field = tmp_dipole_E_field + c%dipoR(ix,iy,iz,alpha)*c%E_field(ix,iy,iz,alpha)
               end do
            end do
         end do
      end do
+!$omp end parallel do
      e%dipole_E_field = - p%Z_star * tmp_dipole_E_field
   end if
 
