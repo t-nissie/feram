@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2012-02-28 09:38:42 t-nissie>
+! Time-stamp: <2012-02-28 09:51:41 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -51,7 +51,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
   !=== e%dipole_dipole = SUM( c%dipoR(:,:,:,:) * c%dVddi(:,:,:,:) ) / 2 ===========
   e_dipole_dipole = 0.0d0
 !POPTION PSUM(e_dipole_dipole)
-!$omp parallel do private(iz, alpha, iy, ix) reduction(+:dipole0)
+!$omp parallel do private(iz, alpha, iy, ix) reduction(+:e_dipole_dipole)
   do iz=0, p%Lz-1
      do alpha = 1,3
         do iy=0, p%Ly-1
