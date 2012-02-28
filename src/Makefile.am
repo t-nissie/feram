@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-01-12 17:12:50 t-nissie>
+# Time-stamp: <2012-02-28 12:03:52 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -78,6 +78,7 @@ feram_mpi.F \
 10example-PbTiO3-DDB2short \
 11example-BaTiO3-new-hysteresis-loop \
 15example-BaTiO3-new-param-defects \
+17example-PbTiO3-100-900K \
 18example-benchmark
 
 ../libbuilt_in_fft/libbuilt_in_fft.a:
