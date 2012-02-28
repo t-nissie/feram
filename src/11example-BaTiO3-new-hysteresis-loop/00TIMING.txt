@@ -42,6 +42,9 @@ feram-0.18.00 gfortran-4.4.4 FFTW-3.3.1-beta1
 feram-0.18.00 xf90-V01-05-/G *r1070 after refactoring*
  SR11000 2.3GHz  1node=16core  5098  5307  5762   8486
 -----------------------------------------------
+feram-0.18.05 xf90-V01-05-/G r1111
+ SR11000 2.3GHz  1node=16core  4524  4811  5194   7638
+-----------------------------------------------
 
 feram-0.17.06
 2011-11-09 /home/t-nissie/f/feram/feram-0.17.06/SR11000/src/zzz11example/
@@ -59,3 +62,6 @@ feram-0.18.00
 
 feram-0.18.00 *r1070 after refactoring*
 /home/t-nissie/f/loto/feram/trunk/0.18.00-r1070-2012-01-12-SR11000/src/zzz11example/
+
+feram-0.18.05 r1111
+/home/t-nissie/f/feram/feram-0.18.05/SR11000/src/11example-BaTiO3-new-hysteresis-loop/
