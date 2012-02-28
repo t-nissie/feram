@@ -4,7 +4,7 @@
 #% -o timing.t2k.stdout -e timing.t2k.stderr
 #% -P NANOGC0
 #% -H 1
-#% -T 01:00:00
+#% -T 10:00:00
 #% -cwd
 #% -MVA
 . /opt/Modules/init/bash
