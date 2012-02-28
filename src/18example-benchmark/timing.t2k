@@ -1,0 +1,28 @@
+#!/bin/sh
+#% -S /bin/sh
+#% -N timing.t2k
+#% -o timing.t2k.stdout -e timing.t2k.stderr
+#% -P NANOGC0
+#% -H 1
+#% -T 01:00:00
+#% -cwd
+#% -MVA
+. /opt/Modules/init/bash
+module load intel mkl mvapich2/intel
+
+OMP_NUM_THREADS=1  time -o timing.dat -f '%e %U %S %R'    ../feram forward.feram
+OMP_NUM_THREADS=2  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=3  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=4  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=5  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=6  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=7  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=8  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=9  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=10 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=11 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=12 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=13 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=14 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=15 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+OMP_NUM_THREADS=16 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
