@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2011-11-04 10:14:59 t-nissie>
+! Time-stamp: <2012-02-28 09:16:08 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -144,7 +144,7 @@ contains
     integer :: alpha,beta, iy,iz
     !--- END of variable definitions -------------------
     tmpS = 0.0d0
-    !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
+!$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
 !POPTION PSUM(tmpS)
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
@@ -158,7 +158,7 @@ contains
           end do
        end do
     end do
-    !$omp end parallel do
+!$omp end parallel do
     e%inho_strain = tmpS * p%Ninv    ! Do NOT divide it by 2 here. It has been already devided.
   end subroutine inhomogeneous_strain_energy
 
@@ -178,7 +178,7 @@ contains
     tmpS = 0.0d0
     do i = 1,6
        do alpha = 1,3
-          !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
+!$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
 !POPTION PSUM(tmpS)
           do iz = 0, p%Lz-1
              do iy = 0, p%Ly-1
@@ -188,9 +188,9 @@ contains
                 tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
           end do
-          !$omp end parallel do
+!$omp end parallel do
        end do
     end do
-    e%inho_coupling = tmpS * 2 / p%N
+    e%inho_coupling = tmpS * 2 * p%Ninv
   end subroutine inhomogeneous_coupling_energy
 end module Energy_module
