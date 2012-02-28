@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-02-24 11:36:21 t-nissie>
+! Time-stamp: <2012-02-28 09:38:43 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -86,16 +86,16 @@ contains
     if (allocated(c%dipoK)) deallocate(c%dipoK)
     allocate(     c%dipoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3)) !"/2" See fft.F!
     !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do i = 0,p%Lz-1
        c%dipoR(:,:,i,:) = 0.0d0
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do i = 0,p%Lz-1
        c%dipoK(:,:,i,:) = (0.0d0,0.0d0)
     end do
-    !$omp end parallel do
+!$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 3
        call dfftw_plan_dft_r2c_3d(c%plans_dipoR2C(alpha), p%Lx, p%Ly, p%Lz, &
@@ -111,16 +111,16 @@ contains
     if (allocated(c%dipoT)) deallocate(c%dipoT)
     allocate(c%dipoT(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
     !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do i = 0,p%Lz-1
        c%dVddi(:,:,i,:) = 0.0d0
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do i = 0,p%Lz-1
        c%dipoT(:,:,i,:) = (0.0d0,0.0d0)
     end do
-    !$omp end parallel do
+!$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 3
        call dfftw_plan_dft_c2r_3d(c%plans_dipoT2dVddi(alpha), p%Lx, p%Ly, p%Lz, &
@@ -131,11 +131,11 @@ contains
     if (allocated(c%E_field)) deallocate(c%E_field)
     allocate(     c%E_field(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
     !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do i = 0,p%Lz-1
        c%E_field(:,:,i,:) = 0.0d0
     end do
-    !$omp end parallel do
+!$omp end parallel do
 
     if (allocated(c%dipoI)) deallocate(c%dipoI)
     allocate(     c%dipoI(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!
@@ -145,16 +145,16 @@ contains
     if (allocated(c%didiK)) deallocate(c%didiK)
     allocate(     c%didiK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))    !"/2" See fft.F!
     !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do i = 0,p%Lz-1
        c%didiR(:,:,i,:) = 0.0d0
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do i = 0,p%Lz-1
        c%didiK(:,:,i,:) = (0.0d0,0.0d0)
     end do
-    !$omp end parallel do
+!$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 6
        call dfftw_plan_dft_r2c_3d(c%plans_didiR2C(alpha), p%Lx, p%Ly, p%Lz, &
@@ -172,16 +172,16 @@ contains
     if (allocated(c%inhoK)) deallocate(c%inhoK)
     allocate(c%inhoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))
     !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do i = 0,p%Lz-1
        c%inhoR(:,:,i,:) = 0.0d0
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do i = 0,p%Lz-1
        c%inhoK(:,:,i,:) = (0.0d0,0.0d0)
     end do
-    !$omp end parallel do
+!$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 6
        call dfftw_plan_dft_c2r_3d(c%plans_inhoK2R(alpha), p%Lx, p%Ly, p%Lz, &

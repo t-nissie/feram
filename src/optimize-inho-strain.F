@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2012-01-12 15:36:59 t-nissie>
+! Time-stamp: <2012-02-28 09:38:36 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -35,7 +35,7 @@ subroutine optimize_inho_strain(p,c,e)
   ! * inhomo_K is positive definite real symmetric matrix. See elastic.F and cholesky_d.f.
   ! * acouK(1:3,0,0,0)=0 is guaranteed by c%inhomo_K_G(1:3,1:4, 0,0,0)=0.
 !POPTION PARALLEL,TLOCAL(acouK_tmp,tmp)
-  !$omp parallel do private(iz,iy,ix,alpha,beta,acouK_tmp,tmp)
+!$omp parallel do private(iz,iy,ix,alpha,beta,acouK_tmp,tmp)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx/2
@@ -64,14 +64,14 @@ subroutine optimize_inho_strain(p,c,e)
         end do
      end do
   end do
-  !$omp end parallel do
+!$omp end parallel do
 
   !--- calculate some emergies -----------------------------------------
   call inhomogeneous_strain_energy(p,c,e,acouK)
   call inhomogeneous_coupling_energy(p,c,e,acouK)
 
   !--- acouK -> c%inhoK -FFT-> c%inhoR (inho. strain in real space) --------
-  !$omp parallel do private(iz,iy,ix,k)
+!$omp parallel do private(iz,iy,ix,k)
   do iz = 0, p%Lz-1
      k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
      k(3) = k(3) * M_2PI / p%a0
@@ -89,7 +89,7 @@ subroutine optimize_inho_strain(p,c,e)
         end do
      end do
   end do
-  !$omp end parallel do
+!$omp end parallel do
 
 #if defined(HAVE_LIBFFTW3)
   do alpha = 1, 6
@@ -103,7 +103,7 @@ subroutine optimize_inho_strain(p,c,e)
 #endif
 
   !--- c%inhoR -> inhomogeneous coupling part of dVddi -------------------
-  !$omp parallel do private(iz,iy,ix,i,eta_B_over_2m)
+!$omp parallel do private(iz,iy,ix,i,eta_B_over_2m)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1
@@ -131,7 +131,7 @@ subroutine optimize_inho_strain(p,c,e)
         end do
      end do
   end do
-  !$omp end parallel do
+!$omp end parallel do
 
   deallocate(acouK)
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')

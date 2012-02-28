@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2012-02-28 09:00:55 t-nissie>
+! Time-stamp: <2012-02-28 09:38:42 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -19,7 +19,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
   real*8 e_dipole_dipole
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'calc dVddi, calc e%dipo_dipo')
-  !$omp parallel do private(iz,iy,ix,alpha)
+!$omp parallel do private(iz,iy,ix,alpha)
   do iz=0, p%Lz-1
      do alpha = 1,3
         do iy=0, p%Ly-1
@@ -29,7 +29,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
         end do
      end do
   end do
-  !$omp end parallel do
+!$omp end parallel do
 
 #if defined(HAVE_LIBFFTW3)
   do alpha = 1, 3
