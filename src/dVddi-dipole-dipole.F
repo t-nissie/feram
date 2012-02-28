@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2012-01-12 15:32:16 t-nissie>
+! Time-stamp: <2012-02-28 09:00:55 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -16,6 +16,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
   type(Energy_type), intent(out)  :: e
   !--- local -----------------------------------------
   integer alpha, ix, iy, iz
+  real*8 e_dipole_dipole
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'calc dVddi, calc e%dipo_dipo')
   !$omp parallel do private(iz,iy,ix,alpha)
@@ -48,18 +49,20 @@ subroutine dVddi_dipole_dipole(p,c,e)
   !end if
 
   !=== e%dipole_dipole = SUM( c%dipoR(:,:,:,:) * c%dVddi(:,:,:,:) ) / 2 ===========
-  e%dipole_dipole = 0.0d0
-!POPTION PSUM(e%dipole_dipole)
+  e_dipole_dipole = 0.0d0
+!POPTION PSUM(e_dipole_dipole)
+!$omp parallel do private(iz, alpha, iy, ix) reduction(+:dipole0)
   do iz=0, p%Lz-1
      do alpha = 1,3
         do iy=0, p%Ly-1
            do ix=0, p%Lx-1
-              e%dipole_dipole = e%dipole_dipole + c%dipoR(ix,iy,iz,alpha) * c%dVddi(ix,iy,iz,alpha)
+              e_dipole_dipole = e_dipole_dipole + c%dipoR(ix,iy,iz,alpha) * c%dVddi(ix,iy,iz,alpha)
            end do
         end do
      end do
   end do
-  e%dipole_dipole = e%dipole_dipole / 2
+!$omp end parallel do
+  e%dipole_dipole = e_dipole_dipole / 2
   !================================================================================
 
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
