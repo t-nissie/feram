@@ -81,7 +81,7 @@ http://sourceforge.net/projects/loto/files/feram/
  $ gv all.eps      # プロットをプレビュー
 
 === configureのオプションの例
- $ ../configure FC=ifort --with-fft=mkl --with-lapack=mkl
+ $ ../configure FC=ifort CPPFLAGS="-I$MKLROOT/include/fftw" --with-fft=mkl --with-lapack=mkl
  $ ../configure FC=xf90 LDFLAGS=-L/sysap/lib --host=SR11000
  $ ../configure FC=gfortran
  $ ../configure FC=ifort LDFLAGS=-L/home/hitomi/Linux/lib CPPFLAGS=-I/home/hitomi/Linux/include
