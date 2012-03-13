@@ -108,7 +108,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  $ mkdir ifort-11.1
  $ cd ifort-11.1
  $ ../configure --help
- $ ../configure FC=ifort --with-fft=mkl --with-lapack=mkl
+ $ ../configure FC=ifort CPPFLAGS="-I$MKLROOT/include/fftw" --with-fft=mkl --with-lapack=mkl
  $ cd src
  $ make
  $ make -j 4        # Parallel make
