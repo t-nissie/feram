@@ -57,8 +57,8 @@ http://sourceforge.net/projects/loto/files/feram/
  * jot（たいていのLinuxディストリビューションにはjotパッケージがあります．ソースathena-jot_9.0.orig.tar.gzもネットに見つかります．）
 
 === feramの開発にあると便利なもの
- * autoconf (version 2.61 or higher)
- * automake (version 1.10 higher)
+ * autoconf (version 2.64 or higher)
+ * automake (version 1.11.1 higher)
 
 === 簡単なインストール方法
  $ tar Jxf feram-X.YY.ZZ.tar.xz

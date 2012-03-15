@@ -78,8 +78,8 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  * gnuplot (version 4.2 or higher)
  * Ruby (version 1.8.6 or higher)
  * jot (Every Linux distributions are presenting jot packages. Or, find its source athena-jot_9.0.orig.tar.gz in the Net.)
- * autoconf (version 2.61 or higher)
- * automake (version 1.10 higher)
+ * autoconf (version 2.64 or higher)
+ * automake (version 1.11.1 higher)
 
 === Quick compilation
  $ tar Jxf feram-X.YY.ZZ.tar.xz
