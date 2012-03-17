@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2011-09-15 19:33:33 takeshi>
+! Time-stamp: <2012-03-17 13:37:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -48,8 +48,11 @@ subroutine read_defects_u(p,c)
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE_NOT_FOUND', '.defects file was NOT found. No defects was created.')
   end if
 
-  if (p%gap_id>0) then
+  if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
      c%sum_p(:,:,(p%Lz+1)/2:p%Lz-1) = .false.     ! Examples:  Lz=7 -> 4:6,  Lz=8 -> 4:7
+  end if
+
+  if (p%gap_id>0) then
      c%dipoR(:, :, 0, 1) = p%gap_dipole_u(1)
      c%dipoR(:, :, 0, 2) = p%gap_dipole_u(2)
      c%dipoR(:, :, 0, 3) = p%gap_dipole_u(3)
@@ -64,14 +67,7 @@ subroutine read_defects_u(p,c)
      end if
   end if
 
-  c%n_sum_p = 0
-  do iz = 0, p%Lz-1
-     do iy = 0, p%Ly-1
-        do ix = 0, p%Lx-1
-           if (c%sum_p(ix,iy,iz)) c%n_sum_p = c%n_sum_p + 1
-        end do
-     end do
-  end do
+  c%n_sum_p = count(c%sum_p)   !; write(6,'(a,i8)') 'c%n_sum_p =', c%n_sum_p ; call flush(6)
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine read_defects_u
