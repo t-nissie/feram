@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-02-28 09:38:43 t-nissie>
+! Time-stamp: <2012-03-17 13:54:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -221,10 +221,12 @@ contains
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
           do ix = 0, p%Lx-1
-             write(UNIT_SYSTEM,'(i4,2i5,3f10.6,6e13.5)') ix, iy, iz, &
-                  & (c%dipoR(ix,iy,iz,i)         ,i=1,3),&
-                  & (c%dipoP(ix,iy,iz,i)/c%s_Nose,i=1,3),&
-                  & (c%dVddi(ix,iy,iz,i)         ,i=1,3)
+             if (c%sum_p(ix,iy,iz)) then
+                write(UNIT_SYSTEM,'(i4,2i5,3f10.6,6e13.5)') ix, iy, iz, &
+                     & (c%dipoR(ix,iy,iz,i)         ,i=1,3),&
+                     & (c%dipoP(ix,iy,iz,i)/c%s_Nose,i=1,3),&
+                     & (c%dVddi(ix,iy,iz,i)         ,i=1,3)
+             end if
           end do
        end do
     end do
