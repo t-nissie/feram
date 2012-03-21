@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2012-03-21 18:27:38 takeshi>
+! Time-stamp: <2012-03-21 21:54:30 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -158,7 +158,7 @@ contains
     write(fn_avg,'(a,a)') trim(p%filename), '.distribution'
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
     do i = -max_i, max_i
-       write(UNIT_AVG,'(f7.4,3f10.7)') step*i, dble(avg%distribution(:,i)) / c%n_sum_p / p%n_average
+       write(UNIT_AVG,'(f7.4,3f12.7)') step*i, dble(avg%distribution(:,i)) * step_inv / c%n_sum_p / p%n_average
     end do
     close(UNIT_AVG)
   end subroutine divide_and_write_Average
