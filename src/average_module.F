@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2011-11-13 10:28:43 takeshi>
+! Time-stamp: <2012-03-21 18:27:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,6 +9,11 @@
 module Average_module
   use Energy_module
   implicit none
+
+  real*8,  parameter :: step     = 0.005d0
+  real*8,  parameter :: step_inv = 1.0d0/step
+  integer, parameter :: max_i    = 300
+
   type Average_type
      type(Energy_type) energy    
      real*8 e2
@@ -17,6 +22,7 @@ module Average_module
      real*8 u(3)
      real*8 uu(6)
      real*8 e_layer(0:10000)
+     integer*8 distribution(3,-max_i:max_i)   !!! integer*8 !!!
   end type Average_type
 
 contains
@@ -32,6 +38,7 @@ contains
     avg%u(:)              = 0.0d0
     avg%uu(:)             = 0.0d0
     avg%e_layer(:)        = 0.0d0
+    avg%distribution(:,:) = 0
   end subroutine reset_Average
 
   subroutine add_to_Average(p,c,e,avg) ! We use p implicitly. Don't worry about compile warning on it.
@@ -44,7 +51,7 @@ contains
     type(Energy_type),  intent(in)    :: e
     type(Average_type), intent(inout) :: avg
     !--- local -----------------------------------------
-    integer alpha
+    integer alpha,ix,iy,iz,k
     real*8 u_tmp(3)
     character(90) message
     !--- END of variable definitions -------------------
@@ -68,6 +75,19 @@ contains
     avg%uu(4) = avg%uu(4) + u_tmp(2)*u_tmp(3)
     avg%uu(5) = avg%uu(5) + u_tmp(3)*u_tmp(1)
     avg%uu(6) = avg%uu(6) + u_tmp(1)*u_tmp(2)
+
+    do iz = 0, p%Lz-1
+       do iy = 0, p%Ly-1
+          do ix = 0, p%Lx-1
+             if (c%sum_p(ix,iy,iz)) then
+                do alpha = 1, 3
+                   k = nint(c%dipoR(ix,iy,iz,alpha)*step_inv)
+                   if (abs(k)<=max_i) avg%distribution(alpha,k) = avg%distribution(alpha,k) + 1
+                end do
+             end if
+          end do
+       end do
+    end do
 
     if (p%verbose>=2) then
        write(message,'("u=",3e13.5)') u_tmp(:)
@@ -119,7 +139,6 @@ contains
 
     write(fn_avg,'(a,a)') trim(p%filename), '.avg'
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
-
     write(UNIT_AVG,"(f6.1,3f9.5,1(e15.5,5e13.5),1(e15.5,2e13.5),1(e15.5,5e13.5),1(1e15.5,11e13.5))")&
          kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
          avg%energy%dipo_kinetic    ,&
@@ -134,7 +153,13 @@ contains
          avg%energy%H_Nose_Poincare ,&
          avg%e2                     ,&
          avg%dipo_kinetic_true
+    close(UNIT_AVG)
 
+    write(fn_avg,'(a,a)') trim(p%filename), '.distribution'
+    open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
+    do i = -max_i, max_i
+       write(UNIT_AVG,'(f7.4,3f10.7)') step*i, dble(avg%distribution(:,i)) / c%n_sum_p / p%n_average
+    end do
     close(UNIT_AVG)
   end subroutine divide_and_write_Average
 end module Average_module
