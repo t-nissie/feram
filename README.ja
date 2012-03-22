@@ -384,6 +384,15 @@ n_thermalizeイテレーションの恒温化の後，
 物性値の温度依存性を見ることができます．
 .avgファイルの詳しい内容は src/average_module.F の最後を見て下さい．
 
+=== foo123.distribution
+u_x(R), u_y(R), u_z(R)の分布関数
+ D_x(u) = (1/N) \sum_R delta(u_x(R)-u)
+をn_averageイテレーションに渡って平均したものが
+foo123.distributionに書き出します．
+各行は u D_x(u) D_y(u) D_z(u) です．
+∫D_x(u)=1になっているはずです．
+詳細は src/average_module.F を見てください．
+
 === foo123.hl
 ヒステリシスループのシミュレーションの method = 'hl' の
 ときには，n_hl_freqイテレーション毎に.hlファイルに物性値が

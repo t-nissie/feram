@@ -466,6 +466,14 @@ calculations altering temperature (kelvin tag),
 you can see temperature dependence of properties.
 Please see the end of src/average_module.F.
 
+=== foo123.distribution
+Distribution function of u_alpha(R) (alpha=x,y,z)
+ D_alpha(u) = (1/N) \sum_R delta(u_alpha(R)-u)
+are averaged in n_average iterations and reported
+in foo123.distribution. From 1st to 4th column,
+u D_x(u) D_y(u) D_z(u) are written. Please see
+src/average_module.F.
+
 === foo123.hl
 In the case of method = 'hl', a simulation of hysteresis loop,
 one .hl file will be created instead of a .avg file.
