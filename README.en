@@ -62,6 +62,7 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  * GNU make  http://www.gnu.org/software/make/ (You cannot use *BSD make.)
  * FFTW3 library  http://www.fftw.org/ (For Intel and AMD machines.
    Configure FFTW3 library with options of --enable-openmp --enable-threads --enable-sse2.
+   --enable-avx and --enable-shared are also useful additional configure options.
    Intel MKL contains FFTW3 wrappers.)
  * BLAS and LAPACK libraries (You do NOT have to used optimized BLAS,
    because LAPACK subroutines are not used in crucial parts in feram.)
