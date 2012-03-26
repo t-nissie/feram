@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2011-11-04 10:58:13 t-nissie>
+! Time-stamp: <2012-03-26 16:34:18 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -33,6 +33,7 @@ module Param_module
      character(len=3) :: method ! 'md' for MD in the canonical ensemble using the Nose-Poincare thermostat, 'lf' for MD in the
      real*8 GPa          ! [GPa]            microcanonical ensemble using the leap-frog method, or 'mc' for Monte Carlo method
      real*8 kelvin       ! [K]
+     real*8 target_kinetic_energy
      real*8 mass_dipo    ! [eV Angstrom^-2 ps^2]
      real*8 Q_Nose       ! [eV ps^2]
      !--- System geometry -----------------------------
@@ -118,6 +119,7 @@ contains
     p%method = 'md'
     p%GPa    = 0.0d0
     p%kelvin = 0.0d0
+    p%target_kinetic_energy = 0.0d0
     p%Q_Nose = 0.1d0
     p%bulk_or_film = 'bulk'
     p%Lx = 32
@@ -308,6 +310,8 @@ contains
     end if
     p%unit_cell_volume = p%a0 ** 3
     p%pNa03 = p%GPa *0.01d0 / ELEMENTARY_CHARGE * p%N * p%unit_cell_volume
+
+    p%target_kinetic_energy = p%kelvin * 1.5d0 * p%N / KELVIN_EV
 
     if (p%bulk_or_film.eq.'bulk') then
        if (p%gap_id.ne.0) then

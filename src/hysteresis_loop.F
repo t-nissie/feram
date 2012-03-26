@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2011-10-17 04:23:12 takeshi>
+! Time-stamp: <2012-03-26 16:19:26 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -17,7 +17,7 @@ subroutine hysteresis_loop(p,c)
   !--- local -----------------------------------------
   type(Energy_type) :: e
   real*8, allocatable :: E_field_initial(:,:,:,:) ! initial external electric field
-  real*8 target_kinetic_energy, E_field_add(3), u(3)
+  real*8 E_field_add(3), u(3)
   integer i_step, ix, iy, iz, alpha
   character(120), parameter :: fmt_time_step = &
        "('TIME_STEP ',i8,3f16.12,' -----------------------------------------------------')"
@@ -28,12 +28,9 @@ subroutine hysteresis_loop(p,c)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'MD')
 
   allocate(E_field_initial(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
-!
 
-  target_kinetic_energy = p%kelvin * 1.5d0 * p%N / KELVIN_EV
   write(message,'(f5.1,a)') p%kelvin, ' [K] BEGIN ================================================'
   call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
-
 
   call initialize_E_field(p,c)
   E_field_initial = c%E_field
@@ -68,30 +65,7 @@ subroutine hysteresis_loop(p,c)
         call msg_ez(UNIT_LOG,message)
      end if
 
-!POPTION COALESCING(2)
-     c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
-     call mirror_force_mirror(p,c,e)
-!POPTION COALESCING(2)
-     c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt * c%dVddi(:,:,:,:)
-
-     !=== e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2 ===========
-     e%dipo_kinetic = 0.0d0
-!POPTION PSUM(e%dipo_kinetic)
-     do iz=0, p%Lz-1
-        do alpha = 1,3
-           do iy=0, p%Ly-1
-              do ix=0, p%Lx-1
-                 e%dipo_kinetic = e%dipo_kinetic + c%dipoP(ix,iy,iz,alpha) * c%dipoP(ix,iy,iz,alpha) * c%m_inv(ix,iy,iz,alpha)
-              end do
-           end do
-        end do
-     end do
-     e%dipo_kinetic = e%dipo_kinetic / 2
-     !==================================================================================================
-
-!POPTION COALESCING(2)
-     c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) * sqrt(target_kinetic_energy/e%dipo_kinetic)
-     !e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
+     call velocity_scaling(p,c,e)
 
      e%total = e%dipo_kinetic + sum_potential_energies(e)
      if (p%verbose>=2) then

@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-03-17 16:19:40 takeshi>
+# Time-stamp: <2012-03-26 15:54:27 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -37,7 +37,8 @@ feram_SRCS = average_module.F \
 	optimize-homo-strain.F \
 	optimize-inho-strain.F \
 	potentials.F \
-	print-eigenvalues.F
+	print-eigenvalues.F \
+	velocity_scaling.F
 feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
 feram_LDADD = $(LDADD) $(LIBBUILT_IN_FFT_A)
 feram_DEPENDENCIES =   $(LIBBUILT_IN_FFT_A)
@@ -124,8 +125,8 @@ initialize_E_field.o read_defects_u.o elastic.o:\
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
 nose-poincare.o leapfrog.o mirror_force_mirror.o:\
                                 param_module.o coord_module.o energy_module.o
-hysteresis_loop.o average_module.o:\
-                                param_module.o coord_module.o energy_module.o define.h
+hysteresis_loop.o:              param_module.o coord_module.o energy_module.o define.h velocity_scaling.o
+average_module.o:               param_module.o coord_module.o energy_module.o define.h
 coord_module.o:                 param_module.o         define.h
 dipole-dipole-long-range.o:     param_module.o         define.h fft_3d_3x3upper_r2c.o
 dipole-dipole-short-range.o:    param_module.o                  fft_3d_3x3upper_r2c.o

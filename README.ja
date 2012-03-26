@@ -20,6 +20,9 @@ http://sourceforge.net/projects/loto/files/feram/
    "Fast molecular-dynamics simulation for ferroelectric thin-film capacitors using a
    first-principles effective Hamiltonian", Phys. Rev. B, vol.78, p.104104 (2008)
    doi:10.1103/PhysRevB.78.104104.
+ * W. Zhong, D. Vanderbilt, and K. M. Rabe: "First-principles theory of ferroelectric
+   phase transitions for perovskites: The case of BaTiO3", Phys. Rev. B, vol.52,
+   pp.6301-6312 (1995) doi:10.1103/PhysRevB.52.6301.
  * R. D. King-Smith and David Vanderbilt: "First-principles investigation of
    ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49,
    pp.5828-5844 (1994) doi:10.1103/PhysRevB.49.5828.

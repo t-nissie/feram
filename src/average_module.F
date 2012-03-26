@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2012-03-21 21:54:30 takeshi>
+! Time-stamp: <2012-03-26 16:36:54 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -109,8 +109,8 @@ contains
 
     if (p%n_average.eq.0) return
 
-    avg%energy = div_energy(avg%energy, p%n_average)
-    avg%energy = div_energy(avg%energy, p%N)
+    avg%energy = div_Energy(avg%energy, p%n_average)
+    avg%energy = div_Energy(avg%energy, p%N)
     avg%e2                = avg%e2                / p%n_average * p%Ninv
     avg%dipo_kinetic_true = avg%dipo_kinetic_true / p%n_average * p%Ninv
 
