@@ -1,0 +1,62 @@
+=begin
+= How to compile feram
+This document describes how to compile feram for your computer.
+Version and date of installation is written in parentheses ().
+
+== Linux
+=== CentOS 6.2 (feram-0.18.05, 2012-03-28)
+CentOS 6.2 can be installed to your x86_64 system with DVD and
+CD-ROM images in http://isoredirect.centos.org/centos/6/isos/x86_64/ .
+
+Network installation is also available with a CD-ROM image of
+CentOS-6.2-x86_64-netinstall.iso. See
+http://www.if-not-true-then-false.com/2011/centos-6-netinstall-network-installation/
+for more details.
+
+Select "Software Development Workstation" in the setup.
+
+==== check the version of gfortran
+ $ gfortran --version
+ GNU Fortran (GCC) 4.4.6 ...
+
+==== install fftw-3.3.1.tar.gz
+ $ tar zxf fftw-3.3.1.tar.gz
+ $ cd fftw-3.3.1
+ $ mkdir CentOS
+ $ cd CentOS
+ $ ../configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-openmp --enable-threads --enable-sse2 --enable-avx --enable-shared
+ $ make check
+ $ su
+ # make install
+ # exit
+
+==== install BLAS and LAPACK
+ $ su
+ # yum install blas.x86_64 lapack.x86_64
+ # cd /usr/lib64
+ # ln -s libblas.so.3 libblas.so
+ # ln -s liblapack.so.3 liblapack.so
+ # exit
+Symbolic links are for avoiding error of "/usr/bin/ld: cannot find -lblas".
+See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbinld.html for more details.
+
+==== compile feram
+ $ export LD_LIBRARY_PATH=/usr/local/lib64   # Do not forget it.
+ $ tar Jxf feram-0.18.05.tar.xz
+ $ cd feram-0.18.05
+ $ mkdir CentOS
+ $ cd CentOS
+ $ ../configure --help
+ $ ../configure
+ $ cd src
+ $ make
+ $ ls -l feram
+ $ ldd feram
+
+
+== Windows
+=== MinGW
+
+== Mac OS X
+
+=end
