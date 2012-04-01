@@ -1,7 +1,59 @@
 =begin
 = How to compile feram
-This document describes how to compile feram for your computer.
+This document describes how to compile feram for your computers.
 Version and date of installation is written in parentheses ().
+
+== Requirements
+ * GNU make  http://www.gnu.org/software/make/ (You cannot use *BSD make.)
+ * FFTW3 library  http://www.fftw.org/ (For Intel and AMD machines.
+   version 3.3 or higher. Configure FFTW3 library with options of
+   --enable-openmp --enable-threads --enable-sse2.
+   --enable-avx and --enable-shared are also useful additional configure options.
+   Intel MKL contains FFTW3 wrappers.)
+ * BLAS and LAPACK libraries (You do NOT have to used optimized BLAS,
+   because LAPACK subroutines are not used in crucial parts in feram.)
+ * Fortran 90 compiler
+   * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
+   * Intel Fortran Compiler (ifort; version 11.1 and later) with
+     Intel Math Kernel Library (MKL; version 10.2 and later)
+     http://software.intel.com/en-us/articles/intel-compilers/
+   * Fortran 90 for HITACHI SR16000
+   * Fortran 90 (frt) for Fujitsu machines: FX1, Kei and FX10
+ * tar (version 1.22 or higher)  http://www.gnu.org/software/tar/
+ * xz  http://tukaani.org/xz/
+
+== Useful software
+These software are useful for executing feram and analyzing calculated results.
+ * gnuplot (version 4.2 or higher)
+ * Ruby (version 1.8.6 or higher)
+ * jot (Every Linux distributions are presenting jot packages. Or, find its source athena-jot_9.0.orig.tar.gz in the Net.)
+
+== Requirements for developing feram
+ * autoconf (version 2.64 or higher)
+ * automake (version 1.11.1 higher)
+
+== Quick compilation
+ $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir Linux-i686-gfortran-4.3.5
+ $ cd Linux-i686-gfortran-4.3.5
+ $ ../configure --help
+ $ ../configure
+ $ cd src
+ $ make
+ $ make feram_mpi   # OPTIONAL
+ $ ls -l feram*
+ $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
+ $ cd 11example-BaTiO3-new-hysteresis-loop
+ $ ../feram hysteresis_d0.feram &         # test run
+ $ ../feram hysteresis_d1_backwrd.feram & # 1day/1file
+ $ ../feram hysteresis_d1_forward.feram &
+ $ ../feram hysteresis_d2.feram &
+ $ gnuplot all.gp  # plot a hysteresis loop
+ $ gv all.eps      # preview
+
+
+
 
 == Linux
 === CentOS 6.2 (feram-0.18.05, 2012-03-28)
@@ -53,6 +105,43 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
  $ ls -l feram
  $ ldd feram
 
+=== Linux with Intel Fortran Compiler and FFTW wrappers in Intel MKL
+ $ . /opt/intel/bin/ifortvars.sh intel64     # Put these two lines in your
+ $ . /opt/intel/mkl/bin/mklvars.sh intel64   # ~/.bashrc or somewhere.
+ $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir ifort-11.1
+ $ cd ifort-11.1
+ $ ../configure --help
+ $ ../configure FC=ifort CPPFLAGS="-I$MKLROOT/include/fftw" --with-fft=mkl --with-lapack=mkl
+ $ cd src
+ $ make
+ $ make feram_mpi   # OPTIONAL
+
+== Super computers
+=== HITACHI SR16000
+feram runs on 1 node of SR16000 effectively.
+Note that libblas.a and liblapack.a must be in /sysap/lib/ or elsewhere.
+ $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir SR16000-xf90
+ $ cd SR16000-xf90
+ $ ../configure FC=xf90 LDFLAGS=-L/sysap/lib --host=SR16000
+ $ cd src
+ $ make
+For performance monitor
+ $ ../configure FC=f90 LDFLAGS=-L/sysap/lib FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
+   -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -pmfunc -pmpar' --host=SR16000
+
+=== Fujitsu FX1, Kei and FX10
+ $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir FX1
+ $ cd FX1
+ $ ../configure FC=frt --with-fft=ssl2 --with-lapack=ssl2
+ $ cd src
+ $ make
+ $ make feram_mpi   # OPTIONAL
 
 == Windows
 === MinGW
@@ -60,3 +149,7 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
 == Mac OS X
 
 =end
+# Local variables:
+#   mode: RD
+#   compile-command: "make INSTALL.html"
+# End:

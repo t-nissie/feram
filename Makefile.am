@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2011-12-24 17:28:52 takeshi>
+# Time-stamp: <2012-04-01 11:49:20 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -9,6 +9,8 @@ EXTRA_DIST = README.en \
              index.en.html \
              README.ja \
              index.ja.html \
+             INSTALL \
+             INSTALL.html \
              TODO \
              ChangeLog \
              Changes \
@@ -38,6 +40,9 @@ logo.jpg: logo.eps
 
 index.%.html: README.%
 	ruby -I ~/ruby/ulmul/trunk/lib $< $< | sed -e 's%</h1>%</h1><div class="navi">[<a href="index.en.html">English</a>/<a href="index.ja.html">Japanese</a>]</div>%' > $@
+
+INSTALL.html: INSTALL
+	ulmul2html5 -s style.css -n 'Takeshi Nishimatsu' $< > $@
 
 dist-hook:
 	rm -rf `find $(distdir) -type d -name .svn`
