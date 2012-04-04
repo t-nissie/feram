@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2011-11-04 11:16:09 t-nissie>
+! Time-stamp: <2012-04-04 18:42:46 c25050>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -13,8 +13,7 @@ subroutine initialize_E_field(p,c)
   character (len=300):: str
   character (len=1)  :: tmp
   character(len=110) :: message
-  real*8             :: normal_dist, local_E_field(3)
-  external normal_dist
+  real*8             :: local_E_field(3)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
   c%E_field(:,:,:,:) = 0.0d0
