@@ -133,12 +133,22 @@ For performance monitor
  $ ../configure FC=f90 LDFLAGS=-L/sysap/lib FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
    -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -pmfunc -pmpar' --host=SR16000
 
-=== Fujitsu FX1, Kei and FX10
+=== Fujitsu FX1
  $ tar Jxf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir FX1
  $ cd FX1
  $ ../configure FC=frt --with-fft=ssl2 --with-lapack=ssl2
+ $ cd src
+ $ make
+ $ make feram_mpi   # OPTIONAL
+
+=== Fujitsu Kei and FX10
+ $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir FX10
+ $ cd FX10
+ $ ../configure FC=frt FCFLAGS="-Kfast,parallel -SSL2" --with-fft=ssl2 --with-lapack=ssl2
  $ cd src
  $ make
  $ make feram_mpi   # OPTIONAL
