@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-03-13 17:21:53 takeshi>
+dnl Time-stamp: <2012-04-09 18:46:24 user2001>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -26,7 +26,7 @@ AC_PROG_INSTALL
 ## Checks for Fortran compilers.
 FCFLAGS_PRESERVE=$FCFLAGS
 AC_LANG(Fortran)
-AC_PROG_FC(gfortran ifort pgf95 g95 xf90 frt openf95)
+AC_PROG_FC(gfortran ifort pgf95 g95 xf90 frt frtpx openf95)
 FCFLAGS=$FCFLAGS_PRESERVE
    # Restore FCFLAGS, because AC_PROG_FC() sets FCFLAGS to '-g -O2', '-O2' or '-g' undesirably.
 
@@ -57,6 +57,10 @@ case "$FC" in
   frt)
     test -n "$FCFLAGS" || FCFLAGS="-Kimpact -Am -SSL2 -KOMP"
     test -n "$MPIFC" || MPIFC=mpifrt
+    ;;
+  frtpx)
+    test -n "$FCFLAGS" || FCFLAGS="-Kfast,parallel,openmp -SSL2"
+    test -n "$MPIFC" || MPIFC=mpifrtpx
     ;;
   *xlf*)
     AC_MSG_ERROR([C preprocessor invoked from IBM XL Fortran cannot process comment lines in define.h and config.h properly, so far.])
@@ -160,7 +164,7 @@ case "$FC" in
   g95|gfortran*)
     FCFLAGS="$FCFLAGS -ffree-form -ffree-line-length-none"
     ;;
-  frt)
+  frt*)
     FCFLAGS="$FCFLAGS -Free"
     ;;
   openf95)

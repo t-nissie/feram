@@ -143,7 +143,17 @@ For performance monitor
  $ make
  $ make feram_mpi   # OPTIONAL
 
-=== Fujitsu Kei and FX10
+=== Fujitsu Kei with cross compiler
+ $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir Kei
+ $ cd Kei
+ $ ../configure FC=frtpx --with-fft=ssl2 --with-lapack=ssl2 --host=Kei
+ $ cd src
+ $ make
+ $ make feram_mpi   # OPTIONAL
+
+=== Fujitsu FX10
  $ tar Jxf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir FX10
