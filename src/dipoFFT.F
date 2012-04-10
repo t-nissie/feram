@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2012-01-12 15:33:41 t-nissie>
+! Time-stamp: <2012-04-10 15:25:02 c25050>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -12,7 +12,7 @@ subroutine dipoFFT(p,c)
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
-  integer alpha
+  integer alpha,iz
 
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dipoR -> dipoK, didiR, didiK')
@@ -28,12 +28,16 @@ subroutine dipoFFT(p,c)
   end do
 #endif
 
-  c%didiR(:,:,:,1) = c%dipoR(:,:,:,1) * c%dipoR(:,:,:,1)
-  c%didiR(:,:,:,2) = c%dipoR(:,:,:,2) * c%dipoR(:,:,:,2)
-  c%didiR(:,:,:,3) = c%dipoR(:,:,:,3) * c%dipoR(:,:,:,3)
-  c%didiR(:,:,:,4) = c%dipoR(:,:,:,2) * c%dipoR(:,:,:,3)
-  c%didiR(:,:,:,5) = c%dipoR(:,:,:,3) * c%dipoR(:,:,:,1)
-  c%didiR(:,:,:,6) = c%dipoR(:,:,:,1) * c%dipoR(:,:,:,2)
+!$omp parallel do
+  do iz=0, p%Lz-1
+     c%didiR(:,:,iz,1) = c%dipoR(:,:,iz,1) * c%dipoR(:,:,iz,1)
+     c%didiR(:,:,iz,2) = c%dipoR(:,:,iz,2) * c%dipoR(:,:,iz,2)
+     c%didiR(:,:,iz,3) = c%dipoR(:,:,iz,3) * c%dipoR(:,:,iz,3)
+     c%didiR(:,:,iz,4) = c%dipoR(:,:,iz,2) * c%dipoR(:,:,iz,3)
+     c%didiR(:,:,iz,5) = c%dipoR(:,:,iz,3) * c%dipoR(:,:,iz,1)
+     c%didiR(:,:,iz,6) = c%dipoR(:,:,iz,1) * c%dipoR(:,:,iz,2)
+  end do
+!$omp end parallel do
 
 #if defined(HAVE_LIBFFTW3)
   do alpha = 1, 6
