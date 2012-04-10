@@ -1,0 +1,10 @@
+#!/bin/sh
+#PJM -L "rscgrp=short"
+#PJM -L "node=1"
+#PJM -L "elapse=0:30:00"
+#PJM -j
+export PJM_JOBNAME=profiling.FX10
+export FLIB_FASTOMP=TRUE
+export PARALLEL=16
+export OMP_NUM_THREADS=16
+fipp -C -d profiling ../feram forward.feram
