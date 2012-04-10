@@ -11,14 +11,14 @@ Version and date of installation is written in parentheses ().
    --enable-avx and --enable-shared are also useful additional configure options.
    Intel MKL contains FFTW3 wrappers.)
  * BLAS and LAPACK libraries (You do NOT have to used optimized BLAS,
-   because LAPACK subroutines are not used in crucial parts in feram.)
+   because LAPACK subroutines are not used in crucial parts of feram.)
  * Fortran 90 compiler
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
    * Intel Fortran Compiler (ifort; version 11.1 and later) with
      Intel Math Kernel Library (MKL; version 10.2 and later)
      http://software.intel.com/en-us/articles/intel-compilers/
    * Fortran 90 for HITACHI SR16000
-   * Fortran 90 (frt) for Fujitsu machines: FX1, Kei and FX10
+   * Fortran 90 (frtpx) for Fujitsu supercomputers: Kei and FX10
  * tar (version 1.22 or higher)  http://www.gnu.org/software/tar/
  * xz  http://tukaani.org/xz/
 
@@ -33,6 +33,8 @@ These software are useful for executing feram and analyzing calculated results.
  * automake (version 1.11.1 higher)
 
 == Quick compilation
+If you have all the required libraries,
+follow this quick compilation instruction.
  $ tar Jxf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir Linux-i686-gfortran-4.3.5
@@ -51,8 +53,6 @@ These software are useful for executing feram and analyzing calculated results.
  $ ../feram hysteresis_d2.feram &
  $ gnuplot all.gp  # plot a hysteresis loop
  $ gv all.eps      # preview
-
-
 
 
 == Linux
@@ -143,25 +143,16 @@ For performance monitor
  $ make
  $ make feram_mpi   # OPTIONAL
 
-=== Fujitsu Kei with cross compiler
+=== Fujitsu Kei and FX10 with their cross compiler frtpx and mpifrtpx
  $ tar Jxf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir Kei
  $ cd Kei
- $ ../configure FC=frtpx --with-fft=ssl2 --with-lapack=ssl2 --host=Kei
+ $ ../configure FC=frtpx --with-fft=ssl2 --with-lapack=ssl2 --host=Kei   # use --host=FX10 for FX10
  $ cd src
  $ make
  $ make feram_mpi   # OPTIONAL
 
-=== Fujitsu FX10
- $ tar Jxf feram-X.YY.ZZ.tar.xz
- $ cd feram-X.YY.ZZ
- $ mkdir FX10
- $ cd FX10
- $ ../configure FC=frt FCFLAGS="-Kfast,parallel -SSL2" --with-fft=ssl2 --with-lapack=ssl2
- $ cd src
- $ make
- $ make feram_mpi   # OPTIONAL
 
 == Windows
 === MinGW
