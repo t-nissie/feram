@@ -1,0 +1,10 @@
+#!/bin/sh
+#PJM -L "rscgrp=short"
+#PJM -L "node=4"
+#PJM -L "elapse=2:00:00"
+#PJM --mpi "proc=4"
+#PJM -j
+export PJM_JOBNAME=all.FX10
+export PARALLEL=16
+export OMP_NUM_THREADS=16
+mpiexec ../feram_mpi hysteresis_d0.feram hysteresis_d1_backwrd.feram hysteresis_d1_forward.feram hysteresis_d2.feram
