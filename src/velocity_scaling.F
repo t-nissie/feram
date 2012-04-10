@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2012-03-26 16:37:29 takeshi>
+! Time-stamp: <2012-04-10 14:08:17 c25050>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -15,15 +15,23 @@ subroutine velocity_scaling(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer ix, iy, iz, alpha
+  real*8 scale
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
 
-!POPTION COALESCING(2)
-     c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
+!$omp parallel do
+     do iz=0, p%Lz-1
+        c%dipoR(:,:,iz,:) = c%dipoR(:,:,iz,:) + p%dt * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:)
+     end do
+!$omp end parallel do
+
      call mirror_force_mirror(p,c,e)
-!POPTION COALESCING(2)
-     c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt * c%dVddi(:,:,:,:)
+!$omp parallel do
+     do iz=0, p%Lz-1
+        c%dipoP(:,:,iz,:) = c%dipoP(:,:,iz,:) - p%dt * c%dVddi(:,:,iz,:)
+     end do
+!$omp end parallel do
 
      !=== e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2 ===========
      e%dipo_kinetic = 0.0d0
@@ -40,8 +48,12 @@ subroutine velocity_scaling(p,c,e)
      e%dipo_kinetic = e%dipo_kinetic / 2
      !==================================================================================================
 
-!POPTION COALESCING(2)
-     c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) * sqrt(p%target_kinetic_energy/e%dipo_kinetic)
+     scale = sqrt(p%target_kinetic_energy/e%dipo_kinetic)
+!$omp parallel do
+     do iz=0, p%Lz-1
+        c%dipoP(:,:,iz,:) = c%dipoP(:,:,iz,:) * scale
+     end do
+!$omp end parallel do
      !e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
 
   if (p%verbose>=2) then
