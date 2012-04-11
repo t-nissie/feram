@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2011-11-04 11:16:50 t-nissie>
+! Time-stamp: <2012-04-11 14:42:34 user2001>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
@@ -15,6 +15,7 @@ subroutine nose_poincare(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   real*8 CB, s_Nose_old, delta_H
+  integer iz
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
 !POPTION COALESCING(2)
@@ -29,10 +30,13 @@ subroutine nose_poincare(p,c,e)
   s_Nose_old = c%s_Nose
   c%s_Nose  = c%s_Nose * ( 1.0d0 + p%dt_2*c%pi_Nose/p%Q_Nose ) / & 
                        & ( 1.0d0 - p%dt_2*c%pi_Nose/p%Q_Nose )         !(35c)
-!POPTION COALESCING(2)
-  c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) &
-       & + p%dt_2 * (1/c%s_Nose+1/s_Nose_old) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:)
-                                                                            !(35d)
+!$omp parallel do
+     do iz=0, p%Lz-1
+        c%dipoR(:,:,iz,:) = c%dipoR(:,:,iz,:) &
+             & + p%dt_2 * (1/c%s_Nose+1/s_Nose_old) * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:)   !(35d)
+     end do
+!$omp end parallel do
+                                                                            
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'is updated.')
 
   call mirror_force_mirror(p,c,e)
@@ -44,8 +48,11 @@ subroutine nose_poincare(p,c,e)
        & + p%dt_2*(2*e%dipo_kinetic/c%s_Nose**2 - p%n_freedom*p%temperature_eV) &
        & - p%dt_2*delta_H                                              !(35e)
 
-!POPTION COALESCING(2)
-  c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - (p%dt_2*c%s_Nose) * c%dVddi(:,:,:,:)
+!$omp parallel do
+     do iz=0, p%Lz-1
+        c%dipoP(:,:,iz,:) = c%dipoP(:,:,iz,:) - (p%dt_2*c%s_Nose) * c%dVddi(:,:,iz,:)
+     end do
+!$omp end parallel do
                                                                             !(35f)
   ! calculate e%dipo_kinetic and e%H_Nose_Poincare for write_Energy()
   e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
