@@ -24,5 +24,6 @@ real*8 function kinetic_energy(p,c)
         end do
      end do
   end do
+!$omp end parallel do
   kinetic_energy = tmp_e / 2
 end function kinetic_energy
