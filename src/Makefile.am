@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-03-26 15:54:27 takeshi>
+# Time-stamp: <2012-04-11 11:04:43 user2001>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -62,7 +62,7 @@ frozen_phonon_X_LDADD = $(LDADD)
 marsaglia_tsang_uni64_check_SOURCES = marsaglia_tsang_uni64_check.F marsaglia_tsang_uni64_module.f
 TESTS = marsaglia_tsang_uni64_check
 
-CLEANFILES = *.mod *.ps *.pdf *.f90 feram_mpi
+CLEANFILES = *.mod *.lst *.ps *.pdf *.f90 feram_mpi
 EXTRA_DIST = define.h \
 cross-section-dVddi.sh \
 cross-section-p.sh \
