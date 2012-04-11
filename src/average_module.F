@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2012-03-26 16:36:54 takeshi>
+! Time-stamp: <2012-04-11 14:22:13 user2001>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -12,7 +12,7 @@ module Average_module
 
   real*8,  parameter :: step     = 0.005d0
   real*8,  parameter :: step_inv = 1.0d0/step
-  integer, parameter :: max_i    = 300
+  integer, parameter :: max_i    = 400
 
   type Average_type
      type(Energy_type) energy    
@@ -54,6 +54,7 @@ contains
     integer alpha,ix,iy,iz,k
     real*8 u_tmp(3)
     character(90) message
+    integer*8 tmp_distribution(3,-max_i:max_i)   !!! integer*8 !!!
     !--- END of variable definitions -------------------
     avg%energy            = avg%energy            + e
     avg%e2                = avg%e2                + e%total**2
@@ -76,18 +77,22 @@ contains
     avg%uu(5) = avg%uu(5) + u_tmp(3)*u_tmp(1)
     avg%uu(6) = avg%uu(6) + u_tmp(1)*u_tmp(2)
 
+    tmp_distribution(:,:)=0
+!$omp parallel do private(iz, alpha, iy, ix) reduction(+:tmp_distribution)
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
           do ix = 0, p%Lx-1
              if (c%sum_p(ix,iy,iz)) then
                 do alpha = 1, 3
                    k = nint(c%dipoR(ix,iy,iz,alpha)*step_inv)
-                   if (abs(k)<=max_i) avg%distribution(alpha,k) = avg%distribution(alpha,k) + 1
+                   tmp_distribution(alpha,k) = tmp_distribution(alpha,k) + 1   !if (abs(k)<=max_i)
                 end do
              end if
           end do
        end do
     end do
+!$omp end parallel do
+    avg%distribution(:,:) = avg%distribution(:,:) + tmp_distribution(:,:)
 
     if (p%verbose>=2) then
        write(message,'("u=",3e13.5)') u_tmp(:)
