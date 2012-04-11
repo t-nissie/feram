@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2012-02-22 15:18:30 takeshin>
+! Time-stamp: <2012-04-11 18:53:32 user2001>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -18,7 +18,9 @@ subroutine leapfrog(p,c,e,i_step)
   real*8 Lx_Ly_delta_e
   integer Lz_1_4
   integer Lz_3_4
-  integer i
+  integer iz,alpha
+  real*8 kinetic_energy
+  external kinetic_energy
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
@@ -28,27 +30,41 @@ subroutine leapfrog(p,c,e,i_step)
   Lz_3_4 = Lz_1_4*3
 
   if (p%delta_e.ne.0.0d0 .and. i_step>p%n_thermalize) then
-     do i=0,p%Lz-1
-        c%e_layer(i) = SUM( c%dipoP(:,:,i,:) * c%dipoP(:,:,i,:) * c%m_inv(:,:,i,:) ) / 2
+     do iz=0,p%Lz-1
+        c%e_layer(iz) = SUM( c%dipoP(:,:,iz,:) * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:) ) / 2
      end do
      c%dipoP(:,:,Lz_1_4,:) = c%dipoP(:,:,Lz_1_4,:) * sqrt((c%e_layer(Lz_1_4)+Lx_Ly_delta_e)/c%e_layer(Lz_1_4))
      c%dipoP(:,:,Lz_3_4,:) = c%dipoP(:,:,Lz_3_4,:) * sqrt((c%e_layer(Lz_3_4)-Lx_Ly_delta_e)/c%e_layer(Lz_3_4))
   end if
 
-!POPTION COALESCING(2)
-  c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt_2 * c%dVddi(:,:,:,:)
-!POPTION COALESCING(2)
-  c%dipoR(:,:,:,:) = c%dipoR(:,:,:,:) + p%dt   * c%dipoP(:,:,:,:) * c%M_inv(:,:,:,:)
+!$omp parallel do
+  do iz=0, p%Lz-1
+     do alpha = 1,3
+        c%dipoP(:,:,iz,alpha) = c%dipoP(:,:,iz,alpha) - p%dt_2 * c%dVddi(:,:,iz,alpha)
+     end do
+  end do
+!$omp end parallel do
+!$omp parallel do
+  do iz=0, p%Lz-1
+     do alpha = 1,3
+        c%dipoR(:,:,iz,alpha) = c%dipoR(:,:,iz,alpha) + p%dt   * c%dipoP(:,:,iz,alpha) * c%M_inv(:,:,iz,alpha)
+     end do
+  end do
+!$omp end parallel do
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'updated.')
   end if
 
   call mirror_force_mirror(p,c,e)
 
-!POPTION COALESCING(2)
-  c%dipoP(:,:,:,:) = c%dipoP(:,:,:,:) - p%dt_2 * c%dVddi(:,:,:,:)
-!POPTION COALESCING(2)
-  e%dipo_kinetic = SUM( c%dipoP(:,:,:,:) * c%dipoP(:,:,:,:) * c%m_inv(:,:,:,:) ) / 2
+!$omp parallel do
+  do iz=0, p%Lz-1
+     do alpha = 1,3
+        c%dipoP(:,:,iz,alpha) = c%dipoP(:,:,iz,alpha) - p%dt_2 * c%dVddi(:,:,iz,alpha)
+     end do
+  end do
+!$omp end parallel do
+  e%dipo_kinetic = kinetic_energy(p,c)
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
   end if
