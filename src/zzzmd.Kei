@@ -2,11 +2,12 @@
 #PJM --rsc-list "rscgrp=small"
 #PJM --rsc-list "node=1"
 #PJM --rsc-list "elapse=1:00:00"
-#PJM --stgin  "./feram            ./"
-#PJM --stgin  "./zzzmd.feram      ./"
-#PJM --stgout "./zzzmd.log        ./"
-#PJM --stgout "./zzzmd.param      ./"
-#PJM --stgout "./zzzmdprofiling/* ./zzzmdprofiling/"
+#PJM --stgin  "./feram              ./"
+#PJM --stgin  "./zzzmd.feram        ./"
+#PJM --stgout "./zzzmd.log          ./"
+#PJM --stgout "./zzzmd.param        ./"
+#PJM --stgout "./zzzmd.distribution ./"
+#PJM --stgout "./zzzmdprofiling/*   ./zzzmdprofiling/"
 #PJM -S
 #
 . /work/system/Env_base
@@ -16,5 +17,5 @@ export OMP_NUM_THREADS=8
 fipp -Ihwm -C -d zzzmdprofiling ./feram zzzmd.feram
 
 ## Then, at login server:
-# FLOPS$ fipppx -A -d zzzmdprofiling > zzzmd.Kei.q162286 
-#  PROF$ fipppx -I hwm -A -d zzzmdprofiling > zzzmd.Kei.p162286
+# fipppx -l 20  -A -d zzzmdprofiling > zzzmd.Kei.PROFILE
+# fipppx -I hwm -A -d zzzmdprofiling > zzzmd.Kei.FLOPS
