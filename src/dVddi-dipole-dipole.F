@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2012-04-11 19:00:18 user2001>
+! Time-stamp: <2012-04-11 21:25:11 c25050>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -42,7 +42,6 @@ subroutine dVddi_dipole_dipole(p,c,e)
   end do
 #endif
 
-!POPTION COALESCING(2)
 !$omp parallel do
   do iz=0, p%Lz-1
      do alpha = 1,3
