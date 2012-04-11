@@ -1,0 +1,17 @@
+#!/bin/sh
+#PJM --rsc-list "rscgrp=small"
+#PJM --rsc-list "node=1"
+#PJM --rsc-list "elapse=1:00:00"
+#PJM --stgin  "../feram             ./"
+#PJM --stgin  "./forward.feram      ./"
+#PJM --stgout "./forward.log        ./"
+#PJM --stgout "./forward.param      ./"
+#PJM --stgout "./forward*.coord     ./"
+#PJM -S
+#
+. /work/system/Env_base
+#
+PARALLEL=8 OMP_NUM_THREADS=8  time ./feram forward.feram
+PARALLEL=4 OMP_NUM_THREADS=4  time ./feram forward.feram
+PARALLEL=2 OMP_NUM_THREADS=2  time ./feram forward.feram
+#ARALLEL=1 OMP_NUM_THREADS=1  time ./feram forward.feram
