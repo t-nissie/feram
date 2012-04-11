@@ -7,4 +7,4 @@ export PJM_JOBNAME=profiling.FX10
 export FLIB_FASTOMP=TRUE
 export PARALLEL=16
 export OMP_NUM_THREADS=16
-fipp -C -d profiling ../feram forward.feram
+fipp -C -Ihwm -d profiling ../feram forward.feram
