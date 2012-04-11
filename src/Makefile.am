@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-04-11 11:04:43 user2001>
+# Time-stamp: <2012-04-11 17:13:52 user2001>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -26,6 +26,7 @@ feram_SRCS = average_module.F \
 	hysteresis_loop.F \
 	initialize_E_field.F \
 	initialize-dipoR.F \
+	kinetic_energy.F \
 	leapfrog.F \
 	read_defects_u.F \
 	marsaglia_tsang_uni64_module.f \
@@ -123,8 +124,9 @@ mirror.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
 initialize_E_field.o read_defects_u.o elastic.o:\
                                 param_module.o coord_module.o define.h
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
-nose-poincare.o leapfrog.o mirror_force_mirror.o:\
-                                param_module.o coord_module.o energy_module.o
+mirror_force_mirror.o:          param_module.o coord_module.o energy_module.o
+nose-poincare.o leapfrog.o velocity_scaling.o:\
+                                param_module.o coord_module.o energy_module.o kinetic_energy.o
 hysteresis_loop.o:              param_module.o coord_module.o energy_module.o define.h velocity_scaling.o
 average_module.o:               param_module.o coord_module.o energy_module.o define.h
 coord_module.o:                 param_module.o         define.h
