@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2012-02-28 09:51:41 t-nissie>
+! Time-stamp: <2012-04-11 19:00:18 user2001>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -43,7 +43,14 @@ subroutine dVddi_dipole_dipole(p,c,e)
 #endif
 
 !POPTION COALESCING(2)
-  c%dVddi(:,:,:,:) = c%dVddi(:,:,:,:) * p%Ninv
+!$omp parallel do
+  do iz=0, p%Lz-1
+     do alpha = 1,3
+        c%dVddi(:,:,iz,alpha) = c%dVddi(:,:,iz,alpha) * p%Ninv
+     end do
+  end do
+!$omp end parallel do
+
   !if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') thenx
   !   call mirror(p, c%dVddi)
   !end if
