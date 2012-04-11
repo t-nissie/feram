@@ -14,3 +14,7 @@
 export PARALLEL=8
 export OMP_NUM_THREADS=8
 fipp -Ihwm -C -d zzzmdprofiling ./feram zzzmd.feram
+
+## Then, at login server:
+# FLOPS$ fipppx -A -d zzzmdprofiling > zzzmd.Kei.q162286 
+#  PROF$ fipppx -I hwm -A -d zzzmdprofiling > zzzmd.Kei.p162286
