@@ -1,5 +1,5 @@
 ! mirror.F -*-f90-*-
-! Time-stamp: <2011-10-17 04:25:10 takeshi>
+! Time-stamp: <2012-04-12 11:24:50 user2001>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -17,17 +17,21 @@ subroutine mirror(p, dipo)
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
   if (p%gap_id==0) then ! There is no dead layers.
+!$omp parallel do
      do iz = 0, p%Lz/2-1
         dipo(:,:,p%Lz-1-iz,1) = -dipo(:,:,iz,1)
         dipo(:,:,p%Lz-1-iz,2) = -dipo(:,:,iz,2)
         dipo(:,:,p%Lz-1-iz,3) =  dipo(:,:,iz,3)
      end do
+!$omp end parallel do
   else                                        ! There are single or double dead layer(s).
+!$omp parallel do
      do iz = 1, (p%Lz+1)/2-1
         dipo(:,:,p%Lz-iz,1) = -dipo(:,:,iz,1)
         dipo(:,:,p%Lz-iz,2) = -dipo(:,:,iz,2)
         dipo(:,:,p%Lz-iz,3) =  dipo(:,:,iz,3)
      end do
+!$omp end parallel do
   end if
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
