@@ -6,6 +6,9 @@
 export PJM_JOBNAME=timing.FX10
 export FLIB_FASTOMP=TRUE
 PARALLEL=16 OMP_NUM_THREADS=16 time -o timing.dat -f '%e %U %S %R'    ../feram forward.feram
+PARALLEL=14 OMP_NUM_THREADS=14 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+PARALLEL=12 OMP_NUM_THREADS=12 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+PARALLEL=10 OMP_NUM_THREADS=10 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
 PARALLEL=8  OMP_NUM_THREADS=8  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
 PARALLEL=4  OMP_NUM_THREADS=4  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
 PARALLEL=2  OMP_NUM_THREADS=2  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram

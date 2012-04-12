@@ -1,0 +1,17 @@
+#!/bin/sh
+#PJM -L "rscgrp=short"
+#PJM -L "node=1"
+#PJM -L "elapse=0:30:00"
+#PJM --mpi "proc=2"
+#PJM -j
+export PJM_JOBNAME=profiling2.FX10
+export FLIB_FASTOMP=TRUE
+export PARALLEL=8
+export OMP_NUM_THREADS=8
+mkdir -p profiling2
+rm -f profiling2/*
+fipp -C -Ihwm -d profiling2 mpiexec ../feram_mpi forward.feram forward2.feram
+
+##
+# fipppx -I hwm -A -d profiling2 > profiling2.FX10.FLOPS
+# fipppx -l 40  -A -d profiling2 > profiling2.FX10.PROFILE
