@@ -1,6 +1,6 @@
 #!/bin/sh
 #PJM --rsc-list "rscgrp=small"
-#PJM --rsc-list "node=1"
+#PJM --rsc-list "node=1x1"
 #PJM --rsc-list "elapse=1:00:00"
 #PJM --stgin  "../feram             ./"
 #PJM --stgin  "./forward.feram      ./"
