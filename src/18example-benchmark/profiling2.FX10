@@ -8,6 +8,7 @@ export PJM_JOBNAME=profiling2.FX10
 export FLIB_FASTOMP=TRUE
 export PARALLEL=8
 export OMP_NUM_THREADS=8
+ln -sf forward.feram forward2.feram
 mkdir -p profiling2
 rm -f profiling2/*
 fipp -C -Ihwm -d profiling2 mpiexec ../feram_mpi forward.feram forward2.feram
