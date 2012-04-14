@@ -14,5 +14,4 @@ rm -f profiling2/*
 fipp -C -Ihwm -d profiling2 mpiexec ../feram_mpi forward.feram forward2.feram
 
 ##
-# fipppx -I hwm -A -d profiling2 > profiling2.FX10.FLOPS
-# fipppx -l 40  -A -d profiling2 > profiling2.FX10.PROFILE
+# fipppx -Icpu,hwm -l 40 -A -d profiling2 > profiling2.FX10.PROFILE
