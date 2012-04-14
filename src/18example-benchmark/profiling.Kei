@@ -1,7 +1,7 @@
 #!/bin/sh
 #PJM --rsc-list "rscgrp=small"
 #PJM --rsc-list "node=1x1"
-#PJM --rsc-list "elapse=1:00:00"
+#PJM --rsc-list "elapse=0:30:00"
 #PJM --stgin  "../feram             ./"
 #PJM --stgin  "./forward.feram      ./"
 #PJM --stgout "./forward.log        ./"
@@ -17,5 +17,4 @@ export OMP_NUM_THREADS=8
 fipp -C -Ihwm -d profiling ./feram forward.feram
 
 ##
-#   $ fipppx -I hwm -A -d profiling > profiling.Kei.FLOPS
-#   $ fipppx -l 25  -A -d profiling > profiling.Kei.PROFILE
+# fipppx -Ibalance,cpu,hwm -l 40  -A -d profiling > profiling.Kei.PROFILE
