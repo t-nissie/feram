@@ -7,4 +7,9 @@ export PJM_JOBNAME=profiling.FX10
 export FLIB_FASTOMP=TRUE
 export PARALLEL=16
 export OMP_NUM_THREADS=16
+mkdir -p profiling
+rm -f profiling/*
 fipp -C -Ihwm -d profiling ../feram forward.feram
+
+##
+# fipppx -Ibalance,cpu,hwm -l 40  -A -d profiling > profiling.FX10.PROFILE
