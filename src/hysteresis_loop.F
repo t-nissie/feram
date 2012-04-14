@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2012-04-12 11:26:45 user2001>
+! Time-stamp: <2012-04-14 12:03:49 user2001>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -52,9 +52,11 @@ subroutine hysteresis_loop(p,c)
         E_field_add = -2*p%external_E_field*(i_step-p%n_thermalize)/p%n_average
 !$omp parallel do
         do iz = 0, p%Lz-1
-           do iy = 0, p%Ly-1
-              do ix = 0, p%Lx-1
-                 c%E_field(ix,iy,iz,:) = E_field_initial(ix,iy,iz,:) + E_field_add(:)
+           do alpha = 1,3
+              do iy = 0, p%Ly-1
+                 do ix = 0, p%Lx-1
+                    c%E_field(ix,iy,iz,alpha) = E_field_initial(ix,iy,iz,alpha) + E_field_add(alpha)
+                 end do
               end do
            end do
         end do
