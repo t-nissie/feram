@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2012-04-11 14:22:13 user2001>
+! Time-stamp: <2012-04-19 16:49:32 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -78,6 +78,7 @@ contains
     avg%uu(6) = avg%uu(6) + u_tmp(1)*u_tmp(2)
 
     tmp_distribution(:,:)=0
+!POPTION PSUM(tmp_distribution)
 !$omp parallel do private(iz, alpha, iy, ix) reduction(+:tmp_distribution)
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
