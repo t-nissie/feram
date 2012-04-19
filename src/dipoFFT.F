@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2012-04-10 15:25:02 c25050>
+! Time-stamp: <2012-04-19 18:20:21 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -28,6 +28,7 @@ subroutine dipoFFT(p,c)
   end do
 #endif
 
+!POPTION PARALLEL,TLOCAL(iz)
 !$omp parallel do
   do iz=0, p%Lz-1
      c%didiR(:,:,iz,1) = c%dipoR(:,:,iz,1) * c%dipoR(:,:,iz,1)
