@@ -1,7 +1,5 @@
 SR16000 timing
-     $ cat time.SR16000
-     time ../feram forward.feram
-     $ for i in `jot -w '%02d' 64`; do submit EM general -pt $i -J time$i -exec time.SR16000; done
+     $ for i in `jot -w '%02d' 64`; do ln -s forward.feram $i.feram; echo "time ../feram $i.feram" > $i; submit EB general -pt $i -J time$i -exec $i; done
 
 FX10 profiler
      $ pjsub profiling.FX10
