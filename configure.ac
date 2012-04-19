@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-04-12 14:05:56 user2001>
+dnl Time-stamp: <2012-04-19 15:09:42 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -26,7 +26,7 @@ AC_PROG_INSTALL
 ## Checks for Fortran compilers.
 FCFLAGS_PRESERVE=$FCFLAGS
 AC_LANG(Fortran)
-AC_PROG_FC(gfortran ifort pgf95 g95 xf90 frt frtpx openf95)
+AC_PROG_FC(gfortran ifort pgf95 g95 xf90 f90 frt frtpx openf95)
 FCFLAGS=$FCFLAGS_PRESERVE
    # Restore FCFLAGS, because AC_PROG_FC() sets FCFLAGS to '-g -O2', '-O2' or '-g' undesirably.
 
@@ -51,7 +51,7 @@ case "$FC" in
     ;;
   xf90|f90)
     test -n "$FCFLAGS" || FCFLAGS="-64 -Os -parallel=4\
-      -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist"
+      -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist"
     test -n "$MPIFC" || MPIFC=mpixf90
     ;;
   frt)
