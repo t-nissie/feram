@@ -1,0 +1,4 @@
+#!/bin/sh
+# Usage: submit EB general -jobtype sparallel -J all -exec all.SR16000
+##
+poe ../feram_mpi hysteresis_d0.feram hysteresis_d1_backwrd.feram hysteresis_d1_forward.feram hysteresis_d2.feram
