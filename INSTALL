@@ -124,14 +124,14 @@ feram runs on 1 node of SR16000 effectively.
 Note that libblas.a and liblapack.a must be in /sysap/lib/ or elsewhere.
  $ tar Jxf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
- $ mkdir SR16000-xf90
- $ cd SR16000-xf90
- $ ../configure FC=xf90 LDFLAGS=-L/sysap/lib --host=SR16000
+ $ mkdir SR16000-f90
+ $ cd SR16000-f90
+ $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/opt/hitachi/matmpp/lib' --host=SR16000
  $ cd src
  $ make
 For performance monitor
- $ ../configure FC=f90 LDFLAGS=-L/sysap/lib FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
-   -exclamation=option -precise -model=K1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -pmfunc -pmpar' --host=SR16000
+ $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/opt/hitachi/matmpp/lib' FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
+   -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -pmfunc -pmpar' --host=SR16000
 
 === Fujitsu FX1
  $ tar Jxf feram-X.YY.ZZ.tar.xz
