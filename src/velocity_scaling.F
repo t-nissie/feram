@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2012-04-11 17:17:07 user2001>
+! Time-stamp: <2012-04-19 17:55:01 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -21,6 +21,7 @@ subroutine velocity_scaling(p,c,e)
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
 
+!POPTION PARALLEL,TLOCAL(iz)
 !$omp parallel do
      do iz=0, p%Lz-1
         c%dipoR(:,:,iz,:) = c%dipoR(:,:,iz,:) + p%dt * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:)
@@ -28,6 +29,7 @@ subroutine velocity_scaling(p,c,e)
 !$omp end parallel do
 
      call mirror_force_mirror(p,c,e)
+!POPTION PARALLEL,TLOCAL(iz)
 !$omp parallel do
      do iz=0, p%Lz-1
         c%dipoP(:,:,iz,:) = c%dipoP(:,:,iz,:) - p%dt * c%dVddi(:,:,iz,:)
