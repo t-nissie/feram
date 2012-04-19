@@ -3,5 +3,5 @@ SR11000 timing
      $ for i in 03 04 05 06 07 08 09 10 11 12 13 14 15 16; do submit SC1 general -np $i -J $i -exec forward.SR11000.command; done
 
 FX10 profiler
-     pjsub profiling.FX10
-     fipppx -l20 -A profiling > profiling.FX10.r1152.txt 
+     $ pjsub profiling.FX10
+     $ fipppx -Ibalance,cpu,hwm -l 40  -A -d profiling > profiling.FX10.PROFILE
