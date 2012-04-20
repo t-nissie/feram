@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-04-11 17:13:52 user2001>
+# Time-stamp: <2012-04-20 09:38:31 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -119,7 +119,7 @@ energy_module.o: param_module.o coord_module.o
 optimize-homo-strain.o:energy_module.o param_module.o coord_module.o
 optimize-inho-strain.o:energy_module.o param_module.o coord_module.o
 molecular-dynamics.o:  energy_module.o param_module.o coord_module.o average_module.o
-mirror.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o:\
+mirror.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy.o:\
                                 param_module.o coord_module.o
 initialize_E_field.o read_defects_u.o elastic.o:\
                                 param_module.o coord_module.o define.h
