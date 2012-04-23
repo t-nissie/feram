@@ -1,0 +1,12 @@
+# /home/t-nissie/f/loto/feram/trunk/0.19.00-r1204-2012-04-23-SR16000-pm/src/18example-benchmark
+# grep 'CPU time              ' *pm
+# grep 'FFT_3D(../../src/fft.F+55)' *pm
+# grep 'OPTIMIZE_INHO_STRAIN(../../src/optimize-inho-strain.F+29)' *pm
+##
+#  total       FFT_3D  OPTIMIZE_INHO_STRAIN
+01 1811.224689 744.631 307.614
+04  881.835709 428.054 118.733
+08  503.104713 275.690  61.053
+16  330.425309 203.632  32.125
+32  248.802780 156.947  26.586
+64  179.313460 124.636  15.719
