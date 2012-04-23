@@ -54,6 +54,9 @@ follow this quick compilation instruction.
  $ gnuplot all.gp  # plot a hysteresis loop
  $ gv all.eps      # preview
 
+If you installed FFTW3 into your home directory,
+specify CPPFLAGS and LDFLAGS for configure.
+ $ ../configure FC=gfortran CPPFLAGS=-I/home/takeshi/include LDFLAGS=-L/home/takeshi/lib
 
 == Linux
 === CentOS 6.2 (feram-0.18.05, 2012-03-28)
