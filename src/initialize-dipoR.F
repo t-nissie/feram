@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2012-04-11 18:04:41 user2001>
+! Time-stamp: <2012-04-25 07:17:25 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -11,7 +11,7 @@ subroutine initialize_dipoR(p,c,e)
   use Energy_module
   use marsaglia_tsang_uni64_module
   implicit none
-  type(Param_type),  intent(in)    :: p
+  type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer ix, iy, iz, alpha, ios, dummy_x, dummy_y, dummy_z
