@@ -5,7 +5,7 @@
 # $Rev$
 # $Author$
 ##
-set terminal postscript portrait enhanced color 24
+set terminal postscript portrait enhanced color "Times-Roman,24"
 set output "forward.eps"
 set multiplot
 
@@ -43,7 +43,7 @@ set origin 0.0,0.0
 #set size square
 set size 1.0,0.64
 set yrange [0:16]
-set xlabel '{/Times-Italic N}_{core}'
+set xlabel '{/Times-Italic N}_{thread}'
 set ylabel 'speed up'
 set key left
 tp_X5650=sprintf("{/Times-Italic p} = %.3f", p_X5650)
