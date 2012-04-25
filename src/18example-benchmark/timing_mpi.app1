@@ -1,0 +1,11 @@
+#!/bin/csh
+# timing_mpi.app1: Measuring parallel performance with forward.feram and backward.feram
+# Author: Takeshi Nishimatsu
+# Requirement: GNU 1.7 version of time(1)
+##
+env OMP_NUM_THREADS=1  /usr/bin/time -o timing_mpi.dat -f '%e %U %S %R'    app_mpi_launcher_mpich2 ../feram_mpi forward.feram backward.feram
+env OMP_NUM_THREADS=2  /usr/bin/time -o timing_mpi.dat -f '%e %U %S %R' -a app_mpi_launcher_mpich2 ../feram_mpi forward.feram backward.feram
+env OMP_NUM_THREADS=3  /usr/bin/time -o timing_mpi.dat -f '%e %U %S %R' -a app_mpi_launcher_mpich2 ../feram_mpi forward.feram backward.feram
+env OMP_NUM_THREADS=4  /usr/bin/time -o timing_mpi.dat -f '%e %U %S %R' -a app_mpi_launcher_mpich2 ../feram_mpi forward.feram backward.feram
+env OMP_NUM_THREADS=5  /usr/bin/time -o timing_mpi.dat -f '%e %U %S %R' -a app_mpi_launcher_mpich2 ../feram_mpi forward.feram backward.feram
+env OMP_NUM_THREADS=6  /usr/bin/time -o timing_mpi.dat -f '%e %U %S %R' -a app_mpi_launcher_mpich2 ../feram_mpi forward.feram backward.feram
