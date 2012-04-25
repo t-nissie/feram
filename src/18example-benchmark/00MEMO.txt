@@ -1,11 +1,13 @@
-SR16000 timing
+SR16000: timing
      $ for i in `jot -w '%02d' 64`; do ln -s forward.feram $i.feram; echo "timex ../feram $i.feram" > $i; submit EB general -pt $i -J time$i -exec $i; done
 
-app1 timing
-     $ cat timing.app1
-     ./timing.sh
-     $ submit AEB general -J app1 -exec timing.app1 
+app1: timing with forward.feram and timing.csh
+     $ submit AEB general -J app1 -exec timing.csh
+     $ for f in 18example*/timing.dat; do echo $f; nl $f; done
 
-FX10 profiler
+app1: timing of OpenMP+MPI hybrid parallelization with forward.feram, backward.feram and timing_mpi.app1
+     $ submit AEB general -jobtype parallel -pm 2 -n 1 -exec timing_mpi.app1 -J mpi1
+
+FX10: profiler
      $ pjsub profiling.FX10
      $ fipppx -Ibalance,cpu,hwm -l 40  -A -d profiling > profiling.FX10.PROFILE
