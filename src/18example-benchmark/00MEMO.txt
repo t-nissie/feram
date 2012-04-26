@@ -1,3 +1,7 @@
+SR16000: performance monitor
+     $ submit EM general -pt 64 -exec 64 -J 64 -N -u t-nissie@example.com
+     $ submit EM general -jcf timing.jcf
+
 SR16000: timing
      $ for i in `jot -w '%02d' 64`; do ln -s forward.feram $i.feram; echo "timex ../feram $i.feram" > $i; submit EB general -pt $i -J time$i -exec $i; done
 
