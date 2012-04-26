@@ -1,0 +1,19 @@
+#!/bin/sh
+#@ class = qem
+#@ output = timing.stdout
+#@ error  = timing.stderr
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = timing
+#@ job_type = serial
+#@ resources = ConsumableCpus(64)
+#@ comment = -n 1 -pm 1 -pt 64 -ap "general"
+#@ queue
+#
+# Usage: submit EM general -jcf timing.jcf
+#
+export MEMORY_AFFINITY=MCM
+export HF_ERR_STATUS_MODE=1
+for i in `jot 64`; do
+    HF_90OPTS="-FPRUNST(THREADNUM($i))" OMP_NUM_THREADS=$i ../feram forward.feram
+done
