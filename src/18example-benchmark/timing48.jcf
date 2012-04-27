@@ -1,0 +1,19 @@
+#!/bin/sh
+#@ class = qem
+#@ output = timing48.stdout
+#@ error  = timing48.stderr
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = timing48
+#@ job_type = serial
+#@ resources = ConsumableCpus(48)
+#@ comment = -n 1 -pm 1 -pt 48 -ap "general"
+#@ queue
+#
+# Usage: submit EM general -jcf timing48.jcf
+#
+export MEMORY_AFFINITY=MCM
+export HF_ERR_STATUS_MODE=1
+for i in `jot 16 33`; do
+    HF_90OPTS="-FPRUNST(THREADNUM($i))" OMP_NUM_THREADS=$i ../feram forward.feram
+done
