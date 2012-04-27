@@ -1,5 +1,5 @@
 #!/usr/bin/env gnuplot
-# forward.SR16000.r1204.gp: Plot results of forward.feram benchmark.
+# timing64.gp: Plot results of forward.feram benchmark.
 # Author: Takeshi Nishimatsu
 # $Date: 2012-04-20 14:26:51 +0900 (金, 20  4 2012) $
 # $Rev: 1201 $
@@ -8,14 +8,14 @@
 #  $ for p in 18example-ConsumableCpus??/pm*; do pmpr $p > $p.txt; done
 #  $ grep 'CPU time              ' 18example-ConsumableCpus??/pm*.txt   |  sed -e 's/.*: //' -e 's/\[s\]//'  | nl                                 > 18example-ConsumableCpus64/timing_total.dat
 #  $ grep 'FFT_3D(../../src/fft.F' 18example-ConsumableCpus??/pm*.txt                                        | sed -e 's/.*\[  1\] //' | cut -c-9 > 18example-ConsumableCpus64/timing_fft.dat
-#  $ grep 'OPTIMIZE_INHO_STRAIN(../../src/optimize-inho-strain.F' 18example-ConsumableCpus??/pm*.txt pm*.txt | sed -e 's/.*\[  2\] //' | cut -c-9 > 18example-ConsumableCpus64/timing_osi.dat
-#  $ cd 18example-ConsumableCpus64/timing_osi.dat
-#  $ paste timing64.dat timing_fft_3d.dat timing_osi.dat > timing64.dat
+#  $ grep 'OPTIMIZE_INHO_STRAIN(../../src/optimize-inho-strain.F' 18example-ConsumableCpus??/pm*.txt         | sed -e 's/.*\[  2\] //' | cut -c-9 > 18example-ConsumableCpus64/timing_osi.dat
+#  $ cd 18example-ConsumableCpus64
+#  $ paste timing_total.dat timing_fft.dat timing_osi.dat > timing64.dat
 #
 ##
 set terminal postscript portrait enhanced color solid  "Times-Roman,24"
-set output "forward.SR16000.r1204.eps"
-datafile = 'forward.SR16000.r1204.dat'
+set output "timing64.eps"
+datafile = 'timing64.dat'
 set multiplot
 
 f_total(x) = t1_total * ((1-p_total)+p_total/x)
@@ -63,13 +63,13 @@ plot      x t 'ideal' w l lt 5 lw 1,\
           1.0 / ((1-p_total)+p_total/x)   t tp_total       w l lt 7 lw 2,\
           datafile using 1:(t1_fft3d/$3)  t 'fft3d'        w p lt 1 lw 1 ps 1,\
           1.0 / ((1-p_fft3d)+p_fft3d/x)   t tp_fft3d       w l lt 1 lw 2,\
-          datafile using 1:(t1_ois/$4)    t 'opt.\_inho.'  w p lt 3 lw 1 ps 1,\
+          datafile using 1:(t1_ois/$4)    t 'opt.\_inho.'  w p lt 3 lw 1 ps 1 pt 2,\
           1.0 / ((1-p_ois)+p_ois/x)       t tp_ois         w l lt 3 lw 2
 
 set nomultiplot
 set output
-!epstopdf.pl forward.SR16000.r1204.eps
+!epstopdf.pl timing64.eps
 
 #Local variables:
-#  compile-command: "gnuplot forward.SR16000.r1204.gp"
+#  compile-command: "gnuplot timing64.gp"
 #End:
