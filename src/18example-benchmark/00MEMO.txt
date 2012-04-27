@@ -1,8 +1,4 @@
 SR16000: performance monitor
-     $ submit EM general -pt 64 -exec 64 -J 64 -N -u t-nissie@example.com
-
-     $ for i in `jot 4 16 64`;do mkdir 18example-ConsumableCpus$i; done
-     $ submit EM general -jcf timing16.jcf
      see the head of timing64.gp
 
 SR16000: timing

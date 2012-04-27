@@ -5,6 +5,12 @@
 # $Rev: 1201 $
 # $Author: t-nissie $
 #
+#  $ for i in 16 32 48 64;do                                          mkdir 18example-ConsumableCpus$i; done
+#  $ for i in 16 32 48 64;do cp ../../src/18example-benchmark/forward.feram 18example-ConsumableCpus$i; done
+#  $ for i in 16 32 48 64;do cp ../../src/18example-benchmark/timing$i.jcf  18example-ConsumableCpus$i; done
+#  $ cd 18example-ConsumableCpus16
+#  $ submit EM general -jcf timing16.jcf
+#
 #  $ for p in 18example-ConsumableCpus??/pm*; do pmpr $p > $p.txt; done
 #  $ grep 'CPU time              ' 18example-ConsumableCpus??/pm*.txt   |  sed -e 's/.*: //' -e 's/\[s\]//'  | nl                                 > 18example-ConsumableCpus64/timing_total.dat
 #  $ grep 'FFT_3D(../../src/fft.F' 18example-ConsumableCpus??/pm*.txt                                        | sed -e 's/.*\[  1\] //' | cut -c-9 > 18example-ConsumableCpus64/timing_fft.dat
