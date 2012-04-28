@@ -1,0 +1,19 @@
+#!/bin/sh
+#@ class = qsc
+#@ output = timingSC.stdout
+#@ error  = timingSC.stderr
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = timingSC
+#@ job_type = serial
+#@ resources = ConsumableCpus(16)
+#@ comment = -n 1 -pm 1 -pt 16 -ap "general"
+#@ queue
+#
+# Usage: submit SC general -jcf timingSC.jcf
+#
+export MEMORY_AFFINITY=MCM
+export HF_ERR_STATUS_MODE=1
+for i in `jot 16  1`; do
+    HF_90OPTS="-FPRUNST(THREADNUM($i))" OMP_NUM_THREADS=$i /usr/bin/timex ../feram forward.feram
+done
