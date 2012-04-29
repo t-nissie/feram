@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2012-04-01 11:49:20 takeshi>
+# Time-stamp: <2012-04-29 12:30:01 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -27,7 +27,7 @@ SNAPSHOT_NAME=$(PACKAGE)-$(VERSION)_`date +"%Y-%m-%d_%H"`
 SOURCEFORGE_FERAM=web.sourceforge.net:/home/groups/l/lo/loto/htdocs/feram
 
 sf: sourceforge
-sourceforge: index.en.html README.en index.ja.html README.ja COPYING style.css favicon.ico logo.jpg index.var dot.htaccess
+sourceforge: index.en.html README.en index.ja.html README.ja INSTALL.html INSTALL COPYING style.css favicon.ico logo.jpg index.var dot.htaccess
 	scp $<                            $(SOURCEFORGE_FERAM)/index.html
 	scp dot.htaccess                  $(SOURCEFORGE_FERAM)/.htaccess
 	scp $^                            $(SOURCEFORGE_FERAM)

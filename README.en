@@ -3,11 +3,14 @@
 
 logo.jpg
 
-== Homepage and DOWNLOAD
+== Homepage, download and installation
 feram's homepage is http://loto.sourceforge.net/feram/ .
 
 You can download a tar ball of feram (feram-X.YY.ZZ.tar.xz) from
 http://sourceforge.net/projects/loto/files/feram/ .
+
+Step-by-step procedure of installation is described in INSTALL.
+
 
 == What is feram?
 feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
@@ -60,12 +63,16 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
    Appl. Phys. Lett., vol.93, p.242905 (2008) doi:10.1063/1.3040326.
 
 
-== Installation
-See INSTALL.
-
 == Execution
 feram reads parameter files specified as command-line arguments.
- $ feram foo.feram bar.feram baz.feram
+ $ OMP_NUM_THREADS=6 SOMEWHERE/feram foo.feram bar.feram baz.feram
+Optionally, you can make MPI version of feram, feram_mpi.
+feram_mpi process input files in parallel.
+ $ OMP_NUM_THREADS=16 mpiexec -np 3 SOMEWHERE/feram_mpi foo.feram bar.feram baz.feram
+The number of threads for each process should be given with
+environment variable OMP_NUM_THREADS. The most efficient value
+for OMP_NUM_THREADS is depends on OMP_NUM_THREADS.
+
 
 == Input files
 === parameter file
@@ -519,6 +526,7 @@ u.subs_rules = lambda{|s|
   gsub(/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?\.F)(\s|$)/,                '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?\.pdf)(\s|$)/,              '<a href="\1">\1</a>\2').
+  gsub(/INSTALL/,             '<a href="INSTALL.html">INSTALL</a>').
   gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').

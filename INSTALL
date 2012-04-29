@@ -123,8 +123,8 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
 
 == Super computers
 === HITACHI SR16000
-feram runs on 1 node of SR16000 effectively.
-Note that libblas.a and liblapack.a must be in /sysap/lib/ or elsewhere.
+Note that libblas.a, liblapack.a, and libmatmpp.a must be in
+/sysap/lib/, /opt/hitachi/matmpp/lib/ or elsewhere.
  $ tar Jxf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir SR16000-f90
@@ -135,6 +135,12 @@ Note that libblas.a and liblapack.a must be in /sysap/lib/ or elsewhere.
 For performance monitor
  $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/opt/hitachi/matmpp/lib' FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
    -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -pmfunc -pmpar' --host=SR16000
+Currently, feram runs on 1/4 node of SR16000 effectively.
+Therefore,
+ $ cat SC
+ ../feram forward.feram
+ $ submit SC general -pt 16 -exec SC -J SC -N -u t-nissie@example.com
+is the most efficient way of queue submission on SR16000, so far.
 
 === Fujitsu FX1
  $ tar Jxf feram-X.YY.ZZ.tar.xz
