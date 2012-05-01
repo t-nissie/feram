@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-04-28 18:29:36 t-nissie>
+dnl Time-stamp: <2012-05-01 20:24:49 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -26,7 +26,7 @@ AC_PROG_INSTALL
 ## Checks for Fortran compilers.
 FCFLAGS_PRESERVE=$FCFLAGS
 AC_LANG(Fortran)
-AC_PROG_FC(gfortran ifort pgf95 g95 xf90 f90 frt frtpx openf95)
+AC_PROG_FC(gfortran ifort pgf95 pgf90 g95 xf90 f90 frt frtpx openf95)
 FCFLAGS=$FCFLAGS_PRESERVE
    # Restore FCFLAGS, because AC_PROG_FC() sets FCFLAGS to '-g -O2', '-O2' or '-g' undesirably.
 
@@ -47,7 +47,7 @@ case "$FC" in
     test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1"
     ;;
   pgf*)
-    test -n "$FCFLAGS" || FCFLAGS="-O3 -mp"
+    test -n "$FCFLAGS" || FCFLAGS="-fastsse -O3 -mp -Minfo=all"
     ;;
   xf90|f90)
     test -n "$FCFLAGS" || FCFLAGS="-64 -Os -parallel=4\
@@ -114,7 +114,7 @@ case "$host" in
       ssl2)
         ;;
       acml*)
-        AC_CHECK_LIB(acml_mp, ZFFT3D,, AC_MSG_ERROR([You need ACML. See config.log.]))
+        AC_CHECK_LIB(acml_mp, DZFFT3D,, AC_MSG_ERROR([You need ACML. See config.log.]))
         ;;
       no)
         AC_DEFINE([BUILT_IN_FFT], [1], [Use the built-in minimal FFT])
@@ -152,6 +152,15 @@ case "$with_lapack" in
   ssl2)
     ;;
   acml*)
+    case "$LIBS" in
+      *acml_mp*)
+        AC_MSG_NOTICE([lapack... It seems that ACML is already putted into LIBS.])
+        ;;
+      *)
+        AC_MSG_NOTICE([lapack... Put ACML into LIBS.])
+        LIBS="-lacml_mp $LIBS"
+        ;;
+    esac
     ;;
   *)
     AC_MSG_ERROR([Unknown LAPACK library: $with_lapack])

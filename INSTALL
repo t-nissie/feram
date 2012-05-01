@@ -121,6 +121,18 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
  $ make
  $ make feram_mpi   # OPTIONAL
 
+=== Linux with PGI Fortran and ACML (AMD Core Math Library)
+ $ source /opt/pgi/linux86-64/12.2/pgi.sh    # Put it in your ~/.bashrc or somewhere.
+ $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir pgf95-12.2
+ $ cd pgf95-12.2
+ $ ../configure --help
+ $ ../configure FC=pgf95 LDFLAGS=-L/opt/pgi/linux86-64/2012/acml/5.1.0/libso --with-fft=acml --with-lapack=acml
+ $ cd src
+ $ make
+
+
 == Super computers
 === HITACHI SR16000
 Note that libblas.a, liblapack.a, and libmatmpp.a must be in
