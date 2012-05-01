@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-01-13 13:30:58 takeshi>
+! Time-stamp: <2012-05-01 20:41:27 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -140,80 +140,6 @@ subroutine fft_3d(mode, Nx, Ny, Nz, r, c)
      end do
   end if
 end subroutine fft_3d
-#endif
-!
-
-#if defined(HAVE_LIBACML) ||  defined(HAVE_LIBACML_MP)
-subroutine dfftw_plan_dft_r2c_3d(plan, Nx, Ny, Nz, r, c, flags)
-  implicit none
-  integer*8, intent(in) :: plan
-  integer,   intent(in) :: Nx, Ny, Nz
-  real*8     :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
-  complex*16 :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
-  integer, intent(in) :: flags
-  complex*16, allocatable :: f(:,:,:), comm(:)
-  integer ix, iy, iz, info
-
-  allocate( f(0:Nx-1, 0:Ny-1, 0:Nz-1) ); f(:,:,:)=(0.0d0,0.0d0)
-  allocate( comm(Nx*Ny*Nz+10*(Nx+Ny+Nz)) )
-
-  do iz = 0, Nz-1
-     do iy = 0, Ny-1
-        do ix = 0, Nx-1
-           f(ix,iy,iz) = r(ix,iy,iz)
-        end do
-     end do
-  end do
-
-  call ZFFT3D(1, Nx,Ny,Nz, f, comm, info)
-
-  do iz = 0, Nz-1
-     do iy = 0, Ny-1
-        do ix = 0, Nx/2
-           c(ix,iy,iz) = f(ix,iy,iz)
-        end do
-     end do
-  end do
-
-  deallocate(f,comm)
-end subroutine dfftw_plan_dft_r2c_3d
-
-subroutine dfftw_plan_dft_c2r_3d(plan, Nx, Ny, Nz, c, r, flags)
-  implicit none
-  integer*8, intent(in) :: plan
-  integer,   intent(in) :: Nx, Ny, Nz
-  complex*16 :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
-  real*8     :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
-  integer, intent(in) :: flags
-  complex*16, allocatable :: f(:,:,:), comm(:)
-  integer ix, iy, iz, info
-
-  allocate( f(0:Nx-1, 0:Ny-1, 0:Nz-1) ); f(:,:,:)=(0.0d0,0.0d0)
-  allocate( comm(Nx*Ny*Nz+10*(Nx+Ny+Nz)) )
-
-  do iz = 0, Nz-1
-     do iy = 0, Ny-1
-        do ix = 0, Nx/2
-           f(ix,iy,iz) = c(ix,iy,iz)
-        end do
-        do ix = Nx/2+1,Nx-1
-           f(ix,iy,iz) = conjg(c(Nx-ix,mod(Ny-iy,Ny),mod(Nz-iz,Nz)))
-        end do
-     end do
-  end do
-
-  call ZFFT3D(-1, Nx,Ny,Nz, f, comm, info)
-
-  do iz = 0, Nz-1
-     do iy = 0, Ny-1
-        do ix = 0, Nx-1
-           r(ix,iy,iz) = dble(f(ix,iy,iz))
-        end do
-     end do
-  end do
-
-  deallocate(f,comm)
-end subroutine dfftw_plan_dft_c2r_3d
 #endif
 !
 
