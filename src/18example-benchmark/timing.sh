@@ -6,15 +6,9 @@
 # $Rev$
 # $Author$
 ##
-OMP_NUM_THREADS=1  time -o timing.dat -f '%e %U %S %R'    ../feram forward.feram
-OMP_NUM_THREADS=2  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
-OMP_NUM_THREADS=3  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
-OMP_NUM_THREADS=4  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
-OMP_NUM_THREADS=5  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
-OMP_NUM_THREADS=6  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
-OMP_NUM_THREADS=7  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
-OMP_NUM_THREADS=8  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
-OMP_NUM_THREADS=9  time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
-OMP_NUM_THREADS=10 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
-OMP_NUM_THREADS=11 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
-OMP_NUM_THREADS=12 time -o timing.dat -f '%e %U %S %R' -a ../feram forward.feram
+rm -f timing.dat
+for j in `jot 5`; do
+    for i in `jot 12`; do
+	OMP_NUM_THREADS=$i time -o timing.dat -f "$i %e %U %S %R" -a ../feram forward.feram
+    done
+done
