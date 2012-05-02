@@ -1,5 +1,5 @@
 ! fft_3d_3x3upper_r2c.F -*-f90-*-
-! Time-stamp: <2012-01-12 17:40:33 t-nissie>
+! Time-stamp: <2012-05-02 17:47:58 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -31,6 +31,15 @@ subroutine fft_3d_3x3upper_r2c(p,r,c)
   end do
   do ip = 1, 6
      call dfftw_destroy_plan(plan(ip))
+  end do
+#elif defined(HAVE_LIBACML_MP)
+  integer info
+  real*8 comm(4*p%Lx+6*p%Ly+6*p%Lz+500)
+  do beta = 1, 3
+     do alpha = 1, beta
+        call DZFFT3D(2, p%Lx, p%Ly, p%Lz, &
+             & r(0,0,0,alpha,beta), c(0,0,0,alpha,beta), comm, info)
+     end do
   end do
 #else
   do beta = 1, 3
