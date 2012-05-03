@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2012-04-04 18:42:46 c25050>
+! Time-stamp: <2012-05-03 18:33:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -58,6 +58,7 @@ subroutine initialize_E_field(p,c)
   if ( p%external_E_field(1).ne.0.0d0 .or. &
        p%external_E_field(2).ne.0.0d0 .or. &
        p%external_E_field(3).ne.0.0d0 ) then
+     p%E_field_always_zero = .false.   ! Make it sure, though it must be already set in pram_module.F.
      write(message,'(a,3f9.5,a)') 'external_ E_field(:)=', p%external_E_field(:), &
           ' [V/Angstrom] is added to E_field'
      call msg(UNIT_LOG, __FILE__, __LINE__, 'NOTICE', message)

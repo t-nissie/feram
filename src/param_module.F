@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2012-03-26 16:34:18 takeshi>
+! Time-stamp: <2012-05-03 18:34:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -221,6 +221,11 @@ contains
           read(str,*) dmy1, dmy2, p%n_hl_freq
        case('external_E_field')
           read(str,*) dmy1, dmy2, p%external_E_field(1), p%external_E_field(2), p%external_E_field(3)
+          if ( p%external_E_field(1).ne.0.0d0 .or. &
+               p%external_E_field(2).ne.0.0d0 .or. &
+               p%external_E_field(3).ne.0.0d0 ) then
+             p%E_field_always_zero = .false.   ! See initialize_E_field.F also.
+          end if
        case('n_hysteresis_loop_continue')
           read(str,*) dmy1, dmy2, p%n_hysteresis_loop_continue
        case('P_kappa2')
