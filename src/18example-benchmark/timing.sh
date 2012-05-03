@@ -12,3 +12,4 @@ for i in `jot 12`; do
 	OMP_NUM_THREADS=$i time -o timing.dat -f "$i %e %U %S %R" -a ../feram forward.feram
     done
 done
+rm forward.0000005000.coord forward.coord
