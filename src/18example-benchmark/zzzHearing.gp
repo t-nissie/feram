@@ -27,7 +27,7 @@ fit f_X5690(x) 'forward.X5690.r1224.dat' using 1:2 via t1_X5690,p_X5690
 set lmargin  9
 #set rmargin 15
 set tics front
-set key spacing 1.5
+set key spacing 1.7
 set grid
 set samples 400
 
@@ -41,12 +41,14 @@ set yrange [0:2250]
 set ytics 250
 set ylabel '{/Times-Italic t} [s]'
 
-plot 'forward.FX10.r1243.dat' t "FX10 (1.85 GHz)\n1 node, 1 CPU" w p lt 1 pt 7,\
+plot 'forward.FX10.r1243.dat' t "FX10 (1.85 GHz)\n1 node, 1 CPU\nFFT in SSL2"\
+                                                                 w p lt 1 pt 7,\
      0.9<x && x<16.1 ? f_FX10(x) : 1/0   t " "                   w l lt 1 lw 3,\
-     'timingSC20.dat' t "SR16000 (3.83 GHz)\n1/4 node, 1 CPU"    w p lt 3 pt 4,\
+     'timingSC20.dat' t "SR16000 (3.83 GHz)\n1/4 node, 1 CPU, SMT on\nFFT in MATRIX/MPP"\
+                                                                 w p lt 3 pt 4,\
      0.9<x && x<8.1  ? f_min(x)   : 1/0  t " "                   w l lt 3 lw 3,\
-     'forward.X5690.r1224.dat'\
-             t "Xeon X5690 (3.47 GHz)\n1 node, 2 CPU, HT off"    w p lt 2 pt 2,\
+     'forward.X5690.r1224.dat' t "Xeon X5690 (3.47 GHz)\n1 node, 2 CPU, HT off\ngfortran-4.4, fftw-3.3"\
+                                                                 w p lt 2 pt 2,\
      0.9<x && x<12.1 ? f_X5690(x) : 1/0  t " "                   w l lt 2 lw 3
 
 set origin 0.0,0.0
@@ -59,9 +61,9 @@ set ylabel 'speed up'
 set key left
 set nogrid
 
-tp_FX10  = sprintf(      "FX10: %.1f\%", p_FX10 *100)
-tp_min   = sprintf(  "SR16000*: %.1f\%", p_min  *100)
-tp_X5690 = sprintf("Xeon X5690: %.1f\%", p_X5690*100)
+tp_FX10  = sprintf(         "FX10: %.1f\%", p_FX10 *100)
+tp_min   = sprintf("SR16000^{min}: %.1f\%", p_min  *100)
+tp_X5690 = sprintf(   "Xeon X5690: %.1f\%", p_X5690*100)
 
 plot      x t 'ideal' w l lt 5 lw 3,\
           'forward.FX10.r1243.dat'  using ($1):(t1_FX10/$2)     t ''        w p  lt 1 pt 7,\
