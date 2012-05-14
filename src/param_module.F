@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2012-05-03 18:34:42 takeshi>
+! Time-stamp: <2012-05-14 17:30:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -339,13 +339,13 @@ contains
     character (len=100) :: fn
     character (len=300) :: str
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_Param(), Parameters for convenience.')
-    write(str,'(a,i7)')     'N = Lx * Ly * Lz          =', p%N
+    write(str,'(a,i11)')    'N = Lx * Ly * Lz          =', p%N
     call msg_ez(UNIT_LOG,str)
     write(str,'(a,e15.7)')  'Ninv = 1/N                =', p%Ninv
     call msg_ez(UNIT_LOG,str)
     write(str,'(a,f11.7)')  'delta_t / 2               =', p%dt_2
     call msg_ez(UNIT_LOG,str)
-    write(str,'(a,i7)')     'N of degree of freedom    =', p%n_freedom
+    write(str,'(a,i11)')    'N of degree of freedom    =', p%n_freedom
     call msg_ez(UNIT_LOG,str)
     write(str,'(a,f11.7)')  'unit_cell_volume          =', p%unit_cell_volume
     call msg_ez(UNIT_LOG,str)
