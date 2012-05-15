@@ -37,6 +37,8 @@ set xtics (1,2,4,6,8,10,12,14,16)
 set origin 0.0,0.575
 set size 0.915,0.43
 
+#set logscale y
+#set yrange [100:10000]
 set yrange [0:2250]
 set ytics 250
 set ylabel '{/Times-Italic t} [s]'
@@ -54,6 +56,7 @@ plot 'forward.FX10.r1243.dat' t "FX10 (1.85 GHz)\n1 node, 1 CPU\nFFT in SSL2"\
 set origin 0.0,0.0
 set size 0.915,0.6
 
+#set nologscale y
 set yrange [0:17]
 set ytics (1,2,4,6,8,10,12,14,16)
 set xlabel '{/Times-Italic N}_{thread}'
