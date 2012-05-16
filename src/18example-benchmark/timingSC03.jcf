@@ -1,0 +1,27 @@
+#!/bin/sh
+#@ class = qsc
+#@ output = timingSC03.stdout
+#@ error  = timingSC03.stderr
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = timingSC03
+#@ job_type = serial
+#@ resources = ConsumableCpus(16)
+#@ comment = -n 1 -pm 1 -pt 16 -ap "general"
+#@ queue
+#
+# Usage: submit SC general -jcf timingSC03.jcf
+#        grep real timingSC03.stderr | sed 's/real//' > tmp
+#        paste index.txt tmp > timingSC03.dat        
+#
+export MEMORY_AFFINITY=MCM
+export HF_ERR_STATUS_MODE=1
+export HF_PRUNST_BIND=1
+export HF_BINDPROC_NUM=0
+export HF_BINDPROC_STRIDE=2
+for i in `jot 16`; do
+    for j in 1 2 3; do
+	HF_90OPTS="-FPRUNST(THREADNUM($i))" OMP_NUM_THREADS=$i /usr/bin/timex ../feram forward.feram
+    done
+done
+rm forward.0000005000.coord forward.coord
