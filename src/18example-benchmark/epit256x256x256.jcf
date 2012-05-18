@@ -1,0 +1,23 @@
+#!/bin/sh
+#@ class = qtn
+#@ output = epit256x256x256.stdout
+#@ error  = epit256x256x256.stderr
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = epit256x256x256
+#@ job_type = serial
+#@ resources = ConsumableCpus(64)
+#@ comment = -n 1 -pm 1 -pt 64 -ap "general"
+#@ queue
+#
+# Usage: llsubmit epit256x256x256.jcf
+#
+export MEMORY_AFFINITY=MCM
+export HF_ERR_STATUS_MODE=1
+export HF_PRUNST_BIND=1
+export HF_BINDPROC_NUM=0
+export HF_BINDPROC_STRIDE=2
+for i in `jot 32`; do
+    HF_90OPTS="-FPRUNST(THREADNUM($i))" OMP_NUM_THREADS=$i /usr/bin/timex ./feram epit256x256x256.feram
+done
+rm -f *.coord
