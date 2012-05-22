@@ -1,0 +1,17 @@
+#!/bin/bash
+#BSUB -a mvapich
+#BSUB -x
+#BSUB -n 2
+#BSUB -R "span[ptile=2]"
+#BSUB -o timing_mpi.stdout
+#BSUB -e timing_mpi.stdout
+#BSUB -J timing_mpi
+#BSUB -q F64
+##
+rm -f timing_mpi.dat
+for i in 4 8; do
+    for j in 1 2; do
+	/usr/bin/time -o timing_mpi.dat -f "$i %e %U %S %R" -a mpirun.lsf OMP_NUM_THREADS=$i ../feram_mpi forward.feram backward.feram
+    done
+done
+rm -f *.coord

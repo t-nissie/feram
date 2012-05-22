@@ -1,0 +1,17 @@
+#!/bin/bash
+#BSUB -a mvapich # select mvapich elim
+#BSUB -x # exclusive use of node
+#BSUB -n 1
+#BSUB -R "span[ptile=1]" # number of processes per node
+#BSUB -o timing.stdout
+#BSUB -e timing.stdout
+#BSUB -J timing
+#BSUB -q F64
+##
+rm -f timing.dat
+for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16; do
+    for j in 1 2; do
+        OMP_NUM_THREADS=$i time -o timing.dat -f "$i %e %U %S %R" -a ../feram forward.feram
+    done
+done
+rm forward.0000005000.coord forward.coord
