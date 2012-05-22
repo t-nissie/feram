@@ -1,0 +1,15 @@
+#!/bin/sh
+#PJM --rsc-list "rscgrp=small"
+#PJM --rsc-list "node=2"
+#PJM --mpi "shape=2"
+#PJM --rsc-list "elapse=1:00:00"
+#PJM --stgin  "../feram_mpi     ./"
+#PJM --stgin  "./*.feram        ./"
+#PJM --stgout "./*.log          ./"
+#PJM --stgout "./*.param        ./"
+#PJM --stgout "./*.coord        ./"
+#PJM -S
+#
+. /work/system/Env_base
+#
+mpiexec ./feram_mpi forward.feram backward.feram
