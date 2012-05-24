@@ -174,6 +174,9 @@ is the most efficient way of queue submission on SR16000, so far.
  $ make
  $ make feram_mpi   # OPTIONAL
 
+If you want to link FFTW 3.3 rather than FFT in SSL II,
+ $ ../configure FC=frtpx LDFLAGS=-L/home2/apps/fftw/3.3/lib64 CPPFLAGS=-I/home2/apps/fftw/3.3/include --with-fft=fftw3 --with-lapack=ssl2 --host=Kei
+ $ ../configure FC=frtpx LDFLAGS=-L/usr/local/fftw/3.3/lib64  CPPFLAGS=-I/usr/local/fftw/3.3/include  --with-fft=fftw3 --with-lapack=ssl2 --host=FX10
 
 == Windows
 === MinGW
