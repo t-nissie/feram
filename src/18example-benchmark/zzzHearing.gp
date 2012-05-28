@@ -12,7 +12,7 @@ set multiplot
 f_FX10(x) = t1_FX10 * ((1-p_FX10)+p_FX10/x)
 t1_FX10 = 3000.0
 p_FX10  = 0.8   # initial guess
-fit f_FX10(x) 'forward.FX10.r1243.dat' via t1_FX10,p_FX10
+fit f_FX10(x) 'forward.FX10.r1258.fftw3.3.dat' via t1_FX10,p_FX10
 
 f_SR16k(x) = t1_SR16k * ((1-p_SR16k)+p_SR16k/x)
 t1_SR16k = 1800
@@ -39,11 +39,11 @@ set size 0.915,0.43
 
 #set logscale y
 #set yrange [100:10000]
-set yrange [0:2250]
+set yrange [0:2000]
 set ytics 250
 set ylabel '{/Times-Italic t} [s]'
 
-plot 'forward.FX10.r1243.dat' t "FX10 (1.85 GHz)\n1 node, 1 CPU\n3D FFT in SSL2"\
+plot 'forward.FX10.r1258.fftw3.3.dat' t "FX10 (1.85 GHz)\n1 node, 1 CPU\nfftw-3.3"\
                                                                  w p lt 1 pt 7,\
      0.9<x && x<16.1 ? f_FX10(x) : 1/0   t " "                   w l lt 1 lw 3,\
      'forward.SR16000.r1253.dat' t "SR16000 (3.83 GHz)\n1/2 node, 2 CPU, SMT off\n3D FFT in MATRIX/MPP"\
@@ -69,7 +69,7 @@ tp_SR16k = sprintf(   "SR16000: %.1f\%", p_SR16k*100)
 tp_E5_2670 = sprintf("Xeon E5-2670: %.1f\%", p_E5_2670*100)
 
 plot      x t 'ideal' w l lt 5 lw 3,\
-          'forward.FX10.r1243.dat'  using ($1):(t1_FX10/$2)     t ''        w p  lt 1 pt 7,\
+          'forward.FX10.r1258.fftw3.3.dat'  using ($1):(t1_FX10/$2)     t ''        w p  lt 1 pt 7,\
           0.9<x && x<16.1 ? 1.0 / ((1-p_FX10)+p_FX10/x): 1/0    t tp_FX10   w l  lt 1 lw 3,\
           'forward.SR16000.r1253.dat' using ($1):(t1_SR16k/$2)  t ''        w p  lt 3 pt 4,\
           0.9<x && x<16.1 ? 1.0 / ((1-p_SR16k)+p_SR16k/x) : 1/0 t tp_SR16k  w l  lt 3 lw 3,\
