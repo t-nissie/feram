@@ -1,0 +1,19 @@
+#!/bin/bash
+#BSUB -a mvapich # select mvapich elim
+#BSUB -x # exclusive use of node
+#BSUB -n 1
+#BSUB -R "span[ptile=1]" # number of processes per node
+#BSUB -o epit300x300x300.stdout
+#BSUB -e epit300x300x300.stdout
+#BSUB -J epit300x300x300
+#BSUB -q F64
+#
+# Usage: bsub < epit300x300x300.phi
+#
+##
+for i in 1 2 4 8 12 16; do
+    for j in 1 2; do
+        OMP_NUM_THREADS=$i time -o epit300x300x300.dat -f "$i %e %U %S %R" -a ../feram epit300x300x300.feram
+    done
+done
+rm -f *.coord
