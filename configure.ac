@@ -135,7 +135,7 @@ AC_ARG_WITH(lapack,[AS_HELP_STRING([--with-lapack=ARG],[LAPACK library.
                                      acml (AMD Core Math Library, slow).])])
 case "$with_lapack" in
   lapack | yes | "")
-    AC_CHECK_LIB(blas,  dsymv,,AC_MSG_ERROR([You need  BLAS  library. See config.log.]))
+    AC_CHECK_LIB(blas,  dsymv,,[AC_CHECK_LIB(f77blas,  dsymv,,AC_MSG_ERROR([You need  BLAS  library. See config.log.]))])
     AC_CHECK_LIB(lapack,dsyev,,AC_MSG_ERROR([You need LAPACK library. See config.log.]))
     ;;
   mkl)
