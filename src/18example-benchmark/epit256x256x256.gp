@@ -24,7 +24,7 @@ t1_E5_2670 = 1500
 p_E5_2670  = 0.9
 fit f_E5_2670(x) 'epit256x256x256.E5-2670.r1258.dat' using 1:2 via t1_E5_2670,p_E5_2670
 
-set lmargin  9
+set lmargin 10
 #set rmargin 15
 set tics front
 set key spacing 1.7
@@ -34,13 +34,14 @@ set samples 400
 set xrange [0:33]
 set xtics (1,2,4,8,12,16,20,24,28,32)
 
+width = 0.940
 set origin 0.0,0.575
-set size 0.915,0.43
+set size width,0.43
 
 #set logscale y
 #set yrange [100:10000]
-#set yrange [0:2250]
-#set ytics 250
+set yrange [0:14000]
+set ytics 2000
 set ylabel '{/Times-Italic t} [s]'
 
 #plot 'epit256x256x256.FX10.r1243.dat' t "FX10 (1.85 GHz)\n1 node, 1 CPU\n3D FFT in SSL2"\
@@ -55,7 +56,7 @@ plot 'epit256x256x256.SR16000.r1253.dat' t "SR16000 (3.83 GHz)\n1/2 node, 2 CPU,
      0.9<x && x<16.1 ? f_E5_2670(x) : 1/0  t " "                 w l lt 2 lw 3
 
 set origin 0.0,0.0
-set size 0.915,0.6
+set size width,0.6
 
 #set nologscale y
 set yrange [0:33]
