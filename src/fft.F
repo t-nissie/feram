@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-05-01 20:41:27 t-nissie>
+! Time-stamp: <2012-05-30 19:10:09 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -102,6 +102,46 @@ subroutine fft_3d(mode, Nx, Ny, Nz, r, c)
 
   deallocate(wk1,wk2)
 end subroutine fft_3d
+
+subroutine fft3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
+  implicit none
+  logical,   intent(in) :: mode
+  integer,   intent(in) :: Nx, Ny, Nz
+  integer,   save       :: Nx_last=0, Ny_last=0, Nz_last=0
+  complex*16            :: a(0:Nx-1, 0:Ny-1, 0:Nz-1)
+  integer,   save       :: ip1(3), ip2(3), ip3(3), nwk
+  integer               :: iopt(2)
+  integer,   parameter  :: NWKW = 5
+  complex*16,save       :: tb1(2048), tb2(2048), tb3(2048)
+  complex*16,allocatable:: wk(:)
+  integer               :: ier
+
+  if (mode) then
+     iopt(1)=1
+  else
+     iopt(1)=2
+  end if
+
+  if (Nx.ne.Nx_last .or. Ny.ne.Ny_last .or. Nz.ne.Nz_last) then
+     if (mod(Nx,2).ne.0) stop 'fft3d_hitachi_module.F:46: Nx must be an even number.'
+     call n2pqr(Nx, ip1)
+     call n2pqr(Ny, ip2)
+     call n2pqr(Nz, ip3)
+     nwk = max((Nx+NWKW)*Ny*Nz,Nx*(Ny+NWKW)*Nz) + 100
+     iopt(2)=1
+     Nx_last=Nx
+     Ny_last=Ny
+     Nz_last=Nz
+  else
+     iopt(2)=2
+  end if
+
+  allocate(wk(nwk))
+
+  call HZFT7M(a, Nx,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3, wk,NWKW, ier)
+
+  deallocate(wk)
+end subroutine fft3d_fwd_or_bkd
 #endif
 !
 
