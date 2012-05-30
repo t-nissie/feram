@@ -4,7 +4,7 @@
 #BSUB -n 1
 #BSUB -R "span[ptile=1]" # number of processes per node
 #BSUB -o timing.stdout
-#BSUB -e timing.stdout
+#BSUB -e timing.stderr
 #BSUB -J timing
 #BSUB -q F64
 ##

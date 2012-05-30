@@ -4,7 +4,7 @@
 #BSUB -n 2
 #BSUB -R "span[ptile=2]"
 #BSUB -o timing_mpi.stdout
-#BSUB -e timing_mpi.stdout
+#BSUB -e timing_mpi.stderr
 #BSUB -J timing_mpi
 #BSUB -q F64
 ##
