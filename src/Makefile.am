@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-05-30 12:15:02 takeshi>
+# Time-stamp: <2012-05-30 18:36:27 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -63,7 +63,7 @@ frozen_phonon_X_LDADD = $(LDADD)
 
 marsaglia_tsang_uni64_check_SOURCES = marsaglia_tsang_uni64_check.F marsaglia_tsang_uni64_module.f
 
-fft_check_SOURCES = fft.F fft_check.F
+fft_check_SOURCES = fft.F fft_check.F msg.F
 
 TESTS = marsaglia_tsang_uni64_check fft_check
 
@@ -142,6 +142,7 @@ dipoFFT.o:                             param_module.o coord_module.o fft.o defin
 print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
 eigenvalues2j.o: param_module.o
 fft.o: define.h msg.o
+fft_check.o: fft.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:
