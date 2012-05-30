@@ -40,7 +40,7 @@ set size 0.915,0.43
 #set logscale y
 #set yrange [100:10000]
 set yrange [0:2000]
-set ytics 250
+set ytics 200
 set ylabel '{/Times-Italic t} [s]'
 
 plot 'forward.FX10.r1258.fftw3.3.dat' t "FX10 (1.85 GHz)\n1 node, 1 CPU\nfftw-3.3"\
