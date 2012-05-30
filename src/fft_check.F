@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-05-30 17:06:52 t-nissie>
+! Time-stamp: <2012-05-30 19:12:35 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -103,20 +103,24 @@ program fft_check
 
   call system_clock(count(1))
   
-#if defined(HAVE_LIBFFTW3)
   do i = 1, N_TIMES
+#   if defined(HAVE_LIBFFTW3)
      call dfftw_execute(plans_fwd)
-
      !$omp parallel do
      do j = 0, Lz-1
         a(:,:,j) = a(:,:,j) * N_inv
      end do
      !$omp end parallel do
-
      call dfftw_execute(plans_bkd)
+#   else
+     call fft3d_fwd_or_bkd(.true.,  Lx, Ly, Lz, a)
+     do j = 0, Lz-1
+        a(:,:,j) = a(:,:,j) * N_inv
+     end do
+     call fft3d_fwd_or_bkd(.false., Lx, Ly, Lz, a)
+#   endif
   end do
-#elif defined(HITACHI_SR)
-#endif
+  ! check results
   if (abs( dble(a(0, 0, 0))-C_CHECK)>1.0d-15) then
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in dble(a).'
      stop 1
@@ -128,20 +132,24 @@ program fft_check
 
   call system_clock(count(2))
 
-#if defined(HAVE_LIBFFTW3)
   do i = 1, N_TIMES
+#   if defined(HAVE_LIBFFTW3)
      call dfftw_execute(plans_r2c)
-
      !$omp parallel do
      do j = 0, Lz-1
         c(:,:,j) = c(:,:,j) * N_inv
      end do
      !$omp end parallel do
-
      call dfftw_execute(plans_c2r)
+#   else
+     call fft_3d(.true.,  Lx, Ly, Lz, r, c)
+     do j = 0, Lz-1
+        c(:,:,j) = c(:,:,j) * N_inv
+     end do
+     call fft_3d(.false., Lx, Ly, Lz, r, c)
+#   endif
   end do
-#elif defined(HITACHI_SR)
-#endif
+  ! check results
   if (abs(r(0, 0, 0)-C_CHECK)>1.0d-15) then
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in r.'
      stop 3
