@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-05-30 14:31:28 takeshi>
+! Time-stamp: <2012-05-30 15:52:49 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -11,6 +11,8 @@
 #  define get_command_argument getarg
 #endif
 
+#  define C_CHECK 0.1d0
+
 program fft_check
   implicit none
   complex*16, allocatable :: a(:,:,:)
@@ -20,7 +22,7 @@ program fft_check
 
   character(len=30)       :: str
   integer                 :: Lx, Ly, Lz, N_TIMES, N, NTHREADS, i, j, omp_get_max_threads
-  real*8                  :: N_inv, t_plan, t_fwdbkd, t_r2cc2r, mflops_fwdbkd, mflops_r2cc2r
+  real*8                  :: N_inv, t_plan, t_fwdbkd, t_r2cc2r, gflops_fwdbkd, gflops_r2cc2r
   integer                 :: count(0:3), count_rate, count_max
   integer                 :: cdiff(1:3)
   integer                 :: command_argument_count
@@ -55,13 +57,13 @@ program fft_check
   N = Lx * Ly * Lz
   N_inv = 1.0d0 / N
 
-  write(6,'((a,i10),3(a,i4),(a,i10),(a,i3))') &
+  write(0,'((a,i8),3(a,i4),(a,i10),(a,i3))') &
        &          'N_TIMES = ', N_TIMES, &
        &           '    Lx = ', Lx, &
        &             ', Ly = ', Ly, &
        &             ', Lz = ', Lz, &
        &           ',    N = ', N, &
-       &    ',    NTHREADS = ', NTHREADS
+       &    ',    NTHREADS = ', NTHREADS   
 
   !
   ! Allocations and first touches
@@ -69,14 +71,14 @@ program fft_check
   allocate(a(0:Lx-1, 0:Ly-1, 0:Lz-1))
   !$omp parallel do
   do j = 0, Lz-1
-     a(:,:,j) = (0.1d0,0.1d0)
+     a(:,:,j) = (C_CHECK,C_CHECK)
   end do
   !$omp end parallel do
 
   allocate(r(0:Lx-1, 0:Ly-1, 0:Lz-1))
   !$omp parallel do
   do j = 0, Lz-1
-     r(:,:,j) = 0.1d0
+     r(:,:,j) = C_CHECK
   end do
   !$omp end parallel do
 
@@ -115,7 +117,14 @@ program fft_check
   end do
 #elif defined(HITACHI_SR)
 #endif
-  write(6,*) a(0, 0, 0)
+  if (abs( dble(a(0, 0, 0))-C_CHECK)>1.0d-15) then
+     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in dble(a).'
+     stop 1
+  end if
+  if (abs(aimag(a(0, 0, 0))-C_CHECK)>1.0d-15) then
+     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in aimag(a).'
+     stop 2
+  end if
 
   call system_clock(count(2))
 
@@ -133,7 +142,10 @@ program fft_check
   end do
 #elif defined(HITACHI_SR)
 #endif
-  write(6,*) r(0, 0, 0)
+  if (abs(r(0, 0, 0)-C_CHECK)>1.0d-15) then
+     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in r.'
+     stop 3
+  end if
 
   call system_clock(count(3), count_rate, count_max)
 
@@ -148,16 +160,18 @@ program fft_check
   t_fwdbkd = dble(cdiff(2))/count_rate
   t_r2cc2r = dble(cdiff(3))/count_rate
 
-  write(6,'(a,f10.5)') ' t_plan   = ', t_plan
-  write(6,'(a,f10.5)') ' t_fwdbkd = ', t_fwdbkd
-  write(6,'(a,f10.5)') ' t_r2cc2r = ', t_r2cc2r
+  write(0,'(a,f10.5)') ' t_plan   = ', t_plan
+  write(0,'(a,f10.5)') ' t_fwdbkd = ', t_fwdbkd
+  write(0,'(a,f10.5)') ' t_r2cc2r = ', t_r2cc2r
 
-  mflops_fwdbkd = log(dble(N)) / log(2.0d0) / t_fwdbkd / 1000000.0d0 * N_TIMES * 5 * N * 2
-  mflops_r2cc2r = log(dble(N)) / log(2.0d0) / t_r2cc2r / 1000000.0d0 * N_TIMES * 5 * N
-  write(6,'(a,f10.2)') ' mflops_fwdbkd = ', mflops_fwdbkd
-  write(6,'(a,f10.2)') ' mflops_r2cc2r = ', mflops_r2cc2r
+  gflops_fwdbkd = log(dble(N)) / log(2.0d0) / t_fwdbkd / 1.0d9 * N_TIMES * 5 * N * 2
+  gflops_r2cc2r = log(dble(N)) / log(2.0d0) / t_r2cc2r / 1.0d9 * N_TIMES * 5 * N
+  write(0,'(a,f10.3)') ' gflops_fwdbkd = ', gflops_fwdbkd
+  write(0,'(a,f10.3)') ' gflops_r2cc2r = ', gflops_r2cc2r
 
-
+  write(6,'(i8,3i5,i10,i4,3f11.5,2f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
+       & t_plan, t_fwdbkd, t_r2cc2r, &
+       & gflops_fwdbkd, gflops_r2cc2r  
 
 #if defined(HAVE_LIBFFTW3)
   call dfftw_cleanup_threads(ireturn)
