@@ -25,3 +25,7 @@
 ./fft_check      50  512  256  512 >> fft_check.dat
 ./fft_check      50  512  512  512 >> fft_check.dat
 ./fft_check      50  256  512 1024 >> fft_check.dat
+./fft_check      50 1024  512  256 >> fft_check.dat
+./fft_check      50  512  512 1024 >> fft_check.dat
+./fft_check      50  512 1024 1024 >> fft_check.dat
+./fft_check      20 1024 1024 1024 >> fft_check.dat

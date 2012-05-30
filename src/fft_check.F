@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-05-30 15:52:49 t-nissie>
+! Time-stamp: <2012-05-30 17:06:52 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -169,7 +169,7 @@ program fft_check
   write(0,'(a,f10.3)') ' gflops_fwdbkd = ', gflops_fwdbkd
   write(0,'(a,f10.3)') ' gflops_r2cc2r = ', gflops_r2cc2r
 
-  write(6,'(i8,3i5,i10,i4,3f11.5,2f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
+  write(6,'(i8,3i5,i11,i4,3f11.5,2f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
        & t_plan, t_fwdbkd, t_r2cc2r, &
        & gflops_fwdbkd, gflops_r2cc2r  
 
