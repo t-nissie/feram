@@ -51,7 +51,9 @@ plot 'forward.FX10.r1258.fftw3.3.dat' t "FX10 (1.85 GHz)\n1 node, 1 CPU\nfftw-3.
      0.9<x && x<16.1 ? f_SR16k(x)  : 1/0   t " "                 w l lt 3 lw 3,\
      'forward.E5-2670.r1258.dat' t "Xeon E5-2670 (2.60 GHz)\n1 node, 2 CPU, HT off\nifort-12.1, MKL"\
                                                                  w p lt 2 pt 2,\
-     0.9<x && x<16.1 ? f_E5_2670(x) : 1/0  t " "                 w l lt 2 lw 3
+     0.9<x && x<16.1 ? f_E5_2670(x) : 1/0  t " "                 w l lt 2 lw 3,\
+    'forward.E5-2670.r1258.gcc-4.4.6.fftw-3.3.2.dat' t "gcc-4.4.6, fftw-3.3.2"\
+                                                                 w p lt 8 pt 6
 
 set origin 0.0,0.0
 set size 0.915,0.6
