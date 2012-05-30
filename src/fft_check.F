@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-05-30 19:12:35 t-nissie>
+! Time-stamp: <2012-05-30 19:53:10 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -99,6 +99,13 @@ program fft_check
   call     dfftw_plan_dft_3d(plans_bkd, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_BACKWARD, FFTW_PATIENT)
   call dfftw_plan_dft_r2c_3d(plans_r2c, Lx, Ly, Lz, r(0,0,0), c(0,0,0),                FFTW_PATIENT)
   call dfftw_plan_dft_c2r_3d(plans_c2r, Lx, Ly, Lz, c(0,0,0), r(0,0,0),                FFTW_PATIENT)
+  !!! Re-substitution of a and r, because contents of them are broken.
+  !$omp parallel do
+  do j = 0, Lz-1
+     a(:,:,j) = (C_CHECK,C_CHECK)
+     r(:,:,j) = C_CHECK
+  end do
+  !$omp end parallel do
 #endif
 
   call system_clock(count(1))
