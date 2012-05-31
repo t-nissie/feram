@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2012-04-19 17:55:01 t-nissie>
+! Time-stamp: <2012-05-31 10:17:44 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -14,7 +14,7 @@ subroutine velocity_scaling(p,c,e)
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
-  integer ix, iy, iz, alpha
+  integer iz
   real*8 scale,kinetic_energy
   external kinetic_energy
   if (p%verbose>=2) then
