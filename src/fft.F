@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-05-31 11:02:39 takeshi>
+! Time-stamp: <2012-05-31 16:50:26 c25050>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -179,4 +179,21 @@ subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
      end do
   end if
 end subroutine fft_3d_r2c_or_c2r
+
+subroutine fft_3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
+  implicit none
+  logical,   intent(in) :: mode
+  integer,   intent(in) :: Nx, Ny, Nz
+  complex*16            :: a(0:Nx-1, 0:Ny-1, 0:Nz-1)
+  integer               :: isn
+  integer               :: icon
+
+  if (mode) then
+     isn=1
+  else
+     isn=-1
+  end if
+
+  call DM_V3DCFT(a, Nx, Nx,Ny,Nz, isn, ICON)
+end subroutine fft_3d_fwd_or_bkd
 #endif

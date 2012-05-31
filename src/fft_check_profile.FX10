@@ -1,0 +1,15 @@
+#!/bin/sh
+#PJM -L "rscgrp=short"
+#PJM -L "node=1"
+#PJM -L "elapse=2:00:00"
+#PJM -j
+export PJM_JOBNAME=fft_check_profiling.FX10
+export FLIB_FASTOMP=TRUE
+export PARALLEL=16
+export OMP_NUM_THREADS=16
+mkdir -p fft_check_profiling
+rm -f fft_check_profiling/*
+fipp -C -Ihwm -d fft_check_profiling ./fft_check 400 256 256 256
+
+##
+# fipppx -Ibalance,cpu,hwm -l 40  -A -d fft_check_profiling > fft_check_profiling.FX10.PROFILE

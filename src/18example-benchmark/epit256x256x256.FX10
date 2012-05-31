@@ -5,6 +5,6 @@
 #PJM -j
 export PJM_JOBNAME=epit256x256x256.FX10
 export FLIB_FASTOMP=TRUE
-for i in 16; do
+for i in 16 14 12 10 8 6 4 2; do
     PARALLEL=$i OMP_NUM_THREADS=$i /usr/bin/time -o 256x256x256.FX10.dat -f "$i %e %U %S %R" -a ../feram epit256x256x256.feram
 done
