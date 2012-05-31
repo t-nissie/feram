@@ -1,12 +1,11 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-05-30 19:10:09 t-nissie>
+! Time-stamp: <2012-05-31 11:02:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
 !    MATRIX/MPP of HITACHI SR11000 and SR16000 (HITACHI_SR)
 !    ACML (HAVE_LIBACML_MP)
 !    Fujitsu SSL2 (__sparc)
-!    Built in minimal FFT library (BUILT_IN_FFT)
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
@@ -37,7 +36,7 @@ subroutine n2pqr(n,pqr)
   if (tmp.ne.1) stop 'fft.F:37: STOP at subroutine n2pqr().'
 end subroutine n2pqr
 
-subroutine fft_3d(mode, Nx, Ny, Nz, r, c)
+subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
   implicit none
   logical,   intent(in) :: mode
   integer,   intent(in) :: Nx, Ny, Nz
@@ -101,9 +100,9 @@ subroutine fft_3d(mode, Nx, Ny, Nz, r, c)
   end if
 
   deallocate(wk1,wk2)
-end subroutine fft_3d
+end subroutine fft_3d_r2c_or_c2r
 
-subroutine fft3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
+subroutine fft_3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
   implicit none
   logical,   intent(in) :: mode
   integer,   intent(in) :: Nx, Ny, Nz
@@ -141,7 +140,7 @@ subroutine fft3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
   call HZFT7M(a, Nx,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3, wk,NWKW, ier)
 
   deallocate(wk)
-end subroutine fft3d_fwd_or_bkd
+end subroutine fft_3d_fwd_or_bkd
 #endif
 !
 
@@ -151,7 +150,7 @@ end subroutine fft3d_fwd_or_bkd
 !    c(0:Nx/2)      10  10
 !     2*(Nx/2+1)-1   9   9
 ! r(0:2*(Nx/2+1)-1) 10  10
-subroutine fft_3d(mode, Nx, Ny, Nz, r, c)
+subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
   implicit none
   logical,   intent(in)    :: mode
   integer,   intent(in)    :: Nx, Ny, Nz
@@ -179,28 +178,5 @@ subroutine fft_3d(mode, Nx, Ny, Nz, r, c)
         end do
      end do
   end if
-end subroutine fft_3d
-#endif
-!
-
-#if defined(BUILT_IN_FFT)
-subroutine dfftw_plan_dft_r2c_3d(plan, Nx, Ny, Nz, r, c, flags)
-  implicit none
-  integer*8, intent(in) :: plan
-  integer,   intent(in) :: Nx, Ny, Nz
-  real*8     :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
-  complex*16 :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
-  integer, intent(in) :: flags
-  call fft3d(.true.,  Nx, Ny, Nz, r, c)
-end subroutine dfftw_plan_dft_r2c_3d
-
-subroutine dfftw_plan_dft_c2r_3d(plan, Nx, Ny, Nz, c, r, flags)
-  implicit none
-  integer*8, intent(in) :: plan
-  integer,   intent(in) :: Nx, Ny, Nz
-  complex*16 :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
-  real*8     :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
-  integer, intent(in) :: flags
-  call fft3d(.false., Nx, Ny, Nz, r, c)
-end subroutine dfftw_plan_dft_c2r_3d
+end subroutine fft_3d_r2c_or_c2r
 #endif

@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-05-30 19:53:10 t-nissie>
+! Time-stamp: <2012-05-31 10:34:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -120,11 +120,11 @@ program fft_check
      !$omp end parallel do
      call dfftw_execute(plans_bkd)
 #   else
-     call fft3d_fwd_or_bkd(.true.,  Lx, Ly, Lz, a)
+     call fft_3d_fwd_or_bkd(.true.,  Lx, Ly, Lz, a)
      do j = 0, Lz-1
         a(:,:,j) = a(:,:,j) * N_inv
      end do
-     call fft3d_fwd_or_bkd(.false., Lx, Ly, Lz, a)
+     call fft_3d_fwd_or_bkd(.false., Lx, Ly, Lz, a)
 #   endif
   end do
   ! check results
@@ -149,11 +149,11 @@ program fft_check
      !$omp end parallel do
      call dfftw_execute(plans_c2r)
 #   else
-     call fft_3d(.true.,  Lx, Ly, Lz, r, c)
+     call fft_3d_r2c_or_c2r(.true.,  Lx, Ly, Lz, r, c)
      do j = 0, Lz-1
         c(:,:,j) = c(:,:,j) * N_inv
      end do
-     call fft_3d(.false., Lx, Ly, Lz, r, c)
+     call fft_3d_r2c_or_c2r(.false., Lx, Ly, Lz, r, c)
 #   endif
   end do
   ! check results

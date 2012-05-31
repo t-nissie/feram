@@ -1,10 +1,10 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2012-04-29 12:30:01 takeshi>
+# Time-stamp: <2012-05-31 10:52:00 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
-SUBDIRS = src libbuilt_in_fft
+SUBDIRS = src
 EXTRA_DIST = README.en \
              index.en.html \
              README.ja \

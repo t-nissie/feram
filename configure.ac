@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-05-30 17:51:08 t-nissie>
+dnl Time-stamp: <2012-05-31 10:48:38 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -99,7 +99,7 @@ case "$host" in
                                      mkl (Intel MKL, FFTW3 wrappers to Intel MKL functions),
                                      ssl2 (Fujitsu SSL II),
                                      acml (AMD Core Math Library, slow), or
-                                     no (use the built-in minimal FFT, slow).])])
+                                     no (error).])])
     case "$with_fft" in
       fftw* | yes | "")
         AC_CHECK_LIB(fftw3, dfftw_execute,,
@@ -117,8 +117,7 @@ case "$host" in
         AC_CHECK_LIB(acml_mp, DZFFT3D,, AC_MSG_ERROR([You need ACML. See config.log.]))
         ;;
       no)
-        AC_DEFINE([BUILT_IN_FFT], [1], [Use the built-in minimal FFT])
-        LIBBUILT_IN_FFT_A=../libbuilt_in_fft/libbuilt_in_fft.a
+        AC_MSG_ERROR([You need an FFT library.])
         ;;
       *)
         AC_MSG_ERROR([Unknown FFT library: $with_fft])
@@ -189,11 +188,9 @@ AC_SUBST(CPPFLAGS)
 AC_SUBST(FCFLAGS_FIXEDFORM)
 AC_SUBST(AR)
 AC_SUBST(RANLIB)
-AC_SUBST(LIBBUILT_IN_FFT_A)
 
 AC_CONFIG_FILES([Makefile
              doc/Makefile
- libbuilt_in_fft/Makefile
       parameters/Makefile
              src/Makefile])
 AC_OUTPUT

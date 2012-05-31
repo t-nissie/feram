@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-05-30 18:36:27 t-nissie>
+# Time-stamp: <2012-05-31 11:00:33 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -42,24 +42,18 @@ feram_SRCS = average_module.F \
 	print-eigenvalues.F \
 	velocity_scaling.F
 feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
-feram_LDADD = $(LDADD) $(LIBBUILT_IN_FFT_A)
-feram_DEPENDENCIES =   $(LIBBUILT_IN_FFT_A)
 
 diagonalize15x15_SOURCES = diagonalize15x15.F
-diagonalize15x15_LDADD = $(LDADD)
 
 displacement_SOURCES = displacement.F
 
 coord2deviation_SOURCES = coord2deviation.F
 
 eigenvalues2j_SOURCES = eigenvalues2j.F msg.F param_module.F
-eigenvalues2j_LDADD = $(LDADD)
 
 frozen_phonon_Gamma_SOURCES = frozen_phonon_Gamma.F
-frozen_phonon_Gamma_LDADD = $(LDADD)
 
 frozen_phonon_X_SOURCES = frozen_phonon_X.F
-frozen_phonon_X_LDADD = $(LDADD)
 
 marsaglia_tsang_uni64_check_SOURCES = marsaglia_tsang_uni64_check.F marsaglia_tsang_uni64_module.f
 
@@ -88,9 +82,6 @@ feram_mpi.F \
 17example-PbTiO3-100-900K \
 18example-benchmark
 
-../libbuilt_in_fft/libbuilt_in_fft.a:
-	cd ../libbuilt_in_fft && $(MAKE)
-
 # all: plot.ps # 300K0000000.ps decay-test.ps
 
 # feram.out: $(INPUT_FILE) feram
@@ -111,7 +102,7 @@ elastic.o: $(srcdir)/elastic.F
 feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	$(MPIFC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
 	         $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
-	$(MPIFC) $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(feram_LDADD) $(LIBS)
+	$(MPIFC) $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(LIBS)
 
 feram_common.o: param_module.o coord_module.o date_and_time2message.o
 decay-functions.o param_module.o:             define.h
