@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-05-31 10:34:50 takeshi>
+! Time-stamp: <2012-05-31 11:36:45 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -175,16 +175,16 @@ program fft_check
   t_fwdbkd = dble(cdiff(2))/count_rate
   t_r2cc2r = dble(cdiff(3))/count_rate
 
-  write(0,'(a,f10.5)') ' t_plan   = ', t_plan
-  write(0,'(a,f10.5)') ' t_fwdbkd = ', t_fwdbkd
-  write(0,'(a,f10.5)') ' t_r2cc2r = ', t_r2cc2r
+  write(0,'(a,f12.5)') ' t_plan   = ', t_plan
+  write(0,'(a,f12.5)') ' t_fwdbkd = ', t_fwdbkd
+  write(0,'(a,f12.5)') ' t_r2cc2r = ', t_r2cc2r
 
   gflops_fwdbkd = log(dble(N)) / log(2.0d0) / t_fwdbkd / 1.0d9 * N_TIMES * 5 * N * 2
   gflops_r2cc2r = log(dble(N)) / log(2.0d0) / t_r2cc2r / 1.0d9 * N_TIMES * 5 * N
   write(0,'(a,f10.3)') ' gflops_fwdbkd = ', gflops_fwdbkd
   write(0,'(a,f10.3)') ' gflops_r2cc2r = ', gflops_r2cc2r
 
-  write(6,'(i8,3i5,i11,i4,3f11.5,2f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
+  write(6,'(i8,3i5,i11,i4,f13.5,2f11.5,2f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
        & t_plan, t_fwdbkd, t_r2cc2r, &
        & gflops_fwdbkd, gflops_r2cc2r  
 
