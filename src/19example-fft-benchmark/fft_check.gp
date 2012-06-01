@@ -38,7 +38,7 @@ set xtics ("4x4x4" 1,\
 "1024x1024x1024"  20) rotate
 
 
-set title "double-precision complex, 3d transforms"
+set title "double-precision complex, 3d transforms\nin-place"
 set origin 0.0,0.5
 set size 1.0,0.52
 plot 'fft_check.FX10.r1292.thread16.dat'         using 1:11  t            'FX10 FFTW 16t' w lp lt 1 lw 2 pt 7,\
@@ -46,7 +46,7 @@ plot 'fft_check.FX10.r1292.thread16.dat'         using 1:11  t            'FX10 
      'fft_check.E5-2670.r1292.thread16.FFTW.dat' using 1:11  t         'E5-2670 FFTW 16t' w lp lt 2 lw 2 pt 6,\
      'fft_check.SR16000.r1292.thread32.dat'      using 1:11  t   'SR16000 MATRIX/MPP 32t' w lp lt 3 lw 2 pt 4
 
-set title "double-precision real-data, 3d transforms"
+set title "double-precision real-data, 3d transforms\nout-of-place or copy"
 set origin 0.0,0.0
 set size 1.0,0.52
 plot 'fft_check.FX10.r1292.thread16.dat'         using 1:12  t            'FX10 FFTW 16t' w lp lt 1 lw 2 pt 7,\
