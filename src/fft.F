@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-05-31 16:50:26 c25050>
+! Time-stamp: <2012-06-04 07:52:43 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -36,13 +36,20 @@ subroutine n2pqr(n,pqr)
   if (tmp.ne.1) stop 'fft.F:37: STOP at subroutine n2pqr().'
 end subroutine n2pqr
 
+!        Nx          8   9
+!        Nx/2        4   4
+!    c(0:Nx/2)      10  10
+!     2*(Nx/2+1)-1   9   9
+! r(0:2*(Nx/2+1)-1) 10  10
+!     2*(Nx/2+1)    10  10   ndim1
 subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
   implicit none
   logical,   intent(in) :: mode
   integer,   intent(in) :: Nx, Ny, Nz
+  real*8, intent(inout) :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
+  real*8, intent(inout) :: c(0:2*(Nx/2+1)-1, 0:Ny-1, 0:Nz-1)
+  ! cf complex*16       :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
   integer,   save       :: Nx_last=0, Ny_last=0, Nz_last=0
-  real*8                :: r(0:Nx-1, 0:Ny-1, 0:Nz-1)
-  complex*16            :: c(0:Nx/2, 0:Ny-1, 0:Nz-1) !CAUTION "/2"!
   integer,   save       :: ip1(3), ip2(3), ip3(3), ndim1, nwk1, nwk2, ipara
   integer               :: iopt(2)
   integer,   parameter  :: NWKW  = 5
@@ -58,11 +65,10 @@ subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
   end if
 
   if (Nx.ne.Nx_last .or. Ny.ne.Ny_last .or. Nz.ne.Nz_last) then
-     if (mod(Nx,2).ne.0) stop 'fft.F:62: Nx must be an even number.'
      call n2pqr(Nx, ip1)
      call n2pqr(Ny, ip2)
      call n2pqr(Nz, ip3)
-     ndim1 = Nx+2
+     ndim1 = 2*(Nx/2+1)
      ipara = $NUMTHRD()
      write(ipara_s,'(i8)') ipara
      call msg(UNIT_LOG, __FILE__, __LINE__, 'ipara = ', ipara_s)
@@ -81,8 +87,8 @@ subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
   if (mode) then
      do iz = 0, Nz-1
         do iy = 0, Ny-1
-           do ix = 0, Nx/2-1
-              c(ix,iy,iz) = cmplx(r(2*ix,iy,iz),r(2*ix+1,iy,iz),kind(0.0d0))
+           do ix = 0, Nx-1
+              c(ix,iy,iz) = r(ix,iy,iz)
            end do
         end do
      end do
@@ -91,9 +97,8 @@ subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
      call HZFD7M(c, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,ipara, ier)
      do iz = 0, Nz-1
         do iy = 0, Ny-1
-           do ix = 0, Nx/2-1
-              r(2*ix  ,iy,iz) =  dble(c(ix,iy,iz))
-              r(2*ix+1,iy,iz) = aimag(c(ix,iy,iz))
+           do ix = 0, Nx-1
+              r(ix,iy,iz) =  c(ix,iy,iz)
            end do
         end do
      end do
@@ -122,7 +127,6 @@ subroutine fft_3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
   end if
 
   if (Nx.ne.Nx_last .or. Ny.ne.Ny_last .or. Nz.ne.Nz_last) then
-     if (mod(Nx,2).ne.0) stop 'fft3d_hitachi_module.F:46: Nx must be an even number.'
      call n2pqr(Nx, ip1)
      call n2pqr(Ny, ip2)
      call n2pqr(Nz, ip3)
