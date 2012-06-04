@@ -1,5 +1,5 @@
 #!/bin/csh
-foreach i (6 12)
+foreach i (1 2 4 6 8 10 12)
     setenv OMP_NUM_THREADS $i
     ../fft_check  100000   30   30   30 >> fft_nonp2.dat
     ../fft_check   50000   48   48   48 >> fft_nonp2.dat
