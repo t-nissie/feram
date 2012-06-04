@@ -1,0 +1,25 @@
+
+
+
+
+
+
+== Xeon E5-2670 with gfortran-4.4 + FFTW-3.3
+ * ifort+MKLより少し速い
+
+== Xeon E5-2670 with ifort + Intel MKL
+ * gfortran+FFTWより少し遅いことがある。
+ * Non-power of 2 の計算で、正変換→逆変換を繰り返すと誤差が累積する。
+
+== FX10 with ???+SSL2
+FX10+FFTW-3.3より遅い。
+
+
+== FX10 with ???+FFTW-3.3
+SSL2より速い。
+CPUじたいがもっさり遅い。
+
+== SR16000 with ???+MATRIX/MPP
+複素数⇔複素数のHZFT7M()が遅い。
+実数⇔複素数のととはまあまあ速いが実行効率は悪い。
+iparaはよう使えん。
