@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-05-31 11:36:45 t-nissie>
+! Time-stamp: <2012-06-04 18:09:41 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -129,10 +129,12 @@ program fft_check
   end do
   ! check results
   if (abs( dble(a(0, 0, 0))-C_CHECK)>1.0d-15) then
+     write(0,*) a(0, 0, 0)
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in dble(a).'
      stop 1
   end if
   if (abs(aimag(a(0, 0, 0))-C_CHECK)>1.0d-15) then
+     write(0,*) a(0, 0, 0)
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in aimag(a).'
      stop 2
   end if
@@ -158,6 +160,7 @@ program fft_check
   end do
   ! check results
   if (abs(r(0, 0, 0)-C_CHECK)>1.0d-15) then
+     write(0,*) r(0, 0, 0)
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in r.'
      stop 3
   end if
