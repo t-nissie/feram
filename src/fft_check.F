@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-06-05 09:29:05 t-nissie>
+! Time-stamp: <2012-06-05 15:46:40 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -11,7 +11,13 @@
 #  define get_command_argument getarg
 #endif
 
-#  define C_CHECK 0.1d0
+#define C_CHECK 0.1d0
+
+#if defined(__INTEL_COMPILER) && defined(HAVE_LIBFFTW3)
+#  define TOLERANCE 1.0d-10
+#else
+#  define TOLERANCE 1.0d-15
+#endif
 
 program fft_check
   implicit none
@@ -128,12 +134,12 @@ program fft_check
 #   endif
   end do
   ! check results
-  if (abs( dble(a(0, 0, 0))-C_CHECK)>1.0d-15) then
+  if (abs( dble(a(0, 0, 0))-C_CHECK)>TOLERANCE) then
      write(0,*) a(0, 0, 0)
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in dble(a).'
      stop 1
   end if
-  if (abs(aimag(a(0, 0, 0))-C_CHECK)>1.0d-15) then
+  if (abs(aimag(a(0, 0, 0))-C_CHECK)>TOLERANCE) then
      write(0,*) a(0, 0, 0)
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in aimag(a).'
      stop 2
@@ -162,7 +168,7 @@ program fft_check
 #   endif
   end do
   ! check results
-  if (abs(r(0, 0, 0)-C_CHECK)>1.0d-15) then
+  if (abs(r(0, 0, 0)-C_CHECK)>TOLERANCE) then
      write(0,*) r(0, 0, 0)
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in r.'
      stop 3
@@ -190,7 +196,7 @@ program fft_check
   write(0,'(a,f10.3)') ' gflops_fwdbkd = ', gflops_fwdbkd
   write(0,'(a,f10.3)') ' gflops_r2cc2r = ', gflops_r2cc2r
 
-  if (t_r2cc2r<0.00001) then
+  if (t_r2cc2r<0.00001d0) then
      write(6,'(i8,3i5,i11,i4,f13.5,2f11.5,1f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
           & t_plan, t_fwdbkd, t_r2cc2r, &
           & gflops_fwdbkd   ! In the case of Lx=odd on SR16000 with MATRIX/MPP
