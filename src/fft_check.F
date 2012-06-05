@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-06-04 18:09:41 t-nissie>
+! Time-stamp: <2012-06-05 09:29:05 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -151,6 +151,9 @@ program fft_check
      !$omp end parallel do
      call dfftw_execute(plans_c2r)
 #   else
+#    if defined(HITACHI_SR)
+     if (mod(Lx,2).eq.1) exit
+#    endif
      call fft_3d_r2c_or_c2r(.true.,  Lx, Ly, Lz, r, c)
      do j = 0, Lz-1
         c(:,:,j) = c(:,:,j) * N_inv
@@ -187,9 +190,15 @@ program fft_check
   write(0,'(a,f10.3)') ' gflops_fwdbkd = ', gflops_fwdbkd
   write(0,'(a,f10.3)') ' gflops_r2cc2r = ', gflops_r2cc2r
 
-  write(6,'(i8,3i5,i11,i4,f13.5,2f11.5,2f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
-       & t_plan, t_fwdbkd, t_r2cc2r, &
-       & gflops_fwdbkd, gflops_r2cc2r  
+  if (t_r2cc2r<0.00001) then
+     write(6,'(i8,3i5,i11,i4,f13.5,2f11.5,1f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
+          & t_plan, t_fwdbkd, t_r2cc2r, &
+          & gflops_fwdbkd   ! In the case of Lx=odd on SR16000 with MATRIX/MPP
+  else
+     write(6,'(i8,3i5,i11,i4,f13.5,2f11.5,2f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
+          & t_plan, t_fwdbkd, t_r2cc2r, &
+          & gflops_fwdbkd, gflops_r2cc2r  
+  end if
 
 #if defined(HAVE_LIBFFTW3)
   call dfftw_cleanup_threads(ireturn)

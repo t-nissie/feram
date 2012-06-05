@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-06-04 07:52:43 takeshi>
+! Time-stamp: <2012-06-05 08:39:43 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -10,7 +10,6 @@
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include "define.h"
 
 #if defined(HITACHI_SR)
 subroutine n2pqr(n,pqr)
@@ -56,7 +55,6 @@ subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
   complex*16,save       :: tb1(2048), tb2(2048), tb3(2048)
   complex*16,allocatable:: wk1(:), wk2(:)
   integer               :: ier, ix, iy, iz
-  character(len=10)     :: ipara_s
 
   if (mode) then
      iopt(1)=1
@@ -68,10 +66,13 @@ subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
      call n2pqr(Nx, ip1)
      call n2pqr(Ny, ip2)
      call n2pqr(Nz, ip3)
+     if (ip1(1).eq.0) then
+        write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': On SR16000 with MATRIX/MPP, NX must be even.'
+        stop 4
+     end if
      ndim1 = 2*(Nx/2+1)
      ipara = $NUMTHRD()
-     write(ipara_s,'(i8)') ipara
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'ipara = ', ipara_s)
+     write(0,'(a,i8)') 'fft.F: ipara = ', ipara
      nwk1 = (Nx/2+NWKW)*(Ny+NWKW)*(Nz+NWKW) + 100
      nwk2 = (Nx/2+NWKW)*MAX(Ny+NWKW,Nz+NWKW)*ipara + 100
      iopt(2)=1
