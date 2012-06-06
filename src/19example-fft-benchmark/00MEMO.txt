@@ -1,12 +1,22 @@
 = 3次元FFTのベンチマーク
 
+コンパイルオプション
+
+
+== 各マシンの比較
+
 
 == Xeon E5-2670 with gfortran-4.4 + FFTW-3.3
  * ifort+MKLより少し速い
 
 == Xeon E5-2670 with ifort + Intel MKL
  * gfortran+FFTWより少し遅いことがある。
- * Non-power of 2 の計算で、正変換→逆変換を繰り返すと誤差が累積する。
+ * Non-power of 2 の計算で、正変換逆変換を繰り返すと誤差が累積する
+   場合がある。たとえば30x30x30の実FFTや75x75x75の複素FFT。
+   ../fft_check 10000 30 30 30 や
+   ../fft_check 10000 75 75 75 で確認可能。
+
+
 
 == FX10 with ???+SSL2
 FX10+FFTW-3.3より遅い。
