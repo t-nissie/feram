@@ -35,7 +35,7 @@ set output "fft_check_powr2.1node.eps"
 set multiplot
 set size 1.0,0.52
 
-set title "double-precision complex, 3d transforms, 1 node, powers of two\nin-place"
+set title "double-precision complex, 3d transforms, 1 node\npowers of two, in-place"
 set origin 0.0,0.5
 plot '< grep "  32      0" fft_check_powr2_stride2.SR16000.r1307.dat'\
                                                   using 0:10  t   'SR16000 MATRIX/MPP SMT=off' w lp lt 3 lw 2 pt 4,\
@@ -46,7 +46,7 @@ plot '< grep "  32      0" fft_check_powr2_stride2.SR16000.r1307.dat'\
      'fft_check_powr2.E5-2670.r1292.FFTW.dat'     using 0:10  t          'E5-2670 FFTW HT=off' w lp lt 2 lw 2 pt 6,\
      'fft_check_powr2.E5-2670.r1292.MKL.dat'      using 0:10  t         'E5-2670 MKL   HT=off' w lp lt 2 lw 2 pt 2
 
-set title "double-precision real-data, 3d transforms, 1 node, powers of two\nout-of-place or copy before/after transform"
+set title "double-precision real-data, 3d transforms, 1 node\npowers of two, out-of-place or copy before/after transform"
 set origin 0.0,0.0
 plot '< grep "  32      0" fft_check_powr2_stride2.SR16000.r1307.dat'\
                                                   using 0:11  t   'SR16000 MATRIX/MPP SMT=off' w lp lt 3 lw 2 pt 4,\
@@ -69,16 +69,16 @@ set size 1.0,0.52
 
 set xrange [-1:16]
 
-set title "double-precision complex, 3d transforms, 1 CPU, powers of two\nin-place"
+set title "double-precision complex, 3d transforms, 1 CPU\npowers of two, in-place"
 set origin 0.0,0.5
 plot '< grep "   8      0" fft_check_powr2_stride2.SR16000.r1307.dat'\
                                                   using 0:10  t   'SR16000 MATRIX/MPP SMT=off' w lp lt 3 lw 2 pt 4,\
      '< grep "  16      0" fft_check_powr2_stride1.SR16000.r1307.dat'\
                                                   using 0:10  t   'SR16000 MATRIX/MPP SMT=on ' w lp lt 3 lw 2 pt 5,\
-     'fft_check_powr2.FX10.r1292.FFTW.dat'        using 0:11  t                    'FX10 FFTW' w lp lt 1 lw 2 pt 7,\
-     'fft_check_powr2.FX10.r1292.SSL2.dat'        using 0:11  t                    'FX10 SSL2' w lp lt 1 lw 2 pt 1
+     'fft_check_powr2.FX10.r1292.FFTW.dat'        using 0:10  t                    'FX10 FFTW' w lp lt 1 lw 2 pt 7,\
+     'fft_check_powr2.FX10.r1292.SSL2.dat'        using 0:10  t                    'FX10 SSL2' w lp lt 1 lw 2 pt 1
 
-set title "double-precision real-data, 3d transforms, 1 CPU, powers of two\nout-of-place or copy before/after transform"
+set title "double-precision real-data, 3d transforms, 1 CPU\npowers of two, out-of-place or copy before/after transform"
 set origin 0.0,0.0
 plot '< grep "   8      0" fft_check_powr2_stride2.SR16000.r1307.dat'\
                                                   using 0:11  t   'SR16000 MATRIX/MPP SMT=off' w lp lt 3 lw 2 pt 4,\
@@ -126,7 +126,7 @@ set multiplot
 
 set size 1.0,0.52
 
-set title "double-precision complex, 3d transforms, 1 node, powers of two\nin-place"
+set title "double-precision complex, 3d transforms, 1 node\nnon-powers of two, in-place"
 set origin 0.0,0.5
 plot '< grep "  32      0" fft_check_nonp2_stride2.SR16000.r1307.dat'\
                                                   using 0:10  t   'SR16000 MATRIX/MPP SMT=off' w lp lt 3 lw 2 pt 4,\
@@ -135,7 +135,7 @@ plot '< grep "  32      0" fft_check_nonp2_stride2.SR16000.r1307.dat'\
      '< grep "  12      0" fft_check_nonp2.X5650.r1307.dat'\
                                                   using 0:10  t             'X5650 MKL HT=off' w lp lt 4 lw 2 pt 2
 
-set title "double-precision real-data, 3d transforms, 1 node, powers of two\nout-of-place or copy before/after transform"
+set title "double-precision real-data, 3d transforms, 1 node\nnon-powers of two, out-of-place or copy before/after transform"
 set origin 0.0,0.0
 plot '< grep "  32      0" fft_check_nonp2_stride2.SR16000.r1307.dat'\
                                                   using 0:11  t   'SR16000 MATRIX/MPP SMT=off' w lp lt 3 lw 2 pt 4,\
@@ -154,7 +154,7 @@ set multiplot
 
 set size 1.0,0.52
 
-set title "double-precision complex, 3d transforms, 1 CPU, powers of two\nin-place"
+set title "double-precision complex, 3d transforms, 1 CPU\nnon-powers of two, in-place"
 set origin 0.0,0.5
 plot '< grep "   8      0" fft_check_nonp2_stride2.SR16000.r1307.dat'\
                                                   using 0:10  t   'SR16000 MATRIX/MPP SMT=off' w lp lt 3 lw 2 pt 4,\
@@ -163,7 +163,7 @@ plot '< grep "   8      0" fft_check_nonp2_stride2.SR16000.r1307.dat'\
      '< grep "   6      0" fft_check_nonp2.X5650.r1307.dat'\
                                                   using 0:10  t             'X5650 MKL HT=off' w lp lt 4 lw 2 pt 2
 
-set title "double-precision real-data, 3d transforms, 1 CPU, powers of two\nout-of-place or copy before/after transform"
+set title "double-precision real-data, 3d transforms, 1 CPU\nnon-powers of two, out-of-place or copy before/after transform"
 set origin 0.0,0.0
 plot '< grep "   8      0" fft_check_nonp2_stride2.SR16000.r1307.dat'\
                                                   using 0:11  t   'SR16000 MATRIX/MPP SMT=off' w lp lt 3 lw 2 pt 4,\
