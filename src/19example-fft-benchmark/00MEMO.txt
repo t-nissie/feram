@@ -1,33 +1,41 @@
-= 3次元FFTのベンチマーク
-
-コンパイルオプション
-
+= 【メモ】最近のコンピュータの１ノードあたりの3次元FFTのベンチマーク
+コンパイルオプション云々。
+NUMA云々。
 
 == 各マシンの比較
-
-
-== Xeon E5-2670 with gfortran-4.4 + FFTW-3.3
- * ifort+MKLより少し速い
-
-== Xeon E5-2670 with ifort + Intel MKL
- * gfortran+FFTWより少し遅いことがある。
- * Non-power of 2 の計算で、正変換逆変換を繰り返すと誤差が累積する
-   場合がある。たとえば30x30x30の実FFTや75x75x75の複素FFT。
+=== Xeon E5-2670 (2.60 GHz)
+ * 2 CPU/node。理論性能 333 GFLOPS。
+ * Hyper Threading (HT) はoff。
+ * FFTは最高で80 GFLOPS前後。価格性能比がよい。１ノードを70万円以下で買える。
+ * E5-4650なら4 CPU/nodeにできる。
+   まだ１ノードが230万円と高価だが。
+   256x256x256以上の大きなサイズでの高速化が期待できる？
+ * gfortran-4.4+FFTW-3.3 は ifort+MKL より少し速い。
+ * FFTW-3.3はE5系のAVX命令が使える。
+ * MKLはnon-powers of 2の計算で、正変換逆変換を繰り返すと誤差が
+   累積する場合がある。たとえば30x30x30の実FFTや75x75x75の複素FFT。
    ../fft_check 10000 30 30 30 や
    ../fft_check 10000 75 75 75 で確認可能。
+   Σ0.1の計算なので誤差が累積するのはあたりまえ。
+   誤差が累積しないのはレジスタの拡張精度？？？？？
 
+=== FX10 (1.85 GHz)
+ * 1 CPU/node。16 core/CPU。理論性能 236.5 GFLOPS。
+ * FFTW-3.3はSSL2よりかなり速い。
 
+=== SR16000 model M1 (3.83 GHz)
+ * 4 CPU/node。8 core/CPU。POWER 7。理論性能 980 GFLOPS。
+ * Simultaneous Multithreading (SMT) offとonとで比較。
+ * MATRIX/MPPを利用。
+   work領域を自分で確保しなくてはならないなど古くさい。
+ * FFTWのコンパイルはできたがplanで刺さる場合がある。
+ * 複素数⇔複素数のHZFT7M()が遅い。
+ * 実数⇔複素数のHDFZ7M()とHZFD7M()とは最高で70GFLOPS弱。
+   理論性能からすると残念な実効性能 (7.1%)。
+ * 実数⇔複素数のHDFZ7M()とHZFD7M()とは今のところNxを奇数にできない。
 
-== FX10 with ???+SSL2
-FX10+FFTW-3.3より遅い。
-
-
-== FX10 with ???+FFTW-3.3
-SSL2より速い。
-CPUじたいがもっさり遅い。
-
-== SR16000 with ???+MATRIX/MPP
-複素数⇔複素数のHZFT7M()が遅い。
-実数⇔複素数のHDFZ7M()とHZFD7M()とはまあまあ速いが実行効率は悪い。
-実数⇔複素数のHDFZ7M()とHZFD7M()とは今のところNxを奇数にできない。
-iparaはよう使えん。
+== 各ライブラリの比較
+=== FFTW
+ * 速い。
+ * 大きなサイズだとplanに時間がかかるので
+   /etc/fftw/wisdomを用意すべき。
