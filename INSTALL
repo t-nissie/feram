@@ -43,7 +43,8 @@ follow this quick compilation instruction.
  $ ../configure
  $ cd src
  $ make
- $ make feram_mpi   # OPTIONAL
+ $ make feram_mpi   # OPTIONAL. mpif90 is required.
+ $ make check       # OPTIONAL. Test RNG and FFT.
  $ ls -l feram*
  $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
  $ cd 11example-BaTiO3-new-hysteresis-loop
