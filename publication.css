@@ -1,0 +1,64 @@
+/* -*-CSS-*-
+ * publication.css
+ * Time-stamp: <2012-06-12 15:17:20 takeshi>
+ * Author: Takeshi NISHIMATSU
+ */
+body
+{
+    color:       black;
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+h1, h2, h3, h4, h6
+{
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+h1
+{
+    color: #dd0000;
+}
+
+h2
+{
+    color: #dd0000;
+}
+
+li
+{
+    margin-left:   2em;
+    margin-bottom: 13px;
+}
+
+dt
+{
+    clear: left;
+    float: left;
+    margin: 0 0 0.8em;
+    width: 2.5em;
+}
+
+dd
+{
+    margin-bottom: 0.8em;
+    margin-left: 2.5em;
+}
+
+a
+{
+    text-decoration: none;
+    color: #dd0000;
+}
+
+div.title
+{
+    font-weight: bold;
+    display: inline;
+}
+
+div.volume
+{
+    font-weight: bold;
+    display: inline;
+}
+
