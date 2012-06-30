@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-06-05 15:46:40 t-nissie>
+! Time-stamp: <2012-06-30 23:46:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -100,6 +100,9 @@ program fft_check
 #if defined(HAVE_LIBFFTW3)
   call dfftw_init_threads(ireturn)
   call dfftw_plan_with_nthreads(NTHREADS)
+
+  call dfftw_import_system_wisdom(ireturn)
+  if (ireturn.ne.1) write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': Could not import FFTW system wisdom. All FFTW plans will be made by myself.'
 
   call     dfftw_plan_dft_3d(plans_fwd, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_FORWARD,  FFTW_PATIENT)
   call     dfftw_plan_dft_3d(plans_bkd, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_BACKWARD, FFTW_PATIENT)
