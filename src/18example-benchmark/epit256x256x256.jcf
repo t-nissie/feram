@@ -6,13 +6,11 @@
 #@ restart = no
 #@ job_name = epit256x256x256
 #@ job_type = serial
-#@ resources = ConsumableCpus(64)
 #@ comment = -n 1 -pm 1 -pt 64 -ap "general"
 #@ queue
 #
 # Usage: llsubmit epit256x256x256.jcf
 #
-export MEMORY_AFFINITY=MCM
 export HF_ERR_STATUS_MODE=1
 export HF_PRUNST_BIND=1
 export HF_BINDPROC_NUM=0
