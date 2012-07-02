@@ -1,5 +1,5 @@
 #!/bin/sh
-#@ class = qtn
+#@ class = qeb
 #@ output = epit256x256x256.stdout
 #@ error  = epit256x256x256.stderr
 #@ environment = COPY_ALL
