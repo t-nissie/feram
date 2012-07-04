@@ -35,7 +35,7 @@ These software are useful for executing feram and analyzing calculated results.
 == Quick compilation
 If you have all the required libraries,
 follow this quick compilation instruction.
- $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir Linux-i686-gfortran-4.3.5
  $ cd Linux-i686-gfortran-4.3.5
@@ -98,7 +98,7 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
 
 ==== compile feram
  $ export LD_LIBRARY_PATH=/usr/local/lib64   # Do not forget it.
- $ tar Jxf feram-0.18.05.tar.xz
+ $ tar xf feram-0.18.05.tar.xz
  $ cd feram-0.18.05
  $ mkdir CentOS
  $ cd CentOS
@@ -112,7 +112,7 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
 === Linux with Intel Fortran Compiler and FFTW wrappers in Intel MKL
  $ . /opt/intel/bin/ifortvars.sh intel64     # Put these two lines in your
  $ . /opt/intel/mkl/bin/mklvars.sh intel64   # ~/.bashrc or somewhere.
- $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir ifort-11.1
  $ cd ifort-11.1
@@ -124,7 +124,7 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
 
 === Linux with PGI Fortran and ACML (AMD Core Math Library)
  $ source /opt/pgi/linux86-64/12.2/pgi.sh    # Put it in your ~/.bashrc or somewhere.
- $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir pgf95-12.2
  $ cd pgf95-12.2
@@ -135,10 +135,10 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
 
 
 == Super computers
-=== HITACHI SR16000
+=== HITACHI SR16000 with f90 (OFORT90), FFT in MATRIX/MPP and LAPACK
 Note that libblas.a, liblapack.a, and libmatmpp.a must be in
 /sysap/lib/, /opt/hitachi/matmpp/lib/ or elsewhere.
- $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir SR16000-f90
  $ cd SR16000-f90
@@ -155,8 +155,20 @@ Therefore,
  $ submit SC general -pt 16 -exec SC -J SC -N -u t-nissie@example.com
 is the most efficient way of queue submission on SR16000, so far.
 
+=== HITACHI SR16000 with IBM xlf90_r, FFTW 3.3 and dsyevx in ESSL (libesslsmp)
+Note that ESSL does not have dsyev but dsyevx.
+ $ tar xf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir SR16000-xlf
+ $ cd SR16000-xlf
+ $ ../configure FC=xlf90_r CPPFLAGS=-I/home/t-nissie/AIX/include LDFLAGS='-L/home/t-nissie/AIX/lib' --with-lapack=essl
+ $ cd src
+ $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-like comments
+ $ emacs Makefile   # DEFS = -DHAVE_CONFIG_H  =>  DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg
+ $ make fft_check
+
 === Fujitsu FX1
- $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir FX1
  $ cd FX1
@@ -166,7 +178,7 @@ is the most efficient way of queue submission on SR16000, so far.
  $ make feram_mpi   # OPTIONAL
 
 === Fujitsu Kei and FX10 with their cross compiler frtpx and mpifrtpx
- $ tar Jxf feram-X.YY.ZZ.tar.xz
+ $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir Kei
  $ cd Kei
