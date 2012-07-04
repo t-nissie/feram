@@ -1,5 +1,5 @@
 ! f90_wisdom.F -*-f90-*-
-! Time-stamp: <2012-07-04 15:50:06 takeshi>
+! Time-stamp: <2012-07-04 16:49:30 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Original: fftw-3.3.2/doc/f77_wisdom.f
 !!
@@ -33,6 +33,9 @@
 ! libraries.
 ! 
 !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 
 #if defined(HAVE_LIBFFTW3)
 ! Strictly speaking, the '$' format specifier, which allows us to
