@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-06-05 08:41:09 t-nissie>
+# Time-stamp: <2012-07-04 16:50:52 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -57,7 +57,7 @@ frozen_phonon_X_SOURCES = frozen_phonon_X.F
 
 marsaglia_tsang_uni64_check_SOURCES = marsaglia_tsang_uni64_check.F marsaglia_tsang_uni64_module.f
 
-fft_check_SOURCES = fft.F fft_check.F
+fft_check_SOURCES = fft.F fft_check.F f90_wisdom.F
 
 TESTS = marsaglia_tsang_uni64_check fft_check
 
