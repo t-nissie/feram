@@ -1,5 +1,5 @@
 ! frozen_phonon_Gamma.F -*-f90-*-
-! Time-stamp: <2009-02-20 15:47:12 t-nissie>
+! Time-stamp: <2012-07-05 14:58:04 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! reference: R. D. King-Smith and David Vanderbilt: "First-principles investigation of
 !            ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
@@ -8,8 +8,8 @@
 
 program frozen_phonon_Gamma
   implicit none
-  integer, parameter :: LWORK = 100   ! for LAPACK
-  real*8    rwork(LWORK)                       ! for LAPACK zheev
+  integer, parameter ::       LWORK = 100   ! for LAPACK
+  real*8             :: rwork(LWORK)        ! for LAPACK dsyev
 
   character (len=30)  dummy
   integer i, j, i_atom, alpha, info
@@ -36,8 +36,12 @@ program frozen_phonon_Gamma
   !   write(6,'(5f11.7)') (force_constant_matrix(i,j),j=1,5)
   !end do
 
+#if defined(__xlc__)
+  stop 'ESSL does not have dsyev().'
+#else
   !LAPACK dsyev(JOBZ, UPLO, N, A,                   LDA, W,           WORK,  LWORK, INFO)
   call    dsyev('V',  'L',  5, force_constant_matrix, 5, eigenvalues, rwork, LWORK, info)
+#endif
 
   write(6,'(a)') 'eigenvalues [eV/Angstrom^2] and eigenvectors of force_constant_matrix'
   do j=1,5

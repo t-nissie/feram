@@ -1,5 +1,5 @@
 ! diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2011-12-19 00:06:46 takeshi>
+! Time-stamp: <2012-07-05 16:06:13 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Usage: ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
 !!
@@ -60,16 +60,24 @@ program diagonalize15x15
   end do
 
   if (all_real) then
+#if defined(__xlc__)
+     stop 'ESSL does not have dsyev().'
+#else
      !LAPACK dsyev(JOBZ, UPLO, N,         A,                           LDA,       W,           WORK,  LWORK, INFO)
      call    dsyev('V',  'L',  N_FREEDOM, Force_Matrix_real_symmetric, N_FREEDOM, eigenvalues, rwork, LWORK, info)
+#endif
      write(fmt_eigen,'(a,i3,a)') '(i2,f11.6,', N_ATOM, '(f10.3,f7.3,f7.3))'
      write(6,'(a)') 'eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)'
      do j=1,N_FREEDOM
         write(6,fmt_eigen) j, eigenvalues(j), (Force_Matrix_real_symmetric(i,j), i=1,N_FREEDOM)
      end do
   else
+#if defined(__xlc__)
+     stop 'ESSL does not have zheev().'
+#else
      !LAPACK zheev(JOBZ,UPLO,N,        A,                     LDA,      W,          WORK,LWORK,RWORK,INFO)
      call    zheev('V', 'L', N_FREEDOM,Force_Matrix_Hermetian,N_FREEDOM,eigenvalues,work,LWORK,rwork,info)
+#endif
      write(fmt_eigen,'(a,i3,a)') "(i2,f11.6,", N_ATOM, "((f8.2,f5.2)(f6.2,f5.2)(f6.2,f5.2)))"
      do j=1,N_FREEDOM
         write(6,fmt_eigen) j, eigenvalues(j), (Force_Matrix_Hermetian(i,j), i=1,N_FREEDOM)

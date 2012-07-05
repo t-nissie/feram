@@ -1,5 +1,5 @@
 ! f90_wisdom.F -*-f90-*-
-! Time-stamp: <2012-07-04 16:49:30 takeshi>
+! Time-stamp: <2012-07-05 15:25:09 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Original: fftw-3.3.2/doc/f77_wisdom.f
 !!
@@ -36,6 +36,10 @@
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
+
+subroutine f90_wisdom_dummy()
+  write(6,*) 'This is a dummy subroutine.'
+end subroutine f90_wisdom_dummy
 
 #if defined(HAVE_LIBFFTW3)
 ! Strictly speaking, the '$' format specifier, which allows us to

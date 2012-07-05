@@ -1,5 +1,5 @@
 ! print-eigenvalues.F -*-f90-*-
-! Time-stamp: <2011-06-16 15:27:50 takeshi>
+! Time-stamp: <2012-07-05 14:57:08 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -100,7 +100,11 @@ subroutine print_eigenvalues_sub(Lx, Ly, Lz, phi, ix, iy, iz, unit, len)
   last_iy = iy
   last_iz = iz
   tmp(:,:) = phi(ix,iy,iz,:,:)
+#if defined(__xlc__)
+  stop 'ESSL does not have dsyev().'
+#else
   call DSYEV('N', 'U', 3, tmp, 3, eigenvalues, work, lwork, info)   ! tmp is destroyed.
+#endif
   write(unit,'(f10.5,3i4,3e25.16E3)') len,ix,iy,iz,(eigenvalues(beta), beta=1,3)
   tmp(:,:) = dble(phi(ix,iy,iz,:,:))
   write(unit,'(2("#",e15.6E3,e16.6E3,e16.6E3,/),"#",e15.6E3,e16.6E3,e16.6E3)') &

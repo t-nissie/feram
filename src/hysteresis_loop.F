@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2012-04-14 12:03:49 user2001>
+! Time-stamp: <2012-07-05 15:19:15 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -84,7 +84,11 @@ subroutine hysteresis_loop(p,c)
            u(:) = u(:) / c%n_sum_p
            write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5)") &
                 i_step,p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
+#         if defined(HITACHI_SR)
            call flush(UNIT_HL)
+#         else
+           flush(UNIT_HL)
+#         endif
            write(fn_system,'(a,a)') trim(p%filename), '.coord'
            call write_system(p,c,fn_system)
         end if
