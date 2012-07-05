@@ -161,11 +161,12 @@ Note that ESSL does not have dsyev but dsyevx.
  $ cd feram-X.YY.ZZ
  $ mkdir SR16000-xlf
  $ cd SR16000-xlf
- $ ../configure FC=xlf90_r CPPFLAGS=-I/home/t-nissie/AIX/include LDFLAGS='-L/home/t-nissie/AIX/lib' --with-lapack=essl
+ $ ../configure FC=xlf90_r CPPFLAGS=-I/home/t-nissie/AIX/include LDFLAGS=-L/home/t-nissie/AIX/lib --with-lapack=essl
  $ cd src
  $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-like comments
  $ emacs Makefile   # DEFS = -DHAVE_CONFIG_H  =>  DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg
  $ make fft_check
+ $ OMP_NUM_THREADS=8 ./fft_check 1000 32 32 32
 
 === Fujitsu FX1
  $ tar xf feram-X.YY.ZZ.tar.xz
