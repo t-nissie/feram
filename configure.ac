@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-07-05 09:14:36 t-nissie>
+dnl Time-stamp: <2012-07-05 18:56:02 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -64,6 +64,7 @@ case "$FC" in
     ;;
   xlf*)
     test -n "$FCFLAGS" || FCFLAGS="-O4 -qsmp=omp -qinfo=all"
+    test -n "$MPIFC" || MPIFC=mp"$FC"
     ;;
   *)
     test -n "$FCFLAGS" || FCFLAGS="-O2"
