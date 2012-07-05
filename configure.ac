@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-05-31 10:48:38 takeshi>
+dnl Time-stamp: <2012-07-05 08:05:22 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -26,7 +26,7 @@ AC_PROG_INSTALL
 ## Checks for Fortran compilers.
 FCFLAGS_PRESERVE=$FCFLAGS
 AC_LANG(Fortran)
-AC_PROG_FC(gfortran ifort pgf95 pgf90 g95 xf90 f90 frt frtpx openf95)
+AC_PROG_FC(gfortran ifort pgf95 pgf90 g95 xf90 f90 frt frtpx xlf90_r xlf95_r openf95)
 FCFLAGS=$FCFLAGS_PRESERVE
    # Restore FCFLAGS, because AC_PROG_FC() sets FCFLAGS to '-g -O2', '-O2' or '-g' undesirably.
 
@@ -62,8 +62,8 @@ case "$FC" in
     test -n "$FCFLAGS" || FCFLAGS="-Kfast,parallel,openmp,preex,array_private,auto -SSL2 -Qt"
     test -n "$MPIFC" || MPIFC=mpifrtpx
     ;;
-  *xlf*)
-    AC_MSG_ERROR([C preprocessor invoked from IBM XL Fortran cannot process comment lines in define.h and config.h properly, so far.])
+  xlf*)
+    test -n "$FCFLAGS" || FCFLAGS="-O4 -qsmp=omp -qinfo=all"
     ;;
   *)
     test -n "$FCFLAGS" || FCFLAGS="-O2"
@@ -116,6 +116,9 @@ case "$host" in
       acml*)
         AC_CHECK_LIB(acml_mp, DZFFT3D,, AC_MSG_ERROR([You need ACML. See config.log.]))
         ;;
+      cufft*)
+        AC_CHECK_LIB(libcufft, cufftPlan3d,, AC_MSG_ERROR([You need CUFFT. See config.log.]))
+        ;;
       no)
         AC_MSG_ERROR([You need an FFT library.])
         ;;
@@ -137,6 +140,9 @@ case "$with_lapack" in
     AC_CHECK_LIB(blas,  dsymv,,[AC_CHECK_LIB(f77blas,  dsymv,,AC_MSG_ERROR([You need  BLAS  library. See config.log.]))])
     AC_CHECK_LIB(lapack,dsyev,,AC_MSG_ERROR([You need LAPACK library. See config.log.]))
     ;;
+  essl)
+    AC_CHECK_LIB(esslsmp,dsyevx,,AC_MSG_ERROR([You need ESSL library for LAPACK subroutines. See config.log.]))
+    ;;  
   mkl)
     case "$LIBS" in
       *mkl_gf_lp64*)
@@ -166,14 +172,16 @@ case "$with_lapack" in
     ;;
 esac
 
-## fixed-form or free-form
-FCFLAGS_FIXEDFORM=$FCFLAGS
+## free-form
 case "$FC" in
   g95|gfortran*)
     FCFLAGS="$FCFLAGS -ffree-form -ffree-line-length-none"
     ;;
   frt*)
     FCFLAGS="$FCFLAGS -Free"
+    ;;
+  xlf*)
+    FCFLAGS="$FCFLAGS -qfree"
     ;;
   openf95)
     FCFLAGS="$FCFLAGS -freeform"
