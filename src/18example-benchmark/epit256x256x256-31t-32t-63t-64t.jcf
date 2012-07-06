@@ -1,0 +1,29 @@
+#!/bin/sh
+#@ class = qem
+#@ output = epit256x256x256-31t-32t-63t-64t.stdout
+#@ error  = epit256x256x256-31t-32t-63t-64t.stderr
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = epit256x256x256-31t-32t-63t-64t
+#@ job_type = serial
+#@ comment = -n 1 -pm 1 -pt 64 -ap "general"
+#@ queue
+#
+# Usage: llsubmit epit256x256x256-31t-32t-63t-64t.jcf
+#
+
+# export MEMORY_AFFINITY=MCM
+
+export HF_ERR_STATUS_MODE=1
+export HF_PRUNST_BIND=1
+export HF_BINDPROC_NUM=0
+
+export HF_BINDPROC_STRIDE=2
+HF_90OPTS="-FPRUNST(THREADNUM(31))" OMP_NUM_THREADS=31 /usr/bin/timex ../feram epit256x256x256.feram
+HF_90OPTS="-FPRUNST(THREADNUM(32))" OMP_NUM_THREADS=32 /usr/bin/timex ../feram epit256x256x256.feram
+
+export HF_BINDPROC_STRIDE=1
+HF_90OPTS="-FPRUNST(THREADNUM(63))" OMP_NUM_THREADS=63 /usr/bin/timex ../feram epit256x256x256.feram
+HF_90OPTS="-FPRUNST(THREADNUM(64))" OMP_NUM_THREADS=64 /usr/bin/timex ../feram epit256x256x256.feram
+
+rm -f *.coord
