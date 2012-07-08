@@ -1,0 +1,15 @@
+#!/bin/sh
+#PJM -L "rscgrp=short"
+#PJM -L "node=1"
+#PJM -L "elapse=0:30:00"
+#PJM -j
+export PJM_JOBNAME=prof32x32x243.FX10
+export FLIB_FASTOMP=TRUE
+export PARALLEL=16
+export OMP_NUM_THREADS=16
+mkdir -p prof32x32x243
+rm -f prof32x32x243/*
+fipp -C -Ihwm -d prof32x32x243 ../fft_check 20000 32 32 243
+
+##
+# fipppx -Ibalance,cpu,hwm -l 40  -A -d prof32x32x243 > prof32x32x243.FX10.PROFILE

@@ -1,0 +1,14 @@
+[c25050@a06tio177 19example-fft-benchmark]$ fipp -C -Ihwm -d prof32x32x243 ../fft_check 20000 32 32 243
+N_TIMES =    20000    Lx =   32, Ly =   32, Lz =  243,    N =     248832,    NTHREADS =  16
+../../src/fft_check.F:109: Successfully read FFTW wisdom in current directory.
+ t_plan   =      0.13200
+ t_fwdbkd =     27.72400
+ t_r2cc2r =     15.33000
+ gflops_fwdbkd =     32.176
+ gflops_r2cc2r =     29.095
+   20000   32   32  243     248832  16      0.13200   27.72400   15.33000    32.176    29.095
+[c25050@a06tio177 19example-fft-benchmark]$
+gnuplot> print 43.3415*32538.4169
+1410263.79607135
+gnuplot> print 5*248832*log(248832.0)/log(2.0)*20000*3
+1338080083469.17
