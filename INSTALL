@@ -142,18 +142,22 @@ Note that libblas.a, liblapack.a, and libmatmpp.a must be in
  $ cd feram-X.YY.ZZ
  $ mkdir SR16000-f90
  $ cd SR16000-f90
- $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/opt/hitachi/matmpp/lib' --host=SR16000
+ $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/opt/hitachi/matmpp/lib' --with-fft=matmpp
  $ cd src
  $ make
 For performance monitor
  $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/opt/hitachi/matmpp/lib' FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
-   -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -pmfunc -pmpar' --host=SR16000
+   -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -i,L -pmfunc -pmpar'
 Currently, feram runs on 1/4 node of SR16000 effectively.
 Therefore,
  $ cat SC
  ../feram forward.feram
  $ submit SC general -pt 16 -exec SC -J SC -N -u t-nissie@example.com
 is the most efficient way of queue submission on SR16000, so far.
+
+
+=== HITACHI SR16000 with f90 (OFORT90), fftw-3.3.2 and LAPACK
+ $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/sysap/fftw/fftw-3.3.2a/lib -lm' CPPFLAGS=-I/sysap/fftw/fftw-3.3.2a/include --with-fft=fftw3_omp
 
 === HITACHI SR16000 with IBM xlf90_r, FFTW 3.3 and dsyevx in ESSL (libesslsmp)
 Note that ESSL does not have dsyev but dsyevx.
