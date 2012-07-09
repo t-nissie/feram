@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-07-05 18:56:02 t-nissie>
+dnl Time-stamp: <2012-07-09 18:19:25 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -51,8 +51,9 @@ case "$FC" in
     ;;
   xf90|f90)
     test -n "$FCFLAGS" || FCFLAGS="-64 -Os -parallel=4\
-      -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist"
+      -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -i,L"
     test -n "$MPIFC" || MPIFC=mpi"$FC"
+    AC_DEFINE([HITACHI_SR], [1], [HITACHI SR11000 and SR16000])
     ;;
   frt)
     test -n "$FCFLAGS" || FCFLAGS="-Kimpact -Am -SSL2 -KOMP"
@@ -85,48 +86,50 @@ case "$host" in
 esac
 
 ## FFT library
-case "$host" in
-  SR1*)
-    AC_DEFINE([HITACHI_SR], [1], [HITACHI SR11000 and SR16000])
-    AC_MSG_NOTICE([We use MATRIX/MPP (matmpp) library of HITACHI SR11000 or SR16000.])
-    LDFLAGS="$LDFLAGS -L/opt/hitachi/matmpp/lib"
+AC_ARG_WITH(fft,[AS_HELP_STRING([--with-fft=ARG],[FFT library.
+                                   ARG must be one of
+                                   fftw3_omp (default, fast),
+                                   fftw3_threads,
+                                   mkl (Intel MKL, FFTW3 wrappers to Intel MKL functions),
+                                   matmpp (Hitachi Matrix/MPP),
+                                   ssl2 (Fujitsu SSL II),
+                                   acml (AMD Core Math Library, slow), or
+                                   no (error).])])
+case "$with_fft" in
+  fftw3_omp | fftw | fftw3 | yes | "")
+    AC_CHECK_LIB(fftw3, dfftw_execute,,
+                 [AC_MSG_ERROR([You need FFTW3 library, i.e. libfftw3. See config.log.])])
+    AC_CHECK_LIB(fftw3_omp, dfftw_init_threads,,
+                 [AC_MSG_ERROR([You need FFTW3 library compiled with --enable-openmp, i.e. libfftw3_omp. See config.log.])])
+    ;;
+  fftw3_threads)
+    AC_CHECK_LIB(fftw3, dfftw_execute,,
+                 [AC_MSG_ERROR([You need FFTW3 library, i.e. libfftw3. See config.log.])])
+    AC_CHECK_LIB(fftw3_threads, dfftw_init_threads,,
+                 [AC_MSG_ERROR([You need FFTW3 library compiled with --enable-threads, i.e. libfftw3_omp. See config.log.])])
+    ;;
+  matmpp)
     AC_CHECK_LIB(matmpp, HDFZ7M,,
-                 AC_MSG_ERROR([You need MATRIX/MPP (matmpp) library. See config.log.]))
+                 [AC_MSG_ERROR([You need MATRIX/MPP (matmpp) library. See config.log.])])
+    ;;
+  mkl)
+    AC_CHECK_LIB(mkl_core, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
+                 AC_MSG_ERROR([You need Intel Math Kernel Library (MKL). See config.log.]),[-lmkl_intel_thread -lmkl_gf_lp64])
+    ;;
+  ssl2)
+    ;;
+  acml*)
+    AC_CHECK_LIB(acml_mp, DZFFT3D,, AC_MSG_ERROR([You need ACML. See config.log.]))
+    ;;
+  cufft*)
+    AC_CHECK_LIB(libcufft, cufftPlan3d,, AC_MSG_ERROR([You need CUFFT. See config.log.]))
+    ;;
+  no)
+    AC_MSG_ERROR([You need an FFT library.])
     ;;
   *)
-    AC_ARG_WITH(fft,[AS_HELP_STRING([--with-fft=ARG],[FFT library.
-                                     ARG must be one of
-                                     fftw3 (default, fast),
-                                     mkl (Intel MKL, FFTW3 wrappers to Intel MKL functions),
-                                     ssl2 (Fujitsu SSL II),
-                                     acml (AMD Core Math Library, slow), or
-                                     no (error).])])
-    case "$with_fft" in
-      fftw* | yes | "")
-        AC_CHECK_LIB(fftw3, dfftw_execute,,
-                     [AC_MSG_ERROR([You need FFTW3 library, i.e. libfftw3. See config.log.])])
-        AC_CHECK_LIB(fftw3_omp, dfftw_init_threads,,
-                     [AC_MSG_ERROR([You need FFTW3 library compiled with --enable-openmp, i.e. libfftw3_omp. See config.log.])])
-        ;;
-      mkl)
-        AC_CHECK_LIB(mkl_core, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
-                     AC_MSG_ERROR([You need Intel Math Kernel Library (MKL). See config.log.]),[-lmkl_intel_thread -lmkl_gf_lp64])
-        ;;
-      ssl2)
-        ;;
-      acml*)
-        AC_CHECK_LIB(acml_mp, DZFFT3D,, AC_MSG_ERROR([You need ACML. See config.log.]))
-        ;;
-      cufft*)
-        AC_CHECK_LIB(libcufft, cufftPlan3d,, AC_MSG_ERROR([You need CUFFT. See config.log.]))
-        ;;
-      no)
-        AC_MSG_ERROR([You need an FFT library.])
-        ;;
-      *)
-        AC_MSG_ERROR([Unknown FFT library: $with_fft])
-        ;;
-    esac
+    AC_MSG_ERROR([Unknown FFT library: $with_fft])
+    ;;
 esac
 
 ## LAPACK
