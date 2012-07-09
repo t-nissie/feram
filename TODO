@@ -1,6 +1,13 @@
 ToDo
 
-o Refactoring of fft.F. Rename it to fft_3d_module.F.
+o Use in-place FFT for speed up
+
+o Use -simd=aggressive
+
+o Introduce  method = 'vs'  with src/velocity_scaling.F for MD.
+  'md' have to be changed to 'np' Nose-Poincare.
+
+o Do not make fft.F module. It receives complex as real.
 
 o extract dependency automatically in src/
 
