@@ -1,5 +1,5 @@
 #!/bin/bash
-#@ class = qsc
+#@ class = qeb
 #@ output = timingEB.stdout
 #@ error  = timingEB.stderr
 #@ environment = COPY_ALL
