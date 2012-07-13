@@ -20,3 +20,13 @@ dVddi-unharmonic.FでdidiRが使われるのでin-placeにはできない．
 == dipoT → dVddi
 dipoTがdVddi-dipole-dipole.F内で一時的に使われるだけなので
 in-placeにできる．最も簡単そう．
+
+FFTWとMATRIX/MPPとで次の手順で書き換える:
+ * timing1
+ * verbose = 2 でdebug1
+ * dVddiの関連するすべてのループに ix, iy のインデックスを追加.
+ * timing2
+ * verbose = 2 でdebug2
+ * coord_module.F, dVddi-dipole-dipole.F 書き換え.
+ * timing3
+ * verbose = 2 でdebug3
