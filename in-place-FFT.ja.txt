@@ -1,0 +1,22 @@
+= 0.19.03 r1346 2012-07-13 の段階でin-placeのFFTが使えるかどうか検討
+
+coord_module.F の中のplansは次の４つ:
+ plans_dipoR2C(3)     dipoR → dipoK
+ plans_didiR2C(6)     didiR → didiK
+ plans_inhoK2R(6)     inhoK → inhoR
+ plans_dipoT2dVddi(3) dipoT → dVddi
+
+== dipoR → dipoK
+直後にdipoRを使うのでin-placeにはできない．
+
+== didiR → didiK
+dipoFFT.Fで両方が作られる．
+その直後にdVddi-dipole-dipole.FでdidiKが，
+dVddi-unharmonic.FでdidiRが使われるのでin-placeにはできない．
+
+== inhoK → inhoR
+両方とも optimize-inho-strain.F内でしか使われないのでin-placeにできる．
+
+== dipoT → dVddi
+dipoTがdVddi-dipole-dipole.F内で一時的に使われるだけなので
+in-placeにできる．最も簡単そう．
