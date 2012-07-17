@@ -1,9 +1,9 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-06-05 08:39:43 t-nissie>
+! Time-stamp: <2012-07-17 21:53:30 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
-!    MATRIX/MPP of HITACHI SR11000 and SR16000 (HITACHI_SR)
+!    MATRIX/MPP of HITACHI SR11000 and SR16000 (HAVE_LIBMATMPP)
 !    ACML (HAVE_LIBACML_MP)
 !    Fujitsu SSL2 (__sparc)
 !!
@@ -11,7 +11,7 @@
 #  include "config.h"
 #endif
 
-#if defined(HITACHI_SR)
+#if defined(HAVE_LIBMATMPP)
 subroutine n2pqr(n,pqr)
   implicit none
   integer, intent(in)  :: n
