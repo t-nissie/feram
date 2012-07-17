@@ -14,3 +14,13 @@ app1: timing of OpenMP+MPI hybrid parallelization with forward.feram, backward.f
 FX10: profiler
      $ pjsub profiling.FX10
      $ fipppx -Ibalance,cpu,hwm -l 40  -A -d profiling > profiling.FX10.PROFILE
+
+app13$ pwd
+/home/t-nissie/f/loto/feram/trunk
+app13$ for e in 0.19.0*/src/18example-*/timingEB.stderr; do printf "%-90s" $e; grep real $e  | nl  | grep '   32'; done
+0.19.01-r1307-2012-06-05-SR16000/src/18example-EB/timingEB.stderr                             32        real 144.36
+0.19.03-r1343-2012-07-09-SR16000-fftw3_omp_fma/src/18example-benchmark/timingEB.stderr        32        real 140.64
+0.19.03-r1343-2012-07-09-SR16000-matmpp/src/18example-benchmark/timingEB.stderr               32        real 144.27
+0.19.03-r1346-2012-07-13-SR16000-omp-fftw3/src/18example-benchmark/timingEB.stderr            32        real 145.66
+app13$ 
+
