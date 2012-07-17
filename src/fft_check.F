@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-17 13:05:37 takeshi>
+! Time-stamp: <2012-07-17 17:15:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -28,17 +28,22 @@ program fft_check
 
   character(len=30)       :: str
   integer                 :: Lx, Ly, Lz, N_TIMES, N, NTHREADS, i, j, omp_get_max_threads
-  real*8                  :: N_inv, t_plan, t_fwdbkd, t_r2cc2r, gflops_fwdbkd, gflops_r2cc2r
-  integer                 :: count(0:3), count_rate, count_max
-  integer                 :: cdiff(1:3)
+  real*8                  :: N_inv
+  integer                 :: c_ci(0:2), c_ri(0:2), c_ro(0:2)   ! count
+  real*8                  :: t_ci(1:2), t_ri(1:2), t_ro(1:2)   ! time
+  real*8                  :: g_ci,      g_ri,      g_ro        ! GFLOPS
+  real*8                  :: f_c,       f_r   ! The numbers of floating point operations in [G]
+  integer                 :: count_rate
   integer                 :: command_argument_count
 
 #if defined(HAVE_LIBFFTW3)
-  integer*8               :: plan_fwd
-  integer*8               :: plan_bkd
-  integer*8               :: plan_r2c
-  integer*8               :: plan_c2r
-  integer                 :: ireturn,ios
+  integer*8               :: plan_cif
+  integer*8               :: plan_cib
+  integer*8               :: plan_rif
+  integer*8               :: plan_rib
+  integer*8               :: plan_rof
+  integer*8               :: plan_rob
+  integer                 :: ireturn, ios
 # include "fftw3.f"
 #endif
 
@@ -55,7 +60,8 @@ program fft_check
      call get_command_argument(3,str); read(str,*) Ly
      call get_command_argument(4,str); read(str,*) Lz
   else
-     stop 'fft_check: illegal number of arguments'
+     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': Illegal number of arguments.'
+     stop 1
   end if
 
   NTHREADS = omp_get_max_threads()
@@ -70,32 +76,6 @@ program fft_check
        &             ', Lz = ', Lz, &
        &           ',    N = ', N, &
        &    ',    NTHREADS = ', NTHREADS
-
-  !
-  ! Allocations and first touches
-  !
-  allocate(a(0:Lx-1, 0:Ly-1, 0:Lz-1))
-  !$omp parallel do
-  do j = 0, Lz-1
-     a(:,:,j) = (C_CHECK,C_CHECK)
-  end do
-  !$omp end parallel do
-
-  allocate(r(0:Lx-1, 0:Ly-1, 0:Lz-1))
-  !$omp parallel do
-  do j = 0, Lz-1
-     r(:,:,j) = C_CHECK
-  end do
-  !$omp end parallel do
-
-  allocate(c(0:Lx/2, 0:Ly-1, 0:Lz-1))
-  !$omp parallel do
-  do j = 0, Lz-1
-     c(:,:,j) = (0.0d0,0.0d0)
-  end do
-  !$omp end parallel do
-
-  call system_clock(count(0))
 
 #if defined(HAVE_LIBFFTW3)
   call dfftw_init_threads(ireturn)
@@ -119,36 +99,50 @@ program fft_check
         write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': Could not import FFTW system wisdom. All FFTW plans will be made by myself.'
      end if
   endif
-
-  call     dfftw_plan_dft_3d(plan_fwd, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_FORWARD,  FFTW_PATIENT)
-  call     dfftw_plan_dft_3d(plan_bkd, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_BACKWARD, FFTW_PATIENT)
-  call dfftw_plan_dft_r2c_3d(plan_r2c, Lx, Ly, Lz, r(0,0,0), c(0,0,0),                FFTW_PATIENT)
-  call dfftw_plan_dft_c2r_3d(plan_c2r, Lx, Ly, Lz, c(0,0,0), r(0,0,0),                FFTW_PATIENT)
-  !!! Re-substitution of a and r, because contents of them are broken.
-  !$omp parallel do
-  do j = 0, Lz-1
-     a(:,:,j) = (C_CHECK,C_CHECK)
-     r(:,:,j) = C_CHECK
-  end do
-  !$omp end parallel do
 #endif
 
-  call system_clock(count(1))
+
+  !!!!! complex to complex, in-place (cif and cib) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! Allocation
+  allocate(a(0:Lx-1, 0:Ly-1, 0:Lz-1))
+
+  ! First touch
+!$omp parallel do
+  do j = 0, Lz-1
+     a(:,:,j) = (C_CHECK,C_CHECK)
+  end do
+!$omp end parallel do
+
+  call system_clock(c_ci(0))
+
+#if defined(HAVE_LIBFFTW3)
+  call     dfftw_plan_dft_3d(plan_cif, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_FORWARD,  FFTW_PATIENT)
+  call     dfftw_plan_dft_3d(plan_cib, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_BACKWARD, FFTW_PATIENT)
+!$omp parallel do
+  do j = 0, Lz-1
+     a(:,:,j) = (C_CHECK,C_CHECK)   ! Re-substitution of a(:,:,:), because contents of them are broken by planner.
+  end do
+!$omp end parallel do
+#endif
+
+  call system_clock(c_ci(1))
 
   do i = 1, N_TIMES
 #   if defined(HAVE_LIBFFTW3)
-     call dfftw_execute(plan_fwd)
-     !$omp parallel do
+     call dfftw_execute(plan_cif)
+!$omp parallel do
      do j = 0, Lz-1
         a(:,:,j) = a(:,:,j) * N_inv
      end do
-     !$omp end parallel do
-     call dfftw_execute(plan_bkd)
+!$omp end parallel do
+     call dfftw_execute(plan_cib)
 #   else
      call fft_3d_fwd_or_bkd(.true.,  Lx, Ly, Lz, a)
+!$omp parallel do
      do j = 0, Lz-1
         a(:,:,j) = a(:,:,j) * N_inv
      end do
+!$omp end parallel do
      call fft_3d_fwd_or_bkd(.false., Lx, Ly, Lz, a)
 #   endif
   end do
@@ -156,73 +150,155 @@ program fft_check
   if (abs( dble(a(0, 0, 0))-C_CHECK)>TOLERANCE) then
      write(0,*) a(0, 0, 0)
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in dble(a).'
-     stop 1
+     stop 2
   end if
   if (abs(aimag(a(0, 0, 0))-C_CHECK)>TOLERANCE) then
      write(0,*) a(0, 0, 0)
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in aimag(a).'
-     stop 2
+     stop 3
   end if
 
-  call system_clock(count(2))
+  call system_clock(c_ci(2))
+  deallocate(a)
+
+
+  !!!!! real, in-place (rif and rib) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! Allocation
+  allocate(r(0:2*(Lx/2+1)-1, 0:Ly-1, 0:Lz-1))
+  ! Lx=8       2*(Lx/2+1)-1=10
+  ! Lx=9       2*(Lx/2+1)-1=10
+
+  ! First touch
+!$omp parallel do
+  do j = 0, Lz-1
+     r(:,:,j) = C_CHECK
+  end do
+!$omp end parallel do
+  call system_clock(c_ri(0))
+
+#if defined(HAVE_LIBFFTW3)
+  call dfftw_plan_dft_r2c_3d(plan_rif, Lx, Ly, Lz, r(0,0,0), r(0,0,0), FFTW_PATIENT)
+  call dfftw_plan_dft_c2r_3d(plan_rib, Lx, Ly, Lz, r(0,0,0), r(0,0,0), FFTW_PATIENT)
+!$omp parallel do
+  do j = 0, Lz-1
+     r(:,:,j) = C_CHECK   ! Re-substitution of r(:,:,:), because contents of them are broken by planner.
+  end do
+!$omp end parallel do
+#endif
+
+  call system_clock(c_ri(1))
 
   do i = 1, N_TIMES
 #   if defined(HAVE_LIBFFTW3)
-     call dfftw_execute(plan_r2c)
-     !$omp parallel do
+     call dfftw_execute(plan_rif)
+!$omp parallel do
      do j = 0, Lz-1
-        c(:,:,j) = c(:,:,j) * N_inv
+        r(:,:,j) = r(:,:,j) * N_inv
      end do
-     !$omp end parallel do
-     call dfftw_execute(plan_c2r)
+!$omp end parallel do
+     call dfftw_execute(plan_rib)
 #   else
 #    if defined(HITACHI_SR)
      if (mod(Lx,2).eq.1) exit
 #    endif
-     call fft_3d_r2c_or_c2r(.true.,  Lx, Ly, Lz, r, c)
+     call fft_3d_r2c_or_c2r_in_place(.true.,  Lx, Ly, Lz, r, c)
      do j = 0, Lz-1
-        c(:,:,j) = c(:,:,j) * N_inv
+        r(:,:,j) = r(:,:,j) * N_inv
      end do
-     call fft_3d_r2c_or_c2r(.false., Lx, Ly, Lz, r, c)
+     call fft_3d_r2c_or_c2r_in_place(.false., Lx, Ly, Lz, r, c)
 #   endif
   end do
   ! check results
   if (abs(r(0, 0, 0)-C_CHECK)>TOLERANCE) then
      write(0,*) r(0, 0, 0)
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in r.'
-     stop 3
+     stop 4
   end if
 
-  call system_clock(count(3), count_rate, count_max)
+  call system_clock(c_ri(2))
+  deallocate(r)
 
-  do i = 1, 3
-     cdiff(i) = count(i)-count(i-1)
-     if (cdiff(i)<0) then
-        cdiff(i) = cdiff(i) + count_max
-     end if
+
+  !!!!! real, out-of-place (rof and rob) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! Allocation
+  allocate(r(0:Lx-1, 0:Ly-1, 0:Lz-1))
+  allocate(c(0:Lx/2, 0:Ly-1, 0:Lz-1))
+
+  ! First touch
+!$omp parallel do
+  do j = 0, Lz-1
+     r(:,:,j) = C_CHECK
+  end do
+!$omp end parallel do
+  call system_clock(c_ro(0))
+
+#if defined(HAVE_LIBFFTW3)
+  call dfftw_plan_dft_r2c_3d(plan_rof, Lx, Ly, Lz, r(0,0,0), c(0,0,0), FFTW_PATIENT)
+  call dfftw_plan_dft_c2r_3d(plan_rob, Lx, Ly, Lz, c(0,0,0), r(0,0,0), FFTW_PATIENT)
+!$omp parallel do
+  do j = 0, Lz-1
+     r(:,:,j) = C_CHECK   ! Re-substitution of r(:,:,:), because contents of them are broken by planner.
+  end do
+!$omp end parallel do
+#endif
+
+  call system_clock(c_ro(1))
+
+  do i = 1, N_TIMES
+#   if defined(HAVE_LIBFFTW3)
+     call dfftw_execute(plan_rof)
+!$omp parallel do
+     do j = 0, Lz-1
+        c(:,:,j) = c(:,:,j) * N_inv
+     end do
+!$omp end parallel do
+     call dfftw_execute(plan_rob)
+#   else
+#    if defined(HITACHI_SR)
+     if (mod(Lx,2).eq.1) exit
+#    endif
+     call fft_3d_r2c_or_c2r_out_of_place(.true.,  Lx, Ly, Lz, r, c)
+     do j = 0, Lz-1
+        c(:,:,j) = c(:,:,j) * N_inv
+     end do
+     call fft_3d_r2c_or_c2r_out_of_place(.false., Lx, Ly, Lz, r, c)
+#   endif
+  end do
+  ! check results
+  if (abs(r(0, 0, 0)-C_CHECK)>TOLERANCE) then
+     write(0,*) r(0, 0, 0)
+     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in r.'
+     stop 5
+  end if
+
+  call system_clock(c_ro(2), count_rate)
+  deallocate(r,c)
+
+  do i = 1, 2
+     t_ci(i) = dble(c_ci(i)-c_ci(i-1))/count_rate
+     t_ri(i) = dble(c_ri(i)-c_ri(i-1))/count_rate
+     t_ro(i) = dble(c_ro(i)-c_ro(i-1))/count_rate
   end do
 
-  t_plan   = dble(cdiff(1))/count_rate
-  t_fwdbkd = dble(cdiff(2))/count_rate
-  t_r2cc2r = dble(cdiff(3))/count_rate
+  f_c = log(dble(N)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * N * 2
+  f_r = log(dble(N)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * N
 
-  write(0,'(a,f12.5)') ' t_plan   = ', t_plan
-  write(0,'(a,f12.5)') ' t_fwdbkd = ', t_fwdbkd
-  write(0,'(a,f12.5)') ' t_r2cc2r = ', t_r2cc2r
+  g_ci = f_c / t_ci(2)
+  g_ri = f_r / t_ri(2)
+  g_ro = f_r / t_ro(2)
 
-  gflops_fwdbkd = log(dble(N)) / log(2.0d0) / t_fwdbkd / 1.0d9 * N_TIMES * 5 * N * 2
-  gflops_r2cc2r = log(dble(N)) / log(2.0d0) / t_r2cc2r / 1.0d9 * N_TIMES * 5 * N
-  write(0,'(a,f10.3)') ' gflops_fwdbkd = ', gflops_fwdbkd
-  write(0,'(a,f10.3)') ' gflops_r2cc2r = ', gflops_r2cc2r
+  write(0,'(a,f14.5,f10.5,f10.3)') ' p_ci, t_ci, g_ci = ', t_ci(1), t_ci(2), g_ci
+  write(0,'(a,f14.5,f10.5,f10.3)') ' p_ri, t_ri, g_ri = ', t_ri(1), t_ri(2), g_ri
+  write(0,'(a,f14.5,f10.5,f10.3)') ' p_ro, t_ro, g_ro = ', t_ro(1), t_ro(2), g_ro
 
-  if (t_r2cc2r<0.00001d0) then
-     write(6,'(i8,3i5,i11,i4,f13.5,2f11.5,1f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
-          & t_plan, t_fwdbkd, t_r2cc2r, &
-          & gflops_fwdbkd   ! In the case of Lx=odd on SR16000 with MATRIX/MPP
+  if (t_ci(1)<0.00001d0 .and. mod(Lx,2).eq.1) then
+     write(6,'(i8,3i5,i11,i4,1(f14.5,f10.5,f8.3))') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
+          &  t_ci(1), t_ci(2), g_ci   ! In the case of Lx=odd on SR16000 with MATRIX/MPP
   else
-     write(6,'(i8,3i5,i11,i4,f13.5,2f11.5,2f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
-          & t_plan, t_fwdbkd, t_r2cc2r, &
-          & gflops_fwdbkd, gflops_r2cc2r
+     write(6,'(i8,3i5,i11,i4,3(f14.5,f10.5,f8.3))') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
+          & t_ci(1), t_ci(2), g_ci, &
+          & t_ri(1), t_ri(2), g_ri, &
+          & t_ro(1), t_ro(2), g_ro
   end if
 
 #if defined(HAVE_LIBFFTW3)
@@ -231,6 +307,7 @@ program fft_check
   close(17)
   call dfftw_cleanup_threads(ireturn)
 #endif
+
 end program fft_check
 !Local variables:
 !  compile-command: "make -k fft_check && ./fft_check"
