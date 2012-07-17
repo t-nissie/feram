@@ -40,9 +40,9 @@ export OMP_NUM_THREADS
 ../fft_check      50  405  405  405
 ../fft_check      50  432  432  432
 ../fft_check      30  500  500  500
-../fft_check      30  600  600  600
-../fft_check      30  720  720  720
-../fft_check      30  729  729  729
-../fft_check      30  800  800  800
-../fft_check      20  810  810  810
-../fft_check      10  900  900  900
+../fft_check      20  600  600  600
+../fft_check      10  720  720  720
+../fft_check      10  729  729  729
+../fft_check      10  800  800  800
+../fft_check      10  810  810  810
+../fft_check       5  900  900  900
