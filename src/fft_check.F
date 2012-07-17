@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-04 16:22:30 takeshi>
+! Time-stamp: <2012-07-17 13:05:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -34,10 +34,10 @@ program fft_check
   integer                 :: command_argument_count
 
 #if defined(HAVE_LIBFFTW3)
-  integer*8               :: plans_fwd
-  integer*8               :: plans_bkd
-  integer*8               :: plans_r2c
-  integer*8               :: plans_c2r
+  integer*8               :: plan_fwd
+  integer*8               :: plan_bkd
+  integer*8               :: plan_r2c
+  integer*8               :: plan_c2r
   integer                 :: ireturn,ios
 # include "fftw3.f"
 #endif
@@ -69,7 +69,7 @@ program fft_check
        &             ', Ly = ', Ly, &
        &             ', Lz = ', Lz, &
        &           ',    N = ', N, &
-       &    ',    NTHREADS = ', NTHREADS   
+       &    ',    NTHREADS = ', NTHREADS
 
   !
   ! Allocations and first touches
@@ -120,10 +120,10 @@ program fft_check
      end if
   endif
 
-  call     dfftw_plan_dft_3d(plans_fwd, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_FORWARD,  FFTW_PATIENT)
-  call     dfftw_plan_dft_3d(plans_bkd, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_BACKWARD, FFTW_PATIENT)
-  call dfftw_plan_dft_r2c_3d(plans_r2c, Lx, Ly, Lz, r(0,0,0), c(0,0,0),                FFTW_PATIENT)
-  call dfftw_plan_dft_c2r_3d(plans_c2r, Lx, Ly, Lz, c(0,0,0), r(0,0,0),                FFTW_PATIENT)
+  call     dfftw_plan_dft_3d(plan_fwd, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_FORWARD,  FFTW_PATIENT)
+  call     dfftw_plan_dft_3d(plan_bkd, Lx, Ly, Lz, a(0,0,0), a(0,0,0), FFTW_BACKWARD, FFTW_PATIENT)
+  call dfftw_plan_dft_r2c_3d(plan_r2c, Lx, Ly, Lz, r(0,0,0), c(0,0,0),                FFTW_PATIENT)
+  call dfftw_plan_dft_c2r_3d(plan_c2r, Lx, Ly, Lz, c(0,0,0), r(0,0,0),                FFTW_PATIENT)
   !!! Re-substitution of a and r, because contents of them are broken.
   !$omp parallel do
   do j = 0, Lz-1
@@ -134,16 +134,16 @@ program fft_check
 #endif
 
   call system_clock(count(1))
-  
+
   do i = 1, N_TIMES
 #   if defined(HAVE_LIBFFTW3)
-     call dfftw_execute(plans_fwd)
+     call dfftw_execute(plan_fwd)
      !$omp parallel do
      do j = 0, Lz-1
         a(:,:,j) = a(:,:,j) * N_inv
      end do
      !$omp end parallel do
-     call dfftw_execute(plans_bkd)
+     call dfftw_execute(plan_bkd)
 #   else
      call fft_3d_fwd_or_bkd(.true.,  Lx, Ly, Lz, a)
      do j = 0, Lz-1
@@ -168,13 +168,13 @@ program fft_check
 
   do i = 1, N_TIMES
 #   if defined(HAVE_LIBFFTW3)
-     call dfftw_execute(plans_r2c)
+     call dfftw_execute(plan_r2c)
      !$omp parallel do
      do j = 0, Lz-1
         c(:,:,j) = c(:,:,j) * N_inv
      end do
      !$omp end parallel do
-     call dfftw_execute(plans_c2r)
+     call dfftw_execute(plan_c2r)
 #   else
 #    if defined(HITACHI_SR)
      if (mod(Lx,2).eq.1) exit
@@ -222,7 +222,7 @@ program fft_check
   else
      write(6,'(i8,3i5,i11,i4,f13.5,2f11.5,2f10.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
           & t_plan, t_fwdbkd, t_r2cc2r, &
-          & gflops_fwdbkd, gflops_r2cc2r  
+          & gflops_fwdbkd, gflops_r2cc2r
   end if
 
 #if defined(HAVE_LIBFFTW3)
