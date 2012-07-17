@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-17 17:15:33 takeshi>
+! Time-stamp: <2012-07-17 21:59:05 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -291,7 +291,7 @@ program fft_check
   write(0,'(a,f14.5,f10.5,f10.3)') ' p_ri, t_ri, g_ri = ', t_ri(1), t_ri(2), g_ri
   write(0,'(a,f14.5,f10.5,f10.3)') ' p_ro, t_ro, g_ro = ', t_ro(1), t_ro(2), g_ro
 
-  if (t_ci(1)<0.00001d0 .and. mod(Lx,2).eq.1) then
+  if (t_ci(2)<0.00001d0 .and. mod(Lx,2).eq.1) then
      write(6,'(i8,3i5,i11,i4,1(f14.5,f10.5,f8.3))') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
           &  t_ci(1), t_ci(2), g_ci   ! In the case of Lx=odd on SR16000 with MATRIX/MPP
   else
