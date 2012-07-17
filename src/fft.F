@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-07-17 21:53:30 takeshi>
+! Time-stamp: <2012-07-18 08:20:31 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -41,7 +41,58 @@ end subroutine n2pqr
 !     2*(Nx/2+1)-1   9   9
 ! r(0:2*(Nx/2+1)-1) 10  10
 !     2*(Nx/2+1)    10  10   ndim1
-subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
+subroutine fft_3d_r2c_or_c2r_in_place(mode, Nx, Ny, Nz, r)
+  implicit none
+  logical,   intent(in) :: mode
+  integer,   intent(in) :: Nx, Ny, Nz
+  real*8, intent(inout) :: r(0:2*(Nx/2+1)-1, 0:Ny-1, 0:Nz-1)
+  integer,   save       :: Nx_last=0, Ny_last=0, Nz_last=0
+  integer,   save       :: ip1(3), ip2(3), ip3(3), ndim1, nwk1, nwk2, ipara
+  integer               :: iopt(2)
+  integer,   parameter  :: NWKW  = 5
+  complex*16,save       :: tb1(2048), tb2(2048), tb3(2048)
+  complex*16,allocatable:: wk1(:), wk2(:)
+  integer               :: ier
+
+  if (mode) then
+     iopt(1)=1
+  else
+     iopt(1)=2
+  end if
+
+  if (Nx.ne.Nx_last .or. Ny.ne.Ny_last .or. Nz.ne.Nz_last) then
+     call n2pqr(Nx, ip1)
+     call n2pqr(Ny, ip2)
+     call n2pqr(Nz, ip3)
+     if (ip1(1).eq.0) then
+        write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': On SR16000 with MATRIX/MPP, NX must be even.'
+        stop 4
+     end if
+     ndim1 = 2*(Nx/2+1)
+     ipara = $NUMTHRD()
+     write(0,'(a,i8)') 'fft.F: ipara = ', ipara
+     nwk1 = (Nx/2+NWKW)*(Ny+NWKW)*(Nz+NWKW) + 100
+     nwk2 = (Nx/2+NWKW)*MAX(Ny+NWKW,Nz+NWKW)*ipara + 100
+     iopt(2)=1
+     Nx_last=Nx
+     Ny_last=Ny
+     Nz_last=Nz
+  else
+     iopt(2)=2
+  end if
+
+  allocate(wk1(nwk1), wk2(nwk2))
+
+  if (mode) then
+     call HDFZ7M(r, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,ipara, ier)
+  else
+     call HZFD7M(r, ndim1,Ny, Nx,Ny,Nz, ip1,ip2,ip3, iopt,tb1,tb2,tb3,  wk1,wk2, NWKW,ipara, ier)
+  end if
+
+  deallocate(wk1,wk2)
+end subroutine fft_3d_r2c_or_c2r_in_place
+
+subroutine fft_3d_r2c_or_c2r_out_of_place(mode, Nx, Ny, Nz, r, c)
   implicit none
   logical,   intent(in) :: mode
   integer,   intent(in) :: Nx, Ny, Nz
@@ -106,7 +157,7 @@ subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
   end if
 
   deallocate(wk1,wk2)
-end subroutine fft_3d_r2c_or_c2r
+end subroutine fft_3d_r2c_or_c2r_out_of_place
 
 subroutine fft_3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
   implicit none
@@ -155,7 +206,7 @@ end subroutine fft_3d_fwd_or_bkd
 !    c(0:Nx/2)      10  10
 !     2*(Nx/2+1)-1   9   9
 ! r(0:2*(Nx/2+1)-1) 10  10
-subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
+subroutine fft_3d_r2c_or_c2r_out_of_place(mode, Nx, Ny, Nz, r, c)
   implicit none
   logical,   intent(in)    :: mode
   integer,   intent(in)    :: Nx, Ny, Nz
@@ -183,7 +234,7 @@ subroutine fft_3d_r2c_or_c2r(mode, Nx, Ny, Nz, r, c)
         end do
      end do
   end if
-end subroutine fft_3d_r2c_or_c2r
+end subroutine fft_3d_r2c_or_c2r_out_of_place
 
 subroutine fft_3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
   implicit none
