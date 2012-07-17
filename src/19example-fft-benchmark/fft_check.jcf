@@ -6,7 +6,6 @@
 #@ restart = no
 #@ job_name = fft_check
 #@ job_type = serial
-#@ resources = ConsumableCpus(64)
 #@ comment = -n 1 -pm 1 -pt 64 -ap "general"
 #@ queue
 #
