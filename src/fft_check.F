@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-17 21:59:05 takeshi>
+! Time-stamp: <2012-07-18 09:09:08 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -287,18 +287,20 @@ program fft_check
   g_ri = f_r / t_ri(2)
   g_ro = f_r / t_ro(2)
 
-  write(0,'(a,f14.5,f10.5,f10.3)') ' p_ci, t_ci, g_ci = ', t_ci(1), t_ci(2), g_ci
-  write(0,'(a,f14.5,f10.5,f10.3)') ' p_ri, t_ri, g_ri = ', t_ri(1), t_ri(2), g_ri
-  write(0,'(a,f14.5,f10.5,f10.3)') ' p_ro, t_ro, g_ro = ', t_ro(1), t_ro(2), g_ro
-
-  if (t_ci(2)<0.00001d0 .and. mod(Lx,2).eq.1) then
-     write(6,'(i8,3i5,i11,i4,1(f14.5,f10.5,f8.3))') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
-          &  t_ci(1), t_ci(2), g_ci   ! In the case of Lx=odd on SR16000 with MATRIX/MPP
+  if (t_ri(2)<0.00001d0 .and. mod(Lx,2).eq.1) then   ! In the case of Lx=odd on SR16000 with MATRIX/MPP
+     write(0,              '(a,f14.5,f10.5,f8.3)') &
+          & ' p_ci, t_ci, g_ci = ', t_ci(1), t_ci(2), g_ci
+     write(6,'(i8,3i5,i11,i4,  f14.5,f10.5,f8.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
+          &                         t_ci(1), t_ci(2), g_ci
   else
+     write(0,              '(a,f14.5,f10.5,f8.3)') &
+          & ' p_ci, t_ci, g_ci = ', t_ci(1), t_ci(2), g_ci, &
+          & ' p_ri, t_ri, g_ri = ', t_ri(1), t_ri(2), g_ri, &
+          & ' p_ro, t_ro, g_ro = ', t_ro(1), t_ro(2), g_ro
      write(6,'(i8,3i5,i11,i4,3(f14.5,f10.5,f8.3))') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
-          & t_ci(1), t_ci(2), g_ci, &
-          & t_ri(1), t_ri(2), g_ri, &
-          & t_ro(1), t_ro(2), g_ro
+          &                         t_ci(1), t_ci(2), g_ci, &
+          &                         t_ri(1), t_ri(2), g_ri, &
+          &                         t_ro(1), t_ro(2), g_ro
   end if
 
 #if defined(HAVE_LIBFFTW3)
