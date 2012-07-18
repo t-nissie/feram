@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-18 09:09:08 t-nissie>
+! Time-stamp: <2012-07-18 21:07:35 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -228,6 +228,7 @@ program fft_check
 !$omp parallel do
   do j = 0, Lz-1
      r(:,:,j) = C_CHECK
+     c(:,:,j) = (0.0d0,0.0d0)
   end do
 !$omp end parallel do
   call system_clock(c_ro(0))
@@ -254,7 +255,7 @@ program fft_check
 !$omp end parallel do
      call dfftw_execute(plan_rob)
 #   else
-#    if defined(HITACHI_SR)
+#    if defined(HAVE_LIBMATMPP)
      if (mod(Lx,2).eq.1) exit
 #    endif
      call fft_3d_r2c_or_c2r_out_of_place(.true.,  Lx, Ly, Lz, r, c)
