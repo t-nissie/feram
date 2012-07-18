@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-18 21:07:35 takeshi>
+! Time-stamp: <2012-07-19 08:24:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -164,9 +164,10 @@ program fft_check
 
   !!!!! real, in-place (rif and rib) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! Allocation
-  allocate(r(0:2*(Lx/2+1)-1, 0:Ly-1, 0:Lz-1))
-  ! Lx=8       2*(Lx/2+1)-1=10
-  ! Lx=9       2*(Lx/2+1)-1=10
+  allocate( r(0:2*(Lx/2+1)-1, 0:Ly-1, 0:Lz-1))
+  ! Lx=8        2*(Lx/2+1)-1=10
+  ! Lx=9        2*(Lx/2+1)-1=10
+  ! Or use allocate(c(0:Lx/2, 0:Ly-1, 0:Lz-1))
 
   ! First touch
 !$omp parallel do
@@ -201,11 +202,11 @@ program fft_check
 #    if defined(HITACHI_SR)
      if (mod(Lx,2).eq.1) exit
 #    endif
-     call fft_3d_r2c_or_c2r_in_place(.true.,  Lx, Ly, Lz, r, c)
+     call fft_3d_r2c_or_c2r_in_place(.true.,  Lx, Ly, Lz, r)
      do j = 0, Lz-1
         r(:,:,j) = r(:,:,j) * N_inv
      end do
-     call fft_3d_r2c_or_c2r_in_place(.false., Lx, Ly, Lz, r, c)
+     call fft_3d_r2c_or_c2r_in_place(.false., Lx, Ly, Lz, r)
 #   endif
   end do
   ! check results
