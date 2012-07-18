@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2012-05-31 10:30:48 takeshi>
+! Time-stamp: <2012-07-18 08:12:27 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -37,7 +37,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
   end do
 #else
   do alpha = 1, 3
-     call fft_3d_r2c_or_c2r(.false., p%Lx, p%Ly, p%Lz, &
+     call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
           & c%dVddi(0,0,0,alpha), c%dipoT(0,0,0,alpha))
   end do
 #endif

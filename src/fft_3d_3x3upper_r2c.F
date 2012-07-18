@@ -1,5 +1,5 @@
 ! fft_3d_3x3upper_r2c.F -*-f90-*-
-! Time-stamp: <2012-05-31 10:30:48 takeshi>
+! Time-stamp: <2012-07-18 08:12:27 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -44,7 +44,7 @@ subroutine fft_3d_3x3upper_r2c(p,r,c)
 #else
   do beta = 1, 3
      do alpha = 1, beta
-        call fft_3d_r2c_or_c2r(.true., p%Lx, p%Ly, p%Lz, &
+        call fft_3d_r2c_or_c2r_out_of_place(.true., p%Lx, p%Ly, p%Lz, &
              & r(0,0,0,alpha,beta), c(0,0,0,alpha,beta))
      end do
   end do

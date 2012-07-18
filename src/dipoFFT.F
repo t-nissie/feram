@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2012-05-31 10:30:48 takeshi>
+! Time-stamp: <2012-07-18 08:12:27 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -23,7 +23,7 @@ subroutine dipoFFT(p,c)
   end do
 #else
   do alpha = 1, 3
-     call fft_3d_r2c_or_c2r(.true., p%Lx, p%Ly, p%Lz, &
+     call fft_3d_r2c_or_c2r_out_of_place(.true., p%Lx, p%Ly, p%Lz, &
             & c%dipoR(0,0,0,alpha), c%dipoK(0,0,0,alpha))
   end do
 #endif
@@ -46,7 +46,7 @@ subroutine dipoFFT(p,c)
   end do
 #else
   do alpha = 1, 6
-     call fft_3d_r2c_or_c2r(.true., p%Lx, p%Ly, p%Lz, &
+     call fft_3d_r2c_or_c2r_out_of_place(.true., p%Lx, p%Ly, p%Lz, &
             & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha))
   end do
 #endif
