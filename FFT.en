@@ -1,0 +1,17 @@
+= Compile fft_check only
+fft_check.F is benchmark program.
+It times in-place complex FFT and in-place and out-of-place real FFT.
+It can read and write wisdom files if it is compiled with FFTW library.
+
+== With GNU Fortran (gfortran) and FFTW
+ gfortran -Wall -O3 -DHAVE_LIBFFTW3 -fopenmp -ffree-form -ffree-line-length-none -o fft_check fft_check.F f90_wisdom.F -lfftw3 -lfftw3_omp -L/home/t-nissie/Linux-x86_64/lib -I/home/t-nissie/Linux-x86_64/include
+
+== With Intel Fortran (ifort) and MKL
+ ifort -DHAVE_LIBFFTW3 -free -r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1 -lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 -I$MKLROOT/include/fftw -o fft_check f90_wisdom.F fft_check.F
+
+== On HITACHI SR16000 with f90 (OFORT90), FFT in MATRIX/MPP and LAPACK
+ f90 -DHITACHI_SR -DHAVE_LIBMATMPP -L/sysap/lib -L/opt/hitachi/matmpp/lib -64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -free -lmatmpp -o fft_check fft_check.F fft.F
+
+== On HITACHI SR16000 with IBM XL FOrtran (xlf90) and FFTW
+ OpenMP???
+ xlf90 -O4 -WF,-DHAVE_LIBFFTW3 -qfree -o fft_check fft_check.F f90_wisdom.F -lfftw3 -lfftw3_omp -lxlsmp -L/home/t-nissie/AIX/lib -I/home/t-nissie/AIX/include
