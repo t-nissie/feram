@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-07-18 08:20:31 t-nissie>
+! Time-stamp: <2012-07-19 20:35:10 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -10,6 +10,10 @@
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
+
+subroutine fft_dummy()
+  write(6,*) 'This is a dummy subroutine.'
+end subroutine fft_dummy
 
 #if defined(HAVE_LIBMATMPP)
 subroutine n2pqr(n,pqr)
