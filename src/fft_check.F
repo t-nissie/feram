@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-19 08:24:42 takeshi>
+! Time-stamp: <2012-07-19 09:56:41 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -33,7 +33,7 @@ program fft_check
   real*8                  :: t_ci(1:2), t_ri(1:2), t_ro(1:2)   ! time
   real*8                  :: g_ci,      g_ri,      g_ro        ! GFLOPS
   real*8                  :: f_c,       f_r   ! The numbers of floating point operations in [G]
-  integer                 :: count_rate
+  integer                 :: count_rate, count_max
   integer                 :: command_argument_count
 
 #if defined(HAVE_LIBFFTW3)
@@ -175,6 +175,7 @@ program fft_check
      r(:,:,j) = C_CHECK
   end do
 !$omp end parallel do
+
   call system_clock(c_ri(0))
 
 #if defined(HAVE_LIBFFTW3)
@@ -232,6 +233,7 @@ program fft_check
      c(:,:,j) = (0.0d0,0.0d0)
   end do
 !$omp end parallel do
+
   call system_clock(c_ro(0))
 
 #if defined(HAVE_LIBFFTW3)
@@ -273,13 +275,13 @@ program fft_check
      stop 5
   end if
 
-  call system_clock(c_ro(2), count_rate)
+  call system_clock(c_ro(2), count_rate, count_max)
   deallocate(r,c)
 
   do i = 1, 2
-     t_ci(i) = dble(c_ci(i)-c_ci(i-1))/count_rate
-     t_ri(i) = dble(c_ri(i)-c_ri(i-1))/count_rate
-     t_ro(i) = dble(c_ro(i)-c_ro(i-1))/count_rate
+     t_ci(i) = dble(c_ci(i)-c_ci(i-1))/count_rate ; if (t_ci(i)<0.0d0) t_ci(i)=t_ci(i)+dble(count_max)/count_rate
+     t_ri(i) = dble(c_ri(i)-c_ri(i-1))/count_rate ; if (t_ri(i)<0.0d0) t_ri(i)=t_ri(i)+dble(count_max)/count_rate
+     t_ro(i) = dble(c_ro(i)-c_ro(i-1))/count_rate ; if (t_ro(i)<0.0d0) t_ro(i)=t_ro(i)+dble(count_max)/count_rate
   end do
 
   f_c = log(dble(N)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * N * 2
