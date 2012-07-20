@@ -4,6 +4,7 @@ foreach i (1 2 4 6 8 10 12)
     ../fft_check  100000   30   30   30 >> fft_nonp2.dat
     ../fft_check   50000   48   48   48 >> fft_nonp2.dat
     ../fft_check   50000   54   54   54 >> fft_nonp2.dat
+    ../fft_check   10000   32   32  243 >> fft_nonp2.dat
     ../fft_check   10000   72   72   72 >> fft_nonp2.dat
     ../fft_check   10000   75   75   75 >> fft_nonp2.dat
     ../fft_check    5000   80   80   80 >> fft_nonp2.dat
