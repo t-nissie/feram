@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-19 09:56:41 t-nissie>
+! Time-stamp: <2012-07-20 10:26:20 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -103,10 +103,8 @@ program fft_check
 
 
   !!!!! complex to complex, in-place (cif and cib) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  ! Allocation
+  ! Allocation and first touch
   allocate(a(0:Lx-1, 0:Ly-1, 0:Lz-1))
-
-  ! First touch
 !$omp parallel do
   do j = 0, Lz-1
      a(:,:,j) = (C_CHECK,C_CHECK)
@@ -163,13 +161,11 @@ program fft_check
 
 
   !!!!! real, in-place (rif and rib) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  ! Allocation
+  ! Allocation and first touch
   allocate( r(0:2*(Lx/2+1)-1, 0:Ly-1, 0:Lz-1))
   ! Lx=8        2*(Lx/2+1)-1=10
   ! Lx=9        2*(Lx/2+1)-1=10
   ! Or use allocate(c(0:Lx/2, 0:Ly-1, 0:Lz-1))
-
-  ! First touch
 !$omp parallel do
   do j = 0, Lz-1
      r(:,:,j) = C_CHECK
@@ -222,14 +218,16 @@ program fft_check
 
 
   !!!!! real, out-of-place (rof and rob) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  ! Allocation
+  ! Allocation and first touch
   allocate(r(0:Lx-1, 0:Ly-1, 0:Lz-1))
-  allocate(c(0:Lx/2, 0:Ly-1, 0:Lz-1))
-
-  ! First touch
 !$omp parallel do
   do j = 0, Lz-1
      r(:,:,j) = C_CHECK
+  end do
+!$omp end parallel do
+  allocate(c(0:Lx/2, 0:Ly-1, 0:Lz-1))
+!$omp parallel do
+  do j = 0, Lz-1
      c(:,:,j) = (0.0d0,0.0d0)
   end do
 !$omp end parallel do
