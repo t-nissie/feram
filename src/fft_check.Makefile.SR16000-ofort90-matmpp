@@ -1,0 +1,4 @@
+fft_check: fft_check.F fft.F
+	f90 -DHITACHI_SR -DHAVE_LIBMATMPP -L/opt/hitachi/matmpp/lib -64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -free -lmatmpp -o $@ $^
+clean:
+	rm -f *.log core* fft_check

@@ -1,0 +1,6 @@
+fft_check: f90_wisdom.F fft_check.F
+	gfortran -Wall -O3 -DHAVE_LIBFFTW3 -fopenmp -ffree-form -ffree-line-length-none -o $@ $^ -lfftw3 -lfftw3_omp \
+	 -L/home/t-nissie/Linux-x86_64/lib \
+	 -I/home/t-nissie/Linux-x86_64/include
+clean:
+	rm -f core* fft_check
