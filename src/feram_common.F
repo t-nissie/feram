@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2012-07-05 15:21:01 t-nissie>
+! Time-stamp: <2012-07-21 15:38:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -19,7 +19,7 @@ subroutine feram_common(fn)
   character(len=70) :: message
 
 # if defined(HAVE_LIBFFTW3)
-  integer :: ireturn
+  integer :: ireturn, ios
   call dfftw_init_threads(ireturn)
   call dfftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
 # endif
@@ -34,9 +34,30 @@ subroutine feram_common(fn)
   fn_log = trim(p%filename) // '.log'
   open(unit=UNIT_LOG,file=fn_log,status='replace')
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
+
   call date_and_time2message(message)
   call msg_ez(UNIT_LOG, message)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'INPUT_FILENAME', fn)
+
+# if defined(HAVE_LIBFFTW3)
+  open(unit=UNIT_WISDOM, file='wisdom', status='old', action='read', iostat=ios)
+  if (ios.eq.0) then
+     call import_wisdom_from_file(ireturn,UNIT_WISDOM)
+     close(UNIT_WISDOM)
+     if (ireturn.eq.1) then
+        call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Successfully imported FFTW wisdom in current directory.')
+     else
+        call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Failed to import FFTW wisdom in current directory.')
+     end if
+  else
+     call    msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'FFTW wisdom is not in current directory.')
+     call dfftw_import_system_wisdom(ireturn)
+     if (ireturn.eq.1) then
+        call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Successfully imported FFTW system wisdom, /etc/fftw/wisdom.')
+     else
+        call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Could not import FFTW system wisdom. All FFTW plans will be made by myself.')
+     end if
+  endif
+# endif
 
   call  read_Param(p,fn)
   call  make_Param(p)

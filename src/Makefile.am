@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-07-21 12:14:16 takeshi>
+# Time-stamp: <2012-07-21 15:07:19 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -20,6 +20,7 @@ feram_SRCS = average_module.F \
 	dipole-dipole-short-range.F \
 	dipole-dipole.F \
 	elastic.F \
+	f90_wisdom.F \
 	feram.F \
 	feram_common.F \
 	fft.F \
@@ -107,34 +108,35 @@ feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	         $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
 	$(MPIFC) $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(LIBS)
 
-feram_common.o: param_module.o coord_module.o date_and_time2message.o
-decay-functions.o param_module.o:             define.h
-feram.o potentials.o dipole-dipole.o:\
+feram_common.o:                 param_module.o coord_module.o date_and_time2message.o f90_wisdom.o define.h
+decay-functions.o param_module.o diagonalize15x15.o: define.h
+feram.o feram_mpi.o potentials.o dipole-dipole.o mirror.o initialize_E_field.o read_defects_u.o elastic.o:\
                                 param_module.o coord_module.o define.h
-initialize-dipoR.o dVddi-unharmonic.o leapfrog.o \
-optimize-homo-strain.o:energy_module.o param_module.o coord_module.o
-energy_module.o: param_module.o coord_module.o
-optimize-homo-strain.o:energy_module.o param_module.o coord_module.o
-optimize-inho-strain.o:energy_module.o param_module.o coord_module.o
-molecular-dynamics.o:  energy_module.o param_module.o coord_module.o average_module.o
-mirror.o dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy.o:\
+initialize-dipoR.o dVddi-unharmonic.o leapfrog.o optimize-homo-strain.o:\
+                energy_module.o param_module.o coord_module.o
+energy_module.o:                param_module.o coord_module.o
+optimize-homo-strain.o optimize-inho-strain.o:\
+                energy_module.o param_module.o coord_module.o
+molecular-dynamics.o:\
+                energy_module.o param_module.o coord_module.o average_module.o
+dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy.o:\
                                 param_module.o coord_module.o
-initialize_E_field.o read_defects_u.o elastic.o:\
-                                param_module.o coord_module.o define.h
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
 mirror_force_mirror.o:          param_module.o coord_module.o energy_module.o
-nose-poincare.o leapfrog.o velocity_scaling.o:\
+nose-poincare.o velocity_scaling.o:\
                                 param_module.o coord_module.o energy_module.o kinetic_energy.o
+leapfrog.o:                     param_module.o coord_module.o energy_module.o kinetic_energy.o define.h
 hysteresis_loop.o:              param_module.o coord_module.o energy_module.o define.h velocity_scaling.o
 average_module.o:               param_module.o coord_module.o energy_module.o define.h
 coord_module.o:                 param_module.o         define.h
 dipole-dipole-long-range.o:     param_module.o         define.h fft_3d_3x3upper_r2c.o
-dipole-dipole-short-range.o:    param_module.o                  fft_3d_3x3upper_r2c.o
-fft_3d_3x3upper_r2c.o:          param_module.o  fft.o  define.h
-dVddi-dipole-dipole.o: energy_module.o param_module.o coord_module.o fft.o
-dipoFFT.o:                             param_module.o coord_module.o fft.o define.h
+dipole-dipole-short-range.o:    param_module.o         define.h fft_3d_3x3upper_r2c.o
+fft_3d_3x3upper_r2c.o:          param_module.o                fft.o  define.h
+dVddi-dipole-dipole.o:\
+                energy_module.o param_module.o coord_module.o fft.o
+dipoFFT.o:                      param_module.o coord_module.o fft.o define.h
 print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
-eigenvalues2j.o: param_module.o
+eigenvalues2j.o:                param_module.o define.h
 fft.o: define.h
 fft_check.o: fft.o f90_wisdom.o
 

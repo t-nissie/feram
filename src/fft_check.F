@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-21 14:38:49 takeshi>
+! Time-stamp: <2012-07-21 14:49:25 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -81,10 +81,10 @@ program fft_check
   call dfftw_init_threads(ireturn)
   call dfftw_plan_with_nthreads(NTHREADS)
 
-  open(unit=16, file='wisdom', status='old', action='read', iostat=ios)
+  open(unit=20, file='wisdom', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
-     call import_wisdom_from_file(ireturn,16)
-     close(16)
+     call import_wisdom_from_file(ireturn,20)
+     close(20)
      if (ireturn.eq.1) then
         write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': Successfully read FFTW wisdom in current directory.'
      else

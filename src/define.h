@@ -6,6 +6,7 @@
 #define UNIT_DEFECTS_U 14
 #define UNIT_T_LAYER 16
 #define UNIT_LOG 18
+#define UNIT_WISDOM 20
 
 /* length */
 #define FILE_NAME_LEN 200
