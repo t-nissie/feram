@@ -81,6 +81,8 @@ Select "Software Development Workstation" in the setup.
  $ mkdir CentOS
  $ cd CentOS
  $ ../configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-openmp --enable-threads --enable-sse2 --enable-avx --enable-shared
+ $ emacs tools/Makefile   # Edit LIBFFTWTHREADS to link libfftw3_omp, not libfftw3_threads.
+ $ make
  $ make check
  $ su
  # make install
