@@ -5,7 +5,7 @@ FFLAGS=-free -r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1
 CPPFLAGS=-DHAVE_LIBFFTW3 -I$MKLROOT/include/fftw
 LDFLAGS=-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64
 
-fft_check: f90_wisdom.o fft_check.o
+fft_check: fft_check.o f90_wisdom.o
 	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
 clean:
 	rm -f core* fft_check fft_check.o f90_wisdom.o *__genmod.mod *__genmod.f90
