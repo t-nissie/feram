@@ -1,5 +1,5 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-07-19 20:35:10 t-nissie>
+! Time-stamp: <2012-07-21 15:10:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Architectures and Libraries:
 !    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
@@ -74,7 +74,7 @@ subroutine fft_3d_r2c_or_c2r_in_place(mode, Nx, Ny, Nz, r)
      end if
      ndim1 = 2*(Nx/2+1)
      ipara = $NUMTHRD()
-     write(0,'(a,i8)') 'fft.F: ipara = ', ipara
+     write(0,'(a,a,i3,a,i8)') __FILE__, ':', __LINE__, ': ipara = ', ipara
      nwk1 = (Nx/2+NWKW)*(Ny+NWKW)*(Nz+NWKW) + 100
      nwk2 = (Nx/2+NWKW)*MAX(Ny+NWKW,Nz+NWKW)*ipara + 100
      iopt(2)=1
@@ -127,7 +127,7 @@ subroutine fft_3d_r2c_or_c2r_out_of_place(mode, Nx, Ny, Nz, r, c)
      end if
      ndim1 = 2*(Nx/2+1)
      ipara = $NUMTHRD()
-     write(0,'(a,i8)') 'fft.F: ipara = ', ipara
+     write(0,'(a,a,i3,a,i8)') __FILE__, ':', __LINE__, ': ipara = ', ipara
      nwk1 = (Nx/2+NWKW)*(Ny+NWKW)*(Nz+NWKW) + 100
      nwk2 = (Nx/2+NWKW)*MAX(Ny+NWKW,Nz+NWKW)*ipara + 100
      iopt(2)=1
