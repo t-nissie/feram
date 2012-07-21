@@ -1,6 +1,6 @@
 ! f90_wisdom.f -*-f90-*-
-! Time-stamp: <2012-07-21 21:23:12 takeshi>
-! Author: Takeshi NISHIMATSU
+! Time-stamp: <2012-07-21 21:51:00 takeshi>
+! Modified by: Takeshi NISHIMATSU
 ! Original: fftw-3.3.2/doc/f77_wisdom.f
 !!
 ! Original Copyright notice: 
