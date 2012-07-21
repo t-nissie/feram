@@ -1,0 +1,12 @@
+# -*-Makefile-*- for fft_check
+##
+FC=f90
+FFLAGS = -64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -i,L -free
+CPPFLAGS = -DHAVE_LIBFFTW3 -DHITACHI_SR -I/sysap/fftw/fftw-3.3.2a/include
+LDFLAGS = -L/sysap/fftw/fftw-3.3.2a/lib -lfftw3 -lfftw3_omp -lm
+
+fft_check: fft_check.o f90_wisdom.o
+	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
+clean:
+	rm -f fft_check.o   f90_wisdom.o   core* fft_check \
+              fft_check.log f90_wisdom.log
