@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-07-04 16:50:52 takeshi>
+# Time-stamp: <2012-07-21 12:14:16 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -70,6 +70,9 @@ coord2dist.rb \
 decay-test.gp \
 defects-maker.rb \
 epit.gp \
+fft_check.Makefile.Intel-gfortran-fftw3_omp \
+fft_check.Makefile.Intel-ifort-MKL \
+fft_check.Makefile.SR16000-ofort90-matmpp \
 inhomo-K.gp \
 plot.gp \
 slicer.rb \
@@ -133,7 +136,7 @@ dipoFFT.o:                             param_module.o coord_module.o fft.o defin
 print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
 eigenvalues2j.o: param_module.o
 fft.o: define.h
-fft_check.o: fft.o
+fft_check.o: fft.o f90_wisdom.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:
