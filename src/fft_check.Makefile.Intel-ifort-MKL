@@ -1,4 +1,4 @@
-fft_check: f90_wisdom.F fft_check.F
+fft_check: f90_wisdom.f fft_check.F
 	ifort -DHAVE_LIBFFTW3 -free -r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1 -lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 -I$MKLROOT/include/fftw -o $@ $^
 clean:
 	rm -f *__genmod.mod *__genmod.f90 core* fft_check

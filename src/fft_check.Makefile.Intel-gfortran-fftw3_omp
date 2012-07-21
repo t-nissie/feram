@@ -1,6 +1,13 @@
-fft_check: f90_wisdom.F fft_check.F
-	gfortran -Wall -O3 -DHAVE_LIBFFTW3 -fopenmp -ffree-form -ffree-line-length-none -o $@ $^ -lfftw3 -lfftw3_omp \
-	 -L/home/t-nissie/Linux-x86_64/lib \
-	 -I/home/t-nissie/Linux-x86_64/include
+# -*-Makefile-*- for fft_check
+##
+FC=gfortran
+FFLAGS=-Wall -O3 -fopenmp -ffree-form -ffree-line-length-none
+CPPFLAGS=-DHAVE_LIBFFTW3
+LDFLAGS=-lfftw3 -lfftw3_omp \
+ -L/home/t-nissie/Linux-x86_64/lib \
+ -I/home/t-nissie/Linux-x86_64/include
+
+fft_check: fft_check.o f90_wisdom.o
+	gfortran $(FFLAGS) -o $@ $^ $(LDFLAGS)
 clean:
-	rm -f core* fft_check
+	rm -f core* fft_check fft_check.o f90_wisdom.o

@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-07-21 15:07:19 takeshi>
+# Time-stamp: <2012-07-21 21:25:17 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -20,7 +20,7 @@ feram_SRCS = average_module.F \
 	dipole-dipole-short-range.F \
 	dipole-dipole.F \
 	elastic.F \
-	f90_wisdom.F \
+	f90_wisdom.f \
 	feram.F \
 	feram_common.F \
 	fft.F \
@@ -58,7 +58,7 @@ frozen_phonon_X_SOURCES = frozen_phonon_X.F
 
 marsaglia_tsang_uni64_check_SOURCES = marsaglia_tsang_uni64_check.F marsaglia_tsang_uni64_module.f
 
-fft_check_SOURCES = fft.F fft_check.F f90_wisdom.F
+fft_check_SOURCES = fft.F fft_check.F f90_wisdom.f
 
 TESTS = marsaglia_tsang_uni64_check fft_check
 

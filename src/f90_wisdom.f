@@ -1,5 +1,5 @@
-! f90_wisdom.F -*-f90-*-
-! Time-stamp: <2012-07-05 15:25:09 t-nissie>
+! f90_wisdom.f -*-f90-*-
+! Time-stamp: <2012-07-21 21:23:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Original: fftw-3.3.2/doc/f77_wisdom.f
 !!
@@ -33,15 +33,7 @@
 ! libraries.
 ! 
 !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-#if defined HAVE_CONFIG_H
-#  include "config.h"
-#endif
 
-subroutine f90_wisdom_dummy()
-  write(6,*) 'This is a dummy subroutine.'
-end subroutine f90_wisdom_dummy
-
-#if defined(HAVE_LIBFFTW3)
 ! Strictly speaking, the '$' format specifier, which allows us to
 ! write a character without a trailing newline, is not standard F77.
 ! However, it seems to be a nearly universal extension
@@ -94,4 +86,3 @@ subroutine import_wisdom_from_file(isuccess, iunit)
   external read_char
   call dfftw_import_wisdom(isuccess, read_char, iunit)
 end
-#endif
