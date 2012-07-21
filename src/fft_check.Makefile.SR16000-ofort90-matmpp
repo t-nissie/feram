@@ -1,4 +1,12 @@
-fft_check: fft_check.F fft.F
-	f90 -DHITACHI_SR -DHAVE_LIBMATMPP -L/opt/hitachi/matmpp/lib -64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -free -lmatmpp -o $@ $^
+# -*-Makefile-*- for fft_check
+##
+FC=f90
+FFLAGS = -64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -free
+CPPFLAGS = -DHAVE_LIBMATMPP -DHITACHI_SR
+LDFLAGS = -L/opt/hitachi/matmpp/lib -lmatmpp -lm
+
+fft_check: fft_check.o fft.o
+	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
 clean:
-	rm -f *.log core* fft_check
+	rm -f fft_check.o   fft.o   core* fft_check \
+              fft_check.log fft.log
