@@ -1,0 +1,31 @@
+#!/bin/bash
+#@ class = qtn
+#@ output = 32x32x243.stdout
+#@ error  = 32x32x243.stderr
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = 32x32x243
+#@ job_type = serial
+#@ comment = -n 1 -pm 1 -pt 64 -ap "general"
+#@ queue
+#
+# Usage: llsubmit 32x32x243.jcf
+#
+##
+export MEMORY_AFFINITY=MCM
+export HF_ERR_STATUS_MODE=1
+export HF_PRUNST_BIND=1
+export HF_BINDPROC_NUM=0
+
+threads='8 16 24 32'
+for s in 2 1; do
+    echo "# HF_BINDPROC_STRIDE=$s"
+    export  HF_BINDPROC_STRIDE=$s
+    for i in $threads; do
+	export HF_PRUNST_THREADNUM=$i
+	export HF_90OPTS="-FPRUNST(THREADNUM($i))"
+	export OMP_NUM_THREADS=$i
+	../fft_check 100  32 32 243
+    done
+    threads='16 32 48 64'
+done
