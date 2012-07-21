@@ -317,6 +317,43 @@ This file is required for the calculation of the local field.
 
 Position must be given in the unit of a0.
 
+=== FFTW wisdom file
+FFTW用のwisdomファイルを用意することによって，feramの初期化の計算時間を
+短縮することができます．具体的には.logファイルに"Ready for simulation!!!"
+というメッセージが出るのが早くなります．wisdomファイルはferamと同時に
+src/内にビルドされるfft_checkコマンドで生成できます．たとえば，
+src/18example-benchmark/ディレクトリ内で，forward.feramのシステム
+サイズLx*Ly*Lz=32*32*243の計算をするなら，
+ $ w   # Before executing fft_check, confirm that load average is zero and there is no background job.
+ $ OMP_NUM_THREADS=6 ../fft_check 1000 32 32 243
+       :
+   It takes a few minutes or a few hours depending on the system size.
+   '1000' in the command line arguments is the number of iterations of
+   FFT benchmarks. So, do not set a large number for it.
+       :
+ $ mv wisdom_new wisdom
+ $ OMP_NUM_THREADS=6 ../feram forward.feram
+ $ grep FFTW_WISDOM forward.log
+   feram_common.F: 47: FFTW_WISDOM: Successfully imported FFTW wisdom in current directory.
+ $ w
+ $ OMP_NUM_THREADS=6 ../fft_check 100 300 300 300
+ $ sudo cp wisdom_new /etc/fftw/wisdom
+ $ rm wosdom wisdom_new
+ $ OMP_NUM_THREADS=6 ../feram epit300x300x300.feram &
+ $ grep FFTW_WISDOM epit300x300x300.log
+  feram_common.F: 52: FFTW_WISDOM: FFTW wisdom is not in current directory.
+  feram_common.F: 55: FFTW_WISDOM: Successfully imported FFTW system wisdom, /etc/fftw/wisdom.
+ここで，/etc/fftw/wisdomはsystem wisdomです．この場合，
+この/etc/fftw/wisdomはOMP_NUM_THREADS=6環境下で
+Lx*Ly*Lz=32*32*243にもLx*Ly*Lz=300*300*300にも
+使うことができます．
+
+FFTW wisdomについての詳細は
+http://www.fftw.org/doc/Other-Important-Topics.html
+をご覧下さい．
+
+もしMKLやMATRIX/MPP, SSL II, ACMLなどFFTW以外のFFTライブラリを
+使っている場合はwisdomファイルを準備する必要はありません．
 
 == 出力ファイル
 feram が feram foo123.feram と実行されたなら

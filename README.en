@@ -339,6 +339,45 @@ This file is required for the calculation of the local field.
 
 Position must be given in the unit of a0.
 
+=== FFTW wisdom file
+By preparing an FFTW wisdom file in your currrent directory,
+you can reduce initial computational time, i.e. computational
+time before the "Ready for simulation!!!" message. You can
+generate an FFTW wisdom file with `fft_check` command, which
+will be built in the src/ directory besides `feram` command.
+In the src/18example-benchmark/ directory, for example, you
+can generate an FFTW wisdom file of system size Lx*Ly*Lz=32*32*243
+for the forward.feram input file,
+ $ w   # Before executing fft_check, confirm that load average is zero and there is no background job.
+ $ OMP_NUM_THREADS=6 ../fft_check 1000 32 32 243
+       :
+   It takes a few minutes or a few hours depending on the system size.
+   '1000' in the command line arguments is the number of iterations of
+   FFT benchmarks. So, do not set a large number for it.
+       :
+ $ mv wisdom_new wisdom
+ $ OMP_NUM_THREADS=6 ../feram forward.feram
+ $ grep FFTW_WISDOM forward.log
+   feram_common.F: 47: FFTW_WISDOM: Successfully imported FFTW wisdom in current directory.
+ $ w
+ $ OMP_NUM_THREADS=6 ../fft_check 100 300 300 300
+ $ sudo cp wisdom_new /etc/fftw/wisdom
+ $ rm wosdom wisdom_new
+ $ OMP_NUM_THREADS=6 ../feram epit300x300x300.feram &
+ $ grep FFTW_WISDOM epit300x300x300.log
+  feram_common.F: 52: FFTW_WISDOM: FFTW wisdom is not in current directory.
+  feram_common.F: 55: FFTW_WISDOM: Successfully imported FFTW system wisdom, /etc/fftw/wisdom.
+Here, /etc/fftw/wisdom is the system wisdom. In this case, you
+can use this /etc/fftw/wisdom for both Lx*Ly*Lz=32*32*243 and
+Lx*Ly*Lz=300*300*300 in the OMP_NUM_THREADS=6 environment.
+
+Check http://www.fftw.org/doc/Other-Important-Topics.html for more
+details on FFTW wisdom.
+
+If you are not using the FFTW library but other FFT libraries
+such as MKL, MATRIX/MPP, SSL II, ACML, etc., you do not have to
+prepare the wisdom file.
+
 == Output files
 If you execute the feram like `feram foo123.feram`,
 filenames of output files are starting from 'foo123',
