@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-20 10:26:20 t-nissie>
+! Time-stamp: <2012-07-21 14:38:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -196,7 +196,7 @@ program fft_check
 !$omp end parallel do
      call dfftw_execute(plan_rib)
 #   else
-#    if defined(HITACHI_SR)
+#    if defined(HAVE_LIBMATMPP)
      if (mod(Lx,2).eq.1) exit
 #    endif
      call fft_3d_r2c_or_c2r_in_place(.true.,  Lx, Ly, Lz, r)
