@@ -8,6 +8,6 @@ LDFLAGS=-lfftw3 -lfftw3_omp \
  -I/home/t-nissie/Linux-x86_64/include
 
 fft_check: fft_check.o f90_wisdom.o
-	gfortran $(FFLAGS) -o $@ $^ $(LDFLAGS)
+	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
 clean:
 	rm -f core* fft_check fft_check.o f90_wisdom.o

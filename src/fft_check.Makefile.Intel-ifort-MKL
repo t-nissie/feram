@@ -1,4 +1,11 @@
-fft_check: f90_wisdom.f fft_check.F
-	ifort -DHAVE_LIBFFTW3 -free -r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1 -lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 -I$MKLROOT/include/fftw -o $@ $^
+# -*-Makefile-*- for fft_check
+##
+FC=ifort
+FFLAGS=-free -r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1
+CPPFLAGS=-DHAVE_LIBFFTW3 -I$MKLROOT/include/fftw
+LDFLAGS=-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64
+
+fft_check: f90_wisdom.o fft_check.o
+	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
 clean:
-	rm -f *__genmod.mod *__genmod.f90 core* fft_check
+	rm -f core* fft_check fft_check.o f90_wisdom.o *__genmod.mod *__genmod.f90
