@@ -9,7 +9,9 @@ feramのホームページは http://loto.sourceforge.net/feram/ です．
 
 最新のtar.xzパッケージ (feram-X.YY.ZZ.tar.xz) を
 http://sourceforge.net/projects/loto/files/feram/
-からダウンロードすることができます．
+から自由にダウンロードすることができます．
+feramはGNU General Public License (GPL)にもとづいて
+コピー・改変・再配布が可能なフリーソフトウエアです．
 
 インストールの手順は INSTALL に述べられています．
 
@@ -442,7 +444,7 @@ cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
 
 == ソフトウエアの再配布について
 === feram
-Copyright © 2007-2011 by Takeshi Nishimatsu
+Copyright © 2007-2012 by Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.

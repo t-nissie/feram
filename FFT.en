@@ -1,7 +1,10 @@
 = Compile fft_check only
 fft_check.F is benchmark program.
-It times in-place complex FFT and in-place and out-of-place real FFT.
-It can read and write wisdom files if it is compiled with FFTW library.
+It times in-place complex 3-dimensional FFT and in-place and out-of-place real 3-dimensional FFT.
+
+If fft_check.F is compiled with FFTW library and f90_wisdom.f,
+it imports 'wisdom' file in currnet directory or /etc/fftw/wisdom and
+exports 'wisdom_new' to currnet directory.
 
 == With GNU Fortran (gfortran) and FFTW
  gfortran -Wall -O3 -DHAVE_LIBFFTW3 -fopenmp -ffree-form -ffree-line-length-none -o fft_check fft_check.F f90_wisdom.F -lfftw3 -lfftw3_omp -L/home/t-nissie/Linux-x86_64/lib -I/home/t-nissie/Linux-x86_64/include
