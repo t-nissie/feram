@@ -6,5 +6,10 @@
 export PJM_JOBNAME=timing.FX10
 export FLIB_FASTOMP=TRUE
 for i in 2 4 8 10 12 14 16; do
-    PARALLEL=$i OMP_NUM_THREADS=$i /usr/bin/time -o timing.dat -f "$i %e %U %S %R" -a ../feram forward.feram
+    export PARALLEL=$i
+    export OMP_NUM_THREADS=$i
+    ../fft_check 10000 32 32 243 >>forward.FX10.fftout 2>>forward.FX10.ffterr
+    mv wisdom_new wisdom
+    /usr/bin/time -f "$i %e %Uuser %Ssys %PCPU" -a -o forward.FX10.dat ../feram forward.feram
 done
+rm -f *.coord
