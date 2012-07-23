@@ -1,0 +1,10 @@
+# ~/f/loto/feram/trunk/0.19.03-r1385-2012-07-23-FX10-fftw3.3/src/18example-32x32x243/
+# With timing.FX10, generate wisdom then execute feram
+##
+2 1690.64 3380.85user 0.29sys 199%CPU
+4 860.53 3438.74user 2.56sys 399%CPU
+8 472.84 3745.75user 27.01sys 797%CPU
+10 401.28 3958.59user 40.05sys 996%CPU
+12 352.22 4142.63user 62.63sys 1193%CPU
+14 320.90 4377.97user 83.49sys 1390%CPU
+16 304.49 4697.35user 119.36sys 1581%CPU
