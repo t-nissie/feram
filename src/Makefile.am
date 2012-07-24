@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-07-21 21:25:17 takeshi>
+# Time-stamp: <2012-07-24 16:41:17 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -71,8 +71,11 @@ coord2dist.rb \
 decay-test.gp \
 defects-maker.rb \
 epit.gp \
+fft_acml.f \
+fft_acml.Makefile \
 fft_check.Makefile.Intel-gfortran-fftw3_omp \
 fft_check.Makefile.Intel-ifort-MKL \
+fft_check.Makefile.SR16000-ofort90-fftw \
 fft_check.Makefile.SR16000-ofort90-matmpp \
 inhomo-K.gp \
 plot.gp \

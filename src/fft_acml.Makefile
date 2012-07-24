@@ -1,11 +1,11 @@
-# -*-Makefile-*- for fft_check
+# -*-Makefile-*- for fft_acml
 ##
-FC=pgf90
+FC=pgf95
 FFLAGS=-fastsse -O3 -mp -Minfo=all -Mfree
 CPPFLAGS=-DHAVE_LIBACML_MP
-LDFLAGS=-L/home/t-nissie/Linux-x86_64/opt/acml5.1.0/pgi64_mp/lib -L/opt/pgi/linux86-64/12.2/libso -lacml_mp
+LDFLAGS=-L/opt/pgi/linux86-64/2012/acml/5.1.0/libso -lacml_mp
 
-fft_check: fft_check.o
+fft_acml: fft_acml.o
 	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
 clean:
-	rm -f core* fft_check fft_check.o
+	rm -f core* fft_acml fft_acml.o
