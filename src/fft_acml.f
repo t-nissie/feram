@@ -1,5 +1,5 @@
 ! fft_acml.F -*-f90-*-
-! Time-stamp: <2012-07-24 16:01:31 t-nissie>
+! Time-stamp: <2012-07-24 17:04:02 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 program fft_check
@@ -36,7 +36,7 @@ program fft_check
      call getarg(3,str); read(str,*) Ly
      call getarg(4,str); read(str,*) Lz
   else
-     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': Illegal number of arguments.'
+     write(0,'(a)') 'fft_acml: Illegal number of arguments.'
      stop 1
   end if
 
@@ -52,7 +52,6 @@ program fft_check
        &             ', Lz = ', Lz, &
        &           ',    N = ', N, &
        &    ',    NTHREADS = ', NTHREADS
-
 
 
   !!!!! complex to complex, in-place (ci) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -76,15 +75,15 @@ program fft_check
   ! check results
   if (abs( dble(a(0, 0, 0))-C_CHECK)>TOLERANCE) then
      write(0,*) a(0, 0, 0)
-     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in dble(a).'
+     write(0,'(a)') 'fft_acml: There is something wrong in dble(a).'
      stop 2
   end if
   if (abs(aimag(a(0, 0, 0))-C_CHECK)>TOLERANCE) then
      write(0,*) a(0, 0, 0)
-     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in aimag(a).'
+     write(0,'(a)') 'fft_acml: There is something wrong in aimag(a).'
      stop 3
   end if
-  deallocate(a,b)
+  deallocate(a,b,comm1)
 
 
   !!!!! complex to complex, out-of-place (co) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -114,15 +113,15 @@ program fft_check
   ! check results
   if (abs( dble(a(0, 0, 0))-C_CHECK)>TOLERANCE) then
      write(0,*) a(0, 0, 0)
-     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in dble(a).'
-     stop 2
+     write(0,'(a)') 'fft_acml: There is something wrong in dble(a).'
+     stop 4
   end if
   if (abs(aimag(a(0, 0, 0))-C_CHECK)>TOLERANCE) then
      write(0,*) a(0, 0, 0)
-     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in aimag(a).'
-     stop 3
+     write(0,'(a)') 'fft_acml:: There is something wrong in aimag(a).'
+     stop 5
   end if
-  deallocate(a,b)
+  deallocate(a,b,comm1)
 
 
   !!!!! real, out-of-place (rof and rob) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -150,16 +149,17 @@ program fft_check
      call dzfft3d(1,Lx,Ly,Lz,r,c,comm1,info)
      call zdfft3d(1,Lx,Ly,Lz,c,r,comm2,info)   !This subroutine normalizes r. No way!
   end do
+  call system_clock(c_ro(2), count_rate, count_max)
   ! check results
   if (abs(r(0, 0, 0)-C_CHECK)>TOLERANCE) then
      write(0,*) r(0, 0, 0)
-     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': There is something wrong in r.'
-     stop 5
+     write(0,'(a)') 'fft_acml: There is something wrong in r.'
+     stop 6
   end if
+  deallocate(r,c,comm1,comm2)
 
-  call system_clock(c_ro(2), count_rate, count_max)
-  deallocate(r,c)
 
+  !!!!! write timing results !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   do i = 1, 2
      t_ci(i) = dble(c_ci(i)-c_ci(i-1))/count_rate ; if (t_ci(i)<0.0d0) t_ci(i)=t_ci(i)+dble(count_max)/count_rate
      t_co(i) = dble(c_co(i)-c_co(i-1))/count_rate ; if (t_co(i)<0.0d0) t_co(i)=t_co(i)+dble(count_max)/count_rate
@@ -177,14 +177,6 @@ program fft_check
        & ' p_ci, t_ci, g_ci = ', t_ci(1), t_ci(2), g_ci, &
        & ' p_co, t_co, g_co = ', t_co(1), t_co(2), g_co, &
        & ' p_ro, t_ro, g_ro = ', t_ro(1), t_ro(2), g_ro
-
-#if defined(HAVE_LIBFFTW3)
-  open(unit=17, file='wisdom_new', status='replace')
-  call export_wisdom_to_file(17)
-  close(17)
-  call dfftw_cleanup_threads(ireturn)
-#endif
-
 end program fft_check
 !Local variables:
 !  compile-command: "make -k fft_acml -f fft_acml.Makefile && ./fft_acml"
