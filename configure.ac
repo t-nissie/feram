@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-07-21 15:18:47 takeshi>
+dnl Time-stamp: <2012-07-24 17:55:14 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -26,28 +26,19 @@ AC_PROG_INSTALL
 ## Checks for Fortran compilers.
 FCFLAGS_PRESERVE=$FCFLAGS
 AC_LANG(Fortran)
-AC_PROG_FC(gfortran ifort pgf95 pgf90 g95 xf90 f90 frt frtpx xlf90_r xlf95_r openf95)
+AC_PROG_FC(gfortran ifort xf90 f90 frt frtpx xlf90_r xlf95_r)
 FCFLAGS=$FCFLAGS_PRESERVE
    # Restore FCFLAGS, because AC_PROG_FC() sets FCFLAGS to '-g -O2', '-O2' or '-g' undesirably.
 
 ## FCFLAGS and MPIFC:
 AC_ARG_VAR(MPIFC, [MPI Fortran compiler command])
 case "$FC" in
-  g95)
-    test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -ffast-math -funroll-loops -pipe"
-    ;;
   gfortran*)
     test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -ffast-math -funroll-loops -pipe\
       -ffpe-trap=zero,overflow -fopenmp"
     ;;
-  openf95)
-    test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -ffast-math -fopenmp"
-    ;;
   ifort)
     test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1"
-    ;;
-  pgf*)
-    test -n "$FCFLAGS" || FCFLAGS="-fastsse -O3 -mp -Minfo=all"
     ;;
   xf90|f90)
     test -n "$FCFLAGS" || FCFLAGS="-64 -Os -parallel=4\
@@ -92,8 +83,7 @@ AC_ARG_WITH(fft,[AS_HELP_STRING([--with-fft=ARG],[FFT library.
                                    fftw3_threads,
                                    mkl (Intel MKL, FFTW3 wrappers to Intel MKL functions),
                                    matmpp (Hitachi Matrix/MPP),
-                                   ssl2 (Fujitsu SSL II),
-                                   acml (AMD Core Math Library, slow), or
+                                   ssl2 (Fujitsu SSL II), or
                                    no (error).])])
 case "$with_fft" in
   fftw3_omp | fftw | fftw3 | yes | "")
@@ -118,9 +108,6 @@ case "$with_fft" in
     ;;
   ssl2)
     ;;
-  acml*)
-    AC_CHECK_LIB(acml_mp, DZFFT3D,, AC_MSG_ERROR([You need ACML. See config.log.]))
-    ;;
   cufft*)
     AC_CHECK_LIB(libcufft, cufftPlan3d,, AC_MSG_ERROR([You need CUFFT. See config.log.]))
     ;;
@@ -137,8 +124,7 @@ AC_ARG_WITH(lapack,[AS_HELP_STRING([--with-lapack=ARG],[LAPACK library.
                                      ARG must be one of
                                      lapack (default),
                                      mkl (Intel MKL),
-                                     ssl2 (Fujitsu SSL II),
-                                     acml (AMD Core Math Library, slow).])])
+                                     ssl2 (Fujitsu SSL II).])])
 case "$with_lapack" in
   lapack | yes | "")
     AC_CHECK_LIB(blas,  dsymv,,[AC_CHECK_LIB(f77blas,  dsymv,,AC_MSG_ERROR([You need  BLAS  library. See config.log.]))])
@@ -160,17 +146,6 @@ case "$with_lapack" in
     ;;
   ssl2)
     ;;
-  acml*)
-    case "$LIBS" in
-      *acml_mp*)
-        AC_MSG_NOTICE([lapack... It seems that ACML is already putted into LIBS.])
-        ;;
-      *)
-        AC_MSG_NOTICE([lapack... Put ACML into LIBS.])
-        LIBS="-lacml_mp $LIBS"
-        ;;
-    esac
-    ;;
   *)
     AC_MSG_ERROR([Unknown LAPACK library: $with_lapack])
     ;;
@@ -178,7 +153,7 @@ esac
 
 ## free-form
 case "$FC" in
-  g95|gfortran*)
+  gfortran*)
     FCFLAGS="$FCFLAGS -ffree-form -ffree-line-length-none"
     ;;
   frt*)
@@ -186,9 +161,6 @@ case "$FC" in
     ;;
   xlf*)
     FCFLAGS="$FCFLAGS -qfree=f90"
-    ;;
-  openf95)
-    FCFLAGS="$FCFLAGS -freeform"
     ;;
   *)
     AC_FC_FREEFORM()
