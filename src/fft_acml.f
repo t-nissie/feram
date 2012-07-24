@@ -1,6 +1,10 @@
-! fft_acml.F -*-f90-*-
-! Time-stamp: <2012-07-24 17:04:02 t-nissie>
+! fft_acml.f -*-f90-*-
+! Time-stamp: <2012-07-24 17:13:01 t-nissie>
 ! Author: Takeshi NISHIMATSU
+! FFT in ACML is not so good:
+!  * Slow.
+!  * Inaccurate. Try it with TOLERANCE = 1.0d-12.
+!  * zdfft3d() normalizes transformed matrix. It is not a standard behavior.
 !!
 program fft_check
   implicit none
