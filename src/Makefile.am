@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-07-24 16:41:17 t-nissie>
+# Time-stamp: <2012-07-27 07:42:07 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -87,7 +87,8 @@ feram_mpi.F \
 11example-BaTiO3-new-hysteresis-loop \
 15example-BaTiO3-new-param-defects \
 17example-PbTiO3-100-900K \
-18example-benchmark
+18example-benchmark \
+19example-fft-benchmark
 
 # all: plot.ps # 300K0000000.ps decay-test.ps
 
