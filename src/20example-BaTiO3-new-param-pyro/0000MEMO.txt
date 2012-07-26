@@ -1,3 +1,14 @@
-On super1 (SR16000)
-     $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.jcf > "$s"c.jcf; submit SC general -jcf "$s"c.jcf; done       
-     $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEh.jcf > "$s"h.jcf; submit SC general -jcf "$s"h.jcf; done
+= Calculation of pyroelectric response
+First calculations were done in /home/t-nissie/feram/feram-e.07/BaTiO3-020-WuC-0.005-100keVcm/.
+
+== On SR16000 (super1 in IMR)
+Make JCFs (job control files) then submit them.
+ $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.jcf > "$s"c.jcf; submit SC general -jcf "$s"c.jcf; done       
+ $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEh.jcf > "$s"h.jcf; submit SC general -jcf "$s"h.jcf; done
+After all jobs are completed, execute atable3.gp.
+You will get three EPS files.
+ $ gnuplot atable3.gp
+ $ ls *eps
+ DeltaT.eps  T999.9.eps  atable3.eps
+Because atable.rb, datamaker.sh, integral.rb will
+be called internally, you need Ruby.
