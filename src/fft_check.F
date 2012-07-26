@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-21 14:49:25 takeshi>
+! Time-stamp: <2012-07-26 16:23:52 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -283,7 +283,10 @@ program fft_check
   end do
 
   f_c = log(dble(N)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * N * 2
-  f_r = log(dble(N)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * N
+  f_r = f_c / 2
+  write(0,'(a)') ' The number of floating point operations:'
+  write(0,'(a,f9.2,a)') '  f_c = ', f_c, ' [G]'
+  write(0,'(a,f9.2,a)') '  f_r = ', f_r, ' [G]'
 
   g_ci = f_c / t_ci(2)
   g_ri = f_r / t_ri(2)
