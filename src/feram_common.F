@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2012-07-27 17:28:38 takeshi>
+! Time-stamp: <2012-07-27 18:15:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -98,9 +98,14 @@ subroutine feram_common(fn)
      time_array(i) = dble(count_array(i)-count_array(i-1))/count_rate
      if (time_array(i)<0.0d0) time_array(i)=time_array(i)+dble(count_max)/count_rate
   end do
-  write(message,'(a,f15.2)') 't_initialization = ', time_array(1)               ; call msg_ez(UNIT_LOG, message)
-  write(message,'(a,f15.2)') 't_simulation     = ', time_array(2)               ; call msg_ez(UNIT_LOG, message)
-  write(message,'(a,f15.2)') 't_total          = ', time_array(1)+time_array(2) ; call msg_ez(UNIT_LOG, message)
+  write(message,'(a,a,a)') &
+       & 't_initialization, ', &
+       & ' t_simulation, ', &
+       & '      t_total'
+  call msg_ez(UNIT_LOG, message)
+  write(message,'(f16.2,2f15.2,a)'), time_array(1),time_array(2), &
+       &                             time_array(1)+time_array(2), "     #TIMING_REPORT"
+  call msg_ez(UNIT_LOG, message)
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'love && peace && free_software')
   close(unit=UNIT_LOG)
