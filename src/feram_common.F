@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2012-07-21 15:38:33 takeshi>
+! Time-stamp: <2012-07-27 17:28:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -17,6 +17,9 @@ subroutine feram_common(fn)
   integer                                  :: fn_len_trim
   integer                                  :: OMP_GET_MAX_THREADS
   character(len=70) :: message
+  integer           :: count_array(0:2)
+  real*8            :: time_array(1:2)
+  integer           :: count_rate, count_max, i
 
 # if defined(HAVE_LIBFFTW3)
   integer :: ireturn, ios
@@ -35,6 +38,7 @@ subroutine feram_common(fn)
   open(unit=UNIT_LOG,file=fn_log,status='replace')
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
 
+  call system_clock(count_array(0))
   call date_and_time2message(message)
   call msg_ez(UNIT_LOG, message)
 
@@ -66,6 +70,7 @@ subroutine feram_common(fn)
   call  potentials(p,c)
   !Instead, read_defects_u(p,c) is called in initialize_dipoR()! call make_mass_matrix(p,c)
 
+  call system_clock(count_array(1))
   call date_and_time2message(message)
   call msg_ez(UNIT_LOG, trim(message)//' Ready for simulation!!!')
 #if defined(HITACHI_SR)
@@ -85,9 +90,19 @@ subroutine feram_common(fn)
      return
   end if
 
+  call system_clock(count_array(2),count_rate,count_max)
   call date_and_time2message(message)
   call msg_ez(UNIT_LOG, message)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+
+  do i = 1, 2
+     time_array(i) = dble(count_array(i)-count_array(i-1))/count_rate
+     if (time_array(i)<0.0d0) time_array(i)=time_array(i)+dble(count_max)/count_rate
+  end do
+  write(message,'(a,f15.2)') 't_initialization = ', time_array(1)               ; call msg_ez(UNIT_LOG, message)
+  write(message,'(a,f15.2)') 't_simulation     = ', time_array(2)               ; call msg_ez(UNIT_LOG, message)
+  write(message,'(a,f15.2)') 't_total          = ', time_array(1)+time_array(2) ; call msg_ez(UNIT_LOG, message)
+
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'love && peace && free_software')
   close(unit=UNIT_LOG)
 
 # if defined(HAVE_LIBFFTW3)
