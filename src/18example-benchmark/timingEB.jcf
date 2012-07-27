@@ -11,12 +11,29 @@
 #
 # Usage: submit EB general -jcf timingEB.jcf
 #
-export MEMORY_AFFINITY=MCM
+##
+# For HITACHI OFORT90
+unset  MEMORY_AFFINITY
 export HF_ERR_STATUS_MODE=1
 export HF_PRUNST_BIND=1
 export HF_BINDPROC_NUM=0
-export HF_BINDPROC_STRIDE=2
-for i in `jot 32`; do
-    HF_90OPTS="-FPRUNST(THREADNUM($i))" OMP_NUM_THREADS=$i /usr/bin/timex ../feram forward.feram
+# For IBM XL Fortran
+export MALLOCMULTIHEAP=true
+export LDR_CNTRL=LARGE_PAGE_DATA=M
+
+threads='8 16 24 31 32'
+for s in 2 1; do
+    echo "# HF_BINDPROC_STRIDE=$s"
+    export  HF_BINDPROC_STRIDE=$s
+    for i in $threads; do
+	export HF_PRUNST_THREADNUM=$i
+	export HF_90OPTS="-FPRUNST(THREADNUM($i))"
+	export OMP_NUM_THREADS=$i
+	export XLSMPOPTS="spins=0:yields=0:parthds=$i:stride=$s:startproc=0"
+	../fft_check 10000 32 32 243
+	mv wisdom_new wisdom
+	/usr/bin/timex ../feram forward.feram
+    done
+    threads='16 32 48 62 63 64'
 done
-rm forward.0000005000.coord forward.coord
+rm -f *.coord
