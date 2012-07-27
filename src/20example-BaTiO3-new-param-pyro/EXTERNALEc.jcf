@@ -12,12 +12,21 @@
 #
 # Usage: submit SC general -jcf EXTERNALEc.jcf
 #
-export MEMORY_AFFINITY=MCM
+##
+# For HITACHI OFORT90
+unset  MEMORY_AFFINITY
 export HF_ERR_STATUS_MODE=1
+export HF_PRUNST_BIND=1
+export HF_BINDPROC_NUM=0
+# For IBM XL Fortran
+export MALLOCMULTIHEAP=true
+export LDR_CNTRL=LARGE_PAGE_DATA=M
+# 16 threads
 export HF_PRUNST_THREADNUM=16
 export HF_90OPTS="-FPRUNST(THREADNUM(16))"
 export OMP_NUM_THREADS=16
-##
+export XLSMPOPTS="spins=0:yields=0:parthds=16:stride=1:startproc=0"	
+
 rm -f EXTERNALEc.avg
 
 temperature_start=900
@@ -86,7 +95,7 @@ EOF
     if [ -r "$prev_coord" ]; then
 	ln -sf "$prev_coord" $filename.restart
     fi
-    ./feram $filename
+    ../feram $filename
     rm -f "$prev_coord" "$filename.restart"
     prev_coord=$filename.`printf '%.10d' $n_coord_freq`.coord
     cat $filename.avg >> EXTERNALEc.avg
