@@ -2,9 +2,18 @@
 First calculations were done in /home/t-nissie/feram/feram-e.07/BaTiO3-020-WuC-0.005-100keVcm/.
 
 == On SR16000 (super1 in IMR)
+Before submission of jobs, check the path to feram in EXTERNALEc.jcf and
+EXTERNALEh.jcf. ./feram or ../feram ? And check the existence of feram.
+
+(Optional) Make a wisdom file for FFTW with the same number of threads
+and environment variables for feram.
+ super3t$ MALLOCMULTIHEAP=true LDR_CNTRL=LARGE_PAGE_DATA=M XLSMPOPTS="spins=0:yields=0:parthds=16:stride=1:startproc=0" ../fft_check 100000 16 16 16
+ super3t$ mv wisdom_new wisdom
+
 Make JCFs (job control files) then submit them.
  $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.jcf > "$s"c.jcf; submit SC general -jcf "$s"c.jcf; done       
  $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEh.jcf > "$s"h.jcf; submit SC general -jcf "$s"h.jcf; done
+
 After all jobs are completed, execute atable3.gp.
 You will get three EPS files.
  $ gnuplot atable3.gp
