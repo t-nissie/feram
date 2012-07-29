@@ -4,7 +4,7 @@ This document describes how to compile feram for your computers.
 Version and date of installation is written in parentheses ().
 
 == Requirements
- * GNU make  http://www.gnu.org/software/make/ (You cannot use *BSD make.)
+ * GNU make  http://www.gnu.org/software/make/
  * FFTW3 library  http://www.fftw.org/ (For Intel and AMD machines.
    version 3.3 or higher. Configure FFTW3 library with options of
    --enable-openmp --enable-threads --enable-sse2.
@@ -24,7 +24,7 @@ Version and date of installation is written in parentheses ().
 
 == Useful software
 These software are useful for executing feram and analyzing calculated results.
- * gnuplot (version 4.2 or higher)
+ * gnuplot (version 4.6 or higher)
  * Ruby (version 1.8.6 or higher)
  * jot (Every Linux distributions are presenting jot packages. Or, find its source athena-jot_9.0.orig.tar.gz in the Net.)
 
@@ -124,7 +124,8 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
  $ ../configure FC=ifort CPPFLAGS="-I$MKLROOT/include/fftw" --with-fft=mkl --with-lapack=mkl
  $ cd src
  $ make
- $ make feram_mpi   # OPTIONAL
+ $ make feram_mpi                 # OPTIONAL. mpif90 is required.
+ $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
 
 
 == Super computers
@@ -162,7 +163,7 @@ You may be able to use dsyevx() instead of dsyev().
  $ cd SR16000-xlf
  $ ../configure FC=xlf90_r CPPFLAGS=-I/sysap/fftw_xlc/fftw-3.3.2a/include LDFLAGS=-L/sysap/fftw_xlc/fftw-3.3.2a/lib --with-lapack=essl
  $ cd src
- $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-like comments
+ $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-style comments
  $ emacs Makefile   # DEFS = -DHAVE_CONFIG_H  =>  DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg
  $ make
  $ MALLOCMULTIHEAP=true LDR_CNTRL=LARGE_PAGE_DATA=M XLSMPOPTS="spins=0:yields=0:parthds=16:stride=1:startproc=0" make check

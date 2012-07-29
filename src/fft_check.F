@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-29 09:46:32 t-nissie>
+! Time-stamp: <2012-07-29 20:42:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -12,21 +12,22 @@ It is written in Fortran and parallelized with OpenMP.
 == Homepage and download
 http://loto.sourceforge.net/feram/src/fft_check.html is the homepage of fft_check.
 
-Its GPLed source code is in feram-X.YY.ZZ/src/ in the feram package.
+Its GPLed source code is in feram-X.YY.ZZ/src/ of the feram package.
 You can freely download a tar ball of feram (feram-X.YY.ZZ.tar.xz) from
 http://sourceforge.net/projects/loto/files/feram/ .
 feram is molecular dynamics (MD) simulator for bulk and
 thin-film ferroelectrics and GPLed free software.
 
+Home page of feram is http://loto.sourceforge.net/feram/ .
+
 == How to build fft_check
 Although fft_check can be built by the usual 'configure && make' manner
-along with feram (See ../INSTALL), makefiles for several compilers and
+along with feram (see ../INSTALL), makefiles for several compilers and
 architectures are provided in names of fft_check.Makefile.*.
 You can build fft_check with GNU Fortran (gfortran), Intel Fortran (ifort),
 IBM XL Fortran (xlf90_r), etc. You can link FFTW, Intel MKL, Hitach MATRIX/MPP
-as a FFT library. For example,
+as an FFT library. For example,
  $ make -f fft_check.Makefile.Intel-gfortran-fftw3_omp
-
 
 === FFTW
 If fft_check.F is compiled with FFTW library and f90_wisdom.f,
@@ -38,8 +39,20 @@ Use fft_acml.f and fft_acml.Makefile.
  $ make -f fft_acml.Makefile
 
 == How to execute fft_check
-If you wan to FFT with a size of 80x90x100 10000 times,
+If you wan to FFT with a size of 80x90x100 in 10,000 iterations,
  $ OMP_NUM_THREADS=6 ./fft_check 10000 80 90 100
+Note that the number of iterations not affects wisdom_new file.
+
+== Copying and author
+Copyright © 2007-2012 by Takeshi Nishimatsu
+
+fft_check is distributed in the hope that
+it will be useful, but WITHOUT ANY WARRANTY.
+You can copy, modify and redistribute fft_check,
+but only under the conditions described in
+the GNU General Public License (the "GPL").
+
+Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 
 #endif
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
