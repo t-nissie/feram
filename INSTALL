@@ -43,8 +43,8 @@ follow this quick compilation instruction.
  $ ../configure
  $ cd src
  $ make
- $ make feram_mpi   # OPTIONAL. mpif90 is required.
- $ make check       # OPTIONAL. Test RNG and FFT.
+ $ make feram_mpi                 # OPTIONAL. mpif90 is required.
+ $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
  $ ls -l feram*
  $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
  $ cd 11example-BaTiO3-new-hysteresis-loop
@@ -108,6 +108,8 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
  $ ../configure
  $ cd src
  $ make
+ $ OMP_NUM_THREADS=6  make check
+ $ OMP_NUM_THREADS=12 make check
  $ ls -l feram
  $ ldd feram
 
@@ -136,6 +138,7 @@ Note that libblas.a, liblapack.a, and libmatmpp.a must be in
  $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/opt/hitachi/matmpp/lib' --with-fft=matmpp
  $ cd src
  $ make
+ $ HF_PRUNST_THREADNUM=16 OMP_NUM_THREADS=16 make check   # OPTIONAL. Test RNG and FFT.
 For performance monitor
  $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/opt/hitachi/matmpp/lib' FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
    -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -i,L -pmfunc -pmpar'
@@ -162,7 +165,7 @@ You may be able to use dsyevx() instead of dsyev().
  $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-like comments
  $ emacs Makefile   # DEFS = -DHAVE_CONFIG_H  =>  DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg
  $ make
- $ make check
+ $ MALLOCMULTIHEAP=true LDR_CNTRL=LARGE_PAGE_DATA=M XLSMPOPTS="spins=0:yields=0:parthds=16:stride=1:startproc=0" make check
 
 === Fujitsu FX1
  $ tar xf feram-X.YY.ZZ.tar.xz
