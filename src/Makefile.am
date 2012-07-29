@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-07-27 07:42:07 takeshi>
+# Time-stamp: <2012-07-29 09:34:47 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -77,6 +77,7 @@ fft_check.Makefile.Intel-gfortran-fftw3_omp \
 fft_check.Makefile.Intel-ifort-MKL \
 fft_check.Makefile.SR16000-ofort90-fftw \
 fft_check.Makefile.SR16000-ofort90-matmpp \
+fft_check.html \
 inhomo-K.gp \
 plot.gp \
 slicer.rb \
@@ -158,6 +159,9 @@ pdf: feram.pdf coord_module.pdf param_module.pdf
 	--borders=off \
 	-f 11.0 --pretty-print=for90-free -o - $< > $@
 
+fft_check.html:  fft_check.F
+	sed -n '/#ifdef FFT_CHECK_DOCUMENT/,/#endif/p' $< | ulmul2html5 -s ../style.css -n 'Takeshi Nishimatsu' \
+	| sed -e 's%\.\./INSTALL%<a href="../INSTALL.html">../INSTALL</a>%' > $@
 #diff: param.F
 #	diff -u -w $< $(INPUT_FILE) ; true
 #	egrep 'read.* DUMMY' $< | cut -b 20- > param.read_dummy

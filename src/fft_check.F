@@ -1,7 +1,48 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-26 16:23:52 t-nissie>
+! Time-stamp: <2012-07-29 09:46:32 t-nissie>
 ! Author: Takeshi NISHIMATSU
-!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#ifdef FFT_CHECK_DOCUMENT
+= fft_check.F, a 3-dimensional FFT benchmark program written in Fortran 
+fft_check.F is a benchmark program. It times
+in-place double-precision complex 3-dimensional FFT and
+in-place and out-of-place double-precision real 3-dimensional FFT.
+It is written in Fortran and parallelized with OpenMP.
+
+== Homepage and download
+http://loto.sourceforge.net/feram/src/fft_check.html is the homepage of fft_check.
+
+Its GPLed source code is in feram-X.YY.ZZ/src/ in the feram package.
+You can freely download a tar ball of feram (feram-X.YY.ZZ.tar.xz) from
+http://sourceforge.net/projects/loto/files/feram/ .
+feram is molecular dynamics (MD) simulator for bulk and
+thin-film ferroelectrics and GPLed free software.
+
+== How to build fft_check
+Although fft_check can be built by the usual 'configure && make' manner
+along with feram (See ../INSTALL), makefiles for several compilers and
+architectures are provided in names of fft_check.Makefile.*.
+You can build fft_check with GNU Fortran (gfortran), Intel Fortran (ifort),
+IBM XL Fortran (xlf90_r), etc. You can link FFTW, Intel MKL, Hitach MATRIX/MPP
+as a FFT library. For example,
+ $ make -f fft_check.Makefile.Intel-gfortran-fftw3_omp
+
+
+=== FFTW
+If fft_check.F is compiled with FFTW library and f90_wisdom.f,
+it imports 'wisdom' file in currnet directory or /etc/fftw/wisdom
+and exports 'wisdom_new' into currnet directory.
+
+=== PGI Fortran and ACML
+Use fft_acml.f and fft_acml.Makefile.
+ $ make -f fft_acml.Makefile
+
+== How to execute fft_check
+If you wan to FFT with a size of 80x90x100 10000 times,
+ $ OMP_NUM_THREADS=6 ./fft_check 10000 80 90 100
+
+#endif
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -317,5 +358,5 @@ program fft_check
 
 end program fft_check
 !Local variables:
-!  compile-command: "make -k fft_check && ./fft_check"
+!  compile-command: "make -k fft_check fft_check.html && OMP_NUM_THREADS=6 ./fft_check"
 !End:
