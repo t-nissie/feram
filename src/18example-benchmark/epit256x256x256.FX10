@@ -3,8 +3,11 @@
 #PJM -L "node=1"
 #PJM -L "elapse=2:00:00"
 #PJM -j
-export PJM_JOBNAME=epit256x256x256.FX10
+export PJM_JOBNAME=epit256x256x256
 export FLIB_FASTOMP=TRUE
 for i in 16 14 12 10 8 6 4 2; do
-    PARALLEL=$i OMP_NUM_THREADS=$i /usr/bin/time -o 256x256x256.FX10.dat -f "$i %e %U %S %R" -a ../feram epit256x256x256.feram
+    PARALLEL=$i OMP_NUM_THREADS=$i ../feram epit256x256x256.feram
+    timing_report=`grep TIMING_REPORT epit256x256x256.log`
+    printf '%2i %s\n' $i "$timing_report" >> epit256x256x256.FX10.dat
 done
+rm -f epit256x256x256*coord epit256x256x256.param epit256x256x256.hl

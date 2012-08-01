@@ -1,0 +1,13 @@
+#!/bin/sh
+#PJM -L "rscgrp=short"
+#PJM -L "node=1"
+#PJM -L "elapse=2:00:00"
+#PJM -j
+export PJM_JOBNAME=epit040x040x040
+export FLIB_FASTOMP=TRUE
+for i in 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1; do
+    PARALLEL=$i OMP_NUM_THREADS=$i ../feram epit040x040x040.feram
+    timing_report=`grep TIMING_REPORT epit040x040x040.log`
+    printf '%2i %s\n' $i "$timing_report" >> epit040x040x040.FX10.dat
+done
+rm -f epit040x040x040*coord epit040x040x040.param epit040x040x040.hl
