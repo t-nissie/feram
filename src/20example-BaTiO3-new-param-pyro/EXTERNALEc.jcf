@@ -4,6 +4,7 @@
 #@ error  = EXTERNALEc.stderr
 #@ environment = COPY_ALL
 #@ restart = no
+#@ notification = never
 #@ job_name = EXTERNALEc
 #@ job_type = serial
 #@ resources = ConsumableCpus(16)
