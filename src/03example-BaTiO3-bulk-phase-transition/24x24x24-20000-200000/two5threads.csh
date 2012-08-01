@@ -15,4 +15,4 @@ wait
 
 grep TIMING_REPORT *.log >> two5threads.dat
 
-rm -f *K.coord *K.restart *K.param *K.distribution
+rm -f *.coord *K.restart *K.param *K.distribution *K.avg
