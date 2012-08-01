@@ -1,9 +1,12 @@
 #!/bin/csh
 ##
+hostname > md24x24x24taskset6x2.dat
+w       >> md24x24x24taskset6x2.dat
+
 setenv OMP_NUM_THREADS 6
 
 rm -f wisdom
-taskset -c 0-5  ../fft_check 10000 24 24 24 > md24x24x24taskset6x2.dat
+taskset -c 0-5  ../fft_check 10000 24 24 24 >> md24x24x24taskset6x2.dat
 mv wisdom_new wisdom
 
 ln -s md24x24x24.feram md24x24x24a.feram
