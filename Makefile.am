@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2012-07-18 19:05:10 takeshi>
+# Time-stamp: <2012-07-29 09:56:49 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -9,7 +9,6 @@ EXTRA_DIST = README.en \
              index.en.html \
              README.ja \
              index.ja.html \
-             FFT.en \
              INSTALL \
              INSTALL.html \
              TODO \
