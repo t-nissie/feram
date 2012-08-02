@@ -23,7 +23,7 @@ export LDR_CNTRL=LARGE_PAGE_DATA=M
 
 threads='8 16 24 31 32'
 for s in 2 1; do
-    echo "# HF_BINDPROC_STRIDE=$s"
+    echo "# HF_BINDPROC_STRIDE=$s" >> epit256x256x256.SR16000.dat
     export  HF_BINDPROC_STRIDE=$s
     for i in $threads; do
 	export HF_PRUNST_THREADNUM=$i
@@ -32,7 +32,9 @@ for s in 2 1; do
 	export XLSMPOPTS="spins=0:yields=0:parthds=$i:stride=$s:startproc=0"	
 	../fft_check 100  256 256 256
 	mv wisdom_new wisdom
-	/usr/bin/timex ../feram epit256x256x256.feram
+	../feram epit256x256x256.feram 
+	timing_report=`grep TIMING_REPORT epit256x256x256.log`
+	printf '%1d %2d %s\n' $s $i "$timing_report" >> epit256x256x256.SR16000.dat
     done
     threads='16 32 48 62 63 64'
 done
