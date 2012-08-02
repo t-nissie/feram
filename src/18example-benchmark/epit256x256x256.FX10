@@ -8,6 +8,6 @@ export FLIB_FASTOMP=TRUE
 for i in 16 14 12 10 8 6 4 2; do
     PARALLEL=$i OMP_NUM_THREADS=$i ../feram epit256x256x256.feram
     timing_report=`grep TIMING_REPORT epit256x256x256.log`
-    printf '%2i %s\n' $i "$timing_report" >> epit256x256x256.FX10.dat
+    printf '%2d %s\n' $i "$timing_report" >> epit256x256x256.FX10.dat
 done
 rm -f epit256x256x256*coord epit256x256x256.param epit256x256x256.hl
