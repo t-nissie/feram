@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-08-02 06:11:40 takeshi>
+! Time-stamp: <2012-08-06 11:55:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -196,11 +196,16 @@ contains
     allocate(     c%inhomo_K_G(3,4, 0:p%Lx/2,0:p%Ly-1,0:p%Lz-1))
 
     if (allocated(c%inhomo_coup2_K)) deallocate(c%inhomo_coup2_K)
-    if (mod(p%Ly,2).eq.0) then
-       allocate(c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1+3,0:p%Lz-1, 3,6))   ! padding
-    else
+    !if (mod(p%Ly,2).eq.0) then
+    !   allocate(c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1+3,0:p%Lz-1, 3,6))   ! padding
+    !else
        allocate(c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1  ,0:p%Lz-1, 3,6))
-    end if
+    !end if
+!$omp parallel do
+    do i = 0,p%Lz-1
+       c%c%inhomo_coup2_K(:,:,i,:,:) = 0.0d0
+    end do
+!$omp end parallel do
 
     !--- sum_p ------------------------------
     if (allocated(c%sum_p)) deallocate(c%sum_p)
