@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-08-06 11:55:01 takeshi>
+! Time-stamp: <2012-08-06 12:00:45 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -203,7 +203,7 @@ contains
     !end if
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%c%inhomo_coup2_K(:,:,i,:,:) = 0.0d0
+       c%inhomo_coup2_K(:,:,i,:,:) = 0.0d0
     end do
 !$omp end parallel do
 
