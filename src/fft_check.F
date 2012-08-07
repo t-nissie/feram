@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-07-29 20:42:46 takeshi>
+! Time-stamp: <2012-08-07 17:41:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -37,11 +37,24 @@ and exports 'wisdom_new' into currnet directory.
 === PGI Fortran and ACML
 Use fft_acml.f and fft_acml.Makefile.
  $ make -f fft_acml.Makefile
+Note that FFT in ACML is currently not so good:
+ * Slow.
+ * Inaccurate. Try it with TOLERANCE = 1.0d-12.
+ * zdfft3d() normalizes transformed matrix. It is not a standard behavior.
 
 == How to execute fft_check
-If you wan to FFT with a size of 80x90x100 in 10,000 iterations,
- $ OMP_NUM_THREADS=6 ./fft_check 10000 80 90 100
+Without OMP_NUM_THREADS environment variable,
+ $ ./fft_check 10000 80 90 100
+fft_check normally uses all cores in your computer,
+where it FFT an array of size 80x90x100 in 10,000 iterations.
 Note that the number of iterations not affects wisdom_new file.
+
+If you want to benchmark efficiency of single processor in
+multi-processor system, use taskset(1) on Linux, cpuset(1)
+on FreeBSD, pbind(1) on Solaris etc. for binding threads
+to cores on one processor. For example, on a system with
+two Xeon X5650,
+ $ OMP_NUM_THREADS=6 taskset -c 0-5 ./fft_check 10000 80 90 100
 
 == Copying and author
 Copyright © 2007-2012 by Takeshi Nishimatsu
