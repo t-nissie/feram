@@ -1,0 +1,11 @@
+# -*-Makefile-*- for fft_check
+##
+FC=frtpx
+FFLAGS=-Kfast,parallel,openmp,preex,array_private,auto -Qt -Free
+LDFLAGS=-lfftw3 -lfftw3_omp -L/usr/local/fftw/3.3/lib64
+CPPFLAGS=-DHAVE_LIBFFTW3 -I/usr/local/fftw/3.3/include
+
+fft_check: fft_check.o f90_wisdom.o
+	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
+clean:
+	rm -f core* fft_check fft_check.o f90_wisdom.o
