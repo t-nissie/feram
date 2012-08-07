@@ -372,6 +372,8 @@ Here, /etc/fftw/wisdom is the system wisdom. In this case, you
 can use this /etc/fftw/wisdom for both Lx*Ly*Lz=32*32*243 and
 Lx*Ly*Lz=300*300*300 in the OMP_NUM_THREADS=6 environment.
 
+See src/fft_check.html for more details on fft_check.
+
 Check http://www.fftw.org/doc/Other-Important-Topics.html for more
 details on FFTW wisdom.
 
@@ -570,8 +572,7 @@ u.subs_rules = lambda{|s|
   gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').
-  gsub(/BaTiO3/,                           '<sub>3</sub>').
-  gsub(/(index\.en\.html)/,                '<a href="\1">\1</a>').
+  gsub(/(src\/fft_check\.html)/,           '<a href="\1">\1</a>').
   gsub(/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2').
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').

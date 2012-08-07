@@ -350,6 +350,8 @@ src/18example-benchmark/ディレクトリ内で，forward.feramのシステム
 Lx*Ly*Lz=32*32*243にもLx*Ly*Lz=300*300*300にも
 使うことができます．
 
+fft_checkの使い方の詳しい説明はsrc/fft_check.htmlにあります。
+
 FFTW wisdomについての詳細は
 http://www.fftw.org/doc/Other-Important-Topics.html
 をご覧下さい．
@@ -535,8 +537,7 @@ u.subs_rules = lambda{|s|
   gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').
-  gsub(/(README\.en)/,                     '<a href="\1">\1</a>').
-  gsub(/(index\.en\.html)/,                '<a href="\1">\1</a>').
+  gsub(/(src\/fft_check\.html)/,           '<a href="\1">\1</a>').
   gsub(/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2').
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').
