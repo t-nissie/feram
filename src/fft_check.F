@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-08-07 17:41:09 takeshi>
+! Time-stamp: <2012-08-08 03:05:20 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -49,11 +49,11 @@ fft_check normally uses all cores in your computer,
 where it FFT an array of size 80x90x100 in 10,000 iterations.
 Note that the number of iterations not affects wisdom_new file.
 
-If you want to benchmark efficiency of single processor in
+If you want to benchmark efficiency of single processor on a
 multi-processor system, use taskset(1) on Linux, cpuset(1)
-on FreeBSD, pbind(1) on Solaris etc. for binding threads
+on FreeBSD or pbind(1) on Solaris for binding threads
 to cores on one processor. For example, on a system with
-two Xeon X5650,
+two hyper-threading-off Xeon X5650,
  $ OMP_NUM_THREADS=6 taskset -c 0-5 ./fft_check 10000 80 90 100
 
 == Copying and author
