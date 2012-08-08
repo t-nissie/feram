@@ -12,6 +12,8 @@
 # Usage: submit EB general -jcf timingEB.jcf
 #
 ##
+hostname > forward.SR16000.dat
+w       >> forward.SR16000.dat
 # For HITACHI OFORT90
 unset  MEMORY_AFFINITY
 export HF_ERR_STATUS_MODE=1
@@ -19,11 +21,11 @@ export HF_PRUNST_BIND=1
 export HF_BINDPROC_NUM=0
 # For IBM XL Fortran
 export MALLOCMULTIHEAP=true
-export LDR_CNTRL=LARGE_PAGE_DATA=M
+export LDR_CNTRL='LARGE_PAGE_DATA=M'
 
 threads='8 16 24 31 32'
 for s in 2 1; do
-    echo "# HF_BINDPROC_STRIDE=$s"
+    echo "# HF_BINDPROC_STRIDE=$s" >> forward.SR16000.dat
     export  HF_BINDPROC_STRIDE=$s
     for i in $threads; do
 	export HF_PRUNST_THREADNUM=$i
@@ -32,7 +34,9 @@ for s in 2 1; do
 	export XLSMPOPTS="spins=0:yields=0:parthds=$i:stride=$s:startproc=0"
 	../fft_check 10000 32 32 243
 	mv wisdom_new wisdom
-	/usr/bin/timex ../feram forward.feram
+	../feram forward.feram
+	timing_report=`grep TIMING_REPORT forward.log`
+	printf '%1d %2d %s\n' $s $i "$timing_report" >> forward.SR16000.dat
     done
     threads='16 32 48 62 63 64'
 done
