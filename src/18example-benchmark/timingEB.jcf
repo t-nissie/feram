@@ -4,6 +4,7 @@
 #@ error  = timingEB.stderr
 #@ environment = COPY_ALL
 #@ restart = no
+#@ notification = never
 #@ job_name = timingEB
 #@ job_type = serial
 #@ comment = -n 1 -pm 1 -pt 64 -ap "general"
