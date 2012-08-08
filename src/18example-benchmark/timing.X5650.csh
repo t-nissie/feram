@@ -3,7 +3,7 @@
 # Author: Takeshi Nishimatsu
 # Requirement: taskset(1)
 ##
-rm wisdom
+rm -f wisdom
 
 setenv OMP_NUM_THREADS 6
 taskset -c 0-5 ../fft_check 10000 32 32 243
