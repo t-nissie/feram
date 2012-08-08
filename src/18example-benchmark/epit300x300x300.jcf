@@ -21,6 +21,8 @@ export HF_BINDPROC_NUM=0
 export MALLOCMULTIHEAP=true
 export LDR_CNTRL=LARGE_PAGE_DATA=M
 
+rm -f wisdom
+
 threads='8 16 24 31 32'
 for s in 2 1; do
     echo "# HF_BINDPROC_STRIDE=$s" >> epit300x300x300.SR16000.dat
@@ -35,6 +37,7 @@ for s in 2 1; do
 	../feram epit300x300x300.feram
 	timing_report=`grep TIMING_REPORT epit300x300x300.log`
 	printf '%1d %2d %s\n' $s $i "$timing_report" >> epit300x300x300.SR16000.dat
+	mv wisdom wisdom.$s.$i
     done
     threads='16 32 48 62 63 64'
 done
