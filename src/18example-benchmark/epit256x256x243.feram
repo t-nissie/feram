@@ -1,0 +1,57 @@
+#
+# WARNING: .coord files become super large.
+#
+# verbose = 2
+#--- Method, Temperature, and mass ---------------
+method = 'hl'
+GPa = -0.5
+kelvin = 300
+mass_amu = 38.24
+Q_Nose = 0.1
+
+#--- System geometry -----------------------------
+bulk_or_film = 'epit'
+epi_strain = -0.01
+L = 256 256 243
+gap_id = 1
+gap_dipole_u = 0.0 0.0 0.0
+
+#--- Elastic Constants ---------------------------
+B11 = 126.731671475652
+B12 =  41.7582963902598
+B44 =  49.2408864348646
+
+#--- From perovskite-optcell2-p.gp ---------------
+B1xx = -185.347187551195 [eV/Angstrom^2]
+B1yy = -3.28092949275457 [eV/Angstrom^2]
+B4yz = -14.5501738943852 [eV/Angstrom^2]
+P_k1 = -267.98013991724 [eV/Angstrom^6]
+P_k2 = 197.500718362573 [eV/Angstrom^6]
+P_k3 = 830.199979293529 [eV/Angstrom^6]
+P_k4 = 641.968099408642 [eV/Angstrom^8]
+P_alpha = 78.9866142426818 [eV/Angstrom^4]
+P_gamma = -115.484148812672 [eV/Angstrom^4]
+#kappa = -1.51821042113588 [eV/Angstrom^2]
+#(- 8.1460516421 (- (/  -3.812330 2) -1.51821042113588)) =>  8.53400622096412 new P_kappa2
+
+#--- Time step -----------------------------------
+dt = 0.002 [pico second]
+n_thermalize =     500
+n_average    =    1000
+n_hl_freq    =   10000
+n_coord_freq =  100000
+
+#--- External electric field ---------------------
+external_E_field = 0.00 0.00 -0.005
+
+#--- From eigenvalues2j --------------------------
+# original  P_kappa2 =    8.1460516421 [eV/Angstrom^2] =    0.0838298622 [Hartree/Bohr^2]
+P_kappa2 = 8.53400622096412
+j =  -2.08403 -1.12904  0.68946 -0.61134  0.00000  0.27690  0.00000    [eV/Angstrom^2]
+a0	  =   3.98597    [Angstrom]
+Z_star      =  10.33000
+epsilon_inf =   6.86915
+
+#--- Initial dipole configrations ----------------
+init_dipo_avg = 0.0   0.0   0.0    [Angstrom]  # Average   of initial dipole displacements
+init_dipo_dev = 0.03  0.03  0.03   [Angstrom]  # Deviation of initial dipole displacements
