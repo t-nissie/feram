@@ -1,0 +1,17 @@
+timing.X5650.csh was used
+
+/home/t-nissie/f/loto/feram/trunk/0.19.04-r1438-2012-08-08-app1-g-w-no-padding/src
+==> 18e-forward/forward.X5650.dat <==
+ 6       2.47     583.89     586.35 #TIMING_REPORT
+12       2.47     409.35     411.82 #TIMING_REPORT
+==> 18e-garnet01/forward.X5650.dat <==
+ 6       2.28     532.90     535.18 #TIMING_REPORT
+12       2.33     310.26     312.59 #TIMING_REPORT
+
+/home/t-nissie/f/loto/feram/trunk/0.19.04-r1438-2012-08-08-app1-g-w-padding/src
+==> 18e-forward/forward.X5650.dat <==
+ 6       2.46     592.77     595.24 #TIMING_REPORT
+12       2.51     414.75     417.26 #TIMING_REPORT
+==> 18e-garnet01/forward.X5650.dat <==
+ 6       2.28     538.43     540.71 #TIMING_REPORT
+12       2.56     317.59     320.15 #TIMING_REPORT
