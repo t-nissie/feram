@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-08-08 03:05:20 takeshi>
+! Time-stamp: <2012-08-10 03:55:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -360,16 +360,16 @@ program fft_check
   g_ro = f_r / t_ro(2)
 
   if (t_ri(2)<0.00001d0 .and. mod(Lx,2).eq.1) then   ! In the case of Lx=odd on SR16000 with MATRIX/MPP
-     write(0,              '(a,f14.5,f10.5,f8.3)') &
+     write(0,              '(a,f13.3,f8.3,f8.3)') &
           & ' p_ci, t_ci, g_ci = ', t_ci(1), t_ci(2), g_ci
-     write(6,'(i8,3i5,i11,i4,  f14.5,f10.5,f8.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
+     write(6,'(i8,3i5,i11,i4,  f13.3,f8.3,f8.3)') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
           &                         t_ci(1), t_ci(2), g_ci
   else
-     write(0,              '(a,f14.5,f10.5,f8.3)') &
+     write(0,              '(a,f13.3,f8.3,f8.3)') &
           & ' p_ci, t_ci, g_ci = ', t_ci(1), t_ci(2), g_ci, &
           & ' p_ri, t_ri, g_ri = ', t_ri(1), t_ri(2), g_ri, &
           & ' p_ro, t_ro, g_ro = ', t_ro(1), t_ro(2), g_ro
-     write(6,'(i8,3i5,i11,i4,3(f14.5,f10.5,f8.3))') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
+     write(6,'(i8,3i5,i11,i4,3(f13.3,f8.3,f8.3))') N_TIMES, Lx, Ly, Lz, N, NTHREADS, &
           &                         t_ci(1), t_ci(2), g_ci, &
           &                         t_ri(1), t_ri(2), g_ri, &
           &                         t_ro(1), t_ro(2), g_ro
