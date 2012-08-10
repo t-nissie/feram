@@ -43,7 +43,7 @@ temperature=$temperature_start
 while [ `perl -e "print $temperature >= $temperature_goal || 0"` = "1" ] ; do
     GPa=`perl -e "print -0.005 * $temperature"`
     i=`expr $i + 1`
-    filename=EXTERNALEc`printf '%.3d' $i`-"$temperature"K
+    filename=EXTERNALEc`printf '%.4d' $i`-"$temperature"K
     cat > $filename <<-EOF
 	#--- Method, Temperature, and mass ---------------
 	method = 'md'
