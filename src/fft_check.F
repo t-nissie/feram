@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-08-10 03:55:00 takeshi>
+! Time-stamp: <2012-08-10 15:59:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -29,7 +29,7 @@ IBM XL Fortran (xlf90_r), etc. You can link FFTW, Intel MKL, Hitach MATRIX/MPP
 as an FFT library. For example,
  $ make -f fft_check.Makefile.Intel-gfortran-fftw3_omp
 
-=== FFTW
+=== FFTW and wisdom file
 If fft_check.F is compiled with FFTW library and f90_wisdom.f,
 it imports 'wisdom' file in currnet directory or /etc/fftw/wisdom
 and exports 'wisdom_new' into currnet directory.
@@ -55,6 +55,23 @@ on FreeBSD or pbind(1) on Solaris for binding threads
 to cores on one processor. For example, on a system with
 two hyper-threading-off Xeon X5650,
  $ OMP_NUM_THREADS=6 taskset -c 0-5 ./fft_check 10000 80 90 100
+
+== results, timing and GFLOPS
+Vorbose reports will be written into standard error (STDERR).
+Formated results will be written into standard output (STDOUT)
+in an order of
+N_TIMES Lx Ly Lz N NTHREADS
+plan_ci time_ci GFLOPS_ci
+plan_ri time_ri GFLOPS_ri
+plan_ro time_ro GFLOPS_ro,
+where plan denotes time in second for planning,
+time denotes time in second for FFT,
+_ci denotes in-place double-precision complex 3-dimensional FFT,
+_ri denotes in-place double-precision real 3-dimensional FFT, and
+_ro denotes out-of-place of that.
+
+Giga FLOPS values are roughly estimated from
+5*N*log_2(N) floating point operations.
 
 == Copying and author
 Copyright © 2007-2012 by Takeshi Nishimatsu
