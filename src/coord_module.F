@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-08-06 12:00:45 takeshi>
+! Time-stamp: <2012-08-21 18:46:11 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -99,7 +99,7 @@ contains
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 3
        call dfftw_plan_dft_r2c_3d(c%plans_dipoR2C(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%dipoR(0,0,0,alpha), c%dipoK(0,0,0,alpha), FFTW_PATIENT)
+            & c%dipoR(0,0,0,alpha), c%dipoK(0,0,0,alpha), FFTW_MEASURE)
     end do
 #   endif
 
@@ -124,7 +124,7 @@ contains
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 3
        call dfftw_plan_dft_c2r_3d(c%plans_dipoT2dVddi(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%dipoT(0,0,0,alpha), c%dVddi(0,0,0,alpha), FFTW_PATIENT)
+            & c%dipoT(0,0,0,alpha), c%dVddi(0,0,0,alpha), FFTW_MEASURE)
     end do
 #   endif
 
@@ -158,7 +158,7 @@ contains
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 6
        call dfftw_plan_dft_r2c_3d(c%plans_didiR2C(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha), FFTW_PATIENT)
+            & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha), FFTW_MEASURE)
     end do
 #   endif
 
@@ -185,7 +185,7 @@ contains
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 6
        call dfftw_plan_dft_c2r_3d(c%plans_inhoK2R(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%inhoK(0,0,0,alpha), c%inhoR(0,0,0,alpha), FFTW_PATIENT)
+            & c%inhoK(0,0,0,alpha), c%inhoR(0,0,0,alpha), FFTW_MEASURE)
     end do
 #   endif
 
