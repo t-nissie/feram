@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-08-10 15:59:52 takeshi>
+! Time-stamp: <2012-08-22 13:43:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -90,7 +90,7 @@ Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 #  include "config.h"
 #endif
 
-#if defined(__PGI) || defined(HITACHI_SR) || defined(__sparc)
+#if defined(__PGI) || defined(__sparc)
 #  define command_argument_count iargc
 #  define get_command_argument getarg
 #endif

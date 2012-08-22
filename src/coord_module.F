@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-08-22 12:41:47 takeshi>
+! Time-stamp: <2012-08-22 13:43:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -11,28 +11,6 @@
 module Coord_module
   implicit none
   type Coord_type
-#  if defined(HITACHI_SR)
-#    define allocated associated
-     real*8,     pointer     :: m_inv(:,:,:,:)   => null()
-     real*8,     pointer     :: dipoR(:,:,:,:)   => null()
-     complex*16, pointer     :: dipoK(:,:,:,:)   => null()
-     real*8,     pointer     :: dipoP(:,:,:,:)   => null()
-     real*8,     pointer     :: dVddi(:,:,:,:)   => null()
-     complex*16, pointer     :: dipoT(:,:,:,:)   => null()
-     real*8,     pointer     :: E_field(:,:,:,:) => null()
-     real*8,     pointer     :: dipoI(:,:,:,:,:) => null()
-     real*8,     pointer     :: didiR(:,:,:,:)   => null()
-     complex*16, pointer     :: didiK(:,:,:,:)   => null()
-    !real*8,     pointer     :: acouR(:,:,:,:)   => null()
-     real*8,     pointer     :: inhoR(:,:,:,:)   => null()
-     complex*16, pointer     :: inhoK(:,:,:,:)   => null()
-     real*8,     pointer     :: inhomo_K(:,:,:, :,:)       => null()
-     real*8,     pointer     :: inhomo_K_G(:,:, :,:,:)     => null()
-     real*8,     pointer     :: inhomo_K_G_inv(:, :,:,:)   => null()
-     real*8,     pointer     :: inhomo_coup2_K(:,:,:, :,:) => null()
-     logical,    pointer     :: sum_p(:,:,:) => null()
-     real*8,     pointer     :: e_layer(:)
-#  else
      real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
      complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoQ
@@ -51,7 +29,6 @@ module Coord_module
      real*8,     allocatable :: inhomo_coup2_K(:,:,:, :,:) ! FTed potential
      logical,    allocatable :: sum_p(:,:,:) ! .true. if the u(R) is not defect nor mirrored film. This array will be initialized in read_defects_u.F
      real*8,     allocatable :: e_layer(:)
-#  endif
      real*8                 strain(6)
      real*8                 homogeneous(6,6)
      real*8                 homogeneous_G(6,6)

@@ -17,7 +17,7 @@ Version and date of installation is written in parentheses ().
    * Intel Fortran Compiler (ifort; version 11.1 and later) with
      Intel Math Kernel Library (MKL; version 10.2 and later)
      http://software.intel.com/en-us/articles/intel-compilers/
-   * Fortran 90 for HITACHI SR16000
+   * IBM XL Fortran for HITACHI SR16000
    * Fortran 90 (frtpx) for Fujitsu supercomputers: Kei and FX10
  * tar (version 1.22 or higher)  http://www.gnu.org/software/tar/
  * xz  http://tukaani.org/xz/
@@ -129,31 +129,6 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
 
 
 == Super computers
-=== HITACHI SR16000 with f90 (OFORT90), FFT in MATRIX/MPP and LAPACK
-Note that libblas.a, liblapack.a, and libmatmpp.a must be in
-/sysap/lib/, /opt/hitachi/matmpp/lib/ or elsewhere.
- $ tar xf feram-X.YY.ZZ.tar.xz
- $ cd feram-X.YY.ZZ
- $ mkdir SR16000-f90
- $ cd SR16000-f90
- $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/opt/hitachi/matmpp/lib' --with-fft=matmpp
- $ cd src
- $ make
- $ HF_PRUNST_THREADNUM=16 OMP_NUM_THREADS=16 make check   # OPTIONAL. Test RNG and FFT.
-For performance monitor
- $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/opt/hitachi/matmpp/lib' FCFLAGS='-64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT \
-   -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -i,L -pmfunc -pmpar'
-Currently, feram runs on 1/4 node of SR16000 effectively.
-Therefore,
- $ cat SC
- ../feram forward.feram
- $ submit SC general -pt 16 -exec SC -J SC -N -u t-nissie@example.com
-is the most efficient way of queue submission on SR16000, so far.
-
-
-=== HITACHI SR16000 with f90 (OFORT90), fftw-3.3.2 and LAPACK
- $ ../configure FC=f90 LDFLAGS='-L/sysap/lib -L/sysap/fftw/fftw-3.3.2a/lib -lm' CPPFLAGS=-I/sysap/fftw/fftw-3.3.2a/include --with-fft=fftw3_omp
-
 === HITACHI SR16000 with IBM xlf90_r, FFTW 3.3 and dsyevx in ESSL (libesslsmp)
 Note that ESSL does not have dsyev() and zheev().
 You may be able to use dsyevx() instead of dsyev().

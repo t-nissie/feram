@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2012-07-18 08:12:23 t-nissie>
+! Time-stamp: <2012-08-22 13:43:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -34,7 +34,6 @@ subroutine optimize_inho_strain(p,c,e)
   ! are solved for all k-points.
   ! * inhomo_K is positive definite real symmetric matrix. See elastic.F and cholesky_d.f.
   ! * acouK(1:3,0,0,0)=0 is guaranteed by c%inhomo_K_G(1:3,1:4, 0,0,0)=0.
-!POPTION PARALLEL,TLOCAL(acouK_tmp,tmp)
 !$omp parallel do private(iz,iy,ix,alpha,beta,acouK_tmp,tmp)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1

@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2012-02-28 09:16:08 t-nissie>
+! Time-stamp: <2012-08-22 13:43:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -145,7 +145,6 @@ contains
     !--- END of variable definitions -------------------
     tmpS = 0.0d0
 !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
-!POPTION PSUM(tmpS)
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
           do alpha = 1,3
@@ -179,7 +178,6 @@ contains
     do i = 1,6
        do alpha = 1,3
 !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
-!POPTION PSUM(tmpS)
           do iz = 0, p%Lz-1
              do iy = 0, p%Ly-1
                 tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) * c%didiK(0,         iy,iz,i) ) / 2

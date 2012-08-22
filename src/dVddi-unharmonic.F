@@ -1,5 +1,5 @@
 ! dVddi-unharmonic.F   -*-f90-*-
-! Time-stamp: <2012-02-23 14:06:05 t-nissie>
+! Time-stamp: <2012-08-22 13:43:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_unharmonic(p,c,e)
@@ -29,7 +29,6 @@ subroutine dVddi_unharmonic(p,c,e)
         four_k2_two_k3 =      4*p%P_k2 - 2*p%P_k3
 
 !$omp parallel do private(iz, alpha, alpha1, alpha2) 
-!POPTION PARALLEL,TLOCAL(iz, alpha, alpha1, alpha2) 
   do iz = 0, p%Lz-1
   do alpha = 1,3
      ! 4th order
@@ -57,7 +56,6 @@ subroutine dVddi_unharmonic(p,c,e)
 !$omp end parallel do
 
   unharm0 = 0.0d0
-!POPTION PSUM(unharm0)
 !$omp parallel do private(iz, iy, ix) reduction(+:unharm0)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1

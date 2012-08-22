@@ -1,5 +1,5 @@
 ! dVddi-homo-coupling.F   -*-f90-*-
-! Time-stamp: <2012-04-19 17:58:09 t-nissie>
+! Time-stamp: <2012-08-22 13:43:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_homo_coupling(p,c) ! We use p implicitly. Don't worry about compile warning on it.
@@ -23,7 +23,6 @@ subroutine dVddi_homo_coupling(p,c) ! We use p implicitly. Don't worry about com
      end do
   end do
 
-!POPTION PARALLEL,TLOCAL(iz)
 !$omp parallel do
   do iz=0, p%Lz-1
   c%dVddi(:,:,iz,1) = &

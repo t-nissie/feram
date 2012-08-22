@@ -13,7 +13,6 @@ real*8 function kinetic_energy(p,c)
   ! kinetic_energy = SUM( c%dipoP(:,:,:,:)**2 * c%m_inv(:,:,:,:) ) / 2
 
   tmp_e = 0.0d0
-!POPTION PSUM(tmp_e)
 !$omp parallel do private(iz, alpha, iy, ix) reduction(+:tmp_e)
   do iz=0, p%Lz-1
      do alpha = 1,3
