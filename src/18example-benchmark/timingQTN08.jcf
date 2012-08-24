@@ -1,0 +1,38 @@
+#!/bin/bash
+#@ class = qtn
+#@ output = timingQTN08.out
+#@ error  = timingQTN08.err
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = timingQTN08
+#@ job_type = serial
+#@ bulkxfer = yes
+#@ rset = rset_mcm_affinity
+#@ task_affinity=cpu(8)
+#@ cpus_per_core=1
+#@ queue
+#
+# Usage: llsubmit timingQTN08.jcf
+#
+##
+# For IBM XL Fortran
+export MALLOCMULTIHEAP=true
+export LDR_CNTRL='LARGE_PAGE_DATA=M'
+# export XLSMPOPTS="spins=0:yields=0:parthds=8:stride=2:startproc=0"
+
+export OMP_NUM_THREADS=8
+
+rm -f wisdom
+../fft_check 10000 32 32 243
+mv wisdom_new wisdom
+
+for j in `jot 10`; do
+    ../feram forward.feram
+    grep TIMING_REPORT forward.log >> timingQTN08.dat
+done
+
+hostname >> timingQTN08.dat
+w        >> timingQTN08.dat
+printenv >> timingQTN08.dat
+
+rm -f *.coord
