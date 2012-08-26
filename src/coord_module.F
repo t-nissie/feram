@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-08-22 13:43:57 t-nissie>
+! Time-stamp: <2012-08-26 22:52:29 c25050>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -173,7 +173,7 @@ contains
     allocate(     c%inhomo_K_G(3,4, 0:p%Lx/2,0:p%Ly-1,0:p%Lz-1))
 
     if (allocated(c%inhomo_coup2_K)) deallocate(c%inhomo_coup2_K)
-#if defined(__xlc__)
+#if defined(__xlc__) || defined(__sparc)
     if (mod(p%Ly,16).eq.0 .and. mod(p%Lz,16).eq.0) then
        allocate(c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1+3,0:p%Lz-1, 3,6))   ! padding
     else
