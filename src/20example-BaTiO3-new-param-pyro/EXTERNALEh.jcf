@@ -26,7 +26,7 @@ export LDR_CNTRL=LARGE_PAGE_DATA=M
 export HF_PRUNST_THREADNUM=16
 export HF_90OPTS="-FPRUNST(THREADNUM(16))"
 export OMP_NUM_THREADS=16
-export XLSMPOPTS="spins=0:yields=0:parthds=16:stride=1:startproc=0"	
+#export XLSMPOPTS="spins=0:yields=0:parthds=16:stride=1:startproc=0"
 
 rm -f EXTERNALEh.avg
 
