@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-08-22 13:43:57 t-nissie>
+! Time-stamp: <2012-08-29 11:23:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -51,10 +51,17 @@ Note that the number of iterations not affects wisdom_new file.
 
 If you want to benchmark efficiency of single processor on a
 multi-processor system, use taskset(1) on Linux, cpuset(1)
-on FreeBSD or pbind(1) on Solaris for binding threads
-to cores on one processor. For example, on a system with
-two hyper-threading-off Xeon X5650,
+on FreeBSD, dplace(1) on SGI or pbind(1) on Solaris for
+binding threads to cores on one processor. For example, on a
+system with two hyper-threading-off Xeon X5650,
  $ OMP_NUM_THREADS=6 taskset -c 0-5 ./fft_check 10000 80 90 100
+
+numactl(8) on Linux is also a useful command for achieving
+good performance on Non-Uniform Memory Access (NUMA) systems.
+ $ numactl --help
+ $ numactl --show
+ $ numactl --hardware
+ $ numactl --cpunodebind=0,1 --interleave=all ./fft_check 100 256 256 256
 
 == results, timing and GFLOPS
 Vorbose reports will be written into standard error (STDERR).
