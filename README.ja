@@ -340,7 +340,7 @@ src/18example-benchmark/ディレクトリ内で，forward.feramのシステム
  $ w
  $ OMP_NUM_THREADS=6 ../fft_check 100 300 300 300
  $ sudo cp wisdom_new /etc/fftw/wisdom
- $ rm wosdom wisdom_new
+ $ rm wisdom wisdom_new
  $ OMP_NUM_THREADS=6 ../feram epit300x300x300.feram &
  $ grep FFTW_WISDOM epit300x300x300.log
   feram_common.F: 52: FFTW_WISDOM: FFTW wisdom is not in current directory.

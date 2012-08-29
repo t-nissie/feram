@@ -341,7 +341,7 @@ This file is required for the calculation of the local field.
 Position must be given in the unit of a0.
 
 === FFTW wisdom file
-By preparing an FFTW wisdom file in your currrent directory,
+By preparing an FFTW wisdom file in your current directory,
 you can reduce initial computational time, i.e. computational
 time before the "Ready for simulation!!!" message. You can
 generate an FFTW wisdom file with `fft_check` command, which
@@ -363,7 +363,7 @@ for the forward.feram input file,
  $ w
  $ OMP_NUM_THREADS=6 ../fft_check 100 300 300 300
  $ sudo cp wisdom_new /etc/fftw/wisdom
- $ rm wosdom wisdom_new
+ $ rm wisdom wisdom_new
  $ OMP_NUM_THREADS=6 ../feram epit300x300x300.feram &
  $ grep FFTW_WISDOM epit300x300x300.log
   feram_common.F: 52: FFTW_WISDOM: FFTW wisdom is not in current directory.
