@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-08-29 11:23:47 takeshi>
+! Time-stamp: <2012-08-30 04:26:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -47,7 +47,7 @@ Without OMP_NUM_THREADS environment variable,
  $ ./fft_check 10000 80 90 100
 fft_check normally uses all cores in your computer,
 where it FFT an array of size 80x90x100 in 10,000 iterations.
-Note that the number of iterations not affects wisdom_new file.
+Note that the number of iterations does not affect wisdom_new file.
 
 If you want to benchmark efficiency of single processor on a
 multi-processor system, use taskset(1) on Linux, cpuset(1)
