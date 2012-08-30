@@ -1,12 +1,26 @@
-# -*-Makefile-*- for marsaglia_tsang_uni64_timing
+# -*-Makefile-*- for check and timing of marsaglia_tsang_uni64_module
 ##
 FC=gfortran
 FFLAGS=-Wall -O3 -ffree-form -ffast-math -funroll-loops
 
+all: marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing
+
+marsaglia_tsang_uni64_check:  marsaglia_tsang_uni64_check.o  marsaglia_tsang_uni64_module.o
+	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
+
 marsaglia_tsang_uni64_timing: marsaglia_tsang_uni64_timing.o marsaglia_tsang_uni64_module.o
 	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
 
-marsaglia_tsang_uni64_timing.o: marsaglia_tsang_uni64_module.o
+marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o: marsaglia_tsang_uni64_module.o
 
 clean:
-	rm -f core* marsaglia_tsang_uni64_timing.o marsaglia_tsang_uni64_module.o marsaglia_tsang_uni64_timing marsaglia_tsang_uni64_module.mod
+	rm -f core* marsaglia_tsang_uni64_check.o \
+                    marsaglia_tsang_uni64_check \
+                    marsaglia_tsang_uni64_check.dat \
+                    marsaglia_tsang_uni64_timing.o \
+                    marsaglia_tsang_uni64_timing \
+                    marsaglia_tsang_uni64_module.o \
+                    marsaglia_tsang_uni64_module.mod
+#local variables:
+#  compile-command: "make -f marsaglia_tsang_uni64_Makefile.gfortran && ./marsaglia_tsang_uni64_check && ./marsaglia_tsang_uni64_timing"
+#End:
