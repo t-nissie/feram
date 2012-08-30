@@ -1,12 +1,12 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-08-28 10:07:35 takeshi>
+# Time-stamp: <2012-08-30 12:27:58 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
 bin_PROGRAMS = feram diagonalize15x15 displacement coord2deviation eigenvalues2j frozen_phonon_Gamma frozen_phonon_X\
-	 marsaglia_tsang_uni64_check fft_check is_power2_check
+	 marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing fft_check
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -56,13 +56,13 @@ frozen_phonon_Gamma_SOURCES = frozen_phonon_Gamma.F
 
 frozen_phonon_X_SOURCES = frozen_phonon_X.F
 
-marsaglia_tsang_uni64_check_SOURCES = marsaglia_tsang_uni64_check.F marsaglia_tsang_uni64_module.f
+marsaglia_tsang_uni64_check_SOURCES  = marsaglia_tsang_uni64_check.F  marsaglia_tsang_uni64_module.f
+
+marsaglia_tsang_uni64_timing_SOURCES = marsaglia_tsang_uni64_timing.f marsaglia_tsang_uni64_module.f
 
 fft_check_SOURCES = fft.F fft_check.F f90_wisdom.f
 
-is_power2_check_SOURCES = is_power2.f is_power2_check.f
-
-TESTS = marsaglia_tsang_uni64_check fft_check is_power2_check
+TESTS = marsaglia_tsang_uni64_check fft_check
 
 CLEANFILES = *.mod *.lst *.ps *.pdf *.f90 feram_mpi
 EXTRA_DIST = define.h \
@@ -131,6 +131,7 @@ molecular-dynamics.o:\
 dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy.o:\
                                 param_module.o coord_module.o
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
+marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o:                          marsaglia_tsang_uni64_module.o
 mirror_force_mirror.o:          param_module.o coord_module.o energy_module.o
 nose-poincare.o velocity_scaling.o:\
                                 param_module.o coord_module.o energy_module.o kinetic_energy.o

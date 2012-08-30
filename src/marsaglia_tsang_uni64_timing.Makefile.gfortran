@@ -1,0 +1,12 @@
+# -*-Makefile-*- for marsaglia_tsang_uni64_timing
+##
+FC=gfortran
+FFLAGS=-Wall -O3 -ffree-form -ffast-math -funroll-loops
+
+marsaglia_tsang_uni64_timing: marsaglia_tsang_uni64_timing.o marsaglia_tsang_uni64_module.o
+	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
+
+marsaglia_tsang_uni64_timing.o: marsaglia_tsang_uni64_module.o
+
+clean:
+	rm -f core* marsaglia_tsang_uni64_timing.o marsaglia_tsang_uni64_module.o marsaglia_tsang_uni64_timing marsaglia_tsang_uni64_module.mod

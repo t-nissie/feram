@@ -1,0 +1,30 @@
+! marsaglia_tsang_uni64_timing.F -*-f90-*-
+! Time-stamp: <2012-08-30 12:23:50 takeshi>
+! Author: Takeshi NISHIMATSU
+!!
+program marsaglia_tsang_uni64_timing
+  use marsaglia_tsang_uni64_module
+  implicit none
+  integer, parameter :: N=1000*1000*1000
+  integer :: i
+  real*8  :: x
+  integer :: count_start, count_goal, count_rate, count_max
+  real*8  :: t
+  if (uni64(123456789,987654321) .ne. 1.0d0) stop 1
+
+  call system_clock(count_start)
+  do i=1,N
+     x=uni64()
+  end do
+  call system_clock(count_goal, count_rate, count_max)
+
+  if (uni64()*9007199254740992.0d0 .ne. 6612779596961172.0d0) stop 2
+
+  t = dble(count_goal-count_start)/count_rate
+  if (t<0.0d0) t=t+dble(count_max)/count_rate
+  write(6,'(a,f10.3,a)') '10^9 double-precision random numbers were generated in', t, ' [s].'
+  write(6,'(a,f10.3,a)') 'Therefore, speed of this marsaglia_tsang_uni64 RNG is ', dble(N)*1.0d-6/t, ' [M/s].'
+end program marsaglia_tsang_uni64_timing
+!local variables:
+!  compile-command: "make marsaglia_tsang_uni64_timing; ./marsaglia_tsang_uni64_timing"
+!End:
