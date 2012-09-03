@@ -4,7 +4,7 @@
 
 feramは強誘電体薄膜の高速分子動力学シミュレーターです．
 
-== ホームページ，ダウンロード，インストール
+== ホームページ，ダウンロード，コンパイル，論文
 feramのホームページは http://loto.sourceforge.net/feram/ です．
 
 最新のtar.xzパッケージ (feram-X.YY.ZZ.tar.xz) を
@@ -13,7 +13,9 @@ http://sourceforge.net/projects/loto/files/feram/
 feramはGNU General Public License (GPL)にもとづいて
 コピー・改変・再配布が可能なフリーソフトウエアです．
 
-インストールの手順は INSTALL に述べられています．
+コンパイルの手順は INSTALL に述べられています．
+
+feramを使った強誘電体の研究の論文のリストがdoc/publication.htmlにあります．
 
 == 参考文献
  * Takeshi Nishimatsu, Masaya Iwamoto, Yoshiyuki Kawazoe, and Umesh V. Waghmare:

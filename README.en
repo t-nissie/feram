@@ -3,15 +3,16 @@
 
 logo.jpg
 
-== Homepage, download and installation
+== Homepage, download, compilation and publication
 feram's homepage is http://loto.sourceforge.net/feram/ .
 
 You can freely download a tar ball of feram (feram-X.YY.ZZ.tar.xz) from
 http://sourceforge.net/projects/loto/files/feram/ .
 feram is GPLed free software.
 
-Step-by-step procedure of installation is described in INSTALL.
+Step-by-step procedure of compilation is described in INSTALL.
 
+Publications related to feram is listed in doc/publication.html.
 
 == What is feram?
 feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroelectrics and relaxors.
