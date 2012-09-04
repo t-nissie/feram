@@ -567,6 +567,7 @@ u.subs_rules = lambda{|s|
   gsub(/logo\.jpg/, '<img src="logo.jpg" alt="feram logo mark" />').
   gsub(/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2').
   gsub(/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2').
+  gsub(/(doc\/publication\.html)/,         '<a href="\1">\1</a>').
   gsub(/(\S*\/?\.F)(\s|$)/,                '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?\.pdf)(\s|$)/,              '<a href="\1">\1</a>\2').
   gsub(/INSTALL/,             '<a href="INSTALL.html">INSTALL</a>').
