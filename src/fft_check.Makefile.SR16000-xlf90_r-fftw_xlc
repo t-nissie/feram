@@ -1,0 +1,12 @@
+# -*-Makefile-*- for fft_check
+##
+FC=xlf90_r
+FFLAGS = -q64 -O4 -qsmp=omp -qinfo=all -qreport
+CPPFLAGS = -WF,-DHAVE_LIBFFTW3 -I/sysap/fftw_xlc/fftw-3.3.2a/include
+LDFLAGS = -L/sysap/fftw_xlc/fftw-3.3.2a/lib -lfftw3 -lfftw3_omp -Wl,'-blpdata' -Wl,'-bmaxdata:90000000000'
+
+fft_check: fft_check.o f90_wisdom.o
+	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
+clean:
+	rm -f fft_check.o   f90_wisdom.o   core* fft_check \
+              fft_check.log f90_wisdom.log *.lst
