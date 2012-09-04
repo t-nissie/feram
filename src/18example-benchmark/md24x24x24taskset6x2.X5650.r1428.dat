@@ -1,0 +1,5 @@
+# /home/t-nissie/f/feram/feram-0.19.04/app1-gfortran-4.4.6-fftw-3.3.2/src/00app1-slow/md24x24x24taskset6x2.dat.garnet01
+# garnet01
+#    10000   24   24   24      13824   6       1.33300   0.89100  21.341       1.37800   0.54800  17.349       1.12500   0.55200  17.224
+md24x24x24a.log:              1.50         139.83         141.33     #TIMING_REPORT
+md24x24x24b.log:              1.50         139.18         140.67     #TIMING_REPORT

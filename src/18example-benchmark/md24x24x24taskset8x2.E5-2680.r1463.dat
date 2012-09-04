@@ -1,0 +1,5 @@
+# /home/t-nissie/f/feram/feram-0.19.05/app1-gfortran-4.4.6-fftw-3.3.2/src/18e-md24x24x24/md24x24x24taskset8x2.dat
+# emerald02.imr.edu, HT off, TB off
+#   10000   24   24   24      13824   8        1.502   0.682  27.881        1.634   0.457  20.804        1.300   0.481  19.766
+md24x24x24a.log:              1.12         109.00         110.12     #TIMING_REPORT
+md24x24x24b.log:              1.10         108.95         110.05     #TIMING_REPORT

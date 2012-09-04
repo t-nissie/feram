@@ -1,4 +1,5 @@
 # See ../21example-KNbO3/two6threads.csh
 # pwd; grep TIMING heating001-30K.log
 # /home/t-nissie/feram/feram-j.05/KNbO3/KNbO3-013-WuC-0.0010-feram-0.19.05-X5650-step1K
+# 1 CPU (1 chip)
               0.47          23.22          23.69     #TIMING_REPORT
