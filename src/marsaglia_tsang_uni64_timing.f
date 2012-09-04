@@ -1,5 +1,5 @@
-! marsaglia_tsang_uni64_timing.F -*-f90-*-
-! Time-stamp: <2012-08-30 12:23:50 takeshi>
+! marsaglia_tsang_uni64_timing.f -*-f90-*-
+! Time-stamp: <2012-09-04 14:03:18 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program marsaglia_tsang_uni64_timing
@@ -11,6 +11,8 @@ program marsaglia_tsang_uni64_timing
   integer :: count_start, count_goal, count_rate, count_max
   real*8  :: t
   if (uni64(123456789,987654321) .ne. 1.0d0) stop 1
+
+  write(6,'(a)') 'marsaglia_tsang_uni64_timing: Initialization has been done. Timing starts.'
 
   call system_clock(count_start)
   do i=1,N
