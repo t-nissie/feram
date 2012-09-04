@@ -1,0 +1,48 @@
+#!/bin/bash
+#@ class = qtn
+#@ output = fft_powr2.stdout
+#@ error  = fft_powr2.stderr
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = fft_powr2
+#@ job_type = serial
+#@ comment = -n 1 -pm 1 -pt 64 -ap "general"
+#@ queue
+#
+# Usage: llsubmit fft_powr2.jcf
+#
+# For HITACHI OFORT90
+export MEMORY_AFFINITY=MCM
+export HF_ERR_STATUS_MODE=1
+export HF_PRUNST_BIND=1
+export HF_BINDPROC_NUM=0
+export HF_BINDPROC_STRIDE=2
+# For IBM XL Fortran
+export MALLOCMULTIHEAP=true
+export LDR_CNTRL=LARGE_PAGE_DATA=M
+
+rm -f wisdom
+
+i=32
+export HF_PRUNST_THREADNUM=$i
+export HF_90OPTS="-FPRUNST(THREADNUM($i))"
+export OMP_NUM_THREADS=$i
+export XLSMPOPTS="spins=0:yields=0:parthds=$i:stride=2:startproc=0"	
+
+../fft_check  100000   32   32   32 >  fft_powr2.SR16000.1node.dat
+../fft_check   10000   64   64   64 >> fft_powr2.SR16000.1node.dat
+../fft_check   10000  256   64   32 >> fft_powr2.SR16000.1node.dat
+../fft_check    1000   16 1024   64 >> fft_powr2.SR16000.1node.dat
+../fft_check    1000  128  128  128 >> fft_powr2.SR16000.1node.dat
+../fft_check     100  256  256  256 >> fft_powr2.SR16000.1node.dat
+../fft_check     100  128  256 1024 >> fft_powr2.SR16000.1node.dat
+../fft_check     100  256  256  512 >> fft_powr2.SR16000.1node.dat
+../fft_check      50  256  512  512 >> fft_powr2.SR16000.1node.dat
+../fft_check      50  512  256  512 >> fft_powr2.SR16000.1node.dat
+../fft_check      50  512  512  512 >> fft_powr2.SR16000.1node.dat
+../fft_check      50  256  512 1024 >> fft_powr2.SR16000.1node.dat
+../fft_check      50 1024  512  256 >> fft_powr2.SR16000.1node.dat
+../fft_check      50  512  512 1024 >> fft_powr2.SR16000.1node.dat
+../fft_check      50  512 1024 1024 >> fft_powr2.SR16000.1node.dat
+../fft_check      20 1024 1024 1024 >> fft_powr2.SR16000.1node.dat
+../fft_check      10 2048 2048 2048 >> fft_powr2.SR16000.1node.dat
