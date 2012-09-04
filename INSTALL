@@ -59,6 +59,11 @@ If you installed FFTW3 into your home directory,
 specify CPPFLAGS and LDFLAGS for configure.
  $ ../configure FC=gfortran CPPFLAGS=-I/home/takeshi/include LDFLAGS=-L/home/takeshi/lib
 
+FFTW3, BLAS and LAPACK libraries can be easily installed into
+Debian 7.0 (wheezy) GNU/Linux system with
+ # apt-get install libfftw3-dev libblas-dev liblapack-dev
+Debian 7.0 will be released next spring (2013).
+
 == Linux
 === CentOS 6.2 (feram-0.18.05, 2012-03-28)
 CentOS 6.2 can be installed to your x86_64 system with DVD and
