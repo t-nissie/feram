@@ -46,25 +46,25 @@ set xtics ("30x30x30" 0,\
 set output "fft_nonp2.eps"
 set multiplot
 
-set size 0.8,0.33
+set size 0.8,0.34
 
 set label 1 at -4.1,190 '(a)' font "Times-Roman,15"
 set title "double-precision complex, 3d transforms, 1 node\nnon-powers of two, in-place"
-set origin 0.0,0.68
+set origin 0.0,0.67
 plot 'fft_check_nonp2_stride2.SR16000.r1492.dat'               using 0:9  t 'SR16000'  w lp lw 2,\
      '< grep "  16   " fft_check_nonp2.E5-2680.r1455.FFTW.dat' using 0:9  t 'E5-2680'  w lp lw 2,\
      'fft_check_nonp2.X5650.r1455.dat'                         using 0:9  t 'X5650'    w lp lw 2
 
 set label 1 '(b)'
 set title "double-precision real, 3d transforms, 1 node\nnon-powers of two, in-place"
-set origin 0.0,0.36
+set origin 0.0,0.34
 plot 'fft_check_nonp2_stride2.SR16000.r1492.dat'               using 0:12 t 'SR16000'  w lp lw 2,\
      '< grep "  16   " fft_check_nonp2.E5-2680.r1455.FFTW.dat' using 0:12 t 'E5-2680'  w lp lw 2,\
      'fft_check_nonp2.X5650.r1455.dat'                         using 0:12 t 'X5650'    w lp lw 2
 
 set label 1 '(c)'
 set title "double-precision real, 3d transforms, 1 node\nnon-powers of two, out-of-place"
-set origin 0.0,0.04
+set origin 0.0,0.01
 plot 'fft_check_nonp2_stride2.SR16000.r1492.dat'               using 0:15 t 'SR16000'  w lp lw 2,\
      '< grep "  16   " fft_check_nonp2.E5-2680.r1455.FFTW.dat' using 0:15 t 'E5-2680'  w lp lw 2,\
      'fft_check_nonp2.X5650.r1455.dat'                         using 0:15 t 'X5650'    w lp lw 2
