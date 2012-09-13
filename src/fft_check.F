@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-08-30 04:26:17 takeshi>
+! Time-stamp: <2012-09-13 13:02:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -63,7 +63,7 @@ good performance on Non-Uniform Memory Access (NUMA) systems.
  $ numactl --hardware
  $ numactl --cpunodebind=0,1 --interleave=all ./fft_check 100 256 256 256
 
-== results, timing and GFLOPS
+== output, timing and GFLOPS
 Vorbose reports will be written into standard error (STDERR).
 Formated results will be written into standard output (STDOUT)
 in an order of
@@ -79,6 +79,78 @@ _ro denotes out-of-place of that.
 
 Giga FLOPS values are roughly estimated from
 5*N*log_2(N) floating point operations.
+
+== results and conditions
+In Fig:powr2 and Fig:nonp2,
+results of 3-dimentional FFT benchmark
+on single node of some systems are shown.
+Computational conditions are listed below.
+
+\Fig:powr2 19example-fft-benchmark/fft_powr2.jpg
+Results of 3-dimentional FFT benchmark of powers of two.
+(a) Double-precision complex, in-place.
+(b) Double-precision real, in-place.
+(c) Double-precision real, out-of-place.
+/Fig:powr2
+
+\Fig:nonp2 19example-fft-benchmark/fft_nonp2.jpg
+Results of 3-dimentional FFT benchmark of non-powers of two.
+(a) Double-precision complex, in-place.
+(b) Double-precision real, in-place.
+(c) Double-precision real, out-of-place.
+/Fig:nonp2
+
+=== Hitachi SR16000 model M1
+ * 1 node = 4 chips of 3.83 GHz POWER7
+ * 32 core = 8 core * 4 chip (NUMA)
+ * SMT off (SMT: Simultaneous Multithreading)
+ * Makefile: fft_check.Makefile.SR16000-xlf90_r-fftw_xlc
+ * FFTW planner flag: FFTW_PATIENT
+ * Environment variables: MALLOCMULTIHEAP=true, LDR_CNTRL="LARGE_PAGE_DATA=M",
+   OMP_NUM_THREADS=32, XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0"
+ * FFTW 3.3.2 compiled with xlc: ../configure CC=xlc_r F77=xlf_r
+   CFLAGS='-O3 -qansialias -w -qarch=auto -qtune=auto -qsmp=omp'
+   OPENMP_CFLAGS=-qsmp=omp --host=power --enable-openmp --enable-threads
+   --enable-fma --prefix=/sysap/fftw_xlc/fftw-3.3.2a
+ * Hitachi OFORT90 and FFT subroutines in MATRIX/MPP
+   are slower than xlc, xlf90_r and FFTW.
+
+=== Intel Xeon E5-2680
+ * 1 node = 2 chips of 2.70 GHz E5-2680
+ * 16 core = 8 core * 2 chip (NUMA)
+ * Mother board: Supermicro X9DRW
+ * HT off (HT: Hyper Threading)
+ * TB off (TB: Turbo Boost)
+ * Makefile: fft_check.Makefile.Intel-gfortran-fftw3_omp
+ * FFTW planner flag: FFTW_PATIENT
+ * Environment variables: OMP_NUM_THREADS=16
+ * How to execute: numactl --cpunodebind=0,1 --interleave=all ../fft_check 50 400 400 400
+ * FFTW 3.3.2 compiled with gfortran 4.4: ../configure --prefix=/usr/local
+   --libdir=/usr/local/lib64 --enable-openmp --enable-threads --enable-sse2
+   --enable-avx --enable-shared
+
+=== Intel Xeon X5650
+ * 1 node = 2 chips of 2.67 GHz X5650
+ * 12 core = 6 core * 2 chip (NUMA)
+ * Mother board: Supermicro X8DTG-D
+ * HT off (HT: Hyper Threading)
+ * TB off (TB: Turbo Boost)
+ * Makefile: fft_check.Makefile.Intel-gfortran-fftw3_omp
+ * FFTW planner flag: FFTW_PATIENT
+ * Environment variables: OMP_NUM_THREADS=12
+ * How to execute: ../fft_check 50 400 400 400
+ * FFTW 3.3.2 compiled with gfortran 4.4: ../configure --prefix=/usr/local
+   --libdir=/usr/local/lib64 --enable-openmp --enable-threads --enable-sse2
+   --enable-shared
+
+=== Fujitsu FX10
+ * 1 node = 1 chip of 1.85 GHz SPARC64 IXfx
+ * 16 core
+ * Makefile: fft_check.Makefile.FX10-frtpx-fftw3_omp
+ * FFTW planner flag: FFTW_MEASURE
+ * Environment variables: FLIB_FASTOMP=TRUE
+ * How to execute: ../fft_check 50 400 400 400
+ * FFTW 3.3.x
 
 == Copying and author
 Copyright © 2007-2012 by Takeshi Nishimatsu
