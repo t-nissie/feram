@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-09-13 13:02:42 takeshi>
+! Time-stamp: <2012-09-14 15:21:13 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -99,6 +99,13 @@ Results of 3-dimentional FFT benchmark of non-powers of two.
 (b) Double-precision real, in-place.
 (c) Double-precision real, out-of-place.
 /Fig:nonp2
+
+Raw data of results of benckmark are
+19example-fft-benchmark/fft_check_powr2.*.dat and
+19example-fft-benchmark/fft_check_nonp2.*.dat.
+They are plotted with GNUPLOT scripts of
+19example-fft-benchmark/fft_powr2.gp and
+19example-fft-benchmark/fft_nonp2.gp.
 
 === Hitachi SR16000 model M1
  * 1 node = 4 chips of 3.83 GHz POWER7
