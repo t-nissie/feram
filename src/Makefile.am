@@ -1,13 +1,13 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-09-04 13:57:34 takeshi>
+# Time-stamp: <2012-09-14 16:28:00 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
 bin_PROGRAMS = feram diagonalize15x15 displacement coord2deviation eigenvalues2j frozen_phonon_Gamma frozen_phonon_X
-TESTS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing fft_check
-EXTRA_PROGRAMS = $(TESTS)
+EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing fft_check
+TESTS = $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \

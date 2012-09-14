@@ -43,8 +43,9 @@ follow this quick compilation instruction.
  $ ../configure
  $ cd src
  $ make
- $ make feram_mpi                 # OPTIONAL. mpif90 is required.
- $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
+ $ make feram_mpi   # OPTIONAL. mpif90 is required.
+ $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT with marsaglia_tsang_uni64_check,
+ $ evince marsaglia_tsang_uni64_check.eps   # marsaglia_tsang_uni64_timing and fft_check.
  $ ls -l feram*
  $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
  $ cd 11example-BaTiO3-new-hysteresis-loop
