@@ -2,7 +2,7 @@
 ##
 FC=ifort
 FFLAGS=-free -r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1
-CPPFLAGS=-DHAVE_LIBFFTW3 -I$MKLROOT/include/fftw
+CPPFLAGS=-DHAVE_LIBFFTW3 -I$$MKLROOT/include/fftw
 LDFLAGS=-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64
 
 fft_check: fft_check.o f90_wisdom.o
