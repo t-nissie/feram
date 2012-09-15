@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-09-14 15:21:13 takeshi>
+! Time-stamp: <2012-09-16 00:42:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -110,6 +110,7 @@ They are plotted with GNUPLOT scripts of
 === Hitachi SR16000 model M1
  * 1 node = 4 chips of 3.83 GHz POWER7
  * 32 core = 8 core * 4 chip (NUMA)
+ * Memory: DDR3 1??? MHz
  * SMT off (SMT: Simultaneous Multithreading)
  * Makefile: fft_check.Makefile.SR16000-xlf90_r-fftw_xlc
  * FFTW planner flag: FFTW_PATIENT
@@ -122,9 +123,23 @@ They are plotted with GNUPLOT scripts of
  * Hitachi OFORT90 and FFT subroutines in MATRIX/MPP
    are slower than xlc, xlf90_r and FFTW.
 
+=== Intel Xeon X7560
+ * 1 node = 4 chips of 2.27 GHz X7560
+ * 32 core = 8 core * 4 chip (NUMA)
+ * Memory: DDR3 1066 MHz
+ * Mother board: NEC Express5800
+ * HT off (HT: Hyper Threading)
+ * TB off (TB: Turbo Boost)
+ * Makefile: fft_check.Makefile.Intel-ifort-MKL
+ * Environment variables: OMP_NUM_THREADS=32
+ * How to execute: ../fft_check 50 400 400 400
+ * Note that, in the case of real-FFT with MKL,
+   out-of-place is much slower than in-place.
+
 === Intel Xeon E5-2680
  * 1 node = 2 chips of 2.70 GHz E5-2680
  * 16 core = 8 core * 2 chip (NUMA)
+ * Memory: DDR3 1333 MHz
  * Mother board: Supermicro X9DRW
  * HT off (HT: Hyper Threading)
  * TB off (TB: Turbo Boost)
@@ -139,6 +154,7 @@ They are plotted with GNUPLOT scripts of
 === Intel Xeon X5650
  * 1 node = 2 chips of 2.67 GHz X5650
  * 12 core = 6 core * 2 chip (NUMA)
+ * Memory: DDR3 1333 MHz
  * Mother board: Supermicro X8DTG-D
  * HT off (HT: Hyper Threading)
  * TB off (TB: Turbo Boost)
@@ -153,6 +169,7 @@ They are plotted with GNUPLOT scripts of
 === Fujitsu FX10
  * 1 node = 1 chip of 1.85 GHz SPARC64 IXfx
  * 16 core
+ * Memory: DDR3 1333 MHz
  * Makefile: fft_check.Makefile.FX10-frtpx-fftw3_omp
  * FFTW planner flag: FFTW_MEASURE
  * Environment variables: FLIB_FASTOMP=TRUE
