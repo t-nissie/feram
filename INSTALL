@@ -133,6 +133,19 @@ See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbi
  $ make feram_mpi                 # OPTIONAL. mpif90 is required.
  $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
 
+=== Linux with Intel Fortran Compiler and FFTW library
+Sometimes it is fater than MKL.
+ $ tar xf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir ifort-12.1-FFTW
+ $ cd ifort-12.1-FFTW
+ $ ../configure --help
+ $ ../configure FC=ifort CPPFLAGS=-I/uhome/s21584/Linux-x86_64/include LDFLAGS=-L/uhome/s21584/Linux-x86_64/lib --with-fft=fftw3_omp --with-lapack=mkl
+ $ cd src
+ $ make
+ $ make feram_mpi                 # OPTIONAL. mpif90 is required.
+ $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
+
 
 == Super computers
 === HITACHI SR16000 with IBM xlf90_r, FFTW 3.3 and dsyevx in ESSL (libesslsmp)
@@ -173,8 +186,10 @@ If you want to link FFTW 3.3 rather than FFT in SSL II,
  $ ../configure FC=frtpx LDFLAGS=-L/home2/apps/fftw/3.3/lib64 CPPFLAGS=-I/home2/apps/fftw/3.3/include --with-fft=fftw3 --with-lapack=ssl2 --host=Kei
  $ ../configure FC=frtpx LDFLAGS=-L/usr/local/fftw/3.3/lib64  CPPFLAGS=-I/usr/local/fftw/3.3/include  --with-fft=fftw3 --with-lapack=ssl2 --host=FX10
 
+
 == Windows
 === MinGW
+
 
 == Mac OS X
 
