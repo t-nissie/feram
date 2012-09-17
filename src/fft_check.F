@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-09-16 00:42:59 takeshi>
+! Time-stamp: <2012-09-17 11:23:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -135,6 +135,8 @@ They are plotted with GNUPLOT scripts of
  * How to execute: ../fft_check 50 400 400 400
  * Note that, in the case of real-FFT with MKL,
    out-of-place is much slower than in-place.
+ * There is a numerical error problem in MKL.
+   Check that with TOLERANCE=1.0d-15.
 
 === Intel Xeon E5-2680
  * 1 node = 2 chips of 2.70 GHz E5-2680
@@ -200,10 +202,10 @@ Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 
 #define C_CHECK 0.1d0
 
-#if defined(__INTEL_COMPILER) && defined(HAVE_LIBFFTW3)
-#  define TOLERANCE 1.0d-10
+#if defined(HAVE_LIBFFTW3_OMP) || defined(HAVE_LIBFFTW3_THREADS) || defined(HAVE_LIBMATMPP)
+#  define TOLERANCE 1.0d-15   /* FFTW is very accurate. */
 #else
-#  define TOLERANCE 1.0d-15
+#  define TOLERANCE 1.0d-10   /* for FFT in MKL */
 #endif
 
 program fft_check

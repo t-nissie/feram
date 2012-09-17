@@ -2,7 +2,7 @@
 ##
 FC=f90
 FFLAGS = -64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option -precise -model=M1 -noscope -nolimit -noprefetch -prefetch_zero -loglist -free
-CPPFLAGS = -DHAVE_LIBMATMPP -DHITACHI_SR
+CPPFLAGS = -DHAVE_LIBMATMPP
 LDFLAGS = -L/opt/hitachi/matmpp/lib -lmatmpp -lm
 
 fft_check: fft_check.o fft.o
