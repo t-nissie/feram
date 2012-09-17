@@ -1,0 +1,35 @@
+#!/bin/csh
+
+#PBS -q a32
+#PBS -o fft_powr2.out
+#PBS -e fft_powr2.err
+#PBS -N fft_powr2
+
+setenv LD_LIBRARY_PATH /uhome/s21584/Linux-x86_64/lib:$LD_LIBRARY_PATH
+
+cd $PBS_O_WORKDIR
+
+date
+pwd
+hostname
+uname -a
+cat /proc/cpuinfo
+
+setenv OMP_NUM_THREADS 32
+
+../fft_check  100000   32   32   32 >> fft_powr2.X7560.1node.dat
+../fft_check   10000   64   64   64 >> fft_powr2.X7560.1node.dat
+../fft_check   10000  256   64   32 >> fft_powr2.X7560.1node.dat
+../fft_check    1000   16 1024   64 >> fft_powr2.X7560.1node.dat
+../fft_check    1000  128  128  128 >> fft_powr2.X7560.1node.dat
+../fft_check     100  256  256  256 >> fft_powr2.X7560.1node.dat
+../fft_check     100  128  256 1024 >> fft_powr2.X7560.1node.dat
+../fft_check     100  256  256  512 >> fft_powr2.X7560.1node.dat
+../fft_check      50  256  512  512 >> fft_powr2.X7560.1node.dat
+../fft_check      50  512  256  512 >> fft_powr2.X7560.1node.dat
+../fft_check      50  512  512  512 >> fft_powr2.X7560.1node.dat
+../fft_check      50  256  512 1024 >> fft_powr2.X7560.1node.dat
+../fft_check      50 1024  512  256 >> fft_powr2.X7560.1node.dat
+../fft_check      50  512  512 1024 >> fft_powr2.X7560.1node.dat
+../fft_check      50  512 1024 1024 >> fft_powr2.X7560.1node.dat
+../fft_check      20 1024 1024 1024 >> fft_powr2.X7560.1node.dat
