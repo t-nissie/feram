@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-09-17 11:23:07 takeshi>
+! Time-stamp: <2012-09-19 07:27:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -130,7 +130,7 @@ They are plotted with GNUPLOT scripts of
  * Mother board: NEC Express5800
  * HT off (HT: Hyper Threading)
  * TB off (TB: Turbo Boost)
- * Makefile: fft_check.Makefile.Intel-ifort-MKL
+ * Makefile: fft_check.Makefile.Intel-ifort-MKL or fft_check.Makefile.Intel-ifort-fftw3_omp
  * Environment variables: OMP_NUM_THREADS=32
  * How to execute: ../fft_check 50 400 400 400
  * Note that, in the case of real-FFT with MKL,
@@ -177,6 +177,7 @@ They are plotted with GNUPLOT scripts of
  * Environment variables: FLIB_FASTOMP=TRUE
  * How to execute: ../fft_check 50 400 400 400
  * FFTW 3.3.x
+ * CAUTION: FFT in Fujitsu SSLII is much slower than FFTW.
 
 == Copying and author
 Copyright © 2007-2012 by Takeshi Nishimatsu
