@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-09-19 07:27:50 takeshi>
+! Time-stamp: <2012-09-21 16:38:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -91,6 +91,8 @@ Results of 3-dimentional FFT benchmark of powers of two.
 (a) Double-precision complex, in-place.
 (b) Double-precision real, in-place.
 (c) Double-precision real, out-of-place.
+Intel MKL is used in "X7560/MKL" benchmark.
+FFTW is used in others.
 /Fig:powr2
 
 \Fig:nonp2 19example-fft-benchmark/fft_nonp2.jpg
@@ -98,6 +100,8 @@ Results of 3-dimentional FFT benchmark of non-powers of two.
 (a) Double-precision complex, in-place.
 (b) Double-precision real, in-place.
 (c) Double-precision real, out-of-place.
+Intel MKL is used in "X7560/MKL" benchmark.
+FFTW is used in others.
 /Fig:nonp2
 
 Raw data of results of benckmark are
