@@ -1,0 +1,16 @@
+garnet01$ date; pwd
+Thu Sep 27 08:12:00 JST 2012
+/home/t-nissie/f/loto/feram/trunk/src/18example-benchmark
+
+garnet01$ head -5 forward.log ; echo '' ; tail -5 forward.log 
+feram_common.F: 39: BEGIN: feram by Takeshi NISHIMATSU 0.19.06
+  2012-09-27T07:50:22.803+0900
+  feram_common.F: 56: FFTW_WISDOM: FFTW wisdom is not in current directory.
+  feram_common.F: 61: FFTW_WISDOM: Could not import FFTW system wisdom. All FFTW plans will be made by myself.
+  param_module.F:115: BEGIN: read_Param().
+
+  hysteresis_loop.F:106: END: MD
+  2012-09-27T07:55:40.707+0900
+  t_initialization,  t_simulation,       t_total
+              2.62         315.28         317.91     #TIMING_REPORT
+feram_common.F:106: END: love && peace && free_software
