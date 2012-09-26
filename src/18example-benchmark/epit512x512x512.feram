@@ -12,7 +12,7 @@ Q_Nose = 0.1
 #--- System geometry -----------------------------
 bulk_or_film = 'epit'
 epi_strain = -0.01
-L = 300 300 300
+L = 512 512 512
 gap_id = 2
 gap_dipole_u = 0.0 0.0 0.0
 

@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-08-26 22:52:29 c25050>
+! Time-stamp: <2012-09-26 17:48:06 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -204,10 +204,21 @@ contains
     type(Param_type), intent(in) :: p
     type(Coord_type), intent(in) :: c
     character(len=*) :: fn
+    character(len=FILE_NAME_LEN) :: coord_directory_fn
     integer ix,iy,iz,i
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
-    open(unit=UNIT_SYSTEM, file=fn, status='replace')
+
+    if (p%coord_directory.eq.'never') then
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'never write .coord files.')
+       return
+    else if (p%coord_directory.eq.'') then
+       coord_directory_fn = trim(fn)
+    else
+       coord_directory_fn = trim(p%coord_directory) // '/' // trim(fn)
+    end if
+
+    open(unit=UNIT_SYSTEM, file=coord_directory_fn, status='replace')
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
           do ix = 0, p%Lx-1
@@ -221,7 +232,7 @@ contains
        end do
     end do
     close(UNIT_SYSTEM)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(coord_directory_fn))
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   end subroutine write_system
 

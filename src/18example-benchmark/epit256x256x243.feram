@@ -40,6 +40,7 @@ n_thermalize =     500
 n_average    =    1000
 n_hl_freq    =   10000
 n_coord_freq =  100000
+coord_directory = 'never'
 
 #--- External electric field ---------------------
 external_E_field = 0.00 0.00 -0.005

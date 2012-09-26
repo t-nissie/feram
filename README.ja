@@ -189,6 +189,17 @@ n_hysteresis_loop_continue回目のイテレーションから
 再開することができます．
  n_hysteresis_loop_continue = 20000
 
+===== coord_directory
+このタグを
+ coord_directory = 'coord_files'
+と設定すると，.coordファイルをそのディレクトリ以下に書き出します．
+この例では coord_files/foo.0000020000.coord などとなります．
+巨大な.coordファイルをNFSのホームディレクトリでなくローカルの
+ハードディスクに書き出したい場合に便利です．
+
+このタグを 'never' に設定すれば，.coordファイルをけっして書き出しません．
+ coord_directory = 'never'
+
 ===== external_E_field
 外部電場Eを[V/Angstrom]の単位で．
 methodが'md', 'lf', 'mc'のときはこの電場で一定．
