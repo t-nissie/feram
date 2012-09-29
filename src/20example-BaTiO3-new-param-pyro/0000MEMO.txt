@@ -1,5 +1,21 @@
 = Calculation of pyroelectric response
-First calculations were done in /home/t-nissie/feram/feram-e.07/BaTiO3-020-WuC-0.005-100keVcm/.
+How to perform heating-up and cooling-down simulations under external electric fields.
+
+== On Linux machines with bash
+Edit EXTERNALEc.jcf and EXTERNALEh.jcf for your computer.
+For example, change OMP_NUM_THREADS value.
+Make sh scripts:
+ $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.jcf > "$s"c.sh; done
+ $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEh.jcf > "$s"h.sh; done
+Execute sh scripts one by one:
+ $ sh 000c.sh
+ $ sh 000h.sh
+ $ sh 005c.sh
+ $ sh 005h.sh
+      :
+ $ gnuplot
+ gnuplot> plot '000c.avg' u 1:11, '000c.avg' u 1:12, '000c.avg' u 1:13,\
+               '000h.avg' u 1:11, '000h.avg' u 1:12, '000h.avg' u 1:13
 
 == On SR16000 (super1 in IMR)
 Before submission of jobs, check the path to feram in EXTERNALEc.jcf and
@@ -11,9 +27,10 @@ and environment variables for feram.
  super3t$ mv wisdom_new wisdom
 
 Make JCFs (job control files) then submit them.
- $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.jcf > "$s"c.jcf; submit SC general -jcf "$s"c.jcf; done       
+ $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.jcf > "$s"c.jcf; submit SC general -jcf "$s"c.jcf; done
  $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEh.jcf > "$s"h.jcf; submit SC general -jcf "$s"h.jcf; done
 
+== Plot results with gnuplot and ruby
 After all jobs are completed, execute atable3.gp.
 You will get three EPS files.
  $ gnuplot atable3.gp
@@ -21,3 +38,6 @@ You will get three EPS files.
  DeltaT.eps  T999.9.eps  atable3.eps
 Because atable.rb, datamaker.sh, integral.rb will
 be called internally, you need Ruby.
+
+== Memo for Takeshi
+First calculations were done in /home/t-nissie/feram/feram-e.07/BaTiO3-020-WuC-0.005-100keVcm/ .
