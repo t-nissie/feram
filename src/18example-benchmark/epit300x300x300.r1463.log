@@ -1,0 +1,137 @@
+../../src/feram_common.F: 39: BEGIN: feram by Takeshi NISHIMATSU 0.19.05
+  2012-08-23T06:54:42.401+0900
+  ../../src/feram_common.F: 51: FFTW_WISDOM: Successfully imported FFTW wisdom in current directory.
+  ../../src/param_module.F:114: BEGIN: read_Param().
+    ../../src/param_module.F:116: INPUT_FILENAME: epit300x300x300.feram
+    #
+    # WARNING: .coord files become super large.
+    #
+    # verbose = 2
+    #--- Method, Temperature, and mass ---------------
+    method = 'hl'
+    GPa = -0.5
+    kelvin = 300
+    mass_amu = 38.24
+    Q_Nose = 0.1
+
+    #--- System geometry -----------------------------
+    bulk_or_film = 'epit'
+    epi_strain = -0.01
+    L = 300 300 300
+    gap_id = 2
+    gap_dipole_u = 0.0 0.0 0.0
+
+    #--- Elastic Constants ---------------------------
+    B11 = 126.731671475652
+    B12 =  41.7582963902598
+    B44 =  49.2408864348646
+
+    #--- From perovskite-optcell2-p.gp ---------------
+    B1xx = -185.347187551195 [eV/Angstrom^2]
+    B1yy = -3.28092949275457 [eV/Angstrom^2]
+    B4yz = -14.5501738943852 [eV/Angstrom^2]
+    P_k1 = -267.98013991724 [eV/Angstrom^6]
+    P_k2 = 197.500718362573 [eV/Angstrom^6]
+    P_k3 = 830.199979293529 [eV/Angstrom^6]
+    P_k4 = 641.968099408642 [eV/Angstrom^8]
+    P_alpha = 78.9866142426818 [eV/Angstrom^4]
+    P_gamma = -115.484148812672 [eV/Angstrom^4]
+    #kappa = -1.51821042113588 [eV/Angstrom^2]
+    #(- 8.1460516421 (- (/  -3.812330 2) -1.51821042113588)) =>  8.53400622096412 new P_kappa2
+
+    #--- Time step -----------------------------------
+    dt = 0.002 [pico second]
+    n_thermalize =     500
+    n_average    =    1000
+    n_hl_freq    =   10000
+    n_coord_freq =  100000
+
+    #--- External electric field ---------------------
+    external_E_field = 0.00 0.00 -0.005
+
+    #--- From eigenvalues2j --------------------------
+    # original  P_kappa2 =    8.1460516421 [eV/Angstrom^2] =    0.0838298622 [Hartree/Bohr^2]
+    P_kappa2 = 8.53400622096412
+    j =  -2.08403 -1.12904  0.68946 -0.61134  0.00000  0.27690  0.00000    [eV/Angstrom^2]
+    a0	  =   3.98597    [Angstrom]
+    Z_star      =  10.33000
+    epsilon_inf =   6.86915
+
+    #--- Initial dipole configrations ----------------
+    init_dipo_avg = 0.0   0.0   0.0    [Angstrom]  # Average   of initial dipole displacements
+    init_dipo_dev = 0.03  0.03  0.03   [Angstrom]  # Deviation of initial dipole displacements
+  ../../src/param_module.F:301: END:   read_Param().
+  ../../src/param_module.F:307: BEGIN: make_Param().
+  ../../src/param_module.F:333: END:   make_Param().
+  ../../src/param_module.F:341: BEGIN: write_Param(), Parameters for convenience.
+    N = Lx * Ly * Lz          =   27000000
+    Ninv = 1/N                =  0.3703704E-07
+    delta_t / 2               =  0.0010000
+    N of degree of freedom    =   81000000
+    unit_cell_volume          = 63.3289193
+    kappa for Ewald sum =     0.0257
+    ../../src/param_module.F:377: FILENAME: epit300x300x300.param
+  ../../src/param_module.F:380: END:   write_Param().
+  ../../src/coord_module.F: 56: BEGIN: alloc_Coord().
+  ../../src/coord_module.F:198: END:   alloc_Coord().
+  ../../src/potentials.F: 12: BEGIN: construction of potentials.
+    ../../src/dipole-dipole.F: 19: BEGIN: construction of dipole-dipole interaction.
+      ../../src/dipole-dipole-long-range.F: 29: BEGIN: 
+      ../../src/dipole-dipole-long-range.F:141: END: 
+      ../../src/dipole-dipole-short-range.F: 24: BEGIN: 
+        TMPreal(   0,0,0,1,1) = 2P_kappa2 =  17.0680
+        TMPreal(Lx-1,0,0,3,3) =  j(1)     =  -2.0840
+        TMPreal(   0,0,1,3,3) =  j(2)     =  -1.1290
+        TMPreal(   1,0,1,3,3) =  j(3)     =   0.6895
+        TMPreal(   1,1,0,3,3) =  j(4)     =  -0.6113
+        TMPreal(   1,0,1,3,1) =  j(5)     =   0.0000
+        TMPreal(   1,1,1,3,3) =  j(6)     =   0.2769
+        TMPreal(   1,1,1,3,1) =  j(7)     =   0.0000
+        (a) Gamma =   5.8797
+        (b) X_LO  =   0.4069
+        (c) X_TO  =   7.5200
+        (d) M_TO  =   8.7001
+        (e) M_LO  =  11.9933
+        (f) R     =  14.2587
+        (g) Sigma =   2.1830
+      ../../src/dipole-dipole-short-range.F:117: END: 
+    ../../src/dipole-dipole.F: 39: END: construction of dipole-dipole interaction.
+    ../../src/elastic.F: 20: BEGIN: make elastic constant matrix.
+    ../../src/elastic.F:160: END: 
+  ../../src/potentials.F: 15: END: construction of potentials.
+  2012-08-23T06:57:56.548+0900 Ready for simulation!!!
+  ../../src/hysteresis_loop.F: 28: BEGIN: MD
+    ../../src/hysteresis_loop.F: 33: T = : 300.0 [K] BEGIN ================================================
+    ../../src/initialize_E_field.F: 17: BEGIN: 
+      ../../src/initialize_E_field.F: 45: FILE: local.field was NOT found.
+      ../../src/initialize_E_field.F: 64: NOTICE: external_ E_field(:)=  0.00000  0.00000 -0.00500 [V/Angstrom] is added to E_field
+    ../../src/initialize_E_field.F: 79: END: 
+    ../../src/initialize-dipoR.F: 22: BEGIN: 
+      ../../src/initialize-dipoR.F: 40: FILE: epit300x300x300.restart was NOT found.
+      ../../src/read_defects_u.F: 18: BEGIN: 
+        ../../src/read_defects_u.F: 48: FILE_NOT_FOUND: .defects file was NOT found. No defects was created.
+      ../../src/read_defects_u.F: 72: END: 
+    ../../src/initialize-dipoR.F: 67: END: 
+    TIME_STEP        0  0.000000000000  0.000000000000 -0.005000000000 -----------------------------------------------------
+    dipo_kinetic       0.000000000000 [eV/u.c.]
+    dipole_dipole      0.022890710731 [eV/u.c.]
+    dipole_E_field     0.000000621924 [eV/u.c.]
+    unharmonic         0.000657857700 [eV/u.c.]
+    homo_strain        0.014414025904 [eV/u.c.]
+    homo_coupling      0.003167412154 [eV/u.c.]
+    inho_strain        0.000101590818 [eV/u.c.]
+    inho_coupling     -0.000203181636 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.041029037596 [eV/u.c.]
+    ../../src/coord_module.F:209: BEGIN: 
+      ../../src/coord_module.F:224: FILE: epit300x300x300.coord
+    ../../src/coord_module.F:225: END: 
+    ../../src/coord_module.F:209: BEGIN: 
+      ../../src/coord_module.F:224: FILE: epit300x300x300.0000000500.coord
+    ../../src/coord_module.F:225: END: 
+    ../../src/hysteresis_loop.F:103: T = : 300.0 [K] END ==================================================
+  ../../src/hysteresis_loop.F:106: END: MD
+  2012-08-23T07:15:49.960+0900
+  t_initialization,  t_simulation,       t_total
+            194.14        1073.42        1267.56     #TIMING_REPORT
+../../src/feram_common.F:106: END: love && peace && free_software
