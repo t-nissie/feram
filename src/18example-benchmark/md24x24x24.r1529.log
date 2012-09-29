@@ -1,0 +1,117 @@
+feram_common.F: 39: BEGIN: feram by Takeshi NISHIMATSU 0.19.06
+  2012-09-29T18:59:35.814+0900
+  feram_common.F: 56: FFTW_WISDOM: FFTW wisdom is not in current directory.
+  feram_common.F: 61: FFTW_WISDOM: Could not import FFTW system wisdom. All FFTW plans will be made by myself.
+  param_module.F:115: BEGIN: read_Param().
+    param_module.F:117: INPUT_FILENAME: md24x24x24.feram
+    #--- Method, Temperature, and mass ---------------
+    method = 'md'
+    GPa = -5.0
+    kelvin = 345
+    mass_amu = 39.0
+    Q_Nose = 0.1
+    
+    #--- System geometry -----------------------------
+    bulk_or_film = 'bulk'
+    L = 24 24 24
+    a0 =  3.94         latice constant a0 [Angstrom]
+    #--- Time step -----------------------------------
+    dt = 0.002 [pico second]
+    n_thermalize =  10000
+    n_average    = 100000
+    n_coord_freq = 220000
+    
+    #--- On-site (Polynomial of order 4) -------------
+    P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
+    P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+    P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
+    
+    #--- Inter-site ----------------------------------
+    j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
+    
+    #--- Elastic Constants ---------------------------
+    B11 = 126.
+    B12 =  44.9
+    B44 =  50.3  [eV]
+    
+    #--- Elastic Coupling ----------------------------
+    B1xx = -211.   [eV/Angstrom^2]
+    B1yy =  -19.3  [eV/Angstrom^2]
+    B4yz =   -7.75 [eV/Angstrom^2]
+    
+    #--- Dipole --------------------------------------
+    seed = 1242914819 1957271599
+    init_dipo_avg = 0.1   0.1   0.1    [Angstrom]  # Average   of initial dipole displacements
+    init_dipo_dev = 0.02  0.02  0.02   [Angstrom]  # Deviation of initial dipole displacements
+    Z_star        = 9.956
+    epsilon_inf   = 5.24
+  param_module.F:305: END:   read_Param().
+  param_module.F:311: BEGIN: make_Param().
+  param_module.F:337: END:   make_Param().
+  param_module.F:345: BEGIN: write_Param(), Parameters for convenience.
+    N = Lx * Ly * Lz          =      13824
+    Ninv = 1/N                =  0.7233796E-04
+    delta_t / 2               =  0.0010000
+    N of degree of freedom    =      41472
+    unit_cell_volume          = 61.1629840
+    kappa for Ewald sum =     0.0918
+    param_module.F:381: FILENAME: md24x24x24.param
+  param_module.F:384: END:   write_Param().
+  coord_module.F: 56: BEGIN: alloc_Coord().
+  coord_module.F:198: END:   alloc_Coord().
+  potentials.F: 12: BEGIN: construction of potentials.
+    dipole-dipole.F: 19: BEGIN: construction of dipole-dipole interaction.
+      dipole-dipole-long-range.F: 29: BEGIN: 
+      dipole-dipole-long-range.F:141: END: 
+      dipole-dipole-short-range.F: 24: BEGIN: 
+        TMPreal(   0,0,0,1,1) = 2P_kappa2 =  11.0040
+        TMPreal(Lx-1,0,0,3,3) =  j(1)     =  -2.6480
+        TMPreal(   0,0,1,3,3) =  j(2)     =   3.8940
+        TMPreal(   1,0,1,3,3) =  j(3)     =   0.8980
+        TMPreal(   1,1,0,3,3) =  j(4)     =  -0.7890
+        TMPreal(   1,0,1,3,1) =  j(5)     =   0.5620
+        TMPreal(   1,1,1,3,3) =  j(6)     =   0.3580
+        TMPreal(   1,1,1,3,1) =  j(7)     =   0.1790
+        (a) Gamma =   7.5460
+        (b) X_LO  = -10.2900
+        (c) X_TO  =   9.5420
+        (d) M_TO  =  10.9540
+        (e) M_LO  =   4.6180
+        (f) R     =   7.4860
+        (g) Sigma =  -1.7370
+      dipole-dipole-short-range.F:117: END: 
+    dipole-dipole.F: 39: END: construction of dipole-dipole interaction.
+    elastic.F: 20: BEGIN: make elastic constant matrix.
+    elastic.F:160: END: 
+  potentials.F: 15: END: construction of potentials.
+  2012-09-29T18:59:37.442+0900 Ready for simulation!!!
+  molecular-dynamics.F: 28: BEGIN: MD
+    T =  345.0 [K] BEGIN ========================================================
+    TIME_STEP       0 ---------------------------------------------------------------------------------
+    initialize_E_field.F: 17: BEGIN: 
+      initialize_E_field.F: 45: FILE: local.field was NOT found.
+    initialize_E_field.F: 79: END: 
+    initialize-dipoR.F: 22: BEGIN: 
+      initialize-dipoR.F: 40: FILE: md24x24x24.restart was NOT found.
+      read_defects_u.F: 18: BEGIN: 
+        read_defects_u.F: 48: FILE_NOT_FOUND: .defects file was NOT found. No defects was created.
+      read_defects_u.F: 72: END: 
+    initialize-dipoR.F: 67: END: 
+    dipo_kinetic       0.000000000000 [eV/u.c.]
+    dipole_dipole     -0.046786066760 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.059838626399 [eV/u.c.]
+    homo_strain        0.071606436791 [eV/u.c.]
+    homo_coupling     -0.143212873582 [eV/u.c.]
+    inho_strain        0.001252062829 [eV/u.c.]
+    inho_coupling     -0.002504125658 [eV/u.c.]
+    --------------------------------------------
+    total_energy      -0.059805939981 [eV/u.c.]
+    H_Nose_Poincare    0.000000000000 [eV/u.c.]
+    s_Nose=    1.00000000 pi_Nose=    0.00000000
+    T =  345.0 [K] END ==========================================================
+  molecular-dynamics.F: 90: END: MD
+  2012-09-29T19:01:48.308+0900
+  t_initialization,  t_simulation,       t_total
+              1.63         130.87         132.49     #TIMING_REPORT
+feram_common.F:106: END: love && peace && free_software
