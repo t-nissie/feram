@@ -1,7 +1,7 @@
 #!/bin/sh
 #@ class = qem
-#@ output = timing48.stdout
-#@ error  = timing48.stderr
+#@ output = timing48.out
+#@ error  = timing48.err
 #@ environment = COPY_ALL
 #@ restart = no
 #@ job_name = timing48

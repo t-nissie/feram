@@ -1,15 +1,15 @@
 #!/bin/bash
 #@ class = qeb
-#@ output = epit256x256x256.out
-#@ error  = epit256x256x256.err
+#@ output = epit512x512x512.out
+#@ error  = epit512x512x512.err
 #@ environment = COPY_ALL
 #@ restart = no
-#@ job_name = epit256
+#@ job_name = epit512
 #@ job_type = serial
 #@ comment = -n 1 -pm 1 -pt 64 -ap "general"
 #@ queue
 #
-# Usage: submit EB general -jcf epit256x256x256.jcf
+# Usage: submit EB general -jcf epit512x512x512.jcf
 #
 ##
 # For HITACHI OFORT90
@@ -25,18 +25,18 @@ rm -f wisdom
 
 threads='8 16 24 31 32'
 for s in 2 1; do
-    echo "# HF_BINDPROC_STRIDE=$s" >> epit256x256x256.SR16000.dat
+    echo "# HF_BINDPROC_STRIDE=$s" >> epit512x512x512.SR16000.dat
     export  HF_BINDPROC_STRIDE=$s
     for i in $threads; do
 	export HF_PRUNST_THREADNUM=$i
 	export HF_90OPTS="-FPRUNST(THREADNUM($i))"
 	export OMP_NUM_THREADS=$i
 	export XLSMPOPTS="spins=0:yields=0:parthds=$i:stride=$s:startproc=0"	
-	../fft_check 100  256 256 256
+	../fft_check 100  512 512 512
 	mv wisdom_new wisdom
-	../feram epit256x256x256.feram 
-	timing_report=`grep TIMING_REPORT epit256x256x256.log`
-	printf '%1d %2d %s\n' $s $i "$timing_report" >> epit256x256x256.SR16000.dat
+	../feram epit512x512x512.feram
+	timing_report=`grep TIMING_REPORT epit512x512x512.log`
+	printf '%1d %2d %s\n' $s $i "$timing_report" >> epit512x512x512.SR16000.dat
 	mv wisdom wisdom.$s.$i
     done
     threads='16 32 48 62 63 64'

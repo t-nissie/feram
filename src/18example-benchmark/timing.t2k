@@ -1,7 +1,7 @@
 #!/bin/sh
 #% -S /bin/sh
 #% -N timing.t2k
-#% -o timing.t2k.stdout -e timing.t2k.stderr
+#% -o timing.t2k.out -e timing.t2k.err
 #% -P NANOGC0
 #% -H 1
 #% -T 10:00:00

@@ -1,7 +1,7 @@
 #!/bin/sh
 #@ class = qem
-#@ output = epit256x256x256-31t-32t-63t-64t.stdout
-#@ error  = epit256x256x256-31t-32t-63t-64t.stderr
+#@ output = epit256x256x256-31t-32t-63t-64t.out
+#@ error  = epit256x256x256-31t-32t-63t-64t.err
 #@ environment = COPY_ALL
 #@ restart = no
 #@ job_name = epit256x256x256-31t-32t-63t-64t

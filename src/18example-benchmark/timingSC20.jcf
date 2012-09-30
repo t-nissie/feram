@@ -1,7 +1,7 @@
 #!/bin/sh
 #@ class = qsc
-#@ output = timingSC20.stdout
-#@ error  = timingSC20.stderr
+#@ output = timingSC20.out
+#@ error  = timingSC20.err
 #@ environment = COPY_ALL
 #@ restart = no
 #@ job_name = timingSC20

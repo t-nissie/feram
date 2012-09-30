@@ -3,8 +3,8 @@
 #BSUB -x # exclusive use of node
 #BSUB -n 1
 #BSUB -R "span[ptile=1]" # number of processes per node
-#BSUB -o timing.stdout
-#BSUB -e timing.stderr
+#BSUB -o timing.out
+#BSUB -e timing.err
 #BSUB -J timing
 #BSUB -q F64
 ##

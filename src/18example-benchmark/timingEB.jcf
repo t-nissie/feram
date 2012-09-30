@@ -1,7 +1,7 @@
 #!/bin/bash
 #@ class = qeb
-#@ output = timingEB.stdout
-#@ error  = timingEB.stderr
+#@ output = timingEB.out
+#@ error  = timingEB.err
 #@ environment = COPY_ALL
 #@ restart = no
 #@ notification = never

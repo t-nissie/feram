@@ -1,7 +1,7 @@
 #!/bin/bash
 #@ class = qeb
-#@ output = epit256x256x243.stdout
-#@ error  = epit256x256x243.stderr
+#@ output = epit256x256x243.out
+#@ error  = epit256x256x243.err
 #@ environment = COPY_ALL
 #@ restart = no
 #@ job_name = epit243

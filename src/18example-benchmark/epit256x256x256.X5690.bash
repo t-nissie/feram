@@ -1,4 +1,5 @@
 #!/bin/bash
+# Usage: ./epit256x256x256.X5690.bash >epit256x256x256.X5690.out 2>epit256x256x256.X5690.err
 ##
 rm -f wisdom
 for i in 6 12; do

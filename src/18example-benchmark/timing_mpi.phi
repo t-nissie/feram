@@ -3,8 +3,8 @@
 #BSUB -x
 #BSUB -n 2
 #BSUB -R "span[ptile=2]"
-#BSUB -o timing_mpi.stdout
-#BSUB -e timing_mpi.stderr
+#BSUB -o timing_mpi.out
+#BSUB -e timing_mpi.err
 #BSUB -J timing_mpi
 #BSUB -q F64
 ##
