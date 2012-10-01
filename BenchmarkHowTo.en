@@ -1,0 +1,28 @@
+
+0. You can find the latest original source of this file as
+  
+
+1. Directories and files
+  Name of a package: feram-X.YY.ZZ.tar.xz
+  Download: https://sourceforge.net/projects/loto/files/feram/
+  Directory stricture: followed GNU free software manner
+
+2. How to build
+  See http://loto.sourceforge.net/feram/INSTALL.html and
+  http://loto.sourceforge.net/feram/src/fft_check.html .
+
+3. How to execute
+ 3.1 feram
+  http://loto.sourceforge.net/feram/
+
+ 3.2 fft_check
+  http://loto.sourceforge.net/feram/src/fft_check.html
+
+
+4. How to validate
+  4.1 Test program
+  4.2 Run test program
+
+# Local variables:
+#   compile-command: "a2ps --no-header --left-title=`date '+%Y-%m-%d'` --center-title='feram and fft_check BechmarkHowTo.en' --right-title='Takeshi Nishimatsu' --footer='' --columns=1 --borders=off -f12.0 --portrait --output=- BenchmarkHowTo.en > feram-fft_check-`date '+%Y-%m-%d'`.ps"
+# End:
