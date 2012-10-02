@@ -9,7 +9,7 @@
 #@ comment = -n 1 -pm 1 -pt 64 -ap "general"
 #@ queue
 #
-# Usage: submit EB general -jcf epit600x600x600.jcf
+# Usage: submit EB general -largememory -jcf epit600x600x600.jcf
 #
 ##
 # For HITACHI OFORT90
@@ -31,7 +31,7 @@ for s in 2 1; do
 	export HF_PRUNST_THREADNUM=$i
 	export HF_90OPTS="-FPRUNST(THREADNUM($i))"
 	export OMP_NUM_THREADS=$i
-	export XLSMPOPTS="spins=0:yields=0:parthds=$i:stride=$s:startproc=0"	
+	export XLSMPOPTS="spins=0:yields=0:parthds=$i:stride=$s:startproc=0"
 	../fft_check 100  600 600 600
 	mv wisdom_new wisdom
 	../feram epit600x600x600.feram
