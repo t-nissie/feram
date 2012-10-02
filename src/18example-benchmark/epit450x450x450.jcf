@@ -1,0 +1,31 @@
+#!/bin/bash
+#@ class = qeb
+#@ output = epit450x450x450.out
+#@ error  = epit450x450x450.err
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = epit450
+#@ job_type = serial
+#@ comment = -n 1 -pm 1 -pt 64 -ap "general"
+#@ queue
+#
+# Usage: submit EB general -largememory -jcf epit450x450x450.jcf
+#
+##
+
+# For IBM XL Fortran
+export MALLOCMULTIHEAP=true
+export LDR_CNTRL=LARGE_PAGE_DATA=M
+
+hostname
+
+export XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0"	
+export OMP_NUM_THREADS=32
+
+rm -f wisdom
+../fft_check 10 450 450 450
+mv wisdom_new wisdom
+
+../feram epit450x450x450.feram
+
+rm -f *.coord
