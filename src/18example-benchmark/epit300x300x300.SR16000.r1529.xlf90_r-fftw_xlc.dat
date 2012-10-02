@@ -24,3 +24,27 @@
 # 100  300  300  300   27000000  62      492.190   5.740 116.121      442.030   2.780 119.880     2518.570   2.820 118.180
 # 100  300  300  300   27000000  63      496.110   5.130 129.929      445.970   2.770 120.313     2499.920   3.040 109.627
 # 100  300  300  300   27000000  64      498.900   5.060 131.726      452.700   2.940 113.356     2530.600   2.820 118.180
+
+super1$ pwd; head epit300x300x300.log; echo ''; tail epit300x300x300.log 
+/home/t-nissie/f/feram/feram-0.19.06/SR16000-xlf90_r/src/18e-300-wisdom
+../../src/feram_common.F: 39: BEGIN: feram by Takeshi NISHIMATSU 0.19.06
+  2012-10-02T21:30:12.522+0900
+  ../../src/feram_common.F: 51: FFTW_WISDOM: Successfully imported FFTW wisdom in current directory.
+  ../../src/param_module.F:115: BEGIN: read_Param().
+    ../../src/param_module.F:117: INPUT_FILENAME: epit300x300x300.feram
+    #
+    # WARNING: .coord files become super large.
+    #
+    # verbose = 2
+    #--- Method, Temperature, and mass ---------------
+
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    ../../src/hysteresis_loop.F:103: T = : 300.0 [K] END ==================================================
+  ../../src/hysteresis_loop.F:106: END: MD
+  2012-10-02T21:48:12.916+0900
+  t_initialization,  t_simulation,       t_total
+            185.75         894.64        1080.39     #TIMING_REPORT
+../../src/feram_common.F:106: END: love && peace && free_software
