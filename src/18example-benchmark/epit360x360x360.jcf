@@ -1,0 +1,44 @@
+#!/bin/bash
+#@ class = qeb
+#@ output = epit360x360x360.out
+#@ error  = epit360x360x360.err
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = epit360
+#@ job_type = serial
+#@ comment = -n 1 -pm 1 -pt 64 -ap "general"
+#@ queue
+#
+# Usage: submit EB general -jcf epit360x360x360.jcf
+#
+##
+# For HITACHI OFORT90
+unset  MEMORY_AFFINITY
+export HF_ERR_STATUS_MODE=1
+export HF_PRUNST_BIND=1
+export HF_BINDPROC_NUM=0
+# For IBM XL Fortran
+export MALLOCMULTIHEAP=true
+export LDR_CNTRL=LARGE_PAGE_DATA=M
+
+rm -f wisdom
+
+threads='8 16 24 31 32'
+for s in 2 1; do
+    echo "# HF_BINDPROC_STRIDE=$s" >> epit360x360x360.SR16000.dat
+    export  HF_BINDPROC_STRIDE=$s
+    for i in $threads; do
+	export HF_PRUNST_THREADNUM=$i
+	export HF_90OPTS="-FPRUNST(THREADNUM($i))"
+	export OMP_NUM_THREADS=$i
+	export XLSMPOPTS="spins=0:yields=0:parthds=$i:stride=$s:startproc=0"	
+	../fft_check 100  360 360 360
+	mv wisdom_new wisdom
+	../feram epit360x360x360.feram
+	timing_report=`grep TIMING_REPORT epit360x360x360.log`
+	printf '%1d %2d %s\n' $s $i "$timing_report" >> epit360x360x360.SR16000.dat
+	mv wisdom wisdom.$s.$i
+    done
+    threads='16 32 48 62 63 64'
+done
+rm -f *.coord
