@@ -1,12 +1,12 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-09-17 18:19:36 takeshi>
+# Time-stamp: <2012-10-15 18:44:21 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
 bin_PROGRAMS = feram diagonalize15x15 displacement coord2deviation eigenvalues2j frozen_phonon_Gamma frozen_phonon_X fft_check
-EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing
+EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check
 TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
@@ -56,6 +56,8 @@ eigenvalues2j_SOURCES = eigenvalues2j.F msg.F param_module.F
 frozen_phonon_Gamma_SOURCES = frozen_phonon_Gamma.F
 
 frozen_phonon_X_SOURCES = frozen_phonon_X.F
+
+rgb_check_SOURCES = rgb_check.f rgb_module.f
 
 marsaglia_tsang_uni64_check_SOURCES  = marsaglia_tsang_uni64_check.F  marsaglia_tsang_uni64_module.f
 
@@ -131,6 +133,7 @@ dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy.o:\
                                 param_module.o coord_module.o
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
 marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o:                          marsaglia_tsang_uni64_module.o
+rgb_check.o:                    rgb_module.o
 mirror_force_mirror.o:          param_module.o coord_module.o energy_module.o
 nose-poincare.o velocity_scaling.o:\
                                 param_module.o coord_module.o energy_module.o kinetic_energy.o
