@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2012-08-22 13:43:57 t-nissie>
+! Time-stamp: <2012-10-16 20:15:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -12,7 +12,7 @@ module Average_module
 
   real*8,  parameter :: step     = 0.005d0
   real*8,  parameter :: step_inv = 1.0d0/step
-  integer, parameter :: max_i    = 400
+  integer, parameter :: max_k    = 99
 
   type Average_type
      type(Energy_type) energy    
@@ -22,7 +22,8 @@ module Average_module
      real*8 u(3)
      real*8 uu(6)
      real*8 e_layer(0:10000)
-     integer*8 distribution(3,-max_i:max_i)   !!! integer*8 !!!
+     integer*8, allocatable :: distribution(:,:)   !!! integer*8 !!!
+     integer,   allocatable :: distribution3d(:,:,:)
   end type Average_type
 
 contains
@@ -38,7 +39,12 @@ contains
     avg%u(:)              = 0.0d0
     avg%uu(:)             = 0.0d0
     avg%e_layer(:)        = 0.0d0
+    if (allocated(avg%distribution))   deallocate(avg%distribution)
+    allocate(avg%distribution(3,-max_k:max_k))
+    if (allocated(avg%distribution3d)) deallocate(avg%distribution3d)
+    allocate(avg%distribution3d(-max_k:max_k,-max_k:max_k,-max_k:max_k))
     avg%distribution(:,:) = 0
+    avg%distribution3d(:,:,:) = 0
   end subroutine reset_Average
 
   subroutine add_to_Average(p,c,e,avg) ! We use p implicitly. Don't worry about compile warning on it.
@@ -51,10 +57,10 @@ contains
     type(Energy_type),  intent(in)    :: e
     type(Average_type), intent(inout) :: avg
     !--- local -----------------------------------------
-    integer alpha,ix,iy,iz,k
+    integer alpha,ix,iy,iz,k,kx,ky,kz
     real*8 u_tmp(3)
     character(90) message
-    integer*8 tmp_distribution(3,-max_i:max_i)   !!! integer*8 !!!
+    integer*8 tmp_distribution(3,-max_k:max_k)   !!! integer*8 !!!
     !--- END of variable definitions -------------------
     avg%energy            = avg%energy            + e
     avg%e2                = avg%e2                + e%total**2
@@ -85,7 +91,7 @@ contains
              if (c%sum_p(ix,iy,iz)) then
                 do alpha = 1, 3
                    k = nint(c%dipoR(ix,iy,iz,alpha)*step_inv)
-                   tmp_distribution(alpha,k) = tmp_distribution(alpha,k) + 1   !if (abs(k)<=max_i)
+                   if (abs(k)<=max_k) tmp_distribution(alpha,k) = tmp_distribution(alpha,k) + 1
                 end do
              end if
           end do
@@ -94,8 +100,21 @@ contains
 !$omp end parallel do
     avg%distribution(:,:) = avg%distribution(:,:) + tmp_distribution(:,:)
 
+    do iz = 0, p%Lz-1
+       do iy = 0, p%Ly-1
+          do ix = 0, p%Lx-1
+             if (c%sum_p(ix,iy,iz)) then
+                kx = nint(c%dipoR(ix,iy,iz,1)*step_inv); if (abs(kx)>max_k) cycle
+                ky = nint(c%dipoR(ix,iy,iz,2)*step_inv); if (abs(ky)>max_k) cycle
+                kz = nint(c%dipoR(ix,iy,iz,3)*step_inv); if (abs(kz)>max_k) cycle
+                avg%distribution3d(kx,ky,kz) = avg%distribution3d(kx,ky,kz) + 1
+             end if
+          end do
+       end do
+    end do
+
     if (p%verbose>=2) then
-       write(message,'("u=",3e13.5)') u_tmp(:)
+       write(message,'("<u>=",3f10.6)') u_tmp(:) / c%n_sum_p
        call msg_ez(UNIT_LOG,message)
     end if
   end subroutine add_to_Average
@@ -110,7 +129,7 @@ contains
     character (len=120)               :: fn_avg
     character (len=200)               :: fn_T_layer
     real*8                            :: kelvin
-    integer                           :: i
+    integer                           :: i,k,kx,ky,kz
 
     if (p%n_average.eq.0) return
 
@@ -162,8 +181,19 @@ contains
 
     write(fn_avg,'(a,a)') trim(p%filename), '.distribution'
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
-    do i = -max_i, max_i
-       write(UNIT_AVG,'(f7.4,3f12.7)') step*i, dble(avg%distribution(:,i)) * step_inv / c%n_sum_p / p%n_average
+    do k = -max_k, max_k
+       write(UNIT_AVG,'(f7.4,3f12.7)') step*k, dble(avg%distribution(:,k)) * step_inv / c%n_sum_p / p%n_average
+    end do
+    close(UNIT_AVG)
+
+    write(fn_avg,'(a,a)') trim(p%filename), '.distribution3d'
+    open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
+    do kz = -max_k, max_k
+       do ky = -max_k, max_k
+          do kx = -max_k, max_k
+             write(UNIT_AVG,'(i3,2i4,e11.5e1)') kx,ky,kz, dble(avg%distribution3d(kx,ky,kz)) * step_inv**3 / c%n_sum_p / p%n_average
+          end do
+       end do
     end do
     close(UNIT_AVG)
   end subroutine divide_and_write_Average
