@@ -1,11 +1,11 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-10-15 19:55:28 takeshi>
+# Time-stamp: <2012-10-16 22:31:05 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
-bin_PROGRAMS = feram diagonalize15x15 displacement coord2deviation eigenvalues2j frozen_phonon_Gamma frozen_phonon_X fft_check
+bin_PROGRAMS = feram diagonalize15x15 displacement coord2deviation eigenvalues2j frozen_phonon_Gamma frozen_phonon_X fft_check distribution3d2ppm
 EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check
 TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp
 
@@ -50,6 +50,8 @@ diagonalize15x15_SOURCES = diagonalize15x15.F
 displacement_SOURCES = displacement.F
 
 coord2deviation_SOURCES = coord2deviation.F rgb_module.f
+
+distribution3d2ppm_SOURCES = distribution3d2ppm.F rgb_module.f
 
 eigenvalues2j_SOURCES = eigenvalues2j.F msg.F param_module.F
 
@@ -149,6 +151,7 @@ dVddi-dipole-dipole.o:\
 dipoFFT.o:                      param_module.o coord_module.o fft.o define.h
 print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
 eigenvalues2j.o:                param_module.o define.h
+distribution3d2ppm.o:           average_module.o rgb_module.o
 fft.o: define.h
 fft_check.o: fft.o f90_wisdom.o
 
