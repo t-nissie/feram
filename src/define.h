@@ -10,6 +10,8 @@
 
 /* length */
 #define FILE_NAME_LEN 200
+#define MAX_K 99
+
 
 /* mathematical and physical constants */
 /* PI */
