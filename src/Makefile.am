@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-10-15 18:44:21 takeshi>
+# Time-stamp: <2012-10-15 19:55:28 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -49,7 +49,7 @@ diagonalize15x15_SOURCES = diagonalize15x15.F
 
 displacement_SOURCES = displacement.F
 
-coord2deviation_SOURCES = coord2deviation.F
+coord2deviation_SOURCES = coord2deviation.F rgb_module.f
 
 eigenvalues2j_SOURCES = eigenvalues2j.F msg.F param_module.F
 
@@ -133,7 +133,7 @@ dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy.o:\
                                 param_module.o coord_module.o
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
 marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o:                          marsaglia_tsang_uni64_module.o
-rgb_check.o:                    rgb_module.o
+rgb_check.o coord2deviation.o:  rgb_module.o
 mirror_force_mirror.o:          param_module.o coord_module.o energy_module.o
 nose-poincare.o velocity_scaling.o:\
                                 param_module.o coord_module.o energy_module.o kinetic_energy.o
