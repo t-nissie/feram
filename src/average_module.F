@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2012-10-16 20:15:56 takeshi>
+! Time-stamp: <2012-10-17 13:26:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -47,7 +47,7 @@ contains
     avg%distribution3d(:,:,:) = 0
   end subroutine reset_Average
 
-  subroutine add_to_Average(p,c,e,avg) ! We use p implicitly. Don't worry about compile warning on it.
+  subroutine add_to_Average(p,c,e,avg,detail) ! We use p implicitly. Don't worry about compile warning on it.
     use Param_module
     use Coord_module
     implicit none
@@ -56,6 +56,7 @@ contains
     type(Coord_type),   intent(in)    :: c
     type(Energy_type),  intent(in)    :: e
     type(Average_type), intent(inout) :: avg
+    logical,            intent(in)    :: detail
     !--- local -----------------------------------------
     integer alpha,ix,iy,iz,k,kx,ky,kz
     real*8 u_tmp(3)
@@ -113,8 +114,8 @@ contains
        end do
     end do
 
-    if (p%verbose>=2) then
-       write(message,'("<u>=",3f10.6)') u_tmp(:) / c%n_sum_p
+    if (detail) then
+       write(message,'("<u> =",3f10.6)') u_tmp(:) / c%n_sum_p
        call msg_ez(UNIT_LOG,message)
     end if
   end subroutine add_to_Average
