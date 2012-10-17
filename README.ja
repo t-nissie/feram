@@ -192,13 +192,27 @@ n_hysteresis_loop_continue回目のイテレーションから
 ===== coord_directory
 このタグを
  coord_directory = 'coord_files'
-と設定すると，.coordファイルをそのディレクトリ以下に書き出します．
+と設定すると，feramは.coordファイルをそのディレクトリに書き出します．
 この例では coord_files/foo.0000020000.coord などとなります．
 巨大な.coordファイルをNFSのホームディレクトリでなくローカルの
-ハードディスクに書き出したい場合に便利です．
+ハードディスクに書き出したい場合に便利です．特に指定がなければカレント
+ディレクトリに.coordファイルは書き出されます．
 
 このタグを 'never' に設定すれば，.coordファイルをけっして書き出しません．
  coord_directory = 'never'
+
+===== distribution_directory
+このタグを
+ distribution_directory = 'distribution_files'
+と設定すると，foo123.distribution と　foo123.distribution3d とは
+distribution_files/ ディレクトリに書き出されます．とくに後者は
+ファイルサイズが約180MBと大きいので，ローカルのハードディスクに
+書き出したい場合があるかもしれません．特に指定がなければカレント
+ディレクトリに２つのファイルは書き出されます．
+
+もし .distribution と .distribution3d とが必要なければ
+ distribution_directory = 'never'
+としてください．こうすることで計算時間も大幅に節約できます．
 
 ===== external_E_field
 外部電場Eを[V/Angstrom]の単位で．
@@ -402,11 +416,20 @@ n_thermalizeイテレーションの恒温化の後，
 
 === foo123.distribution
 u_x(R), u_y(R), u_z(R)の分布関数
- D_x(u) = (1/N) \sum_R delta(u_x(R)-u)
+ D_x(u) = (1/N) Sum_R delta(u_x(R)-u)
 をn_averageイテレーションに渡って平均したものが
-foo123.distributionに書き出します．
+foo123.distributionに書き出されます．
 各行は u D_x(u) D_y(u) D_z(u) です．
 ∫D_x(u)=1になっているはずです．
+詳細は src/average_module.F を見てください．
+
+=== foo123.distribution3d
+ベクトル u(R) の分布関数
+ D(u) = (1/N) Sum_R delta(u(R)-u)
+をn_averageイテレーションに渡って平均したものが
+foo123.distribution3dに書き出されます．
+各行は kx ky kz D(u) です．D(u)を全空間で
+積分を取ると１になっている，∫D(u)du=1，はずです．
 詳細は src/average_module.F を見てください．
 
 === foo123.hl
@@ -471,12 +494,10 @@ For more detail, see COPYING.
 ご寄附を頂けると，質問への回答が早く得られる場合があります:
 http://www.rpip.tohoku.ac.jp/main/kihukin.html
 
-The author is grateful if you would kindly refer the
-name of this program and cite our articles,
-[Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and
-David Vanderbilt: Phys. Rev. B 78 (2008) 104104] and [Jaita Paul,
-Takeshi Nishimatsu, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
-Phys. Rev. Lett. 99 (2007) 077601], in your papers.
+feramを使って成果が得られた場合には，feramというこのプログラムの
+名前と次の２つのわれわれの論文を引用していただけたら幸いです．
+ [Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and　David Vanderbilt: Phys. Rev. B 78 (2008) 104104]
+ [Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe, and Umesh V. Waghmare: Phys. Rev. Lett. 99 (2007) 077601]
 
 === 引用した図版
 feramのドキュメントで引用した下記の図版についてはその作者または出版社が著作権を持っています
