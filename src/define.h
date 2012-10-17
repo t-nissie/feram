@@ -9,8 +9,7 @@
 #define UNIT_WISDOM 20
 
 /* length */
-#define FILE_NAME_LEN 200
-
+#define FILE_NAME_LEN 300
 
 /* mathematical and physical constants */
 /* PI */
