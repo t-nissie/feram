@@ -215,11 +215,25 @@ n_hysteresis_loop_continue-th iteration.
 ===== coord_directory
 If this tag is set as
  coord_directory = 'coord_files'
-.coord file will be written into coord_files/foo.0000020000.coord .
+.coord file will be written into coord_files/foo123.0000020000.coord .
 For example, use this tag to store huge .coord files into a local HDD.
 
 If you do not want to get any .coord files, set it as
  coord_directory = 'never'
+
+===== distribution_directory
+If this tag is set as
+ distribution_directory = 'distribution_files'
+.distribution and .distribution3d files will be written into
+distribution_files/foo123.distribution and
+distribution_files/foo123.distribution3d .   For example,
+use this tag to store the huge .distribution3d file into a
+local HDD.
+
+If you do not want to get any .distribution and .distribution3d
+files, set it as
+ distribution_directory = 'never'
+This can also reduce computational time.
 
 ===== external_E_field
 Vector of the external electric field in the unit of [V/Angstrom].
