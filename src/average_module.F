@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2012-10-17 14:07:04 takeshi>
+! Time-stamp: <2012-10-17 16:34:30 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -39,6 +39,7 @@ contains
     avg%u(:)              = 0.0d0
     avg%uu(:)             = 0.0d0
     avg%e_layer(:)        = 0.0d0
+
     if (allocated(avg%distribution))   deallocate(avg%distribution)
     allocate(avg%distribution(3,-max_k:max_k))
     if (allocated(avg%distribution3d)) deallocate(avg%distribution3d)
@@ -95,35 +96,37 @@ contains
     avg%uu(5) = avg%uu(5) + u_tmp(3)*u_tmp(1)
     avg%uu(6) = avg%uu(6) + u_tmp(1)*u_tmp(2)
 
-    tmp_distribution(:,:)=0
+    if (p%distribution_directory.ne.'never') then
+       tmp_distribution(:,:)=0
 !$omp parallel do private(iz, iy, ix, alpha) reduction(+:tmp_distribution)
-    do iz = 0, p%Lz-1
-       do iy = 0, p%Ly-1
-          do ix = 0, p%Lx-1
-             if (c%sum_p(ix,iy,iz)) then
-                do alpha = 1, 3
-                   k = nint(c%dipoR(ix,iy,iz,alpha)*step_inv)
-                   if (abs(k)<=max_k) tmp_distribution(alpha,k) = tmp_distribution(alpha,k) + 1
-                end do
-             end if
+       do iz = 0, p%Lz-1
+          do iy = 0, p%Ly-1
+             do ix = 0, p%Lx-1
+                if (c%sum_p(ix,iy,iz)) then
+                   do alpha = 1, 3
+                      k = nint(c%dipoR(ix,iy,iz,alpha)*step_inv)
+                      if (abs(k)<=max_k) tmp_distribution(alpha,k) = tmp_distribution(alpha,k) + 1
+                   end do
+                end if
+             end do
           end do
        end do
-    end do
 !$omp end parallel do
-    avg%distribution(:,:) = avg%distribution(:,:) + tmp_distribution(:,:)
+       avg%distribution(:,:) = avg%distribution(:,:) + tmp_distribution(:,:)
 
-    do iz = 0, p%Lz-1
-       do iy = 0, p%Ly-1
-          do ix = 0, p%Lx-1
-             if (c%sum_p(ix,iy,iz)) then
-                kx = nint(c%dipoR(ix,iy,iz,1)*step_inv); if (abs(kx)>max_k) cycle
-                ky = nint(c%dipoR(ix,iy,iz,2)*step_inv); if (abs(ky)>max_k) cycle
-                kz = nint(c%dipoR(ix,iy,iz,3)*step_inv); if (abs(kz)>max_k) cycle
-                avg%distribution3d(kx,ky,kz) = avg%distribution3d(kx,ky,kz) + 1
-             end if
+       do iz = 0, p%Lz-1
+          do iy = 0, p%Ly-1
+             do ix = 0, p%Lx-1
+                if (c%sum_p(ix,iy,iz)) then
+                   kx = nint(c%dipoR(ix,iy,iz,1)*step_inv); if (abs(kx)>max_k) cycle
+                   ky = nint(c%dipoR(ix,iy,iz,2)*step_inv); if (abs(ky)>max_k) cycle
+                   kz = nint(c%dipoR(ix,iy,iz,3)*step_inv); if (abs(kz)>max_k) cycle
+                   avg%distribution3d(kx,ky,kz) = avg%distribution3d(kx,ky,kz) + 1
+                end if
+             end do
           end do
        end do
-    end do
+    end if
 
     if (detail) then
        u_tmp(:) = u_tmp(:) / c%n_sum_p
@@ -141,12 +144,16 @@ contains
     type(Param_type),   intent(in)    :: p
     type(Coord_type),   intent(in)    :: c
     type(Average_type), intent(inout) :: avg
-    character (len=120)               :: fn_avg
-    character (len=200)               :: fn_T_layer
+    character (len=FILE_NAME_LEN)     :: fn_avg, fn_tmp, fn_T_layer
     real*8                            :: kelvin
     integer                           :: i,k,kx,ky,kz
 
-    if (p%n_average.eq.0) return
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'divide_and_write_Average().')
+
+    if (p%n_average.eq.0) then
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'divide_and_write_Average() immediately, because n_average=0.')
+       return
+    end if
 
     avg%energy = div_Energy(avg%energy, p%n_average)
     avg%energy = div_Energy(avg%energy, p%N)
@@ -167,6 +174,7 @@ contains
        kelvin = avg%dipo_kinetic_true * 0.666666666666666666666666666667d0 * KELVIN_EV
        avg%e_layer(0:p%Lz) = avg%e_layer(0:p%Lz) / p%n_average
        write(fn_T_layer,'(a,a)') trim(p%filename), '.T_layer'
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_T_layer)
        open(UNIT=UNIT_T_LAYER,FILE=fn_T_layer)
        do i=0,p%Lz-1
           write(UNIT_T_LAYER,'(i9,f13.8)') i, avg%e_layer(i) / p%Lx / p%Ly * 0.666666666666666666666666666667d0 * KELVIN_EV
@@ -177,6 +185,7 @@ contains
     end if
 
     write(fn_avg,'(a,a)') trim(p%filename), '.avg'
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_avg)
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
     write(UNIT_AVG,"(f6.1,3f9.5,1(e15.5,5e13.5),1(e15.5,2e13.5),1(e15.5,5e13.5),1(1e15.5,11e13.5))")&
          kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
@@ -194,22 +203,36 @@ contains
          avg%dipo_kinetic_true
     close(UNIT_AVG)
 
-    write(fn_avg,'(a,a)') trim(p%filename), '.distribution'
-    open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
-    do k = -max_k, max_k
-       write(UNIT_AVG,'(f7.4,3f12.7)') step*k, dble(avg%distribution(:,k)) * step_inv / c%n_sum_p / p%n_average
-    end do
-    close(UNIT_AVG)
+    if (p%distribution_directory.eq.'never') then
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', 'never write .distribution and .distribution3d files.')
+    else
+       if (p%distribution_directory.eq.'') then
+          fn_tmp = trim(p%filename)
+       else
+          fn_tmp = trim(p%distribution_directory) // '/' // trim(p%filename)
+       end if
 
-    write(fn_avg,'(a,a)') trim(p%filename), '.distribution3d'
-    open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
-    do kz = -max_k, max_k
-       do ky = -max_k, max_k
-          do kx = -max_k, max_k
-             write(UNIT_AVG,'(i3,2i4,e11.5e1)') kx,ky,kz, dble(avg%distribution3d(kx,ky,kz)) * step_inv**3 / c%n_sum_p / p%n_average
+       write(fn_avg,'(a,a)') trim(fn_tmp), '.distribution'
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_avg)
+       open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
+       do k = -max_k, max_k
+          write(UNIT_AVG,'(f7.4,3f12.7)') step*k, dble(avg%distribution(:,k)) * step_inv / c%n_sum_p / p%n_average
+       end do
+       close(UNIT_AVG)
+
+       write(fn_avg,'(a,a)') trim(fn_tmp), '.distribution3d'
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_avg)
+       open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
+       do kz = -max_k, max_k
+          do ky = -max_k, max_k
+             do kx = -max_k, max_k
+                write(UNIT_AVG,'(i3,2i4,e11.5e1)') kx,ky,kz, dble(avg%distribution3d(kx,ky,kz)) * step_inv**3 / c%n_sum_p / p%n_average
+             end do
           end do
        end do
-    end do
-    close(UNIT_AVG)
+       close(UNIT_AVG)
+    end if
+
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'divide_and_write_Average().')
   end subroutine divide_and_write_Average
 end module Average_module
