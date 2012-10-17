@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2012-10-17 13:26:29 takeshi>
+! Time-stamp: <2012-10-17 14:07:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -59,7 +59,7 @@ contains
     logical,            intent(in)    :: detail
     !--- local -----------------------------------------
     integer alpha,ix,iy,iz,k,kx,ky,kz
-    real*8 u_tmp(3)
+    real*8 u_tmp(3),  uu_tmp(3)
     character(90) message
     integer*8 tmp_distribution(3,-max_k:max_k)   !!! integer*8 !!!
     !--- END of variable definitions -------------------
@@ -72,9 +72,20 @@ contains
        avg%e_layer(0:p%Lz-1)   = avg%e_layer(0:p%Lz-1)   + c%e_layer(0:p%Lz-1)
     end if
 
-    do alpha = 1, 3
-       u_tmp(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
+     u_tmp(1:3) = 0.0d0
+    uu_tmp(1:3) = 0.0d0
+!$omp parallel do private(iz, iy, ix) reduction(+:u_tmp,uu_tmp)
+    do iz = 0, p%Lz-1
+       do iy = 0, p%Ly-1
+          do ix = 0, p%Lx-1
+             if (c%sum_p(ix,iy,iz)) then
+                 u_tmp(:) =  u_tmp(:) + c%dipoR(ix,iy,iz,:)
+                uu_tmp(:) = uu_tmp(:) + c%dipoR(ix,iy,iz,:)**2
+             end if
+          end do
+       end do
     end do
+!$omp end parallel do
 
     avg%u(:) = avg%u(:) + u_tmp(:)
     avg%uu(1) = avg%uu(1) + u_tmp(1)**2
@@ -85,7 +96,7 @@ contains
     avg%uu(6) = avg%uu(6) + u_tmp(1)*u_tmp(2)
 
     tmp_distribution(:,:)=0
-!$omp parallel do private(iz, alpha, iy, ix) reduction(+:tmp_distribution)
+!$omp parallel do private(iz, iy, ix, alpha) reduction(+:tmp_distribution)
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
           do ix = 0, p%Lx-1
@@ -115,7 +126,10 @@ contains
     end do
 
     if (detail) then
-       write(message,'("<u> =",3f10.6)') u_tmp(:) / c%n_sum_p
+       u_tmp(:) = u_tmp(:) / c%n_sum_p
+       write(message,'("<u>   =",3f10.6)') u_tmp(1:3)
+       call msg_ez(UNIT_LOG,message)
+       write(message,'("sigma =",3f10.6)') sqrt(uu_tmp(1:3)/c%n_sum_p - u_tmp(1:3)**2)
        call msg_ez(UNIT_LOG,message)
     end if
   end subroutine add_to_Average
