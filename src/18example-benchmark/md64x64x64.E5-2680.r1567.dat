@@ -1,0 +1,6 @@
+# /home/t-nissie/f/loto/feram/trunk/0.19.06-r1567-2012-10-18-app1-gfortran-4.4.6/src/18e-md64x64x64-emerald01/
+#   10000   64   64   64     262144  16       12.364   5.864  80.467       10.208   3.096  76.205        8.934   3.173  74.355
+##
+md64x64x64.without-numactl.log:          2.62        1696.83        1699.45     #TIMING_REPORT
+md64x64x64.without-wisdom.log:           2.90        1352.49        1355.39     #TIMING_REPORT
+md64x64x64.with-wisdom.log:              2.63        1391.14        1393.76     #TIMING_REPORT
