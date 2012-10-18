@@ -1,0 +1,307 @@
+../../src/feram_common.F: 39: BEGIN: feram by Takeshi NISHIMATSU 0.19.06
+  2012-10-18T12:15:59.464+0900
+  ../../src/feram_common.F: 51: FFTW_WISDOM: Successfully imported FFTW wisdom in current directory.
+  ../../src/param_module.F:116: BEGIN: read_Param().
+    ../../src/param_module.F:118: INPUT_FILENAME: md24x24x24a.feram
+    #--- Method, Temperature, and mass ---------------
+    method = 'md'
+    GPa = -5.0
+    kelvin = 345
+    mass_amu = 39.0
+    Q_Nose = 0.1
+    
+    #--- System geometry -----------------------------
+    bulk_or_film = 'bulk'
+    L = 24 24 24
+    a0 =  3.94         latice constant a0 [Angstrom]
+    #--- Time step -----------------------------------
+    dt = 0.002 [pico second]
+    n_thermalize =  10000
+    n_average    = 100000
+    n_coord_freq =  10000
+    coord_directory = 'never'
+    distribution_directory = 'never'
+    
+    #--- On-site (Polynomial of order 4) -------------
+    P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
+    P_alpha  =  110.4    [eV/Angstrom^4] #  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+    P_gamma  = -163.1    [eV/Angstrom^4] # where u^2 = u_x^2 + u_y^2 + u_z^2
+    
+    #--- Inter-site ----------------------------------
+    j = -2.648 3.894 0.898 -0.789 0.562 0.358 0.179    j(i) [eV/Angstrom^2]
+    
+    #--- Elastic Constants ---------------------------
+    B11 = 126.
+    B12 =  44.9
+    B44 =  50.3  [eV]
+    
+    #--- Elastic Coupling ----------------------------
+    B1xx = -211.   [eV/Angstrom^2]
+    B1yy =  -19.3  [eV/Angstrom^2]
+    B4yz =   -7.75 [eV/Angstrom^2]
+    
+    #--- Dipole --------------------------------------
+    seed = 1242914819 1957271599
+    init_dipo_avg = 0.1   0.1   0.1    [Angstrom]  # Average   of initial dipole displacements
+    init_dipo_dev = 0.02  0.02  0.02   [Angstrom]  # Deviation of initial dipole displacements
+    Z_star        = 9.956
+    epsilon_inf   = 5.24
+  ../../src/param_module.F:309: END:   read_Param().
+  ../../src/param_module.F:315: BEGIN: make_Param().
+  ../../src/param_module.F:341: END:   make_Param().
+  ../../src/param_module.F:349: BEGIN: write_Param(), Parameters for convenience.
+    N = Lx * Ly * Lz          =      13824
+    Ninv = 1/N                =  0.7233796E-04
+    delta_t / 2               =  0.0010000
+    N of degree of freedom    =      41472
+    unit_cell_volume          = 61.1629840
+    kappa for Ewald sum =     0.0918
+    ../../src/param_module.F:385: FILENAME: md24x24x24a.param
+  ../../src/param_module.F:388: END:   write_Param().
+  ../../src/coord_module.F: 56: BEGIN: alloc_Coord().
+  ../../src/coord_module.F:198: END:   alloc_Coord().
+  ../../src/potentials.F: 12: BEGIN: construction of potentials.
+    ../../src/dipole-dipole.F: 19: BEGIN: construction of dipole-dipole interaction.
+      ../../src/dipole-dipole-long-range.F: 29: BEGIN: 
+      ../../src/dipole-dipole-long-range.F:141: END: 
+      ../../src/dipole-dipole-short-range.F: 24: BEGIN: 
+        TMPreal(   0,0,0,1,1) = 2P_kappa2 =  11.0040
+        TMPreal(Lx-1,0,0,3,3) =  j(1)     =  -2.6480
+        TMPreal(   0,0,1,3,3) =  j(2)     =   3.8940
+        TMPreal(   1,0,1,3,3) =  j(3)     =   0.8980
+        TMPreal(   1,1,0,3,3) =  j(4)     =  -0.7890
+        TMPreal(   1,0,1,3,1) =  j(5)     =   0.5620
+        TMPreal(   1,1,1,3,3) =  j(6)     =   0.3580
+        TMPreal(   1,1,1,3,1) =  j(7)     =   0.1790
+        (a) Gamma =   7.5460
+        (b) X_LO  = -10.2900
+        (c) X_TO  =   9.5420
+        (d) M_TO  =  10.9540
+        (e) M_LO  =   4.6180
+        (f) R     =   7.4860
+        (g) Sigma =  -1.7370
+      ../../src/dipole-dipole-short-range.F:117: END: 
+    ../../src/dipole-dipole.F: 39: END: construction of dipole-dipole interaction.
+    ../../src/elastic.F: 20: BEGIN: make elastic constant matrix.
+    ../../src/elastic.F:160: END: 
+  ../../src/potentials.F: 15: END: construction of potentials.
+  2012-10-18T12:16:00.588+0900 Ready for simulation!!!
+  ../../src/molecular-dynamics.F: 29: BEGIN: MD
+    T =  345.0 [K] BEGIN ========================================================
+    TIME_STEP       0 ---------------------------------------------------------------------------------
+    ../../src/initialize_E_field.F: 17: BEGIN: 
+      ../../src/initialize_E_field.F: 45: FILE: local.field was NOT found.
+    ../../src/initialize_E_field.F: 79: END: 
+    ../../src/initialize-dipoR.F: 22: BEGIN: 
+      ../../src/initialize-dipoR.F: 40: FILE: md24x24x24a.restart was NOT found.
+      ../../src/read_defects_u.F: 18: BEGIN: 
+        ../../src/read_defects_u.F: 48: FILE_NOT_FOUND: .defects file was NOT found. No defects was created.
+      ../../src/read_defects_u.F: 72: END: 
+    ../../src/initialize-dipoR.F: 67: END: 
+    dipo_kinetic       0.000000000000 [eV/u.c.]
+    dipole_dipole     -0.046786066760 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.059838626399 [eV/u.c.]
+    homo_strain        0.071606436791 [eV/u.c.]
+    homo_coupling     -0.143212873582 [eV/u.c.]
+    inho_strain        0.001252062829 [eV/u.c.]
+    inho_coupling     -0.002504125658 [eV/u.c.]
+    --------------------------------------------
+    total_energy      -0.059805939981 [eV/u.c.]
+    H_Nose_Poincare    0.000000000000 [eV/u.c.]
+    s_Nose=    1.00000000 pi_Nose=    0.00000000
+    TIME_STEP   10000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.044049607638 [eV/u.c.]
+    dipole_dipole      0.006114061232 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.038554120642 [eV/u.c.]
+    homo_strain        0.052756409481 [eV/u.c.]
+    homo_coupling     -0.105512818962 [eV/u.c.]
+    inho_strain        0.003015225812 [eV/u.c.]
+    inho_coupling     -0.006030451624 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.032946154219 [eV/u.c.]
+    H_Nose_Poincare   -0.000235161865 [eV/u.c.]
+    s_Nose=    0.35081866 pi_Nose=   -0.08738491
+    TIME_STEP   20000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.044338179839 [eV/u.c.]
+    dipole_dipole      0.005788651332 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.038531966248 [eV/u.c.]
+    homo_strain        0.052754119149 [eV/u.c.]
+    homo_coupling     -0.105508238298 [eV/u.c.]
+    inho_strain        0.002983261894 [eV/u.c.]
+    inho_coupling     -0.005966523789 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.032921416376 [eV/u.c.]
+    H_Nose_Poincare   -0.000235400849 [eV/u.c.]
+    s_Nose=    0.35092497 pi_Nose=    0.00006251
+    <u>   =  0.001212 -0.000674  0.002138
+    sigma =  0.081922  0.081450  0.083584
+    TIME_STEP   30000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.043609222965 [eV/u.c.]
+    dipole_dipole      0.006298192881 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.038219064030 [eV/u.c.]
+    homo_strain        0.052643353772 [eV/u.c.]
+    homo_coupling     -0.105286707545 [eV/u.c.]
+    inho_strain        0.002986361332 [eV/u.c.]
+    inho_coupling     -0.005972722665 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.032496764771 [eV/u.c.]
+    H_Nose_Poincare   -0.000234583192 [eV/u.c.]
+    s_Nose=    0.35262145 pi_Nose=   -0.01333997
+    <u>   = -0.009509 -0.001605  0.005321
+    sigma =  0.082048  0.081504  0.082306
+    TIME_STEP   40000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.044125953013 [eV/u.c.]
+    dipole_dipole      0.006007030834 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.037865929835 [eV/u.c.]
+    homo_strain        0.052505858203 [eV/u.c.]
+    homo_coupling     -0.105011716407 [eV/u.c.]
+    inho_strain        0.002919314238 [eV/u.c.]
+    inho_coupling     -0.005838628477 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.032573741241 [eV/u.c.]
+    H_Nose_Poincare   -0.000235427766 [eV/u.c.]
+    s_Nose=    0.35230563 pi_Nose=   -0.00584615
+    <u>   = -0.000214  0.001730 -0.011564
+    sigma =  0.081917  0.081714  0.081609
+    TIME_STEP   50000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.044142570290 [eV/u.c.]
+    dipole_dipole      0.006393653883 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.037835111224 [eV/u.c.]
+    homo_strain        0.052514667580 [eV/u.c.]
+    homo_coupling     -0.105029335159 [eV/u.c.]
+    inho_strain        0.002937870633 [eV/u.c.]
+    inho_coupling     -0.005875741266 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.032918797184 [eV/u.c.]
+    H_Nose_Poincare   -0.000234753660 [eV/u.c.]
+    s_Nose=    0.35092730 pi_Nose=    0.10350281
+    <u>   =  0.004381  0.002343  0.004745
+    sigma =  0.081331  0.082858  0.081619
+    TIME_STEP   60000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.044961078314 [eV/u.c.]
+    dipole_dipole      0.006403302360 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.037952267847 [eV/u.c.]
+    homo_strain        0.052445594257 [eV/u.c.]
+    homo_coupling     -0.104891188514 [eV/u.c.]
+    inho_strain        0.002991102415 [eV/u.c.]
+    inho_coupling     -0.005982204829 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.033879951849 [eV/u.c.]
+    H_Nose_Poincare   -0.000235498589 [eV/u.c.]
+    s_Nose=    0.34714417 pi_Nose=    0.00435875
+    <u>   =  0.002899  0.005547  0.001000
+    sigma =  0.082072  0.081707  0.081820
+    TIME_STEP   70000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.044519033566 [eV/u.c.]
+    dipole_dipole      0.006450450958 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.037857298295 [eV/u.c.]
+    homo_strain        0.052562436341 [eV/u.c.]
+    homo_coupling     -0.105124872683 [eV/u.c.]
+    inho_strain        0.002909719048 [eV/u.c.]
+    inho_coupling     -0.005819438096 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.033354627429 [eV/u.c.]
+    H_Nose_Poincare   -0.000235392354 [eV/u.c.]
+    s_Nose=    0.34921169 pi_Nose=   -0.00912796
+    <u>   = -0.005489 -0.004580 -0.006501
+    sigma =  0.081852  0.081643  0.082227
+    TIME_STEP   80000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.043994045112 [eV/u.c.]
+    dipole_dipole      0.005598081225 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.037989477860 [eV/u.c.]
+    homo_strain        0.052540921696 [eV/u.c.]
+    homo_coupling     -0.105081843392 [eV/u.c.]
+    inho_strain        0.002965235400 [eV/u.c.]
+    inho_coupling     -0.005930470801 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.032075447100 [eV/u.c.]
+    H_Nose_Poincare   -0.000235938049 [eV/u.c.]
+    s_Nose=    0.35428447 pi_Nose=    0.05348088
+    <u>   =  0.000914  0.006944 -0.002731
+    sigma =  0.081533  0.082815  0.081502
+    TIME_STEP   90000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.044245352699 [eV/u.c.]
+    dipole_dipole      0.006559396917 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.037958281832 [eV/u.c.]
+    homo_strain        0.052489272590 [eV/u.c.]
+    homo_coupling     -0.104978545181 [eV/u.c.]
+    inho_strain        0.002963749034 [eV/u.c.]
+    inho_coupling     -0.005927498068 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.033310009824 [eV/u.c.]
+    H_Nose_Poincare   -0.000235341476 [eV/u.c.]
+    s_Nose=    0.34938728 pi_Nose=   -0.02859316
+    <u>   = -0.005092 -0.005531 -0.003468
+    sigma =  0.081766  0.081426  0.082397
+    TIME_STEP  100000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.044074622913 [eV/u.c.]
+    dipole_dipole      0.006353352910 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.038067727753 [eV/u.c.]
+    homo_strain        0.052476313587 [eV/u.c.]
+    homo_coupling     -0.104952627174 [eV/u.c.]
+    inho_strain        0.003011753144 [eV/u.c.]
+    inho_coupling     -0.006023506289 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.033007636845 [eV/u.c.]
+    H_Nose_Poincare   -0.000234862951 [eV/u.c.]
+    s_Nose=    0.35058636 pi_Nose=    0.04606870
+    <u>   =  0.001817 -0.001776 -0.002665
+    sigma =  0.082205  0.081251  0.082415
+    TIME_STEP  110000 ---------------------------------------------------------------------------------
+    ../../src/coord_module.F:210: BEGIN: 
+    ../../src/coord_module.F:213: END: never write .coord files.
+    dipo_kinetic       0.043982397132 [eV/u.c.]
+    dipole_dipole      0.006163451075 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.038129525305 [eV/u.c.]
+    homo_strain        0.052662841524 [eV/u.c.]
+    homo_coupling     -0.105325683049 [eV/u.c.]
+    inho_strain        0.002968862462 [eV/u.c.]
+    inho_coupling     -0.005937724923 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.032643669527 [eV/u.c.]
+    H_Nose_Poincare   -0.000234645216 [eV/u.c.]
+    s_Nose=    0.35203617 pi_Nose=    0.01005111
+    <u>   =  0.000187 -0.008563 -0.011642
+    sigma =  0.082361  0.080763  0.082260
+    T =  345.0 [K] END ==========================================================
+    ../../src/average_module.F:151: BEGIN: divide_and_write_Average().
+      ../../src/average_module.F:188: FILE: md24x24x24a.avg
+      ../../src/average_module.F:207: FILE: never write .distribution and .distribution3d files.
+    ../../src/average_module.F:236: END: divide_and_write_Average().
+  ../../src/molecular-dynamics.F: 93: END: MD
+  2012-10-18T12:17:36.494+0900
+  t_initialization,  t_simulation,       t_total
+              1.12          95.91          97.03     #TIMING_REPORT
+../../src/feram_common.F:106: END: love && peace && free_software
