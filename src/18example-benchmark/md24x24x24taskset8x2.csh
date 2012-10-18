@@ -18,4 +18,4 @@ wait
 
 grep TIMING_REPORT md24x24x24[ab].log >> md24x24x24taskset8x2.dat
 
-rm -f md24x24x24[ab].*
+# rm -f md24x24x24[ab].*

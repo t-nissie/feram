@@ -13,7 +13,9 @@ a0 =  3.94         latice constant a0 [Angstrom]
 dt = 0.002 [pico second]
 n_thermalize =  10000
 n_average    = 100000
-n_coord_freq = 220000
+n_coord_freq =  10000
+coord_directory = 'never'
+distribution_directory = 'never'
 
 #--- On-site (Polynomial of order 4) -------------
 P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
