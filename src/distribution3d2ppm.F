@@ -1,5 +1,5 @@
 ! distribution3d2ppm.F -*-f90-*-
-! Time-stamp: <2012-10-16 22:10:50 takeshi>
+! Time-stamp: <2012-10-19 09:12:13 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined(__PGI) || defined(__sparc)
@@ -30,8 +30,8 @@ subroutine distribution3d2ppm_main(fn)
   type(rgb_type)       :: a
   allocate(distribution3d(-max_k:max_k,-max_k:max_k,-max_k:max_k))
 
-  write(6,*)
-  write(6,'(a)') '==> ' // trim(fn) // ' <=='
+  !write(6,*)
+  !write(6,'(a)') '==> ' // trim(fn) // ' <=='
 
   open(7,FILE=fn, status='old', action='read')
   do i=1,(max_k*2+1)**3
