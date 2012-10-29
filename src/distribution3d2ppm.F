@@ -1,5 +1,5 @@
 ! distribution3d2ppm.F -*-f90-*-
-! Time-stamp: <2012-10-19 09:12:13 takeshi>
+! Time-stamp: <2012-10-19 20:36:33 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined(__PGI) || defined(__sparc)
@@ -48,7 +48,26 @@ subroutine distribution3d2ppm_main(fn)
   write(8,'(a)') '255'
   do kz = max_k, -max_k, -1
      do kx = -max_k, max_k
-        x = dble(distribution3d(kx,0,kz)) / 350 - 1.0d0/1275
+        x = sqrt(dble(distribution3d(kx,0,kz))) / 108 - 1.0d0/1275
+        call double2rgb(x, a)
+        if (kz.eq.0 .or. kx.eq.0) then
+           write(8,'(a,a,a,$)') char(255), char(255), char(255)
+        else
+           write(8,'(a,a,a,$)') char(a%r), char(a%g), char(a%b)
+        end if
+     end do
+  end do
+  close(8)
+
+  fn_ppm = trim(fn) // '.110.ppm'
+  open(unit=8,file=fn_ppm, status='REPLACE')
+  write(8,'(a)') 'P6'
+  write(8,'(a,a)') '# ', trim(fn_ppm)
+  write(8,'(i3,i4)') max_k*2+1, max_k*2+1
+  write(8,'(a)') '255'
+  do kz = max_k, -max_k, -1
+     do kx = -max_k, max_k
+        x = sqrt(dble(distribution3d(kx,kx,kz))) / 108 - 1.0d0/1275
         call double2rgb(x, a)
         if (kz.eq.0 .or. kx.eq.0) then
            write(8,'(a,a,a,$)') char(255), char(255), char(255)
