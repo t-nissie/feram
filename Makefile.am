@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2012-07-29 09:56:49 t-nissie>
+# Time-stamp: <2012-11-20 08:13:52 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -31,7 +31,6 @@ sourceforge: index.en.html README.en index.ja.html README.ja INSTALL.html INSTAL
 	scp $<                            $(SOURCEFORGE_FERAM)/index.html
 	scp dot.htaccess                  $(SOURCEFORGE_FERAM)/.htaccess
 	scp $^                            $(SOURCEFORGE_FERAM)
-	scp libblaslapack/COPYING         $(SOURCEFORGE_FERAM)/libblaslapack
 #	cd  doc && $(MAKE) sourceforge
 
 logo.jpg: logo.eps
