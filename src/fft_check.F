@@ -1,9 +1,9 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-09-21 16:38:39 takeshi>
+! Time-stamp: <2012-11-20 17:12:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
-= fft_check.F, a 3-dimensional FFT benchmark program written in Fortran 
+= fft_check.F, a 3-dimensional FFT benchmark program written in Fortran
 fft_check.F is a benchmark program. It times
 in-place double-precision complex 3-dimensional FFT and
 in-place and out-of-place double-precision real 3-dimensional FFT.
@@ -182,6 +182,14 @@ They are plotted with GNUPLOT scripts of
  * How to execute: ../fft_check 50 400 400 400
  * FFTW 3.3.x
  * CAUTION: FFT in Fujitsu SSLII is much slower than FFTW.
+
+=== Comment on "padding"
+If the numbers of dimensions of an array are powers of two,
+for example a(512,512,512), "bank conflict" may happens in FFT and
+it reduces computational speed. To avoid "bank conflict",
+"padding" is commonly introduced, for example a(512,512+3,512).
+However, introduction of "padding" make code complicated.
+Therefore, "padding" is not introduced in this fft_check.F.
 
 == Copying and author
 Copyright © 2007-2012 by Takeshi Nishimatsu
