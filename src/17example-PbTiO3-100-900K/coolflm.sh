@@ -1,50 +1,30 @@
 #!/bin/sh
-#@ class = qsc
-#@ output = cooling.stdout
-#@ error  = cooling.stderr
-#@ environment = COPY_ALL
-#@ restart = no
-#@ job_name = cooling
-#@ job_type = serial
-#@ resources = ConsumableCpus(16)
-#@ comment = -n 1 -pm 1 -pt 16 -ap "general"
-#@ queue
-#
-# Usage: submit SC general -jcf cooling.jcf
-#
-export MEMORY_AFFINITY=MCM
-export HF_ERR_STATUS_MODE=1
-export HF_90OPTS="-FPRUNST(THREADNUM(16))"
-export OMP_NUM_THREADS=16
+# coolflm.sh
+# Time-stamp: <2012-11-28 11:21:00 takeshi>
+# Author: Takeshi NISHIMATSU
 ##
-rm -f cooling.avg
-
-temperature_start=900
-temperature_goal=100
-temperature_step=-1
+rm -f coolflm.avg
 
 n_thermalize=20000
 n_average=20000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
-temperature=$temperature_start
-while [ `perl -e "print $temperature >= $temperature_goal || 0"` = "1" ] ; do
+for temperature in `jot - 1000 300 -1`; do
     i=`expr $i + 1`
-    filename=cooling`printf '%.3d' $i`-"$temperature"K
+    filename=coolflm`printf '%.3d' $i`-"$temperature"K
     cat > $filename.feram <<-EOF
 	#--- Method, Temperature, and mass ---------------
 	method = 'md'
 	GPa = 0.0
 	kelvin = $temperature
 	mass_amu = 100.0
-	Q_Nose = 2.0
+	Q_Nose = 3.0
 
 	#--- System geometry -----------------------------
-	bulk_or_film = 'bulk'
-	L = 32 32 32
+	bulk_or_film = 'film'
+	L = 32 32 64
 	a0 =  3.96883      latice constant a0 [Angstrom]
-	epi_strain = -0.01
 	#--- Time step -----------------------------------
 	dt = 0.002 [pico second]
 	n_thermalize = $n_thermalize
@@ -76,17 +56,16 @@ while [ `perl -e "print $temperature >= $temperature_goal || 0"` = "1" ] ; do
 
 	#--- Dipole --------------------------------------
 	seed = 1242914819 1957271599
-	init_dipo_avg = 0.0   0.0   0.0    [Angstrom]  # Averaged of initial dipole displacements
-	init_dipo_dev = 0.15  0.15  0.15   [Angstrom]  # Deviation of initial dipole displacements
+	init_dipo_avg = 0.000 0.000 0.330   [Angstrom]  # Averaged of initial dipole displacements
+	init_dipo_dev = 0.045 0.045 0.021   [Angstrom]  # Deviation of initial dipole displacements
 	Z_star        = 10.0181
 	epsilon_inf   = 8.24
 EOF
     if [ -r "$prev_coord" ]; then
-	ln -sf "$prev_coord" $filename.restart
+        ln -sf "$prev_coord" $filename.restart
     fi
     ../feram $filename.feram
     rm -f "$prev_coord" "$filename.restart"
     prev_coord=$filename.`printf '%.10d' $n_coord_freq`.coord
-    cat $filename.avg >> cooling.avg
-    temperature=`perl -e "print $temperature + $temperature_step"`
+    cat $filename.avg >> coolflm.avg
 done
