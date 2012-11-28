@@ -2,33 +2,28 @@
 How to perform heating-up and cooling-down simulations under external electric fields.
 
 == On Linux machines with bash
-Edit EXTERNALEc.jcf and EXTERNALEh.jcf for your computer.
-For example, change OMP_NUM_THREADS value.
+Edit EXTERNALEc.template and EXTERNALEh.template for your computer.
+For example, add "OMP_NUM_THREADS=4" before "../feram".
 Make sh scripts:
- $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.jcf > "$s"c.sh; done
- $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEh.jcf > "$s"h.sh; done
+ $ for ((i=0;i<=425;i+=5)); do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.template > "$s"c.csh; done
+ $ for ((i=0;i<=425;i+=5)); do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEh.template > "$s"h.csh; done
 Execute sh scripts one by one:
- $ sh 000c.sh
- $ sh 000h.sh
- $ sh 005c.sh
- $ sh 005h.sh
+ $ csh 000c.csh
+ $ csh 000h.csh
+ $ csh 005c.csh
+ $ csh 005h.csh
       :
  $ gnuplot
  gnuplot> plot '000c.avg' u 1:11, '000c.avg' u 1:12, '000c.avg' u 1:13,\
                '000h.avg' u 1:11, '000h.avg' u 1:12, '000h.avg' u 1:13
 
 == On SR16000 (super1 in IMR)
-Before submission of jobs, check the path to feram in EXTERNALEc.jcf and
-EXTERNALEh.jcf. ./feram or ../feram ? And check the existence of feram.
+Before submission of jobs, check the path to feram in EXTERNALEc.template and
+EXTERNALEh.template. ./feram or ../feram ? And check the existence of feram.
 
-(Optional) Make a wisdom file for FFTW with the same number of threads
-and environment variables for feram.
- super3t$ MALLOCMULTIHEAP=true LDR_CNTRL=LARGE_PAGE_DATA=M XLSMPOPTS="spins=0:yields=0:parthds=16:stride=1:startproc=0" ../fft_check 100000 16 16 16
- super3t$ mv wisdom_new wisdom
-
-Make JCFs (job control files) then submit them.
- $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.jcf > "$s"c.jcf; submit SC general -jcf "$s"c.jcf; done
- $ for ((i=0;i<=425;i+=5));do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEh.jcf > "$s"h.jcf; submit SC general -jcf "$s"h.jcf; done
+Make csh scripts, then submit them.
+ $ for ((i=0;i<=425;i+=5)); do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.template > "$s"c.csh; submit SC general -pt 8 -exec "$s"c.csh -J "$s"c; done
+ $ for ((i=0;i<=425;i+=5)); do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEh.template > "$s"h.csh; submit SC general -pt 8 -exec "$s"h.csh -J "$s"h; done
 
 == Plot results with gnuplot and ruby
 After all jobs are completed, execute atable3.gp.
@@ -41,3 +36,4 @@ be called internally, you need Ruby.
 
 == Memo for Takeshi
 First calculations were done in /home/t-nissie/feram/feram-e.07/BaTiO3-020-WuC-0.005-100keVcm/ .
+Next  calculations were done in /home/t-nissie/feram/feram-j.08/examples-in-SR16000/20example-BaTiO3-new-param-pyro/ .
