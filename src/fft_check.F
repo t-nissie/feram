@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-11-20 17:12:38 takeshi>
+! Time-stamp: <2012-11-29 08:12:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -25,14 +25,14 @@ Although fft_check can be built by the usual 'configure && make' manner
 along with feram (see ../INSTALL), makefiles for several compilers and
 architectures are provided in names of fft_check.Makefile.*.
 You can build fft_check with GNU Fortran (gfortran), Intel Fortran (ifort),
-IBM XL Fortran (xlf90_r), etc. You can link FFTW, Intel MKL, Hitach MATRIX/MPP
+IBM XL Fortran (xlf90_r), etc. You can link FFTW, Intel MKL, Hitachi MATRIX/MPP
 as an FFT library. For example,
  $ make -f fft_check.Makefile.Intel-gfortran-fftw3_omp
 
 === FFTW and wisdom file
 If fft_check.F is compiled with FFTW library and f90_wisdom.f,
-it imports 'wisdom' file in currnet directory or /etc/fftw/wisdom
-and exports 'wisdom_new' into currnet directory.
+it imports 'wisdom' file in current directory or /etc/fftw/wisdom
+and exports 'wisdom_new' into current directory.
 
 === PGI Fortran and ACML
 Use fft_acml.f and fft_acml.Makefile.
@@ -64,8 +64,8 @@ good performance on Non-Uniform Memory Access (NUMA) systems.
  $ numactl --cpunodebind=0,1 --interleave=all ./fft_check 100 256 256 256
 
 == output, timing and GFLOPS
-Vorbose reports will be written into standard error (STDERR).
-Formated results will be written into standard output (STDOUT)
+Verbose reports will be written into standard error (STDERR).
+Formatted results will be written into standard output (STDOUT)
 in an order of
 N_TIMES Lx Ly Lz N NTHREADS
 plan_ci time_ci GFLOPS_ci
@@ -82,12 +82,12 @@ Giga FLOPS values are roughly estimated from
 
 == results and conditions
 In Fig:powr2 and Fig:nonp2,
-results of 3-dimentional FFT benchmark
+results of 3-dimensional FFT benchmark
 on single node of some systems are shown.
 Computational conditions are listed below.
 
 \Fig:powr2 19example-fft-benchmark/fft_powr2.jpg
-Results of 3-dimentional FFT benchmark of powers of two.
+Results of 3-dimensional FFT benchmark of powers of two.
 (a) Double-precision complex, in-place.
 (b) Double-precision real, in-place.
 (c) Double-precision real, out-of-place.
@@ -96,7 +96,7 @@ FFTW is used in others.
 /Fig:powr2
 
 \Fig:nonp2 19example-fft-benchmark/fft_nonp2.jpg
-Results of 3-dimentional FFT benchmark of non-powers of two.
+Results of 3-dimensional FFT benchmark of non-powers of two.
 (a) Double-precision complex, in-place.
 (b) Double-precision real, in-place.
 (c) Double-precision real, out-of-place.
@@ -104,7 +104,7 @@ Intel MKL is used in "X7560/MKL" benchmark.
 FFTW is used in others.
 /Fig:nonp2
 
-Raw data of results of benckmark are
+Raw data of results of benchmark are
 19example-fft-benchmark/fft_check_powr2.*.dat and
 19example-fft-benchmark/fft_check_nonp2.*.dat.
 They are plotted with GNUPLOT scripts of
@@ -185,7 +185,7 @@ They are plotted with GNUPLOT scripts of
 
 === Comment on "padding"
 If the numbers of dimensions of an array are powers of two,
-for example a(512,512,512), "bank conflict" may happens in FFT and
+for example a(512,512,512), "bank conflict" may occur in FFT and
 it reduces computational speed. To avoid "bank conflict",
 "padding" is commonly introduced, for example a(512,512+3,512).
 However, introduction of "padding" make code complicated.
