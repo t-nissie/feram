@@ -1,6 +1,6 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2011-08-20 22:48:54 takeshi>
+# Time-stamp: <2012-11-29 13:17:54 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
@@ -35,6 +35,7 @@ while [ `perl -e "print $temperature <= $temperature_goal || 0"` = "1" ] ; do
 	n_thermalize = $n_thermalize
 	n_average    = $n_average
 	n_coord_freq = $n_coord_freq
+	distribution_directory = 'never'
 	
 	#--- On-site (Polynomial of order 4) -------------
 	P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4

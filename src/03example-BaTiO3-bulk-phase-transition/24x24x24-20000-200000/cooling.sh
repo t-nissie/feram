@@ -1,6 +1,6 @@
 #!/bin/sh
 # cooling.sh
-# Time-stamp: <2011-10-27 09:10:08 t-nissie>
+# Time-stamp: <2012-11-29 13:18:16 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f cooling.avg
@@ -30,6 +30,7 @@ for temperature in `jot - 350 170 -5` ; do
 	n_thermalize = $n_thermalize
 	n_average    = $n_average
 	n_coord_freq = $n_coord_freq
+	distribution_directory = 'never'
 	
 	#--- On-site (Polynomial of order 4) -------------
 	P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
