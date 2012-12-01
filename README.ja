@@ -144,7 +144,7 @@ atomic mass unitで．
 システムの構造を指定します．
 'bulk' は無限に周期的なバルクです．
 'film' は「自由な」薄膜キャパシタです．電極は短絡されています．
-'epit' はエピタキシャル歪みを伴った薄膜キャパシタです．これも電極は短絡されています．
+'epit' はエピタキシャル歪み（epi_strainで指定）を伴った薄膜キャパシタです．これも電極は短絡されています．
  bulk_or_film = 'epit'
 
 ===== L
@@ -169,6 +169,8 @@ dead layerの分極．単位はu(R)と同じÅ．
 ===== epi_strain
 エピタキシャル歪み．
  epi_strain = -0.01
+epi_strainはbulk_or_film = 'epit'のときにだけ有効であることに注意して下さい．
+詳しくは src/optimize-homo-strain.F を見てください．
 
 ===== dt
 タイムステップの長さをピコ秒で．

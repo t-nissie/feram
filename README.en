@@ -169,7 +169,7 @@ For Small system and low  temperatur, use small value.
 Specifies the structure of the system.
 'bulk' for infinitely periodic bulk
 'film' for free standing thin film.
-'epit' for epitaxially strained thin film.
+'epit' for epitaxially strained thin film. See epi_strain tag.
  bulk_or_film = 'epit'
 
 ===== L
@@ -194,6 +194,8 @@ Lattice constant for the perovskite ferroelectrics in Angstrom unit.
 ===== epi_strain
 Epitaxial strain.
  epi_strain = -0.01
+Note that epi_strain is effective only when bulk_or_film = 'epit'.
+See src/optimize-homo-strain.F for more details.
 
 ===== dt
 Time step in pico second.
