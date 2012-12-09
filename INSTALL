@@ -69,6 +69,7 @@ Debian 7.0 will be released next spring (2013).
 === Ubuntu 12.10 (feram-0.19.08, 2012-12-09)
 ==== install required packages
  $ sudo apt-get install liblapack-dev libblas-dev gfortran libfftw3-dev libfftw3-doc gfortran-doc
+ $ sudo apt-get install autoconf automake libtool autoconf-doc libtool-doc   # For developers
 
 ==== compile feram
  $ tar xf feram-0.19.08.tar.xz
