@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-10-17 19:55:17 takeshi>
+# Time-stamp: <2012-12-09 17:55:59 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -10,7 +10,7 @@ bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j \
                frozen_phonon_Gamma \
                frozen_phonon_X
 EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check
-TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp
+TESTS = fft_check $(EXTRA_PROGRAMS)
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -89,6 +89,7 @@ plot.gp \
 slicer.rb \
 splot.gp \
 feram_mpi.F \
+marsaglia_tsang_uni64_check.gp \
 03example-BaTiO3-bulk-phase-transition \
 10example-PbTiO3-DDB2short \
 11example-BaTiO3-new-hysteresis-loop \
