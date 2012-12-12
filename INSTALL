@@ -28,13 +28,13 @@ managers (apt-get, yum, etc.).
 
 == Useful software
 These software are useful for executing feram and analyzing calculated results.
- * gnuplot (version 4.6 or higher)
- * Ruby (version 1.8.6 or higher)
+ * gnuplot (version 4.6 or higher)  http://www.gnuplot.info/
+ * Ruby (version 1.8.6 or higher)  http://www.ruby-lang.org/
  * jot (Every Linux distributions are presenting jot packages. Or, find its source athena-jot_9.0.orig.tar.gz in the Net.)
 
 == Requirements for developing feram
- * autoconf (version 2.64 or higher)
- * automake (version 1.11.1 higher)
+ * autoconf (version 2.64 or higher)  http://www.gnu.org/software/autoconf/
+ * automake (version 1.11.1 higher)   http://www.gnu.org/software/automake/
 
 == Quick compilation
 If you have all the required libraries,
