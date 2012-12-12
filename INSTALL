@@ -21,6 +21,10 @@ Version and date of installation is written in parentheses ().
    * Fortran 90 (frtpx) for Fujitsu supercomputers: Kei and FX10
  * tar (version 1.22 or higher)  http://www.gnu.org/software/tar/
  * xz  http://tukaani.org/xz/
+Modern Linux distributions (Debian, Ubuntu, RedHat, CentOS, etc.) have their
+packages of these software required to compile feram. Check their versions
+with --version option, e.g. make --version, or install them with package
+managers (apt-get, yum, etc.).
 
 == Useful software
 These software are useful for executing feram and analyzing calculated results.
