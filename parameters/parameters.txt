@@ -41,6 +41,7 @@ or
 where BaTiO3-WuCohenGGA/perovskite-a0.nqs is a system-dependent queueing script.
 With this calculation, we determine that
  a0 = 3.98596 [Angstrom] = 7.5323692530 [Bohr].
+The number of irreducible k-points for this calculation is 20 (nkpt=20).
 
 == Elastic constants B11, B12 and B44
 With
@@ -109,6 +110,8 @@ BaTiO3-WuCohenGGA/perovskite-B44.gp  files as follows:
   From the centrosymmetric cubic structure, rhombohedral strain is applied.
 /Fig:B44
 
+The numbers of irreducible k-points for these calculations are
+nkpt=40 for B1112 and B11-12 and nkpt=60 for B44.
 
 == Polynomial coefficients P_* and coupling constants B1xx, B1yy and B4yz
 We determine the potential surface of ABO3 with the method described in [T. Hashimoto,
