@@ -1,11 +1,10 @@
 = autotoolsについてのメモ
-このメモはautoconfとautomakeを使って配布用の
-フリーソフトウェアパッケージを作る方法を解説している。
+このメモはautoconfとautomakeを使って
+配布用のフリーソフトウェアパッケージを作る方法を解説している。
 
 == はじめに
-たいていのGNUのフリーソフトウェアは次のようにtar ballを
-展開して、./configure && make && make install と
-することで簡単にソースからインストールすることができる。
+たいていのGNUのフリーソフトウェアは次のようにtar ballを展開して、
+./configure && make && make installとすることで簡単にソースからインストールすることができる。
  tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir Linux   # Use build directory.
@@ -35,8 +34,8 @@ GNU M4も最新のものを用意したほうがよい。
 でインストールできる。
 
 == 関連コマンド
- autoreconf     以下のコマンド自動的に再実行してくれる。
-                定番。-vオプションを付けて実行すれば何をしているのかがわかる。
+ autoreconf     定番。-vオプションを付けて実行すれば何をしているのかがわかる。
+                以下のコマンド自動的に再実行してくれる。
  autoconf       configure.ac を元に configure を生成。
  autoscan       configure.inの雛形configure.scanを生成。
  automake       Makefile.amからMakefile.inを生成。
@@ -113,6 +112,10 @@ http://support.ntp.org/bin/view/Main/WebHome
 小規模。FOrtranで書かれている。
 http://loto.sourceforge.net/feram/
 
+== まとめ
+autoconfとautomakeとの使い方を説明した。
+他に？？？をするためのlibtool http://www.gnu.org/software/libtool/ もある。
+これらGNU autotoolsを活用すれば、簡単に配布用のフリーソフトウェアパッケージを作ることができる。
 =end
 # Local variables:
 #   mode: RD
