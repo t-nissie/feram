@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2012-11-20 08:13:52 takeshi>
+# Time-stamp: <2012-12-15 16:00:43 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -42,6 +42,11 @@ index.%.html: README.%
 
 INSTALL.html: INSTALL
 	ulmul2html5 -s style.css -n 'Takeshi Nishimatsu' $< > $@
+
+autotools-memo.%.html: autotools-memo.%
+	ulmul2html5 -s style.css\
+                    -l `echo $< | sed 's/autotools-memo\.//'`\
+                    -n 'Takeshi Nishimatsu' $< > $@
 
 dist-hook:
 	rm -rf `find $(distdir) -type d -name .svn`

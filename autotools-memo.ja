@@ -1,5 +1,5 @@
 = autotoolsについてのメモ
-この文章はautoconfとautomakeを使って配布用の
+このメモはautoconfとautomakeを使って配布用の
 フリーソフトウェアパッケージを作る方法を解説している。
 
 == はじめに
@@ -15,11 +15,12 @@
  $ make
  $ make check
  $ sudo make install
-autotoolsはそんなGNU流のフリーソフトウエアパッケージの
+autotoolsはそんなGNU流のフリーソフトウェアパッケージの
 構築を半自動化するためのツールである。最終目的はmake dist
 で foo-1.2.tar.gzなどという[パッケージ名]-[version].tar.gz
 形式のパッケージが自動生成できるようになること。
 
+== 必要なもの
 GNUの２つのパッケージautoconfとautomakeとを開発用のマシン
 にインストールしておく必要がある。また、GNU makeやbashそして
 GNU M4も最新のものを用意したほうがよい。
@@ -34,60 +35,86 @@ GNU M4も最新のものを用意したほうがよい。
 でインストールできる。
 
 == 関連コマンド
-autoreconf     以下のコマンド自動的に再実行してくれる。定番。-vオプションを付けて実行すれば何をしているのかがわかる。
-autoconf    configure.ac を元に configure を生成。
-autoscan    configure.inの雛形configure.scanを生成。
-automake    Makefile.amからMakefile.inを生成。
+ autoreconf     以下のコマンド自動的に再実行してくれる。
+                定番。-vオプションを付けて実行すれば何をしているのかがわかる。
+ autoconf       configure.ac を元に configure を生成。
+ autoscan       configure.inの雛形configure.scanを生成。
+ automake       Makefile.amからMakefile.inを生成。
                 オプション -a を付けて実行すると必要なファイルを
-                /usr/local/share/automake-1.9/ からリンクしてくれる。
-autoheader     config.h.in を作ってくれたような気がする。
-aclocal    aclocal.m4を作ってくれたような気がする。
+                /usr/local/share/automake-1.11/ からリンクしてくれる。
+ autoheader     config.h.in を作ってくれる。
+ aclocal        aclocal.m4を作ってくれる。
 
 == 関連するファイルとディレクトリ
-Makefile.am    Makefileの雛型のMakefile.inの雛型。
-                AUTOMAKE_OPTIONS = foreign と書いておかないと
-                ライセンスをGPLにされちゃってご丁寧にもCOPYINGとかをコピーしてくれる。
-config/gnu/    ファイルがごちゃごちゃ出来てイヤな場合は
-                AC_CONFIG_AUX_DIR(config/gnu) と指定するとmissing等がそこに置かれる。
-config.guess   AC_CANONICAL_TARGET などと書くと automake -a が用意してくれる
-                OSやCPUの自動判別をしてくれるスクリプト。
-config.h.in    config.hの雛型。autoheaderによりMakefile.amやconfigure.acから作られる。
-config.h       AM_CONFIG_HEADER(config.h) と指定。
-                ないとコンパイルオプションがややこしくなるので、使ったほうがよい。
-config.log     configure の実行時のログ。問題が起きたら読む。
-config.status  configure を実行すると出来るスクリプト。foo.in から foo を作るのは実はこいつ。
-configure.ac   configureの雛型。
-missing        automake -a が用意してくれる謎のスクリプト。
+ configure.ac   configureの雛型。自分で書く。
+ Makefile.am    Makefileの雛型のMakefile.inの雛型。自分で書く。
+                ライセンスをGPL以外にしたい場合はMakefile.amに
+                AUTOMAKE_OPTIONS = foreign と書いておく。
+                書いておかないとGLPが採用されてCOPYING等をコピーしてくれる。
+ config/gnu/    ファイルがごちゃごちゃ出来てイヤな場合はMakefile.amに
+                AC_CONFIG_AUX_DIR(config/gnu)と指定するとmissing等がそこに置かれる。
+ config.guess   Makefile.amにAC_CANONICAL_TARGETなどと書くとautomake -aが
+                用意してくれるOSやCPUの自動判別をしてくれるスクリプト。
+ config.h.in    config.hの雛型。autoheaderによりMakefile.amやconfigure.acから自動的に作られる。
+ config.h       configure.acにAC_CONFIG_HEADERS([config.h])と指定。
+                ないとコンパイルオプションが長くややこしくなるので、使ったほうがよい。
+ config.log     configure の実行時のログ。問題が起きたら読む。
+ config.status  configure を実行すると出来るスクリプト。foo.in から foo を作るのは実はこいつ。
+ missing        automake -a が用意してくれる謎のスクリプト。
 
 == 使用方法
-autoconf, automake の inofo を参照せよ。
+=== メモ
+ * ある程度開発が進んで、ソースとMakefileができあがってからautotoolsを使いはじめるとよい。
+ * autoconfとautomakeとのinofoを参照せよ。
+ * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, scr/Makefile.amを見よう見まねで書く。
+ * autoreconfで自動生成されるファイルはSubversionなどのリポジトリに登録しないほうがよい。
+ * Fortranでもcpp（Cプリプロセッサ）を使うと便利。
+   その場合、ソースのファイルの名拡張子は.Fを使う。.F90はGNU makeのデフォルトでないので使わない。
+   AC_FC_FREEFORM()で自由形式のオプションがわかる。
+=== 手順
+configure.ac, Makefile.am, scr/Makefile.amを書いて、
+ $ autoreconf -v
+ $ automake --add-missing   # 初回にautoreconfで実効を要求されたとき
+ $ autoreconf -v            # 念のためもう一度
+ $ ./configure
+ $ make                     # コンパイルできることを確認
+ $ make distclean           # Makefileなどをきれいさっぱり消す
+ $ ./configure
+ $ make dist                # 配布用パッケージの作成
+=== make checkでテストの自動化
+Makefile.amに
+ TESTS=foo.sh bar.sh
+と書いておけば
+ $ make check
+でfoo.shとbar.shとがテストとして実行される。
+ソフトウェアのテストを自動化できる。
+foo.shとbar.shとはカレントディレクトリになければsrcdirの中も探されるので、
+build directoryの中でもテストができる。
+ただし、foo.shとbar.shとは自動的にパッケージに入れてくれるわけではないので、
+Makefile.amの中のEXTRA_DISTに次のように加えておく必要がある。
+ EXTRA_DIST = README \
+              foo.sh \
+              bar.sh
+=== automakeのオプション
+automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定する。例えば
+ AM_INIT_AUTOMAKE([1.11.1 no-dist-gzip dist-xz])
+では、automakeのバージョン1.11.1以上を使用することを強制し、
+パッケージをtar.gzでなくtar.xzで作るように指定している。
 
-よくできたパッケージを参考にする。
-
-ある程度開発が進んで、ソースとMakefileができあがってからautotoolsを使いはじめるとよい。
-
-autoreconfで自動生成されるファイルはSubversionなどのリポジトリに登録しないほうがよい。
-
-Fortranでも cpp (C プリプロセッサ) を使う。
-ソースのファイルの名拡張子は .F を使う。
-.F90 は GNU make のデフォルトでないので使わない。
-AC_FC_FREEFORM() で自由形式のオプションがわかる。
 
 == autotoolsの使用方法として参考になるパッケージ
 === LHa for Unix
 シンプル。
-((<URL:http://www2m.biglobe.ne.jp/~dolphin/lha/lha-unix.htm
-
+http://www2m.biglobe.ne.jp/~dolphin/lha/lha-unix.htm
 === ntp
-大規模だが的確に用いられている。
-((<URL:http://ntp.isc.org/bin/view/Main/WebHome
+大規模。
+http://support.ntp.org/bin/view/Main/WebHome
+=== feram
+小規模。FOrtranで書かれている。
+http://loto.sourceforge.net/feram/
 
-=== abinit
-大規模。無理に稀れな例外まで考慮してややこしくしてしまっているような気もする。
-version 5.1.4 以降。
-((<URL:http://www.abinit.org/
 =end
 # Local variables:
 #   mode: RD
-#   compile-command: "make INSTALL.html"
+#   compile-command: "make autotools-memo.ja.html"
 # End:
