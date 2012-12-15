@@ -1,6 +1,7 @@
 = autotoolsについてのメモ
 このメモはautoconfとautomakeを使って
 配布用のフリーソフトウェアパッケージを作る方法を解説している。
+Fortranのプロジェクトに使う場合の注意点も書いてある。
 
 == はじめに
 たいていのGNUのフリーソフトウェアは次のようにtar ballを展開して、
@@ -64,12 +65,17 @@ GNU M4も最新のものを用意したほうがよい。
 == 使用方法
 === メモ
  * ある程度開発が進んで、ソースとMakefileができあがってからautotoolsを使いはじめるとよい。
- * autoconfとautomakeとのinofoを参照せよ。
+ * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
+   http://www.gnu.org/software/automake/manual/automake.html やinofoを参照せよ。
  * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, scr/Makefile.amを見よう見まねで書く。
- * autoreconfで自動生成されるファイルはSubversionなどのリポジトリに登録しないほうがよい。
+ * automake -aやautoreconfで生成されるファイルはSubversionなどのリポジトリに登録しないほうがよい。
+=== Fortranについてのメモ
+ * autotoolsはFortranのプロジェクトにも使える。
+ * AC_LANG(Fortran), AC_PROG_FC(gfortran ifort)などを使う。
+ * 関係する変数はFC, FCFLAGS, FCLIBS, CPPFLAGSなど。
  * Fortranでもcpp（Cプリプロセッサ）を使うと便利。
    その場合、ソースのファイルの名拡張子は.Fを使う。.F90はGNU makeのデフォルトでないので使わない。
-   AC_FC_FREEFORM()で自由形式のオプションがわかる。
+ * AC_FC_FREEFORM()で自由形式のオプションがわかる。
 === 手順
 configure.ac, Makefile.am, scr/Makefile.amを書いて、
  $ autoreconf -v
@@ -100,21 +106,23 @@ automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定す�
 では、automakeのバージョン1.11.1以上を使用することを強制し、
 パッケージをtar.gzでなくtar.xzで作るように指定している。
 
-
 == autotoolsの使用方法として参考になるパッケージ
 === LHa for Unix
 シンプル。
 http://www2m.biglobe.ne.jp/~dolphin/lha/lha-unix.htm
 === ntp
-大規模。
+大規模。libtoolも使われている。
 http://support.ntp.org/bin/view/Main/WebHome
 === feram
-小規模。FOrtranで書かれている。
+小規模。Fortranで書かれている。
 http://loto.sourceforge.net/feram/
+ * configure.ac 
+ * Makefile.am
+ * src/Makefile.am
 
 == まとめ
 autoconfとautomakeとの使い方を説明した。
-他に？？？をするためのlibtool http://www.gnu.org/software/libtool/ もある。
+他に共有ライブラリを操るための libtool http://www.gnu.org/software/libtool/ もある。
 これらGNU autotoolsを活用すれば、簡単に配布用のフリーソフトウェアパッケージを作ることができる。
 =end
 # Local variables:
