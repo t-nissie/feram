@@ -1,7 +1,7 @@
-= autotoolsについてのメモ
-このメモはautoconfとautomakeを使って
-配布用のフリーソフトウェアパッケージを作る方法を解説している。
-Fortranのプロジェクトに使う場合の注意点も書いてある。
+= Autotoolsについてのメモ
+このメモはGNU Autotoolsのautoconfとautomakeとを使って
+フリーソフトウェアの配布用パッケージを作る方法を解説している。
+FortranのプロジェクトにAutotoolsを使う場合の注意点も書いてある。
 
 == はじめに
 たいていのGNUのフリーソフトウェアは次のようにtar ballを展開して、
@@ -15,7 +15,7 @@ Fortranのプロジェクトに使う場合の注意点も書いてある。
  $ make
  $ make check
  $ sudo make install
-autotoolsはそんなGNU流のフリーソフトウェアパッケージの
+AutotoolsはそんなGNU流のフリーソフトウェアパッケージの
 構築を半自動化するためのツールである。最終目的はmake dist
 で foo-1.2.tar.gzなどという[パッケージ名]-[version].tar.gz
 形式のパッケージが自動生成できるようになること。
@@ -29,23 +29,36 @@ GNU M4も最新のものを用意したほうがよい。
  * make     http://www.gnu.org/software/make/
  * bash     http://www.gnu.org/software/bash/
  * M4       http://www.gnu.org/software/m4/
-たいていのLinuxディストリビューションはこれらのツールの
-パッケージがある。たとえばDebianとUbuntuなら
+たいていのLinuxディストリビューションにはこれらのツールの
+パッケージがある。たとえばDebianやUbuntuなら
  $ sudo apt-get install autoconf automake libtool autoconf-doc libtool-doc
 でインストールできる。
 
-== 関連コマンド
+== コマンドとファイル
+Autotools (autoconf and automake) では Fig:process に示すとおり
+いくつかのコマンドとファイルとによって処理が進む。
+実際はautoreconfが自動でやってくれる。
+以下に関連すコマンドとファイルを列挙した。
+\Fig:process doc/figures/autoconf-automake-process.jpg
+Autotools（autoconf と automake）による作業の流れ。
+実際はautoreconfが自動でやってくれる。
+（この図はクリエイティブコモンズライセンスの下に
+http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
+から配布されているもの。）
+/Fig:process
+
+=== 関連コマンド
+ autoscan       configure.acの雛形configure.scanを生成。
  autoreconf     定番。-vオプションを付けて実行すれば何をしているのかがわかる。
                 以下のコマンド自動的に再実行してくれる。
  autoconf       configure.ac を元に configure を生成。
- autoscan       configure.inの雛形configure.scanを生成。
  automake       Makefile.amからMakefile.inを生成。
                 オプション -a を付けて実行すると必要なファイルを
                 /usr/local/share/automake-1.11/ からリンクしてくれる。
  autoheader     config.h.in を作ってくれる。
  aclocal        aclocal.m4を作ってくれる。
 
-== 関連するファイルとディレクトリ
+=== 関連するファイルとディレクトリ
  configure.ac   configureの雛型。自分で書く。
  Makefile.am    Makefileの雛型のMakefile.inの雛型。自分で書く。
                 ライセンスをGPL以外にしたい場合はMakefile.amに
@@ -64,13 +77,13 @@ GNU M4も最新のものを用意したほうがよい。
 
 == 使用方法
 === メモ
- * ある程度開発が進んで、ソースとMakefileができあがってからautotoolsを使いはじめるとよい。
+ * ある程度開発が進んで、ソースとMakefileができあがってからAutotoolsを使いはじめるとよい。
  * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
    http://www.gnu.org/software/automake/manual/automake.html やinofoを参照せよ。
  * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, scr/Makefile.amを見よう見まねで書く。
  * automake -aやautoreconfで生成されるファイルはSubversionなどのリポジトリに登録しないほうがよい。
 === Fortranについてのメモ
- * autotoolsはFortranのプロジェクトにも使える。
+ * AutotoolsはFortranのプロジェクトにも使える。
  * AC_LANG(Fortran), AC_PROG_FC(gfortran ifort)などを使う。
  * 関係する変数はFC, FCFLAGS, FCLIBS, CPPFLAGSなど。
  * Fortranでもcpp（Cプリプロセッサ）を使うと便利。
@@ -106,7 +119,7 @@ automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定す�
 では、automakeのバージョン1.11.1以上を使用することを強制し、
 パッケージをtar.gzでなくtar.xzで作るように指定している。
 
-== autotoolsの使用方法として参考になるパッケージ
+== Autotoolsの使用方法として参考になるパッケージ
 === LHa for Unix
 シンプル。
 http://www2m.biglobe.ne.jp/~dolphin/lha/lha-unix.htm
@@ -116,16 +129,20 @@ http://support.ntp.org/bin/view/Main/WebHome
 === feram
 小規模。Fortranで書かれている。
 http://loto.sourceforge.net/feram/
- * configure.ac 
- * Makefile.am
- * src/Makefile.am
+ * configure.ac    https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/configure.ac
+ * Makefile.am     https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/Makefile.am
+ * src/Makefile.am https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/src/Makefile.am
 
 == まとめ
 autoconfとautomakeとの使い方を説明した。
 他に共有ライブラリを操るための libtool http://www.gnu.org/software/libtool/ もある。
-これらGNU autotoolsを活用すれば、簡単に配布用のフリーソフトウェアパッケージを作ることができる。
+これらGNU Autotoolsを活用すれば、簡単に配布用のフリーソフトウェアパッケージを作ることができる。
+
+== 著者
+西松 毅 (t-nissie{at}imr.tohoku.ac.jp)
+
 =end
 # Local variables:
 #   mode: RD
-#   compile-command: "make autotools-memo.ja.html"
+#   compile-command: "make Autotools-memo.ja.html"
 # End:
