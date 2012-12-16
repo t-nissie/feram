@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-12-16 22:52:54 takeshi>
+dnl Time-stamp: <2012-12-16 22:55:18 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -58,18 +58,6 @@ case "$FC" in
     ;;
 esac
 test -n "$MPIFC" || MPIFC=mpif90
-
-## AR and RANLIB
-case "$host" in
-  SR1*)
-    AR='ar -X64'
-    RANLIB='ranlib -X64'
-    ;;
-  *)
-    AR=ar
-    AC_PROG_RANLIB
-    ;;
-esac
 
 ## FFT library
 AC_ARG_WITH(fft,[AS_HELP_STRING([--with-fft=ARG],[FFT library.
