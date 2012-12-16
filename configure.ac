@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2012-12-15 22:33:42 takeshi>
+dnl Time-stamp: <2012-12-16 22:52:54 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -159,9 +159,6 @@ esac
 
 ## Finalize.
 AC_SUBST(CPPFLAGS)
-AC_SUBST(FCFLAGS_FIXEDFORM)
-AC_SUBST(AR)
-AC_SUBST(RANLIB)
 
 AC_CONFIG_FILES([Makefile
              doc/Makefile
