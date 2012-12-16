@@ -379,7 +379,7 @@ src/18example-benchmark/ディレクトリ内で，forward.feramのシステム
 Lx*Ly*Lz=32*32*243にもLx*Ly*Lz=300*300*300にも
 使うことができます．
 
-fft_checkの使い方の詳しい説明はsrc/fft_check.htmlにあります。
+fft_checkの使い方の詳しい説明はsrc/fft_check.htmlにあります．
 
 FFTW wisdomについての詳細は
 http://www.fftw.org/doc/Other-Important-Topics.html
@@ -482,6 +482,42 @@ cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
  * 管理者: 西松毅
 
 
+== feramの開発
+=== GNU Autotools
+feramの開発には GNU Autotools (autoconf and automake) が必要です．
+たいていのLinuxディストリビューションにはこれらのツールのパッケージがあります．
+たとえばDebianやUbuntuなら
+ $ sudo apt-get install autoconf automake libtool autoconf-doc libtool-doc
+でインストールできます．Autotoolsの詳しい解説がAutotools-memo.jaにあります。
+
+=== 最新のソースツリーの入手，コンパイル，実行
+Subversion，すなわちsvn(1)を使って最新のソースツリーを入手します．
+--username=YourUsernameオプションを使わなければ匿名でcheckoutできます．
+ $ svn checkout --username=YourUsername https://svn.code.sf.net/p/loto/code/feram/trunk feram-trunk
+ $ cd feram-trunk
+ $ ls -l
+ $ autoreconf -v
+ $ automake --add-missing
+ $ autoreconf -v
+ $ ls -l
+ $ ./configure --help
+ $ ./configure
+ $ emacs src/feram.F   # Edit any source code here.
+ $ make
+ $ make check
+
+便利なsvn(1)のコマンド:
+ $ svn --help
+ $ svn update
+ $ svn stat
+ $ svn diff
+ $ svn log
+
+feramの実行方法:
+ $ ./feram foo1.feram foo2.feram foo3.feram &
+ $ mpiexec -np 3 ./feram_mpi foo1.feram foo2.feram foo3.feram &
+
+
 == ソフトウエアの再配布について
 === feram
 Copyright © 2007-2012 by Takeshi Nishimatsu
@@ -570,7 +606,7 @@ u.subs_rules = lambda{|s|
   gsub(/(doc\/publication\.html)/,         '<a href="\1">\1</a>').
   gsub(/(\S*\/?\.F)(\s|$)/,                '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?\.pdf)(\s|$)/,              '<a href="\1">\1</a>\2').
-  gsub(/INSTALL/,             '<a href="INSTALL.html">INSTALL</a>').
+  gsub(/(INSTALL|Autotools-memo.ja)/,      '<a href="\1.html">\1</a>').
   gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').

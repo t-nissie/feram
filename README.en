@@ -37,7 +37,6 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
  * Parallelized with OpenMP
  * Object oriented programming (OOP) in Fortran 95/2003
  * GNU autotools  http://www.gnu.org/software/autoconf/  Easy to compile!
- * Subversion repository at https://loto.svn.sourceforge.net/svnroot/loto/feram
 
 === References
  * Takeshi Nishimatsu, Masaya Iwamoto, Yoshiyuki Kawazoe, and Umesh V. Waghmare:
@@ -508,6 +507,41 @@ calculations and the other calculations.
  * Public: Your post to this mailing list will be publicly archived and appeared on the net.
  * Language: English
  * Administrator: Takeshi Nishimatsu
+
+
+== Development of feram
+=== GNU Autotools
+GNU Autotools (autoconf and automake) are required for development of feram.
+Most Linux distributions have packages of GNU Autotools.
+In the case of Debian or Ubuntu, you can install GNU Autotools with
+ $ sudo apt-get install autoconf automake libtool autoconf-doc libtool-doc
+
+=== Getting current source tree, compilation and execution
+Get current source tree with svn(1).
+Anonymous checkout can be done without --username=YourUsername option.
+ $ svn checkout --username=YourUsername https://svn.code.sf.net/p/loto/code/feram/trunk feram-trunk
+ $ cd feram-trunk
+ $ ls -l
+ $ autoreconf -v
+ $ automake --add-missing
+ $ autoreconf -v
+ $ ls -l
+ $ ./configure --help
+ $ ./configure
+ $ emacs src/feram.F   # Edit any source code here.
+ $ make
+ $ make check
+
+Useful svn commands:
+ $ svn --help
+ $ svn update
+ $ svn stat
+ $ svn diff
+ $ svn log
+
+How to execute:
+ $ ./feram foo1.feram foo2.feram foo3.feram &
+ $ mpiexec -np 3 ./feram_mpi foo1.feram foo2.feram foo3.feram &
 
 
 == Copying
