@@ -1,0 +1,54 @@
+--- energy_module.F	(revision 1617)
++++ energy_module.F	(working copy)
+@@ -1,5 +1,5 @@
+ ! energy_module.F -*-f90-*-
+-! Time-stamp: <2012-12-18 12:09:24 takeshi>
++! Time-stamp: <2012-12-17 18:10:07 takeshi>
+ ! Author: Takeshi NISHIMATSU
+ !!
+ module Energy_module
+@@ -171,7 +171,7 @@
+     type(Energy_type), intent(inout) :: e
+     complex*16,        intent(in)    :: acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)
+     !--- local -----------------------------------------
+-    real*8  :: tmp1,tmp2,tmp3,tmpS
++    complex*16 :: tmp1,tmp2,tmp3,tmpS
+     integer :: i, alpha, iy,iz
+     !--- END of variable definitions -------------------
+     tmpS = 0.0d0
+@@ -180,15 +180,16 @@
+ !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
+           do iz = 0, p%Lz-1
+              do iy = 0, p%Ly-1
+-                tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) * c%didiK(0,         iy,iz,i) ) / 2
+-                tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) * c%didiK(1:p%Lx/2-1,iy,iz,i) ) )
+-                tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) * c%didiK(  p%Lx/2,  iy,iz,i) ) / 2
++                tmp1 =      conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) * c%didiK(0,         iy,iz,i) / 2
++                tmp2 = sum( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) * c%didiK(1:p%Lx/2-1,iy,iz,i) )
++                tmp3 =      conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) * c%didiK(  p%Lx/2,  iy,iz,i) / 2
+                 tmpS = tmpS + tmp1 + tmp2 + tmp3
+              end do
+           end do
+ !$omp end parallel do
+        end do
+     end do
+-    e%inho_coupling = tmpS * 2 * p%Ninv
++    write(6,*) tmpS
++    e%inho_coupling = dble(tmpS * 2 * p%Ninv)
+   end subroutine inhomogeneous_coupling_energy
+ end module Energy_module
+
+dhcp74-188:src takeshi$ ./feram zzz16.feram
+ ( -5430.5124796609653     , -2.1760371282653068E-014)
+ ( -5224.6769970910264     , -8.2156503822261584E-015)
+ ( -4642.1728563097631     ,  3.7192471324942744E-015)
+ ( -3782.9278030020723     ,  5.6621374255882984E-015)
+ ( -2795.4537971358059     , -5.9952043329758453E-015)
+ ( -1847.4861342682057     ,  3.2890357104520263E-015)
+ ( -1086.2339229687573     , -7.4176775832768271E-015)
+ ( -602.34571865525834     ,  3.6429192995512949E-016)
+            :
+
+# Local variables:
+#   compile-command: "a2ps --medium=A4 --landscape --no-header --left-title=`date '+%Y-%m-%d'` --center-title='Test of energy_moudle.F' --right-title='Takeshi Nishimatsu' --footer='' --columns=1 --borders=off -f 8.6 -o energy_module.test.ps energy_module.test.txt"
+# End:
