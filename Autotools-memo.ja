@@ -133,6 +133,12 @@ http://loto.sourceforge.net/feram/
  * Makefile.am     https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/Makefile.am
  * src/Makefile.am https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/src/Makefile.am
 
+== Autotoolsの代わりになるもの
+改良版のAutotoolsを目指していくつかのパッケージングツール／ビルドツールが開発されている。
+Fortranのプロジェクトもまあまあサポートされている。
+ * CMake http://www.cmake.org/
+ * SCons http://www.scons.org/
+
 == まとめ
 autoconfとautomakeとの使い方を説明した。
 他に共有ライブラリを操るための libtool http://www.gnu.org/software/libtool/ もある。
