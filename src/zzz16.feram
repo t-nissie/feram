@@ -15,7 +15,7 @@ B12 =  41.7582963902598
 B44 =  49.2408864348646
 coord_directory = 'never'
 distribution_directory = 'never'
-
+seed = 1242914819 1957271591
 
 #--- From perovskite-optcell2-p.gp ---------------
 B1xx = -185.347187551195 [eV/Angstrom^2]
