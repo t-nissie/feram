@@ -25,6 +25,9 @@ Make csh scripts, then submit them.
  $ for ((i=0;i<=425;i+=5)); do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEh.template > "$s"h.csh; submit SC general -pt 8 -exec "$s"h.csh -J "$s"h; done
  $ for ((i=0;i<=425;i+=5)); do s=`printf "%03d" $i`; sed "s/EXTERNALE/$s/" EXTERNALEc.template > "$s"c.csh; submit SC general -pt 8 -exec "$s"c.csh -J "$s"c; done
 
+Do not set MALLOCMULTIHEAP=true. In this case, this environment variable makes feram slower.
+Note that -pt 8 is faster than -pt 16.
+
 == Plot results with gnuplot and ruby
 After all jobs are completed, execute atable3.gp.
 You will get three EPS files.
