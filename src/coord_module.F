@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-12-26 17:23:50 t-nissie>
+! Time-stamp: <2012-12-26 17:50:56 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -21,7 +21,7 @@ module Coord_module
      real*8,     allocatable :: dipoI(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8!!!
      real*8,     allocatable :: didiR(:,:,:,:)   ! 6 kind of dipoR*dipoR
      complex*16, allocatable :: didiK(:,:,:,:)   ! 6 kind of dipoR*dipoR
-    !real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
+     real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
      complex*16, allocatable :: acouK(:,:,:,:)   ! Acoustic displacements
      real*8,     allocatable :: inhoR(:,:,:,:)   ! Only used in optimize-inho-strain.F
      complex*16, allocatable :: inhoK(:,:,:,:)   ! Only used in optimize-inho-strain.F
@@ -141,12 +141,23 @@ contains
 #   endif
 
     !--- acou -------------------------------
-    !if (allocated(c%acouR)) deallocate(c%acouR)
-    !allocate(     c%acouR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    if (allocated(c%acouR)) deallocate(c%acouR)
+    allocate(c%acouR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
     if (allocated(c%acouK)) deallocate(c%acouK)
     allocate(c%acouK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
+    !!!first touch
+!$omp parallel do
+    do i = 0,p%Lz-1
+       c%acouR(:,:,i,:) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do i = 0,p%Lz-1
+       c%acouK(:,:,i,:) = (0.0d0,0.0d0)
+    end do
+!$omp end parallel do
 
-    !--- inhomogeneous ----------------------
+    !--- inhomogeneous strain ---------------
     if (allocated(c%inhoR)) deallocate(c%inhoR)
     allocate(c%inhoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
     if (allocated(c%inhoK)) deallocate(c%inhoK)
