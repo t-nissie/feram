@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-11-26 14:53:36 takeshi>
+! Time-stamp: <2012-12-26 16:06:24 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -22,6 +22,7 @@ module Coord_module
      real*8,     allocatable :: didiR(:,:,:,:)   ! 6 kind of dipoR*dipoR
      complex*16, allocatable :: didiK(:,:,:,:)   ! 6 kind of dipoR*dipoR
     !real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
+     complex*16, allocatable :: acouK(:,:,:,:)   ! Acoustic displacements
      real*8,     allocatable :: inhoR(:,:,:,:)   ! Only used in optimize-inho-strain.F
      complex*16, allocatable :: inhoK(:,:,:,:)   ! Only used in optimize-inho-strain.F
      real*8,     allocatable :: inhomo_K(:,:,:, :,:)       ! FTed potential
@@ -142,6 +143,8 @@ contains
     !--- acou -------------------------------
     !if (allocated(c%acouR)) deallocate(c%acouR)
     !allocate(     c%acouR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    if (allocated(c%acouK)) deallocate(c%acouK)
+    allocate(c%acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
 
     !--- inhomogeneous ----------------------
     if (allocated(c%inhoR)) deallocate(c%inhoR)

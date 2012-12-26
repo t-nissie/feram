@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2012-08-22 13:43:57 t-nissie>
+! Time-stamp: <2012-12-26 16:09:49 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -20,13 +20,11 @@ subroutine optimize_inho_strain(p,c,e)
   !--- local -----------------------------------------
   real*8                  :: k(3), eta_B_over_2m(6)
   complex*16              :: acouK_tmp(3)
-  complex*16, allocatable :: acouK(:,:,:,:)
   complex*16              :: tmp
   integer                 :: i, alpha,beta, ix,iy,iz
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
   !     & 'Optimize inhomogeneous strain. Calculate related energies and accelerations.')
-  allocate(acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" See fft.F!
 
   !--- optimize inhomogeneous strain -----------------------------------
   ! Linear equations for acouK,
@@ -59,15 +57,15 @@ subroutine optimize_inho_strain(p,c,e)
                  acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * c%inhomo_K_G(alpha,4, ix,iy,iz)
               end do
               !
-              acouK(:,ix,iy,iz) = acouK_tmp(:)
+              c%acouK(:,ix,iy,iz) = acouK_tmp(:)
         end do
      end do
   end do
 !$omp end parallel do
 
   !--- calculate some emergies -----------------------------------------
-  call inhomogeneous_strain_energy(p,c,e,acouK)
-  call inhomogeneous_coupling_energy(p,c,e,acouK)
+  call inhomogeneous_strain_energy(p,c,e)
+  call inhomogeneous_coupling_energy(p,c,e)
 
   !--- acouK -> c%inhoK -FFT-> c%inhoR (inho. strain in real space) --------
 !$omp parallel do private(iz,iy,ix,k)
@@ -79,12 +77,12 @@ subroutine optimize_inho_strain(p,c,e)
         k(2) = k(2) * M_2PI / p%a0
         do ix = 0, p%Lx/2
            k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-           c%inhoK(ix,iy,iz,1) = k(1)*acouK(1,ix,iy,iz)
-           c%inhoK(ix,iy,iz,2) = k(2)*acouK(2,ix,iy,iz)
-           c%inhoK(ix,iy,iz,3) = k(3)*acouK(3,ix,iy,iz)
-           c%inhoK(ix,iy,iz,4) = k(3)*acouK(2,ix,iy,iz) + k(2)*acouK(3,ix,iy,iz)
-           c%inhoK(ix,iy,iz,5) = k(1)*acouK(3,ix,iy,iz) + k(3)*acouK(1,ix,iy,iz)
-           c%inhoK(ix,iy,iz,6) = k(2)*acouK(1,ix,iy,iz) + k(1)*acouK(2,ix,iy,iz)
+           c%inhoK(ix,iy,iz,1) = k(1)*c%acouK(1,ix,iy,iz)
+           c%inhoK(ix,iy,iz,2) = k(2)*c%acouK(2,ix,iy,iz)
+           c%inhoK(ix,iy,iz,3) = k(3)*c%acouK(3,ix,iy,iz)
+           c%inhoK(ix,iy,iz,4) = k(3)*c%acouK(2,ix,iy,iz) + k(2)*c%acouK(3,ix,iy,iz)
+           c%inhoK(ix,iy,iz,5) = k(1)*c%acouK(3,ix,iy,iz) + k(3)*c%acouK(1,ix,iy,iz)
+           c%inhoK(ix,iy,iz,6) = k(2)*c%acouK(1,ix,iy,iz) + k(1)*c%acouK(2,ix,iy,iz)
         end do
      end do
   end do
@@ -132,6 +130,5 @@ subroutine optimize_inho_strain(p,c,e)
   end do
 !$omp end parallel do
 
-  deallocate(acouK)
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine optimize_inho_strain

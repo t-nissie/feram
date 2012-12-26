@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2012-08-22 13:43:57 t-nissie>
+! Time-stamp: <2012-12-26 16:10:48 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -130,7 +130,7 @@ contains
     e%H_Nose_Poincare = e%H_Nose_Poincare * c%s_Nose
   end subroutine Nose_Poincare_Hamiltonian
 
-  subroutine inhomogeneous_strain_energy(p,c,e,acouK)
+  subroutine inhomogeneous_strain_energy(p,c,e)
     use Param_module
     use Coord_module
     implicit none
@@ -138,7 +138,6 @@ contains
     type(Param_type),  intent(in)    :: p
     type(Coord_type),  intent(in)    :: c
     type(Energy_type), intent(inout) :: e
-    complex*16,        intent(in)    :: acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)
     !--- local -----------------------------------------
     real*8  :: tmp1,tmp2,tmp3,tmpS
     integer :: alpha,beta, iy,iz
@@ -149,9 +148,9 @@ contains
        do iy = 0, p%Ly-1
           do alpha = 1,3
              do beta = 1,3
-                tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_K(0,         iy,iz,alpha,beta) * acouK(beta, 0,         iy,iz)) / 2
-                tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_K(1:p%Lx/2-1,iy,iz,alpha,beta) * acouK(beta, 1:p%Lx/2-1,iy,iz)) )
-                tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_K(  p%Lx/2,  iy,iz,alpha,beta) * acouK(beta,   p%Lx/2,  iy,iz)) / 2
+                tmp1 =      dble( conjg(c%acouK(alpha,0,         iy,iz)) * c%inhomo_K(0,         iy,iz,alpha,beta) * c%acouK(beta, 0,         iy,iz)) / 2
+                tmp2 = sum( dble( conjg(c%acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_K(1:p%Lx/2-1,iy,iz,alpha,beta) * c%acouK(beta, 1:p%Lx/2-1,iy,iz)) )
+                tmp3 =      dble( conjg(c%acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_K(  p%Lx/2,  iy,iz,alpha,beta) * c%acouK(beta,   p%Lx/2,  iy,iz)) / 2
                 tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
           end do
@@ -161,7 +160,7 @@ contains
     e%inho_strain = tmpS * p%Ninv    ! Do NOT divide it by 2 here. It has been already devided.
   end subroutine inhomogeneous_strain_energy
 
-  subroutine inhomogeneous_coupling_energy(p,c,e,acouK)
+  subroutine inhomogeneous_coupling_energy(p,c,e)
     use Param_module
     use Coord_module
     implicit none
@@ -169,7 +168,6 @@ contains
     type(Param_type),  intent(in)    :: p
     type(Coord_type),  intent(in)    :: c
     type(Energy_type), intent(inout) :: e
-    complex*16,        intent(in)    :: acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)
     !--- local -----------------------------------------
     real*8  :: tmp1,tmp2,tmp3,tmpS
     integer :: i, alpha, iy,iz
@@ -180,9 +178,9 @@ contains
 !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
           do iz = 0, p%Lz-1
              do iy = 0, p%Ly-1
-                tmp1 =      dble( conjg(acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) * c%didiK(0,         iy,iz,i) ) / 2
-                tmp2 = sum( dble( conjg(acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) * c%didiK(1:p%Lx/2-1,iy,iz,i) ) )
-                tmp3 =      dble( conjg(acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) * c%didiK(  p%Lx/2,  iy,iz,i) ) / 2
+                tmp1 =      dble( conjg(c%acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) * c%didiK(0,         iy,iz,i) ) / 2
+                tmp2 = sum( dble( conjg(c%acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) * c%didiK(1:p%Lx/2-1,iy,iz,i) ) )
+                tmp3 =      dble( conjg(c%acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) * c%didiK(  p%Lx/2,  iy,iz,i) ) / 2
                 tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
           end do
