@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2012-12-26 16:09:49 t-nissie>
+! Time-stamp: <2012-12-26 17:28:23 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -31,7 +31,7 @@ subroutine optimize_inho_strain(p,c,e)
   !    inhomo_K(1:3,1:3) * acouK(1:3) = - inhomo_coup2_K(1:3,1:6) * c%didiK(1:6) ,
   ! are solved for all k-points.
   ! * inhomo_K is positive definite real symmetric matrix. See elastic.F and cholesky_d.f.
-  ! * acouK(1:3,0,0,0)=0 is guaranteed by c%inhomo_K_G(1:3,1:4, 0,0,0)=0.
+  ! * acouK(0,0,0,1:3)=0 is guaranteed by c%inhomo_K_G(1:3,1:4, 0,0,0)=0.
 !$omp parallel do private(iz,iy,ix,alpha,beta,acouK_tmp,tmp)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
@@ -57,7 +57,7 @@ subroutine optimize_inho_strain(p,c,e)
                  acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * c%inhomo_K_G(alpha,4, ix,iy,iz)
               end do
               !
-              c%acouK(:,ix,iy,iz) = acouK_tmp(:)
+              c%acouK(ix,iy,iz,:) = acouK_tmp(:)
         end do
      end do
   end do
@@ -77,12 +77,12 @@ subroutine optimize_inho_strain(p,c,e)
         k(2) = k(2) * M_2PI / p%a0
         do ix = 0, p%Lx/2
            k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-           c%inhoK(ix,iy,iz,1) = k(1)*c%acouK(1,ix,iy,iz)
-           c%inhoK(ix,iy,iz,2) = k(2)*c%acouK(2,ix,iy,iz)
-           c%inhoK(ix,iy,iz,3) = k(3)*c%acouK(3,ix,iy,iz)
-           c%inhoK(ix,iy,iz,4) = k(3)*c%acouK(2,ix,iy,iz) + k(2)*c%acouK(3,ix,iy,iz)
-           c%inhoK(ix,iy,iz,5) = k(1)*c%acouK(3,ix,iy,iz) + k(3)*c%acouK(1,ix,iy,iz)
-           c%inhoK(ix,iy,iz,6) = k(2)*c%acouK(1,ix,iy,iz) + k(1)*c%acouK(2,ix,iy,iz)
+           c%inhoK(ix,iy,iz,1) = k(1)*c%acouK(ix,iy,iz,1)
+           c%inhoK(ix,iy,iz,2) = k(2)*c%acouK(ix,iy,iz,2)
+           c%inhoK(ix,iy,iz,3) = k(3)*c%acouK(ix,iy,iz,3)
+           c%inhoK(ix,iy,iz,4) = k(3)*c%acouK(ix,iy,iz,2) + k(2)*c%acouK(ix,iy,iz,3)
+           c%inhoK(ix,iy,iz,5) = k(1)*c%acouK(ix,iy,iz,3) + k(3)*c%acouK(ix,iy,iz,1)
+           c%inhoK(ix,iy,iz,6) = k(2)*c%acouK(ix,iy,iz,1) + k(1)*c%acouK(ix,iy,iz,2)
         end do
      end do
   end do

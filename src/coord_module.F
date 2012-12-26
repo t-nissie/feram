@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2012-12-26 16:06:24 t-nissie>
+! Time-stamp: <2012-12-26 17:23:50 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -144,7 +144,7 @@ contains
     !if (allocated(c%acouR)) deallocate(c%acouR)
     !allocate(     c%acouR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
     if (allocated(c%acouK)) deallocate(c%acouK)
-    allocate(c%acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(c%acouK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
 
     !--- inhomogeneous ----------------------
     if (allocated(c%inhoR)) deallocate(c%inhoR)
