@@ -7,16 +7,16 @@ http://sourceforge.net/projects/loto/files/feram/ .
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
-From this version 0.19.09, acoustic displacements will
-be written in .coord files. For more details,
-see src/coord_module.F, src/optimize-inho-strain.F, and
-doc/acoustic-displacements.pdf.
+From the version 0.19.09, feram writes acoustic
+displacements into .coord files. For more details,
+see src/coord_module.F, src/optimize-inho-strain.F,
+and doc/acoustic-displacements.pdf.
 
-The version 0.19.08 contains bug-fixed src/coord_module.F.
-With this fix, feram will write the whole system,
-not half of the system, into .coord files, when
-bulk_or_film = 'film' or 'epit'.  Now, you can perform
-cooling-down and heating-up simulations of films.
+From the version 0.19.08, the tar.xz package contains
+bug-fixed src/coord_module.F. With this fix, feram writes
+the whole system, not half of the system, into .coord
+files, when bulk_or_film = 'film' or 'epit'. Now, you can
+perform cooling-down and heating-up simulations of films.
 See src/17example-PbTiO3-100-900K/coolflm.sh
 and src/17example-PbTiO3-100-900K/heatflm.sh.
 
