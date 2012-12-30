@@ -1,13 +1,18 @@
 Dear current and future feram users,
 
-I released feram-0.19.08.tar.xz from
+I released feram-0.19.09.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 
 "feram" is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
-This version 0.19.08 contains bug-fixed src/coord_module.F.
+From this version 0.19.09, acoustic displacements will
+be written in .coord files. For more details,
+see src/coord_module.F, src/optimize-inho-strain.F, and
+doc/acoustic-displacements.pdf.
+
+The version 0.19.08 contains bug-fixed src/coord_module.F.
 With this fix, feram will write the whole system,
 not half of the system, into .coord files, when
 bulk_or_film = 'film' or 'epit'.  Now, you can perform
