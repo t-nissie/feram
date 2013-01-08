@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2012-12-26 17:26:49 t-nissie>
+! Time-stamp: <2013-01-08 20:04:19 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -101,7 +101,7 @@ contains
     call msg_ez(fd,'--------------------------------------------')
     write(message,fmt) 'total_energy   ', e%total*p%Ninv;           call msg_ez(fd,message)
 
-    if (p%method.eq.'md ') then
+    if (trim(p%method).eq.'md') then
        write(message,fmt) 'H_Nose_Poincare', e%H_Nose_Poincare*p%Ninv; call msg_ez(fd,message)
        write(message,'(a7,f14.8,a9,f14.8)') 's_Nose=', c%s_Nose, ' pi_Nose=', c%pi_Nose
        call msg_ez(fd,message)

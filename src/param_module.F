@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2012-10-17 15:56:44 takeshi>
+! Time-stamp: <2013-01-08 20:13:23 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -30,8 +30,8 @@ module Param_module
      !             (N_Avogadro = 6.0221415e23 [mol^-1 (amu/g)])
      !
      !--- Method, Temperature, and mass ---------------
-     character(len=3) :: method ! 'md' for MD in the canonical ensemble using the Nose-Poincare thermostat, 'lf' for MD in the
-     real*8 GPa          ! [GPa]            microcanonical ensemble using the leap-frog method, or 'mc' for Monte Carlo method
+     character(len=30) :: method ! 'md' Nose-Poincare, 'vs' velocity-scaling, 'lf' leapfrog, 'hl' hysteresis loop
+     real*8 GPa          ! [GPa]
      real*8 kelvin       ! [K]
      real*8 target_kinetic_energy
      real*8 mass_dipo    ! [eV Angstrom^-2 ps^2]
@@ -184,7 +184,7 @@ contains
        select case(TRIM(name))
        case('method')
           read(str,*) dmy1, dmy2, p%method
-          if (p%method.eq.'hl') p%E_field_always_zero = .false.
+          if (trim(p%method).eq.'hl') p%E_field_always_zero = .false.
        case('GPa')
           read(str,*) dmy1, dmy2, p%GPa
        case('kelvin')

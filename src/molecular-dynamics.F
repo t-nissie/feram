@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2013-01-08 18:25:56 takeshi>
+! Time-stamp: <2013-01-08 20:10:06 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -54,13 +54,14 @@ subroutine molecular_dynamics(p,c)
         write(message,fmt_time_step) i_step; call msg_ez(UNIT_LOG,message)
      end if
 
-     if (p%method.eq.'md ') then
+     select case (trim(p%method))
+     case ('md')
         call nose_poincare(p,c,e)   ! H_Nose_Poincare == 0, always
-     else if (p%method.eq.'vs ') then
+     case ('vs')
         call velocity_scaling(p,c,e)
-     else if (p%method.eq.'lf ') then
+     case ('lf')
         call leapfrog(p,c,e,i_step)        ! Leapfrog
-     end if
+     end select
 
      if (mod(i_step,p%n_coord_freq).eq.0) then
         write(   fn,'(a,a,i10.10,a)') trim(p%filename), '.', i_step, '.coord'
