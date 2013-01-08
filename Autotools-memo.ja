@@ -93,12 +93,17 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
 configure.ac, Makefile.am, scr/Makefile.amを書いて、
  $ autoreconf -v
  $ automake --add-missing   # 初回にautoreconfで実効を要求されたとき
- $ autoreconf -v            # 念のためもう一度
+ $ autoreconf -v            # ☆
  $ ./configure
- $ make                     # コンパイルできることを確認
+ $ make                     # ソースの編集など開発を進め、最後にmakeでコンパイルできることを確認
  $ make distclean           # Makefileなどをきれいさっぱり消す
  $ ./configure
  $ make dist                # 配布用パッケージの作成
+新たにconfigure.ac, Makefile.am, scr/Makefile.amを書き変えたら☆からやり直す．
+他に
+ $ make clean
+ $ make check
+などが便利．
 === make checkでテストの自動化
 Makefile.amに
  TESTS=foo.sh bar.sh
