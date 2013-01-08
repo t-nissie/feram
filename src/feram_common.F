@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2012-08-22 13:43:57 t-nissie>
+! Time-stamp: <2013-01-08 18:24:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -75,7 +75,7 @@ subroutine feram_common(fn)
   call msg_ez(UNIT_LOG, trim(message)//' Ready for simulation!!!')
   flush(UNIT_LOG)
 
-  if (p%method.eq.'md ' .or. p%method.eq.'lf ') then
+  if (p%method.eq.'md ' .or. p%method.eq.'vs ' .or. p%method.eq.'lf ') then
      call molecular_dynamics(p,c)
   else if (p%method.eq.'hl ') then
      call hysteresis_loop(p,c)

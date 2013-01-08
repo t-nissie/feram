@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2012-10-17 13:21:43 takeshi>
+! Time-stamp: <2013-01-08 18:25:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -56,6 +56,8 @@ subroutine molecular_dynamics(p,c)
 
      if (p%method.eq.'md ') then
         call nose_poincare(p,c,e)   ! H_Nose_Poincare == 0, always
+     else if (p%method.eq.'vs ') then
+        call velocity_scaling(p,c,e)
      else if (p%method.eq.'lf ') then
         call leapfrog(p,c,e,i_step)        ! Leapfrog
      end if
