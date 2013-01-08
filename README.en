@@ -121,13 +121,15 @@ When 2 is given for verbose tag, messages will be written to .log file in every 
  method = 'md'
 'md' is for a molecular-dynamics simulation in the canonical ensemble using the Nosé-Poincaré thermostat.
 
+ method = 'vs'
+'vs' is for a molecular-dynamics simulation in the canonical ensemble using the velocity scaling thermostat.
+
  method = 'lf'
 'lf' is for a molecular-dynamics simulation in the microcanonical ensemble using the leap-frog method.
 
  method = 'mc'
 'mc' is for a Monte Carlo simulation, but it is NOT IMPLEMENTED YET.
 
- method = 'hl'
  method = 'hl'
 'hl' is for a simulation of hysteresis loop.
 In this case, tags of n_average and external_E_field have special meanings (see Fig:external).
