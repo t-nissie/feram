@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-01-09 12:13:49 t-nissie>
+! Time-stamp: <2013-01-09 22:11:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -35,6 +35,7 @@ module Param_module
      real*8 kelvin       ! [K]
      real*8 target_kinetic_energy
      real*8 mass_dipo    ! [eV Angstrom^-2 ps^2]
+     real*8 mass_acou    ! [eV Angstrom^-2 ps^2]
      real*8 Q_Nose       ! [eV ps^2]
      !--- System geometry -----------------------------
      character(len=4) :: bulk_or_film
@@ -112,6 +113,7 @@ contains
     character (len=30)  name, dmy1, dmy2
     integer io, line_number, i
     real*8 mass_amu
+    real*8 acoustic_mass_amu
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'read_Param().')
     open(UNIT_INPUT, FILE=fn, STATUS='OLD')
@@ -122,6 +124,8 @@ contains
     p%GPa    = 0.0d0
     p%kelvin = 0.0d0
     p%target_kinetic_energy = 0.0d0
+    p%mass_dipo = 100.0d0 / 9648.53377163899d0
+    p%mass_acou =   0.0d0
     p%Q_Nose = 0.1d0
     p%bulk_or_film = 'bulk'
     p%Lx = 32
@@ -192,7 +196,10 @@ contains
           p%temperature_eV = p%kelvin / KELVIN_EV
        case('mass_amu')
           read(str,*) dmy1, dmy2, mass_amu  ! [amu]
-          p%mass_dipo=mass_amu/9648.53377163899
+          p%mass_dipo =          mass_amu / 9648.53377163899d0
+       case('acoustic_mass_amu')
+          read(str,*) dmy1, dmy2, acoustic_mass_amu  ! [amu]
+          p%mass_acou = acoustic_mass_amu / 9648.53377163899d0
        case('Q_Nose')
           read(str,*) dmy1, dmy2, p%Q_Nose
        case('bulk_or_film')
@@ -368,6 +375,7 @@ contains
                                    'Ly          =', p%Ly,         &
                                    'Lz          =', p%Lz
     write(UNIT_SYSTEM,'(a,f13.6)') 'mass_dipo   =', p%mass_dipo,  &
+&                                  'mass_acou   =', p%mass_acou,  &
 &                                  'a0          =', p%a0,         &
 &                                  'kappa_short =',               &
 &    p%P_kappa2+2*p%j(1)+p%j(2)+4*p%j(3)+2*p%j(4)+4*p%j(6),       &
