@@ -35,10 +35,6 @@ o dVddi_... -> dV_du_...
 
 o foo-bar.F -> foo_bar.F
 
-o p%mass_dipo の default value
-
-o p%acoustic_mass_amu の導入
-
 o UNIT_SYSTEM の整理
 
 o mirror_force_mirror.F の最後の力のミラーが必要かどうか。必然的に対称になっているはず。
@@ -172,3 +168,6 @@ x detailed_messages -> verbose, in configure.ac, README.en and source code
 
 x Quit to use libblaslapack/
 
+x p%mass_dipo の default value を 100 amu に
+
+x p%acoustic_mass_amu の導入
