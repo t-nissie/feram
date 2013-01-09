@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-01-09 11:40:13 t-nissie>
+! Time-stamp: <2013-01-09 12:13:49 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -181,7 +181,7 @@ contains
           cycle
        end if
 
-       select case(TRIM(name))
+       select case(name)
        case('method')
           read(str,*) dmy1, dmy2, p%method
           if (p%method.eq.'hl') p%E_field_always_zero = .false.
@@ -361,7 +361,8 @@ contains
     call msg_ez(UNIT_LOG,str)
 
     !=== BEGIN: write parameters for gnuplot ============================
-    write(fn,'(a,a)') trim(p%filename),'.param'
+    fn = trim(p%filename) // '.param'
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn)
     open(unit=UNIT_SYSTEM,file=fn)
     write(UNIT_SYSTEM,'(a,i5)')    'Lx          =', p%Lx,         &
                                    'Ly          =', p%Ly,         &
@@ -382,7 +383,6 @@ contains
 &                                  'epsilon_inf =', p%epsilon_inf
 
     close(UNIT_SYSTEM)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME', fn)
     !=== END: write parameters for gnuplot ==============================
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '  write_Param().')
