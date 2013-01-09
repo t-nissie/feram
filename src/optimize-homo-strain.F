@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2011-10-24 12:27:59 takeshi>
+! Time-stamp: <2013-01-09 21:44:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
@@ -69,10 +69,6 @@ subroutine optimize_homo_strain(p,c,e)
 
   !--- compute homogeneous coupling energy ----------------------
   e%homo_coupling = sum( c%strain(:) * homogeneous_coupling_2_uu(:) )
-
-
-  !--- compute homogeneous strain coupling part of dVddi --------
-  call dVddi_homo_coupling(p,c)
 
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine optimize_homo_strain

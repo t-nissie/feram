@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2012-12-15 05:48:56 takeshi>
+# Time-stamp: <2013-01-09 21:48:53 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -16,6 +16,7 @@ feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
 	dVddi-dipole-dipole.F \
 	dVddi-homo-coupling.F \
+	dVddi_inho_coupling.F \
 	dVddi-unharmonic.F \
 	date_and_time2message.F \
 	decay-functions.f \
@@ -126,11 +127,10 @@ feram_common.o:                 param_module.o coord_module.o date_and_time2mess
 decay-functions.o param_module.o diagonalize15x15.o: define.h
 feram.o feram_mpi.o potentials.o dipole-dipole.o mirror.o initialize_E_field.o read_defects_u.o elastic.o:\
                                 param_module.o coord_module.o define.h
-initialize-dipoR.o dVddi-unharmonic.o leapfrog.o optimize-homo-strain.o:\
+initialize-dipoR.o dVddi-unharmonic.o leapfrog.o optimize-homo-strain.o optimize-homo-strain.o optimize-inho-strain.o:\
                 energy_module.o param_module.o coord_module.o
-energy_module.o:                param_module.o coord_module.o
-optimize-homo-strain.o optimize-inho-strain.o:\
-                energy_module.o param_module.o coord_module.o
+dVddi_inho_coupling.o energy_module.o: \
+                                param_module.o coord_module.o
 molecular-dynamics.o:\
                 energy_module.o param_module.o coord_module.o average_module.o
 dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy.o:\

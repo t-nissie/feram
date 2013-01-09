@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2012-08-22 13:42:38 t-nissie>
+! Time-stamp: <2013-01-09 21:45:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -49,8 +49,12 @@ subroutine mirror_force_mirror(p,c,e)
      e%dipole_E_field = - p%Z_star * tmp_dipole_E_field
   end if
 
-  call optimize_homo_strain(p,c,e)   ! It calls dVddi_homo_coupling().
+  call optimize_homo_strain(p,c,e)
+  call dVddi_homo_coupling(p,c)
+
   call optimize_inho_strain(p,c,e)
+  call dVddi_inho_coupling(p,c)
+
 
   ! mirror (Maybe, it is not necessary.)
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then

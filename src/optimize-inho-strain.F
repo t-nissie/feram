@@ -1,5 +1,5 @@
 ! optimize-inho-strain.F   -*-f90-*-
-! Time-stamp: <2013-01-09 20:45:42 takeshi>
+! Time-stamp: <2013-01-09 21:39:55 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -8,7 +8,6 @@
 #endif
 #include "define.h"
 subroutine optimize_inho_strain(p,c,e)
-  !$use omp_lib
   use Param_module
   use Coord_module
   use Energy_module
@@ -66,69 +65,6 @@ subroutine optimize_inho_strain(p,c,e)
   !--- calculate some emergies -----------------------------------------
   call inhomogeneous_strain_energy(p,c,e)
   call inhomogeneous_coupling_energy(p,c,e)
-
-  !--- acouK -> c%inhoK -FFT-> c%inhoR (inho. strain in real space) --------
-!$omp parallel do private(iz,iy,ix,k)
-  do iz = 0, p%Lz-1
-     k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
-     k(3) = k(3) * M_2PI / p%a0
-     do iy = 0, p%Ly-1
-        k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
-        k(2) = k(2) * M_2PI / p%a0
-        do ix = 0, p%Lx/2
-           k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-           c%inhoK(ix,iy,iz,1) = k(1)*c%acouK(ix,iy,iz,1)
-           c%inhoK(ix,iy,iz,2) = k(2)*c%acouK(ix,iy,iz,2)
-           c%inhoK(ix,iy,iz,3) = k(3)*c%acouK(ix,iy,iz,3)
-           c%inhoK(ix,iy,iz,4) = k(3)*c%acouK(ix,iy,iz,2) + k(2)*c%acouK(ix,iy,iz,3)
-           c%inhoK(ix,iy,iz,5) = k(1)*c%acouK(ix,iy,iz,3) + k(3)*c%acouK(ix,iy,iz,1)
-           c%inhoK(ix,iy,iz,6) = k(2)*c%acouK(ix,iy,iz,1) + k(1)*c%acouK(ix,iy,iz,2)
-        end do
-     end do
-  end do
-!$omp end parallel do
-
-#if defined(HAVE_LIBFFTW3)
-  do alpha = 1, 6
-     call dfftw_execute(c%plans_inhoK2R(alpha))
-  end do
-#else
-  do alpha = 1, 6
-     call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
-          & c%inhoR(0,0,0,alpha), c%inhoK(0,0,0,alpha))
-  end do
-#endif
-
-  !--- c%inhoR -> inhomogeneous coupling part of dVddi -------------------
-!$omp parallel do private(iz,iy,ix,i,eta_B_over_2m)
-  do iz = 0, p%Lz-1
-     do iy = 0, p%Ly-1
-        do ix = 0, p%Lx-1
-           do i = 1, 6
-              eta_B_over_2m(i) = &
-                   &   c%inhoR(ix,iy,iz,1) * p%Ninv * c%homogeneous_coupling_2(1,i) &
-                   & + c%inhoR(ix,iy,iz,2) * p%Ninv * c%homogeneous_coupling_2(2,i) &
-                   & + c%inhoR(ix,iy,iz,3) * p%Ninv * c%homogeneous_coupling_2(3,i) &
-                   & + c%inhoR(ix,iy,iz,4) * p%Ninv * c%homogeneous_coupling_2(4,i) &
-                   & + c%inhoR(ix,iy,iz,5) * p%Ninv * c%homogeneous_coupling_2(5,i) &
-                   & + c%inhoR(ix,iy,iz,6) * p%Ninv * c%homogeneous_coupling_2(6,i)
-           end do
-           c%dVddi(ix,iy,iz,1) = &
-         & c%dVddi(ix,iy,iz,1) + 2 * eta_B_over_2m(1) * c%dipoR(ix,iy,iz,1) &
-         &                     +     eta_B_over_2m(5) * c%dipoR(ix,iy,iz,3) &
-         &                     +     eta_B_over_2m(6) * c%dipoR(ix,iy,iz,2)
-           c%dVddi(ix,iy,iz,2) = &
-         & c%dVddi(ix,iy,iz,2) + 2 * eta_B_over_2m(2) * c%dipoR(ix,iy,iz,2) &
-         &                     +     eta_B_over_2m(4) * c%dipoR(ix,iy,iz,3) &
-         &                     +     eta_B_over_2m(6) * c%dipoR(ix,iy,iz,1)
-           c%dVddi(ix,iy,iz,3) = &
-         & c%dVddi(ix,iy,iz,3) + 2 * eta_B_over_2m(3) * c%dipoR(ix,iy,iz,3) &
-         &                     +     eta_B_over_2m(4) * c%dipoR(ix,iy,iz,2) &
-         &                     +     eta_B_over_2m(5) * c%dipoR(ix,iy,iz,1)
-        end do
-     end do
-  end do
-!$omp end parallel do
 
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine optimize_inho_strain
