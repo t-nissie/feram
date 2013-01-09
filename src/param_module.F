@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-01-09 22:11:08 takeshi>
+! Time-stamp: <2013-01-09 22:38:23 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -36,6 +36,7 @@ module Param_module
      real*8 target_kinetic_energy
      real*8 mass_dipo    ! [eV Angstrom^-2 ps^2]
      real*8 mass_acou    ! [eV Angstrom^-2 ps^2]
+     real*8 mass_acou_inv
      real*8 Q_Nose       ! [eV ps^2]
      !--- System geometry -----------------------------
      character(len=4) :: bulk_or_film
@@ -200,6 +201,7 @@ contains
        case('acoustic_mass_amu')
           read(str,*) dmy1, dmy2, acoustic_mass_amu  ! [amu]
           p%mass_acou = acoustic_mass_amu / 9648.53377163899d0
+          p%mass_acou_inv = 1.0d0 / p%mass_acou
        case('Q_Nose')
           read(str,*) dmy1, dmy2, p%Q_Nose
        case('bulk_or_film')
