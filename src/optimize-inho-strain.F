@@ -1,5 +1,5 @@
 ! optimize-inho-strain.F   -*-f90-*-
-! Time-stamp: <2013-01-09 21:39:55 takeshi>
+! Time-stamp: <2013-01-09 23:57:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -7,20 +7,17 @@
 #  include "config.h"
 #endif
 #include "define.h"
-subroutine optimize_inho_strain(p,c,e)
+subroutine optimize_inho_strain(p,c)
   use Param_module
   use Coord_module
-  use Energy_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
-  type(Energy_type), intent(out)   :: e
   !--- local -----------------------------------------
-  real*8                  :: k(3), eta_B_over_2m(6)
   complex*16              :: acouK_tmp(3)
   complex*16              :: tmp
-  integer                 :: i, alpha,beta, ix,iy,iz
+  integer                 :: alpha,beta, ix,iy,iz
   !--- END of variable definitions -------------------
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
   !     & 'Optimize inhomogeneous strain. Calculate related energies and accelerations.')
@@ -61,10 +58,6 @@ subroutine optimize_inho_strain(p,c,e)
      end do
   end do
 !$omp end parallel do
-
-  !--- calculate some emergies -----------------------------------------
-  call inhomogeneous_strain_energy(p,c,e)
-  call inhomogeneous_coupling_energy(p,c,e)
 
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine optimize_inho_strain

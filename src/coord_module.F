@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2013-01-09 21:31:56 takeshi>
+! Time-stamp: <2013-01-09 23:55:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -23,10 +23,10 @@ module Coord_module
      complex*16, allocatable :: didiK(:,:,:,:)   ! 6 kind of dipoR*dipoR
      real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
      complex*16, allocatable :: acouK(:,:,:,:)   ! Acoustic displacements
+     real*8,     allocatable :: acou_force_R(:,:,:,:)
+     complex*16, allocatable :: acou_force_K(:,:,:,:)
      real*8,     allocatable :: inhoR(:,:,:,:)   ! Only used in optimize-inho-strain.F
      complex*16, allocatable :: inhoK(:,:,:,:)   ! Only used in optimize-inho-strain.F
-     real*8,     allocatable :: inho_force_R(:,:,:,:)
-     complex*16, allocatable :: inho_force_K(:,:,:,:)
      real*8,     allocatable :: inhomo_K(:,:,:, :,:)       ! FTed potential
      real*8,     allocatable :: inhomo_K_G(:,:, :,:,:)     ! inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
      real*8,     allocatable :: inhomo_coup2_K(:,:,:, :,:) ! FTed potential
@@ -42,7 +42,7 @@ module Coord_module
      integer*8              plans_dipoR2C(3)
      integer*8              plans_didiR2C(6)
      integer*8              plans_inhoK2R(6)
-     integer*8              plans_inho_force_K2R(3)
+     integer*8              plans_acou_force_K2R(3)
      integer*8              plans_acouK2R(3)
      integer*8              plans_dipoT2dVddi(3)
   end type Coord_type
@@ -167,6 +167,29 @@ contains
     end do
 #   endif
 
+    !--- force on acoustic displacement --------
+    if (allocated(c%acou_force_R)) deallocate(c%acou_force_R)
+    allocate(c%acou_force_R(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    if (allocated(c%acou_force_K)) deallocate(c%acou_force_K)
+    allocate(c%acou_force_K(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
+    !!!first touch
+!$omp parallel do
+    do i = 0,p%Lz-1
+       c%acou_force_R(:,:,i,:) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do i = 0,p%Lz-1
+       c%acou_force_K(:,:,i,:) = (0.0d0,0.0d0)
+    end do
+!$omp end parallel do
+#   if defined(HAVE_LIBFFTW3)
+    do alpha = 1, 3
+       call dfftw_plan_dft_c2r_3d(c%plans_acou_force_K2R(alpha), p%Lx, p%Ly, p%Lz, &
+            & c%acou_force_K(0,0,0,alpha), c%acou_force_R(0,0,0,alpha), FFTW_MEASURE)
+    end do
+#   endif
+
     !--- inhomogeneous strain ---------------
     if (allocated(c%inhoR)) deallocate(c%inhoR)
     allocate(c%inhoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
@@ -187,29 +210,6 @@ contains
     do alpha = 1, 6
        call dfftw_plan_dft_c2r_3d(c%plans_inhoK2R(alpha), p%Lx, p%Ly, p%Lz, &
             & c%inhoK(0,0,0,alpha), c%inhoR(0,0,0,alpha), FFTW_MEASURE)
-    end do
-#   endif
-
-    !--- force on inho. displacement --------
-    if (allocated(c%inho_force_R)) deallocate(c%inho_force_R)
-    allocate(c%inho_force_R(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
-    if (allocated(c%inho_force_K)) deallocate(c%inho_force_K)
-    allocate(c%inho_force_K(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))
-    !!!first touch
-!$omp parallel do
-    do i = 0,p%Lz-1
-       c%inho_force_R(:,:,i,:) = 0.0d0
-    end do
-!$omp end parallel do
-!$omp parallel do
-    do i = 0,p%Lz-1
-       c%inho_force_K(:,:,i,:) = (0.0d0,0.0d0)
-    end do
-!$omp end parallel do
-#   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 6
-       call dfftw_plan_dft_c2r_3d(c%plans_inho_force_K2R(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%inho_force_K(0,0,0,alpha), c%inho_force_R(0,0,0,alpha), FFTW_MEASURE)
     end do
 #   endif
 

@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2013-01-09 21:45:15 takeshi>
+! Time-stamp: <2013-01-09 23:57:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -52,7 +52,9 @@ subroutine mirror_force_mirror(p,c,e)
   call optimize_homo_strain(p,c,e)
   call dVddi_homo_coupling(p,c)
 
-  call optimize_inho_strain(p,c,e)
+  call optimize_inho_strain(p,c)
+  call inhomogeneous_strain_energy(p,c,e)
+  call inhomogeneous_coupling_energy(p,c,e)
   call dVddi_inho_coupling(p,c)
 
 
