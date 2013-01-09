@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2013-01-08 20:04:20 t-nissie>
+! Time-stamp: <2013-01-09 11:40:58 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -69,7 +69,7 @@ contains
     avg%dipo_kinetic_true = avg%dipo_kinetic_true + e%dipo_kinetic/c%s_Nose**2
     avg%strain(:)         = avg%strain(:)         + c%strain(:)
 
-    if (trim(p%method).eq.'lf') then
+    if (p%method.eq.'lf') then
        avg%e_layer(0:p%Lz-1)   = avg%e_layer(0:p%Lz-1)   + c%e_layer(0:p%Lz-1)
     end if
 
@@ -170,7 +170,7 @@ contains
        avg%uu(:) = avg%uu(:) / p%n_average * p%Ninv
     end if
 
-    if (trim(p%method).eq.'lf') then
+    if (p%method.eq.'lf') then
        kelvin = avg%dipo_kinetic_true * 0.666666666666666666666666666667d0 * KELVIN_EV
        avg%e_layer(0:p%Lz) = avg%e_layer(0:p%Lz) / p%n_average
        write(fn_T_layer,'(a,a)') trim(p%filename), '.T_layer'

@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-01-08 20:13:23 t-nissie>
+! Time-stamp: <2013-01-09 11:40:13 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -184,7 +184,7 @@ contains
        select case(TRIM(name))
        case('method')
           read(str,*) dmy1, dmy2, p%method
-          if (trim(p%method).eq.'hl') p%E_field_always_zero = .false.
+          if (p%method.eq.'hl') p%E_field_always_zero = .false.
        case('GPa')
           read(str,*) dmy1, dmy2, p%GPa
        case('kelvin')

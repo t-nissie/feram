@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2013-01-08 20:10:06 t-nissie>
+! Time-stamp: <2013-01-09 11:40:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -54,7 +54,7 @@ subroutine molecular_dynamics(p,c)
         write(message,fmt_time_step) i_step; call msg_ez(UNIT_LOG,message)
      end if
 
-     select case (trim(p%method))
+     select case (p%method)
      case ('md')
         call nose_poincare(p,c,e)   ! H_Nose_Poincare == 0, always
      case ('vs')

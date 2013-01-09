@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2013-01-08 20:08:54 t-nissie>
+! Time-stamp: <2013-01-09 11:40:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -75,7 +75,7 @@ subroutine feram_common(fn)
   call msg_ez(UNIT_LOG, trim(message)//' Ready for simulation!!!')
   flush(UNIT_LOG)
 
-  select case (trim(p%method))
+  select case (p%method)
   case ('md','vs','lf')
      call molecular_dynamics(p,c)
   case ('hl')
