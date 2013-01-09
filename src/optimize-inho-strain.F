@@ -1,5 +1,5 @@
-! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2012-12-26 17:28:23 t-nissie>
+! optimize-inho-strain.F   -*-f90-*-
+! Time-stamp: <2013-01-09 20:45:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
