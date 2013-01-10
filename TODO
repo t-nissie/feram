@@ -1,5 +1,7 @@
 ToDo
 
+o Nose-Poincareでもleapfrogでもacoustic displacementのMDができるように．
+
 o Use in-place FFT for speed up (See in-place-FFT.ja.txt)
 
 o Use wisdom
