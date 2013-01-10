@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2013-01-10 16:41:00 takeshi>
+! Time-stamp: <2013-01-10 20:19:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -15,8 +15,8 @@ subroutine velocity_scaling(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer iz
-  real*8 scale,kinetic_energy_dipo
-  external kinetic_energy_dipo
+  real*8 scale,kinetic_energy_dipo,kinetic_energy_acou
+  external kinetic_energy_dipo,kinetic_energy_acou
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
@@ -57,13 +57,17 @@ subroutine velocity_scaling(p,c,e)
            c%acouP(:,:,iz,:) = c%acouP(:,:,iz,:) - p%dt * c%dVdacR(:,:,iz,:)
         end do
 !$omp end parallel do
-
-        !scaling must be HERE!!!
-
+        e%acou_kinetic = kinetic_energy_acou(p,c)
+        scale = sqrt(p%target_kinetic_energy/e%acou_kinetic)
+!$omp parallel do
+        do iz=0, p%Lz-1
+           c%acouP(:,:,iz,:) = c%acouP(:,:,iz,:) * scale
+        end do
+!$omp end parallel do
      end if
 
 
   if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP (and acouP) are updated at this end.')
   end if
 end subroutine velocity_scaling

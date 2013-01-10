@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2012-08-22 13:41:43 t-nissie>
+! Time-stamp: <2013-01-10 20:19:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -37,7 +37,7 @@ subroutine hysteresis_loop(p,c)
   call initialize_dipoR(p,c,e)
   write(message,fmt_time_step) 0, p%external_E_field
   call msg_ez(UNIT_LOG,message)
-  e%total = e%dipo_kinetic + sum_potential_energies(e)
+  e%total = e%acou_kinetic + e%dipo_kinetic + sum_potential_energies(e)
   call write_Energy(p,c,e,UNIT_LOG)
 !   write(message,"('strain',6e13.5)") c%strain(:)
 !   call msg_ez(UNIT_LOG,message)
@@ -71,7 +71,7 @@ subroutine hysteresis_loop(p,c)
 
      call velocity_scaling(p,c,e)
 
-     e%total = e%dipo_kinetic + sum_potential_energies(e)
+     e%total = e%acou_kinetic + e%dipo_kinetic + sum_potential_energies(e)
      if (p%verbose>=2) then
         call write_Energy(p,c,e,UNIT_LOG)
      end if

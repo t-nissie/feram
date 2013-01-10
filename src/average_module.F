@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2013-01-09 11:40:58 t-nissie>
+! Time-stamp: <2013-01-10 20:31:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -15,8 +15,9 @@ module Average_module
   integer, parameter :: max_k    = 99
 
   type Average_type
-     type(Energy_type) energy    
+     type(Energy_type) energy
      real*8 e2
+     real*8 acou_kinetic_true
      real*8 dipo_kinetic_true
      real*8 strain(6)
      real*8 u(3)
@@ -32,8 +33,9 @@ contains
     !--- arguments -------------------------------------
     type(Average_type), intent(inout) :: avg
     !--- END of variable definitions -------------------
-    avg%energy            = Energy_type(0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0)
+    avg%energy            = Energy_type(0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0)
     avg%e2                = 0.0d0
+    avg%acou_kinetic_true = 0.0d0
     avg%dipo_kinetic_true = 0.0d0
     avg%strain(:)         = 0.0d0
     avg%u(:)              = 0.0d0
@@ -66,6 +68,7 @@ contains
     !--- END of variable definitions -------------------
     avg%energy            = avg%energy            + e
     avg%e2                = avg%e2                + e%total**2
+!   avg%acou_kinetic_true = avg%acou_kinetic_true + e%acou_kinetic/c%s_Nose**2
     avg%dipo_kinetic_true = avg%dipo_kinetic_true + e%dipo_kinetic/c%s_Nose**2
     avg%strain(:)         = avg%strain(:)         + c%strain(:)
 
@@ -158,6 +161,7 @@ contains
     avg%energy = div_Energy(avg%energy, p%n_average)
     avg%energy = div_Energy(avg%energy, p%N)
     avg%e2                = avg%e2                / p%n_average * p%Ninv
+!   avg%acou_kinetic_true = avg%acou_kinetic_true / p%n_average * p%Ninv
     avg%dipo_kinetic_true = avg%dipo_kinetic_true / p%n_average * p%Ninv
 
     avg%strain(:) = avg%strain(:) / p%n_average
@@ -187,7 +191,7 @@ contains
     write(fn_avg,'(a,a)') trim(p%filename), '.avg'
     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_avg)
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
-    write(UNIT_AVG,"(f7.2,3f9.5,1(e15.5,5e13.5),1(e15.5,2e13.5),1(e15.5,5e13.5),1(1e15.5,11e13.5))")&
+    write(UNIT_AVG,"(f7.2,3f9.5,1(e15.5,5e13.5),1(e15.5,2e13.5),1(e15.5,5e13.5),1(1e15.5,12e13.5))")&
          kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
          avg%energy%dipo_kinetic    ,&
          avg%energy%dipole_dipole   ,&
@@ -200,7 +204,8 @@ contains
          avg%energy%total           ,&
          avg%energy%H_Nose_Poincare ,&
          avg%e2                     ,&
-         avg%dipo_kinetic_true
+         avg%dipo_kinetic_true      ,&
+         avg%energy%acou_kinetic
     close(UNIT_AVG)
 
     if (p%distribution_directory.eq.'never') then

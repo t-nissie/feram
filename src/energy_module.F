@@ -1,11 +1,12 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2013-01-09 11:40:57 t-nissie>
+! Time-stamp: <2013-01-10 20:15:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
   implicit none
   type Energy_type
                               ! calculated in
+     real*8 acou_kinetic      ! leapfrog.F or nose-poincare.F, initialize in initialize_dipoR.F
      real*8 dipo_kinetic      ! leapfrog.F or nose-poincare.F, initialize in initialize_dipoR.F
      real*8 dipole_dipole     ! subroutine write_Energy() below
      real*8 dipole_E_field    ! -m.E, dVddi_E_field.F
@@ -29,6 +30,7 @@ contains
     type(Energy_type)             :: add_Energy
     type(Energy_type), intent(in) :: a, b
 
+    add_Energy%acou_kinetic    = a%acou_kinetic    + b%acou_kinetic
     add_Energy%dipo_kinetic    = a%dipo_kinetic    + b%dipo_kinetic
     add_Energy%dipole_dipole   = a%dipole_dipole   + b%dipole_dipole
     add_Energy%dipole_E_field  = a%dipole_E_field  + b%dipole_E_field
@@ -48,6 +50,7 @@ contains
     type(Energy_type), intent(in) :: a
     integer, intent(in)           :: n
 
+    div_Energy%acou_kinetic    = a%acou_kinetic    / n
     div_Energy%dipo_kinetic    = a%dipo_kinetic    / n
     div_Energy%dipole_dipole   = a%dipole_dipole   / n
     div_Energy%dipole_E_field  = a%dipole_E_field  / n
@@ -89,8 +92,9 @@ contains
     character(45) message
     !--- END of variable definitions -------------------
 
+    write(message,fmt) 'acou_kinetic   ', e%acou_kinetic*p%Ninv;    call msg_ez(fd,message)
     write(message,fmt) 'dipo_kinetic   ', e%dipo_kinetic/c%s_Nose**2*p%Ninv
-                                                                 call msg_ez(fd,message)
+                                                                    call msg_ez(fd,message)
     write(message,fmt) 'dipole_dipole  ', e%dipole_dipole*p%Ninv;   call msg_ez(fd,message)
     write(message,fmt) 'dipole_E_field ', e%dipole_E_field*p%Ninv;  call msg_ez(fd,message)
     write(message,fmt) 'unharmonic     ', e%unharmonic*p%Ninv;      call msg_ez(fd,message)

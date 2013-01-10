@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2013-01-10 18:21:25 takeshi>
+! Time-stamp: <2013-01-10 19:56:41 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -22,12 +22,13 @@ subroutine mirror_force_mirror(p,c,e)
      end if
   end if
 
-  ! force
-  call dipoFFT(p,c)
+  ! FFT
+  call    dipoFFT(p,c)
   if (p%mass_acou > 0.0d0) then
      call acouFFT(p,c)
   end if
 
+  ! dVddi and dVdac
   call  dVddi_dipole_dipole(p,c,e)
   call     dVddi_unharmonic(p,c,e)
 
@@ -67,7 +68,6 @@ subroutine mirror_force_mirror(p,c,e)
   call inhomogeneous_strain_energy(p,c,e)
   call inhomogeneous_coupling_energy(p,c,e)
   call dVddi_inho_coupling(p,c)
-
 
   ! mirror (Maybe, it is not necessary.)
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then

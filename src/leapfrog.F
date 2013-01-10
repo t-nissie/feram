@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2013-01-10 16:30:25 takeshi>
+! Time-stamp: <2013-01-10 20:20:54 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -64,6 +64,7 @@ subroutine leapfrog(p,c,e,i_step)
      end do
   end do
 !$omp end parallel do
+! e%acou_kinetic = kinetic_energy_acou(p,c)
   e%dipo_kinetic = kinetic_energy_dipo(p,c)
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')

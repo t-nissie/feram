@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2013-01-10 16:30:25 takeshi>
+! Time-stamp: <2013-01-10 20:23:35 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -15,7 +15,7 @@ subroutine initialize_dipoR(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer ix, iy, iz, alpha, ios, dummy_x, dummy_y, dummy_z
-  real*8 dmy,kinetic_energy_dipo
+  real*8 dmy,kinetic_energy_dipo,kinetic_energy_acou
   character (len=120) :: message
   character (len=120) :: restart_fn
   external kinetic_energy_dipo
@@ -67,6 +67,7 @@ subroutine initialize_dipoR(p,c,e)
 
   c%s_Nose  = 1.0d0   ! s0
   c%pi_Nose = 0.0d0   ! pi0
+  e%acou_kinetic    = kinetic_energy_acou(p,c)
   e%dipo_kinetic    = kinetic_energy_dipo(p,c)
   e%H_Nose_Poincare = 0.0d0
 

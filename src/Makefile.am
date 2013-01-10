@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-01-10 18:32:38 takeshi>
+# Time-stamp: <2013-01-10 20:24:08 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -36,6 +36,7 @@ feram_SRCS = average_module.F \
 	initialize_E_field.F \
 	initialize-dipoR.F \
 	kinetic_energy_dipo.F \
+	kinetic_energy_acou.F \
 	leapfrog.F \
 	read_defects_u.F \
 	marsaglia_tsang_uni64_module.f \
@@ -135,7 +136,7 @@ dVddi_inho_coupling.o energy_module.o dVdac.o: \
                                 param_module.o coord_module.o
 molecular-dynamics.o:\
                 energy_module.o param_module.o coord_module.o average_module.o
-dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy_dipo.o:\
+dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy_dipo.o kinetic_energy_acou.o:\
                                 param_module.o coord_module.o
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
 marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o:                          marsaglia_tsang_uni64_module.o
