@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2012-08-22 13:43:57 t-nissie>
+! Time-stamp: <2013-01-10 15:13:06 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -23,9 +23,17 @@ subroutine velocity_scaling(p,c,e)
 
 !$omp parallel do
      do iz=0, p%Lz-1
-        c%dipoR(:,:,iz,:) = c%dipoR(:,:,iz,:) + p%dt * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:)
+           c%dipoR(:,:,iz,:) = c%dipoR(:,:,iz,:) + p%dt * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:)
      end do
 !$omp end parallel do
+
+     if (p%mass_acou > 0.0d0) then
+!$omp parallel do
+        do iz=0, p%Lz-1
+           c%acouR(:,:,iz,:) = c%acouR(:,:,iz,:) + p%dt * c%acouP(:,:,iz,:) * c%m_inv(:,:,iz,:)
+        end do
+!$omp end parallel do
+     end if
 
      call mirror_force_mirror(p,c,e)
 !$omp parallel do

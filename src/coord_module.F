@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2013-01-09 23:55:00 takeshi>
+! Time-stamp: <2013-01-10 15:00:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -23,8 +23,9 @@ module Coord_module
      complex*16, allocatable :: didiK(:,:,:,:)   ! 6 kind of dipoR*dipoR
      real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
      complex*16, allocatable :: acouK(:,:,:,:)   ! Acoustic displacements
-     real*8,     allocatable :: acou_force_R(:,:,:,:)
-     complex*16, allocatable :: acou_force_K(:,:,:,:)
+     real*8,     allocatable :: acouP(:,:,:,:)
+     real*8,     allocatable :: dVdacR(:,:,:,:)
+     complex*16, allocatable :: dVdacK(:,:,:,:)
      real*8,     allocatable :: inhoR(:,:,:,:)   ! Only used in optimize-inho-strain.F
      complex*16, allocatable :: inhoK(:,:,:,:)   ! Only used in optimize-inho-strain.F
      real*8,     allocatable :: inhomo_K(:,:,:, :,:)       ! FTed potential
@@ -42,7 +43,7 @@ module Coord_module
      integer*8              plans_dipoR2C(3)
      integer*8              plans_didiR2C(6)
      integer*8              plans_inhoK2R(6)
-     integer*8              plans_acou_force_K2R(3)
+     integer*8              plans_dVdacK2R(3)
      integer*8              plans_acouK2R(3)
      integer*8              plans_dipoT2dVddi(3)
   end type Coord_type
@@ -149,6 +150,8 @@ contains
     allocate(c%acouR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
     if (allocated(c%acouK)) deallocate(c%acouK)
     allocate(c%acouK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
+    if (allocated(c%acouP)) deallocate(c%acouP)
+    allocate(c%acouP(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
@@ -160,6 +163,11 @@ contains
        c%acouK(:,:,i,:) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
+!$omp parallel do
+    do i = 0,p%Lz-1
+       c%acouP(:,:,i,:) = 0.0d0
+    end do
+!$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 3
        call dfftw_plan_dft_c2r_3d(c%plans_acouK2R(alpha), p%Lx, p%Ly, p%Lz, &
@@ -168,25 +176,25 @@ contains
 #   endif
 
     !--- force on acoustic displacement --------
-    if (allocated(c%acou_force_R)) deallocate(c%acou_force_R)
-    allocate(c%acou_force_R(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
-    if (allocated(c%acou_force_K)) deallocate(c%acou_force_K)
-    allocate(c%acou_force_K(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
+    if (allocated(c%dVdacR)) deallocate(c%dVdacR)
+    allocate(c%dVdacR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    if (allocated(c%dVdacK)) deallocate(c%dVdacK)
+    allocate(c%dVdacK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%acou_force_R(:,:,i,:) = 0.0d0
+       c%dVdacR(:,:,i,:) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%acou_force_K(:,:,i,:) = (0.0d0,0.0d0)
+       c%dVdacK(:,:,i,:) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 3
-       call dfftw_plan_dft_c2r_3d(c%plans_acou_force_K2R(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%acou_force_K(0,0,0,alpha), c%acou_force_R(0,0,0,alpha), FFTW_MEASURE)
+       call dfftw_plan_dft_c2r_3d(c%plans_dVdacK2R(alpha), p%Lx, p%Ly, p%Lz, &
+            & c%dVdacK(0,0,0,alpha), c%dVdacR(0,0,0,alpha), FFTW_MEASURE)
     end do
 #   endif
 

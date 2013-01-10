@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-01-09 21:48:53 takeshi>
+# Time-stamp: <2013-01-10 14:54:28 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -18,6 +18,7 @@ feram_SRCS = average_module.F \
 	dVddi-homo-coupling.F \
 	dVddi_inho_coupling.F \
 	dVddi-unharmonic.F \
+	dVdac.F \
 	date_and_time2message.F \
 	decay-functions.f \
 	dipoFFT.F \
@@ -129,7 +130,7 @@ feram.o feram_mpi.o potentials.o dipole-dipole.o mirror.o initialize_E_field.o r
                                 param_module.o coord_module.o define.h
 initialize-dipoR.o dVddi-unharmonic.o leapfrog.o optimize-homo-strain.o optimize-homo-strain.o optimize-inho-strain.o:\
                 energy_module.o param_module.o coord_module.o
-dVddi_inho_coupling.o energy_module.o: \
+dVddi_inho_coupling.o energy_module.o dVdac.o: \
                                 param_module.o coord_module.o
 molecular-dynamics.o:\
                 energy_module.o param_module.o coord_module.o average_module.o

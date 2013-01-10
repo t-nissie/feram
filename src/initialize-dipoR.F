@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2012-04-25 07:17:25 t-nissie>
+! Time-stamp: <2013-01-10 14:32:45 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -30,10 +30,13 @@ subroutine initialize_dipoR(p,c,e)
            do ix = 0, p%Lx-1
               read(UNIT_SYSTEM,*) dummy_x, dummy_y, dummy_z, &
                    c%dipoR(ix,iy,iz,1),c%dipoR(ix,iy,iz,2),c%dipoR(ix,iy,iz,3),&
-                   c%dipoP(ix,iy,iz,1),c%dipoP(ix,iy,iz,2),c%dipoP(ix,iy,iz,3)
+                   c%dipoP(ix,iy,iz,1),c%dipoP(ix,iy,iz,2),c%dipoP(ix,iy,iz,3),&
+                   c%dVddi(ix,iy,iz,1),c%dVddi(ix,iy,iz,2),c%dVddi(ix,iy,iz,3),&
+                   c%acouR(ix,iy,iz,1),c%acouR(ix,iy,iz,2),c%acouR(ix,iy,iz,3)
            end do
         end do
      end do
+     ! c%dipoP() must be multiplied by c%s_Nose ???
      close(UNIT_SYSTEM)
   else
      write(message,'(a,a)') trim(restart_fn), ' was NOT found.'
