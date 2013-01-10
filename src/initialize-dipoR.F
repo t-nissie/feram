@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2013-01-10 14:32:45 takeshi>
+! Time-stamp: <2013-01-10 15:50:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -56,7 +56,10 @@ subroutine initialize_dipoR(p,c,e)
         end do
      end do
      c%dipoP(:,:,:,:) = 0.0d0
+     c%acouR(:,:,:,:) = 0.0d0
   end if
+
+  c%acouP(:,:,:,:) = 0.0d0
 
   call read_defects_u(p,c)   ! Prepares fixed u for defects and c%m_inv(:,:,:,:).
 
