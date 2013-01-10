@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2012-04-11 18:53:32 user2001>
+! Time-stamp: <2013-01-10 16:30:25 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -19,8 +19,8 @@ subroutine leapfrog(p,c,e,i_step)
   integer Lz_1_4
   integer Lz_3_4
   integer iz,alpha
-  real*8 kinetic_energy
-  external kinetic_energy
+  real*8 kinetic_energy_dipo
+  external kinetic_energy_dipo
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
@@ -64,7 +64,7 @@ subroutine leapfrog(p,c,e,i_step)
      end do
   end do
 !$omp end parallel do
-  e%dipo_kinetic = kinetic_energy(p,c)
+  e%dipo_kinetic = kinetic_energy_dipo(p,c)
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
   end if

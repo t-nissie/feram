@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2012-04-11 18:35:14 user2001>
+! Time-stamp: <2013-01-10 16:30:24 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
@@ -14,9 +14,9 @@ subroutine nose_poincare(p,c,e)
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
-  real*8 CB, s_Nose_old, delta_H, kinetic_energy, dt2s
+  real*8 CB, s_Nose_old, delta_H, kinetic_energy_dipo, dt2s
   integer iz,alpha
-  external kinetic_energy
+  external kinetic_energy_dipo
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
   dt2s = p%dt_2*c%s_Nose
@@ -27,7 +27,7 @@ subroutine nose_poincare(p,c,e)
      end do
   end do
 !$omp end parallel do
-  e%dipo_kinetic = kinetic_energy(p,c)
+  e%dipo_kinetic = kinetic_energy_dipo(p,c)
   CB = p%n_freedom*p%temperature_eV*(1.0d0+log(c%s_Nose)) &
        - e%dipo_kinetic/c%s_Nose**2 &
        + sum_potential_energies(e) &
@@ -62,7 +62,7 @@ subroutine nose_poincare(p,c,e)
 !$omp end parallel do
                                                                             !(35f)
   ! calculate e%dipo_kinetic and e%H_Nose_Poincare for write_Energy()
-  e%dipo_kinetic = kinetic_energy(p,c)
+  e%dipo_kinetic = kinetic_energy_dipo(p,c)
   call Nose_Poincare_Hamiltonian(p,c,e)
 
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')

@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-01-10 14:54:28 takeshi>
+# Time-stamp: <2013-01-10 16:32:09 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -34,7 +34,7 @@ feram_SRCS = average_module.F \
 	hysteresis_loop.F \
 	initialize_E_field.F \
 	initialize-dipoR.F \
-	kinetic_energy.F \
+	kinetic_energy_dipo.F \
 	leapfrog.F \
 	read_defects_u.F \
 	marsaglia_tsang_uni64_module.f \
@@ -134,15 +134,15 @@ dVddi_inho_coupling.o energy_module.o dVdac.o: \
                                 param_module.o coord_module.o
 molecular-dynamics.o:\
                 energy_module.o param_module.o coord_module.o average_module.o
-dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy.o:\
+dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy_dipo.o:\
                                 param_module.o coord_module.o
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
 marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o:                          marsaglia_tsang_uni64_module.o
 rgb_check.o:                    rgb_module.o
 mirror_force_mirror.o:          param_module.o coord_module.o energy_module.o
 nose-poincare.o velocity_scaling.o:\
-                                param_module.o coord_module.o energy_module.o kinetic_energy.o
-leapfrog.o:                     param_module.o coord_module.o energy_module.o kinetic_energy.o define.h
+                                param_module.o coord_module.o energy_module.o kinetic_energy_dipo.o
+leapfrog.o:                     param_module.o coord_module.o energy_module.o kinetic_energy_dipo.o define.h
 hysteresis_loop.o:              param_module.o coord_module.o energy_module.o define.h velocity_scaling.o
 average_module.o:               param_module.o coord_module.o energy_module.o define.h
 coord_module.o:                 param_module.o         define.h
