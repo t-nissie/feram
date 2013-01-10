@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2013-01-10 15:00:50 takeshi>
+! Time-stamp: <2013-01-10 18:27:19 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -44,7 +44,8 @@ module Coord_module
      integer*8              plans_didiR2C(6)
      integer*8              plans_inhoK2R(6)
      integer*8              plans_dVdacK2R(3)
-     integer*8              plans_acouK2R(3)
+     integer*8              plans_acouR2C(3)
+     integer*8              plans_acouC2R(3)
      integer*8              plans_dipoT2dVddi(3)
   end type Coord_type
 
@@ -170,7 +171,9 @@ contains
 !$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
     do alpha = 1, 3
-       call dfftw_plan_dft_c2r_3d(c%plans_acouK2R(alpha), p%Lx, p%Ly, p%Lz, &
+       call dfftw_plan_dft_r2c_3d(c%plans_acouR2C(alpha), p%Lx, p%Ly, p%Lz, &
+            & c%acouR(0,0,0,alpha), c%acouK(0,0,0,alpha), FFTW_MEASURE)
+       call dfftw_plan_dft_c2r_3d(c%plans_acouC2R(alpha), p%Lx, p%Ly, p%Lz, &
             & c%acouK(0,0,0,alpha), c%acouR(0,0,0,alpha), FFTW_MEASURE)
     end do
 #   endif
@@ -273,28 +276,30 @@ contains
        coord_directory_fn = trim(p%coord_directory) // '/' // trim(fn)
     end if
 
+    if (p%mass_acou <= 0.0d0) then
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%acouK(:,:,i,:) = (0.0d0, -1.0d0) * c%acouK(:,:,i,:)
-    end do
+       do i = 0,p%Lz-1
+          c%acouK(:,:,i,:) = (0.0d0, -1.0d0) * c%acouK(:,:,i,:)
+       end do
 !$omp end parallel do
 
-#  if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_execute(c%plans_acouK2R(alpha))
-    end do
-#  else
-    do alpha = 1, 3
-       call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
-            & c%acouR(0,0,0,alpha), c%acouK(0,0,0,alpha))
-    end do
-#  endif
+#      if defined(HAVE_LIBFFTW3)
+       do alpha = 1, 3
+          call dfftw_execute(c%plans_acouC2R(alpha))
+       end do
+#      else
+       do alpha = 1, 3
+          call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
+               & c%acouR(0,0,0,alpha), c%acouK(0,0,0,alpha))
+       end do
+#      endif
 
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%acouR(:,:,i,:) = c%acouR(:,:,i,:) * p%Ninv
-    end do
+       do i = 0,p%Lz-1
+          c%acouR(:,:,i,:) = c%acouR(:,:,i,:) * p%Ninv
+       end do
 !$omp end parallel do
+    end if
 
     open(unit=UNIT_SYSTEM, file=coord_directory_fn, status='replace')
     do iz = 0, p%Lz-1

@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2013-01-10 15:01:47 takeshi>
+! Time-stamp: <2013-01-10 18:21:25 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -15,12 +15,19 @@ subroutine mirror_force_mirror(p,c,e)
 
   ! mirror
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-     call mirror(p, c%dipoR)
-     !call mirror(p, c%m_inv)
+     call    mirror(p, c%dipoR)
+     !call   mirror(p, c%m_inv)
+     if (p%mass_acou > 0.0d0) then
+        call mirror(p, c%acouR)
+     end if
   end if
 
   ! force
   call dipoFFT(p,c)
+  if (p%mass_acou > 0.0d0) then
+     call acouFFT(p,c)
+  end if
+
   call  dVddi_dipole_dipole(p,c,e)
   call     dVddi_unharmonic(p,c,e)
 

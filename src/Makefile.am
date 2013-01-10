@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-01-10 16:32:09 takeshi>
+# Time-stamp: <2013-01-10 18:32:38 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -21,6 +21,7 @@ feram_SRCS = average_module.F \
 	dVdac.F \
 	date_and_time2message.F \
 	decay-functions.f \
+	acouFFT.F \
 	dipoFFT.F \
 	dipole-dipole-long-range.F \
 	dipole-dipole-short-range.F \
@@ -151,7 +152,7 @@ dipole-dipole-short-range.o:    param_module.o         define.h fft_3d_3x3upper_
 fft_3d_3x3upper_r2c.o:          param_module.o                fft.o  define.h
 dVddi-dipole-dipole.o:\
                 energy_module.o param_module.o coord_module.o fft.o
-dipoFFT.o:                      param_module.o coord_module.o fft.o define.h
+dipoFFT.o acouFFT.o:            param_module.o coord_module.o fft.o define.h
 print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
 eigenvalues2j.o:                param_module.o define.h
 distribution3d2ppm.o:           average_module.o rgb_module.o
