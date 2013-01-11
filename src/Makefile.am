@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-01-10 20:24:08 takeshi>
+# Time-stamp: <2013-01-11 20:16:22 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -96,13 +96,12 @@ feram_mpi.F \
 marsaglia_tsang_uni64_check.gp \
 03example-BaTiO3-bulk-phase-transition \
 10example-PbTiO3-DDB2short \
-11example-BaTiO3-new-hysteresis-loop \
-15example-BaTiO3-new-param-defects \
 17example-PbTiO3-100-900K \
 18example-benchmark \
 19example-fft-benchmark \
 20example-BaTiO3-new-param-pyro \
-21example-KNbO3
+21example-KNbO3 \
+22example-BaTiO3-new-param-hl
 
 # all: plot.ps # 300K0000000.ps decay-test.ps
 
