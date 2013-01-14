@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2013-01-10 20:19:08 takeshi>
+! Time-stamp: <2013-01-12 21:47:36 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -30,7 +30,7 @@ subroutine velocity_scaling(p,c,e)
      if (p%mass_acou > 0.0d0) then
 !$omp parallel do
         do iz=0, p%Lz-1
-           c%acouR(:,:,iz,:) = c%acouR(:,:,iz,:) + p%dt * c%acouP(:,:,iz,:) * p%mass_acou_inv
+           c%acouR(:,:,iz,:) = c%acouR(:,:,iz,:) + (p%dt*p%mass_acou_inv) * c%acouP(:,:,iz,:)
         end do
 !$omp end parallel do
      end if
@@ -57,6 +57,7 @@ subroutine velocity_scaling(p,c,e)
            c%acouP(:,:,iz,:) = c%acouP(:,:,iz,:) - p%dt * c%dVdacR(:,:,iz,:)
         end do
 !$omp end parallel do
+        write(6,'(3(f13.7,2f12.7))') c%acouR(0,0,0,:), c%acouP(0,0,0,:), c%dVdacR(0,0,0,:)
         e%acou_kinetic = kinetic_energy_acou(p,c)
         scale = sqrt(p%target_kinetic_energy/e%acou_kinetic)
 !$omp parallel do
