@@ -1,5 +1,5 @@
 ! acouFFT.F -*-f90-*-
-! Time-stamp: <2013-01-10 18:31:12 takeshi>
+! Time-stamp: <2013-01-15 09:32:55 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -29,11 +29,15 @@ subroutine acouFFT(p,c)
   end do
 #endif
 
+    !write(6,'(a,2(f14.7,f12.7))') '1acouK', c%acouK(0,1,1,1), c%acouK(0,15,15,1)
+
 !$omp parallel do
     do iz = 0,p%Lz-1
        c%acouK(:,:,iz,:) = (0.0d0, 1.0d0) * c%acouK(:,:,iz,:)
     end do
 !$omp end parallel do
+
+    !write(6,'(a,2(f14.7,f12.7))') '2acouK', c%acouK(0,1,1,1), c%acouK(0,15,15,1)
 
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'acouR -> acouK, done')
