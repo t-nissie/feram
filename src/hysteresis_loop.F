@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2013-01-10 20:19:51 takeshi>
+! Time-stamp: <2013-01-17 12:58:16 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -62,6 +62,8 @@ subroutine hysteresis_loop(p,c)
         end do
 !$omp end parallel do
      end if
+
+     ! Needs mirror of c%E_field around here, maybe.
 
      if (p%verbose>=2) then
         call msg_ez(UNIT_LOG,'')

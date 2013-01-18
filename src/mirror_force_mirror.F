@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2013-01-12 19:52:23 takeshi>
+! Time-stamp: <2013-01-17 12:51:04 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -17,9 +17,9 @@ subroutine mirror_force_mirror(p,c,e)
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
      call    mirror(p, c%dipoR)
      !call   mirror(p, c%m_inv)
-     if (p%mass_acou > 0.0d0) then
-        call mirror(p, c%acouR)
-     end if
+     !if (p%mass_acou > 0.0d0) then
+     !   call mirror(p, c%acouR)
+     !end if
   end if
 
   ! FFT
@@ -72,7 +72,7 @@ subroutine mirror_force_mirror(p,c,e)
   ! mirror (Maybe, it is not necessary.)
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
      call mirror(p, c%dVddi)
-     call mirror(p, c%dVdacR)
+     !call mirror(p, c%dVdacR)
   end if
 
   ! Fixed u of defects must be really fixed after this.
