@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2012-11-29 08:12:59 takeshi>
+! Time-stamp: <2013-01-25 14:45:22 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -402,9 +402,11 @@ program fft_check
      if (mod(Lx,2).eq.1) exit
 #    endif
      call fft_3d_r2c_or_c2r_in_place(.true.,  Lx, Ly, Lz, r)
+!$omp parallel do
      do j = 0, Lz-1
         r(:,:,j) = r(:,:,j) * N_inv
      end do
+!$omp end parallel do
      call fft_3d_r2c_or_c2r_in_place(.false., Lx, Ly, Lz, r)
 #   endif
   end do
@@ -462,9 +464,11 @@ program fft_check
      if (mod(Lx,2).eq.1) exit
 #    endif
      call fft_3d_r2c_or_c2r_out_of_place(.true.,  Lx, Ly, Lz, r, c)
+!$omp parallel do
      do j = 0, Lz-1
         c(:,:,j) = c(:,:,j) * N_inv
      end do
+!$omp end parallel do
      call fft_3d_r2c_or_c2r_out_of_place(.false., Lx, Ly, Lz, r, c)
 #   endif
   end do
