@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-01-10 16:30:49 takeshi>
+! Time-stamp: <2013-01-27 10:00:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -126,7 +126,8 @@ contains
     p%kelvin = 0.0d0
     p%target_kinetic_energy = 0.0d0
     p%mass_dipo = 100.0d0 / 9648.53377163899d0
-    p%mass_acou =   0.0d0
+    p%mass_acou = -100.0d0
+    p%mass_acou_inv = 1.0d0
     p%Q_Nose = 0.1d0
     p%bulk_or_film = 'bulk'
     p%Lx = 32
