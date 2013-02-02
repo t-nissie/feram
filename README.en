@@ -156,10 +156,13 @@ Effective mass of u(R), the length of dipole on the unit cell R.
 In atomic mass unit.
 
 ===== acoustic_mass_amu
-Effective mass of acoustic displacements in atomic mass unit.
-Generally, it is average of mass of 5 atoms.
 If acoustic_mass_amu is not set, acoustic displacements,
-i.e. local strain is optimized according to the {u(R)}.
+i.e. homogeneous local strains, are optimized according to the {u(R)}.
+If it is set to the effective mass of acoustic displacements
+ acoustic_mass_amu = 46.44
+molecular dynamics is performed on acoustic displacements.
+Its unit is atomic mass unit.
+Generally, it is average of mass of 5 atoms.
 
 ===== acoustic_mass_amu
 Effective mass of w(R), the acoustic displacement of the unit cell R.
