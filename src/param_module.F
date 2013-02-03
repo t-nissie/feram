@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-01-27 10:00:50 takeshi>
+! Time-stamp: <2013-02-03 16:41:31 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -200,6 +200,10 @@ contains
           read(str,*) dmy1, dmy2, mass_amu  ! [amu]
           p%mass_dipo =          mass_amu / 9648.53377163899d0
        case('acoustic_mass_amu')
+          if (p%method.eq.'md' .or. p%method.eq.'lf') then
+             write(0,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
+             stop ": You cannot use method = 'md' nor 'lf' togeter with acoustic_mass_amu."
+          end if
           read(str,*) dmy1, dmy2, acoustic_mass_amu  ! [amu]
           p%mass_acou = acoustic_mass_amu / 9648.53377163899d0
           p%mass_acou_inv = 1.0d0 / p%mass_acou
@@ -208,7 +212,7 @@ contains
        case('bulk_or_film')
           read(str,*) dmy1, dmy2, p%bulk_or_film
           if (p%bulk_or_film.ne.'bulk' .and. p%bulk_or_film.ne.'film' .and. p%bulk_or_film.ne.'epit')  then
-             write(6,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
+             write(0,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
              stop ': Input error: bulk_or_film must be bulk, film or epit.'
           end if
        case('L')
@@ -309,7 +313,7 @@ contains
        case('DDB_g')
           read(str,*) dmy1, dmy2, p%DDB_g
        case default
-          write(6,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
+          write(0,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
           stop ': Input error: No such parameter'
        end select
        call msg_ez(UNIT_LOG,str)
@@ -338,14 +342,11 @@ contains
 
     if (p%bulk_or_film.eq.'bulk') then
        if (p%gap_id.ne.0) then
-          call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'In the case of bulk calculation, gap_id must be 0.')
-          stop
+          stop ': In the case of bulk calculation, gap_id must be 0.'
        end if
     else
        if (mod(p%Lz,2).ne.mod(p%gap_id,2)) then
-          call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', &
-               'In the case of film or epit calculation, mod(Lz,2)==mod(gap_id,2)')
-          stop
+          stop ': In the case of film or epit calculation, it must be mod(Lz,2)==mod(gap_id,2).'
        end if
     end if
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '  make_Param().')

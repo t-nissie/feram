@@ -127,12 +127,15 @@ foo123.log, foo123.cood, ... などとなります．
 
 ===== mass_amu
 Rにあるunit cellの双極子の長さu(R)の有効質量．
-atomic mass unitで．
+単位はatomic mass unit．
 
 ===== acoustic_mass_amu
-音響変位w(R)の有効質量．
-atomic mass unitで．
-まだインプリメントされていません．
+もしacoustic_mass_amuが設定されないと、音響変位，すなわち局所歪みは{u(R)}を元に最適化される．
+acoustic_mass_amuとして音響変位の有効質量が
+ acoustic_mass_amu = 46.44
+と与えられると，音響変位についても分子動力学計算が行われる．
+単位はatomic mass unit．一般的に全５原子の平均質量とする．
+現在，method = 'md'またはmethod = 'lf'では音響変位の分子動力学計算はできません．
 
 ===== Q_Nose
 能勢のQ．MD計算に必要なパラメータで，熱欲と系とのカップリングの強さを表す．
