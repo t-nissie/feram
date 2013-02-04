@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2013-01-09 11:40:57 t-nissie>
+! Time-stamp: <2013-02-04 00:02:36 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -89,9 +89,10 @@ subroutine molecular_dynamics(p,c)
      call add_to_Average(p,c,e,avg,detail)
   end do
 
+  call divide_and_write_Average(p,c,avg)
+
   write(message,'(a,f6.1,a)') 'T = ', p%kelvin, ' [K] END =========================================================='
   call msg_ez(UNIT_LOG, message)
-  call divide_and_write_Average(p,c,avg)
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'MD')
 end subroutine molecular_dynamics
