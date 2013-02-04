@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2013-02-03 23:52:13 takeshi>
+! Time-stamp: <2013-02-04 00:09:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -148,7 +148,6 @@ contains
     type(Coord_type),   intent(in)    :: c
     type(Average_type), intent(inout) :: avg
     character (len=FILE_NAME_LEN)     :: fn_avg, fn_tmp, fn_T_layer
-    real*8                            :: kelvin
     integer                           :: i,k,kx,ky,kz
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'divide_and_write_Average().')
@@ -175,27 +174,24 @@ contains
     end if
 
     if (p%method.eq.'lf') then
-       kelvin = avg%dipo_kinetic_true * 0.666666666666666666666666666667d0 * KELVIN_EV
-    else
-       kelvin = p%kelvin
-    end if
-
-    if (p%delta_e.ne.0.0d0) then
-       avg%e_layer_dipo(0:p%Lz) = avg%e_layer_dipo(0:p%Lz) / p%n_average
-       write(fn_T_layer,'(a,a)') trim(p%filename), '.T_layer'
-       call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_T_layer)
-       open(UNIT=UNIT_T_LAYER,FILE=fn_T_layer)
-       do i=0,p%Lz-1
-          write(UNIT_T_LAYER,'(i9,f13.8)') i, avg%e_layer_dipo(i) / p%Lx / p%Ly * 0.666666666666666666666666666667d0 * KELVIN_EV
-       end do
-       close(UNIT_T_LAYER)
+       p%kelvin = avg%dipo_kinetic_true * 0.666666666666666666666666666667d0 * KELVIN_EV
+       if (p%delta_e.ne.0.0d0) then
+          avg%e_layer_dipo(0:p%Lz) = avg%e_layer_dipo(0:p%Lz) / p%n_average
+          write(fn_T_layer,'(a,a)') trim(p%filename), '.T_layer'
+          call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_T_layer)
+          open(UNIT=UNIT_T_LAYER,FILE=fn_T_layer)
+          do i=0,p%Lz-1
+             write(UNIT_T_LAYER,'(i9,f13.8)') i, avg%e_layer_dipo(i) / p%Lx / p%Ly * 0.666666666666666666666666666667d0 * KELVIN_EV
+          end do
+          close(UNIT_T_LAYER)
+       end if
     end if
 
     write(fn_avg,'(a,a)') trim(p%filename), '.avg'
     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_avg)
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
     write(UNIT_AVG,"(f7.2,3f9.5,1(e15.5,5e13.5),1(e15.5,2e13.5),1(e15.5,5e13.5),1(1e15.5,12e13.5))")&
-         kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
+         p%kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
          avg%energy%dipo_kinetic    ,&
          avg%energy%dipole_dipole   ,&
          avg%energy%dipole_E_field  ,&
