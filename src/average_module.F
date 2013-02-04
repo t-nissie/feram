@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2013-02-04 00:09:38 takeshi>
+! Time-stamp: <2013-02-04 00:13:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -144,7 +144,7 @@ contains
     use Param_module
     use Coord_module
     implicit none
-    type(Param_type),   intent(in)    :: p
+    type(Param_type),   intent(inout) :: p   ! may alter p%kelvin
     type(Coord_type),   intent(in)    :: c
     type(Average_type), intent(inout) :: avg
     character (len=FILE_NAME_LEN)     :: fn_avg, fn_tmp, fn_T_layer
