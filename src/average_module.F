@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2013-02-03 20:30:17 takeshi>
+! Time-stamp: <2013-02-03 23:52:13 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -176,6 +176,11 @@ contains
 
     if (p%method.eq.'lf') then
        kelvin = avg%dipo_kinetic_true * 0.666666666666666666666666666667d0 * KELVIN_EV
+    else
+       kelvin = p%kelvin
+    end if
+
+    if (p%delta_e.ne.0.0d0) then
        avg%e_layer_dipo(0:p%Lz) = avg%e_layer_dipo(0:p%Lz) / p%n_average
        write(fn_T_layer,'(a,a)') trim(p%filename), '.T_layer'
        call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_T_layer)
@@ -184,8 +189,6 @@ contains
           write(UNIT_T_LAYER,'(i9,f13.8)') i, avg%e_layer_dipo(i) / p%Lx / p%Ly * 0.666666666666666666666666666667d0 * KELVIN_EV
        end do
        close(UNIT_T_LAYER)
-    else
-       kelvin = p%kelvin
     end if
 
     write(fn_avg,'(a,a)') trim(p%filename), '.avg'
