@@ -1,5 +1,10 @@
-#!/bin/sh
-poe ./abinit < perovskite-frozen-phonon-Gamma.files > perovskite-frozen-phonon-Gamma.log
+#!/bin/csh
+# For: app1 at IMR, Tohoku Univ.
+# Time-stamp: <2013-02-07 08:53:51 t-nissie>
+# Author: Takeshi NISHIMATSU
+# Usage: submit AEB general -jobtype parallel -pm 12 -n 1 -exec perovskite-frozen-phonon-Gamma.nqs -J perovskite-frozen-phonon-Gamma
+##
+app_mpi_launcher_mpich2 ./abinit < perovskite-frozen-phonon-Gamma.files > perovskite-frozen-phonon-Gamma.log
 
 sed -n '/after computation/,$p' perovskite-frozen-phonon-Gamma.out | grep acell > perovskite-frozen-phonon-Gamma.dat
 tail -21 perovskite-frozen-phonon-Gamma_o_DS1_DDB >> perovskite-frozen-phonon-Gamma.dat
@@ -7,3 +12,5 @@ tail -21 perovskite-frozen-phonon-Gamma_o_DS2_DDB >> perovskite-frozen-phonon-Ga
 tail -21 perovskite-frozen-phonon-Gamma_o_DS3_DDB >> perovskite-frozen-phonon-Gamma.dat
 tail -21 perovskite-frozen-phonon-Gamma_o_DS4_DDB >> perovskite-frozen-phonon-Gamma.dat
 tail -21 perovskite-frozen-phonon-Gamma_o_DS5_DDB >> perovskite-frozen-phonon-Gamma.dat
+
+rm -f *WFK perovskite-frozen-phonon-Gamma_LOG*
