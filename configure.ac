@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2013-01-15 09:35:20 takeshi>
+dnl Time-stamp: <2013-02-06 22:41:04 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -34,7 +34,7 @@ FCFLAGS=$FCFLAGS_PRESERVE
 AC_ARG_VAR(MPIFC, [MPI Fortran compiler command])
 case "$FC" in
   gfortran*)
-    test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -ffast-math -funroll-loops -pipe\
+    test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -funroll-loops -pipe\
       -ffpe-trap=zero,overflow -fopenmp"
     ;;
   ifort)
