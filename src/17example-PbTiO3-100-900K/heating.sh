@@ -1,6 +1,6 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2012-11-28 12:01:05 takeshi>
+# Time-stamp: <2013-02-08 08:52:36 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
@@ -30,7 +30,6 @@ while [ `perl -e "print $temperature <= $temperature_goal || 0"` = "1" ] ; do
 	bulk_or_film = 'bulk'
 	L = 32 32 32
 	a0 =  3.96883      latice constant a0 [Angstrom]
-	epi_strain = -0.01
 	#--- Time step -----------------------------------
 	dt = 0.002 [pico second]
 	n_thermalize = $n_thermalize
