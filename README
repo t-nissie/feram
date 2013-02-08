@@ -19,8 +19,8 @@ README.ja.
 You cannot use method = 'md' nor 'lf' togeter with
 acoustic_mass_amu, currently.
 
-Currently, a hysteresis loop calculation of film with
-acoustic_mass_amu. A strange peak appears in the beginning.
+Currently, a hysteresis loop calculation of *film* with
+acoustic_mass_amu goes wrong. A strange peak appears in the beginning.
 See src/23example-BaTiO3-new-param-hl-film-acoustic-mass/.
 Bulk calculations go very fine.
 

@@ -1,3 +1,3 @@
 Currently (version 0.20.00), a hysteresis loop calculation
-of film with acoustic_mass_amu. Strange peak appears in the
-beginning. See hysteresis.jpg or hysteresis.pdf.
+of *film* with acoustic_mass_amu goes wrong. Strange peak
+appears in the beginning. See hysteresis.jpg or hysteresis.pdf.
