@@ -1,48 +1,29 @@
 Dear current and future feram users,
 
-I released feram-0.19.09.tar.xz from
+I released feram-0.20.00.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 
 "feram" is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
-From the version 0.19.09, feram writes acoustic
-displacements into .coord files. For more details,
-see src/coord_module.F, src/optimize-inho-strain.F,
-and doc/acoustic-displacements.pdf.
+From this version 0.20.00, if acoustic_mass_amu is
+set to the effective mass of acoustic displacements
+ acoustic_mass_amu = 46.44
+molecular dynamics is performed on acoustic displacements.
+(If acoustic_mass_amu is not set, acoustic displacements,
+i.e. inhomogeneous strains, are optimized according to the
+{u(R)}, in the same way as before.) See README.en or
+README.ja.
 
-From the version 0.19.08, the tar.xz package contains
-bug-fixed src/coord_module.F. With this fix, feram writes
-the whole system, not half of the system, into .coord
-files, when bulk_or_film = 'film' or 'epit'. Now, you can
-perform cooling-down and heating-up simulations of films.
-See src/17example-PbTiO3-100-900K/coolflm.sh
-and src/17example-PbTiO3-100-900K/heatflm.sh.
+You cannot use method = 'md' nor 'lf' togeter with
+acoustic_mass_amu, currently.
 
-From the version 0.19.07, a new tag "distribution_directory"
-is introduced to control .distribution and .distribution3d
-output files. You can use distribution3d2ppm command
-for visualization of 3-dimensional distribution of dipole
-vector u. See README.en, README.ja, average_module.F
-and distribution3d2ppm.F.
-
-From the version 0.19.06, a new tag "coord_directory" is
-introduced. It controls the directory into which .coord files
-will be stored.
-
-From the version 0.19.05, FFTW_MEASURE is used for the FFTW
-Planner Flag instead of FFTW_PATIENT. For more details,
- $ grep FFTW_MEASURE src/coord_module.F
-and see http://www.fftw.org/doc/Planner-Flags.html .
-Use fft_check to boost up your calculations.
-
-From the version 0.19.05, You cannot compile feram with
-OFORT90 (Hitachi Fortran). Use xlf90_r (IBM XL Fortran)
-for SR16000.
-
-From the version 0.19.04, feram tries to import
-'wisdom' file from current directory or /etc/fftw/wisdom.
+Currently, a hysteresis loop calculation of film with
+acoustic_mass_amu at T<Tc goes wrong. A strange
+peak appears in the beginning. See 
+src/23example-BaTiO3-new-param-hl-film-acoustic-mass/.
+Bulk calculations go very fine.
 
 Enjoy,
 -- Takeshi

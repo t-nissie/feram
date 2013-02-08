@@ -167,8 +167,8 @@ You cannot use method = 'md' nor 'lf' togeter with acoustic_mass_amu, currently.
 
 ===== Q_Nose
 Q_Nose for Nose-Poincare thermostat.
-For large system and high temperatur, use large value.
-For Small system and low  temperatur, use small value.
+For large system and high temperature, use large value.
+For Small system and low  temperature, use small value.
  Q_Nose = 14.4
 
 ===== bulk_or_film
@@ -290,7 +290,7 @@ The normal-distributed random number generator N(mu,sigma^2) is used.
 
 For example, if you only have four dipoles and
  init_dipo_avg = 0.10 0.00 0.00   [Angstrom]  # Average (mu)      of initial dipole displacements
- init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Dneviation (sigma) of initial dipole displacements,
+ init_dipo_dev = 0.02 0.02 0.02   [Angstrom]  # Deviation (sigma) of initial dipole displacements,
 the dipoles may be
  0.09  0.01  0.02
  0.11 -0.02  0.01
@@ -321,18 +321,18 @@ data files for plotting dispersion relation will be written. Default is .false..
 === .restart input file
 If you executed feram with a parameter file "foo123.feram" as
  $ feram foo123.feram
-feram searchs for the "foo123.restart" file as an
+feram searches for the "foo123.restart" file as an
 initial configurations. If there is no such file, feram
 starts from a random configurations.
 
 === .defects input file
 If you executed feram with a parameter file "foo123.feram" as
  $ feram foo123.feram
-feram searchs for the "foo123.defects" file as
+feram searches for the "foo123.defects" file as
 information of defects. If there is no such file, feram
 do not introduce defects.
 
-The .defects input file gives positions and fiexed dipole moments u
+The .defects input file gives positions and fixed dipole moments u
 for simulations of defects in ferroelectrics.
  0  0  0   0.1 -0.1  0.7
  1  0  0   0.1  0.1  0.7
@@ -346,8 +346,8 @@ Use src/defects-maker.rb to make this .defects file.
 === .localfield input file
 If you executed feram with a parameter file "foo123.feram" as
  $ feram foo123.feram
-feram searchs for the "foo123.localfield" file as
-information of local exectric field. Format of .localfield file is:
+feram searches for the "foo123.localfield" file as
+information of local electric field. Format of .localfield file is:
   4  6 13   0.00 0.00 0.10
     :
  ix iy iz   Ex   Ey   Ez
@@ -600,7 +600,7 @@ Authors and/or publishers of the papers have their copyrights for the following 
 Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 
 
-== Acknowledgements
+== Acknowledgments
 This project is/was partially supported by:
  * Jawaharlal Nehru Centre for Advanced Scientific Research (JNCASR)  http://www.jncasr.ac.in/
  * Department of Physics and Astronomy, Rutgers University  http://www.physics.rutgers.edu/

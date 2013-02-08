@@ -1,0 +1,4 @@
+Currently (version 0.20.00), a hysteresis loop calculation
+of film with acoustic_mass_amu at T<Tc goes wrong. Strange
+peak appears in the beginning. See hysteresis.jpg or
+hysteresis.pdf.
