@@ -550,10 +550,14 @@ How to execute:
  $ ./feram foo1.feram foo2.feram foo3.feram &
  $ mpiexec -np 3 ./feram_mpi foo1.feram foo2.feram foo3.feram &
 
+=== README.enとindex.en.html
+index.en.html is automatically generated from README.en with ULMUL http://ulmul.rubyforge.org/ .
+After editing README.ja (Japanese) or README.en (English), transform them with
+ $ make index.en.html index.ja.html
 
 == Copying
 === feram
-Copyright © 2007-2012 by Takeshi Nishimatsu
+Copyright © 2007-2013 by Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.

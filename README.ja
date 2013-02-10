@@ -523,10 +523,15 @@ feramの実行方法:
  $ ./feram foo1.feram foo2.feram foo3.feram &
  $ mpiexec -np 3 ./feram_mpi foo1.feram foo2.feram foo3.feram &
 
+=== README.jaとindex.ja.html
+index.ja.htmlはREADME.jaからULMUL http://ulmul.rubyforge.org/
+によって自動的に生成しています．README.ja（日本語）やREADME.en（英語）を編集したら
+ $ make index.en.html index.ja.html
+としてうまく変換できることを確認して下さい．
 
 == ソフトウエアの再配布について
 === feram
-Copyright © 2007-2012 by Takeshi Nishimatsu
+Copyright © 2007-2013 by Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
@@ -540,7 +545,7 @@ http://www.rpip.tohoku.ac.jp/main/kihukin.html
 
 feramを使って成果が得られた場合には，feramというこのプログラムの
 名前と次の２つのわれわれの論文を引用していただけたら幸いです．
- [Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and　David Vanderbilt: Phys. Rev. B 78 (2008) 104104]
+ [Takeshi Nishimatsu, Umesh V. Waghmare, Yoshiyuki Kawazoe, and David Vanderbilt: Phys. Rev. B 78 (2008) 104104]
  [Jaita Paul, Takeshi Nishimatsu, Yoshiyuki Kawazoe, and Umesh V. Waghmare: Phys. Rev. Lett. 99 (2007) 077601]
 
 === 引用した図版
