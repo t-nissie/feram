@@ -456,6 +456,13 @@ cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
 
 
 == シミュレーションの例
+ソフトウエアパッケージの次のディレクトリに入力ファイル（と結果）が入っています．
+ feram-X.YY.ZZ/src/03example-BaTiO3-bulk-phase-transition/
+ feram-X.YY.ZZ/src/17example-PbTiO3-100-900K/
+ feram-X.YY.ZZ/src/20example-BaTiO3-new-param-pyro/
+ feram-X.YY.ZZ/src/21example-KNbO3/
+ feram-X.YY.ZZ/src/22example-BaTiO3-new-param-hl/
+
 === 降温シミュレーションでの各種エネルギー対MDステップのグラフ
 \Fig:MD doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
   50,000 MDMDステップ毎に段階的に降温するシミュレーション．
