@@ -10,3 +10,7 @@
 === Film simulations
  $ submit SC general -pt 8 -exec heatflm.csh -J heatflm
  $ submit SC general -pt 8 -exec coolflm.csh -J coolflm
+=== Timing
+With version 0.20.00,
+ bulk (L = 32 32 32): 100 s
+ film (L = 32 32 64): 186 s
