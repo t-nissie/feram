@@ -1,0 +1,12 @@
+= How to execute PbTiO3 heating-up and cooling-down simulations
+== On Linux
+ $ OMP_NUM_THREADS=16 ./heating.sh &
+ $ OMP_NUM_THREADS=16 ./cooling.sh &
+
+== On SR16000 in IMR
+=== Bulk simulations
+ $ submit SC general -pt 8 -exec heating.csh -J heating
+ $ submit SC general -pt 8 -exec cooling.csh -J cooling
+=== Film simulations
+ $ submit SC general -pt 8 -exec heatflm.csh -J heatflm
+ $ submit SC general -pt 8 -exec coolflm.csh -J coolflm
