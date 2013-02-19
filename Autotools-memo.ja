@@ -79,7 +79,7 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
 === メモ
  * ある程度開発が進んで、ソースとMakefileができあがってからAutotoolsを使いはじめるとよい。
  * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
-   http://www.gnu.org/software/automake/manual/automake.html やinofoを参照せよ。
+   http://www.gnu.org/software/automake/manual/automake.html やinfoを参照せよ。
  * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, scr/Makefile.amを見よう見まねで書く。
  * automake -aやautoreconfで生成されるファイルはSubversionなどのリポジトリに登録しないほうがよい。
 === Fortranについてのメモ
