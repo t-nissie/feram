@@ -7,6 +7,7 @@
 #define UNIT_T_LAYER 16
 #define UNIT_LOG 18
 #define UNIT_WISDOM 20
+#define UNIT_QUADRATIC 22
 
 /* length */
 #define FILE_NAME_LEN 300
@@ -23,7 +24,7 @@
 
 /* E_h = 27.211 383 86 eV   http://physics.nist.gov/cgi-bin/cuu/Value?hrev */
 #define HARTREE_IN_EV  27.21138386d0
-#define BOHR_RADIUS     0.5291772083 /* [Amgstrom] */
+#define BOHR_RADIUS     0.5291772083d0 /* [Amgstrom] */
 #define HARTREE_BOHR   14.399644d0 /* = e_Hartree [eV] * r_Bohr [Angstrom] = 27.21138386 * 0.5291772083 [eV Amgstrom] */
 #define KELVIN_EV      11604.45d0  /* [K] */
 #define ELEMENTARY_CHARGE 1.60217653d0 /* x 10^-19 C */
