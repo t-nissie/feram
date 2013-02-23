@@ -22,3 +22,4 @@ Use anaddb patched by parameters/abinit-7.0.5-ifc_src_72_response_phfrq3.patch .
  $ ln -s zzzquadratic.dipole-dipole-long.dat dipole-dipole-long.dat
  $ ln -s zzzquadratic.dipole-dipole-short.dat dipole-dipole-short.dat
  $ ln -s zzzquadratic.param param.gp
+ $ gnuplot dipole-dipole.gp
