@@ -1,4 +1,9 @@
+See /Users/takeshi/Darwin/work/abinit/abinit-7.0.5/Darwin-print-projected-ifc/src/98_main/
+ $ gfortran -ffree-form -o qpoints4anaddb qpoints4anaddb.F && ./qpoints4anaddb   # list L**3/2 q-points
+ $ emacs perovskite-anaddb.in     # specify L**3/2 q-points as qph1l
+ $ ./anaddb < perovskite-anaddb.files > perovskite-anaddb.log &
  $ grep projected perovskite-anaddb.log | sed 's/projected_IFC//' > zzzquadratic.quadratic
+
  $ emacs zzzquadratic.quadratic   # cut first some part
  $ emacs zzzquadratic.feram       # set all j1-j7 to ZERO. Use P_kappa2 for *elevation*.
  $ ./feram zzzquadratic.feram
