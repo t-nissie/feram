@@ -1,4 +1,14 @@
 See /Users/takeshi/Darwin/work/abinit/abinit-7.0.5/Darwin-print-projected-ifc/src/98_main/
+
+Using first 3 lines of output of
+ $ ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
+prepare "softmodes" file as
+ 2  -5.595216     0.1642  0.0000 -0.0021     0.8086  0.0000 -0.0105    -0.3348 -0.0000  0.0042    -0.3217 -0.0000  0.0042    -0.3217 -0.0000  0.0044
+ 1  -5.595823     0.0000 -0.1642 -0.0000     0.0000 -0.8086 -0.0000    -0.0000  0.3218  0.0000    -0.0000  0.3348  0.0000    -0.0000  0.3217  0.0000
+ 3  -5.595216    -0.0021  0.0000 -0.1642    -0.0105  0.0000 -0.8086     0.0044 -0.0000  0.3217     0.0042 -0.0000  0.3217     0.0042 -0.0000  0.3348
+
+Use anaddb patched by parameters/abinit-7.0.5-ifc_src_72_response_phfrq3.patch .
+
  $ gfortran -ffree-form -o qpoints4anaddb qpoints4anaddb.F && ./qpoints4anaddb   # list L**3/2 q-points
  $ emacs perovskite-anaddb.in     # specify L**3/2 q-points as qph1l
  $ ./anaddb < perovskite-anaddb.files > perovskite-anaddb.log &
