@@ -1,5 +1,5 @@
 ! diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2012-07-05 16:06:13 t-nissie>
+! Time-stamp: <2013-02-23 17:07:19 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
 !!
@@ -66,7 +66,7 @@ program diagonalize15x15
      !LAPACK dsyev(JOBZ, UPLO, N,         A,                           LDA,       W,           WORK,  LWORK, INFO)
      call    dsyev('V',  'L',  N_FREEDOM, Force_Matrix_real_symmetric, N_FREEDOM, eigenvalues, rwork, LWORK, info)
 #endif
-     write(fmt_eigen,'(a,i3,a)') '(i2,f11.6,', N_ATOM, '(f10.3,f7.3,f7.3))'
+     write(fmt_eigen,'(a,i3,a)') '(i2,f11.6,', N_ATOM, '(f11.4,f8.4,f8.4))'
      write(6,'(a)') 'eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)'
      do j=1,N_FREEDOM
         write(6,fmt_eigen) j, eigenvalues(j), (Force_Matrix_real_symmetric(i,j), i=1,N_FREEDOM)
