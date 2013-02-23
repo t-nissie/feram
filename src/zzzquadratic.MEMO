@@ -1,0 +1,9 @@
+ $ grep projected perovskite-anaddb.log | sed 's/projected_IFC//' > zzzquadratic.quadratic
+ $ emacs zzzquadratic.quadratic   # cut first some part
+ $ emacs zzzquadratic.feram       # set all j1-j7 to ZERO. Use P_kappa2 for *elevation*.
+ $ ./feram zzzquadratic.feram
+
+ $ ln -s zzzquadratic.dipole-dipole-long+short.dat dipole-dipole-long+short.dat
+ $ ln -s zzzquadratic.dipole-dipole-long.dat dipole-dipole-long.dat
+ $ ln -s zzzquadratic.dipole-dipole-short.dat dipole-dipole-short.dat
+ $ ln -s zzzquadratic.param param.gp
