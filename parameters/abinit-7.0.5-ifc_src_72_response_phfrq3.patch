@@ -1,0 +1,107 @@
+--- phfrq3.F90.orig	2013-02-23 15:14:22.000000000 -0500
++++ phfrq3.F90	2013-02-23 17:45:36.000000000 -0500
+@@ -109,13 +109,16 @@
+ 
+ !Local variables -------------------------
+ !scalars
+- integer :: analyt,enough=50,i1,i2,idir1,idir2,ier,ii,imode,index,ipert1,ipert2
++ integer :: analyt,enough=50,i1,i2,idir1,idir2,ier,ii,imode,index,ipert1,ipert2,jj
+  real(dp),parameter :: break_symm=1.0d-12
+  real(dp) :: epsq,fac,norm,qphon2
+  character(len=500) :: message
+ !arrays
+  real(dp) :: nearidentity(3,3),qptn(3)
+  real(dp),allocatable :: dum(:,:),matrx(:,:),zeff(:,:),zhpev1(:,:),zhpev2(:)
++ real(dp),allocatable    :: tmp(:)
++ complex(dp),allocatable :: softmodes(:,:),y(:)
++ complex(dp) :: ZDOTC
+ 
+ ! *********************************************************************
+ 
+@@ -226,7 +229,7 @@
+ !Include the masses in the dynamical matrix
+  do ipert1=1,natom
+    do ipert2=1,natom
+-     fac=1.0_dp/sqrt(amu(typat(ipert1))*amu(typat(ipert2)))/amu_emass
++     fac=1.0_dp   !/sqrt(amu(typat(ipert1))*amu(typat(ipert2)))/amu_emass
+      do idir1=1,3
+        do idir2=1,3
+          i1=idir1+(ipert1-1)*3
+@@ -236,9 +239,9 @@
+          displ(2*index  )=displ(2*index  )*fac*nearidentity(idir1,idir2)
+ !        This is to break slightly the translation invariance, and make
+ !        the automatic tests more portable
+-         if(ipert1==ipert2 .and. idir1==idir2)then
+-           displ(2*index-1)=displ(2*index-1)+break_symm*natom/amu_emass/idir1*0.01_dp
+-         end if
++         !if(ipert1==ipert2 .and. idir1==idir2)then
++         !  displ(2*index-1)=displ(2*index-1)+break_symm*natom/amu_emass/idir1*0.01_dp
++         !end if
+        end do
+      end do
+    end do
+@@ -276,6 +279,38 @@
+      ii=ii+1
+    end do
+  end do
++
++ ALLOCATE(softmodes(3*natom,3))
++ ALLOCATE(y(3*natom))
++
++ ABI_ALLOCATE(tmp,(3*natom))
++ softmodes(:,:) = 0.0d0
++ open(unit=77, file='softmodes', status='old', action='read')
++    do ii=1,3
++       read(77,*) jj, eigval(1), tmp(:)
++       softmodes(:,ii) = tmp(:)
++    end do
++ close(77)
++ !write(6,'(2f10.5)') softmodes(:,3)
++ ABI_DEALLOCATE(tmp)
++
++ write(6,'(a,3f10.5)') 'projected_IFC#', qphon(:)
++ do ii=1,3
++    write(6,'(a,$)') 'projected_IFC'
++    do jj=1,3
++           !ZHPMV(UPLO,N      ,ALPHA                      ,AP   ,X              ,INCX,BETA         ,Y,INCY)
++       call ZHPMV('U' ,3*natom,(97.17361651348614d0,0.0d0),matrx,softmodes(1,jj),1   ,(0.0d0,0.0d0),Y,1   )
++       !write(6,'(2f10.5)') (y(i1), i1=1,3*natom)
++                          !ZDOTC(N      ,ZX             ,INCX,ZY,INCY)
++       write(6,'(f14.9,$)') dble(sum( conjg(softmodes(:,ii))*y(:) ))
++    end do
++    write(6,'(a)') ''
++ end do
++
++ DEALLOCATE(softmodes)
++ DEALLOCATE(y)
++
++
+  ABI_ALLOCATE(zhpev1,(2,2*3*natom-1))
+  ABI_ALLOCATE(zhpev2,(3*3*natom-2))
+  call ZHPEV ('V','U',3*natom,matrx,eigval,eigvec,3*natom,zhpev1,zhpev2,ier)
+@@ -287,15 +322,16 @@
+ 
+ !Get the phonon frequencies (negative by convention, if
+ !the eigenvalue of the dynamical matrix is negative)
+- do imode=1,3*natom
+-   if(eigval(imode)>=1.0d-16)then
+-     phfrq(imode)=sqrt(eigval(imode))
+-   else if(eigval(imode)>=-1.0d-16)then
+-     phfrq(imode)=zero
+-   else
+-     phfrq(imode)=-sqrt(-eigval(imode))
+-   end if
+- end do
++!  do imode=1,3*natom
++!    if(eigval(imode)>=1.0d-16)then
++!      phfrq(imode)=sqrt(eigval(imode))
++!    else if(eigval(imode)>=-1.0d-16)then
++!      phfrq(imode)=zero
++!    else
++!      phfrq(imode)=-sqrt(-eigval(imode))
++!    end if
++!  end do
++phfrq(:)=eigval(:)
+ 
+ !Fix the phase of the eigenvectors
+  ABI_ALLOCATE(dum,(2,0))
