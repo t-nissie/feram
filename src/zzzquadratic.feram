@@ -1,9 +1,10 @@
+# copied from ~/feram/feram-k.01/BaTiO3-003-WuC-0.005-read-IFC-dispersion/cooling001-450K.feram
 #--- Method, Temperature, and mass ---------------
 method = 'md'
-GPa = -0.21
-kelvin = 300
+GPa = 0.0
+kelvin = 450
 mass_amu = 38.24
-Q_Nose = 0.05
+Q_Nose = 0.1
 
 #--- System geometry -----------------------------
 bulk_or_film = 'bulk'
@@ -14,9 +15,6 @@ plot_dispersion = .true.
 B11 = 126.731671475652
 B12 =  41.7582963902598
 B44 =  49.2408864348646
-#coord_directory = 'never'
-distribution_directory = 'never'
-seed = 1242914819 1957271591
 
 #--- From perovskite-optcell2-p.gp ---------------
 B1xx = -185.347187551195 [eV/Angstrom^2]
@@ -29,26 +27,23 @@ P_k4 = 641.968099408642 [eV/Angstrom^8]
 P_alpha = 78.9866142426818 [eV/Angstrom^4]
 P_gamma = -115.484148812672 [eV/Angstrom^4]
 #kappa = -1.51821042113588 [eV/Angstrom^2]
-#(- 8.1460516421 (- (/  -3.812330 2) -1.51821042113588)) =>  8.53400622096412 new P_kappa2
+#        -1.51821042113588 + 4.074269676/2 = 0.51892441686412 = P_kappa2
 
 #--- Time step -----------------------------------
 dt = 0.002 [pico second]
-n_thermalize = 40
-n_average    = 20
-n_coord_freq = 20
+n_thermalize = 0
+n_average    = 1
+n_coord_freq = 1
+distribution_directory = 'never'
+coord_directory = 'never'
 
 #--- From eigenvalues2j --------------------------
-# original  P_kappa2 =    8.1460516421 [eV/Angstrom^2] =    0.0838298622 [Hartree/Bohr^2]
-P_kappa2 = 0.5
-j =   0.00000  0.00000  0.00000  0.00000  0.00000  0.00000  0.00000
+P_kappa2 = 0.51892441686412
+j =  0 0 0 0 0 0 0
 a0	  =   3.98597    [Angstrom]
 Z_star      =  10.33000
 epsilon_inf =   6.86915
 
 #--- Initial dipole configrations ----------------
-init_dipo_avg = 0.00  0.00  0.00   [Angstrom]  # Average   of initial dipole displacements
-init_dipo_dev = 0.04  0.04  0.04   [Angstrom]  # Deviation of initial dipole displacements
-
-# Local variables:
-#   compile-command: "a2ps --medium=A4 --portrait --no-header --left-title=`date '+%Y-%m-%d'` --center-title='zzz16.feram' --right-title='Takeshi Nishimatsu' --footer='' --columns=1 --borders=off -f 9.8 -o zzz16.ps zzz16.feram"
-# End:
+init_dipo_avg = 0.0   0.0   0.0    [Angstrom]  # Average   of initial dipole displacements
+init_dipo_dev = 0.03  0.03  0.03   [Angstrom]  # Deviation of initial dipole displacements
