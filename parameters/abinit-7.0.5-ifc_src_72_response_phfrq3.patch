@@ -1,24 +1,67 @@
---- phfrq3.F90.orig	2013-02-23 15:14:22.000000000 -0500
-+++ phfrq3.F90	2013-02-23 17:45:36.000000000 -0500
-@@ -109,13 +109,16 @@
+--- phfrq3.F90.original	2013-02-25 17:37:39.000000000 -0500
++++ phfrq3.F90	2013-02-26 18:59:48.000000000 -0500
+@@ -109,13 +109,59 @@
  
  !Local variables -------------------------
  !scalars
 - integer :: analyt,enough=50,i1,i2,idir1,idir2,ier,ii,imode,index,ipert1,ipert2
-+ integer :: analyt,enough=50,i1,i2,idir1,idir2,ier,ii,imode,index,ipert1,ipert2,jj
++ integer :: analyt,enough=50,i1,i2,idir1,idir2,ier,ii,imode,index,ipert1,ipert2,jj,alpha,i_atom,i_bto
++ integer, parameter :: L=16
   real(dp),parameter :: break_symm=1.0d-12
   real(dp) :: epsq,fac,norm,qphon2
   character(len=500) :: message
  !arrays
   real(dp) :: nearidentity(3,3),qptn(3)
   real(dp),allocatable :: dum(:,:),matrx(:,:),zeff(:,:),zhpev1(:,:),zhpev2(:)
-+ real(dp),allocatable    :: tmp(:)
++ real(dp),allocatable    :: tmp(:,:)
 + complex(dp),allocatable :: softmodes(:,:),y(:)
 + complex(dp) :: ZDOTC
++ integer,parameter :: n_bto(5) = (/8,1,2,2,2/)
++ real*8, parameter  :: bto(3,8,5) = reshape((/ 0.5d0, 0.5d0, 0.5d0, &   ! Ba
++      &                                        0.5d0, 0.5d0,-0.5d0, &
++      &                                        0.5d0,-0.5d0, 0.5d0, &
++      &                                        0.5d0,-0.5d0,-0.5d0, &
++      &                                       -0.5d0, 0.5d0, 0.5d0, &
++      &                                       -0.5d0, 0.5d0,-0.5d0, &
++      &                                       -0.5d0,-0.5d0, 0.5d0, &
++      &                                       -0.5d0,-0.5d0,-0.5d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &   ! Ti
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.5d0, 0.0d0, 0.0d0, &   ! O1
++      &                                       -0.5d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.5d0, 0.0d0, &   ! O2
++      &                                        0.0d0,-0.5d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.5d0, &   ! O3
++      &                                        0.0d0, 0.0d0,-0.5d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0, &
++      &                                        0.0d0, 0.0d0, 0.0d0/),(/3,8,5/))
++
  
  ! *********************************************************************
  
-@@ -226,7 +229,7 @@
+@@ -226,7 +272,7 @@
  !Include the masses in the dynamical matrix
   do ipert1=1,natom
     do ipert2=1,natom
@@ -27,7 +70,7 @@
       do idir1=1,3
         do idir2=1,3
           i1=idir1+(ipert1-1)*3
-@@ -236,9 +239,9 @@
+@@ -236,9 +282,9 @@
           displ(2*index  )=displ(2*index  )*fac*nearidentity(idir1,idir2)
  !        This is to break slightly the translation invariance, and make
  !        the automatic tests more portable
@@ -40,26 +83,49 @@
         end do
       end do
     end do
-@@ -276,6 +279,38 @@
+@@ -276,6 +322,61 @@
       ii=ii+1
     end do
   end do
 +
-+ ALLOCATE(softmodes(3*natom,3))
-+ ALLOCATE(y(3*natom))
++ allocate(softmodes(3*natom,3))
++ allocate(y(3*natom))
 +
-+ ABI_ALLOCATE(tmp,(3*natom))
-+ softmodes(:,:) = 0.0d0
++ ABI_ALLOCATE(tmp,(3*natom,0:3))
 + open(unit=77, file='softmodes', status='old', action='read')
 +    do ii=1,3
-+       read(77,*) jj, eigval(1), tmp(:)
-+       softmodes(:,ii) = tmp(:)
++       read(77,*) jj, eigval(1), tmp(:,ii)
 +    end do
 + close(77)
-+ !write(6,'(2f10.5)') softmodes(:,3)
-+ ABI_DEALLOCATE(tmp)
++ write(6,'(15f6.3)') tmp(:,1)
++ write(6,'(15f6.3)') tmp(:,2)
++ write(6,'(15f6.3)') tmp(:,3)
 +
-+ write(6,'(a,3f10.5)') 'projected_IFC#', qphon(:)
++ softmodes(:,:) = (0.0d0,0.0d0)
++ do ii=1,3
++    do i_atom=1,natom
++       do alpha=1,3
++          do i_bto =1, n_bto(i_atom)
++             softmodes(3*(i_atom-1)+alpha,ii) = &
++           & softmodes(3*(i_atom-1)+alpha,ii) + tmp(3*(i_atom-1)+alpha,ii) &
++           &                                  * exp( (0.0d0,1.0d0)*two_pi*(bto(1,i_bto,i_atom)*qphon(1)+&
++           &                                                               bto(2,i_bto,i_atom)*qphon(2)+&
++           &                                                               bto(3,i_bto,i_atom)*qphon(3)) )
++          end do
++          softmodes(3*(i_atom-1)+alpha,ii) = &
++        & softmodes(3*(i_atom-1)+alpha,ii) / n_bto(i_atom)
++       end do
++    end do
++ end do
++ ABI_DEALLOCATE(tmp)
++ do ii=1,3
++    softmodes(:,ii) = softmodes(:,ii) / sqrt(sum(softmodes(:,ii)*softmodes(:,ii)))
++ end do
++ do jj=1,3*natom
++    write(6,'(f10.5,f9.5,f10.5,f9.5,f10.5,f9.5)') softmodes(jj,1),softmodes(jj,2),softmodes(jj,3)
++ end do
++
++ write(6,'(a,3f12.5)') 'projected_IFC#', qphon(:)
 + do ii=1,3
 +    write(6,'(a,$)') 'projected_IFC'
 +    do jj=1,3
@@ -79,7 +145,7 @@
   ABI_ALLOCATE(zhpev1,(2,2*3*natom-1))
   ABI_ALLOCATE(zhpev2,(3*3*natom-2))
   call ZHPEV ('V','U',3*natom,matrx,eigval,eigvec,3*natom,zhpev1,zhpev2,ier)
-@@ -287,15 +322,16 @@
+@@ -287,15 +388,16 @@
  
  !Get the phonon frequencies (negative by convention, if
  !the eigenvalue of the dynamical matrix is negative)
