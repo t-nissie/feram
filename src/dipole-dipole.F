@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2013-02-23 18:02:04 takeshi>
+! Time-stamp: <2013-02-26 19:27:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -36,7 +36,7 @@ subroutine dipole_dipole(p,c)
            end do
         end do
      end do
-     ! write(6,'(3f4.1)') (c%dipoI(0,0,0,alpha,:), alpha=1,3)
+     !write(6,'(3f10.5)') (long_range(0,8,8,alpha,:), alpha=1,3)
      close(UNIT_QUADRATIC)
   else
      call  dipole_dipole_long_range(p, long_range)
@@ -44,6 +44,8 @@ subroutine dipole_dipole(p,c)
 
   call dipole_dipole_short_range(p,short_range)
   c%dipoI(:,:,:,:,:) = long_range(:,:,:,:,:) + short_range(:,:,:,:,:)
+
+  !write(6,'(3f10.5)') (c%dipoI(0,8,8,alpha,:), alpha=1,3)
 
   if (p%plot_dispersion) then
      write(fn,'(a,a)') trim(p%filename),'.dipole-dipole-long.dat'
