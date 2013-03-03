@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2013-01-25 14:45:22 takeshi>
+! Time-stamp: <2013-03-03 15:11:52 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -192,7 +192,7 @@ However, introduction of "padding" make code complicated.
 Therefore, "padding" is not introduced in this fft_check.F.
 
 == Copying and author
-Copyright © 2007-2012 by Takeshi Nishimatsu
+Copyright © 2007-2032 by Takeshi Nishimatsu
 
 fft_check is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
@@ -208,7 +208,7 @@ Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
 #  include "config.h"
 #endif
 
-#if defined(__PGI) || defined(__sparc)
+#if defined(__PGI) || defined(__sparc) || defined(HAVE_LIBMATMPP)
 #  define command_argument_count iargc
 #  define get_command_argument getarg
 #endif
