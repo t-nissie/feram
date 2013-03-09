@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2013-03-03 15:11:52 t-nissie>
+! Time-stamp: <2013-03-09 10:05:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -30,6 +30,10 @@ as an FFT library. For example,
  $ make -f fft_check.Makefile.Intel-gfortran-fftw3_omp
 
 === FFTW and wisdom file
+The version number of your FFTW library can be obtained with
+fftw-wisdom command as
+ $ fftw-wisdom -V
+
 If fft_check.F is compiled with FFTW library and f90_wisdom.f,
 it imports 'wisdom' file in current directory or /etc/fftw/wisdom
 and exports 'wisdom_new' into current directory.
