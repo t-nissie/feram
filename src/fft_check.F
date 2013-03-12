@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2013-03-09 10:05:58 takeshi>
+! Time-stamp: <2013-03-12 11:00:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -118,7 +118,7 @@ They are plotted with GNUPLOT scripts of
 === Hitachi SR16000 model M1
  * 1 node = 4 chips of 3.83 GHz POWER7
  * 32 core = 8 core * 4 chip (NUMA)
- * Memory: DDR3 1??? MHz
+ * Memory: DDR3 1333 MHz
  * SMT off (SMT: Simultaneous Multithreading)
  * Makefile: fft_check.Makefile.SR16000-xlf90_r-fftw_xlc
  * FFTW planner flag: FFTW_PATIENT
