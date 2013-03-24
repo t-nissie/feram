@@ -50,7 +50,7 @@ feramのMPI版であるferam_mpiをmakeすることもできます．
 feram_mpiは入力ファイルを並列処理します．
  $ OMP_NUM_THREADS=16 mpiexec -np 3 SOMEWHERE/feram_mpi foo.feram bar.feram baz.feram
 各プロセスのスレッド数は環境変数OMP_NUM_THREADSで指定してください．
-マシンによって最適なOMP_NUM_THREADSの値は異なります．
+マシンやシステムサイズ (N = L_x L_y L_z) によって最適なOMP_NUM_THREADSの値は異なります．
 
 
 == 入力ファイル
