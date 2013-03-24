@@ -68,11 +68,12 @@ feram is a fast molecular dynamics (MD) simulator for bulk and thin-film ferroel
 feram reads parameter files specified as command-line arguments.
  $ OMP_NUM_THREADS=6 SOMEWHERE/feram foo.feram bar.feram baz.feram
 Optionally, you can make MPI version of feram, feram_mpi.
-feram_mpi process input files in parallel.
+feram_mpi processes input files in parallel.
  $ OMP_NUM_THREADS=16 mpiexec -np 3 SOMEWHERE/feram_mpi foo.feram bar.feram baz.feram
 The number of threads for each process should be given with
 environment variable OMP_NUM_THREADS. The most efficient value
-for OMP_NUM_THREADS is depends on OMP_NUM_THREADS.
+for OMP_NUM_THREADS is depends on the system size (N = L_x L_y L_z),
+the method of calculation and your computer.
 
 
 == Input files
