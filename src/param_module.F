@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-02-03 16:41:31 takeshi>
+! Time-stamp: <2013-04-01 12:11:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -372,7 +372,7 @@ contains
     call msg_ez(UNIT_LOG,str)
 
     !=== BEGIN: write parameters for gnuplot ============================
-    fn = trim(p%filename) // '.param'
+    fn = trim(p%filename) // '.param.gp'
     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn)
     open(unit=UNIT_SYSTEM,file=fn)
     write(UNIT_SYSTEM,'(a,i5)')    'Lx          =', p%Lx,         &

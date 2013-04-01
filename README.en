@@ -470,6 +470,10 @@ cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
 (Bourne Shell scripts). cross-section-p.sh and cross-section-dVddi.sh
 are symbolic links or copy of cross-section-q.sh.
 
+=== foo123.param.gp
+Parameter file for GNUPLOT.
+rename it to param.gp, then use it with cross-section-q.sh etc.
+
 === foo123.dipole-dipole-long+short.dat
 
 === foo123.dipole-dipole-long.dat

@@ -454,6 +454,9 @@ cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
 計算が止まってしまった場合には，このファイルを.restartファイルとして計算を
 再開することができます．
 
+=== foo123.param.gp
+GNUPLOT用のパラメーターファイルです．
+param.gpにファイル名を変更してからcross-section-q.shなどで使います．
 
 == シミュレーションの例
 ソフトウエアパッケージの次のディレクトリに入力ファイル（と結果）が入っています．
