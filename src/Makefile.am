@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-02-07 21:06:21 takeshi>
+# Time-stamp: <2013-04-04 02:18:22 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -83,10 +83,13 @@ defects-maker.rb \
 epit.gp \
 fft_acml.f \
 fft_acml.Makefile \
+fft_check.Makefile.FX10-frtpx-fftw3_omp \
 fft_check.Makefile.Intel-gfortran-fftw3_omp \
 fft_check.Makefile.Intel-ifort-MKL \
+fft_check.Makefile.Intel-ifort-fftw3_omp \
 fft_check.Makefile.SR16000-ofort90-fftw \
 fft_check.Makefile.SR16000-ofort90-matmpp \
+fft_check.Makefile.SR16000-xlf90_r-fftw_xlc \
 fft_check.html \
 inhomo-K.gp \
 plot.gp \
