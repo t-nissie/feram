@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2012-05-03 18:33:51 takeshi>
+! Time-stamp: <2013-04-21 13:21:41 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -42,7 +42,7 @@ subroutine initialize_E_field(p,c)
      call       msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.localfield was found and read successfully.')
      close(UNIT_SYSTEM)
   else
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', 'local.field was NOT found.')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE_NOT_FOUND', 'local.field was NOT found.')
      open(unit=UNIT_SYSTEM, file='ionic.configuration', status='old', action='read', iostat=ios)
      if (ios.eq.0) then
         stop ': Not implemented: Ewald sum for calculating the local field is not implemented yet.'
