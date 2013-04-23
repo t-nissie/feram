@@ -1,0 +1,58 @@
+= README for .quadratic file
+From version 0.21.00, feram can read .quadratic file,
+if the file exist. The .quadratic file will be used
+as quadratic IFC matrices at each k-point. IF the size
+of the system is Lx*Ly*Lz, you have to prepare
+(Lx/2+1)*Ly*Lz 3x3 matrices in the file.
+With this new feature of feram, you can directly use
+*projected* IFC matrices described in Ref.1.
+
+== References
+1. K. M. Rabe and U. V. Waghmare: "Localized basis for
+   effective lattice Hamiltonians: Lattice Wannier functions",
+   Phys. Rev. B 52, 13236 (1995).
+2. "[anaddb] FYI: plot eigenvalues of IFC matrix"
+   http://forum.abinit.org/viewtopic.php?f=12&t=1273
+
+== Step-by-step way to use .quadratic file
+(In the following description, input files are enclosed in "".
+They are in this src/24example-BaTiO3-read-IFC-as-quadratic/
+directory.)
+
+Plot the dispersion of eigenvalues of IFC-matrix with Ref.2. (1)
+
+Using first 3 lines of output of
+ $ ../diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
+prepare "softmodes" file as
+ 2  -5.595216     0.1642  0.0000 -0.0021     0.8086  0.0000 -0.0105    -0.3348 -0.0000  0.0042    -0.3217 -0.0000  0.0042    -0.3217 -0.0000  0.0044
+ 1  -5.595823     0.0000 -0.1642 -0.0000     0.0000 -0.8086 -0.0000    -0.0000  0.3218  0.0000    -0.0000  0.3348  0.0000    -0.0000  0.3217  0.0000
+ 3  -5.595216    -0.0021  0.0000 -0.1642    -0.0105  0.0000 -0.8086     0.0044 -0.0000  0.3217     0.0042 -0.0000  0.3217     0.0042 -0.0000  0.3348
+
+Prepare "perovskite-anaddb.in" file. (Lx/2+1)*Ly*Lz q-points
+for qph1l can be obtained with qpoints4anaddb.F as
+ $ gfortran -ffree-form -o qpoints4anaddb qpoints4anaddb.F
+ $ ./qpoints4anaddb
+
+Prepare a special anaddb patched with
+"abinit-7.0.5-ifc_src_72_response_phfrq3.patch".
+
+Using the special anaddb, make "zzzquadratic.quadratic" file.
+ $ anaddb < perovskite-anaddb.files > perovskite-anaddb.log &
+ $ grep projected perovskite-anaddb.log | sed 's/projected_IFC//' > zzzquadratic.quadratic
+ $ emacs zzzquadratic.quadratic   # cut some parts in the beginning
+ $ wc -l zzzquadratic.quadratic
+     9216 zzzquadratic.quadratic  # (Lx/2+1)*Ly*Lz*4 lines
+
+Set all j1-j7 to ZERO. Use P_kappa2 for *elevation*.
+Now you can run heating and cooling simulations
+with "heating.sh" and "cooling.sh".
+ $ OMP_NUM_THREADS=6 ./heating.sh $
+ $ OMP_NUM_THREADS=6 ./cooling.sh &
+ $ strain-susceptibility.gp
+Compare the results with those of
+../24example-BaTiO3-new-param-heating-cooling/ .
+
+Plot dispersion with plot_dispersion = .true..
+Comparing the dispersion with the original one (1), or
+../../doc/figures/BaTiO3-000-dispersion-with-ifc/BaTiO3-000-dispersion-with-ifc.pdf,
+may be a good idea.

@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-04-04 02:18:22 takeshi>
+# Time-stamp: <2013-04-23 19:23:51 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -105,7 +105,9 @@ marsaglia_tsang_uni64_check.gp \
 20example-BaTiO3-new-param-pyro \
 21example-KNbO3 \
 22example-BaTiO3-new-param-hl \
-23example-BaTiO3-new-param-hl-film-acoustic-mass
+23example-BaTiO3-new-param-hl-film-acoustic-mass \
+24example-BaTiO3-new-param-heating-cooling \
+25example-BaTiO3-read-quadratic
 
 # all: plot.ps # 300K0000000.ps decay-test.ps
 

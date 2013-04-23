@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2013-04-21 13:12:32 takeshi>
+! Time-stamp: <2013-04-23 20:21:23 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -46,7 +46,18 @@ subroutine dipole_dipole(p,c)
   call dipole_dipole_short_range(p,short_range)
   c%dipoI(:,:,:,:,:) = long_range(:,:,:,:,:) + short_range(:,:,:,:,:)
 
-  !write(6,'(3f10.5)') (c%dipoI(0,8,8,alpha,:), alpha=1,3)
+  ! open(unit=UNIT_QUADRATIC, file=trim(p%filename)//'.dipoI', status='replace')
+  !    do iz= 0, p%Lz-1
+  !       do iy= 0, p%Ly-1
+  !          do ix= 0, p%Lx/2
+  !             write(UNIT_QUADRATIC,'(3i3)'   ) ix,iy,iz
+  !             write(UNIT_QUADRATIC,'(3f12.5)') c%dipoI(ix,iy,iz,1,:)
+  !             write(UNIT_QUADRATIC,'(3f12.5)') c%dipoI(ix,iy,iz,2,:)
+  !             write(UNIT_QUADRATIC,'(3f12.5)') c%dipoI(ix,iy,iz,3,:)
+  !          end do
+  !       end do
+  !    end do
+  ! close(UNIT_QUADRATIC)
 
   if (p%plot_dispersion) then
      write(fn,'(a,a)') trim(p%filename),'.dipole-dipole-long.dat'
