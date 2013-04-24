@@ -35,6 +35,7 @@ for qph1l can be obtained with qpoints4anaddb.F as
 
 Prepare a special anaddb patched with
 "abinit-7.0.5-ifc_src_72_response_phfrq3.patch".
+This patch is for BaTiO3.
 
 Using the special anaddb, make "zzzquadratic.quadratic" file.
  $ anaddb < perovskite-anaddb.files > perovskite-anaddb.log &
@@ -49,8 +50,8 @@ with "heating.sh" and "cooling.sh".
  $ OMP_NUM_THREADS=6 ./heating.sh $
  $ OMP_NUM_THREADS=6 ./cooling.sh &
  $ strain-susceptibility.gp
-Compare the results with those of
-../24example-BaTiO3-new-param-heating-cooling/ .
+Compare the plotted results strain-susceptibility.eps
+with those of ../24example-BaTiO3-new-param-heating-cooling/ .
 
 Plot dispersion with plot_dispersion = .true..
 Comparing the dispersion with the original one (1), or
