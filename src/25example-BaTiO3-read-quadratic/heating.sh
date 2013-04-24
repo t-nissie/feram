@@ -1,6 +1,6 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2013-04-23 19:36:38 takeshi>
+# Time-stamp: <2013-04-24 09:47:21 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
@@ -25,7 +25,7 @@ while [ `perl -e "print $temperature <= $temperature_goal || 0"` = "1" ] ; do
 	GPa = $GPa
 	kelvin = $temperature
 	mass_amu = 38.24
-	Q_Nose = 0.001
+	Q_Nose = 0.01
 	
 	#--- System geometry -----------------------------
 	bulk_or_film = 'bulk'
