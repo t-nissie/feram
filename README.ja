@@ -308,6 +308,14 @@ feramを次のようにパラメータ・ファイル "foo123.feram" を引数�
 init_dipo_avgタグとinit_dipo_devタグとで指定される初期状態が
 疑似乱数を使って作られます．
 
+=== .quadratic input file
+２次の原子間力定数行列 (qudratic inter-atomic force constant (IFC)
+matrices) を.quadraticファイルから読み込ませることができます．
+3x3の行列が(Lx/2+1)*Ly*Lz個ひつようです．.quadraticファイルを使う場合，
+j1-j7 をすべてゼロにして下さい．また，P_kappa2を *elevation*
+のために使って下さい．src/25example-BaTiO3-read-quadratic/ にその
+使用例があります．
+
 === .defects input file
 feramを次のようにパラメータ・ファイル "foo123.feram" を引数として
  $ feram foo123.feram

@@ -326,6 +326,12 @@ feram searches for the "foo123.restart" file as an
 initial configurations. If there is no such file, feram
 starts from a random configurations.
 
+=== .quadratic input file
+Qudratic inter-atomic force constant (IFC) matrices can be
+read from .quadratic file. Set all j1-j7 to ZERO. Use P_kappa2
+for *elevation*. (Lx/2+1)*Ly*Lz 3x3 matrices are required.
+See src/25example-BaTiO3-read-quadratic/ for more details.
+
 === .defects input file
 If you executed feram with a parameter file "foo123.feram" as
  $ feram foo123.feram
