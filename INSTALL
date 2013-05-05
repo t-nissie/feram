@@ -64,21 +64,19 @@ If you installed FFTW3 into your home directory,
 specify CPPFLAGS and LDFLAGS for configure.
  $ ../configure FC=gfortran CPPFLAGS=-I/home/takeshi/include LDFLAGS=-L/home/takeshi/lib
 
-FFTW3, BLAS and LAPACK libraries can be easily installed into
-Debian 7.0 (wheezy) GNU/Linux system with
- # apt-get install libfftw3-dev libblas-dev liblapack-dev
-Debian 7.0 will be released next spring (2013).
-
 == Linux
-=== Ubuntu 12.10 (feram-0.19.08, 2012-12-09)
+=== Ubuntu 12.10, Ubuntu 13.04 and Debian 7.0 (feram-0.21.00, 2013-05-05)
+FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
+installed into Debian 7.0 (Wheezy) GNU/Linux systems or Ubuntu systems.
+
 ==== install required packages
- $ sudo apt-get install liblapack-dev libblas-dev gfortran libfftw3-dev libfftw3-doc gfortran-doc
+ $ sudo apt-get install liblapack-dev libblas-dev gfortran libfftw3-dev libfftw3-doc gfortran-doc athena-jot
  $ sudo apt-get install autoconf automake libtool autoconf-doc libtool-doc   # For developers
 
 ==== compile feram
- $ tar xf feram-0.19.08.tar.xz
- $ mkdir feram-0.19.08/ubuntu-12.10
- $ cd feram-0.19.08/ubuntu-12.10
+ $ tar xf feram-0.21.00.tar.xz
+ $ mkdir feram-0.21.00/ubuntu-13.04
+ $ cd feram-0.21.00/ubuntu-13.04
  $ ../configure && make
  $ make check
 
