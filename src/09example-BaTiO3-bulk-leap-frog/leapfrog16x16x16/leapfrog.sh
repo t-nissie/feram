@@ -1,18 +1,16 @@
 #!/bin/sh
 # leapfrog.sh
-# Time-stamp: <2008-10-14 20:37:02 takeshi>
+# Time-stamp: <2013-05-21 10:34:34 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 n_thermalize=40000
 n_average=10000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
-i=0
-while [ $i -le 60 ] ; do
-    i=`expr $i + 1`
+for i in `jot 40`; do
     dev=`printf '%.3d' $i`
     filename=leapfrog"$dev"
-    cat > $filename <<-EOF
+    cat > $filename.feram <<-EOF
 	#--- Method, Temperature, and mass ---------------
 	method = 'lf'
 	GPa = -5.0
@@ -28,6 +26,8 @@ while [ $i -le 60 ] ; do
 	n_thermalize = $n_thermalize
 	n_average    = $n_average
 	n_coord_freq = $n_coord_freq
+	coord_directory = 'never'
+	distribution_directory = 'never'
 	
 	#--- On-site (Polynomial of order 4) -------------
 	P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4
@@ -53,8 +53,6 @@ while [ $i -le 60 ] ; do
 	Z_star        = 9.956
 	epsilon_inf   = 5.24
 EOF
-    echo 1 > FILES
-    echo $filename >> FILES
-    OMP_NUM_THREADS=6 ../../feram $filename > /dev/null
+    ../../feram $filename.feram
     cat $filename.avg >> leapfrog.avg
 done
