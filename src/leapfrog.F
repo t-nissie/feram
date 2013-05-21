@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2013-02-03 20:29:36 takeshi>
+! Time-stamp: <2013-05-21 20:59:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -39,35 +39,41 @@ subroutine leapfrog(p,c,e,i_step)
      c%dipoP(:,:,Lz_3_4,:) = c%dipoP(:,:,Lz_3_4,:) * sqrt((c%e_layer_dipo(Lz_3_4)-Lx_Ly_delta_e)/c%e_layer_dipo(Lz_3_4))
   end if
 
+  if (i_step.eq.0) then
+     call mirror_force_mirror(p,c,e)
 !$omp parallel do
-  do iz=0, p%Lz-1
-     do alpha = 1,3
-        c%dipoP(:,:,iz,alpha) = c%dipoP(:,:,iz,alpha) - p%dt_2 * c%dVddi(:,:,iz,alpha)
+     do iz=0, p%Lz-1
+        do alpha = 1,3
+           c%dipoP(:,:,iz,alpha) = c%dipoP(:,:,iz,alpha) - p%dt_2 * c%dVddi(:,:,iz,alpha)
+        end do
      end do
-  end do
 !$omp end parallel do
+  else
 !$omp parallel do
-  do iz=0, p%Lz-1
-     do alpha = 1,3
-        c%dipoR(:,:,iz,alpha) = c%dipoR(:,:,iz,alpha) + p%dt   * c%dipoP(:,:,iz,alpha) * c%M_inv(:,:,iz,alpha)
+     do iz=0, p%Lz-1
+        do alpha = 1,3
+           c%dipoR(:,:,iz,alpha) = c%dipoR(:,:,iz,alpha) + p%dt   * c%dipoP(:,:,iz,alpha) * c%M_inv(:,:,iz,alpha)
+        end do
      end do
-  end do
 !$omp end parallel do
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'updated.')
+     if (p%verbose>=2) then
+        call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'updated.')
+     end if
+
+     call mirror_force_mirror(p,c,e)
+
+!$omp parallel do
+     do iz=0, p%Lz-1
+        do alpha = 1,3
+           c%dipoP(:,:,iz,alpha) = c%dipoP(:,:,iz,alpha) - p%dt * c%dVddi(:,:,iz,alpha)
+        end do
+     end do
+!$omp end parallel do
   end if
 
-  call mirror_force_mirror(p,c,e)
-
-!$omp parallel do
-  do iz=0, p%Lz-1
-     do alpha = 1,3
-        c%dipoP(:,:,iz,alpha) = c%dipoP(:,:,iz,alpha) - p%dt_2 * c%dVddi(:,:,iz,alpha)
-     end do
-  end do
-!$omp end parallel do
 ! e%acou_kinetic = kinetic_energy_acou(p,c)
   e%dipo_kinetic = kinetic_energy_dipo(p,c)
+
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
   end if
