@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2013-05-21 20:59:58 takeshi>
+! Time-stamp: <2013-05-22 18:06:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -19,8 +19,8 @@ subroutine leapfrog(p,c,e,i_step)
   integer Lz_1_4
   integer Lz_3_4
   integer iz,alpha
-  real*8 kinetic_energy_dipo
-  external kinetic_energy_dipo
+  real*8   kinetic_energy_dipo, kinetic_energy_acou
+  external kinetic_energy_dipo, kinetic_energy_acou
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
@@ -30,6 +30,10 @@ subroutine leapfrog(p,c,e,i_step)
   Lz_3_4 = Lz_1_4*3
 
   if (p%delta_e.ne.0.0d0 .and. i_step>p%n_thermalize) then
+     if (p%mass_acou > 0.0d0) then
+        call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'Thermal conductivity simulation with mass_acou>0 is not implemented yet.')
+        stop 1
+     end if
 !$omp parallel do
      do iz=0,p%Lz-1
         c%e_layer_dipo(iz) = SUM( c%dipoP(:,:,iz,:) * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:) ) / 2
@@ -48,6 +52,15 @@ subroutine leapfrog(p,c,e,i_step)
         end do
      end do
 !$omp end parallel do
+     if (p%mass_acou > 0.0d0) then
+!$omp parallel do
+        do iz=0, p%Lz-1
+           do alpha = 1,3
+              c%acouP(:,:,iz,alpha) = c%acouP(:,:,iz,alpha) - p%dt_2 * c%dVdacR(:,:,iz,alpha)
+           end do
+        end do
+!$omp end parallel do
+     end if
   else
 !$omp parallel do
      do iz=0, p%Lz-1
@@ -56,6 +69,15 @@ subroutine leapfrog(p,c,e,i_step)
         end do
      end do
 !$omp end parallel do
+     if (p%mass_acou > 0.0d0) then
+!$omp parallel do
+        do iz=0, p%Lz-1
+           do alpha = 1,3
+              c%acouR(:,:,iz,alpha) = c%acouR(:,:,iz,alpha) + (p%dt*p%mass_acou_inv) * c%acouP(:,:,iz,alpha)
+           end do
+        end do
+!$omp end parallel do
+     end if
      if (p%verbose>=2) then
         call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'updated.')
      end if
@@ -69,10 +91,21 @@ subroutine leapfrog(p,c,e,i_step)
         end do
      end do
 !$omp end parallel do
+     if (p%mass_acou > 0.0d0) then
+!$omp parallel do
+        do iz=0, p%Lz-1
+           do alpha = 1,3
+              c%acouP(:,:,iz,alpha) = c%acouP(:,:,iz,alpha) - p%dt * c%dVdacR(:,:,iz,alpha)
+           end do
+        end do
+!$omp end parallel do
+     end if
   end if
 
-! e%acou_kinetic = kinetic_energy_acou(p,c)
-  e%dipo_kinetic = kinetic_energy_dipo(p,c)
+  e%dipo_kinetic    = kinetic_energy_dipo(p,c)
+  if (p%mass_acou > 0.0d0) then
+     e%acou_kinetic = kinetic_energy_acou(p,c)
+  end if
 
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')

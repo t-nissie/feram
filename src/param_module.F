@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-04-01 12:11:56 takeshi>
+! Time-stamp: <2013-05-22 19:19:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -200,9 +200,9 @@ contains
           read(str,*) dmy1, dmy2, mass_amu  ! [amu]
           p%mass_dipo =          mass_amu / 9648.53377163899d0
        case('acoustic_mass_amu')
-          if (p%method.eq.'md' .or. p%method.eq.'lf') then
+          if (p%method.eq.'md') then
              write(0,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
-             stop ": You cannot use method = 'md' nor 'lf' togeter with acoustic_mass_amu."
+             stop ": You cannot use method = 'md' togeter with acoustic_mass_amu."
           end if
           read(str,*) dmy1, dmy2, acoustic_mass_amu  ! [amu]
           p%mass_acou = acoustic_mass_amu / 9648.53377163899d0

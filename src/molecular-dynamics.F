@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2013-02-04 00:02:36 takeshi>
+! Time-stamp: <2013-05-22 18:02:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -34,7 +34,7 @@ subroutine molecular_dynamics(p,c)
   write(message,fmt_time_step) 0; call msg_ez(UNIT_LOG,message)
   call initialize_E_field(p,c)
   call initialize_dipoR(p,c,e)
-  e%total = e%dipo_kinetic/c%s_Nose**2 + sum_potential_energies(e)
+  e%total = e%dipo_kinetic/c%s_Nose**2 + e%acou_kinetic + sum_potential_energies(e)
   call write_Energy(p,c,e,UNIT_LOG)
   !write(message,"('strain',6e13.5)") c%strain(:)
   !call msg_ez(UNIT_LOG,message)
@@ -75,7 +75,7 @@ subroutine molecular_dynamics(p,c)
      !write(message,"('strain',6e13.5)") c%strain(:)
      !call msg_ez(UNIT_LOG,message)
 
-     e%total = e%dipo_kinetic/c%s_Nose**2 + sum_potential_energies(e)
+     e%total = e%dipo_kinetic/c%s_Nose**2 + e%acou_kinetic + sum_potential_energies(e)
      if (detail) then
         call write_Energy(p,c,e,UNIT_LOG)
      end if
