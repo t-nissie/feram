@@ -1,6 +1,6 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2013-01-08 20:33:41 t-nissie>
+# Time-stamp: <2013-05-23 18:58:29 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
@@ -20,7 +20,7 @@ for temperature in `jot - 170 350  5` ; do
 	GPa = -5.0
 	kelvin = $temperature
 	mass_amu = 39.0
-	Q_Nose = 0.1
+	# acoustic_mass_amu = 46.44
 	
 	#--- System geometry -----------------------------
 	bulk_or_film = 'bulk'

@@ -1,8 +1,12 @@
 ToDo
 
+o No need to initialize Energy_type ???
+
+o e%acou_kinetic=0 if mass_acou<0
+
 o Needs mirror of c%E_field in hysteresis_loop.F, maybe.
 
-o Nose-Poincareでもleapfrogでもacoustic displacementのMDができるように．
+o Nose-Poincareでもacoustic displacementのMDができるように．
 
 o Use in-place FFT for speed up (See in-place-FFT.ja.txt)
 

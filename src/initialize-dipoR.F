@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2013-04-21 13:23:44 takeshi>
+! Time-stamp: <2013-05-23 12:10:29 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -27,10 +27,11 @@ subroutine initialize_dipoR(p,c,e)
         do iy = 0, p%Ly-1
            do ix = 0, p%Lx-1
               read(UNIT_SYSTEM,*) dummy_x, dummy_y, dummy_z, &
-                   c%dipoR(ix,iy,iz,1),c%dipoR(ix,iy,iz,2),c%dipoR(ix,iy,iz,3),&
-                   c%dipoP(ix,iy,iz,1),c%dipoP(ix,iy,iz,2),c%dipoP(ix,iy,iz,3),&
-                   c%dVddi(ix,iy,iz,1),c%dVddi(ix,iy,iz,2),c%dVddi(ix,iy,iz,3),&
-                   c%acouR(ix,iy,iz,1),c%acouR(ix,iy,iz,2),c%acouR(ix,iy,iz,3)
+                   c%dipoR(ix,iy,iz,1:3),&
+                   c%dipoP(ix,iy,iz,1:3),&
+                   c%dVddi(ix,iy,iz,1:3),&
+                   c%acouR(ix,iy,iz,1:3),&
+                   c%acouP(ix,iy,iz,1:3)
            end do
         end do
      end do
@@ -55,8 +56,6 @@ subroutine initialize_dipoR(p,c,e)
      c%dipoP(:,:,:,:) = 0.0d0
      c%acouR(:,:,:,:) = 0.0d0
   end if
-
-  c%acouP(:,:,:,:) = 0.0d0
 
   call read_defects_u(p,c)   ! Prepares fixed u for defects and c%m_inv(:,:,:,:).
 

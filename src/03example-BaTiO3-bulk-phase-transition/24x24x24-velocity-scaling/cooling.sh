@@ -1,6 +1,6 @@
 #!/bin/sh
 # cooling.sh
-# Time-stamp: <2013-01-08 20:32:23 t-nissie>
+# Time-stamp: <2013-05-23 18:58:19 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f cooling.avg
@@ -20,7 +20,7 @@ for temperature in `jot - 350 170 -5` ; do
 	GPa = -5.0
 	kelvin = $temperature
 	mass_amu = 39.0
-	Q_Nose = 0.1
+	# acoustic_mass_amu = 46.44
 	
 	#--- System geometry -----------------------------
 	bulk_or_film = 'bulk'
