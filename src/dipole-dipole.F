@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2013-04-23 20:21:23 takeshi>
+! Time-stamp: <2013-05-23 09:39:42 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -25,8 +25,8 @@ subroutine dipole_dipole(p,c)
            short_range(:,:,:,:,:) = 0.0d0
 
   open(unit=UNIT_QUADRATIC, file=trim(p%filename)//'.quadratic', status='old', action='read', iostat=ios)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.quadratic'//' was found.')
   if (ios.eq.0) then
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.quadratic'//' was found.')
      do iz= 0, p%Lz-1
         do iy= 0, p%Ly-1
            do ix= 0, p%Lx/2
