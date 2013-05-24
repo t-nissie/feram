@@ -164,7 +164,7 @@ If it is set to the effective mass of acoustic displacements
 molecular dynamics is performed on acoustic displacements.
 Its unit is atomic mass unit.
 Generally, it is average of mass of 5 atoms.
-You cannot use method = 'md' nor 'lf' togeter with acoustic_mass_amu, currently.
+You cannot use method = 'md' togeter with acoustic_mass_amu, currently.
 
 ===== Q_Nose
 Q_Nose for Nose-Poincare thermostat.
