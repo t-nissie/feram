@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-04-23 19:23:51 takeshi>
+# Time-stamp: <2013-05-24 10:18:12 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -98,6 +98,7 @@ splot.gp \
 feram_mpi.F \
 marsaglia_tsang_uni64_check.gp \
 03example-BaTiO3-bulk-phase-transition \
+09example-BaTiO3-bulk-leap-frog \
 10example-PbTiO3-DDB2short \
 17example-PbTiO3-100-900K \
 18example-benchmark \

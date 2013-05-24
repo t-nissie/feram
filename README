@@ -1,17 +1,21 @@
 Dear current and future feram users,
 
-I released feram-0.21.00.tar.xz from
+I released feram-0.21.01.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 
 "feram" is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
-From this version 0.21.00, qudratic inter-atomic force
-constant (IFC) matrices can be read from .quadratic file.
-See feram-0.21.00/src/25example-BaTiO3-read-quadratic/ .
+From this version 0.21.01, you can do leapfrog MD with
+acoustic displacements, i.e. acoustic_mass_amu > 0.
+See src/09example-BaTiO3-bulk-leap-frog/.
 
-From this version 0.21.00, parameters for GNUPLOT will
+From the version 0.21.00, qudratic inter-atomic force
+constant (IFC) matrices can be read from .quadratic file.
+See src/25example-BaTiO3-read-quadratic/ .
+
+From the version 0.21.00, parameters for GNUPLOT will
 be written into .param.gp file, not into .param file.
 
 Currently, a hysteresis loop calculation of *film* with
