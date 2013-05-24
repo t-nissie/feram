@@ -1,0 +1,11 @@
+= Example of leapfrog MD simulations with feram
+Leapfrog MD simulations in the microcanonical ensemble
+conserve total energy. You can also turn on the MD
+of acoustic displacements by setting acoustic_mass_amu.
+
+Temperature is adjusted by init_dipo_dev, the initial
+deviation of dipoles.
+
+Because this example does not read the last .coord
+file, the plot of strains are not continuous. See
+leapfrog16x16x16/strain.pdf .

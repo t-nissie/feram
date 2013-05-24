@@ -1,6 +1,6 @@
 #!/bin/sh
 # leapfrog.sh
-# Time-stamp: <2013-05-21 10:34:34 takeshi>
+# Time-stamp: <2013-05-24 10:22:31 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 n_thermalize=40000
@@ -15,7 +15,7 @@ for i in `jot 40`; do
 	method = 'lf'
 	GPa = -5.0
 	mass_amu = 39.0
-	Q_Nose = 0.1
+	# acoustic_mass_amu = 46.44
 	
 	#--- System geometry -----------------------------
 	bulk_or_film = 'bulk'
