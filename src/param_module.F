@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-05-22 19:19:52 takeshi>
+! Time-stamp: <2013-05-31 08:10:19 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -31,7 +31,7 @@ module Param_module
      !
      !--- Method, Temperature, and mass ---------------
      character(len=30) :: method ! 'md' Nose-Poincare, 'vs' velocity-scaling, 'lf' leapfrog, 'hl' hysteresis loop
-     real*8 GPa          ! [GPa]
+     real*8 GPa(3)       ! [GPa]
      real*8 kelvin       ! [K]
      real*8 target_kinetic_energy
      real*8 mass_dipo    ! [eV Angstrom^-2 ps^2]
@@ -98,7 +98,7 @@ module Param_module
      real*8 dt_2
      integer n_freedom
      real*8 unit_cell_volume
-     real*8 pNa03 ![eV]
+     real*8 pNa03(3) ![eV]
      real*8 temperature_eV
      logical E_field_always_zero 
      !=== etc ============================================================
@@ -112,7 +112,7 @@ contains
     character(len=*),intent(in)    :: fn
     character (len=300) str
     character (len=30)  name, dmy1, dmy2
-    integer io, line_number, i
+    integer io, iosGPa, line_number, i
     real*8 mass_amu
     real*8 acoustic_mass_amu
 
@@ -122,7 +122,7 @@ contains
 
     ! Default parameters
     p%method = 'md'
-    p%GPa    = 0.0d0
+    p%GPa(1:3) = 0.0d0
     p%kelvin = 0.0d0
     p%target_kinetic_energy = 0.0d0
     p%mass_dipo = 100.0d0 / 9648.53377163899d0
@@ -192,7 +192,12 @@ contains
           read(str,*) dmy1, dmy2, p%method
           if (p%method.eq.'hl') p%E_field_always_zero = .false.
        case('GPa')
-          read(str,*) dmy1, dmy2, p%GPa
+          read(str,*,IOSTAT=iosGPa) dmy1, dmy2, p%GPa(1), p%GPa(2), p%GPa(3)
+          if (iosGPa.ne.0) then
+             read(str,*) dmy1, dmy2, p%GPa(1)
+             p%GPa(2) = p%GPa(1)
+             p%GPa(3) = p%GPa(1)
+          end if
        case('kelvin')
           read(str,*) dmy1, dmy2, p%kelvin
           p%temperature_eV = p%kelvin / KELVIN_EV
@@ -336,7 +341,7 @@ contains
        p%kappa = sqrt(M_PI) / p%a0 / (dble(p%N))**(1.0d0/6)
     end if
     p%unit_cell_volume = p%a0 ** 3
-    p%pNa03 = p%GPa *0.01d0 / ELEMENTARY_CHARGE * p%N * p%unit_cell_volume
+    p%pNa03(1:3) = p%GPa(1:3) * 0.01d0 / ELEMENTARY_CHARGE * p%N * p%unit_cell_volume
 
     p%target_kinetic_energy = p%kelvin * 1.5d0 * p%N / KELVIN_EV
 
