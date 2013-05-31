@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-05-31 08:10:19 takeshi>
+! Time-stamp: <2013-05-31 09:20:20 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -112,7 +112,7 @@ contains
     character(len=*),intent(in)    :: fn
     character (len=300) str
     character (len=30)  name, dmy1, dmy2
-    integer io, iosGPa, line_number, i
+    integer io, line_number, i
     real*8 mass_amu
     real*8 acoustic_mass_amu
 
@@ -192,9 +192,10 @@ contains
           read(str,*) dmy1, dmy2, p%method
           if (p%method.eq.'hl') p%E_field_always_zero = .false.
        case('GPa')
-          read(str,*,IOSTAT=iosGPa) dmy1, dmy2, p%GPa(1), p%GPa(2), p%GPa(3)
-          if (iosGPa.ne.0) then
-             read(str,*) dmy1, dmy2, p%GPa(1)
+          read(str,*) dmy1, dmy2, p%GPa(1), p%GPa(2), p%GPa(3)
+          if (p%GPa(1).ne.0.0d0 .and. p%GPa(2).eq.0.0d0 .and. p%GPa(3).eq.0.0d0) then
+             write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
+             write(0,'(a,a,i3,a)')   __FILE__, ':', __LINE__ ,  ': Hydrostatic pressure is applied.'
              p%GPa(2) = p%GPa(1)
              p%GPa(3) = p%GPa(1)
           end if
