@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2013-05-24 11:02:01 takeshi>
+dnl Time-stamp: <2013-06-01 19:33:06 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -34,8 +34,8 @@ FCFLAGS=$FCFLAGS_PRESERVE
 AC_ARG_VAR(MPIFC, [MPI Fortran compiler command])
 case "$FC" in
   gfortran*)
-    test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -funroll-loops -pipe\
-      -ffpe-trap=zero,overflow -fopenmp"
+    test -n "$FCFLAGS" || FCFLAGS="-g -Wall -O3 -funroll-loops -pipe -ffpe-trap=zero,overflow -fopenmp"
+    gfortran --version | head -1 | grep -v 4.8.0 || AC_MSG_ERROR([Do NOT use gfortran 4.8.0. Use 4.8.1 or higher. See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=56696 .])
     ;;
   ifort)
     test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1"
