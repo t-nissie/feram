@@ -59,8 +59,8 @@ set title 'epit256x256x256: feram-0.21.01 (r1831) time for iteration'
 
 plot 'epit256x256x256.SR16000.r1831.dat' using 1:3 t "SR16000 (3.83 GHz)\n1 node, 4 CPU, SMT off\nFFTW" w p lt 3 pt 4,\
      f_SR16k(x)                                    t " "                                                w l lt 3 lw 3,\
-     'epit256x256x256.FX10.r1831.dat'    using 1:3 t "FX10 (1.848 GHz)\n1 node, 1 CPU, FFTW"            w p lt 1 pt 3,\
-     f_FX10(x)                                     t " "                                                w l lt 1 lw 3
+     'epit256x256x256.FX10.r1831.dat'    using 1:3 t "FX10 (1.848 GHz)\n1 node, 1 CPU,\nFFTW"           w p lt 1 pt 3,\
+     0.9<x && x<16.1 ? f_FX10(x) : 1/0             t " "                                                w l lt 1 lw 3
      
 #     'epit256x256x256.E5-2670.r1258.dat' t "Xeon E5-2670 (2.60 GHz)\n1 node, 2 CPU, HT off\nifort-12.1, MKL"\
 #                                                                 w p lt 2 pt 2,\
