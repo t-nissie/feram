@@ -1,0 +1,15 @@
+#!/bin/sh
+#PJM -L "rscgrp=short"
+#PJM -L "node=1"
+#PJM -L "elapse=1:30:00"
+#PJM -j
+export PJM_JOBNAME=epit256x256x256.FX10.profiling
+export FLIB_FASTOMP=TRUE
+export PARALLEL=16
+export OMP_NUM_THREADS=16
+mkdir -p profiling
+rm -f profiling/*
+fipp -C -Ihwm -d profiling ../feram epit256x256x256.feram
+
+##
+# fipppx -Ibalance,cpu,hwm -l 40  -A -d profiling > profiling.FX10.PROFILE
