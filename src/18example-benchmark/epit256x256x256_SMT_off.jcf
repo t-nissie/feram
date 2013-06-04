@@ -1,0 +1,25 @@
+#!/bin/bash
+#@ class = qjcf
+#@ output = epit256x256x256.out
+#@ error  = epit256x256x256.err
+#@ environment = COPY_ALL
+#@ restart = no
+#@ job_name = epit256x256x256
+#@ job_type = serial
+#@ queue
+#
+# Usage: submit EJCF general -jcf epit256x256x256.jcf
+#
+##
+# For IBM XL Fortran
+export MALLOCMULTIHEAP=true
+export LDR_CNTRL=LARGE_PAGE_DATA=M
+
+for i in 32 31 24 16 8; do
+  export OMP_NUM_THREADS=$i
+  export XLSMPOPTS="spins=0:yields=0:parthds=$i:stride=2:startproc=0"	
+  ../feram epit256x256x256.feram
+  timing_report=`grep TIMING_REPORT epit256x256x256.log`
+  printf '%2d %s\n' $i "$timing_report" >> epit256x256x256.SR16000.dat
+done
+rm -f *.coord
