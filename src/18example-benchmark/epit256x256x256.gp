@@ -10,7 +10,7 @@ set output 'epit256x256x256.eps'
 set multiplot
 
 f_FX10(x) = t1_FX10 * ((1-p_FX10)+p_FX10/x)
-t1_FX10 = 20000.0
+t1_FX10 = 45000.0
 p_FX10  = 0.95   # initial guess
 fit f_FX10(x) 'epit256x256x256.FX10.r1831.dat' using 1:3 via t1_FX10,p_FX10
 
@@ -85,6 +85,14 @@ set nomultiplot
 set output
 
 !epstopdf.pl epit256x256x256.eps
+
+print 't1_FX10    = ', t1_FX10     
+print 'p_FX10     = ', p_FX10      
+print 't1_SR16k   = ', t1_SR16k    
+print 'p_SR16k    = ', p_SR16k     
+print 't1_E5_2670 = ', t1_E5_2670  
+print 'p_E5_2670  = ', p_E5_2670   
+
 
 #Local variables:
 #  compile-command: "gnuplot epit256x256x256.gp"
