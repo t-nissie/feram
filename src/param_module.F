@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-05-31 10:06:52 t-nissie>
+! Time-stamp: <2013-06-07 21:25:51 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -193,11 +193,10 @@ contains
           if (p%method.eq.'hl') p%E_field_always_zero = .false.
        case('GPa')
           read(str,*,IOSTAT=iosGPa) dmy1, dmy2, p%GPa(1), p%GPa(2), p%GPa(3)
-          if ( io.ne.0 .or. (p%GPa(1).ne.0.0d0 .and. &
-               &             p%GPa(2).eq.0.0d0 .and. &
-               &             p%GPa(3).eq.0.0d0) ) then
+          if (iosGPa.ne.0) then
              write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
              write(0,'(a,a,i3,a)')   __FILE__, ':', __LINE__ ,  ': Hydrostatic pressure is applied.'
+             read(str,*) dmy1, dmy2, p%GPa(1)
              p%GPa(2) = p%GPa(1)
              p%GPa(3) = p%GPa(1)
           end if
