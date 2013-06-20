@@ -2,7 +2,7 @@
 ##
 FC=gfortran
 FFLAGS=-Wall -O3 -fopenmp -ffree-form -ffree-line-length-none
-CPPFLAGS=-DHAVE_LIBFFTW3 -DHAVE_LIBFFTW3_OMP -I/home/t-nissie/Linux-x86_64/include
+CPPFLAGS=-DHAVE_LIBFFTW3 -I/home/t-nissie/Linux-x86_64/include
 LDFLAGS=-lfftw3 -lfftw3_omp \
  -L/home/t-nissie/Linux-x86_64/lib
 
