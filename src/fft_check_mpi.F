@@ -77,15 +77,15 @@ program fft_check_mpi
   call system_clock(c_ro(0))
 
   !   create MPI plan for in-place forward DFT (note dimension reversal)
-  plan_r2c = fftw_mpi_plan_dft_r2c_3d(Lz, Ly, Lx, r, c, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_OUT))
-  plan_c2r = fftw_mpi_plan_dft_c2r_3d(Lz, Ly, Lx, c, r, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_IN))
+  plan_r2c = fftw_mpi_plan_dft_r2c_3d(Lz, Ly, Lx, r, c, MPI_COMM_WORLD, ior(FFTW_PATIENT,FFTW_MPI_TRANSPOSED_OUT))
+  plan_c2r = fftw_mpi_plan_dft_c2r_3d(Lz, Ly, Lx, c, r, MPI_COMM_WORLD, ior(FFTW_PATIENT,FFTW_MPI_TRANSPOSED_IN))
 
   call system_clock(c_ro(1))
 
   !   initialization of array r(:,:,:) with a wave
 !$omp parallel do
   do i = 1, local_Lz
-     if (mod(i+local_z_offset,2).eq.1) then
+     if (mod(int(i+local_z_offset),2).eq.1) then
         r(:, :, i) = 0.1d0
      else
         r(:, :, i) = 0.0d0
