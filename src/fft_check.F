@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2013-03-12 11:00:38 takeshi>
+! Time-stamp: <2013-06-21 05:27:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -196,7 +196,7 @@ However, introduction of "padding" make code complicated.
 Therefore, "padding" is not introduced in this fft_check.F.
 
 == Copying and author
-Copyright © 2007-2032 by Takeshi Nishimatsu
+Copyright © 2007-2013 by Takeshi Nishimatsu
 
 fft_check is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
