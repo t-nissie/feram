@@ -18,6 +18,13 @@ program fft_check_mpi
   integer                            :: n, N_TIMES, i_error, my_mpi_rank, n_mpi_procs
   character(len=100)                 :: str
 
+  ! For timing
+  integer                 :: c_ro(0:2)   ! count
+  real*8                  :: t_ro(1:2)   ! time
+  real*8                  :: g_ro        ! GFLOPS
+  real*8                  :: f_c, f_r    ! The numbers of floating point operations in [G]
+  integer                 :: count_rate, count_max
+
 # if defined(_OPENMP)
   integer                            :: provided, OMP_GET_MAX_THREADS
   call MPI_INIT_THREAD(MPI_THREAD_FUNNELED, provided, i_error)
@@ -55,11 +62,27 @@ program fft_check_mpi
   rdata = fftw_alloc_real(2 * alloc_local); call c_f_pointer(rdata, r, [2*(Lx/2+1),Ly,local_Lz])
   cdata = fftw_alloc_complex( alloc_local); call c_f_pointer(cdata, c, [   Lx/2+1, Lz,local_Ly])
 
+  !   first-touch of r(:,:,:) and c(:,:,:)
+!$omp parallel do
+  do i = 1, local_Lz
+     r(:, :, i) = 0.0d0
+  end do
+!$omp end parallel do
+!$omp parallel do
+  do i = 1, local_Ly
+     c(:, :, i) = (0.0d0, 0.0d0)
+  end do
+!$omp end parallel do
+
+  call system_clock(c_ro(0))
+
   !   create MPI plan for in-place forward DFT (note dimension reversal)
   plan_r2c = fftw_mpi_plan_dft_r2c_3d(Lz, Ly, Lx, r, c, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_OUT))
   plan_c2r = fftw_mpi_plan_dft_c2r_3d(Lz, Ly, Lx, c, r, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_IN))
 
-  !   initialization and first-touch of array r(:,:,:) with a wave
+  call system_clock(c_ro(1))
+
+  !   initialization of array r(:,:,:) with a wave
 !$omp parallel do
   do i = 1, local_Lz
      if (mod(i+local_z_offset,2).eq.1) then
@@ -67,13 +90,6 @@ program fft_check_mpi
      else
         r(:, :, i) = 0.0d0
      end if
-  end do
-!$omp end parallel do
-
-  !   first-touch of array c(:,:,:)
-!$omp parallel do
-  do i = 1, local_Ly
-     c(:, :, i) = (0.0d0, 0.0d0)
   end do
 !$omp end parallel do
 
@@ -91,9 +107,11 @@ program fft_check_mpi
 !$omp end parallel do
      call fftw_mpi_execute_dft_c2r(plan_c2r, c, r)
   end do
+
+  call system_clock(c_ro(2), count_rate, count_max)
+
   write(6,'(a,i2,a,i2,a,f10.2)')          'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
        &',                                             r(1,1,1)      =', r(1,1,1)
-
 
   !   let them free
   call fftw_destroy_plan(plan_r2c)
@@ -101,8 +119,22 @@ program fft_check_mpi
   call fftw_free(rdata)
   call fftw_free(cdata)
 
+  do i = 1, 2
+     t_ro(i) = dble(c_ro(i)-c_ro(i-1))/count_rate ; if (t_ro(i)<0.0d0) t_ro(i)=t_ro(i)+dble(count_max)/count_rate
+  end do
+
+  f_c = log(dble(Lx)*dble(Lz)*dble(Ly)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * Lx * Ly * Lz * 2
+  f_r = f_c / 2
+  write(0,'(a,f9.2,a)') ' The number of floating point operations: f_r = ', f_r, ' [G]'
+
+  g_ro = f_r / t_ro(2)
+
+  write(6,'(i8,3i5,i11,2i5,1(f13.3,f8.3,f8.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz,&
+       & OMP_GET_MAX_THREADS(), n_mpi_procs, t_ro(1), t_ro(2), g_ro
+
+
   call MPI_FINALIZE(i_error)
 end program fft_check_mpi
 !Local variables:
-!  compile-command: "mpif90 -Wall -O3 -I/home/t-nissie/Linux-x86_64/include -ffree-form -fopenmp -o fft_check_mpi fft_check_mpi.F -lfftw3 -lfftw3_mpi -L/home/t-nissie/Linux-x86_64/lib -lfftw3_omp"
+!  compile-command: "mpif90 -Wall -O3 -I/home/t-nissie/Linux-x86_64/include -ffree-form -fopenmp -o fft_check_mpi fft_check_mpi.F -lfftw3 -lfftw3_mpi -L/home/t-nissie/Linux-x86_64/lib -lfftw3_omp && OMP_NUM_THREADS=4 mpirun -np 2 ./fft_check_mpi && sleep 1"
 !End:
