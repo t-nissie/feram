@@ -17,6 +17,7 @@ program fft_check_mpi
   integer(C_INTPTR_T)                ::                 local_Ly, local_y_offset
   integer                            :: n, N_TIMES, i_error, my_mpi_rank, n_mpi_procs
   character(len=100)                 :: str
+  logical                            :: in_or_out
 
   ! For timing
   integer                 :: c_ro(0:2)   ! count
@@ -30,25 +31,29 @@ program fft_check_mpi
   call MPI_INIT_THREAD(MPI_THREAD_FUNNELED, provided, i_error)
   call dfftw_init_threads(i_error)
   call dfftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
-  write(6,'(a,i7,a,i3)') '_OPENMP =', _OPENMP, ',    OMP_GET_MAX_THREADS =', OMP_GET_MAX_THREADS()
+  write(0,'(a,i7,a,i3)') '_OPENMP =', _OPENMP, ',    OMP_GET_MAX_THREADS =', OMP_GET_MAX_THREADS()
 # else
   call MPI_INIT(i_error)
 # endif
   call MPI_COMM_RANK(MPI_COMM_WORLD, my_mpi_rank, i_error)
   call MPI_COMM_SIZE(MPI_COMM_WORLD, n_mpi_procs, i_error)
 
+  ! default values
+  N_TIMES = 1000
+  Lx =  60
+  Ly =  80
+  Lz = 100
+  in_or_out = .true.
+
   n = command_argument_count()
   if (n.eq.0) then
-     ! default values
-     N_TIMES = 1000
-     Lx =  60
-     Ly =  80
-     Lz = 100
-  else if (n.eq.4) then
+     ! Use default values
+  else if (n.eq.5) then
      call get_command_argument(1,str); read(str,*) N_TIMES
      call get_command_argument(2,str); read(str,*) Lx
      call get_command_argument(3,str); read(str,*) Ly
      call get_command_argument(4,str); read(str,*) Lz
+     call get_command_argument(5,str); if (str.eq.'out') in_or_out = .false.
   else
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': Illegal number of arguments.'
      stop 1
@@ -59,8 +64,13 @@ program fft_check_mpi
   alloc_local = fftw_mpi_local_size_3d_transposed(Lz, Ly, Lx/2+1, MPI_COMM_WORLD, &
        & local_Lz, local_z_offset, &
        & local_Ly, local_y_offset)
-  rdata = fftw_alloc_real(2 * alloc_local); call c_f_pointer(rdata, r, [2*(Lx/2+1),Ly,local_Lz])
-  cdata = fftw_alloc_complex( alloc_local); call c_f_pointer(cdata, c, [   Lx/2+1, Lz,local_Ly])
+  rdata    = fftw_alloc_real(2 * alloc_local); call c_f_pointer(rdata, r, [2*(Lx/2+1),Ly,local_Lz])
+  if (in_or_out) then
+     call                                           c_f_pointer(rdata, c, [   Lx/2+1, Lz,local_Ly])
+     cdata = c_null_ptr
+  else
+     cdata = fftw_alloc_complex( alloc_local); call c_f_pointer(cdata, c, [   Lx/2+1, Lz,local_Ly])
+  end if
 
   !   first-touch of r(:,:,:) and c(:,:,:)
 !$omp parallel do
@@ -77,8 +87,8 @@ program fft_check_mpi
   call system_clock(c_ro(0))
 
   !   create MPI plan for in-place forward DFT (note dimension reversal)
-  plan_r2c = fftw_mpi_plan_dft_r2c_3d(Lz, Ly, Lx, r, c, MPI_COMM_WORLD, ior(FFTW_PATIENT,FFTW_MPI_TRANSPOSED_OUT))
-  plan_c2r = fftw_mpi_plan_dft_c2r_3d(Lz, Ly, Lx, c, r, MPI_COMM_WORLD, ior(FFTW_PATIENT,FFTW_MPI_TRANSPOSED_IN))
+  plan_r2c = fftw_mpi_plan_dft_r2c_3d(Lz, Ly, Lx, r, c, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_OUT))
+  plan_c2r = fftw_mpi_plan_dft_c2r_3d(Lz, Ly, Lx, c, r, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_IN))
 
   call system_clock(c_ro(1))
 
@@ -110,8 +120,8 @@ program fft_check_mpi
 
   call system_clock(c_ro(2), count_rate, count_max)
 
-  write(6,'(a,i2,a,i2,a,f10.2)')          'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
-       &',                                             r(1,1,1)      =', r(1,1,1)
+  write(0,'(a,i2,a,i2,a,f6.2)') 'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
+       &',   r(1,1,1) =', r(1,1,1)
 
   !   let them free
   call fftw_destroy_plan(plan_r2c)
@@ -125,12 +135,14 @@ program fft_check_mpi
 
   f_c = log(dble(Lx)*dble(Lz)*dble(Ly)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * Lx * Ly * Lz * 2
   f_r = f_c / 2
-  write(0,'(a,f9.2,a)') ' The number of floating point operations: f_r = ', f_r, ' [G]'
+  write(0,'(a,f9.2,a)') 'The number of floating point operations: f_r = ', f_r, ' [G]'
 
   g_ro = f_r / t_ro(2)
 
-  write(6,'(i8,3i7,i16,2i5,1(f13.3,f8.3,f8.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz,&
-       & OMP_GET_MAX_THREADS(), n_mpi_procs, t_ro(1), t_ro(2), g_ro
+  if (my_mpi_rank.eq.0) then
+     write(6,'(i6,3i7,i16,L2,2i5,1(f13.3,f8.3,f8.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz, in_or_out, &
+          & OMP_GET_MAX_THREADS(), n_mpi_procs, t_ro(1), t_ro(2), g_ro
+  end if
 
   call MPI_FINALIZE(i_error)
 end program fft_check_mpi
