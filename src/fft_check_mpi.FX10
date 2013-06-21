@@ -8,5 +8,7 @@ export PJM_JOBNAME=fft_check_mpi.FX10
 export FLIB_FASTOMP=TRUE
 export OMP_NUM_THREADS=16
 export PARALLEL=16
-mpiexec ./fft_check_mpi 20 1024 1024 1024
-mpiexec ./fft_check_mpi 10 2048 2048 2048
+mpiexec ./fft_check_mpi 20 1024 1024 1024 in
+mpiexec ./fft_check_mpi 20 1024 1024 1024 out
+mpiexec ./fft_check_mpi 10 2048 2048 2048 in
+mpiexec ./fft_check_mpi 10 2048 2048 2048 out
