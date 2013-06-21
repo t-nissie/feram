@@ -10,4 +10,4 @@ fft_check_mpi: fft_check_mpi.F
 	$(FC) $(FFLAGS) -o $@ $< $(LDFLAGS)
 
 clean:
-	rm -f core* fft_check_mpi fft_check_mpi.o
+	rm -f core* fft_check_mpi fft_check_mpi.o fft_check_mpi.lst
