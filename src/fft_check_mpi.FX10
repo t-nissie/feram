@@ -1,7 +1,7 @@
 #!/bin/sh
 #PJM -L "rscgrp=short"
 #PJM -L "node=8"
-#PJM -L "elapse=6:00:00"
+#PJM -L "elapse=1:00:00"
 #PJM --mpi "proc=8"
 #PJM -j
 export PJM_JOBNAME=fft_check_mpi.FX10
