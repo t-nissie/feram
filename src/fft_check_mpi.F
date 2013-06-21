@@ -129,9 +129,8 @@ program fft_check_mpi
 
   g_ro = f_r / t_ro(2)
 
-  write(6,'(i8,3i5,i11,2i5,1(f13.3,f8.3,f8.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz,&
+  write(6,'(i8,3i7,i16,2i5,1(f13.3,f8.3,f8.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz,&
        & OMP_GET_MAX_THREADS(), n_mpi_procs, t_ro(1), t_ro(2), g_ro
-
 
   call MPI_FINALIZE(i_error)
 end program fft_check_mpi
