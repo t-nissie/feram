@@ -31,7 +31,7 @@ program fft_check_mpi
   call MPI_INIT_THREAD(MPI_THREAD_FUNNELED, provided, i_error)
   call dfftw_init_threads(i_error)
   call dfftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
-  write(0,'(a,i7,a,i3)') '_OPENMP =', _OPENMP, ',    OMP_GET_MAX_THREADS =', OMP_GET_MAX_THREADS()
+  write(0,'(a,i7,a,i4)') '_OPENMP =', _OPENMP, ',    OMP_GET_MAX_THREADS =', OMP_GET_MAX_THREADS()
 # else
   call MPI_INIT(i_error)
 # endif
@@ -106,7 +106,7 @@ program fft_check_mpi
   !   compute transform
   do n = 1, n_times
      call fftw_mpi_execute_dft_r2c(plan_r2c, r, c)
-     ! write(6,'(a,i2,a,i2,2(a,i5),a,2e23.15)') 'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
+     ! write(6,'(a,i5,a,i4,2(a,i5),a,2e23.15)') 'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
      !      &                               ',  local_Ly =', local_Ly, &
      !      &                               ',  local_y_offset =', local_y_offset, &
      !      &                               ',   c(1,Lz/2+1,1) =', c(1,Lz/2+1,1)
@@ -120,7 +120,7 @@ program fft_check_mpi
 
   call system_clock(c_ro(2), count_rate, count_max)
 
-  write(0,'(a,i2,a,i2,a,f6.2)') 'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
+  write(0,'(a,i5,a,i4,a,f19.15)') 'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
        &',   r(1,1,1) =', r(1,1,1)
 
   !   let them free
@@ -132,15 +132,12 @@ program fft_check_mpi
   do i = 1, 2
      t_ro(i) = dble(c_ro(i)-c_ro(i-1))/count_rate ; if (t_ro(i)<0.0d0) t_ro(i)=t_ro(i)+dble(count_max)/count_rate
   end do
-
   f_c = log(dble(Lx)*dble(Lz)*dble(Ly)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * Lx * Ly * Lz * 2
   f_r = f_c / 2
-  write(0,'(a,f9.2,a)') 'The number of floating point operations: f_r = ', f_r, ' [G]'
-
   g_ro = f_r / t_ro(2)
-
   if (my_mpi_rank.eq.0) then
-     write(6,'(i6,3i7,i16,L2,2i5,1(f13.3,f8.3,f8.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz, in_or_out, &
+     write(0,'(a,f10.2,a)') 'The number of floating point operations: f_r = ', f_r, ' [G]'
+     write(6,'(i6,3i7,i16,L2,2i5,1(f13.3,f8.3,f10.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz, in_or_out, &
           & OMP_GET_MAX_THREADS(), n_mpi_procs, t_ro(1), t_ro(2), g_ro
   end if
 
