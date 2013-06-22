@@ -1,7 +1,7 @@
 #!/bin/bash
 #@ class = qep
 #@ output = fft_check_mpi.out
-#@ error  = fft_check_mpi.out
+#@ error  = fft_check_mpi.err
 #@ environment = COPY_ALL
 #@ restart = no
 #@ job_name = fft_check_mpi
@@ -13,7 +13,7 @@
 #@ tasks_per_node = 1
 #@ queue
 #
-# Usage: submit EP general -jcf fft_check_mpi.imr_super
+# Usage: submit EP general -largememory -jcf fft_check_mpi.imr_super
 #
 # For IBM XL Fortran
 export MALLOCMULTIHEAP=true
@@ -21,5 +21,13 @@ export OMP_NUM_THREADS=32
 export XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0"
 poe ./Annabel_Lee 20 1024 1024 1024 in
 poe ./Annabel_Lee 20 1024 1024 1024 out
+poe ./Annabel_Lee 20 1200 1200 1200 in
+poe ./Annabel_Lee 20 1200 1200 1200 out
 poe ./Annabel_Lee 10 2048 2048 2048 in
 poe ./Annabel_Lee 10 2048 2048 2048 out
+poe ./Annabel_Lee 10 2400 2400 2400 in
+poe ./Annabel_Lee 10 2400 2400 2400 out
+poe ./Annabel_Lee 10 3600 3600 3600 in
+poe ./Annabel_Lee 10 3600 3600 3600 out
+poe ./Annabel_Lee 10 4096 4096 4096 in
+poe ./Annabel_Lee 10 4096 4096 4096 out
