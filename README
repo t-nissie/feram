@@ -1,13 +1,16 @@
 Dear current and future feram users,
 
-I released feram-0.21.01.tar.xz from
+I released feram-0.21.02.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 
 "feram" is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
-From this version 0.21.01, you can do leapfrog MD with
+From this version 0.21.02, you can apply uniaxial normal
+stress by giving three values to GPa, "GPa = 0.0 0.0 -3.0".
+
+From the version 0.21.01, you can do leapfrog MD with
 acoustic displacements, i.e. acoustic_mass_amu > 0.
 See src/09example-BaTiO3-bulk-leap-frog/.
 

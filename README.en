@@ -147,6 +147,8 @@ See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
 ===== GPa
 Pressure in GPa unit.
  GPa = -5.0
+You can apply uniaxial normal stress by giving three values to GPa.
+ GPa = 0.0 0.0 -3.0
 
 ===== kelvin
 Temperature in Kelvin.
