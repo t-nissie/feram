@@ -137,7 +137,7 @@ program fft_check_mpi
   g_ro = f_r / t_ro(2)
   if (my_mpi_rank.eq.0) then
      write(0,'(a,f10.2,a)') 'The number of floating point operations: f_r = ', f_r, ' [G]'
-     write(6,'(i6,3i7,i16,L2,2i5,1(f13.3,f8.3,f10.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz, in_or_out, &
+     write(6,'(i6,3i7,i16,L2,2i5,1(f13.3,f9.3,f10.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz, in_or_out, &
           & OMP_GET_MAX_THREADS(), n_mpi_procs, t_ro(1), t_ro(2), g_ro
   end if
 
