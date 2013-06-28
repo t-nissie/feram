@@ -15,7 +15,7 @@ program fft_check_mpi
   complex(C_DOUBLE_COMPLEX), pointer :: c(:,:,:)
   integer(C_INTPTR_T)                :: i, alloc_local, local_Lz, local_z_offset
   integer(C_INTPTR_T)                ::                 local_Ly, local_y_offset
-  integer                            :: n, N_TIMES, i_error, my_mpi_rank, n_mpi_procs
+  integer                            :: n, N_TIMES, i_error, my_mpi_rank, n_mpi_procs, n_threads
   character(len=100)                 :: str
   logical                            :: in_or_out
 
@@ -30,10 +30,12 @@ program fft_check_mpi
   integer                            :: provided, OMP_GET_MAX_THREADS
   call MPI_INIT_THREAD(MPI_THREAD_FUNNELED, provided, i_error)
   call dfftw_init_threads(i_error)
-  call dfftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
-  write(0,'(a,i7,a,i4)') '_OPENMP =', _OPENMP, ',    OMP_GET_MAX_THREADS =', OMP_GET_MAX_THREADS()
+  n_threads = OMP_GET_MAX_THREADS()
+  call dfftw_plan_with_nthreads(n_threads)
+  write(0,'(a,i7,a,i4)') '_OPENMP =', _OPENMP, ',    OMP_GET_MAX_THREADS =', n_threads
 # else
   call MPI_INIT(i_error)
+  n_threads = 1
 # endif
   call MPI_COMM_RANK(MPI_COMM_WORLD, my_mpi_rank, i_error)
   call MPI_COMM_SIZE(MPI_COMM_WORLD, n_mpi_procs, i_error)
@@ -138,7 +140,7 @@ program fft_check_mpi
   if (my_mpi_rank.eq.0) then
      write(0,'(a,f10.2,a)') 'The number of floating point operations: f_r = ', f_r, ' [G]'
      write(6,'(i6,3i7,i16,L2,2i5,1(f13.3,f9.3,f10.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz, in_or_out, &
-          & OMP_GET_MAX_THREADS(), n_mpi_procs, t_ro(1), t_ro(2), g_ro
+          & n_threads, n_mpi_procs, t_ro(1), t_ro(2), g_ro
   end if
 
   call MPI_FINALIZE(i_error)
