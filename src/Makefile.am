@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-05-24 10:18:12 takeshi>
+# Time-stamp: <2013-07-03 15:38:13 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -30,7 +30,7 @@ feram_SRCS = average_module.F \
 	f90_wisdom.f \
 	feram.F \
 	feram_common.F \
-	fft.F \
+	fft_wrappers.F \
 	fft_3d_3x3upper_r2c.F \
 	hysteresis_loop.F \
 	initialize_E_field.F \
@@ -70,7 +70,7 @@ marsaglia_tsang_uni64_check_SOURCES  = marsaglia_tsang_uni64_check.F  marsaglia_
 
 marsaglia_tsang_uni64_timing_SOURCES = marsaglia_tsang_uni64_timing.f marsaglia_tsang_uni64_module.f
 
-fft_check_SOURCES = fft.F fft_check.F f90_wisdom.f
+fft_check_SOURCES = fft_wrappers.F fft_check.F f90_wisdom.f
 
 CLEANFILES = *.mod *.lst *.ps *.pdf *.f90 feram_mpi
 EXTRA_DIST = define.h \
@@ -156,15 +156,14 @@ average_module.o:               param_module.o coord_module.o energy_module.o de
 coord_module.o:                 param_module.o         define.h
 dipole-dipole-long-range.o:     param_module.o         define.h fft_3d_3x3upper_r2c.o
 dipole-dipole-short-range.o:    param_module.o         define.h fft_3d_3x3upper_r2c.o
-fft_3d_3x3upper_r2c.o:          param_module.o                fft.o  define.h
+fft_3d_3x3upper_r2c.o:          param_module.o                fft_wrappers.o  define.h
 dVddi-dipole-dipole.o:\
-                energy_module.o param_module.o coord_module.o fft.o
-dipoFFT.o acouFFT.o:            param_module.o coord_module.o fft.o define.h
+                energy_module.o param_module.o coord_module.o fft_wrappers.o
+dipoFFT_WRAPPERS.o acouFFT.o:            param_module.o coord_module.o fft_wrappers.o define.h
 print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
 eigenvalues2j.o:                param_module.o define.h
 distribution3d2ppm.o:           average_module.o rgb_module.o
-fft.o: define.h
-fft_check.o: fft.o f90_wisdom.o
+fft_check.o: fft_wrappers.o f90_wisdom.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:
