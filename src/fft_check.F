@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2013-06-21 05:27:09 takeshi>
+! Time-stamp: <2013-07-03 10:29:54 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -38,7 +38,7 @@ If fft_check.F is compiled with FFTW library and f90_wisdom.f,
 it imports 'wisdom' file in current directory or /etc/fftw/wisdom
 and exports 'wisdom_new' into current directory.
 
-=== PGI Fortran and ACML
+=== AMD Core Math Library (ACML)
 Use fft_acml.f and fft_acml.Makefile.
  $ make -f fft_acml.Makefile
 Note that FFT in ACML is currently not so good:

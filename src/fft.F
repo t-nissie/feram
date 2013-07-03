@@ -1,19 +1,16 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2012-07-21 15:10:01 takeshi>
+! Time-stamp: <2013-07-03 10:51:45 takeshi>
 ! Author: Takeshi NISHIMATSU
-! Architectures and Libraries:
-!    FFTW3 (HAVE_LIBFFTW3, including wrapper in Intel MKL)
-!    MATRIX/MPP of HITACHI SR11000 and SR16000 (HAVE_LIBMATMPP)
-!    ACML (HAVE_LIBACML_MP)
-!    Fujitsu SSL2 (__sparc)
+! What is this fft.F for?
+!    This file contains wrappers of FFT subroutines in MATRIX/MPP
+!    library of Hitach SR16000 (HAVE_LIBMATMPP) and SSL2 of Fujitsu
+!    FX10 (__sparc). However, on both architectures, FFTW3 is much
+!    faster than their original FFT libraries. In most cases,
+!    therefore, this file will not be used.
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
-
-subroutine fft_dummy()
-  write(6,*) 'This is a dummy subroutine.'
-end subroutine fft_dummy
 
 #if defined(HAVE_LIBMATMPP)
 subroutine n2pqr(n,pqr)
@@ -201,10 +198,7 @@ subroutine fft_3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
 
   deallocate(wk)
 end subroutine fft_3d_fwd_or_bkd
-#endif
-!
-
-#if defined(__sparc)
+#elif defined(__sparc)
 !        Nx          8   9
 !        Nx/2        4   4
 !    c(0:Nx/2)      10  10
@@ -256,4 +250,8 @@ subroutine fft_3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
 
   call DM_V3DCFT(a, Nx, Nx,Ny,Nz, isn, ICON)
 end subroutine fft_3d_fwd_or_bkd
+#else
+subroutine fft_dummy_feram()
+  write(6,*) 'This is a dummy subroutine in feram.'
+  end subroutine fft_dummy_feram
 #endif
