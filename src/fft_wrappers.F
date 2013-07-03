@@ -1,7 +1,7 @@
-! fft.F -*-f90-*-
-! Time-stamp: <2013-07-03 15:31:31 takeshi>
+! fft_wrappers.F -*-f90-*-
+! Time-stamp: <2013-07-03 15:46:57 takeshi>
 ! Author: Takeshi NISHIMATSU
-! What is this fft.F for?
+! What is this fft_wrappers.F for?
 !    This file contains wrappers of FFT subroutines in
 !    MATRIX/MPP library of Hitachi SR16000 (HAVE_LIBMATMPP)
 !    and SSL2 of Fujitsu FX10 (__sparc). However, on both
@@ -34,7 +34,7 @@ subroutine n2pqr(n,pqr)
      tmp=tmp/5
   end do
   !write(6,'(i6,3(a,i2))') n, ' = 2**',pqr(1), ' + 3**',pqr(2), ' + 5**',pqr(3)
-  if (tmp.ne.1) stop 'fft.F:37: STOP at subroutine n2pqr().'
+  if (tmp.ne.1) stop 'fft_wrappers.F:37: STOP at subroutine n2pqr().'
 end subroutine n2pqr
 
 !        Nx          8   9
