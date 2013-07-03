@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-07-03 15:38:13 takeshi>
+# Time-stamp: <2013-07-04 08:32:43 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -156,7 +156,7 @@ average_module.o:               param_module.o coord_module.o energy_module.o de
 coord_module.o:                 param_module.o         define.h
 dipole-dipole-long-range.o:     param_module.o         define.h fft_3d_3x3upper_r2c.o
 dipole-dipole-short-range.o:    param_module.o         define.h fft_3d_3x3upper_r2c.o
-fft_3d_3x3upper_r2c.o:          param_module.o                fft_wrappers.o  define.h
+fft_3d_3x3upper_r2c.o:          param_module.o                fft_wrappers.o
 dVddi-dipole-dipole.o:\
                 energy_module.o param_module.o coord_module.o fft_wrappers.o
 dipoFFT_WRAPPERS.o acouFFT.o:            param_module.o coord_module.o fft_wrappers.o define.h

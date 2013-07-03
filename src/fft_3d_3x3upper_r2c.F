@@ -1,11 +1,10 @@
 ! fft_3d_3x3upper_r2c.F -*-f90-*-
-! Time-stamp: <2013-07-03 10:24:35 takeshi>
+! Time-stamp: <2013-07-04 08:32:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include "define.h"
 
 subroutine fft_3d_3x3upper_r2c(p,r,c)
   use Param_module
