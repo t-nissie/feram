@@ -1,12 +1,13 @@
 ! fft.F -*-f90-*-
-! Time-stamp: <2013-07-03 10:51:45 takeshi>
+! Time-stamp: <2013-07-03 15:31:31 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! What is this fft.F for?
-!    This file contains wrappers of FFT subroutines in MATRIX/MPP
-!    library of Hitach SR16000 (HAVE_LIBMATMPP) and SSL2 of Fujitsu
-!    FX10 (__sparc). However, on both architectures, FFTW3 is much
-!    faster than their original FFT libraries. In most cases,
-!    therefore, this file will not be used.
+!    This file contains wrappers of FFT subroutines in
+!    MATRIX/MPP library of Hitachi SR16000 (HAVE_LIBMATMPP)
+!    and SSL2 of Fujitsu FX10 (__sparc). However, on both
+!    architectures, FFTW3 is much faster than their original
+!    FFT libraries. On Linux, FFTW3 (HAVE_LIBFFTW3) is used.
+!    In most cases, therefore, this file will not be used.
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
@@ -250,8 +251,10 @@ subroutine fft_3d_fwd_or_bkd(mode, Nx, Ny, Nz, a)
 
   call DM_V3DCFT(a, Nx, Nx,Ny,Nz, isn, ICON)
 end subroutine fft_3d_fwd_or_bkd
-#else
+#elif defined(HAVE_LIBFFTW3)
 subroutine fft_dummy_feram()
   write(6,*) 'This is a dummy subroutine in feram.'
-  end subroutine fft_dummy_feram
+end subroutine fft_dummy_feram
+#else
+#  error You need an FFT library.
 #endif
