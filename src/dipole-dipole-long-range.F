@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2012-01-12 16:51:57 t-nissie>
+! Time-stamp: <2013-07-03 15:50:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 !UINLINE decay-functions.f
@@ -12,7 +12,7 @@ subroutine dipole_dipole_long_range(p,long_range)
   implicit none
   !--- arguments -------------------------------------
   type(Param_type), intent(in)     :: p
-  real*8,           intent(out)    :: long_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3) !"/2" See fft.F!
+  real*8,           intent(out)    :: long_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3) !"/2" for real<->complex FFT
   !--- local -----------------------------------------
   real*8,     allocatable :: TMPreal(:,:,:,:,:)
   complex*16, allocatable :: TMPcomplex(:,:,:,:,:)
@@ -40,7 +40,7 @@ subroutine dipole_dipole_long_range(p,long_range)
   max_z = 24/p%Lz
 
   allocate(   TMPreal(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3, 3))
-  allocate(TMPcomplex(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!
+  allocate(TMPcomplex(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" for real<->complex FFT
   TMPreal(:,:,:,:,:)=0.0d0
 
   !--- BEGIN of self-interaction correction ----------------

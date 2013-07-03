@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2013-05-23 09:39:42 t-nissie>
+! Time-stamp: <2013-07-03 15:50:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -19,9 +19,9 @@ subroutine dipole_dipole(p,c)
   !--- END of variable definitions -------------------
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'construction of dipole-dipole interaction.')
 
-  allocate( long_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!
+  allocate( long_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" for real<->complex FFT
             long_range(:,:,:,:,:) = 0.0d0
-  allocate(short_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!
+  allocate(short_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" for real<->complex FFT
            short_range(:,:,:,:,:) = 0.0d0
 
   open(unit=UNIT_QUADRATIC, file=trim(p%filename)//'.quadratic', status='old', action='read', iostat=ios)

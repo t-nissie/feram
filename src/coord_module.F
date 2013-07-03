@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2013-05-23 09:14:52 t-nissie>
+! Time-stamp: <2013-07-03 15:50:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -68,7 +68,7 @@ contains
     if (allocated(c%dipoR)) deallocate(c%dipoR)
     allocate(     c%dipoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
     if (allocated(c%dipoK)) deallocate(c%dipoK)
-    allocate(     c%dipoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3)) !"/2" See fft.F!
+    allocate(     c%dipoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3)) !"/2" for real<->complex FFT
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
@@ -122,12 +122,12 @@ contains
 !$omp end parallel do
 
     if (allocated(c%dipoI)) deallocate(c%dipoI)
-    allocate(     c%dipoI(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" See fft.F!
+    allocate(     c%dipoI(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" for real<->complex FFT
 
     if (allocated(c%didiR)) deallocate(c%didiR)
     allocate(     c%didiR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
     if (allocated(c%didiK)) deallocate(c%didiK)
-    allocate(     c%didiK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))    !"/2" See fft.F!
+    allocate(     c%didiK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))    !"/2" for real<->complex FFT
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1

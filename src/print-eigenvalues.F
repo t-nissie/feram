@@ -1,5 +1,5 @@
 ! print-eigenvalues.F -*-f90-*-
-! Time-stamp: <2012-07-05 14:57:08 t-nissie>
+! Time-stamp: <2013-07-03 15:50:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -7,7 +7,7 @@ subroutine print_eigenvalues(Lx, Ly, Lz, phi, filename)
   implicit none
   !--- arguments -------------------------------------
   integer,      intent(in) :: Lx, Ly, Lz
-  real*8,       intent(in) :: phi(0:Lx/2, 0:Ly-1, 0:Lz-1, 3, 3) !"/2" See fft.F!
+  real*8,       intent(in) :: phi(0:Lx/2, 0:Ly-1, 0:Lz-1, 3, 3) !"/2" for real<->complex FFT
   character(*), intent(in) :: filename
   !--- etc -------------------------------------------
   integer ix, iy, iz
@@ -78,7 +78,7 @@ subroutine print_eigenvalues_sub(Lx, Ly, Lz, phi, ix, iy, iz, unit, len)
   implicit none
   !--- arguments -------------------------------------
   integer, intent(in)    :: Lx, Ly, Lz
-  real*8,  intent(in)    :: phi(0:Lx/2, 0:Ly-1, 0:Lz-1, 3, 3) !"/2" See fft.F!
+  real*8,  intent(in)    :: phi(0:Lx/2, 0:Ly-1, 0:Lz-1, 3, 3) !"/2" for real<->complex FFT
   integer, intent(in)    :: ix, iy, iz, unit
   real*8,  intent(inout) :: len
   !--- etc -------------------------------------------
