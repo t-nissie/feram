@@ -5,8 +5,8 @@ FFLAGS = -64 -Os -parallel=4 -uinline=2 -mathinline -COMOUT -exclamation=option 
 CPPFLAGS = -DHAVE_LIBMATMPP
 LDFLAGS = -L/opt/hitachi/matmpp/lib -lmatmpp -lm
 
-fft_check: fft_check.o fft.o
+fft_check: fft_check.o fft_wrappers.o
 	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
 clean:
-	rm -f fft_check.o   fft.o   core* fft_check \
-              fft_check.log fft.log
+	rm -f fft_check.o   fft_wrappers.o   core* fft_check \
+              fft_check.log fft_wrappers.log
