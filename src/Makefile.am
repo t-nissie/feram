@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-07-04 08:32:43 takeshi>
+# Time-stamp: <2013-07-04 09:15:00 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -159,7 +159,7 @@ dipole-dipole-short-range.o:    param_module.o         define.h fft_3d_3x3upper_
 fft_3d_3x3upper_r2c.o:          param_module.o                fft_wrappers.o
 dVddi-dipole-dipole.o:\
                 energy_module.o param_module.o coord_module.o fft_wrappers.o
-dipoFFT_WRAPPERS.o acouFFT.o:            param_module.o coord_module.o fft_wrappers.o define.h
+dipoFFT.o acouFFT.o:            param_module.o coord_module.o fft_wrappers.o define.h
 print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
 eigenvalues2j.o:                param_module.o define.h
 distribution3d2ppm.o:           average_module.o rgb_module.o
