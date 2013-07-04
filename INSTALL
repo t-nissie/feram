@@ -67,16 +67,30 @@ specify CPPFLAGS and LDFLAGS for configure.
 == Linux
 === Ubuntu 12.10, Ubuntu 13.04 and Debian 7.0 (feram-0.21.00, 2013-05-05)
 FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
-installed into Debian 7.0 (Wheezy) GNU/Linux systems or Ubuntu systems.
-
+installed into Debian 7.0 (Wheezy) GNU/Linux systems or Ubuntu systems
+with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
 ==== install required packages
  $ sudo apt-get install liblapack-dev libblas-dev gfortran libfftw3-dev libfftw3-doc gfortran-doc athena-jot
  $ sudo apt-get install autoconf automake libtool autoconf-doc libtool-doc   # For developers
-
 ==== compile feram
  $ tar xf feram-0.21.00.tar.xz
  $ mkdir feram-0.21.00/ubuntu-13.04
  $ cd feram-0.21.00/ubuntu-13.04
+ $ ../configure && make
+ $ make check
+
+=== Fedora 19 (feram-0.21.02, 2013-07-04)
+FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
+installed into Fedora systems with yum(8) command. See http://fedoraproject.org .
+Here, we use an x86_64 system.
+==== install required packages
+ # yum install gcc.x86_64 gcc-gfortran.x86_64
+ # yum install fftw-devel.x86_64 blas-devel.x86_64 lapack-devel.x86_64 gnuplot.x86_64
+ # yum install autoconf.noarch automake.noarch libtool.x86_64 subversion.x86_64   # For developers
+==== compile feram
+ $ tar xf feram-0.21.02.tar.xz
+ $ mkdir feram-0.21.02/fedora19
+ $ cd feram-0.21.02/fedora19
  $ ../configure && make
  $ make check
 
@@ -110,13 +124,8 @@ Select "Software Development Workstation" in the setup.
 
 ==== install BLAS and LAPACK
  $ su
- # yum install blas.x86_64 lapack.x86_64
- # cd /usr/lib64
- # ln -s libblas.so.3 libblas.so
- # ln -s liblapack.so.3 liblapack.so
+ # yum install blas-devel.x86_64 lapack-devel.x86_64
  # exit
-Symbolic links are for avoiding error of "/usr/bin/ld: cannot find -lblas".
-See http://linuxtoolkit.blogspot.jp/2011/11/cannot-find-llapack-when-doing-usrbinld.html for more details.
 
 ==== compile feram
  $ export LD_LIBRARY_PATH=/usr/local/lib64   # Do not forget it.
