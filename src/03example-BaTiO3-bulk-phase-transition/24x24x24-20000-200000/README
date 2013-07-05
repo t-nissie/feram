@@ -8,5 +8,7 @@
 ---------------------------------------------------
 version          CPU     s/shot/slot   script
 ---------------------------------------------------
+0.21.00   Intel Xeon X5650   260   two6threads.csh
 0.21.02   Intel Xeon E5462   869   two4threads.csh
+0.21.02   AMD Opteron  275  2443   two2threads.csh
 ---------------------------------------------------
