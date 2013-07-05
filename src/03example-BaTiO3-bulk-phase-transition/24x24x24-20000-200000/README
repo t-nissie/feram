@@ -1,14 +1,17 @@
 = README for feram-X.YY.ZZ/src/03example-BaTiO3-bulk-phase-transition/24x24x24-20000-200000/
+Heating-up and cooling-down simulations of BaTiO3.
 == References
- * W. Zhong, D. Vanderbilt, and K. M. Rabe: "First-principles theory of ferroelectric
+ * A set of parameters for effective Hamiltonian described in this article is used. GPa = -5.0.
+   W. Zhong, D. Vanderbilt, and K. M. Rabe: "First-principles theory of ferroelectric
    phase transitions for perovskites: The case of BaTiO3", Phys. Rev. B, vol.52,
    pp.6301-6312 (1995) doi:10.1103/PhysRevB.52.6301.
 
 == Timing per 1 shot 1 slot
----------------------------------------------------
-version          CPU     s/shot/slot   script
----------------------------------------------------
-0.21.00   Intel Xeon X5650   260   two6threads.csh
-0.21.02   Intel Xeon E5462   869   two4threads.csh
-0.21.02   AMD Opteron  275  2443   two2threads.csh
----------------------------------------------------
+-----------------------------------------------------
+version           CPU      s/shot/slot   script
+-----------------------------------------------------
+0.21.02   Intel Xeon E5-2680   185   two8threads.csh
+0.21.00   Intel  Xeon  X5650   260   two6threads.csh
+0.21.02   Intel  Xeon  E5462   869   two4threads.csh
+0.21.02   AMD   Opteron  275  2443   two2threads.csh
+-----------------------------------------------------
