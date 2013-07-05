@@ -1,5 +1,10 @@
 ToDo
 
+o 交流電場を掛けられるようにして、hysteresis_loop.F と
+  molecular-dynamics.F とを統合。sin, cos, (sawsin, sawcos,) ...
+
+o coord fileの桁数を上げて高精度化。ファイルサイズは大きくなってしまうけど。
+
 o No need to initialize Energy_type ???
 
 o e%acou_kinetic=0 if mass_acou<0
