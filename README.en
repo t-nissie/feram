@@ -504,10 +504,14 @@ calculations and the other calculations.
 == Examples
 You can find input files and their simulated results in following directories in the software package.
  feram-X.YY.ZZ/src/03example-BaTiO3-bulk-phase-transition/
+ feram-X.YY.ZZ/src/09example-BaTiO3-bulk-leap-frog/
  feram-X.YY.ZZ/src/17example-PbTiO3-100-900K/
  feram-X.YY.ZZ/src/20example-BaTiO3-new-param-pyro/
  feram-X.YY.ZZ/src/21example-KNbO3/
  feram-X.YY.ZZ/src/22example-BaTiO3-new-param-hl/
+ feram-X.YY.ZZ/src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
+ feram-X.YY.ZZ/src/24example-BaTiO3-new-param-heating-cooling/
+ feram-X.YY.ZZ/src/25example-BaTiO3-read-quadratic/
 
 === Energies vs MD step in cooling simulation
 \Fig:MD doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
