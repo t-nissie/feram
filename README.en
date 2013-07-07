@@ -74,6 +74,11 @@ The number of threads for each process should be given with
 environment variable OMP_NUM_THREADS. The most efficient value
 for OMP_NUM_THREADS is depends on the system size (N = L_x L_y L_z),
 the method of calculation and your computer.
+Latest Intel Xeon machines with GNU/Linux OS give high performance to feram.
+feram does not require large memory, but requires broad memory band width for high performance computing.
+Up to system size of 64x64x64, execution on 1 slot of CPU may gives good performance.
+For lager system size calculations, multi-slot NUMA execution may gives better performance.
+Use taskset(1) or numactl(8) to retrieve or set a process's CPU affinity.
 
 
 == Input files

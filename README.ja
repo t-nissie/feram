@@ -49,8 +49,13 @@ feramはコマンドライン引数で与えられたファイルを読み込み
 feramのMPI版であるferam_mpiをmakeすることもできます．
 feram_mpiは入力ファイルを並列処理します．
  $ OMP_NUM_THREADS=16 mpiexec -np 3 SOMEWHERE/feram_mpi foo.feram bar.feram baz.feram
-各プロセスのスレッド数は環境変数OMP_NUM_THREADSで指定してください．
+各プロセスのスレッド数を環境変数OMP_NUM_THREADSで指定してください．
 マシンやシステムサイズ (N = L_x L_y L_z) によって最適なOMP_NUM_THREADSの値は異なります．
+最新のIntel XeonのGNU/Linuxマシンで実行するのが効果的です．
+feramはあまり大容量のメモリを必要としませんが，高速な実行には広帯域のメモリアクセスが必要です．
+システムサイズ64x64x64までは1 slotのCPUを占有して実行するのがよいでしょう．
+より大きなシステムサイズではslotを跨いだ並列実行 (NUMA) も効果的です．
+プロセスのCPU属性を制御するためにtaskset(1)やnumactl(8)を適宜活用してください．
 
 
 == 入力ファイル
@@ -123,7 +128,7 @@ foo123.log, foo123.cood, ... などとなります．
 ===== GPa
 圧力をGPa単位で．過小評価されるTcを負圧をかけることにより補正することがある．
  GPa = -5.0
-また、３つの値を指定することにより垂直応力をかけることもできる。
+また、３つの値を指定することにより垂直応力をかけることもできる．
  GPa = 0.0 0.0 -3.0
 
 ===== kelvin
@@ -141,7 +146,7 @@ acoustic_mass_amuとして音響変位の有効質量が
 と与えられると，音響変位についても分子動力学計算が行われる．
 単位はatomic mass unit．一般的に全５原子の平均質量とする．
 今のところ，method = 'md'では音響変位の分子動力学計算はできません．
-method = 'vs'もしくはmethod = 'lf'で使って下さい。
+method = 'vs'もしくはmethod = 'lf'で使って下さい．
 
 ===== Q_Nose
 能勢のQ．MD計算に必要なパラメータで，熱欲と系とのカップリングの強さを表す．
@@ -515,7 +520,7 @@ feramの開発には GNU Autotools (autoconf and automake) が必要です．
 たいていのLinuxディストリビューションにはこれらのツールのパッケージがあります．
 たとえばDebianやUbuntuなら
  $ sudo apt-get install autoconf automake libtool autoconf-doc libtool-doc
-でインストールできます．Autotoolsの詳しい解説がAutotools-memo.jaにあります。
+でインストールできます．Autotoolsの詳しい解説がAutotools-memo.jaにあります．
 
 === 最新のソースツリーの入手，コンパイル，実行
 Subversion，すなわちsvn(1)を使って最新のソースツリーを入手します．
