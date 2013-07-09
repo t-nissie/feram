@@ -1,5 +1,5 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2013-07-09 21:04:23 takeshi>
+# Time-stamp: <2013-07-09 21:13:25 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set terminal postscript portrait enhanced dashed color 'Times-Roman' 12
@@ -27,9 +27,9 @@ set ytics ("100" 0,\
           "1600" 4)
 plot x t '',\
      'fft_check_mpi_only.real.4096x4096x4096.out.SR16000'\
-     using (log($1/2)/log(2)):(log($12/100.00)/log(2)) t 'SR16000: 4096x4096x4096' w lp,\
+     using (log($1/2)/log(2)):(log($12/100.00)/log(2)) t 'SR16000: 4096x4096x4096' w lp lw 3,\
      'fft_check_mpi_only.real.2048x2048x2048.out.SR16000'\
-     using (log($1/2)/log(2)):(log($12/100.00)/log(2)) t 'SR16000: 2048x2048x2048' w lp
+     using (log($1/2)/log(2)):(log($12/100.00)/log(2)) t 'SR16000: 2048x2048x2048' w lp lw 3
 
 #Local variables:
 #  compile-command: "gnuplot fft_check_mpi_only.real.out-of-place.gp"
