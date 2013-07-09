@@ -1,0 +1,4 @@
+# 3D FFT, real<->complex, out-of-place, SR16000
+#node it.  Lx     Ly     Lz        N      place  th. proc.      t_plan   t_calc    GFLOPS
+   8  10   4096   4096   4096     68719476736 F    1  256       29.290  316.720   390.550
+  32  10   4096   4096   4096     68719476736 F    1 1024        8.960  103.930  1190.177
