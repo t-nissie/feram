@@ -1,9 +1,11 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2013-07-09 22:42:40 takeshi>
+# Time-stamp: <2013-07-10 08:51:11 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set terminal postscript portrait enhanced dashed color 'Times-Roman' 12
 set output 'fft_check_mpi_only.real.out-of-place.eps'
+set title "3-dimensional real{/Symbol \253}complex out-of-place FFT\nwith FFTW\\_MEASURE, without padding"
+
 #set key outside
 #set bmargin 8
 set key left
@@ -42,6 +44,8 @@ plot x t '',\
      using (log($1/8)/log(2)):(log($12/100.00)/log(2)) t    'FX10: 2048x2048x2048' w lp pt 4 lw 2,\
      'fft_check_mpi_only.real.1024x1024x1024.out.FX10'\
      using (log($1/8)/log(2)):(log($12/100.00)/log(2)) t    'FX10: 1024x1024x1024' w lp pt 5 lw 2 lc 8
+
+!epstopdf.pl fft_check_mpi_only.real.out-of-place.eps
 #Local variables:
 #  compile-command: "gnuplot fft_check_mpi_only.real.out-of-place.gp"
 #End:
