@@ -1,10 +1,11 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2013-07-10 12:10:05 takeshi>
+# Time-stamp: <2013-07-11 09:38:20 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set terminal postscript portrait enhanced dashed color 'Times-Roman' 12
 set output 'fft_check_mpi_only.real.out-of-place.eps'
-set title "3-dimensional real{/Symbol \253}complex out-of-place FFT\nwith FFTW\\_MEASURE, without padding\n\n"
+set title "3-dimensional real{/Symbol \253}complex out-of-place FFT\nwith FFTW\\_MEASURE,\
+\nwithout final transposition, without padding\n\n"
 
 #set key outside
 #set bmargin 8
