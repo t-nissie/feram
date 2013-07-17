@@ -1,0 +1,16 @@
+See [Jordan Barr, Takeshi Nishimatsu and Soctt P. Beckman: "Computational modeling of the
+electrocaloric effect for solid-state refrigeration" 2013 MRS Spring Meeting proceedings.]
+
+1. acoustic-MD.vs.feram: constant-temperature (T=520 K) MD in the
+   canonical ensemble with the velocity-scaling (vs) method under 160 kV/cm.
+2. Use the vs final state as the lf initial state:
+   ln -sf acoustic-MD.vs.0000005000.coord acoustic-MD.lf.restart
+3. acoustic-MD.lf.feram: constant-energy MD in the microcanonical ensemble
+   with the leapfrog (lf) method under 60 kV/cm.
+
+You will see the change in temperature from 520 K to 505 K in acoustic-MD.avg.
+True refrigeration may be (505-520)*2/5 = -6 K, because "acoustic_mass_amu = 46.44"
+is set in both two .feram files and acoustic displacements is treated with MD.
+
+Removing the "acoustic_mass_amu = 46.44" line turns off MD in acoustic
+displacements. The acoustic displacements will be *optimized*.
