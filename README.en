@@ -512,6 +512,7 @@ You can find input files and their simulated results in following directories in
  feram-X.YY.ZZ/src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
  feram-X.YY.ZZ/src/24example-BaTiO3-new-param-heating-cooling/
  feram-X.YY.ZZ/src/25example-BaTiO3-read-quadratic/
+ feram-X.YY.ZZ/src/26example-BaTiO3-acoustic-MD/
 
 === Energies vs MD step in cooling simulation
 \Fig:MD doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
