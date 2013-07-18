@@ -1,4 +1,5 @@
-See [Jordan Barr, Takeshi Nishimatsu and Soctt P. Beckman: "Computational modeling of the
+= README for examples of velocity-scaling (vs) and leapfrog methods
+See [Jordan Barr, Takeshi Nishimatsu and Soctt P. Beckman: "Computational modeling the
 electrocaloric effect for solid-state refrigeration" 2013 MRS Spring Meeting proceedings.]
 
 1. acoustic-MD.vs.feram: constant-temperature (T=520 K) MD in the
