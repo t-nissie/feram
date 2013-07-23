@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2013-01-10 20:15:42 takeshi>
+! Time-stamp: <2013-07-23 19:28:26 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -110,6 +110,8 @@ contains
        write(message,'(a7,f14.8,a9,f14.8)') 's_Nose=', c%s_Nose, ' pi_Nose=', c%pi_Nose
        call msg_ez(fd,message)
     end if
+
+    flush(fd)
   end subroutine write_Energy
 
   subroutine Nose_Poincare_Hamiltonian(p,c,e)
