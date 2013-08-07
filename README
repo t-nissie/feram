@@ -7,6 +7,11 @@ http://sourceforge.net/projects/loto/files/feram/ .
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
+We wrote and submit a paper entitled "Direct molecular
+dynamics simulation of electrocaloric effect in BaTiO3"
+Please go to http://arxiv.org/abs/1307.7011 . Input files
+are in feram-0.21.03/src/26example-BaTiO3-acoustic-MD/ .
+
 In this feram-0.21.03, I have done some renames and
 refactorings of source code. For example, fft.F was
 renamed to fft_wrappers.F.
