@@ -5,7 +5,7 @@ electrocaloric effect for solid-state refrigeration" 2013 MRS Spring Meeting pro
 1. acoustic-MD.vs.feram: constant-temperature (T=520 K) MD in the
    canonical ensemble with the velocity-scaling (vs) method under 160 kV/cm.
 2. Use the vs final state as the lf initial state:
-   ln -sf acoustic-MD.vs.0000005000.coord acoustic-MD.lf.restart
+   ln -sf acoustic-MD.vs.0000050000.coord acoustic-MD.lf.restart
 3. acoustic-MD.lf.feram: constant-energy MD in the microcanonical ensemble
    with the leapfrog (lf) method under 60 kV/cm.
 
