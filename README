@@ -1,6 +1,6 @@
 Dear current and future feram users,
 
-I released feram-0.21.03.tar.xz from
+I released feram-0.21.04.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 
 "feram" is a fast molecular dynamics (MD) simulator
@@ -10,9 +10,9 @@ http://loto.sourceforge.net/feram/ .
 We wrote and submit a paper entitled "Direct molecular
 dynamics simulation of electrocaloric effect in BaTiO3"
 Please go to http://arxiv.org/abs/1307.7011 . Input files
-are in feram-0.21.03/src/26example-BaTiO3-acoustic-MD/ .
+are in feram-0.21.04/src/26example-BaTiO3-acoustic-MD/ .
 
-In this feram-0.21.03, I have done some renames and
+In this feram-0.21.04, I have done some renames and
 refactorings of source code. For example, fft.F was
 renamed to fft_wrappers.F.
 
