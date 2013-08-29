@@ -15,7 +15,7 @@ program fft_check_mpi
   complex(C_DOUBLE_COMPLEX), pointer :: c(:,:,:)
   integer(C_INTPTR_T)                :: i, alloc_local, local_Lz, local_z_offset
   integer(C_INTPTR_T)                ::                 local_Ly, local_y_offset
-  integer                            :: n, N_TIMES, i_error, my_mpi_rank, n_mpi_procs, n_threads
+  integer                            :: n, j, N_TIMES, i_error, my_mpi_rank, n_mpi_procs, n_threads
   character(len=100)                 :: str
   logical                            :: in_or_out
 
@@ -103,10 +103,10 @@ program fft_check_mpi
   end do
 !$omp end parallel do
 
-  call system_clock(c_ro(1))
+  !   compute transform (j=0 is a dummy iteration.)
+  do j = 0, n_times
+     if (j.eq.1) call system_clock(c_ro(1))
 
-  !   compute transform
-  do n = 1, n_times
      call fftw_mpi_execute_dft_r2c(plan_r2c, r, c)
      ! write(6,'(a,i5,a,i4,2(a,i5),a,2e23.15)') 'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
      !      &                               ',  local_Ly =', local_Ly, &
@@ -131,8 +131,8 @@ program fft_check_mpi
   call fftw_free(rdata)
   call fftw_free(cdata)
 
-  do i = 1, 2
-     t_ro(i) = dble(c_ro(i)-c_ro(i-1))/count_rate ; if (t_ro(i)<0.0d0) t_ro(i)=t_ro(i)+dble(count_max)/count_rate
+  do j = 1, 2
+     t_ro(j) = dble(c_ro(j)-c_ro(j-1))/count_rate ; if (t_ro(j)<0.0d0) t_ro(j)=t_ro(j)+dble(count_max)/count_rate
   end do
   f_c = log(dble(Lx)*dble(Lz)*dble(Ly)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * Lx * Ly * Lz * 2
   f_r = f_c / 2
