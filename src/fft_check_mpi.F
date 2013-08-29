@@ -146,5 +146,5 @@ program fft_check_mpi
   call MPI_FINALIZE(i_error)
 end program fft_check_mpi
 !Local variables:
-!  compile-command: "mpif90 -Wall -O3 -I/home/t-nissie/Linux-x86_64/include -ffree-form -fopenmp -o fft_check_mpi fft_check_mpi.F -lfftw3 -lfftw3_mpi -L/home/t-nissie/Linux-x86_64/lib -lfftw3_omp && OMP_NUM_THREADS=4 mpirun -np 2 ./fft_check_mpi && sleep 1"
+!  compile-command: "mpif90 -Wall -O3 -ffree-form -ffree-line-length-none -o fft_check_mpi fft_check_mpi.F -lfftw3 -lfftw3_mpi && mpirun -np 2 ./fft_check_mpi 100 30 40 50 out && sleep 1"
 !End:
