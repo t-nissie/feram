@@ -92,8 +92,6 @@ program fft_check_mpi
   plan_r2c = fftw_mpi_plan_dft_r2c_3d(Lz, Ly, Lx, r, c, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_OUT))
   plan_c2r = fftw_mpi_plan_dft_c2r_3d(Lz, Ly, Lx, c, r, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_IN))
 
-  call system_clock(c_ro(1))
-
   !   initialization of array r(:,:,:) with a wave
 !$omp parallel do
   do i = 1, local_Lz
@@ -104,6 +102,8 @@ program fft_check_mpi
      end if
   end do
 !$omp end parallel do
+
+  call system_clock(c_ro(1))
 
   !   compute transform
   do n = 1, n_times
