@@ -20,8 +20,8 @@ program fft_check_mpi
   logical                            :: in_or_out
 
   ! For timing
-  integer                 :: c_ro(0:2)   ! count
-  real*8                  :: t_ro(1:2)   ! time
+  integer                 :: c_ro(0:4)   ! count
+  real*8                  :: t_ro(1:4)   ! time
   real*8                  :: g_ro        ! GFLOPS
   real*8                  :: f_c, f_r    ! The numbers of floating point operations in [G]
   integer                 :: count_rate, count_max
@@ -92,6 +92,8 @@ program fft_check_mpi
   plan_r2c = fftw_mpi_plan_dft_r2c_3d(Lz, Ly, Lx, r, c, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_OUT))
   plan_c2r = fftw_mpi_plan_dft_c2r_3d(Lz, Ly, Lx, c, r, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_IN))
 
+  call system_clock(c_ro(1))
+
   !   initialization of array r(:,:,:) with a wave
 !$omp parallel do
   do i = 1, local_Lz
@@ -103,9 +105,11 @@ program fft_check_mpi
   end do
 !$omp end parallel do
 
+  call system_clock(c_ro(2))
+
   !   compute transform (j=0 is a dummy iteration.)
   do j = 0, n_times
-     if (j.eq.1) call system_clock(c_ro(1))
+     if (j.eq.1) call system_clock(c_ro(3))
 
      call fftw_mpi_execute_dft_r2c(plan_r2c, r, c)
      ! write(6,'(a,i5,a,i4,2(a,i5),a,2e23.15)') 'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
@@ -120,7 +124,7 @@ program fft_check_mpi
      call fftw_mpi_execute_dft_c2r(plan_c2r, c, r)
   end do
 
-  call system_clock(c_ro(2), count_rate, count_max)
+  call system_clock(c_ro(4), count_rate, count_max)
 
   write(0,'(a,i5,a,i4,a,f19.15)') 'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
        &',   r(1,1,1) =', r(1,1,1)
@@ -131,16 +135,16 @@ program fft_check_mpi
   call fftw_free(rdata)
   call fftw_free(cdata)
 
-  do j = 1, 2
+  do j = 1, 4
      t_ro(j) = dble(c_ro(j)-c_ro(j-1))/count_rate ; if (t_ro(j)<0.0d0) t_ro(j)=t_ro(j)+dble(count_max)/count_rate
   end do
   f_c = log(dble(Lx)*dble(Lz)*dble(Ly)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * Lx * Ly * Lz * 2
   f_r = f_c / 2
-  g_ro = f_r / t_ro(2)
+  g_ro = f_r / t_ro(4)
   if (my_mpi_rank.eq.0) then
      write(0,'(a,f10.2,a)') 'The number of floating point operations: f_r = ', f_r, ' [G]'
-     write(6,'(i6,3i7,i16,L2,2i5,1(f13.3,f9.3,f10.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz, in_or_out, &
-          & n_threads, n_mpi_procs, t_ro(1), t_ro(2), g_ro
+     write(6,'(i6,3i7,i16,L2,2i5,1(f13.3,3f9.3,f10.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz, in_or_out, &
+          & n_threads, n_mpi_procs, t_ro(1), t_ro(2), t_ro(3), t_ro(4), g_ro
   end if
 
   call MPI_FINALIZE(i_error)
