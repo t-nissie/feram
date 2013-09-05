@@ -1,5 +1,5 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2013-09-03 10:43:45 takeshi>
+# Time-stamp: <2013-09-05 09:15:37 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set terminal postscript portrait enhanced dashed color 'Times-Roman' 12
@@ -23,7 +23,7 @@ set xtics ("128\n8"   0,\
           "2048\n128" 4,\
           "4096\n256" 5)
 
-set x2label "Hitachi SR16000:  (node) / (MPI process)\n"
+set x2label "Hitachi SR16000 (SMT off):  (node) / (MPI process)\n"
 set x2tics ("2\n64"   0,\
             "4\n128"  1,\
             "8\n256"  2,\

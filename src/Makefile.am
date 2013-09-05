@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-07-18 14:50:04 takeshi>
+# Time-stamp: <2013-09-05 09:36:29 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -183,6 +183,9 @@ pdf: feram.pdf coord_module.pdf param_module.pdf
 fft_check.html:  fft_check.F
 	sed -n '/#ifdef FFT_CHECK_DOCUMENT/,/#endif/p' $< | ulmul2html5 -s ../style.css -n 'Takeshi Nishimatsu' \
 	| sed -e 's%\.\./INSTALL%<a href="../INSTALL.html">../INSTALL</a>%' > $@
+
+fft_check_mpi.html:  fft_check_mpi.F
+	sed -n '/#ifdef FFT_CHECK_MPI_DOCUMENT/,/#endif/p' $< | ulmul2html5 -s ../style.css -n 'Takeshi Nishimatsu' > $@
 #diff: param.F
 #	diff -u -w $< $(INPUT_FILE) ; true
 #	egrep 'read.* DUMMY' $< | cut -b 20- > param.read_dummy

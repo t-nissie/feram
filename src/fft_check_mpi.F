@@ -1,7 +1,53 @@
+! fft_check_mpi.F -*-f90-*-
+! Time-stamp: <2013-09-05 09:41:52 takeshi>
+! Author: Takeshi NISHIMATSU
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#ifdef FFT_CHECK_MPI_DOCUMENT
+= fft_check_mpi.F, a 3-dimensional FFT benchmark program written in Fortran with MPI
+fft_check_mpi.F is a benchmark program. It times
+in-place double-precision in-place and out-of-place double-precision real 3-dimensional FFT.
+It is written in Fortran and parallelized with MPI.
+
+== Homepage and download
+http://loto.sourceforge.net/feram/src/fft_check_mpi.html is the homepage of fft_check_mpi.
+
+== FFTW
+See:
+ * http://www.fftw.org/doc/Transposed-distributions.html
+ * http://www.fftw.org/doc/Combining-MPI-and-Threads.html
+
+== How to build fft_check_mpi
+ $ make -f fft_check_mpi.Makefile.?????
+
+== How to execute fft_check_mpi
+ $ mpirun -np 8 ./fft_check_mpi 100 512 512 512 out
+
+== output, timing and GFLOPS
+fft_check_mpi writes results into standard output (stdout).
+Data for debug will be written into standard error output (stderr).
+Giga FLOPS values are roughly estimated from 5*N*log_2(N) floating point operations.
+
+=== Comment on "padding"
+If the numbers of dimensions of an array are powers of two,
+for example a(2048,2048,2048), "bank conflict" may occur in FFT and
+it reduces computational speed. To avoid "bank conflict",
+"padding" is commonly introduced, for example a(2048,2048+3,2048).
+However, introduction of "padding" make code complicated.
+Therefore, "padding" is not introduced in this fft_check.F.
+
+== Copying and author
+Copyright © 2007-2013 by Takeshi Nishimatsu
+
+fft_check_mpi is distributed in the hope that
+it will be useful, but WITHOUT ANY WARRANTY.
+You can copy, modify and redistribute fft_check_mpi,
+but only under the conditions described in
+the GNU General Public License (the "GPL").
+
+Takeshi Nishimatsu (t-nissie{at}imr.tohoku.ac.jp)
+#endif
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 program fft_check_mpi
-  ! See:
-  !  http://www.fftw.org/doc/Transposed-distributions.html
-  !  http://www.fftw.org/doc/Combining-MPI-and-Threads.html
   use, intrinsic :: iso_c_binding
   implicit none
   include 'mpif.h'
