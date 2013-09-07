@@ -1,42 +1,70 @@
 ! fft_check_mpi.F -*-f90-*-
-! Time-stamp: <2013-09-05 09:41:52 takeshi>
+! Time-stamp: <2013-09-06 20:28:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_MPI_DOCUMENT
 = fft_check_mpi.F, a 3-dimensional FFT benchmark program written in Fortran with MPI
-fft_check_mpi.F is a benchmark program. It times
-in-place double-precision in-place and out-of-place double-precision real 3-dimensional FFT.
-It is written in Fortran and parallelized with MPI.
+fft_check_mpi.F is a benchmark program. It times in-place and
+out-of-place double-precision real 3-dimensional FFT.
+It is written in Fortran, using FFTW, parallelized with MPI.
 
 == Homepage and download
-http://loto.sourceforge.net/feram/src/fft_check_mpi.html is the homepage of fft_check_mpi.
+http://loto.sourceforge.net/fft_check_mpi/ is the
+homepage of fft_check_mpi. You can find source code
+in http://github.com/.......
 
 == FFTW
+It is very important that machines have the de facto standard and
+ultra fast FFT library, FFTW http://www.fftw.org/ .
 See:
  * http://www.fftw.org/doc/Transposed-distributions.html
  * http://www.fftw.org/doc/Combining-MPI-and-Threads.html
 
 == How to build fft_check_mpi
- $ make -f fft_check_mpi.Makefile.?????
+ $ make -f fft_check_mpi.flatMPI.Makefile.?????
+ $ make -f fft_check_mpi.hybrid.Makefile.?????
 
 == How to execute fft_check_mpi
+fft_check_mpi requires five command line arguments.
+They are the number of iterations, Lx, Ly, Lz and
+in-place (in) or out-of-place (out). For example,
  $ mpirun -np 8 ./fft_check_mpi 100 512 512 512 out
 
 == output, timing and GFLOPS
 fft_check_mpi writes results into standard output (stdout).
-Data for debug will be written into standard error output (stderr).
-Giga FLOPS values are roughly estimated from 5*N*log_2(N) floating point operations.
+A result contains Lx, Ly, Lz, N(=LxLyLz), in-place or out-of-place,
+the number of OpenMP threads, the number of MPI processes, time for plan,
+time for preparation, time for one dummy loop, time for calculation,
+and GFLOPS value.
 
-=== Comment on "padding"
+Data for debug will be written into standard error output (stderr).
+
+Giga FLOPS values are roughly estimated from 5*N*log_2(N)/2 floating point operations.
+
+== Benchmark results
+\Fig:results fft_check_mpi.flatMPI.real.out-of-place.jpg
+Results of real 3-dimensional out-of-place FFT benchmark of powers of two.
+/Fig:results
+
+== Flat MPI vs. OpenMP+MPI hybrid parallelization
+fft_check_mpi can be compiled both in flat MPI and in OpenMP+MPI
+hybrid parallelization. In many cases of large scale 3-dimensional FFT,
+flat MPI is faster than hybrid parallelization.
+
+== Padding
 If the numbers of dimensions of an array are powers of two,
-for example a(2048,2048,2048), "bank conflict" may occur in FFT and
+for example r(2048,2048,2048), "bank conflict" may occur in FFT and
 it reduces computational speed. To avoid "bank conflict",
-"padding" is commonly introduced, for example a(2048,2048+3,2048).
+"padding" is commonly introduced, for example r(2048,2048+3,2048).
 However, introduction of "padding" make code complicated.
 Therefore, "padding" is not introduced in this fft_check.F.
 
+== Initial dummy loop
+On some platforms, initial MPI communication takes unpredictable time.
+Therefore, fft_check_mpi wast one dummy loop in the beginning.
+
 == Copying and author
-Copyright © 2007-2013 by Takeshi Nishimatsu
+Copyright © 2012-2013 by Takeshi Nishimatsu
 
 fft_check_mpi is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
@@ -66,10 +94,10 @@ program fft_check_mpi
   logical                            :: in_or_out
 
   ! For timing
-  integer                 :: c_ro(0:4)   ! count
-  real*8                  :: t_ro(1:4)   ! time
-  real*8                  :: g_ro        ! GFLOPS
-  real*8                  :: f_c, f_r    ! The numbers of floating point operations in [G]
+  integer                 :: c_r(0:4)   ! count
+  real*8                  :: t_r(1:4)   ! time
+  real*8                  :: g_r        ! GFLOPS
+  real*8                  :: f_r         ! The numbers of floating point operations in [G]
   integer                 :: count_rate, count_max
 
 # if defined(_OPENMP)
@@ -132,13 +160,13 @@ program fft_check_mpi
   end do
 !$omp end parallel do
 
-  call system_clock(c_ro(0))
+  call system_clock(c_r(0))
 
   !   create MPI plan for in-place forward DFT (note dimension reversal)
   plan_r2c = fftw_mpi_plan_dft_r2c_3d(Lz, Ly, Lx, r, c, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_OUT))
   plan_c2r = fftw_mpi_plan_dft_c2r_3d(Lz, Ly, Lx, c, r, MPI_COMM_WORLD, ior(FFTW_MEASURE,FFTW_MPI_TRANSPOSED_IN))
 
-  call system_clock(c_ro(1))
+  call system_clock(c_r(1))
 
   !   initialization of array r(:,:,:) with a wave
 !$omp parallel do
@@ -151,11 +179,11 @@ program fft_check_mpi
   end do
 !$omp end parallel do
 
-  call system_clock(c_ro(2))
+  call system_clock(c_r(2))
 
   !   compute transform (j=0 is a dummy iteration.)
   do j = 0, n_times
-     if (j.eq.1) call system_clock(c_ro(3))
+     if (j.eq.1) call system_clock(c_r(3))
 
      call fftw_mpi_execute_dft_r2c(plan_r2c, r, c)
      ! write(6,'(a,i5,a,i4,2(a,i5),a,2e23.15)') 'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
@@ -170,7 +198,7 @@ program fft_check_mpi
      call fftw_mpi_execute_dft_c2r(plan_c2r, c, r)
   end do
 
-  call system_clock(c_ro(4), count_rate, count_max)
+  call system_clock(c_r(4), count_rate, count_max)
 
   write(0,'(a,i5,a,i4,a,f19.15)') 'my_mpi_rank/size =', my_mpi_rank, '/', n_mpi_procs, &
        &',   r(1,1,1) =', r(1,1,1)
@@ -182,15 +210,14 @@ program fft_check_mpi
   call fftw_free(cdata)
 
   do j = 1, 4
-     t_ro(j) = dble(c_ro(j)-c_ro(j-1))/count_rate ; if (t_ro(j)<0.0d0) t_ro(j)=t_ro(j)+dble(count_max)/count_rate
+     t_r(j) = dble(c_r(j)-c_r(j-1))/count_rate ; if (t_r(j)<0.0d0) t_r(j)=t_r(j)+dble(count_max)/count_rate
   end do
-  f_c = log(dble(Lx)*dble(Lz)*dble(Ly)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * Lx * Ly * Lz * 2
-  f_r = f_c / 2
-  g_ro = f_r / t_ro(4)
+  f_r = log(dble(Lx)*dble(Lz)*dble(Ly)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * Lx * Ly * Lz
+  g_r = f_r / t_r(4)
   if (my_mpi_rank.eq.0) then
      write(0,'(a,f10.2,a)') 'The number of floating point operations: f_r = ', f_r, ' [G]'
      write(6,'(i6,3i7,i16,L2,2i5,1(f13.3,3f9.3,f10.3))') N_TIMES, Lx, Ly, Lz, Lx*Ly*Lz, in_or_out, &
-          & n_threads, n_mpi_procs, t_ro(1), t_ro(2), t_ro(3), t_ro(4), g_ro
+          & n_threads, n_mpi_procs, t_r(1), t_r(2), t_r(3), t_r(4), g_r
   end if
 
   call MPI_FINALIZE(i_error)
