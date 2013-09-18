@@ -15,3 +15,15 @@ is set in both two .feram files and acoustic displacements is treated with MD.
 
 Removing the "acoustic_mass_amu = 46.44" line turns off MD in acoustic
 displacements. The acoustic displacements will be *optimized*.
+
+== Timing
+Timing results with 1 and 1/4 node of SR16000.
+ $ pwd; grep TIMING */*log
+ /home/t-nissie/feram/feram-l.04/26example-BaTiO3-acoustic-MD
+ 26example-0.21.03/acoustic-MD.lf.log:             14.95        2542.03        2556.98     #TIMING_REPORT
+ 26example-0.21.03/acoustic-MD.vs.log:             14.87        2577.11        2591.98     #TIMING_REPORT
+ 26example-0.21.04/acoustic-MD.lf.log:             15.01        2330.87        2345.88     #TIMING_REPORT
+ 26example-0.21.04/acoustic-MD.vs.log:             14.80        2338.31        2353.11     #TIMING_REPORT
+ 26example-0.21.04-optimize/acoustic-MD.lf.log:    15.01        1744.85        1759.86     #TIMING_REPORT
+ 26example-0.21.04-optimize/acoustic-MD.vs.log:    15.15        1712.26        1727.41     #TIMING_REPORT
+ $
