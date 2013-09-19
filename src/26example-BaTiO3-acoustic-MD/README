@@ -1,6 +1,8 @@
 = README for examples of velocity-scaling (vs) and leapfrog methods
-See [Jordan Barr, Takeshi Nishimatsu and Soctt P. Beckman: "Computational modeling the
-electrocaloric effect for solid-state refrigeration" 2013 MRS Spring Meeting proceedings.]
+See [Jordan A. Barr, Takeshi Nishimatsu and Soctt P. Beckman: "Computational modeling the
+electrocaloric effect for solid-state refrigeration" 2013 MRS Spring Meeting proceedings]
+and [Takeshi Nishimatsu, Jordan A. Barr and Soctt P. Beckman: "Direct molecular
+dynamics simulation of electrocaloric effect in BaTiO3" http://arxiv.org/abs/1307.7011].
 
 1. acoustic-MD.vs.feram: constant-temperature (T=520 K) MD in the
    canonical ensemble with the velocity-scaling (vs) method under 160 kV/cm.
@@ -17,13 +19,24 @@ Removing the "acoustic_mass_amu = 46.44" line turns off MD in acoustic
 displacements. The acoustic displacements will be *optimized*.
 
 == Timing
-Timing results with 1 and 1/4 node of SR16000.
+Timing results.
+
+SR16000 1 node:
  $ pwd; grep TIMING */*log
- /home/t-nissie/feram/feram-l.04/26example-BaTiO3-acoustic-MD
+ /home/t-nissie/feram/feram-l.04/26example-BaTiO3-acoustic-1node
  26example-0.21.03/acoustic-MD.lf.log:             14.95        2542.03        2556.98     #TIMING_REPORT
  26example-0.21.03/acoustic-MD.vs.log:             14.87        2577.11        2591.98     #TIMING_REPORT
  26example-0.21.04/acoustic-MD.lf.log:             15.01        2330.87        2345.88     #TIMING_REPORT
  26example-0.21.04/acoustic-MD.vs.log:             14.80        2338.31        2353.11     #TIMING_REPORT
  26example-0.21.04-optimize/acoustic-MD.lf.log:    15.01        1744.85        1759.86     #TIMING_REPORT
  26example-0.21.04-optimize/acoustic-MD.vs.log:    15.15        1712.26        1727.41     #TIMING_REPORT
- $
+
+SR16000 1 slot (1/4 node):
+ $ pwd; grep TIMING */*log
+ /home/t-nissie/feram/feram-l.04/26example-BaTiO3-acoustic-1slot
+ 26example-0.21.03/acoustic-MD.lf.log:             10.86        6460.40        6471.26     #TIMING_REPORT
+ 26example-0.21.03/acoustic-MD.vs.log:             10.68        6217.77        6228.45     #TIMING_REPORT
+ 26example-0.21.04/acoustic-MD.lf.log:             10.06        4122.38        4132.44     #TIMING_REPORT
+ 26example-0.21.04/acoustic-MD.vs.log:             10.12        4057.08        4067.20     #TIMING_REPORT
+ 26example-0.21.04-optimize/acoustic-MD.lf.log:    10.09        3235.80        3245.89     #TIMING_REPORT
+ 26example-0.21.04-optimize/acoustic-MD.vs.log:    10.15        3148.79        3158.94     #TIMING_REPORT
