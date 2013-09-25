@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2013-09-19 09:14:58 takeshi>
+! Time-stamp: <2013-09-25 10:46:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -195,8 +195,8 @@ it reduces computational speed. To avoid "bank conflict",
 However, introduction of "padding" make code complicated.
 Therefore, "padding" is not introduced in this fft_check.F.
 
-== fft_check_mpi.F, an MPI-parallelized large-sale FFT benchmark program
-You can find an MPI-parallelized large-sale FFT benchmark program at
+== fft_check_mpi.F, an MPI-parallelized large-scale FFT benchmark program
+You can find an MPI-parallelized large-scale FFT benchmark program at
 https://github.com/t-nissie/fft_check_mpi .
 It is written in Fortran, using FFTW, parallelized with MPI.
 
