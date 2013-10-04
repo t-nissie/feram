@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2013-10-04 11:15:44 takeshi>
+! Time-stamp: <2013-10-04 11:54:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -18,7 +18,7 @@ module Coord_module
      real*8,     allocatable :: dVddi(:,:,:,:)   ! dV/dq for dipole
      complex*16, allocatable :: dipoT(:,:,:,:)   ! Only used in dVddi_dipole_dipole.F
      real*8,     allocatable :: E_field(:,:,:,:) ! external and local electric field
-     real*8,     allocatable :: E_field_initial(:,:,:,:) ! initial external electric field
+     real*8,     allocatable :: E_field_local(:,:,:,:) ! initial external electric field
      real*8,     allocatable :: dipoI(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8!!!
      real*8,     allocatable :: didiR(:,:,:,:)   ! 6 kind of dipoR*dipoR
      complex*16, allocatable :: didiK(:,:,:,:)   ! 6 kind of dipoR*dipoR
@@ -122,12 +122,12 @@ contains
     end do
 !$omp end parallel do
 
-    if (allocated(c%E_field_initial)) deallocate(c%E_field_initial)
-    allocate(     c%E_field_initial(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    if (allocated(c%E_field_local)) deallocate(c%E_field_local)
+    allocate(     c%E_field_local(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%E_field_initial(:,:,i,:) = 0.0d0
+       c%E_field_local(:,:,i,:) = 0.0d0
     end do
 !$omp end parallel do
 

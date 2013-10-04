@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2013-10-04 11:06:07 takeshi>
+! Time-stamp: <2013-10-04 11:53:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -16,7 +16,7 @@ subroutine initialize_E_field(p,c)
   real*8             :: local_E_field(3)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
-  c%E_field(:,:,:,:) = 0.0d0
+  c%E_field_local(:,:,:,:) = 0.0d0
 
   open(unit=UNIT_SYSTEM, file=(trim(p%filename)//'.localfield'), status='old', action='read', iostat=ios)
   if (ios.eq.0) then
@@ -31,7 +31,7 @@ subroutine initialize_E_field(p,c)
         if (ios.ne.0 .or. tmp.eq.'#') cycle
         read(str,*,IOSTAT=ios) ix, iy, iz, local_E_field(:)
         if (ios.eq.0) then
-           c%E_field(ix,iy,iz,:) = local_E_field(:)
+           c%E_field_local(ix,iy,iz,:) = local_E_field(:)
         else
            call msg(UNIT_LOG, trim(p%filename)//'.localfield', line_number, 'There is something wrong in this line: ', trim(str))
            call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'there is something wrong in '//trim(p%filename)//'.localfield')
@@ -65,7 +65,7 @@ subroutine initialize_E_field(p,c)
         do iz = 0, p%Lz-1
            do iy = 0, p%Ly-1
               do ix = 0, p%Lx-1
-                 c%E_field(ix,iy,iz,:) = c%E_field(ix,iy,iz,:) + p%external_E_field(:)
+                 c%E_field(ix,iy,iz,:) = c%E_field_local(ix,iy,iz,:) + p%external_E_field(:)
               end do
            end do
         end do

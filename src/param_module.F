@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-10-04 11:08:49 takeshi>
+! Time-stamp: <2013-10-04 12:21:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -195,6 +195,9 @@ contains
        case('method')
           read(str,*) dmy1, dmy2, p%method
           if (p%method.eq.'hl') p%E_field_always_zero = .false.
+       case('E_wave')
+          read(str,*) dmy1, dmy2, p%E_wave
+          p%E_field_always_zero = .false.
        case('GPa')
           read(str,*,IOSTAT=iosGPa) dmy1, dmy2, p%GPa(1), p%GPa(2), p%GPa(3)
           if (iosGPa.ne.0) then

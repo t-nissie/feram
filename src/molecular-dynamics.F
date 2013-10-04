@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2013-05-22 18:02:56 takeshi>
+! Time-stamp: <2013-10-04 12:32:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -19,21 +19,31 @@ subroutine molecular_dynamics(p,c)
   !--- local -----------------------------------------
   type(Energy_type) :: e
   type(Average_type) :: avg
-  integer i_step
+  integer i_step, ix, iy, iz, alpha
+  real*8 E_field_add(3)
   character(120), parameter :: fmt_time_step = &
-  & "('TIME_STEP ',i7,' ---------------------------------------------------------------------------------')"
+       "('TIME_STEP ',i8,3f16.12,' -----------------------------------------------------')"
   character (len=120) :: message
   character (len=120) :: fn
   logical             :: detail
   !--- END of variable definitions -------------------
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'MD')
 
+  E_field_add = 0.0d0
+
   write(message,'(a,f6.1,a)') 'T = ', p%kelvin, ' [K] BEGIN ========================================================'
   call msg_ez(UNIT_LOG, message)
 
-  write(message,fmt_time_step) 0; call msg_ez(UNIT_LOG,message)
   call initialize_E_field(p,c)
   call initialize_dipoR(p,c,e)
+
+  if (p%E_wave.eq.'triangular_sin' .or. p%E_wave.eq.'sin') then
+     write(message,fmt_time_step) 0, 0.0d0
+  else
+     write(message,fmt_time_step) 0, p%external_E_field
+  end if
+  call msg_ez(UNIT_LOG,message)
+
   e%total = e%dipo_kinetic/c%s_Nose**2 + e%acou_kinetic + sum_potential_energies(e)
   call write_Energy(p,c,e,UNIT_LOG)
   !write(message,"('strain',6e13.5)") c%strain(:)
@@ -48,10 +58,33 @@ subroutine molecular_dynamics(p,c)
   call reset_Average(avg)
 
   do i_step = 1, p%n_thermalize+p%n_thermal_conductivity+p%n_average
+
+     if (p%n_E_wave_period>0 .and. i_step>=p%n_thermalize) then
+        if (p%E_wave.eq.'triangular_cos') then
+           E_field_add = abs(mod((i_step-p%n_thermalize)                      ,p%n_E_wave_period)-p%n_E_wave_period/2)-p%n_E_wave_period/4
+        else
+           E_field_add = abs(mod((i_step-p%n_thermalize+3*p%n_E_wave_period/4),p%n_E_wave_period)-p%n_E_wave_period/2)-p%n_E_wave_period/4
+        end if
+        E_field_add = p%external_E_field * E_field_add / (p%n_E_wave_period/4.0)
+!$omp parallel do
+        do iz = 0, p%Lz-1
+           do alpha = 1,3
+              do iy = 0, p%Ly-1
+                 do ix = 0, p%Lx-1
+                    c%E_field(ix,iy,iz,alpha) = c%E_field_local(ix,iy,iz,alpha) + E_field_add(alpha)
+                 end do
+              end do
+           end do
+        end do
+!$omp end parallel do
+     end if
+
+     ! Needs mirror of c%E_field around here, maybe.
+
      detail = p%verbose>=2 .or. mod(i_step,p%n_coord_freq).eq.0 &
           &   .or. i_step.eq.p%n_thermalize+p%n_thermal_conductivity+p%n_average
      if (detail) then
-        write(message,fmt_time_step) i_step; call msg_ez(UNIT_LOG,message)
+        write(message,fmt_time_step) i_step, E_field_add; call msg_ez(UNIT_LOG,message)
      end if
 
      select case (p%method)
