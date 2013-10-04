@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-10-04 10:47:15 takeshi>
+! Time-stamp: <2013-10-04 11:08:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -151,7 +151,7 @@ contains
     p%distribution_directory = ''
 
     p%external_E_field(:) = 0.0d0
-    p%E_wave = 'triangular_sin'
+    p%E_wave = ''
     p%P_kappa2 = 0.0d0
     p%P_alpha  = 0.0d0
     p%P_gamma  = 0.0d0

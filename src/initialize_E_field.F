@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2013-04-21 13:21:41 takeshi>
+! Time-stamp: <2013-10-04 11:06:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -59,16 +59,17 @@ subroutine initialize_E_field(p,c)
        p%external_E_field(2).ne.0.0d0 .or. &
        p%external_E_field(3).ne.0.0d0 ) then
      p%E_field_always_zero = .false.   ! Make it sure, though it must be already set in pram_module.F.
-     write(message,'(a,3f9.5,a)') 'external_ E_field(:)=', p%external_E_field(:), &
-          ' [V/Angstrom] is added to E_field'
+     write(message,'(a,3f9.5,a)') 'external_ E_field(:)=', p%external_E_field(:), ' [V/Angstrom]'
      call msg(UNIT_LOG, __FILE__, __LINE__, 'NOTICE', message)
-     do iz = 0, p%Lz-1
-        do iy = 0, p%Ly-1
-           do ix = 0, p%Lx-1
-              c%E_field(ix,iy,iz,:) = c%E_field(ix,iy,iz,:) + p%external_E_field(:)
+     if (p%E_wave.ne.'triangular_sin' .and. p%E_wave.ne.'sin') then
+        do iz = 0, p%Lz-1
+           do iy = 0, p%Ly-1
+              do ix = 0, p%Lx-1
+                 c%E_field(ix,iy,iz,:) = c%E_field(ix,iy,iz,:) + p%external_E_field(:)
+              end do
            end do
         end do
-     end do
+     end if
   end if
 
   !=== Mirror ===================================================================
