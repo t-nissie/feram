@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2013-01-17 12:58:16 t-nissie>
+! Time-stamp: <2013-10-04 11:16:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -16,7 +16,6 @@ subroutine hysteresis_loop(p,c)
   type(Coord_type) :: c
   !--- local -----------------------------------------
   type(Energy_type) :: e
-  real*8, allocatable :: E_field_initial(:,:,:,:) ! initial external electric field
   real*8 E_field_add(3), u(3)
   integer i_step, ix, iy, iz, alpha
   character(120), parameter :: fmt_time_step = &
@@ -27,13 +26,11 @@ subroutine hysteresis_loop(p,c)
   !--- END of variable definitions -------------------
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'MD')
 
-  allocate(E_field_initial(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
-
   write(message,'(f5.1,a)') p%kelvin, ' [K] BEGIN ================================================'
   call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
 
   call initialize_E_field(p,c)
-  E_field_initial = c%E_field
+  c%E_field_initial = c%E_field
   call initialize_dipoR(p,c,e)
   write(message,fmt_time_step) 0, p%external_E_field
   call msg_ez(UNIT_LOG,message)
@@ -55,7 +52,7 @@ subroutine hysteresis_loop(p,c)
            do alpha = 1,3
               do iy = 0, p%Ly-1
                  do ix = 0, p%Lx-1
-                    c%E_field(ix,iy,iz,alpha) = E_field_initial(ix,iy,iz,alpha) + E_field_add(alpha)
+                    c%E_field(ix,iy,iz,alpha) = c%E_field_initial(ix,iy,iz,alpha) + E_field_add(alpha)
                  end do
               end do
            end do
@@ -104,6 +101,5 @@ subroutine hysteresis_loop(p,c)
   write(message,'(f5.1,a)') p%kelvin, ' [K] END =================================================='
   call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
 
-  deallocate(E_field_initial)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'MD')
 end subroutine hysteresis_loop
