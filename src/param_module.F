@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-06-07 21:25:51 t-nissie>
+! Time-stamp: <2013-10-04 10:47:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -50,6 +50,7 @@ module Param_module
      integer n_thermalize
      integer n_thermal_conductivity
      integer n_average
+     integer n_E_wave_period
      integer n_coord_freq  ! frequency for writing out the coordinates
      integer n_hl_freq     ! frequency for writing to .hl file
      integer n_hysteresis_loop_continue
@@ -57,6 +58,7 @@ module Param_module
      character (len=FILE_NAME_LEN) distribution_directory
      !!--- External electric field ---------------------
      real*8    external_E_field(3)  ! External electric field [V/Angstrom]
+     character(len=30) :: E_wave    ! 'triangular_sin', 'triangular_cos'  !Not yet: 'sin', 'cos'
      !--- On-site (Polynomial of order 6) -------------
      real*8 P_kappa2    ! P_6(u) = kappa2*u^2 + alpha*u^4
      real*8 P_alpha     !  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
@@ -141,6 +143,7 @@ contains
     p%n_thermalize =  10000
     p%n_thermal_conductivity = 0
     p%n_average    = 100000
+    p%n_E_wave_period = 0
     p%n_coord_freq = huge(1)   ! Maximum integer. Do not write system by default.
     p%n_hl_freq    =  10000
     p%n_hysteresis_loop_continue = 1
@@ -148,6 +151,7 @@ contains
     p%distribution_directory = ''
 
     p%external_E_field(:) = 0.0d0
+    p%E_wave = 'triangular_sin'
     p%P_kappa2 = 0.0d0
     p%P_alpha  = 0.0d0
     p%P_gamma  = 0.0d0
@@ -240,6 +244,12 @@ contains
           read(str,*) dmy1, dmy2, p%n_thermal_conductivity
        case('n_average'   )
           read(str,*) dmy1, dmy2, p%n_average
+       case('n_E_wave_period')
+          read(str,*) dmy1, dmy2, p%n_E_wave_period
+          if (mod(p%n_E_wave_period,4).ne.0) then
+             write(0,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
+             stop ': Input error: n_E_wave_period must be devided by 4.'
+          end if
        case('n_coord_freq')
           read(str,*) dmy1, dmy2, p%n_coord_freq
        case('n_hl_freq')
