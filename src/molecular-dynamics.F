@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2013-10-06 22:24:19 takeshi>
+! Time-stamp: <2013-10-06 23:38:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -36,7 +36,7 @@ subroutine molecular_dynamics(p,c)
   call initialize_E_field(p,c)
   call initialize_dipoR(p,c,e)
 
-  E_field_add = wave(p%E_wave, 0, p%n_E_wave_period, p%external_E_field) !Redundant. The same is in initialize_E_field.F.
+  E_field_add = wave(p%E_wave_type, 0, p%n_E_wave_period, p%external_E_field) !Redundant. The same is in initialize_E_field.F.
   write(message,fmt_time_step) 0, E_field_add
   call msg_ez(UNIT_LOG,message)
 
@@ -57,7 +57,7 @@ subroutine molecular_dynamics(p,c)
   do i_step = 1, p%n_thermalize+p%n_thermal_conductivity+p%n_average
 
      if (p%n_E_wave_period>0 .and. i_step>=p%n_thermalize) then
-        E_field_add(:) = wave(p%E_wave, i_step-p%n_thermalize, p%n_E_wave_period, p%external_E_field(:))
+        E_field_add(:) = wave(p%E_wave_type, i_step-p%n_thermalize, p%n_E_wave_period, p%external_E_field(:))
 !$omp parallel do
         do iz = 0, p%Lz-1
            do alpha = 1,3

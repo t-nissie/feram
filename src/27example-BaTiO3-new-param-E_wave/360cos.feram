@@ -36,7 +36,7 @@ n_hl_freq    =       100
 n_coord_freq =   4000000
 coord_directory = 'never'
 distribution_directory = 'never'
-E_wave = 'triangular_cos'
+E_wave_type = 'triangular_cos'
 
 #--- External electric field ---------------------
 external_E_field = 0.00 0.00 0.0035

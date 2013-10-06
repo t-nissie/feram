@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-10-04 12:21:15 takeshi>
+! Time-stamp: <2013-10-06 23:38:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -58,7 +58,7 @@ module Param_module
      character (len=FILE_NAME_LEN) distribution_directory
      !!--- External electric field ---------------------
      real*8    external_E_field(3)  ! External electric field [V/Angstrom]
-     character(len=30) :: E_wave    ! 'triangular_sin', 'triangular_cos'  !Not yet: 'sin', 'cos'
+     character(len=30) :: E_wave_type    ! 'triangular_sin', 'triangular_cos'  !Not yet: 'sin', 'cos'
      !--- On-site (Polynomial of order 6) -------------
      real*8 P_kappa2    ! P_6(u) = kappa2*u^2 + alpha*u^4
      real*8 P_alpha     !  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
@@ -151,7 +151,7 @@ contains
     p%distribution_directory = ''
 
     p%external_E_field(:) = 0.0d0
-    p%E_wave = ''
+    p%E_wave_type = ''
     p%P_kappa2 = 0.0d0
     p%P_alpha  = 0.0d0
     p%P_gamma  = 0.0d0
@@ -195,8 +195,8 @@ contains
        case('method')
           read(str,*) dmy1, dmy2, p%method
           if (p%method.eq.'hl') p%E_field_always_zero = .false.
-       case('E_wave')
-          read(str,*) dmy1, dmy2, p%E_wave
+       case('E_wave_type')
+          read(str,*) dmy1, dmy2, p%E_wave_type
           p%E_field_always_zero = .false.
        case('GPa')
           read(str,*,IOSTAT=iosGPa) dmy1, dmy2, p%GPa(1), p%GPa(2), p%GPa(3)
