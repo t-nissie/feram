@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-09-05 09:36:29 takeshi>
+# Time-stamp: <2013-10-06 14:12:03 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -9,8 +9,8 @@ bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j \
                fft_check distribution3d2ppm \
                frozen_phonon_Gamma \
                frozen_phonon_X
-EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check
-TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp
+EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check
+TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -70,9 +70,11 @@ marsaglia_tsang_uni64_check_SOURCES  = marsaglia_tsang_uni64_check.F  marsaglia_
 
 marsaglia_tsang_uni64_timing_SOURCES = marsaglia_tsang_uni64_timing.f marsaglia_tsang_uni64_module.f
 
+wave_check_SOURCES = wave_check.f wave_module.F
+
 fft_check_SOURCES = fft_wrappers.F fft_check.F f90_wisdom.f
 
-CLEANFILES = *.mod *.lst *.ps *.pdf *.f90 feram_mpi
+CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 feram_mpi $(EXTRA_PROGRAMS)
 EXTRA_DIST = define.h \
 cross-section-dVddi.sh \
 cross-section-p.sh \
@@ -97,6 +99,7 @@ slicer.rb \
 splot.gp \
 feram_mpi.F \
 marsaglia_tsang_uni64_check.gp \
+wave_check.gp \
 03example-BaTiO3-bulk-phase-transition \
 09example-BaTiO3-bulk-leap-frog \
 10example-PbTiO3-DDB2short \
@@ -147,6 +150,7 @@ dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy_dipo.o kinet
                                 param_module.o coord_module.o
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
 marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o:                          marsaglia_tsang_uni64_module.o
+wave_check.o:                   wave_module.o
 rgb_check.o:                    rgb_module.o
 mirror_force_mirror.o:          param_module.o coord_module.o energy_module.o
 nose-poincare.o velocity_scaling.o:\
