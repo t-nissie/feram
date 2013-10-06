@@ -12,7 +12,7 @@ set xtics 4
 set grid
 
 plot 'wave_check.dat' using 1:2 title 'triangular\_sin' with linespoints,\
-     'wave_check.dat' using 1:3 title 'triangular\_cos' with linespoints
+     'wave_check.dat' using 1:5 title 'triangular\_cos' with linespoints
 
 set output
 print 'wave_check.eps is generated.'

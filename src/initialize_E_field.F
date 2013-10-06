@@ -1,11 +1,12 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2013-10-04 11:53:01 takeshi>
+! Time-stamp: <2013-10-06 17:16:54 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
 subroutine initialize_E_field(p,c)
   use Param_module
   use Coord_module
+  use wave_module
   implicit none
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c
@@ -13,7 +14,7 @@ subroutine initialize_E_field(p,c)
   character (len=300):: str
   character (len=1)  :: tmp
   character(len=110) :: message
-  real*8             :: local_E_field(3)
+  real*8             :: tmp_E(3)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
   c%E_field_local(:,:,:,:) = 0.0d0
@@ -29,9 +30,9 @@ subroutine initialize_E_field(p,c)
         line_number = line_number + 1
         read(str,*,IOSTAT=ios) tmp
         if (ios.ne.0 .or. tmp.eq.'#') cycle
-        read(str,*,IOSTAT=ios) ix, iy, iz, local_E_field(:)
+        read(str,*,IOSTAT=ios) ix, iy, iz, tmp_E(:)
         if (ios.eq.0) then
-           c%E_field_local(ix,iy,iz,:) = local_E_field(:)
+           c%E_field_local(ix,iy,iz,:) = tmp_E(:)
         else
            call msg(UNIT_LOG, trim(p%filename)//'.localfield', line_number, 'There is something wrong in this line: ', trim(str))
            call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'there is something wrong in '//trim(p%filename)//'.localfield')
@@ -54,23 +55,15 @@ subroutine initialize_E_field(p,c)
      end if
   end if
 
-  !=== Add external constant electric field to c%E_field ========================
-  if ( p%external_E_field(1).ne.0.0d0 .or. &
-       p%external_E_field(2).ne.0.0d0 .or. &
-       p%external_E_field(3).ne.0.0d0 ) then
-     p%E_field_always_zero = .false.   ! Make it sure, though it must be already set in pram_module.F.
-     write(message,'(a,3f9.5,a)') 'external_ E_field(:)=', p%external_E_field(:), ' [V/Angstrom]'
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'NOTICE', message)
-     if (p%E_wave.ne.'triangular_sin' .and. p%E_wave.ne.'sin') then
-        do iz = 0, p%Lz-1
-           do iy = 0, p%Ly-1
-              do ix = 0, p%Lx-1
-                 c%E_field(ix,iy,iz,:) = c%E_field_local(ix,iy,iz,:) + p%external_E_field(:)
-              end do
-           end do
+  !=== Add external_E_field ========================
+  tmp_E(:) = wave(p%E_wave,0,p%n_E_wave_period,p%external_E_field(:))
+  do iz = 0, p%Lz-1
+     do iy = 0, p%Ly-1
+        do ix = 0, p%Lx-1
+           c%E_field(ix,iy,iz,:) = c%E_field_local(ix,iy,iz,:) + tmp_E(:)
         end do
-     end if
-  end if
+     end do
+  end do
 
   !=== Mirror ===================================================================
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then

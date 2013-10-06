@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2013-10-04 12:32:15 takeshi>
+! Time-stamp: <2013-10-06 17:24:27 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -12,6 +12,7 @@ subroutine molecular_dynamics(p,c)
   use Coord_module
   use Energy_module
   use Average_module
+  use wave_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type) :: p
@@ -29,19 +30,14 @@ subroutine molecular_dynamics(p,c)
   !--- END of variable definitions -------------------
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'MD')
 
-  E_field_add = 0.0d0
-
   write(message,'(a,f6.1,a)') 'T = ', p%kelvin, ' [K] BEGIN ========================================================'
   call msg_ez(UNIT_LOG, message)
 
   call initialize_E_field(p,c)
   call initialize_dipoR(p,c,e)
 
-  if (p%E_wave.eq.'triangular_sin' .or. p%E_wave.eq.'sin') then
-     write(message,fmt_time_step) 0, 0.0d0
-  else
-     write(message,fmt_time_step) 0, p%external_E_field
-  end if
+  E_field_add = wave(p%E_wave, 0, p%n_E_wave_period, p%external_E_field)
+  write(message,fmt_time_step) 0, E_field_add
   call msg_ez(UNIT_LOG,message)
 
   e%total = e%dipo_kinetic/c%s_Nose**2 + e%acou_kinetic + sum_potential_energies(e)
@@ -59,13 +55,8 @@ subroutine molecular_dynamics(p,c)
 
   do i_step = 1, p%n_thermalize+p%n_thermal_conductivity+p%n_average
 
-     if (p%n_E_wave_period>0 .and. i_step>=p%n_thermalize) then
-        if (p%E_wave.eq.'triangular_cos') then
-           E_field_add = abs(mod((i_step-p%n_thermalize)                      ,p%n_E_wave_period)-p%n_E_wave_period/2)-p%n_E_wave_period/4
-        else
-           E_field_add = abs(mod((i_step-p%n_thermalize+3*p%n_E_wave_period/4),p%n_E_wave_period)-p%n_E_wave_period/2)-p%n_E_wave_period/4
-        end if
-        E_field_add = p%external_E_field * E_field_add / (p%n_E_wave_period/4.0)
+     if (p%n_E_wave_period>0 .and. i_step>p%n_thermalize) then
+        E_field_add(:) = wave(p%E_wave, i_step-p%n_thermalize, p%n_E_wave_period, p%external_E_field(:))
 !$omp parallel do
         do iz = 0, p%Lz-1
            do alpha = 1,3
@@ -79,7 +70,7 @@ subroutine molecular_dynamics(p,c)
 !$omp end parallel do
      end if
 
-     ! Needs mirror of c%E_field around here, maybe.
+     ! We may need mirror of c%E_field around here.
 
      detail = p%verbose>=2 .or. mod(i_step,p%n_coord_freq).eq.0 &
           &   .or. i_step.eq.p%n_thermalize+p%n_thermal_conductivity+p%n_average
