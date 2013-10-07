@@ -223,6 +223,11 @@ of taking snapshots, and frequency of writing to .hl file.
  n_coord_freq = 50000
  n_hl_freq    =  5000
 
+===== n_E_wave_period, E_wave_type
+n_E_wave_period is the period of alternating external electric field
+which have external_E_field amplitude. Set 'triangular_sin' or
+'triangular_cos' to E_wave_type.
+
 ===== n_hysteresis_loop_continue
 You can restart and continue a hysteresis-loop calculation from the
 n_hysteresis_loop_continue-th iteration.
@@ -254,6 +259,8 @@ This can also reduce computational time.
 ===== external_E_field
 Vector of the external electric field in the unit of [V/Angstrom].
  external_E_field = 0.00 0.00 -0.01
+External electric field will be constant in this value when method is 'md', 'vs' or 'lf'.
+Or, if E_wave_type is specified, E will be altering in period n_E_wave_period.
 
 ===== P_kappa2, P_alpha, P_gamma
 Coefficients for the 4-th order polynomial.

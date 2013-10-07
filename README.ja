@@ -199,6 +199,10 @@ thermalizeにかけるステップ数，物理量の平均を取るのにかけ�
  n_coord_freq = 50000
  n_hl_freq    =  5000
 
+===== n_E_wave_period, E_wave_type
+external_E_fieldの振幅を持つ外部電場を時間により振動させるときの周期。
+E_wave_typeに'triangular_sin'か'triangular_cos'を指定する。
+
 ===== n_hysteresis_loop_continue
 ヒステリシスループ (hysteresis loop) のシミュレーションを
 n_hysteresis_loop_continue回目のイテレーションから
@@ -235,6 +239,7 @@ distribution_files/ ディレクトリに書き出されます．とくに後者
 methodが'md', 'lf', 'mc'のときはこの電場で一定．
 methodが'hl'のヒステリシスの計算ではn_averageステップの間に電場が+Eから-Eまで変化する．
  external_E_field = 0.00 0.00 -0.01
+また、E_wave_typeを指定すると、Eはn_E_wave_periodの周期で振動する。
 
 ===== P_kappa2, P_alpha, P_gamma
 4次の多項式の係数．
