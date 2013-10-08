@@ -202,6 +202,7 @@ thermalizeにかけるステップ数，物理量の平均を取るのにかけ�
 ===== n_E_wave_period, E_wave_type
 external_E_fieldの振幅を持つ外部電場を時間により振動させるときの周期。
 E_wave_typeに'triangular_sin'か'triangular_cos'を指定する。
+src/27example-BaTiO3-new-param-E_wave/ 以下に例がある。
 
 ===== n_hysteresis_loop_continue
 ヒステリシスループ (hysteresis loop) のシミュレーションを

@@ -226,7 +226,8 @@ of taking snapshots, and frequency of writing to .hl file.
 ===== n_E_wave_period, E_wave_type
 n_E_wave_period is the period of alternating external electric field
 which have external_E_field amplitude. Set 'triangular_sin' or
-'triangular_cos' to E_wave_type.
+'triangular_cos' to E_wave_type. See example files in
+src/27example-BaTiO3-new-param-E_wave/ .
 
 ===== n_hysteresis_loop_continue
 You can restart and continue a hysteresis-loop calculation from the

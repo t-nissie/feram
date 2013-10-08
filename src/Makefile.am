@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-10-06 17:19:49 takeshi>
+# Time-stamp: <2013-10-08 18:32:41 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -113,7 +113,8 @@ wave_check.gp \
 23example-BaTiO3-new-param-hl-film-acoustic-mass \
 24example-BaTiO3-new-param-heating-cooling \
 25example-BaTiO3-read-quadratic \
-26example-BaTiO3-acoustic-MD
+26example-BaTiO3-acoustic-MD \
+27example-BaTiO3-new-param-E_wave
 
 # all: plot.ps # 300K0000000.ps decay-test.ps
 
