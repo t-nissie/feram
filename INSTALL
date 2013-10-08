@@ -169,6 +169,35 @@ Sometimes it is fater than MKL.
  $ make feram_mpi                 # OPTIONAL. mpif90 is required.
  $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
 
+=== Linux with OLD Intel Fortran Compiler and FFTW library (feram-0.21.04, 2013-10-08)
+Old versions (around version 9.1) of ifort (Intel Fortran Compiler) does not
+have FFTW wrappers. You should also edit src/Makefile for changing LIBS.
+
+Configure options for fftw-3.3.3 are:
+ $ ../configure --prefix=/users/takeshi/Linux-x86_64 --enable-openmp --enable-threads --enable-sse2 CC=icc F77=ifort FC=ifort
+
+Compile feram as:
+ $ tar xf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir ifort-9.1-FFTW
+ $ cd ifort-9.1-FFTW
+ $ ../configure --help
+ $ ../configure FC=ifort CPPFLAGS=-I/users/takeshi/Linux-x86_64/include LDFLAGS="-L/nfs/apps/intel/mkl/9.0/lib/em64t -L/users/takeshi/Linux-x86_64/lib" --with-lapack=mkl
+ $ emacs src/Makefile   # Edit LIBS as below diff
+ $ diff -u src/Makefile~ src/Makefile
+ --- src/Makefile~      2013-10-08 11:58:19.369218529 +0200
+ +++ src/Makefile       2013-10-08 12:00:21.795094709 +0200
+ @@ -477,7 +477,7 @@
+  INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
+  LDFLAGS = -L/nfs/apps/intel/mkl/9.0/lib/em64t -L/users/takeshi/Linux-x86_64/lib -L/usr/local/lib
+  LIBOBJS = 
+ -LIBS = -lfftw3_omp -lfftw3  -lmkl_core -lmkl_intel_thread -lmkl_gf_lp64
+ +LIBS = -lfftw3_omp -lfftw3 -lmkl -lmkl_lapack
+  LTLIBOBJS = 
+  MAKEINFO = ${SHELL} /users/takeshi/f/loto/feram/trunk/missing makeinfo
+  MKDIR_P = /bin/mkdir -p
+ $ make
+
 
 == Super computers
 === HITACHI SR16000 with IBM xlf90_r, FFTW 3.3 and dsyevx in ESSL (libesslsmp)
@@ -184,16 +213,6 @@ You may be able to use dsyevx() instead of dsyev().
  $ emacs Makefile   # DEFS = -DHAVE_CONFIG_H  =>  DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg
  $ make
  $ MALLOCMULTIHEAP=true LDR_CNTRL=LARGE_PAGE_DATA=M XLSMPOPTS="spins=0:yields=0:parthds=16:stride=1:startproc=0" make check
-
-=== Fujitsu FX1
- $ tar xf feram-X.YY.ZZ.tar.xz
- $ cd feram-X.YY.ZZ
- $ mkdir FX1
- $ cd FX1
- $ ../configure FC=frt --with-fft=ssl2 --with-lapack=ssl2
- $ cd src
- $ make
- $ make feram_mpi   # OPTIONAL
 
 === Fujitsu Kei and FX10 with their cross compiler frtpx and mpifrtpx
  $ tar xf feram-X.YY.ZZ.tar.xz
