@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2013-10-04 12:03:16 takeshi>
+! Time-stamp: <2013-10-08 17:22:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -63,7 +63,7 @@ subroutine hysteresis_loop(p,c)
 
      if (p%verbose>=2) then
         call msg_ez(UNIT_LOG,'')
-        write(message,fmt_time_step) i_step, p%external_E_field+E_field_add
+        write(message,fmt_time_step) i_step, E_field_add
         call msg_ez(UNIT_LOG,message)
      end if
 
@@ -81,7 +81,7 @@ subroutine hysteresis_loop(p,c)
            end do
            u(:) = u(:) / c%n_sum_p
            write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5)") &
-                i_step,p%kelvin, p%external_E_field+E_field_add, c%strain(1:6), u(1:3)
+                i_step,p%kelvin, E_field_add, c%strain(1:6), u(1:3)
            flush(UNIT_HL)
            write(fn_system,'(a,a)') trim(p%filename), '.coord'
            call write_system(p,c,fn_system)
