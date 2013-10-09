@@ -1,7 +1,8 @@
 ToDo
 
-o 交流電場を掛けられるようにして、hysteresis_loop.F と
-  molecular-dynamics.F とを統合。sin, cos, (sawsin, sawcos,) ...
+o add seeds to normal_dist(mu,sigma,seed1,seed2). speed up DOUBLE.
+
+o Reduce memory size using in-place FFT (See in-place-FFT.ja.txt)
 
 o coord fileの桁数を上げて高精度化。ファイルサイズは大きくなってしまうけど。
 
@@ -11,16 +12,11 @@ o e%acou_kinetic=0 if mass_acou<0
 
 o Needs mirror of c%E_field in hysteresis_loop.F, maybe.
 
+o 'md' have to be changed to 'np' Nose-Poincare.
 o Nose-Poincareでもacoustic displacementのMDができるように．
-
-o Use in-place FFT for speed up (See in-place-FFT.ja.txt)
-
-o Use wisdom
+o Imprement Nose:JPhysSocJpn:70:p75-77:2001
 
 o Use -simd=aggressive
-
-o Introduce  method = 'vs'  with src/velocity_scaling.F for MD.
-  'md' have to be changed to 'np' Nose-Poincare.
 
 o Do not make fft.F module. It receives complex as real.
 
@@ -38,13 +34,11 @@ o When n_hysteresis_loop_continue is given, the .hl file must no REPLACEd, must 
 
 o FILENAME.avgの出力の見直し polarization -> <u_z> とか
 
-o plot_dispersion = .ture. のとき32x32x32を使う。FILENAME.param は無くす方向で。
+o plot_dispersion = .ture. のとき32x32x32を使う。FILENAME.param.gp は無くす方向で。
 
 o slice.rb マニュアル
 
 o cross-section マニュアル
-
-o Imprement Nose:JPhysSocJpn:70:p75-77:2001
 
 o dVddi_... -> dV_du_...
 
@@ -66,8 +60,6 @@ o  call dipoFFT(p,c)
 
 o libbuilt_in_fft 128 256, libbuilt_in_fft -> libminimal_fft
 
-o fft.FのDFZ7M()とHZFD7M()、Nx must be even???
-
 o Makefile.am の依存関係。make -j でデバグできる。
 
 o 力の計算の部分をsubroutineにして、leapfrog をもう一度動くようにする。
@@ -87,8 +79,6 @@ o refactoring nose-poincare.F and energy.F
 o 3 node parallelization
 
 o replace DSYEV().
-
-o -parallel for ifort
 
 o use autoconf and make configure
 
@@ -134,8 +124,6 @@ o children, parents, use
 
 o input file parserをつくる, input file と param.gp とをきょうつうか
   タイトルも引数で指定できるようにしないと面倒臭い。
-
-o timing
 
 o call msg() DEPTH or p%message_depth
 
@@ -186,3 +174,15 @@ x Quit to use libblaslapack/
 x p%mass_dipo の default value を 100 amu に
 
 x p%acoustic_mass_amu の導入
+
+x 交流電場を掛けられるようにして、hysteresis_loop.F と
+  molecular-dynamics.F とを統合。sin, cos, (sawsin, sawcos,) ...
+
+x Use wisdom
+
+x Introduce  method = 'vs'  with src/velocity_scaling.F for MD.
+
+x fft.FのDFZ7M()とHZFD7M()、Nx must be even???　→もうMATRIX/MPPは使わない
+
+x -parallel for ifort -> Everythings are parallelized with OpenMP.
+
