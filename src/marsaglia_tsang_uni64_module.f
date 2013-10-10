@@ -1,7 +1,7 @@
 ! marsaglia_tsang_uni64_module.f -*-f90-*-
 ! Marsaglia-Tsang 64-bit universal RNG
 ! It does not use global variable.
-! Time-stamp: <2011-05-01 20:46:36 takeshi>
+! Time-stamp: <2013-10-10 15:17:48 takeshi>
 ! Author:     Takeshi NISHIMATSU
 ! Usage:      See marsaglia_tsang_uni64_check.f for example.
 !             (1) Set two integers for seeds. It will return 1.0d0.
@@ -93,15 +93,28 @@ contains
   ! N(mu,sigma^2) normal-distributed random number generator
   ! N(mu,sigma^2) = N(0,1)*sigma + mu
   ! See Reference2
-  real*8 function normal_dist(mu,sigma)
+  real*8 function normal_dist(mu,sigma,seed1,seed2)
     implicit none
-    real*8 mu, sigma
+    real*8,            intent(in) :: mu, sigma
+    integer, optional, intent(in) :: seed1, seed2
     real*8, parameter :: M_2PI = 6.28318530717958647693d0
     real*8 N01   ! standard normal distribution
-    real*8 t, u
-    t = sqrt( -2 * log(1.0d0-uni64()) )
-    u = M_2PI * uni64()
-    N01 = t * cos(u)
-    normal_dist = N01*sigma + mu
+    real*8,  save :: t, u
+    logical, save :: sw = .true.
+    if (present(seed1)) then
+       sw = .true.
+       normal_dist = uni64(seed1,seed2)
+    else
+       if (sw) then
+          sw = .false.
+          t = sqrt( -2 * log(1.0d0-uni64()) )
+          u = M_2PI * uni64()
+          N01 = t * cos(u)
+       else
+          sw = .true.
+          N01 = t * sin(u)
+       end if
+       normal_dist = N01*sigma + mu
+    end if
   end function normal_dist
 end module marsaglia_tsang_uni64_module

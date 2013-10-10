@@ -1,5 +1,5 @@
 ! marsaglia_tsang_uni64_timing.f -*-f90-*-
-! Time-stamp: <2012-09-04 14:03:18 takeshi>
+! Time-stamp: <2013-10-10 16:39:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program marsaglia_tsang_uni64_timing
@@ -24,8 +24,23 @@ program marsaglia_tsang_uni64_timing
 
   t = dble(count_goal-count_start)/count_rate
   if (t<0.0d0) t=t+dble(count_max)/count_rate
-  write(6,'(a,f10.3,a)') '10^9 double-precision random numbers were generated in', t, ' [s].'
-  write(6,'(a,f10.3,a)') 'Therefore, speed of this marsaglia_tsang_uni64 RNG is ', dble(N)*1.0d-6/t, ' [M/s].'
+  write(6,'(a,f10.3,a)') '10^9 double-precision random numbers were generated in    ', t, ' [s].'
+  write(6,'(a,f10.3,a)') 'Therefore, speed of this marsaglia_tsang_uni64 RNG is     ', dble(N)*1.0d-6/t, ' [M/s].'
+
+  if (normal_dist(50.0d0,10.0d0,123456798,987654312) .ne. 2.0d0) stop 3
+
+  write(6,'(a)') 'marsaglia_tsang_uni64_timing: Second initialization has been done. Timing starts.'
+
+  call system_clock(count_start)
+  do i=1,N
+     x=normal_dist(50.0d0,10.0d0)
+  end do
+  call system_clock(count_goal)
+
+  t = dble(count_goal-count_start)/count_rate
+  if (t<0.0d0) t=t+dble(count_max)/count_rate
+  write(6,'(a,f10.3,a)') '10^9 normally distributed random numbers were generated in', t, ' [s].'
+  write(6,'(a,f10.3,a)') 'Therefore, speed of this normal_dist RNG is               ', dble(N)*1.0d-6/t, ' [M/s].'
 end program marsaglia_tsang_uni64_timing
 !local variables:
 !  compile-command: "make marsaglia_tsang_uni64_timing; ./marsaglia_tsang_uni64_timing"
