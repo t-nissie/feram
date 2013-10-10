@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-10-08 18:32:41 takeshi>
+# Time-stamp: <2013-10-10 18:01:25 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -8,7 +8,8 @@ AM_FFLAGS=@FCFLAGS@
 bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j \
                fft_check distribution3d2ppm \
                frozen_phonon_Gamma \
-               frozen_phonon_X
+               frozen_phonon_X \
+               random_field_generator
 EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check
 TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp
 
@@ -70,6 +71,8 @@ rgb_check_SOURCES = rgb_check.f rgb_module.f
 marsaglia_tsang_uni64_check_SOURCES  = marsaglia_tsang_uni64_check.F  marsaglia_tsang_uni64_module.f
 
 marsaglia_tsang_uni64_timing_SOURCES = marsaglia_tsang_uni64_timing.f marsaglia_tsang_uni64_module.f
+
+random_field_generator_SOURCES = random_field_generator.F marsaglia_tsang_uni64_module.f
 
 wave_check_SOURCES = wave_check.f wave_module.F
 
@@ -152,7 +155,7 @@ molecular-dynamics.o:\
 dVddi-homo-coupling.o dVddi-unharmonic.o potential.o kinetic_energy_dipo.o kinetic_energy_acou.o:\
                                 param_module.o coord_module.o
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
-marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o:                          marsaglia_tsang_uni64_module.o
+marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o random_field_generator.o: marsaglia_tsang_uni64_module.o
 wave_check.o:                   wave_module.o
 rgb_check.o:                    rgb_module.o
 mirror_force_mirror.o:          param_module.o coord_module.o energy_module.o
