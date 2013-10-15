@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2013-10-10 15:27:33 takeshi>
+! Time-stamp: <2013-10-15 13:54:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -39,7 +39,7 @@ subroutine initialize_dipoR(p,c,e)
      close(UNIT_SYSTEM)
   else
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE_NOT_FOUND', trim(restart_fn)//' was NOT found.')
-     dmy = normal_dist(p%init_dipo_avg(alpha),p%init_dipo_dev(alpha),p%seed(1), p%seed(2))
+     dmy = normal_dist(p%init_dipo_avg(1),p%init_dipo_dev(1),p%seed(1), p%seed(2))
      do alpha = 1, 3
         do iz = 0, p%Lz-1
            do iy = 0, p%Ly-1
