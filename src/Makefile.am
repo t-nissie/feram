@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2013-10-10 18:01:25 takeshi>
+# Time-stamp: <2013-10-23 14:38:03 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -83,6 +83,7 @@ EXTRA_DIST = define.h \
 cross-section-dVddi.sh \
 cross-section-p.sh \
 cross-section-q.sh \
+cholesky_d.f \
 coord2dist.rb \
 decay-test.gp \
 defects-maker.rb \

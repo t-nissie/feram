@@ -3,7 +3,7 @@
 ! where A is a n by n positive definite real symmetric matrix, x and b are
 ! real*8 vectors length n.
 !
-! Time-stamp: <2007-07-25 10:41:42 t-nissie>
+! Time-stamp: <2013-10-23 14:39:10 takeshi>
 ! Author: Takeshi NISHIMATSU
 !
 ! [1] A = G tG, where G is a lower triangular matrix and tG is transpose of G.
@@ -12,8 +12,6 @@
 !
 ! Reference: Taketomo MITSUI: Solvers for linear equations [in Japanese]
 ! http://www2.math.human.nagoya-u.ac.jp/~mitsui/syllabi/sis/info_math4_chap2.pdf
-!
-!OPTION FORM(FREE)
 !!
 subroutine cholesky_d(n, A, G, b)
   implicit none
