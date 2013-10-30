@@ -1,6 +1,8 @@
 ! date_and_time2message.F -*-f90-*-
-! Time-stamp: <2012-07-27 17:37:10 takeshi>
+! Time-stamp: <2013-10-30 19:10:35 takeshi>
 ! Author: Takeshi NISHIMATSU
+! Purpose: Call internal date_and_time(), convert it into
+!          ISO 8601 format, then return the string.
 !!
 subroutine date_and_time2message(message)
   implicit none
