@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2013-01-09 11:40:57 t-nissie>
+! Time-stamp: <2013-11-11 12:08:54 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -14,7 +14,7 @@ subroutine feram_common(fn)
   type(Coord_type) :: c
   character(len=FILE_NAME_LEN), intent(in) :: fn
   character(len=FILE_NAME_LEN)             :: fn_log
-  integer                                  :: fn_len_trim
+  integer                                  :: fn_len_trim, suffix
   integer                                  :: OMP_GET_MAX_THREADS
   character(len=70) :: message
   integer           :: count_array(0:2)
@@ -28,7 +28,8 @@ subroutine feram_common(fn)
 # endif
 
   fn_len_trim = len_trim(fn)
-  if (fn_len_trim-5 .eq. index(fn,'.feram',back=.true.)) then
+  suffix = index(fn,'.feram',back=.true.)
+  if (suffix.gt.0 .and. suffix.eq.fn_len_trim-5) then
      p%filename = fn(1:fn_len_trim-6)
   else
      p%filename = fn
