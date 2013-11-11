@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2013-10-06 23:38:02 takeshi>
+! Time-stamp: <2013-11-11 11:47:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -13,7 +13,6 @@ subroutine initialize_E_field(p,c)
   integer ix, iy, iz, ios, line_number
   character (len=300):: str
   character (len=1)  :: tmp
-  character(len=110) :: message
   real*8             :: tmp_E(3)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
