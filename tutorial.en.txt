@@ -1,0 +1,62 @@
+= feram tutorial
+== Login
+ $ ssh -A -X -l guest01 phi.aics.riken.jp
+
+== Compile
+ $ cd 
+ $ mkdir -p f/feram
+ $ cd f/feram
+ $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.22.00/feram-0.22.00.tar.xz/download
+ $ md5sum feram-0.22.00.tar.xz | grep 063b95bd154fdf9dc27f9abee19e749c
+ $ tar xf feram-0.22.00.tar.xz
+ $ ifort -V   # check the version number of Intel Fortran
+ $ mkdir feram-0.22.00/ifort-13.1.2.183
+ $ cd feram-0.22.00/ifort-13.1.2.183
+ $ ../configure FC=ifort CPPFLAGS=-I$MKLROOT/include/fftw --with-fft=mkl --with-lapack=mkl
+ $ make -j8
+ $ ls src/
+See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
+
+== Preparation
+ $ ssh -X phi01
+ $ mkdir -p feram/feram-0.22.00/
+ $ cd feram/feram-0.22.00/
+ $ ln -s ~/f/feram/feram-0.22.00/ifort-13.1.2.183/src/feram .
+
+==Execute 26example-BaTiO3-acoustic-MD
+ $ cd ~/feram/feram-0.22.00
+ $ cp -a ~/f/feram/feram-0.22.00/src/26example-BaTiO3-acoustic-MD/ .
+ $ cd 26example-BaTiO3-acoustic-MD
+ $ vim acoustic-MD.vs.feram
+ $ vim acoustic-MD.lf.feram
+ L = 96 96 96   =>   L = 48 48 48
+ $ diff -u acoustic-MD.vs.feram acoustic-MD.lf.feram
+ $ chmod 755 acoustic-MD.csh
+ $ cat acoustic-MD.csh
+ $ numactl --cpunodebind 0 ./acoustic-MD.csh
+ $ cat acoustic-MD.lf.avg
+ 503.91  0.00000  0.00000  0.00060    0.82641E-02  0.82474E-02 ...
+
+== Execute 27example-BaTiO3-new-param-E_wave
+ $ cd ~/feram/feram-0.22.00
+ $ cp -a ~/f/feram/feram-0.22.00/src/27example-BaTiO3-new-param-E_wave/ .
+ $ cd 27example-BaTiO3-new-param-E_wave
+ $ vim 360cos.feram
+ $ vim 360sin.feram
+    n_coord_freq = 4000000   =>   n_coord_freq = 5000
+    coord_directory = 'never'   =>   #coord_directory = 'never'
+ $ diff -u 360cos.feram 360sin.feram
+ $ numactl --show
+ $ numactl --cpunodebind 0 ../feram 360cos.feram &
+ $ ls
+ $ top   # Quit with q
+ $ numactl --cpunodebind 1 ../feram 360sin.feram &
+ $ sar -P ALL
+ $ ln -s 360sin.param.gp param.gp
+ $ /home/t-nissie/f/feram/feram-0.22.00/src/cross-section-q.sh 360sin.0000004000.coord
+ $ evince 360sin.0000004000-q-x.eps
+ $ ./hysteresis.gp
+ $ evince hysteresis.eps
+ $ grep TIMING *log
+ 360cos.log:           0.76         433.39         434.14     #TIMING_REPORT
+ 360sin.log:           0.76         433.34         434.10     #TIMING_REPORT
