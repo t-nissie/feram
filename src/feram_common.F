@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2013-11-11 12:08:54 takeshi>
+! Time-stamp: <2013-11-19 10:55:22 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -41,7 +41,10 @@ subroutine feram_common(fn)
 
   call system_clock(count_array(0))
   call date_and_time2message(message)
-  call msg_ez(UNIT_LOG, message)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'DATE_AND_TIME', message)
+
+  write(message,'(i5)') OMP_GET_MAX_THREADS()
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'N_THREADS', message)
 
 # if defined(HAVE_LIBFFTW3)
   open(unit=UNIT_WISDOM, file='wisdom', status='old', action='read', iostat=ios)
@@ -73,7 +76,7 @@ subroutine feram_common(fn)
 
   call system_clock(count_array(1))
   call date_and_time2message(message)
-  call msg_ez(UNIT_LOG, trim(message)//' Ready for simulation!!!')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'DATE_AND_TIME', trim(message)//' Ready for simulation!!!')
   flush(UNIT_LOG)
 
   select case (p%method)
@@ -89,7 +92,7 @@ subroutine feram_common(fn)
 
   call system_clock(count_array(2),count_rate,count_max)
   call date_and_time2message(message)
-  call msg_ez(UNIT_LOG, message)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'DATE_AND_TIME', message)
 
   do i = 1, 2
      time_array(i) = dble(count_array(i)-count_array(i-1))/count_rate
@@ -98,10 +101,11 @@ subroutine feram_common(fn)
   write(message,'(a,a,a)') &
        & 't_initialization, ', &
        & ' t_simulation, ', &
-       & '      t_total'
+       & '      t_total, n_threads'
   call msg_ez(UNIT_LOG, message)
-  write(message,'(f16.2,2f15.2,a)') time_array(1),time_array(2), &
-       &                            time_array(1)+time_array(2), "     #TIMING_REPORT"
+  write(message,'(f16.2,2f15.2,i5,a)') time_array(1),time_array(2), &
+       &                               time_array(1)+time_array(2), &
+       & OMP_GET_MAX_THREADS(), "     #TIMING_REPORT"
   call msg_ez(UNIT_LOG, message)
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'love && peace && free_software')
