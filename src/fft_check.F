@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2013-09-25 10:46:56 takeshi>
+! Time-stamp: <2013-11-20 15:42:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -67,7 +67,7 @@ good performance on Non-Uniform Memory Access (NUMA) systems.
  $ numactl --hardware
  $ numactl --cpunodebind=0,1 --interleave=all ./fft_check 100 256 256 256
 
-== output, timing and GFLOPS
+== Output, timing and GFLOPS
 Verbose reports will be written into standard error (STDERR).
 Formatted results will be written into standard output (STDOUT)
 in an order of
@@ -84,7 +84,7 @@ _ro denotes out-of-place of that.
 Giga FLOPS values are roughly estimated from
 5*N*log_2(N) floating point operations.
 
-== results and conditions
+== Single node results and conditions
 In Fig:powr2 and Fig:nonp2,
 results of 3-dimensional FFT benchmark
 on single node of some systems are shown.
@@ -187,7 +187,55 @@ They are plotted with GNUPLOT scripts of
  * FFTW 3.3.x
  * CAUTION: FFT in Fujitsu SSLII is much slower than FFTW.
 
-=== Comment on "padding"
+== Single chip results and conditions
+In Fig:powr2chip and Fig:nonp2chip,
+results of 3-dimensional FFT benchmark
+on single chip 3.83 GHz POWER7 and 2.70 GHz E5-2680.
+For small size FFT, single chip may give better efficiency than single node.
+Computational conditions are listed below.
+
+\Fig:powr2chip 19example-fft-benchmark/fft_powr2chip.jpg
+Results of 3-dimensional FFT benchmark of powers of two with single chip.
+(a) Double-precision complex, in-place.
+(b) Double-precision real, in-place.
+(c) Double-precision real, out-of-place.
+FFTW is used.
+/Fig:powr2chip
+
+\Fig:nonp2chip 19example-fft-benchmark/fft_nonp2chip.jpg
+Results of 3-dimensional FFT benchmark of non-powers of two with single chip.
+(a) Double-precision complex, in-place.
+(b) Double-precision real, in-place.
+(c) Double-precision real, out-of-place.
+FFTW is used.
+/Fig:nonp2chip
+
+Raw data of results of benchmark are
+19example-fft-benchmark/fft_check_powr2chip.*.dat and
+19example-fft-benchmark/fft_check_nonp2chip.*.dat.
+They are plotted with GNUPLOT scripts of
+19example-fft-benchmark/fft_powr2chip.gp and
+19example-fft-benchmark/fft_nonp2chip.gp.
+
+=== Hitachi SR16000 model M1
+ * Single chip of 3.83 GHz POWER7
+ * Memory: DDR3 1333 MHz
+ * SMT off (SMT: Simultaneous Multithreading)
+ * FFTW planner flag: FFTW_PATIENT
+ * SC queue in CCMS-IMR is used.
+ * Environment variables:
+
+=== Intel Xeon E5-2680
+ * Single chip of 2.70 GHz E5-2680
+ * Memory: DDR3 1333 MHz
+ * Mother board: Supermicro X9DRW
+ * HT off (HT: Hyper Threading)
+ * TB off (TB: Turbo Boost)
+ * Makefile: fft_check.Makefile.Intel-gfortran-fftw3_omp
+ * FFTW planner flag: FFTW_PATIENT
+ * How to execute: numactl --cpunodebind=0 ../fft_check 50 400 400 400
+
+== Comment on "padding"
 If the numbers of dimensions of an array are powers of two,
 for example a(512,512,512), "bank conflict" may occur in FFT and
 it reduces computational speed. To avoid "bank conflict",
