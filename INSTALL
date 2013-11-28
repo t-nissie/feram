@@ -204,10 +204,12 @@ Compile feram as:
 === HITACHI SR16000 with IBM xlf90_r, FFTW 3.3 and dsyevx in ESSL (libesslsmp)
 Note that ESSL does not have dsyev() and zheev().
 You may be able to use dsyevx() instead of dsyev().
+IBM XL Fortran (xlf90_r) version 13.1 or higher is required.
  $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir SR16000-xlf
  $ cd SR16000-xlf
+ $ xlf90_r -qversion   # Displays the official compiler product name and version information
  $ ../configure FC=xlf90_r CPPFLAGS=-I/sysap/fftw_xlc/fftw-3.3.2a/include LDFLAGS=-L/sysap/fftw_xlc/fftw-3.3.2a/lib --with-lapack=essl
  $ cd src
  $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-style comments
