@@ -6,6 +6,13 @@ coord_module.F の中のplansは次の４つ:
  plans_inhoK2R(6)     inhoK → inhoR
  plans_dipoT2dVddi(3) dipoT → dVddi
 
+r1980以降では、acoustic mode も増えている。
+
+rank remapping or array dimension changing を使うと奇麗に見やすく書けると思う
+  r(0:2*(Lx/2+1)-1, 0:Ly-1, 0:local_Lz-1) => r_tmp
+  c(0:Lx/2,         0:Lz-1, 0:local_Ly-1) => c_tmp
+
+
 == dipoR → dipoK
 直後にdipoRを使うのでin-placeにはできない．
 

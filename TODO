@@ -2,7 +2,8 @@ ToDo
 
 o add seeds to normal_dist(mu,sigma,seed1,seed2). speed up DOUBLE.
 
-o Reduce memory size using in-place FFT (See in-place-FFT.ja.txt)
+o Reduce memory size using in-place FFT and
+  rank remapping or array dimension changing (See in-place-FFT.ja.txt)
 
 o coord fileの桁数を上げて高精度化。ファイルサイズは大きくなってしまうけど。
 
