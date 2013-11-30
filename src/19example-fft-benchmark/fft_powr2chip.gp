@@ -40,22 +40,22 @@ set size 0.9,0.34
 set label 1 at -3.6,190 '(a)' font "Times-Roman,15"
 set title "double-precision complex, 3d transforms, 1 chip\npowers of two, in-place"
 set origin 0.0,0.67
-plot 'fft_check_powr2_stride2.SR16000.r1492.dat'               using 0:9  t 'SR16000'   w lp lw 2 lt 1 pt 1,\
-     '< grep "   8   " fft_check_powr2.E5-2680.r1455.FFTW.dat' using 0:9  t 'E5-2680'   w lp lw 2 lt 2 pt 2,\
+plot 'fft_check_powr2.SR16000.r1975.FFTW.chip.dat'             using 0:9  t 'SR16000'   w lp lw 2 lt 1 pt 1,\
+     'fft_check_powr2.E5-2680.r1975.FFTW.chip.dat'             using 0:9  t 'E5-2680'   w lp lw 2 lt 2 pt 2,\
      'fft_check_powr2.FX10.r1454.FFTW_MEASURE.dat'             using 0:9  t 'FX10'      w lp lw 2 lt 4 pt 4
 
 set label 1 '(b)'
 set title "double-precision real, 3d transforms, 1 chip\npowers of two, in-place"
 set origin 0.0,0.34
-plot 'fft_check_powr2_stride2.SR16000.r1492.dat'               using 0:12 t 'SR16000'   w lp lw 2 lt 1 pt 1,\
-     '< grep "   8   " fft_check_powr2.E5-2680.r1455.FFTW.dat' using 0:12 t 'E5-2680'   w lp lw 2 lt 2 pt 2,\
+plot 'fft_check_powr2.SR16000.r1975.FFTW.chip.dat'             using 0:12 t 'SR16000'   w lp lw 2 lt 1 pt 1,\
+     'fft_check_powr2.E5-2680.r1975.FFTW.chip.dat'             using 0:12 t 'E5-2680'   w lp lw 2 lt 2 pt 2,\
      'fft_check_powr2.FX10.r1454.FFTW_MEASURE.dat'             using 0:12 t 'FX10'      w lp lw 2 lt 4 pt 4
 
 set label 1 '(c)'
 set title "double-precision real, 3d transforms, 1 chip\npowers of two, out-of-place"
 set origin 0.0,0.01
-plot 'fft_check_powr2_stride2.SR16000.r1492.dat'               using 0:15 t 'SR16000'   w lp lw 2 lt 1 pt 1,\
-     '< grep "   8   " fft_check_powr2.E5-2680.r1455.FFTW.dat' using 0:15 t 'E5-2680'   w lp lw 2 lt 2 pt 2,\
+plot 'fft_check_powr2.SR16000.r1975.FFTW.chip.dat'             using 0:15 t 'SR16000'   w lp lw 2 lt 1 pt 1,\
+     'fft_check_powr2.E5-2680.r1975.FFTW.chip.dat'             using 0:15 t 'E5-2680'   w lp lw 2 lt 2 pt 2,\
      'fft_check_powr2.FX10.r1454.FFTW_MEASURE.dat'             using 0:15 t 'FX10'      w lp lw 2 lt 4 pt 4
 
 set nomultiplot
