@@ -1,6 +1,12 @@
 #!/bin/csh
-# Usage: submit SC general -largememory -exec fft_check_powr2.csh -J fft_check_powr2
+# Usage: submit SC general -largememory           -exec fft_check_powr2.csh -J fft_check_powr2
+#        submit EB general -largememory -longtime -exec fft_check_powr2.csh -J fft_check_powr2
 ##
+
+# For IBM XL Fortran
+setenv MALLOCMULTIHEAP true
+setenv XLSMPOPTS "spins=0:yields=0"
+
 ./fft_check  100000   32   32   32 >> fft_check_powr2.dat
 ./fft_check   10000   64   64   64 >> fft_check_powr2.dat
 ./fft_check   10000  256   64   32 >> fft_check_powr2.dat

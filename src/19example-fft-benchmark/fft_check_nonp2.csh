@@ -1,6 +1,12 @@
 #!/bin/csh
-# Usage: submit SC general -largememory -exec fft_check_nonp2.csh -J fft_check_nonp2
+# Usage: submit SC general -largememory           -exec fft_check_nonp2.csh -J fft_check_nonp2
+#        submit EB general -largememory -longtime -exec fft_check_nonp2.csh -J fft_check_nonp2
 ##
+
+# For IBM XL Fortran
+setenv MALLOCMULTIHEAP true
+setenv XLSMPOPTS "spins=0:yields=0"
+
 ./fft_check  100000   30   30   30 >  fft_check_nonp2.dat
 ./fft_check   50000   48   48   48 >> fft_check_nonp2.dat
 ./fft_check   50000   54   54   54 >> fft_check_nonp2.dat
