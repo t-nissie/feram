@@ -1,15 +1,16 @@
 program cufft_check
   use cufft_module
+  use, intrinsic :: iso_c_binding
   implicit none
   integer, parameter :: Nx=100
   integer, parameter :: Ny=100
   integer, parameter :: Nz=100
   integer            :: plan = 0
-  integer            :: ret, f_cudamalloc, f_cudafree
+  integer            :: ret, f_cudafree
   integer            :: f_cudamemcpy_host_to_device
   integer            :: f_cudamemcpy_device_to_host
   integer            :: f_cufftExecZ2Z
-  integer*8          :: z_device = 0
+  integer*8,target   :: z_device = 0
   complex*16         :: z(0:Nx-1, 0:Ny-1, 0:Nz-1)
 
   ret = cufftPlan3d(plan, Nx, Ny, Nz, CUFFT_Z2Z)
@@ -18,7 +19,7 @@ program cufft_check
   z(:,:,:) = (0.1d0, 0.2d0)
 
   !write(6,*) z_device
-  ret = f_cudamalloc(z_device,16*Nx*Ny*Nz)
+  ret = cudamalloc(c_loc(z_device),16*Nx*Ny*Nz)
   write(6,*) 'mlc', ret
   !write(6,*) '1: z_device = ', z_device
 

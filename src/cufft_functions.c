@@ -3,17 +3,6 @@
 #include<stdio.h>
 typedef size_t devptr_t;
 
-int f_cudamalloc_(devptr_t *i, const int *n)
-{
-  void *tmp=0;
-  int ret;
-  /* printf("in f_cudamalloc_, before: %p\n", tmp); */
-  ret = cudaMalloc(&tmp, *n);
-  /* printf("in f_cudamalloc_,  after: %p\n", tmp); */
-  *i = (devptr_t)tmp;
-  return ret;
-}
-
 int f_cudamemcpy_host_to_device_(void *host_source, devptr_t *device_destination, const int *n)
 { 
   /* printf("in f_cudamemcpy_1: %f\n", *(double *)host_source); */

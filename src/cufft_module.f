@@ -1,5 +1,5 @@
 ! cufft_module.F -*-f90-*-
-! Time-stamp: <2013-11-28 15:55:51 t-nissie>
+! Time-stamp: <2013-12-13 10:16:39 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Reference: http://www.softek.co.jp/SPG/Pgi/TIPS/public/accel/cufft.html
 !!
@@ -15,9 +15,19 @@ module cufft_module
   integer, parameter, public :: CUFFT_Z2D = X"6c"
   integer, parameter, public :: CUFFT_Z2Z = X"69"
 
+  interface cudamalloc
+     function cudamalloc(dv,n) bind(C,name='cudaMalloc')
+       use, intrinsic :: iso_c_binding
+       implicit none
+       integer(c_int)        :: cudamalloc
+       type(c_ptr),value     :: dv
+       integer(c_int), value :: n
+     end function cudamalloc
+  end interface
+
   interface cufftPlan3d
      function cufftPlan3d(plan, nx, ny, nz, type) bind(C,name='cufftPlan3d')
-       use iso_c_binding
+       use, intrinsic :: iso_c_binding
        implicit none
        integer(c_int)        :: cufftPlan3d
        integer(c_int)        :: plan
@@ -27,7 +37,7 @@ module cufft_module
 
   interface cufftDestroy
      function cufftDestroy(plan) bind(C,name='cufftDestroy')
-       use iso_c_binding
+       use, intrinsic :: iso_c_binding
        implicit none
        integer(c_int):: cufftDestroy
        integer(c_int),value:: plan
