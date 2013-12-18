@@ -1,5 +1,5 @@
-! cufft_module.F -*-f90-*-
-! Time-stamp: <2013-12-18 17:50:02 t-nissie>
+! cufft_module.f -*-f90-*-
+! Time-stamp: <2013-12-18 18:22:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Reference: http://www.softek.co.jp/SPG/Pgi/TIPS/public/accel/cufft.html
 !!
