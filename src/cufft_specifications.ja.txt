@@ -1,0 +1,23 @@
+= feramの精度選択、padding導入、CUDA化の仕様書
+== コンパイルおよび実行環境
+３つの必須環境と１つの選択環境でコンパイルと実行が可能であることを確認すること。
+変更前より速くなり、メモリ消費量が少なくなることを確認すること。
+=== 必須環境
+ * GNU Fortran compiler (gfortran) + FFTW
+ * Intel fortran (ifort) + FFTW wrapper in MKL
+ * GNU Fortran compiler (gfortran) + CUFFT of CUDA
+
+=== 選択環境
+ * IBM XL Fortran + FFTW
+ * Fujitsu FX10 + FFTW
+
+== 精度の選択
+--with-precision=single
+--with-precision=double
+
+== paddingの導入、fftw_plan_many_dft_r2c(), fftw_plan_many_dft_c2r()の活用、可能なところはin placeに
+- c%dipoR(   0:p%Lx-1,       0:p%Ly-1,             0:p%Lz-1, 3)
++ c%dipoR(3, 0:2*(Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)
+
+== CUDA化
+--with-fft=cufft
