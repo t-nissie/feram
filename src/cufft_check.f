@@ -6,7 +6,7 @@ program cufft_check
   integer, parameter :: Ny=100
   integer, parameter :: Nz=100
   integer            :: plan = 0
-  integer            :: ret, f_cudafree
+  integer            :: ret!, f_cudafree
   integer            :: f_cudamemcpy_host_to_device
   integer            :: f_cudamemcpy_device_to_host
   integer            :: f_cufftExecZ2Z
@@ -41,7 +41,7 @@ program cufft_check
   ret = cufftDestroy(plan)
   write(6,*) 'dst', ret
 
-  ret = f_cudafree(z_device)
+  ret = cudafree(z_device)
   write(6,*) 'fre', ret
 end program cufft_check
 !Local variables:

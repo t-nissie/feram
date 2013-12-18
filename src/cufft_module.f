@@ -1,5 +1,5 @@
 ! cufft_module.F -*-f90-*-
-! Time-stamp: <2013-12-13 10:16:39 t-nissie>
+! Time-stamp: <2013-12-18 17:24:26 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Reference: http://www.softek.co.jp/SPG/Pgi/TIPS/public/accel/cufft.html
 !!
@@ -23,6 +23,15 @@ module cufft_module
        type(c_ptr),value     :: dv
        integer(c_int), value :: n
      end function cudamalloc
+  end interface
+
+  interface cudafree
+     function cudafree(d) bind(C,name='cudaFree')
+       use, intrinsic :: iso_c_binding
+       implicit none
+       integer(c_int)          :: cudafree
+       integer(c_size_t),value :: d
+     end function cudafree
   end interface
 
   interface cufftPlan3d

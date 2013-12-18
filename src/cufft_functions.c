@@ -1,6 +1,5 @@
 /* cufft_functions.c */
 #include <cufft.h>
-#include<stdio.h>
 typedef size_t devptr_t;
 
 int f_cudamemcpy_host_to_device_(void *host_source, devptr_t *device_destination, const int *n)
@@ -16,15 +15,9 @@ int f_cudamemcpy_device_to_host_(devptr_t *device_source, void *host_destination
   return cudaMemcpy(host_destination, *device_source, *n, cudaMemcpyDeviceToHost);
 }
 
-int f_cudafree_(const devptr_t *dev_to_be_free)
-{
-    return cudaFree (*dev_to_be_free);
-}
-
 int f_cufftexecz2z_(const int *plan, devptr_t *idata, devptr_t *odata, const int *direction)
 {
   return cufftExecZ2Z(*plan, (cufftDoubleComplex *)*idata, (cufftDoubleComplex *)*odata, *direction);
-
 }
 /* Local variables:
    compile-command: "gfortran -Wall -ffree-form -c cufft_module.f && gcc -I/usr/local/cuda/include -c cufft_functions.c && gfortran -Wall -ffree-form -c cufft_check.f && gfortran -Wall -o cufft_check cufft_check.o cufft_functions.o cufft_module.o -L/usr/local/cuda/lib64 -lcufft -lcudart && ./cufft_check"
