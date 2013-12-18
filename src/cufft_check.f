@@ -6,10 +6,9 @@ program cufft_check
   integer, parameter :: Ny=100
   integer, parameter :: Nz=100
   integer            :: plan = 0
-  integer            :: ret!, f_cudafree
+  integer            :: ret
   integer            :: f_cudamemcpy_host_to_device
   integer            :: f_cudamemcpy_device_to_host
-  integer            :: f_cufftExecZ2Z
   integer*8,target   :: z_device = 0
   complex*16         :: z(0:Nx-1, 0:Ny-1, 0:Nz-1)
 
@@ -19,7 +18,7 @@ program cufft_check
   z(:,:,:) = (0.1d0, 0.2d0)
 
   !write(6,*) z_device
-  ret = cudamalloc(c_loc(z_device),16*Nx*Ny*Nz)
+  ret = cudaMalloc(c_loc(z_device),16*Nx*Ny*Nz)
   write(6,*) 'mlc', ret
   !write(6,*) '1: z_device = ', z_device
 
@@ -29,7 +28,7 @@ program cufft_check
 
   z(:,:,:) = (0.0d0, 0.0d0)
 
-  ret = f_cufftExecZ2Z(plan, z_device, z_device, CUFFT_FORWARD)
+  ret = cufftExecZ2Z(plan, z_device, z_device, CUFFT_FORWARD)
   write(6,*) 'z2z', ret
 
   ret = f_cudamemcpy_device_to_host(z_device, z, 16*Nx*Ny*Nz);
@@ -41,7 +40,7 @@ program cufft_check
   ret = cufftDestroy(plan)
   write(6,*) 'dst', ret
 
-  ret = cudafree(z_device)
+  ret = cudaFree(z_device)
   write(6,*) 'fre', ret
 end program cufft_check
 !Local variables:

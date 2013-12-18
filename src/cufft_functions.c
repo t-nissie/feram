@@ -15,10 +15,6 @@ int f_cudamemcpy_device_to_host_(devptr_t *device_source, void *host_destination
   return cudaMemcpy(host_destination, *device_source, *n, cudaMemcpyDeviceToHost);
 }
 
-int f_cufftexecz2z_(const int *plan, devptr_t *idata, devptr_t *odata, const int *direction)
-{
-  return cufftExecZ2Z(*plan, (cufftDoubleComplex *)*idata, (cufftDoubleComplex *)*odata, *direction);
-}
 /* Local variables:
    compile-command: "gfortran -Wall -ffree-form -c cufft_module.f && gcc -I/usr/local/cuda/include -c cufft_functions.c && gfortran -Wall -ffree-form -c cufft_check.f && gfortran -Wall -o cufft_check cufft_check.o cufft_functions.o cufft_module.o -L/usr/local/cuda/lib64 -lcufft -lcudart && ./cufft_check"
    End: */

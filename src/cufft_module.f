@@ -1,5 +1,5 @@
 ! cufft_module.F -*-f90-*-
-! Time-stamp: <2013-12-18 17:24:26 t-nissie>
+! Time-stamp: <2013-12-18 17:50:02 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Reference: http://www.softek.co.jp/SPG/Pgi/TIPS/public/accel/cufft.html
 !!
@@ -15,23 +15,23 @@ module cufft_module
   integer, parameter, public :: CUFFT_Z2D = X"6c"
   integer, parameter, public :: CUFFT_Z2Z = X"69"
 
-  interface cudamalloc
-     function cudamalloc(dv,n) bind(C,name='cudaMalloc')
+  interface cudaMalloc
+     function cudaMalloc(dv,n) bind(C,name='cudaMalloc')
        use, intrinsic :: iso_c_binding
        implicit none
-       integer(c_int)        :: cudamalloc
+       integer(c_int)        :: cudaMalloc
        type(c_ptr),value     :: dv
        integer(c_int), value :: n
-     end function cudamalloc
+     end function cudaMalloc
   end interface
 
-  interface cudafree
-     function cudafree(d) bind(C,name='cudaFree')
+  interface cudaFree
+     function cudaFree(d) bind(C,name='cudaFree')
        use, intrinsic :: iso_c_binding
        implicit none
-       integer(c_int)          :: cudafree
+       integer(c_int)          :: cudaFree
        integer(c_size_t),value :: d
-     end function cudafree
+     end function cudaFree
   end interface
 
   interface cufftPlan3d
@@ -42,6 +42,16 @@ module cufft_module
        integer(c_int)        :: plan
        integer(c_int), value :: nx, ny, nz, type
      end function cufftPlan3d
+  end interface
+
+  interface cufftExecZ2Z
+     function cufftExecZ2Z(plan,id,od,direction) bind(C,name='cufftExecZ2Z')
+       use, intrinsic :: iso_c_binding
+       implicit none
+       integer(c_int)          :: cufftExecZ2Z
+       integer(c_int),   value :: plan, direction
+       integer(c_size_t),value :: id, od
+     end function cufftExecZ2Z
   end interface
 
   interface cufftDestroy
