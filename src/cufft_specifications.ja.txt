@@ -19,10 +19,19 @@
 - c%dipoR(   0:p%Lx-1,       0:p%Ly-1,             0:p%Lz-1, 3)
 + c%dipoR(3, 0:2*(Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)
 
+３つまたは６つのplansを１つのplanにまとめる。
+ plans_dipoR2C(3)     dipoR → dipoK
+ plans_didiR2C(6)     didiR → didiK
+ plans_inhoK2R(6)     inhoK → inhoR
+ plans_dVdacK2R(3)    dVdacK → dVdacR
+ plans_acouR2C(3)     acouR → acouK
+ plans_acouC2R(3)     acouK → acouR
+ plans_dipoT2dVddi(3) dipoT → dVddi
+
 可能なところはin placeにしてメモリ消費量が少なくなることを確認すること。
 
 == CUDA化
 --with-fft=cufft
  * PGI CUDA Fortranは使わない。
- * src/cufft_module.fなどを活用する。
- * coord_module.Fの中の大きな配列はGPUに置いたままにする。
+ * src/cufft_module.fを通し、できるだけCを使わずにFortran 2003だけで書く。
+ * 将来的にはcoord_module.Fの中の大きな配列をGPUに置いたままにしたい。
