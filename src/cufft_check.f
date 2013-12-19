@@ -8,9 +8,9 @@ program cufft_check
   integer            :: plan = 0
   integer            :: ret
   integer            :: f_cudamemcpy_host_to_device
-  integer            :: f_cudamemcpy_device_to_host
+  !integer           :: f_cudamemcpy_device_to_host
   integer*8,target   :: z_device = 0
-  complex*16         :: z(0:Nx-1, 0:Ny-1, 0:Nz-1)
+  complex*16,target  :: z(0:Nx-1, 0:Ny-1, 0:Nz-1)
 
   ret = cufftPlan3d(plan, Nx, Ny, Nz, CUFFT_Z2Z)
   write(6,*) 'pln', ret
@@ -31,7 +31,7 @@ program cufft_check
   ret = cufftExecZ2Z(plan, z_device, z_device, CUFFT_FORWARD)
   write(6,*) 'z2z', ret
 
-  ret = f_cudamemcpy_device_to_host(z_device, z, 16*Nx*Ny*Nz);
+  ret = cudaMemcpy(c_loc(z), z_device, 16*Nx*Ny*Nz, cudaMemcpyDeviceToHost);
   write(6,*) 'd2h', ret
 
   write(6,*) z(0,0,0)/Nx/Ny/Nz

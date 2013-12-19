@@ -1,5 +1,5 @@
 ! cufft_module.f -*-f90-*-
-! Time-stamp: <2013-12-18 18:22:17 takeshi>
+! Time-stamp: <2013-12-19 11:46:27 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Reference: http://www.softek.co.jp/SPG/Pgi/TIPS/public/accel/cufft.html
 !!
@@ -14,6 +14,12 @@ module cufft_module
   integer, parameter, public :: CUFFT_D2Z = X"6a"
   integer, parameter, public :: CUFFT_Z2D = X"6c"
   integer, parameter, public :: CUFFT_Z2Z = X"69"
+
+  integer, parameter, public :: cudaMemcpyHostToHost     = 0 ! Host   -> Host
+  integer, parameter, public :: cudaMemcpyHostToDevice   = 1 ! Host   -> Device
+  integer, parameter, public :: cudaMemcpyDeviceToHost   = 2 ! Device -> Host
+  integer, parameter, public :: cudaMemcpyDeviceToDevice = 3 ! Device -> Device
+  integer, parameter, public :: cudaMemcpyDefault        = 4 ! Default based unified virtual address space
 
   interface cudaMalloc
      function cudaMalloc(dv,n) bind(C,name='cudaMalloc')
@@ -32,6 +38,17 @@ module cufft_module
        integer(c_int)          :: cudaFree
        integer(c_size_t),value :: d
      end function cudaFree
+  end interface
+
+  interface cudaMemcpy
+     function cudaMemcpy(dst, src, count, kind) bind(C,name='cudaMemcpy')
+       use, intrinsic :: iso_c_binding
+       implicit none
+       integer(c_int)          :: cudaMemcpy
+       type(c_ptr),value       :: dst
+       integer(c_size_t),value :: src
+       integer(c_int),value    :: count, kind
+     end function cudaMemcpy
   end interface
 
   interface cufftPlan3d
