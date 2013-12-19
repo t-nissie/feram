@@ -4,7 +4,7 @@ coord_module.F の中のplansは次の７つ:
  plans_didiR2C(6)     didiR → didiK
  plans_inhoK2R(6)     inhoK → inhoR
  plans_dVdacK2R(3)    dVdacK → dVdacR
- plans_acouR2C(3)     acouR → acouK
+ plans_acouR2C(3)     acouR → acouK      plans_dipoR2Cと共用できるけど。
  plans_acouC2R(3)     acouK → acouR
  plans_dipoT2dVddi(3) dipoT → dVddi
 
