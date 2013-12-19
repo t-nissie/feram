@@ -7,9 +7,7 @@ program cufft_check
   integer, parameter :: Nz=100
   integer            :: plan = 0
   integer            :: ret
-  integer            :: f_cudamemcpy_host_to_device
-  !integer           :: f_cudamemcpy_device_to_host
-  integer*8,target   :: z_device = 0
+  type(c_ptr),target :: z_device
   complex*16,target  :: z(0:Nx-1, 0:Ny-1, 0:Nz-1)
 
   ret = cufftPlan3d(plan, Nx, Ny, Nz, CUFFT_Z2Z)
@@ -22,7 +20,7 @@ program cufft_check
   write(6,*) 'mlc', ret
   !write(6,*) '1: z_device = ', z_device
 
-  ret = f_cudamemcpy_host_to_device(z, z_device, 16*Nx*Ny*Nz);
+  ret = cudaMemcpy(z_device, c_loc(z), 16*Nx*Ny*Nz, cudaMemcpyHostToDevice);
   write(6,*) 'h2d', ret
   !write(6,*) '2: z_device = ', z_device
 
@@ -44,5 +42,5 @@ program cufft_check
   write(6,*) 'fre', ret
 end program cufft_check
 !Local variables:
-!  compile-command: "gfortran -Wall -ffree-form -c cufft_module.f && gcc -I/usr/local/cuda/include -c cufft_functions.c && gfortran -Wall -ffree-form -c cufft_check.f && gfortran -Wall -o cufft_check cufft_check.o cufft_functions.o cufft_module.o -L/usr/local/cuda/lib64 -lcufft -lcudart && ./cufft_check"
+!  compile-command: "gfortran -Wall -ffree-form -c cufft_module.f && gfortran -Wall -ffree-form -c cufft_check.f && gfortran -Wall -o cufft_check cufft_check.o cufft_functions.o cufft_module.o -L/usr/local/cuda/lib64 -lcufft -lcudart && ./cufft_check"
 !End:
