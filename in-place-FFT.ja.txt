@@ -1,17 +1,16 @@
 = 0.19.03 r1346 2012-07-13 の段階でin-placeのFFTが使えるかどうか検討
-
-coord_module.F の中のplansは次の４つ:
+coord_module.F の中のplansは次の７つ:
  plans_dipoR2C(3)     dipoR → dipoK
  plans_didiR2C(6)     didiR → didiK
  plans_inhoK2R(6)     inhoK → inhoR
+ plans_dVdacK2R(3)    dVdacK → dVdacR
+ plans_acouR2C(3)     acouR → acouK
+ plans_acouC2R(3)     acouK → acouR
  plans_dipoT2dVddi(3) dipoT → dVddi
-
-r1980以降では、acoustic mode も増えている。
 
 rank remapping or array dimension changing を使うと奇麗に見やすく書けると思う
   r(0:2*(Lx/2+1)-1, 0:Ly-1, 0:local_Lz-1) => r_tmp
   c(0:Lx/2,         0:Lz-1, 0:local_Ly-1) => c_tmp
-
 
 == dipoR → dipoK
 直後にdipoRを使うのでin-placeにはできない．
@@ -28,7 +27,7 @@ dVddi-unharmonic.FでdidiRが使われるのでin-placeにはできない．
 dipoTがdVddi-dipole-dipole.F内で一時的に使われるだけなので
 in-placeにできる．最も簡単そう．
 
-FFTWとMATRIX/MPPとで次の手順で書き換える:
+次の手順で書き換える:
  * timing1
  * verbose = 2 でdebug1
  * dVddiの関連するすべてのループに ix, iy のインデックスを追加.
