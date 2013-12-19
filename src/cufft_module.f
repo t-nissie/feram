@@ -1,5 +1,5 @@
 ! cufft_module.f -*-f90-*-
-! Time-stamp: <2013-12-19 12:24:28 t-nissie>
+! Time-stamp: <2013-12-19 19:09:36 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Reference: http://www.softek.co.jp/SPG/Pgi/TIPS/public/accel/cufft.html
 !!
@@ -68,6 +68,16 @@ module cufft_module
        integer(c_int), value :: plan, direction
        type(c_ptr),value     :: id, od
      end function cufftExecZ2Z
+  end interface
+
+  interface cublasDscal
+     subroutine cublasDscal(n, alpha, x, incx) bind(C,name='cublasDscal')
+       use, intrinsic :: iso_c_binding
+       implicit none
+       integer(c_int), value :: n, incx
+       real(c_double), value :: alpha
+       type(c_ptr),    value :: x
+     end subroutine cublasDscal
   end interface
 
   interface cufftDestroy

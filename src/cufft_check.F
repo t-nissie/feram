@@ -31,13 +31,15 @@ program cufft_check
   ret = cufftExecZ2Z(plan, z_device, z_device, CUFFT_FORWARD)
   write(6,*) 'z2z', ret
 
+  call cublasDscal(2*N, N_inv, z_device, 1)
+
   ret = cudaMemcpy(c_loc(z), z_device, 16*N, cudaMemcpyDeviceToHost);
   write(6,*) 'd2h', ret
 
   do iz = 0, Nz-1
      do iy = 0, Ny-1
         do ix = 0, Nx-1
-           tmp = z(ix,iy,iz) * N_inv
+           tmp = z(ix,iy,iz)
            if (ix.eq.0 .and. iy.eq.0 .and. iz.eq.0) then
               tmp = tmp - z_check
               if (abs(real(tmp))  > accuracy) then
