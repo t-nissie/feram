@@ -10,10 +10,14 @@ program cufft_check
   type(c_ptr),target :: z_device
   complex*16,target  :: z(0:Nx-1, 0:Ny-1, 0:Nz-1)
 
+  complex*16           :: tmp
+  complex*16,parameter :: z_check = (0.1d0, 0.2d0)
+  real*8,    parameter :: accuracy = 1.0d-14
+
   ret = cufftPlan3d(plan, Nx, Ny, Nz, CUFFT_Z2Z)
   write(6,*) 'pln', ret
 
-  z(:,:,:) = (0.1d0, 0.2d0)
+  z(:,:,:) = z_check
 
   !write(6,*) z_device
   ret = cudaMalloc(c_loc(z_device),16*Nx*Ny*Nz)
@@ -32,7 +36,13 @@ program cufft_check
   ret = cudaMemcpy(c_loc(z), z_device, 16*Nx*Ny*Nz, cudaMemcpyDeviceToHost);
   write(6,*) 'd2h', ret
 
-  write(6,*) z(0,0,0)/Nx/Ny/Nz
+  tmp = z(0,0,0)/Nx/Ny/Nz - z_check
+  if (abs(aimag(tmp)) > accuracy) then
+     write(0,'(a,a,i3,a)')   __FILE__, ':', __LINE__ ,  &
+          & ': Error in accuracy at aimag(z(0,0,0)).'
+     stop 1
+  end if
+  
   write(6,*) z(0,0,1)
 
   ret = cufftDestroy(plan)
