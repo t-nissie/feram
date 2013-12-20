@@ -30,6 +30,8 @@ FLOSS (Free/Libre andOpen Source Software) だけで
 ソフトウェアライセンス料を気にせずに自由でお手軽な
 GPUプログラミングを楽しむ方法を解説する。
 
+次節で…
+初出で下線のある用語は最後に用語解説を載せた。
 
 == CUDAのインストール
 
@@ -39,3 +41,9 @@ interfaceを書く。
 
 == 高速化の例
 feram
+
+== プロファイリング
+
+== 用語解説
+=== OpenACC
+=== PGI CUDA Fortran
