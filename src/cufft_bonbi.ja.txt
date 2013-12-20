@@ -35,7 +35,7 @@ GPUプログラミングを楽しむ方法を解説する。
 
 == CUDAのインストール
 
-== interfaceを書く
+== interfaceを書く（３次元FFTの実例）
 /usr/local/cuda/include/以下にインストールされているヘッダファイル (*.h) を参考に
 interfaceを書く。
 
@@ -47,3 +47,6 @@ feram
 == 用語解説
 === OpenACC
 === PGI CUDA Fortran
+=== cuFFT
+=== cuBLAS
+=== BLASライブラリ
