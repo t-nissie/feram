@@ -103,8 +103,9 @@ program cufft_check
      call cublasDscal(2*N_half, N_inv, devptr, 1)
      ret = cufftExecZ2D(plan_backward, devptr, devptr, CUFFT_INVERSE)
   end do
+  ret = cudaThreadSynchronize()
   call system_clock(c_ri(1), count_rate, count_max)
-  write(0,*) 'exec z2d', ret
+  write(0,*) 'thrd syn', ret
 
   ret = cudaMemcpy(c_loc(d), devptr, 16*N_half, cudaMemcpyDeviceToHost)
   write(0,*) 'mcpy h d', ret

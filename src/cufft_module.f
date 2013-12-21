@@ -1,5 +1,5 @@
 ! cufft_module.f -*-f90-*-
-! Time-stamp: <2013-12-21 13:58:06 t-nissie>
+! Time-stamp: <2013-12-21 18:16:45 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Reference: http://www.softek.co.jp/SPG/Pgi/TIPS/public/accel/cufft.html
 !!
@@ -38,6 +38,14 @@ module cufft_module
        integer(c_int)    :: cudaFree
        type(c_ptr),value :: devPtr
      end function cudaFree
+  end interface
+
+  interface cudaThreadSynchronize
+     function cudaThreadSynchronize() bind(C,name='cudaThreadSynchronize')
+       use, intrinsic :: iso_c_binding
+       implicit none
+       integer(c_int)    :: cudaThreadSynchronize
+     end function cudaThreadSynchronize
   end interface
 
   interface cudaMemcpy
