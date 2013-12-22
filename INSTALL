@@ -83,11 +83,10 @@ with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
 === Fedora 19 (feram-0.21.02, 2013-07-04)
 FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
 installed into Fedora systems with yum(8) command. See http://fedoraproject.org .
-Here, we use an x86_64 system.
 ==== install required packages
- # yum install gcc.x86_64 gcc-gfortran.x86_64
- # yum install fftw-devel.x86_64 blas-devel.x86_64 lapack-devel.x86_64 gnuplot.x86_64
- # yum install autoconf.noarch automake.noarch libtool.x86_64 subversion.x86_64   # For developers
+ # yum install gcc gcc-gfortran
+ # yum install fftw-devel blas-devel lapack-devel gnuplot
+ # yum install autoconf.noarch automake.noarch libtool subversion   # For developers
 ==== compile feram
  $ tar xf feram-0.21.02.tar.xz
  $ mkdir feram-0.21.02/fedora19
@@ -125,7 +124,7 @@ Select "Software Development Workstation" in the setup.
 
 ==== install BLAS and LAPACK
  $ su
- # yum install blas-devel.x86_64 lapack-devel.x86_64
+ # yum install blas-devel lapack-devel
  # exit
 
 ==== compile feram
