@@ -2,9 +2,9 @@ program cufft_check
   use cufft_module
   use, intrinsic :: iso_c_binding
   implicit none
-  integer, parameter :: Lx = 128
-  integer, parameter :: Ly = 128
-  integer, parameter :: Lz = 128
+  integer, parameter :: Lx =  80
+  integer, parameter :: Ly =  90
+  integer, parameter :: Lz = 100
   integer, parameter :: N_TIMES = 1000
   integer, parameter :: N  = Lx * Ly * Lz
   integer, parameter :: N_half  = (Lx/2+1)*Ly*Lz
@@ -29,7 +29,7 @@ program cufft_check
   allocate(z(0:Lx-1, 0:Ly-1, 0:Lz-1))
   z(:,:,:) = z_check
 
-  ret = cufftPlan3d(plan_forward, Lx, Ly, Lz, CUFFT_Z2Z)
+  ret = cufftPlan3d(plan_forward, Lz, Ly, Lx, CUFFT_Z2Z)   !Note order of Lz, Ly, Lx!
   write(0,*) 'plan z2z', ret
 
   ret = cudaMalloc(c_loc(devptr), 16*N)
@@ -86,9 +86,9 @@ program cufft_check
        &    z(0:Lx/2,         0:Ly-1, 0:Lz-1) )
   d(:,:,:) = d_check
 
-  ret = cufftPlan3d(plan_forward,  Lx, Ly, Lz, CUFFT_D2Z)
+  ret = cufftPlan3d(plan_forward,  Lz, Ly, Lx, CUFFT_D2Z)   !Note order of Lz, Ly, Lx!
   write(0,*) 'plan d2z', ret
-  ret = cufftPlan3d(plan_backward, Lx, Ly, Lz, CUFFT_Z2D)
+  ret = cufftPlan3d(plan_backward, Lz, Ly, Lx, CUFFT_Z2D)   !Note order of Lz, Ly, Lx!
   write(0,*) 'plan z2d', ret
 
   ret = cudaMalloc(c_loc(devptr), 16*N_half)
