@@ -1,5 +1,5 @@
 ! cufft_module.f -*-f90-*-
-! Time-stamp: <2013-12-21 18:16:45 t-nissie>
+! Time-stamp: <2013-12-24 18:25:32 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Reference: http://www.softek.co.jp/SPG/Pgi/TIPS/public/accel/cufft.html
 !!
@@ -59,7 +59,7 @@ module cufft_module
   end interface
 
   interface cufftPlan3d
-     function cufftPlan3d(plan, nx, ny, nz, type) bind(C,name='cufftPlan3d')
+     function cufftPlan3d(plan, nz, ny, ny, type) bind(C,name='cufftPlan3d')    !Note order of nz, ny, nx!
        use, intrinsic :: iso_c_binding
        implicit none
        integer(c_int)        :: cufftPlan3d
