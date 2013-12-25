@@ -1,4 +1,9 @@
-ToDo
+ToDo:
+o 使うGPUって環境変数で選べるの？
+
+o (nightly) automation of unit test with "make check"
+
+o (nightly) automation of profiling and timing
 
 o Temperature from averaging acou_kinetic and dipo_kinetic
 
@@ -19,11 +24,9 @@ o 'md' have to be changed to 'np' Nose-Poincare.
 o Nose-Poincareでもacoustic displacementのMDができるように．
 o Imprement Nose:JPhysSocJpn:70:p75-77:2001
 
-o Use -simd=aggressive
+o Use -simd=aggressive ???
 
 o Do not make fft.F module. It receives complex as real.
-
-o extract dependency automatically in src/
 
 o Error messages to stderr.
 
@@ -63,19 +66,19 @@ o  call dipoFFT(p,c)
 
 o libbuilt_in_fft 128 256, libbuilt_in_fft -> libminimal_fft
 
-o Makefile.am の依存関係。make -j でデバグできる。
+o Makefile.amの依存関係。並列コンパイルmake -jでデバグできる。
+  たとえMakefile.amに依存関係が適切に書かれていても、
+  XL Fortranが書き出すa.lstが並列コンパイルの邪魔をする。
+  a.lstは何？これはmakeの新オプション--output-sync（-O）で回避できる？
+
+o 依存関係の自動生成。gfortranに新しく導入される-Mオプションの活用？ makedepf90？
+
 
 o 力の計算の部分をsubroutineにして、leapfrog をもう一度動くようにする。
-
-o TEST UNIT
-
-o gfortranに新しく導入される-Mオプションの活用。makedepf90でも。
 
 o Use msg() in write_Param() of param_module.F.
 
 o striped structure を initial configuration にできるようにする.
-
-o acoustic displacement も MD.
 
 o refactoring nose-poincare.F and energy.F
 
@@ -133,7 +136,7 @@ o call msg() DEPTH or p%message_depth
 o Use class of Fortran 2003: class Ferroelectrics has a Param, a Coord and a Energy
 
 
-
+Done:
 x plot_dispersion = .ture. で分散関係が出力されるようにする。
 
 x LARGE_MASS_INV = 1.0d0 / 1000000000.0d0
@@ -190,3 +193,5 @@ x fft.FのDFZ7M()とHZFD7M()、Nx must be even???　→もうMATRIX/MPPは使わ
 x -parallel for ifort -> Everythings are parallelized with OpenMP.
 
 x add seeds to normal_dist(mu,sigma,seed1,seed2). speed up DOUBLE.
+
+x acoustic displacement も MD.
