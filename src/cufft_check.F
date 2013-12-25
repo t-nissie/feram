@@ -46,6 +46,7 @@ program cufft_check
   N  = Lx * Ly * Lz
   N_half  = (Lx/2+1)*Ly*Lz
   N_inv = 1.0d0/N
+  write(0,'(i8,3i5,i11)') N_TIMES, Lx, Ly, Lz, N
 
   allocate(z(0:Lx-1, 0:Ly-1, 0:Lz-1))
   z(:,:,:) = z_check
