@@ -1,6 +1,8 @@
 ToDo
 
-o add seeds to normal_dist(mu,sigma,seed1,seed2). speed up DOUBLE.
+o Temperature from averaging acou_kinetic and dipo_kinetic
+
+o continue_without_restart_file for avoiding huge .coord files
 
 o Reduce memory size using in-place FFT and
   rank remapping or array dimension changing (See in-place-FFT.ja.txt)
@@ -187,3 +189,4 @@ x fft.FのDFZ7M()とHZFD7M()、Nx must be even???　→もうMATRIX/MPPは使わ
 
 x -parallel for ifort -> Everythings are parallelized with OpenMP.
 
+x add seeds to normal_dist(mu,sigma,seed1,seed2). speed up DOUBLE.
