@@ -76,21 +76,21 @@ program cufft_check
            if (ix.eq.0 .and. iy.eq.0 .and. iz.eq.0) then
               tmp = tmp - z_check
               if (abs(real(tmp))  > accuracy) then
-                 write(0,'(a,a,i3,a)')   __FILE__, ':', __LINE__ ,  &
-                      & ': Error in accuracy at real(z(0,0,0)).'
+                 write(0,'(a,a,i3,a,f21.16)')   __FILE__, ':', __LINE__ ,  &
+                      & ': Error in accuracy at real(z(0,0,0)) =',real(z(0,0,0))
                  stop 1
               else if (abs(aimag(tmp)) > accuracy) then
-                 write(0,'(a,a,i3,a)')   __FILE__, ':', __LINE__ ,  &
-                      & ': Error in accuracy at aimag(z(0,0,0)).'
+                 write(0,'(a,a,i3,a,f21.16)')   __FILE__, ':', __LINE__ ,  &
+                      & ': Error in accuracy at aimag(z(0,0,0)) =',aimag(z(0,0,0))
                  stop 2
               end if
            else if (abs(real(tmp))  > accuracy) then
-              write(0,'(a,a,i3,a,3(i5,a))')   __FILE__, ':', __LINE__ ,  &
-                   & ': Error in accuracy at real(z(',ix,',',iy,',',iz,')).'
+              write(0,'(a,a,i3,a,3(i5,a),f21.16)')   __FILE__, ':', __LINE__ ,  &
+                   & ': Error in accuracy at real(z(',ix,',',iy,',',iz,')) =',real(tmp)
               stop 3
            else if (abs(aimag(tmp))  > accuracy) then
-              write(0,'(a,a,i3,a,3(i5,a))')   __FILE__, ':', __LINE__ ,  &
-                   & ': Error in accuracy at aimag(z(',ix,',',iy,',',iz,')).'
+              write(0,'(a,a,i3,a,3(i5,a),f21.16)')   __FILE__, ':', __LINE__ ,  &
+                   & ': Error in accuracy at aimag(z(',ix,',',iy,',',iz,')) =',real(tmp)
               stop 4
            end if
         end do
