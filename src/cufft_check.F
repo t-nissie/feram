@@ -2,13 +2,14 @@ program cufft_check
   use cufft_module
   use, intrinsic :: iso_c_binding
   implicit none
-  integer, parameter :: Lx =  80
-  integer, parameter :: Ly =  90
-  integer, parameter :: Lz = 100
-  integer, parameter :: N_TIMES = 1000
-  integer, parameter :: N  = Lx * Ly * Lz
-  integer, parameter :: N_half  = (Lx/2+1)*Ly*Lz
-  real*8,  parameter :: N_inv = 1.0d0/N
+  character(len=100) :: str
+  integer :: N_TIMES
+  integer :: Lx
+  integer :: Ly
+  integer :: Lz
+  integer :: N
+  integer :: N_half
+  real*8  :: N_inv
   integer            :: plan_forward = 0
   integer            :: plan_backward = 0
   integer            :: ret
@@ -25,6 +26,26 @@ program cufft_check
   real*8                  :: g_ri        ! GFLOPS
   real*8                  :: f_r         ! The numbers of floating point operations in [G]
   integer                 :: count_rate, count_max
+
+  i = command_argument_count()
+  if (i.eq.0) then
+     ! default values
+     N_TIMES = 1000
+     Lx =  80
+     Ly =  90
+     Lz = 100
+  else if (i.eq.4) then
+     call get_command_argument(1,str); read(str,*) N_TIMES
+     call get_command_argument(2,str); read(str,*) Lx
+     call get_command_argument(3,str); read(str,*) Ly
+     call get_command_argument(4,str); read(str,*) Lz
+  else
+     write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': Illegal number of arguments.'
+     stop 1
+  end if
+  N  = Lx * Ly * Lz
+  N_half  = (Lx/2+1)*Ly*Lz
+  N_inv = 1.0d0/N
 
   allocate(z(0:Lx-1, 0:Ly-1, 0:Lz-1))
   z(:,:,:) = z_check
@@ -46,6 +67,7 @@ program cufft_check
   ret = cudaMemcpy(c_loc(z), devptr, 16*N, cudaMemcpyDeviceToHost)
   write(0,*) 'mcpy d2h', ret
 
+!$omp parallel do
   do iz = 0, Lz-1
      do iy = 0, Ly-1
         do ix = 0, Lx-1
@@ -73,7 +95,8 @@ program cufft_check
         end do
      end do
   end do
-     
+!$omp end parallel do
+
   ret = cufftDestroy(plan_forward)
   write(0,*) 'destroy ', ret
 
@@ -109,6 +132,7 @@ program cufft_check
 
   ret = cudaMemcpy(c_loc(d), devptr, 16*N_half, cudaMemcpyDeviceToHost)
   write(0,*) 'mcpy h d', ret
+!$omp parallel do
   do iz = 0, Lz-1
      do iy = 0, Ly-1
         do ix = 0, Lx-1
@@ -119,6 +143,7 @@ program cufft_check
         end do
      end do
   end do
+!$omp end parallel do
 
   t_ri = dble(c_ri(1)-c_ri(0))/count_rate
   if (t_ri<0.0d0) t_ri=t_ri+dble(count_max)/count_rate
@@ -139,5 +164,5 @@ program cufft_check
   deallocate(d,z)
 end program cufft_check
 !Local variables:
-!  compile-command: "gfortran -Wall -ffree-form -c cufft_module.f && gfortran -Wall -ffree-form -c cufft_check.F && gfortran -Wall -o cufft_check cufft_check.o cufft_module.o -L/usr/local/cuda/lib64 -lcublas -lcufft -lcudart && ./cufft_check"
+!  compile-command: "gfortran -Wall -fopenmp -ffree-form -c cufft_module.f && gfortran -Wall -fopenmp -ffree-form -c cufft_check.F && gfortran -Wall -fopenmp -o cufft_check cufft_check.o cufft_module.o -L/usr/local/cuda/lib64 -lcublas -lcufft -lcudart && ./cufft_check"
 !End:

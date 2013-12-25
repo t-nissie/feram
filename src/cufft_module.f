@@ -1,5 +1,5 @@
 ! cufft_module.f -*-f90-*-
-! Time-stamp: <2013-12-24 18:29:29 takeshi>
+! Time-stamp: <2013-12-25 11:03:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Reference: http://www.softek.co.jp/SPG/Pgi/TIPS/public/accel/cufft.html
 !!
@@ -118,5 +118,5 @@ module cufft_module
   end interface
 end module cufft_module
 !Local variables:
-!  compile-command: "gfortran -Wall -ffree-form -c cufft_module.f && gfortran -Wall -ffree-form -c cufft_check.F && gfortran -Wall -o cufft_check cufft_check.o cufft_module.o -L/usr/local/cuda/lib64 -lcublas -lcufft -lcudart && ./cufft_check"
+!  compile-command: "gfortran -Wall -fopenmp -ffree-form -c cufft_module.f && gfortran -Wall -fopenmp -ffree-form -c cufft_check.F && gfortran -Wall -fopenmp -o cufft_check cufft_check.o cufft_module.o -L/usr/local/cuda/lib64 -lcublas -lcufft -lcudart && ./cufft_check"
 !End:
