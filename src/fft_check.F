@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2013-11-20 15:42:28 takeshi>
+! Time-stamp: <2013-12-27 14:46:21 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -193,6 +193,12 @@ results of 3-dimensional FFT benchmark
 on single chip 3.83 GHz POWER7 and 2.70 GHz E5-2680.
 For small size FFT, single chip may give better efficiency than single node.
 Computational conditions are listed below.
+
+Benchmarks with Tesla K20X and Tesla M2090 GPUs are also plotted in
+In Fig:powr2chip (b) and Fig:nonp2chip (b).
+Double-precision real↔complex 3-dimensional in-place FFT is performed
+on the GPU devices with cufft_check.F and cufft_module.f.
+
 
 \Fig:powr2chip 19example-fft-benchmark/fft_powr2chip.jpg
 Results of 3-dimensional FFT benchmark of powers of two with single chip.
