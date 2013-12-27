@@ -60,7 +60,9 @@ set title "double-precision real, 3d transforms, 1 chip\nnon-powers of two, in-p
 set origin 0.0,0.34
 plot 'fft_check_nonp2.SR16000.r1981.FFTW.chip.dat'             using 0:12 t 'SR16000'   w lp lw 2 lt 1 pt 1,\
      'fft_check_nonp2.E5-2680.r1975.FFTW.chip.dat'             using 0:12 t 'E5-2680'   w lp lw 2 lt 2 pt 2,\
-     'fft_check_nonp2.FX10.r1454.FFTW_MEASURE.dat'             using 0:12 t 'FX10'      w lp lw 2 lt 4 pt 4
+     'fft_check_nonp2.FX10.r1454.FFTW_MEASURE.dat'             using 0:12 t 'FX10'      w lp lw 2 lt 4 pt 4,\
+   'cufft_check_nonp2.K20X.r2028.dat'                          using 0:7 t  'K20X'      w lp lw 2 lt 7 pt 7,\
+   'cufft_check_nonp2.M2090.r2030.dat'                         using 0:7 t  'M2090'     w lp lw 2 lt 5 pt 6
 
 set label 1 '(c)'
 set title "double-precision real, 3d transforms, 1 chip\nnon-powers of two, out-of-place"
