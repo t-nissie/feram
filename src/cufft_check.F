@@ -68,7 +68,7 @@ program cufft_check
   ret = cudaMemcpy(c_loc(z), devptr, 16*N, cudaMemcpyDeviceToHost)
   write(0,*) 'mcpy d2h', ret
 
-!$omp parallel do
+!$omp parallel do private(iz, iy, ix, tmp)
   do iz = 0, Lz-1
      do iy = 0, Ly-1
         do ix = 0, Lx-1
@@ -76,21 +76,25 @@ program cufft_check
            if (ix.eq.0 .and. iy.eq.0 .and. iz.eq.0) then
               tmp = tmp - z_check
               if (abs(real(tmp))  > accuracy) then
-                 write(0,'(a,a,i3,a,f21.16)')   __FILE__, ':', __LINE__ ,  &
-                      & ': Error in accuracy at real(z(0,0,0)) =',real(z(0,0,0))
+                 write(0,'(a,a,i3,a,f21.16,a,d19.10)')   __FILE__, ':', __LINE__ ,  &
+                      & ': Error in accuracy at real(z(0,0,0)) =',real(z(0,0,0)), &
+                      & 'diff =',abs(real(tmp))
                  stop 1
               else if (abs(aimag(tmp)) > accuracy) then
-                 write(0,'(a,a,i3,a,f21.16)')   __FILE__, ':', __LINE__ ,  &
-                      & ': Error in accuracy at aimag(z(0,0,0)) =',aimag(z(0,0,0))
+                 write(0,'(a,a,i3,a,f21.16,a,d19.10)')   __FILE__, ':', __LINE__ ,  &
+                      & ': Error in accuracy at aimag(z(0,0,0)) =',aimag(z(0,0,0)), &
+                      & 'diff =',abs(aimag(tmp))
                  stop 2
               end if
            else if (abs(real(tmp))  > accuracy) then
-              write(0,'(a,a,i3,a,3(i5,a),f21.16)')   __FILE__, ':', __LINE__ ,  &
-                   & ': Error in accuracy at real(z(',ix,',',iy,',',iz,')) =',real(tmp)
+              write(0,'(a,a,i3,a,3(i5,a),f21.16,a,d19.10)')   __FILE__, ':', __LINE__ ,  &
+                   & ': Error in accuracy at real(z(',ix,',',iy,',',iz,')) =',real(tmp), &
+                      & 'diff =',abs(real(tmp))
               stop 3
            else if (abs(aimag(tmp))  > accuracy) then
-              write(0,'(a,a,i3,a,3(i5,a),f21.16)')   __FILE__, ':', __LINE__ ,  &
-                   & ': Error in accuracy at aimag(z(',ix,',',iy,',',iz,')) =',real(tmp)
+              write(0,'(a,a,i3,a,3(i5,a),f21.16,a,d19.10)')   __FILE__, ':', __LINE__ ,  &
+                   & ': Error in accuracy at aimag(z(',ix,',',iy,',',iz,')) =',aimag(tmp), &
+                      & ', diff =',abs(aimag(tmp))
               stop 4
            end if
         end do
@@ -133,7 +137,7 @@ program cufft_check
 
   ret = cudaMemcpy(c_loc(d), devptr, 16*N_half, cudaMemcpyDeviceToHost)
   write(0,*) 'mcpy h d', ret
-!$omp parallel do
+!$omp parallel do private(iz, iy, ix)
   do iz = 0, Lz-1
      do iy = 0, Ly-1
         do ix = 0, Lx-1
