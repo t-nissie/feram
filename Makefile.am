@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2012-12-16 22:48:46 takeshi>
+# Time-stamp: <2014-01-01 17:25:16 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -39,7 +39,7 @@ logo.jpg: logo.eps
 	 | pnmcrop -white | cjpeg -quality 80 > $@
 
 index.%.html: README.%
-	ruby -I ~/ruby/ulmul/trunk/lib $< $< | sed -e 's%</h1>%</h1><div class="navi">[<a href="index.en.html">English</a>/<a href="index.ja.html">Japanese</a>]</div>%' > $@
+	ruby $< $< | sed -e 's%</h1>%</h1><div class="navi">[<a href="index.en.html">English</a>/<a href="index.ja.html">Japanese</a>]</div>%' > $@
 
 INSTALL.html: INSTALL
 	ulmul2html5 -s style.css -n 'Takeshi Nishimatsu' $< > $@
