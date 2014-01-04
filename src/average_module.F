@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2013-02-04 00:13:08 takeshi>
+! Time-stamp: <2014-01-04 11:49:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -174,7 +174,12 @@ contains
     end if
 
     if (p%method.eq.'lf') then
-       p%kelvin = avg%dipo_kinetic_true * 0.666666666666666666666666666667d0 * KELVIN_EV
+       if (p%mass_acou > 0.0d0) then
+          p%kelvin = ( avg%dipo_kinetic_true + &   ! average two kinetic energies
+               &       avg%energy%acou_kinetic ) / 3 * KELVIN_EV
+       else
+          p%kelvin =   avg%dipo_kinetic_true * 2 / 3 * KELVIN_EV
+       end if
        if (p%delta_e.ne.0.0d0) then
           avg%e_layer_dipo(0:p%Lz) = avg%e_layer_dipo(0:p%Lz) / p%n_average
           write(fn_T_layer,'(a,a)') trim(p%filename), '.T_layer'
