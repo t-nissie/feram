@@ -1,8 +1,6 @@
-= README for examples of velocity-scaling (vs) and leapfrog methods
-See [Jordan A. Barr, Takeshi Nishimatsu and Soctt P. Beckman: "Computational modeling the
-electrocaloric effect for solid-state refrigeration" 2013 MRS Spring Meeting proceedings]
-and [Takeshi Nishimatsu, Jordan A. Barr and Soctt P. Beckman: "Direct molecular
-dynamics simulation of electrocaloric effect in BaTiO3" http://arxiv.org/abs/1307.7011].
+= README for examples of velocity-scaling (vs) and leapfrog (lf) methods
+See [Takeshi Nishimatsu, Jordan A. Barr and Soctt P. Beckman: "Direct molecular
+dynamics simulation of electrocaloric effect in BaTiO3", J. Phys. Soc. Jpn. 82, 114605 (2013)].
 
 1. acoustic-MD.vs.feram: constant-temperature (T=520 K) MD in the
    canonical ensemble with the velocity-scaling (vs) method under 160 kV/cm.
@@ -11,8 +9,8 @@ dynamics simulation of electrocaloric effect in BaTiO3" http://arxiv.org/abs/130
 3. acoustic-MD.lf.feram: constant-energy MD in the microcanonical ensemble
    with the leapfrog (lf) method under 60 kV/cm.
 
-You will see the change in temperature from 520 K to 505 K in acoustic-MD.avg.
-True refrigeration may be (505-520)*2/5 = -6 K, because "acoustic_mass_amu = 46.44"
+You will see the change in temperature from 520 K to 504 K in acoustic-MD.avg.
+True refrigeration may be (504-520)*2/5 = -6.4 K, because "acoustic_mass_amu = 46.44"
 is set in both two .feram files and acoustic displacements is treated with MD.
 
 Removing the "acoustic_mass_amu = 46.44" line turns off MD in acoustic
@@ -40,3 +38,14 @@ SR16000 1 slot (1/4 node):
  26example-0.21.04/acoustic-MD.vs.log:             10.12        4057.08        4067.20     #TIMING_REPORT
  26example-0.21.04-optimize/acoustic-MD.lf.log:    10.09        3235.80        3245.89     #TIMING_REPORT
  26example-0.21.04-optimize/acoustic-MD.vs.log:    10.15        3148.79        3158.94     #TIMING_REPORT
+
+E5-2670 1 node (2 chips):
+ $ pwd; grep TIMING 26example-BaTiO3-acoustic-MD*/*log
+ /home/t-nissie/f/loto/feram/trunk/0.22.00-r2040-2014-01-04-platinum-gfortran/src
+ 26example-BaTiO3-acoustic-MD/acoustic-MD.lf.log: 156.55       56279.57       56436.12   16     #TIMING_REPORT
+ 26example-BaTiO3-acoustic-MD/acoustic-MD.vs.log:   9.48        8593.76        8603.24   16     #TIMING_REPORT
+
+E5-2670 1 chip (1/2 node):
+ 26example-BaTiO3-acoustic-MD-1chip-emerald01/acoustic-MD.lf.log, acoustic-MD.vs.log:
+                                                    9.21        4132.82        4142.03    8     #TIMING_REPORT
+                                                    9.20        4222.44        4231.64    8     #TIMING_REPORT
