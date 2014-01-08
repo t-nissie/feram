@@ -1,6 +1,6 @@
-= feram tutorial
+= feram tutorial at AICS
 == Login
- $ ssh -A -X -l guest01 phi.aics.riken.jp
+ $ ssh -A -X -l guestNN phi.aics.riken.jp
  $ ls -l /home/hands-on/feram/
 
 == Compile
@@ -8,11 +8,10 @@
  $ mkdir -p f/feram
  $ cd f/feram
  $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.22.00/feram-0.22.00.tar.xz/download
- $ md5sum feram-0.22.00.tar.xz | grep 063b95bd154fdf9dc27f9abee19e749c
  $ tar xf feram-0.22.00.tar.xz
  $ ifort -V   # check the version number of Intel Fortran
- $ mkdir feram-0.22.00/ifort-13.1.2.183
- $ cd feram-0.22.00/ifort-13.1.2.183
+ $ mkdir feram-0.22.00/ifort-13
+ $ cd feram-0.22.00/ifort-13
  $ ../configure FC=ifort CPPFLAGS=-I$MKLROOT/include/fftw --with-fft=mkl --with-lapack=mkl
  $ make -j8
  $ ls src/
@@ -22,7 +21,7 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  $ ssh -X phi01
  $ mkdir -p feram/feram-0.22.00/
  $ cd feram/feram-0.22.00/
- $ ln -s ~/f/feram/feram-0.22.00/ifort-13.1.2.183/src/feram .
+ $ ln -s ~/f/feram/feram-0.22.00/ifort-13/src/feram .
 
 ==Execute 26example-BaTiO3-acoustic-MD
  $ cd ~/feram/feram-0.22.00
