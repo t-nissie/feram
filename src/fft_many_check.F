@@ -1,5 +1,5 @@
 ! fft_many_check.F -*-f90-*-
-! Time-stamp: <2014-01-13 19:54:17 takeshi>
+! Time-stamp: <2014-01-13 20:59:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program fft_many_check
@@ -16,8 +16,8 @@ program fft_many_check
   integer :: N_half
   real*8  :: N_inv
   integer :: OMP_GET_MAX_THREADS
-  integer :: ret, i, rank, LzLyLx(3), howmany, inembed(3), istride, idist, onembed(3), ostride, odist
-  type(C_PTR) :: plan_r2c
+  integer :: ret, i,ix,iy,iz, rank, LzLyLx(3), howmany, d_embed(3), stride, dist, z_embed(3)
+  type(C_PTR) :: plan_r2c, plan_c2r
   complex*16,allocatable :: z(:,:,:,:)
   real*8,    allocatable :: d(:,:,:,:)
 
@@ -50,38 +50,37 @@ program fft_many_check
   LzLyLx(1) = Lz
   LzLyLx(2) = Ly
   LzLyLx(3) = Lx
-  inembed(1) = Lz
-  inembed(2) = Ly+padding_y
-  inembed(3) = 2*(Lx/2+1)
-  onembed(1) = Lz
-  onembed(2) = Ly+padding_y
-  onembed(3) = Lx/2+1
+  d_embed(1) = Lz
+  d_embed(2) = Ly+padding_y
+  d_embed(3) = 2*(Lx/2+1)
+  z_embed(1) = Lz
+  z_embed(2) = Ly+padding_y
+  z_embed(3) = Lx/2+1
 
   rank = 3
 
   howmany = 3
-  istride = 3
-  ostride = 3
+  stride = 3
 
-  idist = 1
-  odist = 1
+  dist = 1
 
   allocate( d(3, 0:2*(Lx/2+1)-1, 0:Ly+padding_y-1, 0:Lz-1), &
        &    z(3, 0:Lx/2,         0:Ly+padding_y-1, 0:Lz-1) )
 
 !!!first touch
 !$omp parallel do
-  do i = 0,Lz-1
-     d(:,:,:,i) = 0.0d0
+  do iz = 0,Lz-1
+     d(:,:,:,iz) = 0.0d0
   end do
 !$omp end parallel do
 !$omp parallel do
-  do i = 0,Lz-1
-     z(:,:,:,i) = (0.0d0,0.0d0)
+  do iz = 0,Lz-1
+     z(:,:,:,iz) = (0.0d0,0.0d0)
   end do
 !$omp end parallel do
 
-  plan_r2c = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,d,inembed,istride,idist,z,onembed,ostride,odist,FFTW_MEASURE)
+  plan_r2c = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,d,d_embed,stride,dist,z,z_embed,stride,dist,FFTW_MEASURE)
+  plan_c2r = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,z,z_embed,stride,dist,d,d_embed,stride,dist,FFTW_MEASURE)
 
 !$omp parallel do
   do i = 0,Lz-1
@@ -91,7 +90,40 @@ program fft_many_check
 
   call fftw_execute_dft_r2c(plan_r2c, d, z)
 
-  write(6,*) z(:,0,0,0)
+!$omp parallel do
+  do iz = 0,Lz-1
+     z(:,:,:,iz) = z(:,:,:,iz) * N_inv
+  end do
+!$omp end parallel do
+
+!  write(6,*) z(:,0,0,0)
+
+  call fftw_execute_dft_c2r(plan_c2r, z, d)
+
+!   do iz = 0, Lz-1
+!      do iy = 0, Ly-1
+!         do ix = 0, Lx-1
+!            do i = 1, 3
+!               write(0,'(a,4(i5,a),f21.16)') 'd(',i,',',ix,',',iy,',',iz,') =',d(i,ix,iy,iz)
+!            end do
+!         end do
+!      end do
+!   end do
+
+!$omp parallel do private(iz, iy, ix)
+  do iz = 0, Lz-1
+     do iy = 0, Ly-1
+        do ix = 0, Lx-1
+           do i = 1, 3
+              if (abs(d(i,ix,iy,iz)-0.1d0)>1.0d-15) then
+                 write(0,'(a,a,i3,a,4(i5,a),f21.16)')   __FILE__, ':', __LINE__ ,  &
+                      & ': Error in accuracy at d(',i,',',ix,',',iy,',',iz,') =',d(i,ix,iy,iz)
+              end if
+           end do
+        end do
+     end do
+  end do
+!$omp end parallel do
 
   call fftw_cleanup_threads()
 end program fft_many_check
