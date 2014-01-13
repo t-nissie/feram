@@ -1,5 +1,5 @@
 ! fft_many_check.F -*-f90-*-
-! Time-stamp: <2014-01-13 20:59:42 takeshi>
+! Time-stamp: <2014-01-13 21:38:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program fft_many_check
@@ -51,21 +51,19 @@ program fft_many_check
   LzLyLx(2) = Ly
   LzLyLx(3) = Lx
   d_embed(1) = Lz
-  d_embed(2) = Ly+padding_y
+  d_embed(2) = Ly+padding_y*2
   d_embed(3) = 2*(Lx/2+1)
   z_embed(1) = Lz
   z_embed(2) = Ly+padding_y
   z_embed(3) = Lx/2+1
 
   rank = 3
-
   howmany = 3
-  stride = 3
-
+  stride  = 3
   dist = 1
 
-  allocate( d(3, 0:2*(Lx/2+1)-1, 0:Ly+padding_y-1, 0:Lz-1), &
-       &    z(3, 0:Lx/2,         0:Ly+padding_y-1, 0:Lz-1) )
+  allocate( d(3, 0:2*(Lx/2+1)-1, 0:Ly+padding_y*2-1, 0:Lz-1), &
+       &    z(3, 0:Lx/2,         0:Ly+padding_y  -1, 0:Lz-1) )
 
 !!!first touch
 !$omp parallel do
