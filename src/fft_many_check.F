@@ -1,5 +1,5 @@
 ! fft_many_check.F -*-f90-*-
-! Time-stamp: <2014-01-13 22:02:01 takeshi>
+! Time-stamp: <2014-01-14 16:02:10 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program fft_many_check
@@ -12,14 +12,23 @@ program fft_many_check
   integer :: Ly
   integer :: Lz
   integer :: padding_y
+  logical :: in_or_out
   integer :: N
   integer :: N_half
   real*8  :: N_inv
   integer :: OMP_GET_MAX_THREADS
   integer :: ret, i,ix,iy,iz, rank, LzLyLx(3), howmany, d_embed(3), stride, dist, z_embed(3)
-  type(C_PTR) :: plan_r2c, plan_c2r
-  complex*16,allocatable :: z(:,:,:,:)
-  real*8,    allocatable :: d(:,:,:,:)
+  type(C_PTR) :: plan_r2c, plan_c2r, d_ptr, z_ptr
+  integer(C_SIZE_T) :: n_tmp
+  real*8,    pointer :: d_linear(:)
+  real*8,    pointer :: d(:,:,:,:)
+  complex*16,pointer :: z_linear(:)
+  complex*16,pointer :: z(:,:,:,:)
+  integer                 :: c_ri(0:1)   ! count
+  real*8                  :: t_ri        ! time
+  real*8                  :: g_ri        ! GFLOPS
+  real*8                  :: f_r         ! The numbers of floating point operations in [G]
+  integer                 :: count_rate, count_max
 
   ret = fftw_init_threads()
   call fftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
@@ -32,12 +41,14 @@ program fft_many_check
      Ly =  64
      Lz =  64
      padding_y = 3
-  else if (i.eq.5) then
+     in_or_out = .true.
+  else if (i.eq.6) then
      call get_command_argument(1,str); read(str,*) N_TIMES
      call get_command_argument(2,str); read(str,*) Lx
      call get_command_argument(3,str); read(str,*) Ly
      call get_command_argument(4,str); read(str,*) Lz
      call get_command_argument(5,str); read(str,*) padding_y
+     call get_command_argument(6,str); read(str,*) in_or_out
   else
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': Illegal number of arguments.'
      stop 1
@@ -59,11 +70,23 @@ program fft_many_check
 
   rank = 3
   howmany = 3
-  stride  = 3
+  stride  = howmany
   dist = 1
 
-  allocate( d(3, 0:2*(Lx/2+1)-1, 0:Ly+padding_y-1, 0:Lz-1), &
-       &    z(3, 0:Lx/2,         0:Ly+padding_y-1, 0:Lz-1) )
+  n_tmp = 2 * howmany * (Lx/2+1) * (Ly+padding_y) * Lz
+  d_ptr = fftw_alloc_real(n_tmp)
+  call    c_f_pointer(d_ptr, d_linear, [n_tmp])
+
+  n_tmp =     howmany * (Lx/2+1) * (Ly+padding_y) * Lz
+  if (in_or_out) then
+     z_ptr = c_null_ptr
+     call c_f_pointer(d_ptr, z_linear, [n_tmp])
+  else
+     z_ptr = fftw_alloc_complex(n_tmp)
+     call c_f_pointer(z_ptr, z_linear, [n_tmp])
+  end if
+  d(1:howmany, 0:2*(Lx/2+1)-1, 0:Ly+padding_y-1, 0:Lz-1) => d_linear
+  z(1:howmany, 0:Lx/2,         0:Ly+padding_y-1, 0:Lz-1) => z_linear
 
 !!!first touch
 !$omp parallel do
@@ -86,22 +109,22 @@ program fft_many_check
   end do
 !$omp end parallel do
 
-  call fftw_execute_dft_r2c(plan_r2c, d, z)
-
+  call system_clock(c_ri(0))
+  do i = 1, N_TIMES
+     call fftw_execute_dft_r2c(plan_r2c, d, z)
 !$omp parallel do
-  do iz = 0,Lz-1
-     z(:,:,:,iz) = z(:,:,:,iz) * N_inv
-  end do
+     do iz = 0,Lz-1
+        z(:,:,:,iz) = z(:,:,:,iz) * N_inv
+     end do
 !$omp end parallel do
-
-!  write(6,*) z(:,0,0,0)
-
-  call fftw_execute_dft_c2r(plan_c2r, z, d)
+     call fftw_execute_dft_c2r(plan_c2r, z, d)
+  end do
+  call system_clock(c_ri(1), count_rate, count_max)
 
 !   do iz = 0, Lz-1
 !      do iy = 0, Ly-1
 !         do ix = 0, Lx-1
-!            do i = 1, 3
+!            do i = 1, howmany
 !               write(0,'(a,4(i5,a),f21.16)') 'd(',i,',',ix,',',iy,',',iz,') =',d(i,ix,iy,iz)
 !            end do
 !         end do
@@ -112,7 +135,7 @@ program fft_many_check
   do iz = 0, Lz-1
      do iy = 0, Ly-1
         do ix = 0, Lx-1
-           do i = 1, 3
+           do i = 1, howmany
               if (abs(d(i,ix,iy,iz)-0.1d0)>1.0d-15) then
                  write(0,'(a,a,i3,a,4(i5,a),f21.16)')   __FILE__, ':', __LINE__ ,  &
                       & ': Error in accuracy at d(',i,',',ix,',',iy,',',iz,') =',d(i,ix,iy,iz)
@@ -123,8 +146,18 @@ program fft_many_check
   end do
 !$omp end parallel do
 
+  t_ri = dble(c_ri(1)-c_ri(0))/count_rate
+  if (t_ri<0.0d0) t_ri=t_ri+dble(count_max)/count_rate
+  f_r = log(dble(N)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * N * howmany
+  g_ri = f_r / t_ri
+
+  write(6,'(i8,4i5,i11,  f8.3,f8.3)') N_TIMES, Lx, Ly, Lz, padding_y, N,  t_ri, g_ri
+  call fftw_destroy_plan(plan_r2c)
+  call fftw_destroy_plan(plan_c2r)
+  call fftw_free(d_ptr)
+  call fftw_free(z_ptr)
   call fftw_cleanup_threads()
 end program fft_many_check
 !local variables:
-!  compile-command: "make -k -f fft_many_check.Makefile.Intel-gfortran-fftw3_omp && ./fft_many_check 100 128 128 64 3"
+!  compile-command: "make -k -f fft_many_check.Makefile.Intel-gfortran-fftw3_omp && OMP_NUM_THREADS=2 ./fft_many_check 100 128 128 64 3 T"
 !End:
