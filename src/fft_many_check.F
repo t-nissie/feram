@@ -1,5 +1,5 @@
 ! fft_many_check.F -*-f90-*-
-! Time-stamp: <2014-01-14 16:02:10 takeshi>
+! Time-stamp: <2014-01-15 07:12:20 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program fft_many_check
@@ -56,7 +56,7 @@ program fft_many_check
   N  = Lx * Ly * Lz
   N_half  = (Lx/2+1)*Ly*Lz
   N_inv = 1.0d0/N
-  write(0,'(i8,4i5,i11)') N_TIMES, Lx, Ly, Lz, padding_y, N
+  write(0,'(i8,4i5,i11,l3)') N_TIMES, Lx, Ly, Lz, padding_y, N, in_or_out
 
   LzLyLx(1) = Lz
   LzLyLx(2) = Ly
@@ -151,7 +151,7 @@ program fft_many_check
   f_r = log(dble(N)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * N * howmany
   g_ri = f_r / t_ri
 
-  write(6,'(i8,4i5,i11,  f8.3,f8.3)') N_TIMES, Lx, Ly, Lz, padding_y, N,  t_ri, g_ri
+  write(6,'(i8,4i5,i11,L3,  f8.3,f8.3)') N_TIMES, Lx, Ly, Lz, padding_y, N, in_or_out,  t_ri, g_ri
   call fftw_destroy_plan(plan_r2c)
   call fftw_destroy_plan(plan_c2r)
   call fftw_free(d_ptr)
