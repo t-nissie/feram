@@ -1,0 +1,8 @@
+# cckf:/k/home/users/zh0/feram/feram-0.22.00-r2049/
+# ~/feram/feram-m.00/prof.at.FX10.cckf.ims/
+# n_thermalize = 4000
+# n_average    = 1000
+##
+096             39.89         643.00         682.90   16     #TIMING_REPORT
+192            234.07        5946.41        6180.48   16     #TIMING_REPORT
+288            556.15       21769.27       22325.42   16     #TIMING_REPORT
