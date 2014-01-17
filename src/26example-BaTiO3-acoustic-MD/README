@@ -39,13 +39,12 @@ SR16000 1 slot (1/4 node):
  26example-0.21.04-optimize/acoustic-MD.lf.log:    10.09        3235.80        3245.89     #TIMING_REPORT
  26example-0.21.04-optimize/acoustic-MD.vs.log:    10.15        3148.79        3158.94     #TIMING_REPORT
 
-E5-2670 1 node (2 chips):
+E5-2680 1 node (2 chips):
  $ pwd; grep TIMING 26example-BaTiO3-acoustic-MD*/*log
  /home/t-nissie/f/loto/feram/trunk/0.22.00-r2040-2014-01-04-platinum-gfortran/src
  26example-BaTiO3-acoustic-MD/acoustic-MD.lf.log: 156.55       56279.57       56436.12   16     #TIMING_REPORT
  26example-BaTiO3-acoustic-MD/acoustic-MD.vs.log:   9.48        8593.76        8603.24   16     #TIMING_REPORT
-
-E5-2670 1 chip (1/2 node):
+E5-2680 1 chip (1/2 node):
  26example-BaTiO3-acoustic-MD-1chip-emerald01/acoustic-MD.lf.log, acoustic-MD.vs.log:
                                                     9.21        4132.82        4142.03    8     #TIMING_REPORT
                                                     9.20        4222.44        4231.64    8     #TIMING_REPORT
