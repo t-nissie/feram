@@ -142,6 +142,46 @@ Select "Software Development Workstation" in the setup.
  $ ls -l feram
  $ ldd feram
 
+=== Slackware64 14.1 (feram-0.22.00, 2014-01-20)
+==== install BLAS and LAPACK
+Download blas-20110419-x86_64-1_uqv.txz and lapack-3.4.1-x86_64-1_uqv.txz
+from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
+ $ wget http://www.vislab.uq.edu.au/slackware64/14.1/blas-20110419-x86_64-1_uqv.txz
+ $ wget http://www.vislab.uq.edu.au/slackware64/14.1/lapack-3.4.1-x86_64-1_uqv.txz
+ $ su
+ $ installpkg blas-20110419-x86_64-1_uqv.txz
+ $ installpkg lapack-3.4.1-x86_64-1_uqv.txz
+
+==== install fftw-3.3.3.tar.gz
+ $ wget http://www.fftw.org/fftw-3.3.3.tar.gz
+ $ tar xf fftw-3.3.3.tar.gz
+ $ cd fftw-3.3.3
+ $ mkdir Slackware
+ $ cd Slackware
+ $ ../configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-openmp --enable-threads --enable-sse2 --enable-avx --enable-mpi --enable-shared
+ $ emacs tools/Makefile   # Edit LIBFFTWTHREADS to link libfftw3_omp, not libfftw3_threads.
+ $ make -j12
+ $ make check
+ $ su
+ # make install
+ # ldconfig
+ # exit
+
+==== compile feram
+ $ export LD_LIBRARY_PATH=/usr/local/lib64   # Do not forget it.
+ $ tar xf feram-0.22.00.tar.xz
+ $ cd feram-0.22.00
+ $ mkdir Slackware
+ $ cd Slackware
+ $ ../configure --help
+ $ ../configure
+ $ cd src
+ $ make
+ $ OMP_NUM_THREADS=6  make check
+ $ OMP_NUM_THREADS=12 make check
+ $ ls -l feram
+ $ ldd feram
+
 === Linux with Intel Fortran Compiler and FFTW wrappers in Intel MKL
  $ . /opt/intel/bin/ifortvars.sh intel64     # Put these two lines in your
  $ . /opt/intel/mkl/bin/mklvars.sh intel64   # ~/.bashrc or somewhere.
