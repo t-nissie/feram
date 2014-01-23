@@ -49,5 +49,10 @@ E5-2680 1 chip (1/2 node, got same results with gfortran 4.4.6 and 4.8.2):
                                                     9.21        4132.82        4142.03    8     #TIMING_REPORT
                                                     9.20        4222.44        4231.64    8     #TIMING_REPORT
 
+Pentium M (1500MHz, year 2004):
+/home/takeshi/f/feram/feram-0.22.00/VineLinux-6.2/src/26example-BaTiO3-acoustic-MD/
+acoustic-MD.lf.log:                                60.49      182236         182296     #TIMING_REPORT
+acoustic-MD.vs.log:                                63.07      188881         188944     #TIMING_REPORT
+
 FX10:
  See FX10.timing.dat
