@@ -13,7 +13,7 @@
  $ mkdir feram-0.22.00/Linux-x86_64-gfortran-4.4
  $ cd feram-0.22.00/Linux-x86_64-gfortran-4.4
  $ ../configure
- $ make -j8
+ $ make -j --max-load=10.0
  $ ls src/
 See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
 
