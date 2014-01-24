@@ -47,7 +47,7 @@ follow this quick compilation instruction.
  $ ../configure --help
  $ ../configure
  $ cd src
- $ make
+ $ make -j --max-load=10.0
  $ make feram_mpi   # OPTIONAL. mpif90 is required.
  $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT with marsaglia_tsang_uni64_check,
  $ evince marsaglia_tsang_uni64_check.eps   # marsaglia_tsang_uni64_timing and fft_check.
@@ -77,7 +77,7 @@ with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
  $ tar xf feram-0.21.00.tar.xz
  $ mkdir feram-0.21.00/ubuntu-13.04
  $ cd feram-0.21.00/ubuntu-13.04
- $ ../configure && make
+ $ ../configure && make -j --max-load=10.0
  $ make check
 
 === Fedora 19 (feram-0.21.02, 2013-07-04)
@@ -91,7 +91,7 @@ installed into Fedora systems with yum(8) command. See http://fedoraproject.org 
  $ tar xf feram-0.21.02.tar.xz
  $ mkdir feram-0.21.02/fedora19
  $ cd feram-0.21.02/fedora19
- $ ../configure && make
+ $ ../configure && make -j --max-load=10.0
  $ make check
 
 === CentOS 6.2 (feram-0.18.05, 2012-03-28)
@@ -116,7 +116,7 @@ Select "Software Development Workstation" in the setup.
  $ cd CentOS
  $ ../configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-openmp --enable-threads --enable-sse2 --enable-avx --enable-shared
  $ emacs tools/Makefile   # Edit LIBFFTWTHREADS to link libfftw3_omp, not libfftw3_threads.
- $ make
+ $ make -j --max-load=10.0
  $ make check
  $ su
  # make install
@@ -136,7 +136,7 @@ Select "Software Development Workstation" in the setup.
  $ ../configure --help
  $ ../configure
  $ cd src
- $ make
+ $ make -j --max-load=10.0
  $ OMP_NUM_THREADS=6  make check
  $ OMP_NUM_THREADS=12 make check
  $ ls -l feram
@@ -160,7 +160,7 @@ from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
  $ cd Slackware
  $ ../configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-openmp --enable-threads --enable-sse2 --enable-avx --enable-mpi --enable-shared
  $ emacs tools/Makefile   # Edit LIBFFTWTHREADS to link libfftw3_omp, not libfftw3_threads.
- $ make -j12
+ $ make -j --max-load=10.0
  $ make check
  $ su
  # make install
@@ -176,7 +176,7 @@ from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
  $ ../configure --help
  $ ../configure
  $ cd src
- $ make
+ $ make -j --max-load=10.0
  $ OMP_NUM_THREADS=6  make check
  $ OMP_NUM_THREADS=12 make check
  $ ls -l feram
@@ -192,7 +192,7 @@ from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
  $ ../configure --help
  $ ../configure FC=ifort CPPFLAGS="-I$MKLROOT/include/fftw" --with-fft=mkl --with-lapack=mkl
  $ cd src
- $ make
+ $ make -j --max-load=10.0
  $ make feram_mpi                 # OPTIONAL. mpif90 is required.
  $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
 
@@ -205,7 +205,7 @@ Sometimes it is fater than MKL.
  $ ../configure --help
  $ ../configure FC=ifort CPPFLAGS=-I/uhome/s21584/Linux-x86_64/include LDFLAGS=-L/uhome/s21584/Linux-x86_64/lib --with-fft=fftw3_omp --with-lapack=mkl
  $ cd src
- $ make
+ $ make -j --max-load=10.0
  $ make feram_mpi                 # OPTIONAL. mpif90 is required.
  $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
 
@@ -236,7 +236,7 @@ Compile feram as:
   LTLIBOBJS = 
   MAKEINFO = ${SHELL} /users/takeshi/f/loto/feram/trunk/missing makeinfo
   MKDIR_P = /bin/mkdir -p
- $ make
+ $ make -j --max-load=10.0
 
 
 == Super computers
@@ -253,7 +253,7 @@ IBM XL Fortran (xlf90_r) version 13.1 or higher is required.
  $ cd src
  $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-style comments
  $ emacs Makefile   # DEFS = -DHAVE_CONFIG_H  =>  DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg
- $ make
+ $ make   # Do NOT use parallel compilation.
  $ MALLOCMULTIHEAP=true LDR_CNTRL=LARGE_PAGE_DATA=M XLSMPOPTS="spins=0:yields=0:parthds=16:stride=1:startproc=0" make check
 
 === Fujitsu Kei and FX10 with their cross compiler frtpx and mpifrtpx
@@ -276,6 +276,7 @@ If you want to link FFTW 3.3 rather than FFT in SSL II,
 
 
 == Mac OS X
+You can compile feram on Mac OS X with Xcode and its Command Line Tools.
 
 =end
 # Local variables:
