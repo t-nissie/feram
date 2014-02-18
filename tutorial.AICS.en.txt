@@ -7,11 +7,11 @@
  $ cd 
  $ mkdir -p f/feram
  $ cd f/feram
- $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.22.00/feram-0.22.00.tar.xz/download
- $ tar xf feram-0.22.00.tar.xz
+ $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.22.01/feram-0.22.01.tar.xz/download
+ $ tar xf feram-0.22.01.tar.xz
  $ ifort -V   # check the version number of Intel Fortran
- $ mkdir feram-0.22.00/ifort-13
- $ cd feram-0.22.00/ifort-13
+ $ mkdir feram-0.22.01/ifort-13
+ $ cd feram-0.22.01/ifort-13
  $ ../configure FC=ifort CPPFLAGS=-I$MKLROOT/include/fftw --with-fft=mkl --with-lapack=mkl
  $ make -j --max-load=10.0
  $ ls src/
@@ -19,13 +19,13 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
 
 == Preparation
  $ ssh -X phi01
- $ mkdir -p feram/feram-0.22.00/
- $ cd feram/feram-0.22.00/
- $ ln -s ~/f/feram/feram-0.22.00/ifort-13/src/feram .
+ $ mkdir -p feram/feram-0.22.01/
+ $ cd feram/feram-0.22.01/
+ $ ln -s ~/f/feram/feram-0.22.01/ifort-13/src/feram .
 
 ==Execute 26example-BaTiO3-acoustic-MD
- $ cd ~/feram/feram-0.22.00
- $ cp -a ~/f/feram/feram-0.22.00/src/26example-BaTiO3-acoustic-MD/ .
+ $ cd ~/feram/feram-0.22.01
+ $ cp -a ~/f/feram/feram-0.22.01/src/26example-BaTiO3-acoustic-MD/ .
  $ cd 26example-BaTiO3-acoustic-MD
  $ vim acoustic-MD.vs.feram
  $ vim acoustic-MD.lf.feram
@@ -38,8 +38,8 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  503.91  0.00000  0.00000  0.00060    0.82641E-02  0.82474E-02 ...
 
 == Execute 27example-BaTiO3-new-param-E_wave
- $ cd ~/feram/feram-0.22.00
- $ cp -a ~/f/feram/feram-0.22.00/src/27example-BaTiO3-new-param-E_wave/ .
+ $ cd ~/feram/feram-0.22.01
+ $ cp -a ~/f/feram/feram-0.22.01/src/27example-BaTiO3-new-param-E_wave/ .
  $ cd 27example-BaTiO3-new-param-E_wave
  $ vim 360cos.feram
  $ vim 360sin.feram
@@ -52,13 +52,13 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  $ top   # Toggle SMP view with "1", Quit with "q"
  $ numactl --cpunodebind 1 ../feram 360sin.feram &
  $ ln -s 360sin.param.gp param.gp
- $ head ~/f/feram/feram-0.22.00/src/cross-section-q.sh
- $ ~/f/feram/feram-0.22.00/src/cross-section-q.sh 360sin.0000004000.coord
+ $ head ~/f/feram/feram-0.22.01/src/cross-section-q.sh
+ $ ~/f/feram/feram-0.22.01/src/cross-section-q.sh 360sin.0000004000.coord
  $ evince 360sin.0000004000-q-x.eps
  $ ./hysteresis.gp
  $ evince hysteresis.eps
  $ grep TIMING *log
  360cos.log:           0.76         433.39         434.14     #TIMING_REPORT
  360sin.log:           0.76         433.34         434.10     #TIMING_REPORT
- $ head ~/f/feram/feram-0.22.00/src/slicer.rb
- $ ~/f/feram/feram-0.22.00/src/slicer.rb 360sin.0000004000.coord
+ $ head ~/f/feram/feram-0.22.01/src/slicer.rb
+ $ ~/f/feram/feram-0.22.01/src/slicer.rb 360sin.0000004000.coord
