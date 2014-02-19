@@ -31,7 +31,6 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  $ emacs -nw acoustic-MD.lf.feram
  L = 96 96 96   =>   L = 48 48 48
  $ diff -u acoustic-MD.vs.feram acoustic-MD.lf.feram
- $ chmod 755 acoustic-MD.csh
  $ cat acoustic-MD.csh
  $ numactl --cpunodebind 0 ./acoustic-MD.csh
  $ cat acoustic-MD.lf.avg
