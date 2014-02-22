@@ -23,7 +23,7 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  $ cd feram/feram-0.22.01/
  $ ln -sf ~/f/feram/feram-0.22.01/Linux-x86_64-gfortran-4.4/src/feram .
 
-==Execute 26example-BaTiO3-acoustic-MD
+== Execute 26example-BaTiO3-acoustic-MD
  $ cd ~/feram/feram-0.22.01
  $ cp -a ~/f/feram/feram-0.22.01/src/26example-BaTiO3-acoustic-MD/ .
  $ cd 26example-BaTiO3-acoustic-MD
