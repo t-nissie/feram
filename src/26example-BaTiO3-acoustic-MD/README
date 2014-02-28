@@ -39,27 +39,34 @@ SR16000 1 slot (1/4 node):
  26example-0.21.04-optimize/acoustic-MD.lf.log:    10.09        3235.80        3245.89     #TIMING_REPORT
  26example-0.21.04-optimize/acoustic-MD.vs.log:    10.15        3148.79        3158.94     #TIMING_REPORT
 
-E5-2680 1 node (2 chips):
+Xeon E5-2680 1 node (2 chips):
  $ pwd; grep TIMING 26example-BaTiO3-acoustic-MD*/*log
  /home/t-nissie/f/loto/feram/trunk/0.22.00-r2040-2014-01-04-platinum-gfortran/src
  26example-BaTiO3-acoustic-MD/acoustic-MD.lf.log: 156.55       56279.57       56436.12   16     #TIMING_REPORT
  26example-BaTiO3-acoustic-MD/acoustic-MD.vs.log:   9.48        8593.76        8603.24   16     #TIMING_REPORT
-E5-2680 1 chip (1/2 node, got same results with gfortran 4.4.6 and 4.8.2):
+Xeon E5-2680 1 chip (1/2 node, got same results with gfortran 4.4.6 and 4.8.2):
  26example-BaTiO3-acoustic-MD-1chip-emerald01/acoustic-MD.lf.log, acoustic-MD.vs.log:
                                                     9.21        4132.82        4142.03    8     #TIMING_REPORT
                                                     9.20        4222.44        4231.64    8     #TIMING_REPORT
 
 Celeron 1037U (1 chip = 2 cores, 1.8GHz, year 2013):
-silver$ date; pwd; grep TIMING *log
-Sun Feb 23 06:16:49 JST 2014
-/home/t-nissie/f/feram/feram-0.22.01/Linux-x86_64-gfortran-4.8.1-silver/src/26example-BaTiO3-acoustic-MD/
-acoustic-MD.lf.log:                                18.75       18274.28       18293.03    2     #TIMING_REPORT
-acoustic-MD.vs.log:                                18.77       18833.62       18852.39    2     #TIMING_REPORT
+ silver$ date; pwd; grep TIMING *log
+ Sun Feb 23 06:16:49 JST 2014
+ /home/t-nissie/f/feram/feram-0.22.01/Linux-x86_64-gfortran-4.8.1-silver/src/26example-BaTiO3-acoustic-MD/
+ acoustic-MD.lf.log:                               18.75       18274.28       18293.03    2     #TIMING_REPORT
+ acoustic-MD.vs.log:                               18.77       18833.62       18852.39    2     #TIMING_REPORT
+
+Xeon E5-2637 v2 (1/2 node = 1 chip = 4 cores, 3.5GHz, year 2014):
+ peridot$ LANG=C date; pwd; grep TIMING *log
+ Fri Feb 28 15:18:33 JST 2014
+ /home/t-nissie/f/feram/feram-0.22.01/Linux-x86_64-gfortran-4.4.7-peridot/src/26example-BaTiO3-acoustic-MD/
+ acoustic-MD.lf.log:                               28.72        4823.38        4852.10    4     #TIMING_REPORT
+ acoustic-MD.vs.log:                               28.76        5030.41        5059.18    4     #TIMING_REPORT
 
 Pentium M (1500MHz, year 2004):
-/home/takeshi/f/feram/feram-0.22.00/VineLinux-6.2/src/26example-BaTiO3-acoustic-MD/
-acoustic-MD.lf.log:                                60.49      182236         182296     #TIMING_REPORT
-acoustic-MD.vs.log:                                63.07      188881         188944     #TIMING_REPORT
+ /home/takeshi/f/feram/feram-0.22.00/VineLinux-6.2/src/26example-BaTiO3-acoustic-MD/
+ acoustic-MD.lf.log:                               60.49      182236.00      182296.00     #TIMING_REPORT
+ acoustic-MD.vs.log:                               63.07      188881.00      188944.00     #TIMING_REPORT
 
 FX10:
  See FX10.timing.dat
