@@ -73,7 +73,11 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
                 ないとコンパイルオプションが長くややこしくなるので、使ったほうがよい。
  config.log     configure の実行時のログ。問題が起きたら読む。
  config.status  configure を実行すると出来るスクリプト。foo.in から foo を作るのは実はこいつ。
+ install-sh     automake -a が用意してくれるスクリプト。make installのときに使われることがある。
  missing        automake -a が用意してくれる謎のスクリプト。
+ test-driver    新しめのautomakeが用意してくれるのスクリプト。
+                make checkのときに使われ、カラフルな表示をしてくれる。
+                make checkのログもファイルとして残してくれる。
 
 == 使用方法
 === メモ
