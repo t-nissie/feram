@@ -85,7 +85,7 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  * ある程度開発が進んで、ソースとMakefileができあがってからAutotoolsを使いはじめるとよい。
  * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
    http://www.gnu.org/software/automake/manual/automake.html やinfoを参照せよ。
- * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, scr/Makefile.amを見よう見まねで書く。
+ * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, src/Makefile.amを見よう見まねで書く。
  * automake -aやautoreconfで生成されるファイルはSubversionなどのリポジトリに登録しないほうがよい。
 === Fortranについてのメモ
  * AutotoolsはFortranのプロジェクトにも使える。
@@ -97,7 +97,7 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  * C言語のプロジェクトの場合はファイル間の依存関係を自動的に調べてくれるが、
    Fortranの場合はMakefile.amに依存関係を書いておくことがまだ必要。
 === 手順
-configure.ac, Makefile.am, scr/Makefile.amを書いて、
+configure.ac, Makefile.am, src/Makefile.amを書いて、
  $ autoreconf -v
  $ automake --add-missing   # 初回にautoreconfで実効を要求されたとき
  $ autoreconf -v            # ☆
@@ -106,7 +106,7 @@ configure.ac, Makefile.am, scr/Makefile.amを書いて、
  $ make distclean           # Makefileなどをきれいさっぱり消す
  $ ./configure
  $ make dist                # 配布用パッケージの作成
-新たにconfigure.ac, Makefile.am, scr/Makefile.amを書き変えたら☆からやり直す。
+新たにconfigure.ac, Makefile.am, src/Makefile.amを書き変えたら☆からやり直す。
 他に
  $ make clean
  $ make check
