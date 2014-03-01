@@ -48,13 +48,14 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
 /Fig:process
 
 === 関連コマンド
- autoscan       configure.acの雛形configure.scanを生成。
+ autoscan       Autotoolsの利用を開始するときに１回だけ実行するコマンド。
+                configure.acの雛形configure.scanを生成してくれる。
  autoreconf     定番。-vオプションを付けて実行すれば何をしているのかがわかる。
                 以下のコマンド自動的に再実行してくれる。
  autoconf       configure.ac を元に configure を生成。
  automake       Makefile.amからMakefile.inを生成。
-                オプション -a を付けて実行すると必要なファイルを
-                /usr/local/share/automake-1.11/ からリンクしてくれる。
+                オプション -a を付けて実行すると install-sh, missing, test-driver
+                などの必要なスクリプトを /usr/share/automake-1.14/ からシンボリックリンクしてくれる。
  autoheader     config.h.in を作ってくれる。
  aclocal        aclocal.m4を作ってくれる。
 
@@ -74,7 +75,7 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  config.log     configure の実行時のログ。問題が起きたら読む。
  config.status  configure を実行すると出来るスクリプト。foo.in から foo を作るのは実はこいつ。
  install-sh     automake -a が用意してくれるスクリプト。make installのときに使われることがある。
- missing        automake -a が用意してくれる謎のスクリプト。
+ missing        automake -a が用意してくれるスクリプト。忘れ物を教えてくれる。
  test-driver    新しめのautomakeが用意してくれるのスクリプト。
                 make checkのときに使われ、カラフルな表示をしてくれる。
                 make checkのログもファイルとして残してくれる。
@@ -93,6 +94,8 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  * Fortranでもcpp（Cプリプロセッサ）を使うと便利。
    その場合、ソースのファイルの名拡張子は.Fを使う。.F90はGNU makeのデフォルトでないので使わない。
  * AC_FC_FREEFORM()で自由形式のオプションがわかる。
+ * C言語のプロジェクトの場合はファイル間の依存関係を自動的に調べてくれるが、
+   Fortranの場合はMakefile.amに依存関係を書いておくことがまだ必要。
 === 手順
 configure.ac, Makefile.am, scr/Makefile.amを書いて、
  $ autoreconf -v
@@ -103,11 +106,11 @@ configure.ac, Makefile.am, scr/Makefile.amを書いて、
  $ make distclean           # Makefileなどをきれいさっぱり消す
  $ ./configure
  $ make dist                # 配布用パッケージの作成
-新たにconfigure.ac, Makefile.am, scr/Makefile.amを書き変えたら☆からやり直す．
+新たにconfigure.ac, Makefile.am, scr/Makefile.amを書き変えたら☆からやり直す。
 他に
  $ make clean
  $ make check
-などが便利．
+などが便利。
 === make checkでテストの自動化
 Makefile.amに
  TESTS=foo.sh bar.sh
