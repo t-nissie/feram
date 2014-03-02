@@ -1,6 +1,12 @@
 ! marsaglia_tsang_uni64_timing.f -*-f90-*-
-! Time-stamp: <2013-10-10 16:39:56 takeshi>
+! Time-stamp: <2014-03-03 06:41:16 takeshi>
 ! Author: Takeshi NISHIMATSU
+! Results:
+!  Machine                    RNG [M/s]  N() [M/s]  date
+!  SR16000 (Power7, 3.83GHz)   263.158    18.727    2014-03-03
+!  Xeon X5650                                      2014-03-03
+!  Xeon E5-2680                                    2014-03-03
+!  Xeon E5-2637 v2 3.50GHz                         2014-03-03
 !!
 program marsaglia_tsang_uni64_timing
   use marsaglia_tsang_uni64_module

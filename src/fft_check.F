@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2013-12-27 14:46:21 takeshi>
+! Time-stamp: <2014-03-03 06:33:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -137,7 +137,6 @@ They are plotted with GNUPLOT scripts of
  * Memory: DDR3 1066 MHz
  * Mother board: NEC Express5800
  * HT off (HT: Hyper Threading)
- * TB off (TB: Turbo Boost)
  * Makefile: fft_check.Makefile.Intel-ifort-MKL or fft_check.Makefile.Intel-ifort-fftw3_omp
  * Environment variables: OMP_NUM_THREADS=32
  * How to execute: ../fft_check 50 400 400 400
@@ -152,7 +151,6 @@ They are plotted with GNUPLOT scripts of
  * Memory: DDR3 1333 MHz
  * Mother board: Supermicro X9DRW
  * HT off (HT: Hyper Threading)
- * TB off (TB: Turbo Boost)
  * Makefile: fft_check.Makefile.Intel-gfortran-fftw3_omp
  * FFTW planner flag: FFTW_PATIENT
  * Environment variables: OMP_NUM_THREADS=16
@@ -167,7 +165,6 @@ They are plotted with GNUPLOT scripts of
  * Memory: DDR3 1333 MHz
  * Mother board: Supermicro X8DTG-D
  * HT off (HT: Hyper Threading)
- * TB off (TB: Turbo Boost)
  * Makefile: fft_check.Makefile.Intel-gfortran-fftw3_omp
  * FFTW planner flag: FFTW_PATIENT
  * Environment variables: OMP_NUM_THREADS=12
@@ -236,7 +233,6 @@ They are plotted with GNUPLOT scripts of
  * Memory: DDR3 1333 MHz
  * Mother board: Supermicro X9DRW
  * HT off (HT: Hyper Threading)
- * TB off (TB: Turbo Boost)
  * Makefile: fft_check.Makefile.Intel-gfortran-fftw3_omp
  * FFTW planner flag: FFTW_PATIENT
  * How to execute: numactl --cpunodebind=0 ../fft_check 50 400 400 400
