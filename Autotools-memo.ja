@@ -76,9 +76,8 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  config.status  configure を実行すると出来るスクリプト。foo.in から foo を作るのは実はこいつ。
  install-sh     automake -a が用意してくれるスクリプト。make installのときに使われることがある。
  missing        automake -a が用意してくれるスクリプト。忘れ物を教えてくれる。
- test-driver    新しめのautomakeが用意してくれるのスクリプト。
-                make checkのときに使われ、カラフルな表示をしてくれる。
-                make checkのログもファイルとして残してくれる。
+ test-driver    Makefile.amにTESTSの項目がある場合、automakeが用意してくれるのスクリプト。
+                make checkのときに使われ、カラフルな表示やログファイルの書き出しをしてくれる。
 
 == 使用方法
 === メモ
