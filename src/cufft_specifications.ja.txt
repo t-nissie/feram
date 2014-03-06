@@ -17,8 +17,8 @@ feramは、configureに与えるオプションで指定することにより、
 --with-precision=double
 
 == paddingの導入、fftw_plan_many_dft_r2c(), fftw_plan_many_dft_c2r()の活用
-- c%dipoR(   0:p%Lx-1,       0:p%Ly-1,             0:p%Lz-1, 3)
-+ c%dipoR(3, 0:2*(Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)
+- c%dipoR(   0:p%Lx-1,         0:p%Ly-1,             0:p%Lz-1, 3)
++ c%dipoR(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)
 
 ３つまたは６つのplansを１つのplanにまとめる。
  plans_dipoR2C(3)     dipoR → dipoK
