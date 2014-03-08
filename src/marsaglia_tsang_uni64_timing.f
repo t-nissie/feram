@@ -1,5 +1,5 @@
 ! marsaglia_tsang_uni64_timing.f -*-f90-*-
-! Time-stamp: <2014-03-03 14:11:23 takeshi>
+! Time-stamp: <2014-03-08 21:14:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Results:
 !  Machine                    RNG[M/s]  N()[M/s] date       compiler
@@ -10,6 +10,7 @@
 !  Xeon X5650       2.67GHz    64.470    25.254  2014-03-03 ifort 12.1.5
 !  Xeon X5650       2.67GHz    71.659    12.102  2014-03-03 gfortran 4.8.2
 !  Celeron 1037U    1.80GHz    45.510     7.407  2014-03-03 gfortran 4.8.1
+!  Celeron ULV743   1.30GHz    32.977     4.751  2014-03-08 gfortran 4.7.2
 !!
 program marsaglia_tsang_uni64_timing
   use marsaglia_tsang_uni64_module
