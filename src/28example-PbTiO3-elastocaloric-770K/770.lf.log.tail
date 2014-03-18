@@ -1,0 +1,300 @@
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090213417234 [eV/u.c.]
+    dipo_kinetic       0.089262503223 [eV/u.c.]
+    dipole_dipole     -0.036862693045 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091695290221 [eV/u.c.]
+    homo_strain        0.015061423682 [eV/u.c.]
+    homo_coupling     -0.030122847364 [eV/u.c.]
+    inho_strain        0.101504869304 [eV/u.c.]
+    inho_coupling     -0.022595992457 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298155970798 [eV/u.c.]
+    <u>   =  0.001464 -0.002407  0.001079
+    sigma =  0.145203  0.145113  0.145214
+    TIME_STEP  4999988  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090270632853 [eV/u.c.]
+    dipo_kinetic       0.089246570474 [eV/u.c.]
+    dipole_dipole     -0.036865057285 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091724104726 [eV/u.c.]
+    homo_strain        0.015066192742 [eV/u.c.]
+    homo_coupling     -0.030132385483 [eV/u.c.]
+    inho_strain        0.101437533277 [eV/u.c.]
+    inho_coupling     -0.022599663274 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298147928030 [eV/u.c.]
+    <u>   =  0.001478 -0.002409  0.001074
+    sigma =  0.145211  0.145121  0.145232
+    TIME_STEP  4999989  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090313722325 [eV/u.c.]
+    dipo_kinetic       0.089228567302 [eV/u.c.]
+    dipole_dipole     -0.036865516004 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091753505115 [eV/u.c.]
+    homo_strain        0.015070662517 [eV/u.c.]
+    homo_coupling     -0.030141325034 [eV/u.c.]
+    inho_strain        0.101387572716 [eV/u.c.]
+    inho_coupling     -0.022607431201 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298139757736 [eV/u.c.]
+    <u>   =  0.001493 -0.002411  0.001069
+    sigma =  0.145219  0.145129  0.145248
+    TIME_STEP  4999990  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090338417212 [eV/u.c.]
+    dipo_kinetic       0.089209246290 [eV/u.c.]
+    dipole_dipole     -0.036864143892 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091782969609 [eV/u.c.]
+    homo_strain        0.015074789728 [eV/u.c.]
+    homo_coupling     -0.030149579457 [eV/u.c.]
+    inho_strain        0.101356852913 [eV/u.c.]
+    inho_coupling     -0.022619493662 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298129058742 [eV/u.c.]
+    <u>   =  0.001508 -0.002413  0.001064
+    sigma =  0.145226  0.145137  0.145263
+    TIME_STEP  4999991  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090335413344 [eV/u.c.]
+    dipo_kinetic       0.089189348728 [eV/u.c.]
+    dipole_dipole     -0.036861053132 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091811835931 [eV/u.c.]
+    homo_strain        0.015078530594 [eV/u.c.]
+    homo_coupling     -0.030157061189 [eV/u.c.]
+    inho_strain        0.101351810528 [eV/u.c.]
+    inho_coupling     -0.022635043672 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298113781132 [eV/u.c.]
+    <u>   =  0.001522 -0.002414  0.001060
+    sigma =  0.145232  0.145143  0.145277
+    TIME_STEP  4999992  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090298849056 [eV/u.c.]
+    dipo_kinetic       0.089169550960 [eV/u.c.]
+    dipole_dipole     -0.036856381395 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091839348738 [eV/u.c.]
+    homo_strain        0.015081841864 [eV/u.c.]
+    homo_coupling     -0.030163683727 [eV/u.c.]
+    inho_strain        0.101379905211 [eV/u.c.]
+    inho_coupling     -0.022652333770 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298097096937 [eV/u.c.]
+    <u>   =  0.001537 -0.002416  0.001056
+    sigma =  0.145238  0.145149  0.145289
+    TIME_STEP  4999993  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090236994763 [eV/u.c.]
+    dipo_kinetic       0.089150468703 [eV/u.c.]
+    dipole_dipole     -0.036850280417 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091864700068 [eV/u.c.]
+    homo_strain        0.015084681302 [eV/u.c.]
+    homo_coupling     -0.030169362604 [eV/u.c.]
+    inho_strain        0.101438827350 [eV/u.c.]
+    inho_coupling     -0.022669000376 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298087028789 [eV/u.c.]
+    <u>   =  0.001552 -0.002417  0.001053
+    sigma =  0.145243  0.145154  0.145300
+    TIME_STEP  4999994  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090173768036 [eV/u.c.]
+    dipo_kinetic       0.089132690623 [eV/u.c.]
+    dipole_dipole     -0.036842906709 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091887057273 [eV/u.c.]
+    homo_strain        0.015087007785 [eV/u.c.]
+    homo_coupling     -0.030174015569 [eV/u.c.]
+    inho_strain        0.101509661048 [eV/u.c.]
+    inho_coupling     -0.022682546320 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298090716166 [eV/u.c.]
+    <u>   =  0.001567 -0.002419  0.001049
+    sigma =  0.145247  0.145159  0.145308
+    TIME_STEP  4999995  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090137190679 [eV/u.c.]
+    dipo_kinetic       0.089116803939 [eV/u.c.]
+    dipole_dipole     -0.036834415224 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091905583805 [eV/u.c.]
+    homo_strain        0.015088781296 [eV/u.c.]
+    homo_coupling     -0.030177562591 [eV/u.c.]
+    inho_strain        0.101562585971 [eV/u.c.]
+    inho_coupling     -0.022690839260 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298108128614 [eV/u.c.]
+    <u>   =  0.001583 -0.002420  0.001047
+    sigma =  0.145250  0.145162  0.145314
+    TIME_STEP  4999996  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090142142815 [eV/u.c.]
+    dipo_kinetic       0.089103391059 [eV/u.c.]
+    dipole_dipole     -0.036824956191 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091919464047 [eV/u.c.]
+    homo_strain        0.015089963207 [eV/u.c.]
+    homo_coupling     -0.030179926414 [eV/u.c.]
+    inho_strain        0.101573112032 [eV/u.c.]
+    inho_coupling     -0.022692505574 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298130684982 [eV/u.c.]
+    <u>   =  0.001598 -0.002421  0.001044
+    sigma =  0.145251  0.145165  0.145318
+    TIME_STEP  4999997  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090180201278 [eV/u.c.]
+    dipo_kinetic       0.089093002387 [eV/u.c.]
+    dipole_dipole     -0.036814674854 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091927940399 [eV/u.c.]
+    homo_strain        0.015090517088 [eV/u.c.]
+    homo_coupling     -0.030181034177 [eV/u.c.]
+    inho_strain        0.101537525799 [eV/u.c.]
+    inho_coupling     -0.022687158233 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298146319687 [eV/u.c.]
+    <u>   =  0.001613 -0.002422  0.001042
+    sigma =  0.145252  0.145167  0.145320
+    TIME_STEP  4999998  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090224641635 [eV/u.c.]
+    dipo_kinetic       0.089086126019 [eV/u.c.]
+    dipole_dipole     -0.036803713648 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091930361823 [eV/u.c.]
+    homo_strain        0.015090410150 [eV/u.c.]
+    homo_coupling     -0.030180820301 [eV/u.c.]
+    inho_strain        0.101475889969 [eV/u.c.]
+    inho_coupling     -0.022675453250 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298147442397 [eV/u.c.]
+    <u>   =  0.001629 -0.002422  0.001040
+    sigma =  0.145251  0.145168  0.145318
+    TIME_STEP  4999999  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.090247656894 [eV/u.c.]
+    dipo_kinetic       0.089083169868 [eV/u.c.]
+    dipole_dipole     -0.036792216100 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091926234689 [eV/u.c.]
+    homo_strain        0.015089615242 [eV/u.c.]
+    homo_coupling     -0.030179230484 [eV/u.c.]
+    inho_strain        0.101419741980 [eV/u.c.]
+    inho_coupling     -0.022658995435 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298135976654 [eV/u.c.]
+    <u>   =  0.001644 -0.002423  0.001038
+    sigma =  0.145249  0.145169  0.145313
+    TIME_STEP  5000000  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    ../../src/coord_module.F:278: BEGIN: 
+    ../../src/coord_module.F:281: END: never write .coord files.
+    acou_kinetic       0.090237922033 [eV/u.c.]
+    dipo_kinetic       0.089084452494 [eV/u.c.]
+    dipole_dipole     -0.036780331571 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.091915264654 [eV/u.c.]
+    homo_strain        0.015088113236 [eV/u.c.]
+    homo_coupling     -0.030176226473 [eV/u.c.]
+    inho_strain        0.101392709834 [eV/u.c.]
+    inho_coupling     -0.022640111583 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298121792625 [eV/u.c.]
+    <u>   =  0.001659 -0.002424  0.001036
+    sigma =  0.145245  0.145170  0.145306
+    ../../src/average_module.F:153: BEGIN: divide_and_write_Average().
+      ../../src/average_module.F:196: FILE: 770.lf.avg
+      ../../src/average_module.F:216: FILE: never write .distribution and .distribution3d files.
+    ../../src/average_module.F:245: END: divide_and_write_Average().
+    T =  694.2 [K] END ==========================================================
+  ../../src/molecular-dynamics.F:129: END: MD
+  ../../src/feram_common.F: 95: DATE_AND_TIME: 2014-02-23T21:25:08.910+0900
+  t_initialization,  t_simulation,       t_total, n_threads
+              2.97       14893.37       14896.34    8     #TIMING_REPORT
+../../src/feram_common.F:111: END: love && peace && free_software

@@ -1,0 +1,300 @@
+../../src/feram_common.F: 40: BEGIN: feram by Takeshi NISHIMATSU 0.22.01
+  ../../src/feram_common.F: 44: DATE_AND_TIME: 2014-02-22T17:16:52.572+0900
+  ../../src/feram_common.F: 47: N_THREADS:     8
+  ../../src/feram_common.F: 60: FFTW_WISDOM: FFTW wisdom is not in current directory.
+  ../../src/feram_common.F: 65: FFTW_WISDOM: Could not import FFTW system wisdom. All FFTW plans will be made by myself.
+  ../../src/param_module.F:121: BEGIN: read_Param().
+    ../../src/param_module.F:123: INPUT_FILENAME: 770.lf.feram
+    verbose = 2
+    #--- Method, Temperature, and mass ---------------
+    method = 'lf'
+    GPa = 0.0 0.0 0.000000000
+    kelvin = 770
+    mass_amu = 100.0
+    acoustic_mass_amu = 60.6
+
+    #--- System geometry -----------------------------
+    bulk_or_film = 'bulk'
+    L = 64 64 64
+    a0 =  3.96883      latice constant a0 [Angstrom]
+    #--- Time step -----------------------------------
+    dt = 0.002 [pico second]
+    n_thermalize = 4990000
+    n_average    = 10000
+    n_coord_freq = 50000
+    external_E_field = 0.00 0.00 0.00
+    distribution_directory = 'never'
+
+    #--- On-site (Polynomial of order 8) -------------
+    P_kappa2 =    1.17004 [eV/Angstrom2] # P_4(u) = kappa2*u2 +alpha*u4
+    P_alpha  =  27.8341  [eV/Angstrom4] #  +gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+    P_gamma  = -34.4762  [eV/Angstrom4] # where u2 = u_x2 + u_y2 +u_z2
+    P_k1  = -42.4238
+    P_k2  = 0.0
+    P_k3  = 0.0
+    P_k4  = 156.432
+
+    #--- Inter-site ----------------------------------
+    j = -1.354782  4.98616  0.2216286  -0.01820766  0.3982454 -0.083301867 -0.20356880
+
+    #--- Elastic Constants ---------------------------
+    B11 = 117.9
+    B12 =  51.6
+    B44 = 137.0  [eV]
+
+    #--- Elastic Coupling ----------------------------
+    B1xx = -114.02   [eV/Angstrom2]
+    B1yy =  -13.6748 [eV/Angstrom2]
+    B4yz =  -22.67   [eV/Angstrom2]
+
+    #--- Dipole --------------------------------------
+    seed = 1242914819 1957271599
+    init_dipo_avg = 0.000 0.000 0.330   [Angstrom]  # Averaged of initial dipole displacements
+    init_dipo_dev = 0.045 0.045 0.021   [Angstrom]  # Deviation of initial dipole displacements
+    Z_star        = 10.0181
+    epsilon_inf   = 8.24
+    coord_directory = 'never'
+  ../../src/param_module.F:343: END:   read_Param().
+  ../../src/param_module.F:349: BEGIN: make_Param().
+  ../../src/param_module.F:372: END:   make_Param().
+  ../../src/param_module.F:380: BEGIN: write_Param(), Parameters for convenience.
+    N = Lx * Ly * Lz          =     262144
+    Ninv = 1/N                =  0.3814697E-05
+    delta_t / 2               =  0.0010000
+    N of degree of freedom    =     786432
+    unit_cell_volume          = 62.5154685
+    kappa for Ewald sum =     0.0558
+    ../../src/param_module.F:396: FILE: 770.lf.param.gp
+  ../../src/param_module.F:420: END:   write_Param().
+  ../../src/coord_module.F: 64: BEGIN: alloc_Coord().
+  ../../src/coord_module.F:266: END:   alloc_Coord().
+  ../../src/potentials.F: 12: BEGIN: construction of potentials.
+    ../../src/dipole-dipole.F: 20: BEGIN: construction of dipole-dipole interaction.
+      ../../src/dipole-dipole-long-range.F: 29: BEGIN: 
+      ../../src/dipole-dipole-long-range.F:141: END: 
+      ../../src/dipole-dipole-short-range.F: 24: BEGIN: 
+        TMPreal(   0,0,0,1,1) = 2P_kappa2 =   2.3401
+        TMPreal(Lx-1,0,0,3,3) =  j(1)     =  -1.3548
+        TMPreal(   0,0,1,3,3) =  j(2)     =   4.9862
+        TMPreal(   1,0,1,3,3) =  j(3)     =   0.2216
+        TMPreal(   1,1,0,3,3) =  j(4)     =  -0.0182
+        TMPreal(   1,0,1,3,1) =  j(5)     =   0.3982
+        TMPreal(   1,1,1,3,3) =  j(6)     =  -0.0833
+        TMPreal(   1,1,1,3,1) =  j(7)     =  -0.2036
+        (a) Gamma =   3.9635
+        (b) X_LO  =  -7.1154
+        (c) X_TO  =   6.5258
+        (d) M_TO  =   7.6096
+        (e) M_LO  =  -4.1129
+        (f) R     =   0.0768
+        (g) Sigma =  -0.7520
+      ../../src/dipole-dipole-short-range.F:117: END: 
+    ../../src/dipole-dipole.F: 73: END: construction of dipole-dipole interaction.
+    ../../src/elastic.F: 20: BEGIN: make elastic constant matrix.
+    ../../src/elastic.F:160: END: 
+  ../../src/potentials.F: 15: END: construction of potentials.
+  ../../src/feram_common.F: 79: DATE_AND_TIME: 2014-02-22T17:16:55.540+0900 Ready for simulation!!!
+  ../../src/molecular-dynamics.F: 31: BEGIN: MD
+    T =  770.0 [K] BEGIN ========================================================
+    ../../src/initialize_E_field.F: 17: BEGIN: 
+      ../../src/initialize_E_field.F: 45: FILE_NOT_FOUND: local.field was NOT found.
+    ../../src/initialize_E_field.F: 72: END: 
+    ../../src/initialize-dipoR.F: 21: BEGIN: 
+      ../../src/initialize-dipoR.F: 25: FILE: 770.lf.restart was found.
+      ../../src/read_defects_u.F: 18: BEGIN: 
+        ../../src/read_defects_u.F: 48: FILE_NOT_FOUND: .defects file was NOT found. No defects was created.
+      ../../src/read_defects_u.F: 72: END: 
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/initialize-dipoR.F: 70: END: 
+    TIME_STEP        0  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    acou_kinetic       0.099530783156 [eV/u.c.]
+    dipo_kinetic       0.099530782991 [eV/u.c.]
+    dipole_dipole     -0.112637622421 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.192496320091 [eV/u.c.]
+    homo_strain        0.065762605355 [eV/u.c.]
+    homo_coupling     -0.131525210709 [eV/u.c.]
+    inho_strain        0.114079979034 [eV/u.c.]
+    inho_coupling     -0.028911358574 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298326278923 [eV/u.c.]
+    TIME_STEP        1  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.099604378416 [eV/u.c.]
+    dipo_kinetic       0.099537525373 [eV/u.c.]
+    dipole_dipole     -0.112638210545 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.192500593687 [eV/u.c.]
+    homo_strain        0.065766413099 [eV/u.c.]
+    homo_coupling     -0.131532826198 [eV/u.c.]
+    inho_strain        0.114029550071 [eV/u.c.]
+    inho_coupling     -0.028935602002 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298331821900 [eV/u.c.]
+    TIME_STEP        2  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.099628657602 [eV/u.c.]
+    dipo_kinetic       0.099553375697 [eV/u.c.]
+    dipole_dipole     -0.112607995089 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.192419164162 [eV/u.c.]
+    homo_strain        0.065732509029 [eV/u.c.]
+    homo_coupling     -0.131465018057 [eV/u.c.]
+    inho_strain        0.113994822480 [eV/u.c.]
+    inho_coupling     -0.028950809424 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298304706400 [eV/u.c.]
+    TIME_STEP        3  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.099577932504 [eV/u.c.]
+    dipo_kinetic       0.099577398022 [eV/u.c.]
+    dipole_dipole     -0.112547099277 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.192253195817 [eV/u.c.]
+    homo_strain        0.065661054041 [eV/u.c.]
+    homo_coupling     -0.131322108082 [eV/u.c.]
+    inho_strain        0.114027247344 [eV/u.c.]
+    inho_coupling     -0.028955765986 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298271854383 [eV/u.c.]
+    TIME_STEP        4  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.099487281026 [eV/u.c.]
+    dipo_kinetic       0.099608320294 [eV/u.c.]
+    dipole_dipole     -0.112455736668 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.192005024491 [eV/u.c.]
+    homo_strain        0.065552467381 [eV/u.c.]
+    homo_coupling     -0.131104934761 [eV/u.c.]
+    inho_strain        0.114119850973 [eV/u.c.]
+    inho_coupling     -0.028949587148 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298262685585 [eV/u.c.]
+    TIME_STEP        5  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.099426843813 [eV/u.c.]
+    dipo_kinetic       0.099644665964 [eV/u.c.]
+    dipole_dipole     -0.112334203683 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.191677939233 [eV/u.c.]
+    homo_strain        0.065407416053 [eV/u.c.]
+    homo_coupling     -0.130814832106 [eV/u.c.]
+    inho_strain        0.114213556916 [eV/u.c.]
+    inho_coupling     -0.028932016486 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298289369704 [eV/u.c.]
+    TIME_STEP        6  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.099454133441 [eV/u.c.]
+    dipo_kinetic       0.099684798140 [eV/u.c.]
+    dipole_dipole     -0.112182872855 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.191275930813 [eV/u.c.]
+    homo_strain        0.065226799226 [eV/u.c.]
+    homo_coupling     -0.130453598451 [eV/u.c.]
+    inho_strain        0.114237696124 [eV/u.c.]
+    inho_coupling     -0.028903504153 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298339382282 [eV/u.c.]
+    TIME_STEP        7  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.099575037887 [eV/u.c.]
+    dipo_kinetic       0.099726898805 [eV/u.c.]
+    dipole_dipole     -0.112002187165 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.190803453952 [eV/u.c.]
+    homo_strain        0.065011728875 [eV/u.c.]
+    homo_coupling     -0.130023457751 [eV/u.c.]
+    inho_strain        0.114157160058 [eV/u.c.]
+    inho_coupling     -0.028865049820 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298383584842 [eV/u.c.]
+    TIME_STEP        8  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.099736581543 [eV/u.c.]
+    dipo_kinetic       0.099768940854 [eV/u.c.]
+    dipole_dipole     -0.111792655577 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.190265231054 [eV/u.c.]
+    homo_strain        0.064763507258 [eV/u.c.]
+    homo_coupling     -0.129527014517 [eV/u.c.]
+    inho_strain        0.113997219957 [eV/u.c.]
+    inho_coupling     -0.028817892938 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298393917634 [eV/u.c.]
+    TIME_STEP        9  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
+      ../../src/acouFFT.F: 43: END: acouR -> acouK, done
+    ../../src/leapfrog.F:111: END: dipoP is updated at this end.
+    acou_kinetic       0.099854910274 [eV/u.c.]
+    dipo_kinetic       0.099808710474 [eV/u.c.]
+    dipole_dipole     -0.111554849647 [eV/u.c.]
+    dipole_E_field     0.000000000000 [eV/u.c.]
+    unharmonic         0.189666104010 [eV/u.c.]
+    homo_strain        0.064483601212 [eV/u.c.]
+    homo_coupling     -0.128967202424 [eV/u.c.]
+    inho_strain        0.113832007533 [eV/u.c.]
+    inho_coupling     -0.028763184859 [eV/u.c.]
+    --------------------------------------------
+    total_energy       0.298360096573 [eV/u.c.]
+    TIME_STEP       10  0.000000000000  0.000000000000  0.000000000000 -----------------------------------------------------
+    ../../src/leapfrog.F: 25: BEGIN: 
+      ../../src/leapfrog.F: 82: dipoR: updated.
+      ../../src/dipoFFT.F: 18: BEGIN: dipoR -> dipoK, didiR, didiK
+      ../../src/dipoFFT.F: 54: END: didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.
+      ../../src/acouFFT.F: 18: BEGIN: acouR -> acouK
