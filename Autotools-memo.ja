@@ -39,10 +39,11 @@ Autotools (autoconf and automake) では Fig:process に示すとおり
 いくつかのコマンドとファイルとによって処理が進む。
 実際はautoreconfが自動でやってくれる。
 以下に関連すコマンドとファイルを列挙した。
-\Fig:process doc/figures/autoconf-automake-process.jpg
+\Fig:process http://upload.wikimedia.org/wikipedia/commons/8/84/Autoconf-automake-process.svg
 Autotools（autoconf と automake）による作業の流れ。
 実際はautoreconfが自動でやってくれる。
-（この図はクリエイティブコモンズライセンスの下に
+（By Jdthood (Own work) [CC-BY-SA-3.0], via Wikimedia Commons.
+この図はクリエイティブコモンズライセンスの下に
 http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
 から配布されているもの。）
 /Fig:process
