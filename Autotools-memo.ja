@@ -54,7 +54,7 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
                 以下のコマンド自動的に再実行してくれる。
  autoconf       configure.ac を元に configure を生成。
  automake       Makefile.amからMakefile.inを生成。
-                オプション -a を付けて実行すると install-sh, missing, test-driver
+                オプション --add-missing を付けて実行すると install-sh, missing, test-driver
                 などの必要なスクリプトを /usr/share/automake-1.14/ からシンボリックリンクしてくれる。
  autoheader     config.h.in を作ってくれる。
  aclocal        aclocal.m4を作ってくれる。
@@ -67,15 +67,15 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
                 書いておかないとGLPが採用されてCOPYING等をコピーしてくれる。
  config/gnu/    ファイルがごちゃごちゃ出来てイヤな場合はMakefile.amに
                 AC_CONFIG_AUX_DIR(config/gnu)と指定するとmissing等がそこに置かれる。
- config.guess   Makefile.amにAC_CANONICAL_TARGETなどと書くとautomake -aが
+ config.guess   Makefile.amにAC_CANONICAL_TARGETなどと書くとautomake --add-missingが
                 用意してくれるOSやCPUの自動判別をしてくれるスクリプト。
  config.h.in    config.hの雛型。autoheaderによりMakefile.amやconfigure.acから自動的に作られる。
  config.h       configure.acにAC_CONFIG_HEADERS([config.h])と指定。
                 ないとコンパイルオプションが長くややこしくなるので、使ったほうがよい。
  config.log     configure の実行時のログ。問題が起きたら読む。
  config.status  configure を実行すると出来るスクリプト。foo.in から foo を作るのは実はこいつ。
- install-sh     automake -a が用意してくれるスクリプト。make installのときに使われることがある。
- missing        automake -a が用意してくれるスクリプト。忘れ物を教えてくれる。
+ install-sh     automake --add-missing が用意してくれるスクリプト。make installのときに使われることがある。
+ missing        automake --add-missing が用意してくれるスクリプト。忘れ物を教えてくれる。
  test-driver    Makefile.amにTESTSの項目がある場合、automakeが用意してくれるのスクリプト。
                 make checkのときに使われ、カラフルな表示やログファイルの書き出しをしてくれる。
 
@@ -85,7 +85,8 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
    http://www.gnu.org/software/automake/manual/automake.html やinfoを参照せよ。
  * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, src/Makefile.amを見よう見まねで書く。
- * automake -aやautoreconfで生成されるファイルはGitやSubversionなどのリポジトリに登録しないほうがよい。
+ * automake --add-missingやautoreconfで生成されるファイルはGitやSubversionなどのリポジトリに登録しないほうがよい。
+   それらのファイルは.gitignoreにリストしたり、svn propset svn:ignoreしておくとstatusで表示されないので便利。
 === Fortranについてのメモ
  * AutotoolsはFortranのプロジェクトにも使える。
  * AC_LANG(Fortran), AC_PROG_FC(gfortran ifort)などを使う。
