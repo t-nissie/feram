@@ -81,7 +81,8 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
 
 == 使用方法
 === メモ
- * ある程度開発が進んで、ソースとMakefileができあがってからAutotoolsを使いはじめるとよい。
+ * ソースファイルは伝統的にsrc/以下に置く。例: src/foo.c, src/bar.F
+ * ある程度開発が進んで、ソースファイルとMakefileができあがってからAutotoolsを使いはじめるとよい。
  * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
    http://www.gnu.org/software/automake/manual/automake.html やinfoを参照せよ。
  * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, src/Makefile.amを見よう見まねで書く。
