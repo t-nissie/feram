@@ -6,7 +6,7 @@ FortranのプロジェクトにAutotoolsを使う場合の注意点も書いて�
 == はじめに
 たいていのGNUのフリーソフトウェアは次のようにtar ballを展開して、
 ./configure && make && make installとすることで簡単にソースからインストールすることができる。
- tar xf feram-X.YY.ZZ.tar.xz
+ $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir Linux   # Use build directory.
  $ cd Linux
