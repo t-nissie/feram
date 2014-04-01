@@ -37,7 +37,7 @@ GNU M4も最新のものを用意したほうがよい。
 == コマンドとファイル
 Autotools (autoconf and automake) では Fig:process に示すとおり
 いくつかのコマンドとファイルとによって処理が進む。
-実際はautoreconfが自動でやってくれる。
+前半部分はautoreconfが自動的にやってくれる。
 以下に関連すコマンドとファイルを列挙した。
 \Fig:process http://upload.wikimedia.org/wikipedia/commons/8/84/Autoconf-automake-process.svg
 Autotools（autoconf と automake）による作業の流れ。
