@@ -134,10 +134,11 @@ automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定す�
 === コンパイラオプション
 C, Fortran, C++コンパイラとそのオプションはそれぞれ
 AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
-configure.ac の中で決定し
-CFLAGS, FCFLAGS, CXXFLAGS にセットする。
-デフォルトはたいてい-O2または-g -O2である。
-configure.ac の中でデフォルト以外に独自に設定したい場合には
+configure.ac の中で決定する。コンパイラは CC, FC, CXX に、
+コンパイラオプションは CFLAGS, FCFLAGS, CXXFLAGS に
+セットされる。 コンパイラオプションのデフォルトはたいてい
+-g -O2 または -O2 である。configure.ac の中で
+デフォルト以外に独自に設定したい場合には
  cflags_save="$CFLAGS"
  AC_PROG_CC()
  CFLAGS="$cflags_save"
