@@ -132,7 +132,7 @@ automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定す�
 では、automakeのバージョン1.14.1以上を使用することを強制し、
 パッケージをtar.gzでなくtar.xzで作るように指定している。
 === コンパイラオプション
-C, Fortran, C++コンパイラのオプションはそれぞれ
+C, Fortran, C++コンパイラとそのオプションはそれぞれ
 AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
 configure.ac の中で決定し
 CFLAGS, FCFLAGS, CXXFLAGS にセットする。
