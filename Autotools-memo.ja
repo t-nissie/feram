@@ -131,6 +131,17 @@ automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定す�
  AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz])
 では、automakeのバージョン1.14.1以上を使用することを強制し、
 パッケージをtar.gzでなくtar.xzで作るように指定している。
+=== コンパイラオプション
+C, Fortran, C++コンパイラのオプションはそれぞれ
+AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
+configure.ac の中で決定し
+CFLAGS, FCFLAGS, CXXFLAGS にセットする。
+デフォルトはたいてい-O2または-g -O2である。
+デフォルト以外に設定したい場合には
+ cflags_save="$CFLAGS"
+ AC_PROG_CC
+ CFLAGS="$cflags_save"
+などとその前後でsave/restoreする。
 
 == Autotoolsの使用方法として参考になるパッケージ
 === LHa for Unix
