@@ -137,11 +137,12 @@ AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
 configure.ac の中で決定し
 CFLAGS, FCFLAGS, CXXFLAGS にセットする。
 デフォルトはたいてい-O2または-g -O2である。
-デフォルト以外に設定したい場合には
+configure.ac の中でデフォルト以外に独自に設定したい場合には
  cflags_save="$CFLAGS"
- AC_PROG_CC
+ AC_PROG_CC()
  CFLAGS="$cflags_save"
-などとその前後でsave/restoreする。
+ test -n "$CFLAGS" || CFLAGS="-g -Wall -O3"
+などとAC_PROG_*()の前後でsave/restoreし、その後に独自設定をする。
 
 == Autotoolsの使用方法として参考になるパッケージ
 === LHa for Unix
