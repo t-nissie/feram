@@ -1,5 +1,5 @@
 ! fft_old_check.F -*-f90-*-
-! Time-stamp: <2014-04-22 13:54:28 takeshi>
+! Time-stamp: <2014-04-22 15:58:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program fft_old_check
@@ -72,7 +72,7 @@ program fft_old_check
   howmany = 3
   stride  = 1
   z_dist = (Lx/2+1) * (Ly+padding_y) * Lz
-  d_dist = 2 * z_dist
+  d_dist = 2 * z_dist   ! For large distance, you should use FFTW_PATIENT.
 
   n_tmp = 2 * howmany * (Lx/2+1) * (Ly+padding_y) * Lz
   d_ptr = fftw_alloc_real(n_tmp)
@@ -101,8 +101,8 @@ program fft_old_check
   end do
 !$omp end parallel do
 
-  plan_r2c = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,d,d_embed,stride,d_dist,z,z_embed,stride,z_dist,FFTW_MEASURE)
-  plan_c2r = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,z,z_embed,stride,z_dist,d,d_embed,stride,d_dist,FFTW_MEASURE)
+  plan_r2c = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,d,d_embed,stride,d_dist,z,z_embed,stride,z_dist,FFTW_PATIENT)
+  plan_c2r = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,z,z_embed,stride,z_dist,d,d_embed,stride,d_dist,FFTW_PATIENT)
 
 !$omp parallel do
   do i = 0,Lz-1
