@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2014-04-17 17:06:45 takeshi>
+dnl Time-stamp: <2014-04-28 20:37:06 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -18,7 +18,7 @@ LDFLAGS="$LDFLAGS -L/usr/local/lib"
 ## $ CPPFLAGS=-I/some/wherer ./configure
 ## AC_CHECK_HEADER(fftw3.f) does not work in Fortran.
 CPPFLAGS="$CPPFLAGS -I/usr/include -I/usr/local/include"
-AC_ARG_VAR(CPPFLAGS, [C preprocessor (CPP) Flags, e.g. -l<include dir>])
+AC_ARG_VAR(CPPFLAGS, [C preprocessor (CPP) Flags, e.g. -I<include dir>])
 
 ## Checks for some programs.
 AC_PROG_INSTALL
