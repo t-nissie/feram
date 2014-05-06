@@ -1,13 +1,19 @@
 Dear current and future feram users,
 
-I released feram-0.22.01.tar.xz from
+I released feram-0.22.03.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 
 "feram" is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
-From this feram-0.22.01, in a leapfrog method with acoustic_mass_amu,
+In this feram-0.22.03, a bug in kinetic_energy_dipo.F is fixed.
+Now, you can safely perform simulations with defects.
+
+From the feram-0.22.02, a new exapmle src/28example-PbTiO3-elastocaloric-770K/
+is included in the package. See http://arxiv.org/abs/1404.5459 .
+
+From the feram-0.22.01, in a leapfrog method with acoustic_mass_amu,
 final temperature is reported form an average of dipolar and acoustic
 kinetic energies. See subroutine divide_and_write_Average() in
 src/average_module.F.
