@@ -11,7 +11,8 @@ In this feram-0.22.03, a bug in kinetic_energy_dipo.F is fixed.
 Now, you can safely perform simulations with defects.
 
 From the feram-0.22.02, a new exapmle src/28example-PbTiO3-elastocaloric-770K/
-is included in the package. See http://arxiv.org/abs/1404.5459 .
+is included in the package. See http://arxiv.org/abs/1404.5459 ,
+though we will revise this preprint soon.
 
 From the feram-0.22.01, in a leapfrog method with acoustic_mass_amu,
 final temperature is reported form an average of dipolar and acoustic
