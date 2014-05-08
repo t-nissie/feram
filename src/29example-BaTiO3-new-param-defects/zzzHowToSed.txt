@@ -13,3 +13,6 @@
      -rwxr-xr-x 1 t-nissie users 2605 May  6 22:10 zero-100-heating.sh
      -rwxr-xr-x 1 t-nissie users  207 May  6 22:10 zero-100-two6threads.csh
      $
+
+How to avoid duplex defects
+     $ sort rnd2.defects | colrm 15 | uniq -d
