@@ -16,3 +16,6 @@
 
 How to avoid duplex defects
      $ sort rnd2.defects | colrm 15 | uniq -d
+
+How to submit jobs on app:
+     $ for r in *.csh; do submit AEB general -exec $r -J `basename $r .csh`; done
