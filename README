@@ -7,7 +7,8 @@ http://sourceforge.net/projects/loto/files/feram/ .
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
-In this feram-0.22.03, a bug in kinetic_energy_dipo.F is fixed.
+In this feram-0.22.03, bugs in kinetic_energy_dipo.F
+and velocity_scaling.F are fixed.
 Now, you can safely perform simulations with defects.
 
 From the feram-0.22.02, a new exapmle src/28example-PbTiO3-elastocaloric-770K/
