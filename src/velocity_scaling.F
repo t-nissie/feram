@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2013-11-13 17:40:44 takeshi>
+! Time-stamp: <2014-05-09 10:39:53 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -14,7 +14,7 @@ subroutine velocity_scaling(p,c,e)
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
-  integer iz
+  integer ix,iy,iz,alpha
   real*8 scale,kinetic_energy_dipo,kinetic_energy_acou
   external kinetic_energy_dipo,kinetic_energy_acou
   if (p%verbose>=2) then
@@ -38,9 +38,19 @@ subroutine velocity_scaling(p,c,e)
      call mirror_force_mirror(p,c,e)
 
 !$omp parallel do
-     do iz=0, p%Lz-1
-           c%dipoP(:,:,iz,:) = c%dipoP(:,:,iz,:) - p%dt * c%dVddi(:,:,iz,:)
+  do iz=0, p%Lz-1
+     do alpha = 1,3
+        do iy=0, p%Ly-1
+           do ix=0, p%Lx-1
+              if (c%sum_p(ix, iy, iz)) then
+                 c%dipoP(ix,iy,iz,alpha) = c%dipoP(ix,iy,iz,alpha) - p%dt * c%dVddi(ix,iy,iz,alpha)
+              else
+                 c%dipoP(ix,iy,iz,alpha) = 0.0d0
+              end if
+           end do
+        end do
      end do
+  end do
 !$omp end parallel do
      e%dipo_kinetic = kinetic_energy_dipo(p,c)
      scale = sqrt(p%target_kinetic_energy/e%dipo_kinetic)
