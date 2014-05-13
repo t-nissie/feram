@@ -1,13 +1,13 @@
 #!/bin/sh
-# rand-000-cooling.sh
+# rnd1-100-heating.sh
 # Time-stamp: <2014-05-13 20:29:52 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
-rm -f rand-000-cooling.avg
+rm -f rnd1-100-heating.avg
 
-temperature_start=900
-temperature_goal=250
-temperature_step=-1
+temperature_start=250
+temperature_goal=900
+temperature_step=1
 
 n_thermalize=20000
 n_average=80000
@@ -17,7 +17,7 @@ i=0
 for temperature in `seq $temperature_start $temperature_step $temperature_goal`; do
     GPa=`perl -e "print -0.005 * $temperature"`
     i=`expr $i + 1`
-    filename=rand-000-cooling`printf '%.3d' $i`-"$temperature"K
+    filename=rnd1-100-heating`printf '%.3d' $i`-"$temperature"K
     cat > $filename.feram <<-EOF
 	#--- Method, Temperature, and mass ---------------
 	method = 'vs'
@@ -53,7 +53,7 @@ for temperature in `seq $temperature_start $temperature_step $temperature_goal`;
 	n_thermalize = $n_thermalize
 	n_average    = $n_average
 	n_coord_freq = $n_coord_freq
-	external_E_field = 0.00 0.00 0.00000
+	external_E_field = 0.00 0.00 0.00100
 	distribution_directory = 'never'
 	
 	#--- From eigenvalues2j --------------------------
@@ -65,17 +65,17 @@ for temperature in `seq $temperature_start $temperature_step $temperature_goal`;
 	epsilon_inf =   6.86915
 	
 	#--- Initial dipole configrations ----------------
-	init_dipo_avg = 0.0   0.0   0.0    [Angstrom]  # Average   of initial dipole displacements
-	init_dipo_dev = 0.03  0.03  0.03   [Angstrom]  # Deviation of initial dipole displacements
+	init_dipo_avg = 0.00  0.00  0.20   [Angstrom]  # Average   of initial dipole displacements
+	init_dipo_dev = 0.02  0.02  0.02   [Angstrom]  # Deviation of initial dipole displacements
 EOF
     if [ -r "$prev_coord" ]; then
        ln -sf "$prev_coord" $filename.restart
     fi
-    ln -sf rand.defects $filename.defects
+    ln -sf rnd1.defects $filename.defects
     ./feram $filename.feram
     rm -f $prev_coord $filename.restart
     prev_coord=$filename.`printf '%.10d' $n_coord_freq`.coord
-    cat $filename.avg >> rand-000-cooling.avg
+    cat $filename.avg >> rnd1-100-heating.avg
 done
 
-rm rand-000-cooling???-[2-8]??K.*
+rm rnd1-100-heating???-[2-8]??K.*
