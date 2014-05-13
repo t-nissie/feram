@@ -1,11 +1,11 @@
 #!/bin/sh
 # anti-000-heating.sh
-# Time-stamp: <2014-05-12 11:26:50 t-nissie>
+# Time-stamp: <2014-05-13 20:30:45 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f anti-000-heating.avg
 
-temperature_start=200
+temperature_start=250
 temperature_goal=900
 temperature_step=1
 

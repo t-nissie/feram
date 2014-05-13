@@ -1,6 +1,6 @@
 #!/bin/sh
 # zero-100-cooling.sh
-# Time-stamp: <2014-05-07 17:56:50 t-nissie>
+# Time-stamp: <2014-05-13 20:33:04 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f zero-100-cooling.avg
@@ -78,4 +78,4 @@ EOF
     cat $filename.avg >> zero-100-cooling.avg
 done
 
-rm zero-100-cooling???-???K.*
+rm zero-100-cooling???-[2-8]??K.*

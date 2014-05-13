@@ -1,11 +1,11 @@
 #!/bin/sh
 # para-000-heating.sh
-# Time-stamp: <2014-05-12 11:26:50 t-nissie>
+# Time-stamp: <2014-05-13 20:29:52 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f para-000-heating.avg
 
-temperature_start=200
+temperature_start=250
 temperature_goal=900
 temperature_step=1
 

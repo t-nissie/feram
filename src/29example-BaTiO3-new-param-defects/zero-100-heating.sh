@@ -1,6 +1,6 @@
 #!/bin/sh
 # zero-100-heating.sh
-# Time-stamp: <2014-05-07 17:56:40 t-nissie>
+# Time-stamp: <2014-05-13 20:32:47 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f zero-100-heating.avg
@@ -78,4 +78,4 @@ EOF
     cat $filename.avg >> zero-100-heating.avg
 done
 
-rm zero-100-heating???-???K.*
+rm zero-100-heating???-[2-8]??K.*

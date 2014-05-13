@@ -1,12 +1,12 @@
 #!/bin/sh
 # anti-000-cooling.sh
-# Time-stamp: <2014-05-12 11:26:50 t-nissie>
+# Time-stamp: <2014-05-13 20:30:48 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f anti-000-cooling.avg
 
 temperature_start=900
-temperature_goal=200
+temperature_goal=250
 temperature_step=-1
 
 n_thermalize=20000
