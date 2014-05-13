@@ -1,12 +1,12 @@
 #!/bin/sh
 # anti-100-cooling.sh
-# Time-stamp: <2014-05-07 17:43:20 t-nissie>
+# Time-stamp: <2014-05-12 11:26:50 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f anti-100-cooling.avg
 
 temperature_start=900
-temperature_goal=250
+temperature_goal=200
 temperature_step=-1
 
 n_thermalize=20000
@@ -78,4 +78,4 @@ EOF
     cat $filename.avg >> anti-100-cooling.avg
 done
 
-rm anti-100-cooling???-???K.*
+rm anti-100-cooling???-[2-8]??K.*

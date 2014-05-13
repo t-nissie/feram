@@ -1,11 +1,11 @@
 #!/bin/sh
 # anti-100-heating.sh
-# Time-stamp: <2014-05-07 17:42:00 t-nissie>
+# Time-stamp: <2014-05-12 11:26:50 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f anti-100-heating.avg
 
-temperature_start=250
+temperature_start=200
 temperature_goal=900
 temperature_step=1
 
@@ -78,4 +78,4 @@ EOF
     cat $filename.avg >> anti-100-heating.avg
 done
 
-rm anti-100-heating???-???K.*
+rm anti-100-heating???-[2-8]??K.*

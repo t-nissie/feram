@@ -1,11 +1,11 @@
 #!/bin/sh
 # sixd-000-heating.sh
-# Time-stamp: <2014-05-07 17:49:36 t-nissie>
+# Time-stamp: <2014-05-12 11:26:50 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f sixd-000-heating.avg
 
-temperature_start=250
+temperature_start=200
 temperature_goal=900
 temperature_step=1
 
@@ -78,4 +78,4 @@ EOF
     cat $filename.avg >> sixd-000-heating.avg
 done
 
-rm sixd-000-heating???-???K.*
+rm sixd-000-heating???-[2-8]??K.*

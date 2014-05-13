@@ -1,12 +1,12 @@
 #!/bin/sh
 # idel-000-cooling.sh
-# Time-stamp: <2014-05-07 18:36:59 t-nissie>
+# Time-stamp: <2014-05-12 11:26:50 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f idel-000-cooling.avg
 
 temperature_start=900
-temperature_goal=250
+temperature_goal=200
 temperature_step=-1
 
 n_thermalize=20000
@@ -77,4 +77,4 @@ EOF
     cat $filename.avg >> idel-000-cooling.avg
 done
 
-rm idel-000-cooling???-???K.*
+rm idel-000-cooling???-[2-8]??K.*
