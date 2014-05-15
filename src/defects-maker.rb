@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
 # defects-maker.rb
-# Time-stamp: <2014-05-14 18:39:41 takeshi>
+# Time-stamp: <2014-05-15 11:06:20 takeshi>
 # Author: Takeshi NISHIMATSU
+# Reference: 渡辺宙志 (Hiroshi Watanabe): 『一様乱数を使う (Using RNG)』
+#            http://apollon.issp.u-tokyo.ac.jp/~watanabe/pdf/prob.pdf [in Japanese]
 # Usage:   ./defects-maker.rb Lx Ly Lz fixed_dipole n_defects [seed]
 # Example: ./defects-maker.rb 16 16 81 '0.00 0.00 0.05' 100
 # Example: ./defects-maker.rb 16 16 81 'rand 0.05'      100 2134567890
