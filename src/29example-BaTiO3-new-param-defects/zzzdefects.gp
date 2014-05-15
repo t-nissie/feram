@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # zzzdefects.gp
-# Time-stamp: <2014-05-12 10:28:12 takeshi>
+# Time-stamp: <2014-05-15 10:47:04 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set encoding iso_8859_1
@@ -35,9 +35,9 @@ plot 'para-000-heating.avg' using 1:13 t 'parallel defects:     0 kV/cm'       w
      'para-100-heating.avg' using 1:13 t 'parallel defects: 100 kV/cm'         w l lt 2 lw 3,\
      'anti-000-cooling.avg' using 1:13 t 'anti-parallel defects:     0 kV/cm'  w l lt 6 lw 3,\
      'anti-100-heating.avg' using 1:13 t 'anti-parallel defects: heating in 100 kV/cm' w l lt 8 lw 3,\
-     'anti-100-cooling.avg' using 1:13 t 'anti-parallel defects: heating in 100 kV/cm' w l lt 7 lw 3,\
-     'anti-070-heating.avg' using 1:13 t 'anti-parallel defects: heating in 70 kV/cm'  w l lt 4 lw 3,\
-     'anti-070-cooling.avg' using 1:13 t 'anti-parallel defects: heating in 70 kV/cm'  w l lt 5 lw 3
+     'anti-100-cooling.avg' using 1:13 t 'anti-parallel defects: cooling in 100 kV/cm' w l lt 7 lw 3,\
+     'anti-070-heating.avg' using 1:13 t 'anti-parallel defects: heating in   70 kV/cm'  w l lt 4 lw 3,\
+     'anti-070-cooling.avg' using 1:13 t 'anti-parallel defects: cooling in   70 kV/cm'  w l lt 5 lw 3
 
 
 
