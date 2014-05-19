@@ -14,8 +14,5 @@
      -rwxr-xr-x 1 t-nissie users  207 May  6 22:10 zero-100-two6threads.csh
      $
 
-How to avoid duplex defects
-     $ sort rnd2.defects | colrm 15 | uniq -d
-
 How to submit jobs on app:
      $ for r in *.csh; do submit AEB general -exec $r -J `basename $r .csh`; done
