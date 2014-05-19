@@ -345,7 +345,7 @@ feramを次のようにパラメータ・ファイル "foo123.feram" を引数�
     :
 と固定するu(R)の位置とベクトルを順に１行ずつ書きます．
 
-src/defects-maker.rb はこの .defects 入力ファイルを作るのに便利です．
+src/defects_maker.rb はこの .defects 入力ファイルを作るのに便利です．
 
 === .localfield input file
 feramを次のようにパラメータ・ファイル "foo123.feram" を引数として
