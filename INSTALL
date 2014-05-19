@@ -19,7 +19,6 @@ Version and date of installation is written in parentheses ().
      http://software.intel.com/en-us/articles/intel-compilers/
    * IBM XL Fortran for HITACHI SR16000
    * Fortran 90 (frtpx) for Fujitsu supercomputers: Kei and FX10
- * tar (version 1.22 or higher)  http://www.gnu.org/software/tar/
  * xz  http://tukaani.org/xz/
 Modern Linux distributions (Debian, Ubuntu, RedHat, CentOS, etc.) have their
 packages of these software required to compile feram. Check their versions
@@ -32,6 +31,7 @@ These software are useful for executing feram and analyzing calculated results.
  * Ruby (version 1.8.6 or higher)  http://www.ruby-lang.org/
  * jot (Every Linux distributions are presenting jot packages. Or, find its source athena-jot_9.0.orig.tar.gz in the Net.)
  * epstopdf.pl http://www.ctan.org/pkg/epstopdf
+ * tar (version 1.22 or higher)  http://www.gnu.org/software/tar/
 
 == Requirements for developing feram
  * autoconf (version 2.64 or higher)  http://www.gnu.org/software/autoconf/
@@ -40,7 +40,8 @@ These software are useful for executing feram and analyzing calculated results.
 == Quick compilation
 If you have all the required libraries,
 follow this quick compilation instruction.
- $ tar xf feram-X.YY.ZZ.tar.xz
+ $ tar xf feram-X.YY.ZZ.tar.xz   # If you do not have the latest tar(1),
+                                 # $ xz -cd feram-X.YY.ZZ.tar.xz | tar xf -
  $ cd feram-X.YY.ZZ
  $ mkdir Linux-i686-gfortran-4.3.5
  $ cd Linux-i686-gfortran-4.3.5
