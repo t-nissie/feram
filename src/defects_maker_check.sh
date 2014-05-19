@@ -1,7 +1,7 @@
 #!/bin/sh
 # defect-maker-check.sh
 ##
-./defects_maker.rb 16 16 16 'rand 1.0' 1000 2134567890 > defects_maker_check.defects
-gnuplot defects_maker_check.gp
+./defects_maker.rb 32 32 32 'rand 1.0' 20000 2134567890 > defects_maker_check.defects
+gnuplot -e 'basename="defects_maker_check"; binwidth=0.1' defects_maker_check.gp
+epstopdf.pl defects_maker_check.eps
 test -z "`sort defects_maker_check.defects | colrm 15 | uniq -d`"
-g

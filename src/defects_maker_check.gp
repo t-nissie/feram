@@ -1,15 +1,17 @@
 #!/usr/bin/env gnuplot
 # defects_maker_check.gp
-# Time-stamp: <2014-05-19 13:24:32 takeshi>
+# Time-stamp: <2014-05-19 14:40:56 takeshi>
 # Author: Takeshi NISHIMATSU
+# Usage: gnuplot -e 'basename="defects_maker_check"; binwidth=0.1' defects_maker_check.gp
 ##
-set encoding iso_8859_1
-set terminal postscript portrait enhanced color dashed "Times-Roman" 13
-#set output "| sed 's/50 50 554 770/50 50 330 460/'> T1.eps
-set output "rndplot.eps"
-
-
-binwidth=5
-bin(x,width)=width*floor(x/width)
-
-plot 'datafile' using (bin($1,binwidth)):(1.0) smooth freq with boxes
+set terminal postscript landscape color dashed "Times-Roman" 24
+defects_file = basename.".defects"
+set output basename.".eps"
+set title "histogram of ".basename.".defects"
+set ylabel 'count'
+set key bottom right
+bin(x,width)=width*floor(x/width)+width/2
+plot defects_file using (bin($4,binwidth)):(1.0) smooth freq t 'x' with linespoints lw 3,\
+     defects_file using (bin($5,binwidth)):(1.0) smooth freq t 'y' with linespoints lw 3,\
+     defects_file using (bin($6,binwidth)):(1.0) smooth freq t 'z' with linespoints lw 3
+set output
