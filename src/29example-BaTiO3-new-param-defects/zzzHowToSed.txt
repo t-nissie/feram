@@ -1,7 +1,7 @@
+How to use sed(1):
      $ sed 's/100/000/g' sixd-100-cooling.sh > sixd-000-cooling.sh
      $ sed 's/100/000/g' sixd-100-heating.sh > sixd-000-heating.sh
      $ sed 's/100/000/g' sixd-100-two6threads.csh > sixd-000-two6threads.csh
-
 
      $ for f in sixd*sh; do sed 's/sixd/zero/g' $f > `echo $f | sed 's/sixd/zero/'`; done
      $ chmod 755 zero*sh
@@ -13,6 +13,11 @@
      -rwxr-xr-x 1 t-nissie users 2605 May  6 22:10 zero-100-heating.sh
      -rwxr-xr-x 1 t-nissie users  207 May  6 22:10 zero-100-two6threads.csh
      $
+
+How to make .defects files:
+     $ SOMEWHERE/defects_maker.rb 16 16 16 'rand 0.2'  84 > rnd2.defects
+     $ SOMEWHERE/defects_maker.rb 16 16 16 'rand 0.2' 126 > rnd3.defects
+     $ SOMEWHERE/defects_maker.rb 16 16 16 'rand 0.2' 168 > rnd4.defects
 
 How to submit jobs on app:
      $ for r in *.csh; do submit AEB general -exec $r -J `basename $r .csh`; done
