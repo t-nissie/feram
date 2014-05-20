@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2014-05-16 18:30:04 t-nissie>
+# Time-stamp: <2014-05-20 10:14:51 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -11,7 +11,7 @@ bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j \
                frozen_phonon_X \
                random_field_generator
 EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check
-TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp
+TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -86,7 +86,7 @@ cross-section-q.sh \
 cholesky_d.f \
 coord2dist.rb \
 decay-test.gp \
-defects-maker.rb \
+defects_maker.rb \
 epit.gp \
 fft_acml.f \
 fft_acml.Makefile \
