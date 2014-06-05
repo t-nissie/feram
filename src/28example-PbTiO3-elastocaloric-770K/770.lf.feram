@@ -1,3 +1,4 @@
+continue = .true.
 verbose = 2
 #--- Method, Temperature, and mass ---------------
 method = 'lf'
@@ -16,6 +17,7 @@ n_thermalize = 4990000
 n_average    = 10000
 n_coord_freq = 50000
 external_E_field = 0.00 0.00 0.00
+coord_directory = 'never'
 distribution_directory = 'never'
 
 #--- On-site (Polynomial of order 8) -------------
@@ -46,4 +48,3 @@ init_dipo_avg = 0.000 0.000 0.330   [Angstrom]  # Averaged of initial dipole dis
 init_dipo_dev = 0.045 0.045 0.021   [Angstrom]  # Deviation of initial dipole displacements
 Z_star        = 10.0181
 epsilon_inf   = 8.24
-coord_directory = 'never'
