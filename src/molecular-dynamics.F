@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2013-10-06 23:38:02 takeshi>
+! Time-stamp: <2014-06-05 11:56:29 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -34,7 +34,7 @@ subroutine molecular_dynamics(p,c)
   call msg_ez(UNIT_LOG, message)
 
   call initialize_E_field(p,c)
-  call initialize_dipoR(p,c,e)
+  if (.not. p%continue) call initialize_dipoR(p,c,e)
 
   E_field_add = wave(p%E_wave_type, 0, p%n_E_wave_period, p%external_E_field) !Redundant. The same is in initialize_E_field.F.
   write(message,fmt_time_step) 0, E_field_add

@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2013-10-08 17:22:08 takeshi>
+! Time-stamp: <2014-06-05 11:56:19 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -30,7 +30,7 @@ subroutine hysteresis_loop(p,c)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
 
   call initialize_E_field(p,c)
-  call initialize_dipoR(p,c,e)
+  if (.not. p%continue) call initialize_dipoR(p,c,e)
   write(message,fmt_time_step) 0, p%external_E_field
   call msg_ez(UNIT_LOG,message)
   e%total = e%acou_kinetic + e%dipo_kinetic + sum_potential_energies(e)

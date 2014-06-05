@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2013-10-06 23:38:02 takeshi>
+! Time-stamp: <2014-06-05 11:16:32 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -30,6 +30,7 @@ module Param_module
      !             (N_Avogadro = 6.0221415e23 [mol^-1 (amu/g)])
      !
      !--- Method, Temperature, and mass ---------------
+     logical continue
      character(len=30) :: method ! 'md' Nose-Poincare, 'vs' velocity-scaling, 'lf' leapfrog, 'hl' hysteresis loop
      real*8 GPa(3)       ! [GPa]
      real*8 kelvin       ! [K]
@@ -165,6 +166,7 @@ contains
     p%init_dipo_avg(:) = 0.00d0
     p%init_dipo_dev(:) = 0.05d0
     p%kappa = 0.0d0
+    p%continue = .false.
     p%plot_dispersion = .false.
     p%delta_e = 0.0d0
     p%verbose = 1
@@ -312,6 +314,8 @@ contains
           read(str,*) dmy1, dmy2, p%epsilon_inf
        case('kappa')
           read(str,*) dmy1, dmy2, p%kappa
+       case('continue')
+          read(str,*) dmy1, dmy2, p%continue
        case('plot_dispersion')
           read(str,*) dmy1, dmy2, p%plot_dispersion
        case('delta_e')

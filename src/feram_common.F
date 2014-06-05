@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2013-11-19 10:55:22 takeshi>
+! Time-stamp: <2014-06-05 19:24:56 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -10,8 +10,8 @@ subroutine feram_common(fn)
   use Param_module
   use Coord_module
   implicit none
-  type(Param_type) :: p
-  type(Coord_type) :: c
+  type(Param_type),save :: p
+  type(Coord_type),save :: c
   character(len=FILE_NAME_LEN), intent(in) :: fn
   character(len=FILE_NAME_LEN)             :: fn_log
   integer                                  :: fn_len_trim, suffix
@@ -70,7 +70,7 @@ subroutine feram_common(fn)
   call  read_Param(p,fn)
   call  make_Param(p)
   call write_Param(p)
-  call alloc_Coord(p,c)
+  if (.not. p%continue) call alloc_Coord(p,c)
   call  potentials(p,c)
   !Instead, read_defects_u(p,c) is called in initialize_dipoR()! call make_mass_matrix(p,c)
 
