@@ -36,6 +36,8 @@ o Examples
 
 o In initialize-dipoR.F, c%dipoP() must be multiplied by c%s_Nose after read ???
 
+o "if (.not. continue) call initialize_dipoR()" is both in hysteresis_loop.F and molecular-dynamics.F.
+
 o When n_hysteresis_loop_continue is given, the .hl file must no REPLACEd, must be APPENDed.
 
 o FILENAME.avgの出力の見直し polarization -> <u_z> とか
