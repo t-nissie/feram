@@ -333,6 +333,14 @@ If
  plot_dispersion = .true.
 data files for plotting dispersion relation will be written. Default is .false..
 
+===== continue
+If feram is executed as
+ $ feram foo.feram bar.feram
+and, in bar.feram,
+ continue = .true.
+is declared, simulation of bar.feram uses results of foo.feram as initial configurations.
+The .restart file will not be used.
+Deafault value of continue is .false..
 
 === .restart input file
 If you executed feram with a parameter file "foo123.feram" as

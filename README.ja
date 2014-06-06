@@ -313,6 +313,15 @@ src/dipole-dipole-long-range.Fで双極子のエワルト和に使われる任�
 が指定されたなら，分散関係のプロットのためのデータファイルが書き出される．
 デフォルトは.false.である．
 
+===== continue
+feramが
+ $ feram foo.feram bar.feram
+と実行されて，bar.feramの中で
+ continue = .true.
+が指定されたなら，bar.feramはfoo.feramの結果を初期状態として計算を始める．
+.restartファイルは使われない．
+デフォルトは.false.である．
+
 === .restart input file
 feramを次のようにパラメータ・ファイル "foo123.feram" を引数として
  $ feram foo123.feram
