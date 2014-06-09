@@ -1,0 +1,21 @@
+= Nightly build, then send an email
+Everynight, build feram and send results via email automatically.
+
+== Requirements specification
+ * 03:00, everyday
+ * Go to a directory
+ * $ make distclean
+ * $ svn up
+ * $ autoreconf -v
+ * $ ./configure
+ * $ make -j10
+ * $ numactl --cpunodebind 0 make check
+ * Send an email to developers with test-suite.log, `head *trs` and Subject:
+   * [PASS] feram nightly build 2014-06-29, if TOTAL==PASS
+   * [*NG*] feram nightly build 2014-06-29, if TOTAL!=PASS
+
+== crontab
+I do not know how.
+
+== Shell script
+See Nightly.sh
