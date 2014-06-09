@@ -12,4 +12,9 @@ endif
 
 ./feram elastocaloric770K_check.vs.feram elastocaloric770K_check.lf.feram
 set t_final=`colrm 8 < elastocaloric770K_check.lf.avg`
-test `echo "$t_final < 695.00" | bc` = 1
+if (`echo "$t_final < 695.00" | bc` == 1) then
+    echo $0 : T_final = $t_final seems OK
+else
+    echo $0 : T_final = $t_final seems NOT good
+    exit 1
+endif
