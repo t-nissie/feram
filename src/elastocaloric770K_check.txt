@@ -9,6 +9,6 @@
  SR16000 1/4 node 8 thds:  2.98         994.32         997.30    8     #TIMING_REPORT
 
 === elastocaloric770K_check.lf.log
- X5650 1 chip = 6 core:
- SR16000 1 node:
+ X5650 1 chip = 6 core:    3.40        2106.04        2109.44    6     #TIMING_REPORT
+ SR16000 1 node:           
  SR16000 1/4 node 8 thds:  2.74        1005.32        1008.06    8     #TIMING_REPORT
