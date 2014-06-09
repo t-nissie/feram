@@ -5,6 +5,10 @@
 # $Rev: 1340 $
 # $Author: t-nissie $
 ##
+if ("`ls -1 marsaglia_tsang_uni64_check.dat`" ne 'marsaglia_tsang_uni64_check.dat') {
+        marsaglia_tsang_uni64_check.gp: cannot find marsaglia_tsang_uni64_check.dat
+}
+
 set terminal postscript portrait enhanced color solid  "Times-Roman,20"
 set output 'marsaglia_tsang_uni64_check.eps'
 set title '10^7 samples'

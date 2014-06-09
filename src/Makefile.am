@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2014-06-06 12:58:22 t-nissie>
+# Time-stamp: <2014-06-09 16:27:02 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -78,7 +78,7 @@ wave_check_SOURCES = wave_check.f wave_module.F
 
 fft_check_SOURCES = fft_wrappers.F fft_check.F f90_wisdom.f
 
-CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 feram_mpi $(EXTRA_PROGRAMS)
+CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg feram_mpi $(EXTRA_PROGRAMS)
 EXTRA_DIST = define.h \
 cross-section-dVddi.sh \
 cross-section-p.sh \
