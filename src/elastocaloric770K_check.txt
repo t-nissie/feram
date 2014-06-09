@@ -4,3 +4,4 @@ How to make check:
 elastocaloric770K_check.vs.log:
  X5650 1 chip = 6 core:    3.73        2114.44        2118.17    6     #TIMING_REPORT
  SR16000 1 node:           3.99         422.41         426.40   64     #TIMING_REPORT
+ SR16000 1/4 node 8 thds:  2.98         994.32         997.30    8     #TIMING_REPORT
