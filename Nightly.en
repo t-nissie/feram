@@ -12,8 +12,9 @@ Everynight, build feram and send results via email automatically.
  * $ make -j10
  * $ numactl --cpunodebind 0 make check
  * Send an email to developers with test-suite.log, `head *trs` and Subject:
-   * [PASS] feram nightly build 2014-06-29, if TOTAL==PASS
-   * [*NG*] feram nightly build 2014-06-29, if TOTAL!=PASS
+   * [PASS] feram nightly build 2014-06-29 r2345, if TOTAL==PASS
+   * [*NG*] feram nightly build 2014-06-29 r2345, if TOTAL!=PASS
+ * marsaglia_tsang_uni64_check.pdf and rgb_check.ppm should be attached to the email?
 
 == crontab
 I do not know how.
