@@ -115,18 +115,24 @@ configure.ac, Makefile.am, src/Makefile.amを書いて、
 などが便利。
 === make checkでテストの自動化
 src/Makefile.amに
- TESTS=foo.sh bar
+ TESTS=foo.sh bar baz
 と書いておけば
  $ make check
-でsrc/の中でfoo.shとbarとがテストとして実行される。
+でsrc/の中でfoo.shとbarとbazとがテストとして実行される。
 ソフトウェアのテストを自動化できる。
-foo.shとbarとはカレントディレクトリになければsrcdirの中も探されるので、
+foo.shとbarとbazとはカレントディレクトリになければsrcdirの中も探されるので、
 build directoryの中でもテストができる。
 ただし、foo.shは自動的にパッケージに入れてくれるわけではないので、
 Makefile.amの中のEXTRA_DISTに次のように加えておく必要がある。
  EXTRA_DIST = README foo.sh
-テストのログがfoo.sh.logとbar.logとに、テストの結果がfoo.sh.trsとbar.trsとに保存される。
+
+テストのログがfoo.sh.logとbar.logとbaz.logとに、
+テストの結果がfoo.sh.trsとbar.trsとbaz.trsとに保存される。
 テスト全体のまとめがtest-suite.logに保存される。
+
+一部のテストだけを選択的に繰り返し行いたい場合は
+ $ make check TESTS='foo.sh bar'
+とTESTS変数で指定するする。
 === automakeのオプション
 automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定する。例えば
  AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz])
