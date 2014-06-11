@@ -1,14 +1,16 @@
 = Test feram automatically
 == How to make check:
- X5650$ taskset -c 6-11 make check
+ app2      X5650$ taskset -c 6-11 make check
+ super3t SR16000$ env XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" make check
 
 == Timing results
+Results of `grep TIMING *.log`
 === elastocaloric770K_check.vs.log
- X5650 1 chip = 6 core:    3.73        2114.44        2118.17    6     #TIMING_REPORT
- SR16000 1 node:           3.99         422.41         426.40   64     #TIMING_REPORT
- SR16000 1/4 node 8 thds:  2.98         994.32         997.30    8     #TIMING_REPORT
+ X5650 1 chip = 6 core:        3.73        2114.44        2118.17    6     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node:  2.98         994.32         997.30    8     #TIMING_REPORT
+ SR16000 32 thds on  1  node:  3.12         363.08         366.20   32     #TIMING_REPORT
 
 === elastocaloric770K_check.lf.log
- X5650 1 chip = 6 core:    3.40        2106.04        2109.44    6     #TIMING_REPORT
- SR16000 1 node:           
- SR16000 1/4 node 8 thds:  2.74        1005.32        1008.06    8     #TIMING_REPORT
+ X5650 1 chip = 6 core:        3.40        2106.04        2109.44    6     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node:  2.74        1005.32        1008.06    8     #TIMING_REPORT
+ SR16000 32 thds on  1  node:  2.76         363.94         366.70   32     #TIMING_REPORT
