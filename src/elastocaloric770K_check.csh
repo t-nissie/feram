@@ -3,7 +3,9 @@
 ##
 # For IBM XL Fortran
 setenv MALLOCMULTIHEAP true
-setenv XLSMPOPTS "spins=0:yields=0:parthds=8:stride=2:startproc=0"
+if (! ${?XLSMPOPTS}) then
+    setenv XLSMPOPTS "spins=0:yields=0"
+endif
 
 if (!(-f       elastocaloric770K_check.vs.feram)) then
     cp $srcdir/elastocaloric770K_check.vs.feram .
