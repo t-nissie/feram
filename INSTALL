@@ -255,7 +255,8 @@ IBM XL Fortran (xlf90_r) version 13.1 or higher is required.
  $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-style comments
  $ emacs Makefile   # DEFS = -DHAVE_CONFIG_H  =>  DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg
  $ make   # Do NOT use parallel compilation.
- $ MALLOCMULTIHEAP=true LDR_CNTRL=LARGE_PAGE_DATA=M XLSMPOPTS="spins=0:yields=0:parthds=16:stride=1:startproc=0" make check
+ $ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" make check
+ $ make feram_mpi   # OPTIONAL
 
 === Fujitsu Kei and FX10 with their cross compiler frtpx and mpifrtpx
  $ tar xf feram-X.YY.ZZ.tar.xz
