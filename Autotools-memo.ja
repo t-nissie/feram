@@ -168,9 +168,10 @@ http://loto.sourceforge.net/feram/
 
 == Autotoolsの代わりになるもの
 改良版のAutotoolsを目指していくつかのパッケージングツール／ビルドツールが開発されている。
-Fortranのプロジェクトもまあまあサポートされている。
+CMakeとSConsではFortranのプロジェクトもサポートされている。
  * CMake http://www.cmake.org/
  * SCons http://www.scons.org/
+ * Ninja https://github.com/martine/ninja
 
 == まとめ
 autoconfとautomakeとの使い方を説明した。
