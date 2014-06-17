@@ -12,7 +12,7 @@ feramは、configureに与えるオプションで指定することにより、
  * IBM XL Fortran + FFTW
  * Fujitsu FX10 + FFTW
 
-== 精度の選択
+== 精度の選択がconfigureへのオプションでできるようにしたい
 --with-precision=single
 --with-precision=double
 
