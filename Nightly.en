@@ -21,3 +21,6 @@ I do not know how.
 
 == Shell script
 See Nightly.sh
+
+== References
+ * Best practice around cron (1): http://gihyo.jp/dev/serial/01/perl-hackers-hub/002501
