@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2014-06-09 18:15:24 takeshi>
+# Time-stamp: <2014-06-20 19:23:08 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -89,6 +89,7 @@ decay-test.gp \
 defects_maker.rb \
 defects_maker_check.gp \
 defects_maker_check.sh \
+defects_maker_check_sphere.gp \
 elastocaloric770K_check.csh \
 elastocaloric770K_check.lf.feram \
 elastocaloric770K_check.vs.feram \
