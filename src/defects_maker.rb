@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 # defects_maker.rb
-# Time-stamp: <2014-05-19 16:37:25 takeshi>
+# Time-stamp: <2014-06-21 14:12:39 takeshi>
 # Author: Takeshi NISHIMATSU
 # Reference: 渡辺宙志 (Hiroshi Watanabe): 『一様乱数を使う (Using RNG)』
 #            http://apollon.issp.u-tokyo.ac.jp/~watanabe/pdf/prob.pdf [in Japanese]
@@ -23,7 +23,7 @@ end
 
 ary = Array.new(Lx).map!{Array.new(Ly).map!{Array.new(Lz,true)}}
 
-(1..ARGV[4].to_i).each do |ix|
+ARGV[4].to_i.times do
   if randp=='rand' then
     z   = rand(-1.0..1.0)
     phi = rand(0...2*PI)
