@@ -65,10 +65,17 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
 =end
 == 主催者の準備
  * 配布印刷物（論文５本、PPTを印刷したやつ、この文章の前半）の準備
- * emerald01, emerald02, platinumの順に使う
  * 無線LANの準備
  * パソコンを２台ほど準備
  * NUMAの概念図
+=== 用意するマシン
+ * guest1 emerald01 ???
+ * guest2 emerald02 TOSHIBA Dynabook
+ * guest3 platinum  MacBook Air (Early 2008)
+ * guest4           tartarをDHCPにして
+ * guest5           HPのデスクトップ(VineLinux 6.2)
+ * guest6
+
 === ゲストアカウントの作成
  # useradd -g 1100 -u 7001 -s /bin/bash -d /localhome/guest1 guest1
  # passwd guest1
