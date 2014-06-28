@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2014-06-05 11:16:32 t-nissie>
+! Time-stamp: <2014-06-27 21:41:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -360,7 +360,7 @@ contains
        p%kappa = sqrt(M_PI) / p%a0 / (dble(p%N))**(1.0d0/6)
     end if
     p%unit_cell_volume = p%a0 ** 3
-    p%pNa03(1:3) = p%GPa(1:3) * 0.01d0 / ELEMENTARY_CHARGE * p%N * p%unit_cell_volume
+    p%pNa03(1:3) = p%GPa(1:3) * 0.01d0 / ELEMENTARY_CHARGE * p%N * p%unit_cell_volume   ! [eV/supercell]
 
     p%target_kinetic_energy = p%kelvin * 1.5d0 * p%N / KELVIN_EV
 
