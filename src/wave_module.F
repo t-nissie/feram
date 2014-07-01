@@ -1,5 +1,5 @@
 ! wave_module.f -*-f90-*-
-! Time-stamp: <2014-07-01 20:38:24 takeshi>
+! Time-stamp: <2014-07-02 06:11:10 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: a = wave(wave_type, i_step, n_thermalize, period, amplitude)
 !!
@@ -41,7 +41,6 @@ contains
     case ('ramping_on')
        if (i_step<n_thermalize) then
           wave = amplitude * i_step / n_thermalize
-          write(6,*) wave
        else
           wave = amplitude
        end if
