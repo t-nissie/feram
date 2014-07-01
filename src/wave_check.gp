@@ -10,9 +10,12 @@ set output 'wave_check.eps'
 set title 'wave\_check.f checks wave\_module.F'
 set xtics 4
 set grid
+set key bottom left
 
-plot 'wave_check.dat' using 1:2 title 'triangular\_sin' with linespoints,\
-     'wave_check.dat' using 1:5 title 'triangular\_cos' with linespoints
+plot 'wave_check.dat' using 1:2  title 'triangular\_sin' with linespoints,\
+     'wave_check.dat' using 1:5  title 'triangular\_cos' with linespoints,\
+     'wave_check.dat' using 1:8  title 'ramping\_on'     with linespoints,\
+     'wave_check.dat' using 1:11 title 'ramping\_off'    with linespoints
 
 set output
 print 'wave_check.eps is generated.'

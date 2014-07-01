@@ -1,5 +1,5 @@
 ! wave_module.f -*-f90-*-
-! Time-stamp: <2014-07-01 18:13:20 takeshi>
+! Time-stamp: <2014-07-01 20:38:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: a = wave(wave_type, i_step, n_thermalize, period, amplitude)
 !!
@@ -37,6 +37,21 @@ contains
           tmp = abs(mod((i+3*period/4),period)-period/2) - period/4
        end if
        wave = amplitude * tmp / (period/4.0)
+       return
+    case ('ramping_on')
+       if (i_step<n_thermalize) then
+          wave = amplitude * i_step / n_thermalize
+          write(6,*) wave
+       else
+          wave = amplitude
+       end if
+       return
+    case ('ramping_off')
+       if (i_step<n_thermalize) then
+          wave = amplitude * (n_thermalize-i_step) / n_thermalize
+       else
+          wave = 0.0d0
+       end if
        return
     case default
        wave = amplitude
