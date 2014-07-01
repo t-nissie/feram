@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2013-11-11 11:47:09 takeshi>
+! Time-stamp: <2014-07-01 18:14:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -55,7 +55,7 @@ subroutine initialize_E_field(p,c)
   end if
 
   !=== Add external_E_field ========================
-  tmp_E(:) = wave(p%E_wave_type,0,p%n_E_wave_period,p%external_E_field(:))
+  tmp_E(:) = wave(p%E_wave_type,0,p%n_thermalize,p%n_E_wave_period,p%external_E_field(:))
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1

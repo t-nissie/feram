@@ -1,18 +1,20 @@
 ! wave_module.f -*-f90-*-
-! Time-stamp: <2013-10-06 16:51:14 takeshi>
+! Time-stamp: <2014-07-01 18:13:20 takeshi>
 ! Author: Takeshi NISHIMATSU
-! Usage: a = wave(wave_type, i_step, period, amplitude)
+! Usage: a = wave(wave_type, i_step, n_thermalize, period, amplitude)
 !!
 module wave_module
 contains
-  function wave(wave_type, i_step, period, amplitude)
+  function wave(wave_type, i_step, n_thermalize, period, amplitude)
     implicit none
     real*8                       :: wave(3)
     character(len=*), intent(in) :: wave_type
     integer,          intent(in) :: i_step
+    integer,          intent(in) :: n_thermalize
     integer,          intent(in) :: period
     real*8,           intent(in) :: amplitude(3)
     real*8                       :: tmp
+    integer                      :: i
 
     if (   amplitude(1).eq.0.0d0 .and.&
          & amplitude(2).eq.0.0d0 .and.&
@@ -27,10 +29,12 @@ contains
           write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': period must be divided by 4.'
           stop 1
        end if
+       i = i_step - n_thermalize
+       if (i<0) i=0
        if (wave_type.eq.'triangular_cos') then
-          tmp = abs(mod((i_step)           ,period)-period/2) - period/4
+          tmp = abs(mod((i)           ,period)-period/2) - period/4
        else
-          tmp = abs(mod((i_step+3*period/4),period)-period/2) - period/4
+          tmp = abs(mod((i+3*period/4),period)-period/2) - period/4
        end if
        wave = amplitude * tmp / (period/4.0)
        return
