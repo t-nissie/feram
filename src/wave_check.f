@@ -1,12 +1,12 @@
 ! wave_check.f -*-f90-*-
-! Time-stamp: <2014-07-01 20:38:49 takeshi>
+! Time-stamp: <2014-07-02 12:05:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program wave_check
   use wave_module
   implicit none
   integer, parameter :: period       = 24
-  integer, parameter :: n_thermalize = 16
+  integer, parameter :: n_thermalize = 36
   real*8,  parameter :: amplitude(3) = (/10.0d0,-10.0d0,8.0d0/)
   real*8             :: x(3)
   integer            :: i
@@ -25,12 +25,12 @@ program wave_check
 
   x = wave('ramping_on',                           0, n_thermalize, period, amplitude); if (x(1).ne. 0.0d0)          stop 12
   x = wave('ramping_off',                          0, n_thermalize, period, amplitude); if (x(1).ne. amplitude(1))   stop 13
-  x = wave('ramping_on',              n_thermalize/2, n_thermalize, period, amplitude); if (x(2).ne. amplitude(2)/2) stop 14
-  x = wave('ramping_off',             n_thermalize/2, n_thermalize, period, amplitude); if (x(2).ne. amplitude(2)/2) stop 15
-  x = wave('ramping_on',                n_thermalize, n_thermalize, period, amplitude); if (x(3).ne. amplitude(3))   stop 16
-  x = wave('ramping_off',               n_thermalize, n_thermalize, period, amplitude); if (x(3).ne. 0.0d0)          stop 17
-  x = wave('ramping_on',              n_thermalize+1, n_thermalize, period, amplitude); if (x(1).ne. amplitude(1))   stop 18
-  x = wave('ramping_off',             n_thermalize+1, n_thermalize, period, amplitude); if (x(1).ne. 0.0d0)          stop 19
+  x = wave('ramping_on',                    period/2, n_thermalize, period, amplitude); if (x(2).ne. amplitude(2)/2) stop 14
+  x = wave('ramping_off',                   period/2, n_thermalize, period, amplitude); if (x(2).ne. amplitude(2)/2) stop 15
+  x = wave('ramping_on',                      period, n_thermalize, period, amplitude); if (x(3).ne. amplitude(3))   stop 16
+  x = wave('ramping_off',                     period, n_thermalize, period, amplitude); if (x(3).ne. 0.0d0)          stop 17
+  x = wave('ramping_on',                    period+1, n_thermalize, period, amplitude); if (x(1).ne. amplitude(1))   stop 18
+  x = wave('ramping_off',                   period+1, n_thermalize, period, amplitude); if (x(1).ne. 0.0d0)          stop 19
 
   open(unit=8, file='wave_check.dat', status='REPLACE')
   do i = 0, n_thermalize+period

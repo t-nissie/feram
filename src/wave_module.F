@@ -1,5 +1,5 @@
 ! wave_module.f -*-f90-*-
-! Time-stamp: <2014-07-02 06:11:10 takeshi>
+! Time-stamp: <2014-07-02 12:13:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: a = wave(wave_type, i_step, n_thermalize, period, amplitude)
 !!
@@ -39,15 +39,23 @@ contains
        wave = amplitude * tmp / (period/4.0)
        return
     case ('ramping_on')
-       if (i_step<n_thermalize) then
-          wave = amplitude * i_step / n_thermalize
+       if (period>n_thermalize) then
+          write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': period must be smaller than n_thermalize.'
+          stop 2
+       end if
+       if (i_step<period) then
+          wave = amplitude * i_step / period
        else
           wave = amplitude
        end if
        return
     case ('ramping_off')
-       if (i_step<n_thermalize) then
-          wave = amplitude * (n_thermalize-i_step) / n_thermalize
+       if (period>n_thermalize) then
+          write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': period must be smaller than n_thermalize.'
+          stop 3
+       end if
+       if (i_step<period) then
+          wave = amplitude * (period-i_step) / period
        else
           wave = 0.0d0
        end if
