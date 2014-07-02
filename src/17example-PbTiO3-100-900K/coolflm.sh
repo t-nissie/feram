@@ -1,6 +1,6 @@
 #!/bin/sh
 # coolflm.sh
-# Time-stamp: <2012-11-28 11:21:00 takeshi>
+# Time-stamp: <2014-07-02 10:30:55 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f coolflm.avg
@@ -16,7 +16,6 @@ for temperature in `jot - 1000 300 -1`; do
     cat > $filename.feram <<-EOF
 	#--- Method, Temperature, and mass ---------------
 	method = 'md'
-	GPa = 0.0
 	kelvin = $temperature
 	mass_amu = 100.0
 	Q_Nose = 3.0

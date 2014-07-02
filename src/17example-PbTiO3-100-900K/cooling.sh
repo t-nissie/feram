@@ -1,6 +1,6 @@
 #!/bin/sh
 # cooling.sh
-# Time-stamp: <2013-02-08 08:53:08 t-nissie>
+# Time-stamp: <2014-07-02 10:30:58 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f cooling.avg
@@ -21,7 +21,6 @@ while [ `perl -e "print $temperature >= $temperature_goal || 0"` = "1" ] ; do
     cat > $filename.feram <<-EOF
 	#--- Method, Temperature, and mass ---------------
 	method = 'md'
-	GPa = 0.0
 	kelvin = $temperature
 	mass_amu = 100.0
 	Q_Nose = 2.0
