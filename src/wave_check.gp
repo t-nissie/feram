@@ -19,8 +19,8 @@ plot 'wave_check.dat' using 1:2  title 'triangular\_sin' with linespoints,\
 
 set output
 print 'wave_check.eps is generated.'
-#!epstopdf.pl wave_check.eps
+!epstopdf.pl wave_check.eps
 
 #Local variables:
-#  compile-command: "gnuplot wave_check.gp"
+#  compile-command: "make check TESTS='wave_check wave_check.gp'"
 #End:
