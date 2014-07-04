@@ -137,17 +137,9 @@ When 2 is given for verbose tag, messages will be written to .log file in every 
 'mc' is for a Monte Carlo simulation, but it is NOT IMPLEMENTED YET.
 
  method = 'hl'
-'hl' is for a simulation of hysteresis loop.
-In this case, tags of n_average and external_E_field have special meanings (see Fig:external).
-.hl file,e.g. foo123.hl, will be created.
-See the directory of src/11example-BaTiO3-new-hysteresis-loop/.
-
-\Fig:external doc/figures/external-E-field-hysteresis-loop.jpg
-  Special meanings of n_average and external_E_field,
-  in the case of method = 'hl', a simulation of hysteresis loop.
-  After thermalization, the external electric field is gradually
-  altered from external_E_field to -external_E_field.
-/Fig:external
+This 'hl' feature will be obsolere.
+For simulations of hysteresis loops,
+use n_E_wave_period and E_wave_type instead.
 
 ===== GPa
 Pressure in GPa unit.

@@ -113,17 +113,9 @@ foo123.log, foo123.cood, ... などとなります．
 'mc'を指定するとモンテカルロシミュレーションを行います．まだインプリメントされていません．
 
  method = 'hl'
-'hl'を指定すると外部電場を変化させながらヒステリシスループ (hysteresis loop) のシミュレーションを行います．
-この場合，n_averageタグとexternal_E_fieldタグが特別な意味を持ちます (see Fig:external)．
-.hlファイル，例えばfoo.hlが作られるでしょう．
-ディレクトリ src/11example-BaTiO3-new-hysteresis-loop/ に例があります．
-
-\Fig:external doc/figures/external-E-field-hysteresis-loop.jpg
-  ヒステリシスループ (hysteresis loop) のシミュレーション method = 'hl' のときの
-  n_averageタグとexternal_E_fieldタグの特別な意味．
-  n_thermalizeステップの恒温化の後，n_averageステップをかけて外部電場を
-  external_E_fieldから-external_E_fieldまでゆっくり変化させてゆきます．
-/Fig:external
+'hl'の機能はちかぢか削除されます。
+ヒステリシスループ (hysteresis loop) のシミュレーションには
+n_E_wave_periodとE_wave_typeとを使って下さい。
 
 ===== GPa
 圧力をGPa単位で．過小評価されるTcを負圧をかけることにより補正することがある．
