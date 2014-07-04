@@ -1,13 +1,19 @@
 Dear current and future feram users,
 
-I released feram-0.22.03.tar.xz from
+I released feram-0.22.04.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
+MD5 (feram-0.22.04.tar.xz) = 051e04a5cddd0301df4e8b71b666c402
 
 "feram" is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
-In this feram-0.22.03, bugs in kinetic_energy_dipo.F
+In this feram-0.22.04, bugs in rnd?.defects files in
+src/29example-BaTiO3-new-param-defects/ are fixed.
+See feram-0.22.04/src/29example-BaTiO3-new-param-defects/compare-0.22.03-0.22.04.pdf .
+Detailed documents about E_wave_type is added in README.en and README.ja.
+
+In the feram-0.22.03, bugs in kinetic_energy_dipo.F
 and velocity_scaling.F are fixed.
 Now, you can safely perform simulations with defects.
 
