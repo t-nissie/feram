@@ -1,11 +1,11 @@
 #!/bin/sh
 # cooling.sh
-# Time-stamp: <2013-04-23 19:21:42 takeshi>
+# Time-stamp: <2014-07-04 13:24:50 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f cooling.avg
 
-temperature_start=450
+temperature_start=500
 temperature_goal=30
 temperature_step=-2
 

@@ -1,12 +1,12 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2013-04-23 19:21:54 takeshi>
+# Time-stamp: <2014-07-04 13:24:57 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
 
 temperature_start=30
-temperature_goal=450
+temperature_goal=500
 temperature_step=2
 
 n_thermalize=40000
