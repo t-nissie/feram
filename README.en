@@ -220,6 +220,10 @@ n_E_wave_period is the period of alternating external electric field
 which have external_E_field amplitude. Set 'triangular_sin' or
 'triangular_cos' to E_wave_type. See example files in
 src/27example-BaTiO3-new-param-E_wave/ .
+You can also use 'ramping_off' and 'ramping_on'.
+\Fig:E_wave doc/figures/E_wave.jpg
+  Four options of E_wave_type.
+/Fig:E_wave
 
 ===== n_hysteresis_loop_continue
 You can restart and continue a hysteresis-loop calculation from the
