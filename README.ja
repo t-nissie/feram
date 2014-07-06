@@ -195,6 +195,7 @@ thermalizeにかけるステップ数，物理量の平均を取るのにかけ�
 external_E_fieldの振幅を持つ外部電場を時間により振動させるときの周期。
 E_wave_typeに'triangular_sin'か'triangular_cos'を指定する。
 src/27example-BaTiO3-new-param-E_wave/ 以下に例がある。
+n_E_wave_periodは４で割り切れる正の整数でなくてはならない。
 'ramping_off'と'ramping_on'も使うことができる。
 \Fig:E_wave doc/figures/E_wave.jpg
   Four options of E_wave_type.
