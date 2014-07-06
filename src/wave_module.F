@@ -1,5 +1,5 @@
 ! wave_module.f -*-f90-*-
-! Time-stamp: <2014-07-02 12:13:59 takeshi>
+! Time-stamp: <2014-07-06 21:19:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: a = wave(wave_type, i_step, n_thermalize, period, amplitude)
 !!
@@ -25,10 +25,10 @@ contains
 
     select case (wave_type)
     case ('triangular_cos', 'triangular_sin')
-       if (mod(period,4).ne.0) then
-          write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': period must be divided by 4.'
-          stop 1
-       end if
+       !if (mod(period,4).ne.0) then
+       !   write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': period must be divided by 4.'
+       !   stop 1
+       !end if
        i = i_step - n_thermalize
        if (i<0) i=0
        if (wave_type.eq.'triangular_cos') then
