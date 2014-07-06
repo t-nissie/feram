@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2014-06-27 21:41:01 takeshi>
+! Time-stamp: <2014-07-06 21:30:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -253,7 +253,7 @@ contains
           read(str,*) dmy1, dmy2, p%n_E_wave_period
           if (mod(p%n_E_wave_period,4).ne.0) then
              write(0,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
-             stop ': Input error: n_E_wave_period must be devided by 4.'
+             stop ': Input error: n_E_wave_period must be divided by 4.'
           end if
        case('n_coord_freq')
           read(str,*) dmy1, dmy2, p%n_coord_freq
