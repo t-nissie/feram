@@ -1,0 +1,5 @@
+= README for src/30example-BaTiO3-new-param-ramping-off/
+ $ ../feram vs.feram   #---> You will get vs.0000040000.coord
+ $ ./seq.sh            #---> You will get 001000.feram, ..., 900000.feram and 001000.csh, ..., 900000.csh
+ $ for period in `seq 900000 -100000 300000` `seq 200000 -1000 1000`; do f=`printf "%.6d\n" $period`; ./$f.csh; done
+                       #---> You will get resulting 001000.avg, ..., 900000.avg
