@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2014-07-04 12:06:57 takeshi>
+# Time-stamp: <2014-07-07 10:33:25 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -126,7 +126,8 @@ wave_check.gp \
 26example-BaTiO3-acoustic-MD \
 27example-BaTiO3-new-param-E_wave \
 28example-PbTiO3-elastocaloric-770K \
-29example-BaTiO3-new-param-defects
+29example-BaTiO3-new-param-defects \
+30example-BaTiO3-new-param-ramping-off
 
 # all: plot.ps # 300K0000000.ps decay-test.ps
 
