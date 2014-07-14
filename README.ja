@@ -447,6 +447,15 @@ verbose = 2 のとき，.logファイルにはイテレーション毎にメッ�
  $ feram foo123.feram
  $ gnuplot plot.gp
 
+計算時間が.logファイルの最後に秒を単位として書き出されます。
+ただし、SR16000とFX10の場合、計算時間が１日（86,400秒）を越えるとカウンタが一度リセットされてしまいます。
+      :
+   ../../src/feram_common.F: 95: DATE_AND_TIME: 2014-07-14T14:37:23.360+0900
+   t_initialization,  t_simulation,       t_total, n_threads
+               3.73        2117.14        2120.87    6     #TIMING_REPORT
+   ../../src/feram_common.F:111: COUNT_RATE_AND_COUNT_MAX:        1000 2147483647
+ ../../src/feram_common.F:113: END
+
 === foo123.avg
 n_thermalizeイテレーションの恒温化の後，
 物性値の平均がn_averageイテレーションに渡って計算されます．
