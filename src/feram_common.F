@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2014-06-05 19:24:56 t-nissie>
+! Time-stamp: <2014-07-14 13:03:44 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -107,6 +107,8 @@ subroutine feram_common(fn)
        &                               time_array(1)+time_array(2), &
        & OMP_GET_MAX_THREADS(), "     #TIMING_REPORT"
   call msg_ez(UNIT_LOG, message)
+  write(message,'(2i11)') count_rate, count_max
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'COUNT_RATE_AND_COUNT_MAX', message)
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'love && peace && free_software')
   close(unit=UNIT_LOG)
