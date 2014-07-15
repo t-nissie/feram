@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2014-07-15 06:42:26 takeshi>
+! Time-stamp: <2014-07-16 06:32:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,6 +9,7 @@
 subroutine feram_common(fn)
   use Param_module
   use Coord_module
+  use date_and_time_module
   implicit none
   type(Param_type),save :: p
   type(Coord_type),save :: c

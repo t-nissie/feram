@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2014-07-07 10:33:25 t-nissie>
+# Time-stamp: <2014-07-16 06:46:34 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -10,7 +10,7 @@ bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j \
                frozen_phonon_Gamma \
                frozen_phonon_X \
                random_field_generator
-EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check
+EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
 TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh elastocaloric770K_check.csh
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
@@ -20,7 +20,7 @@ feram_SRCS = average_module.F \
 	dVddi_inho_coupling.F \
 	dVddi-unharmonic.F \
 	dVdac.F \
-	date_and_time2message.F \
+	date_and_time_module.f \
 	decay-functions.f \
 	acouFFT.F \
 	dipoFFT.F \
@@ -67,6 +67,8 @@ frozen_phonon_Gamma_SOURCES = frozen_phonon_Gamma.F
 frozen_phonon_X_SOURCES = frozen_phonon_X.F
 
 rgb_check_SOURCES = rgb_check.f rgb_module.f
+
+date_and_time_check_SOURCES = date_and_time_check.f date_and_time_module.f
 
 marsaglia_tsang_uni64_check_SOURCES  = marsaglia_tsang_uni64_check.F  marsaglia_tsang_uni64_module.f
 
@@ -151,7 +153,7 @@ feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	         $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
 	$(MPIFC) $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(LIBS)
 
-feram_common.o:                 param_module.o coord_module.o date_and_time2message.o f90_wisdom.o define.h
+feram_common.o:                 param_module.o coord_module.o date_and_time_module.o f90_wisdom.o define.h
 decay-functions.o param_module.o diagonalize15x15.o: define.h
 feram.o feram_mpi.o potentials.o dipole-dipole.o mirror.o read_defects_u.o elastic.o:\
                                 param_module.o coord_module.o define.h
