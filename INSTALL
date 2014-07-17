@@ -50,8 +50,7 @@ follow this quick compilation instruction.
  $ cd src
  $ make -j --max-load=10.0
  $ make feram_mpi   # OPTIONAL. mpif90 is required.
- $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT with marsaglia_tsang_uni64_check,
- $ evince marsaglia_tsang_uni64_check.eps   # marsaglia_tsang_uni64_timing and fft_check.
+ $ OMP_NUM_THREADS=6 make check   # OPTIONAL. It takes 2 hours.
  $ ls -l feram*
  $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
  $ cd 11example-BaTiO3-new-hysteresis-loop
@@ -79,7 +78,7 @@ with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
  $ mkdir feram-0.21.00/ubuntu-13.04
  $ cd feram-0.21.00/ubuntu-13.04
  $ ../configure && make -j --max-load=10.0
- $ make check
+ $ make check   # OPTIONAL. It takes 2 hours.
 
 === Fedora 19 (feram-0.21.02, 2013-07-04)
 FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
@@ -93,7 +92,7 @@ installed into Fedora systems with yum(8) command. See http://fedoraproject.org 
  $ mkdir feram-0.21.02/fedora19
  $ cd feram-0.21.02/fedora19
  $ ../configure && make -j --max-load=10.0
- $ make check
+ $ make check   # OPTIONAL. It takes 2 hours.
 
 === CentOS 6.2 (feram-0.18.05, 2012-03-28)
 CentOS 6.2 can be installed to your x86_64 system with DVD and
@@ -138,8 +137,8 @@ Select "Software Development Workstation" in the setup.
  $ ../configure
  $ cd src
  $ make -j --max-load=10.0
- $ OMP_NUM_THREADS=6  make check
- $ OMP_NUM_THREADS=12 make check
+ $ OMP_NUM_THREADS=6  make check   # OPTIONAL. It takes 2 hours.
+ $ OMP_NUM_THREADS=12 make check   # OPTIONAL. It takes 2 hours.
  $ ls -l feram
  $ ldd feram
 
@@ -178,8 +177,8 @@ from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
  $ ../configure
  $ cd src
  $ make -j --max-load=10.0
- $ OMP_NUM_THREADS=6  make check
- $ OMP_NUM_THREADS=12 make check
+ $ OMP_NUM_THREADS=6  make check   # OPTIONAL. It takes 2 hours.
+ $ OMP_NUM_THREADS=12 make check   # OPTIONAL. It takes 2 hours.
  $ ls -l feram
  $ ldd feram
 
@@ -208,7 +207,7 @@ Sometimes it is fater than MKL.
  $ cd src
  $ make -j --max-load=10.0
  $ make feram_mpi                 # OPTIONAL. mpif90 is required.
- $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
+ $ OMP_NUM_THREADS=6 make check   # OPTIONAL. It takes 2 hours.
 
 === Linux with OLD Intel Fortran Compiler and FFTW library (feram-0.21.04, 2013-10-08)
 Old versions (around version 9.1) of ifort (Intel Fortran Compiler) does not
@@ -255,7 +254,7 @@ IBM XL Fortran (xlf90_r) version 13.1 or higher is required.
  $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-style comments
  $ emacs Makefile   # DEFS = -DHAVE_CONFIG_H  =>  DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg
  $ make   # Do NOT use parallel compilation.
- $ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" make check
+ $ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" make check   # OPTIONAL. It takes 30 minutes.
  $ make feram_mpi   # OPTIONAL
 
 === Fujitsu Kei and FX10 with their cross compiler frtpx and mpifrtpx
