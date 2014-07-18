@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2014-06-06 11:05:52 t-nissie>
+dnl Time-stamp: <2014-07-18 12:03:48 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -10,12 +10,9 @@ AC_CONFIG_SRCDIR(src/feram.F)
 AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz])
 AC_CONFIG_HEADERS([config.h])
 
-## Some OS does not see /usr/local/lib.
-LDFLAGS="$LDFLAGS -L/usr/local/lib"
-
 ## fftw3.f must be in /usr/include/, /usr/local/include/.
 ## Or specify the directory explicitly as:
-## $ CPPFLAGS=-I/some/wherer ./configure
+## $ ./configure CPPFLAGS=-I/some/where
 ## AC_CHECK_HEADER(fftw3.f) does not work in Fortran.
 CPPFLAGS="$CPPFLAGS -I/usr/include -I/usr/local/include"
 AC_ARG_VAR(CPPFLAGS, [C preprocessor (CPP) Flags, e.g. -I<include dir>])
@@ -51,7 +48,7 @@ case "$FC" in
   xlf*)
     test -n "$FCFLAGS" || FCFLAGS="-q64 -O4 -qsmp=omp -qinfo=all -qreport"
     test -n "$MPIFC" || MPIFC=mp"$FC"
-    LDFLAGS="$LDFLAGS -L/usr/local/lib -Wl,-blpdata -Wl,-bmaxdata:90000000000"
+    LDFLAGS="$LDFLAGS -Wl,-blpdata -Wl,-bmaxdata:90000000000"
     ;;
   *)
     test -n "$FCFLAGS" || FCFLAGS="-O2"
