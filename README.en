@@ -1,8 +1,5 @@
 =begin
-= feram: molecular dynamics simulator for bulk and thin-film ferroelectrics and relaxors
-
-logo.jpg
-
+= feram: MD simulator for bulk and thin-film ferroelectrics
 == Homepage, download, compilation and publication
 feram's homepage is http://loto.sourceforge.net/feram/ .
 
@@ -699,7 +696,6 @@ u.subs_rules = lambda{|s|
   gsub(/&/,'&amp;').
   gsub(/</,'&lt;').
   gsub(/>/,'&gt;').
-  gsub(/logo\.jpg/, '<img src="logo.jpg" alt="feram logo mark" />').
   gsub(/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2').
   gsub(/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2').
   gsub(/(doc\/publication\.html)/,         '<a href="\1">\1</a>').
