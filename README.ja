@@ -688,7 +688,7 @@ u.subs_rules = lambda{|s|
   gsub(/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ').
   gsub(/SourceForge\.net/,'
 <a href="http://sourceforge.net">
-  <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" border="0" alt="SourceForge.net Logo" />
+  <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" alt="SourceForge.net Logo" />
 </a>')
 # gsub(/\$(.*?)\$/){|s| Regexp.last_match[1].to_mathml}       # There is no equation in this document.
 }
