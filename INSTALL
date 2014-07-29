@@ -153,10 +153,10 @@ from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
  $ installpkg blas-20110419-x86_64-1_uqv.txz
  $ installpkg lapack-3.4.1-x86_64-1_uqv.txz
 
-==== install fftw-3.3.3.tar.gz
- $ wget http://www.fftw.org/fftw-3.3.3.tar.gz
- $ tar xf fftw-3.3.3.tar.gz
- $ cd fftw-3.3.3
+==== install fftw-3.3.4.tar.gz
+ $ wget http://www.fftw.org/fftw-3.3.4.tar.gz
+ $ tar xf fftw-3.3.4.tar.gz
+ $ cd fftw-3.3.4
  $ mkdir Slackware
  $ cd Slackware
  $ ../configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-openmp --enable-threads --enable-sse2 --enable-avx --enable-mpi --enable-shared
@@ -214,7 +214,7 @@ Sometimes it is fater than MKL.
 Old versions (around version 9.1) of ifort (Intel Fortran Compiler) does not
 have FFTW wrappers. You should also edit src/Makefile for changing LIBS.
 
-Configure options for fftw-3.3.3 are:
+Configure options for fftw-3.3.4 are:
  $ ../configure --prefix=/users/takeshi/Linux-x86_64 --enable-openmp --enable-threads --enable-sse2 CC=icc F77=ifort FC=ifort
 
 Compile feram as:
