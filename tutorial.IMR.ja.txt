@@ -62,13 +62,24 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  $ head ~/f/feram/feram-0.22.04/src/slicer.rb
  $ ~/f/feram/feram-0.22.04/src/slicer.rb 360sin.0000005000.coord
 
+さらにn_coord_freq = 500にして、アニメーションの作成も…
+要gifsicleとImageMagick。
 =end
+
 == 主催者の準備
- * 配布印刷物（論文５本、PPTを印刷したやつ、この文章の前半）の準備
+ * 配布印刷物
+   * 論文５本
+   * PPTを印刷したやつ
+   * この文章の前半
+   * MateriApps Live!の取扱説明書
  * 無線LANの準備
  * パソコンを２台ほど準備
  * NUMAの概念図
+ * テーブルタップ
+ * 指し棒またはレーザーポインタ
+
 === 用意するマシン
+Linuxがベター。MacのXQuartzやWindowsのXエミューレータは遅い。
  * guest1 emerald01 HPのデスクトップ(VineLinux 6.2)
  * guest2 emerald02 TOSHIBA dynabook MX/33LWH (Debian 7.5)
  * guest3 platinum  MacBook Air (Early 2008)
@@ -85,3 +96,8 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  * この文章の更新
 === ゲストアカウントの消去
  # userdel guest1
+
+# Local variables:
+#   mode: RD
+#   compile-command: "make tutorial.IMR.ja.html"
+# End:
