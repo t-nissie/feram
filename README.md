@@ -4,6 +4,7 @@ Dear current and future feram users,
 
 I released feram-0.22.04.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
+
 MD5 (feram-0.22.04.tar.xz) = 051e04a5cddd0301df4e8b71b666c402
 
 "feram" is a fast molecular dynamics (MD) simulator
@@ -11,6 +12,7 @@ for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
 Enjoy,
+
 Takeshi
 
 ## Changes
@@ -45,19 +47,19 @@ A strange peak appears in the beginning.
 See src/23example-BaTiO3-new-param-hl-film-acoustic-mass/.
 Bulk calculations go very fine.
 
-  Version | acoustic_mass_amu | Good or N.G.
-  ------- | ----------------- | ------------
-  0.20.00 | with              | strange peak
-  0.20.00 | without           | Good
-  0.21.04 | with              | strange peak
-  0.21.04 | without           | Good
-  0.22.00 | with              | strange peak
-  0.22.00 | without           | Good
-  0.22.01 | with              | strange peak
-  0.22.01 | without           | Good
-  0.22.02 | with              | strange peak
-  0.22.02 | without           | Good
-  0.22.03 | with              | paraelectric
-  0.22.03 | without           | paraelectric
-  0.22.04 | with              | paraelectric
-  0.22.04 | without           | paraelectric
+    Version | acoustic_mass_amu | Good or N.G.
+    ------- | ----------------- | ------------
+    0.20.00 | with              | strange peak
+    0.20.00 | without           | Good
+    0.21.04 | with              | strange peak
+    0.21.04 | without           | Good
+    0.22.00 | with              | strange peak
+    0.22.00 | without           | Good
+    0.22.01 | with              | strange peak
+    0.22.01 | without           | Good
+    0.22.02 | with              | strange peak
+    0.22.02 | without           | Good
+    0.22.03 | with              | paraelectric
+    0.22.03 | without           | paraelectric
+    0.22.04 | with              | paraelectric
+    0.22.04 | without           | paraelectric
