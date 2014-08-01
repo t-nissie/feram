@@ -28,6 +28,8 @@ SR16000 1 node:
  26example-0.21.04/acoustic-MD.vs.log:             14.80        2338.31        2353.11     #TIMING_REPORT
  26example-0.21.04-optimize/acoustic-MD.lf.log:    15.01        1744.85        1759.86     #TIMING_REPORT
  26example-0.21.04-optimize/acoustic-MD.vs.log:    15.15        1712.26        1727.41     #TIMING_REPORT
+ ~/feram/feram-m.04/26example-BaTiO3-acou..lf.log: 15.44        2732.51        2747.95  32 #TIMING_REPORT
+ ~/feram/feram-m.04/26example-BaTiO3-acou..vs.log: 15.45        2770.30        2785.75  32 #TIMING_REPORT
 
 SR16000 1 slot (1/4 node):
  $ pwd; grep TIMING */*log
@@ -38,6 +40,8 @@ SR16000 1 slot (1/4 node):
  26example-0.21.04/acoustic-MD.vs.log:             10.12        4057.08        4067.20     #TIMING_REPORT
  26example-0.21.04-optimize/acoustic-MD.lf.log:    10.09        3235.80        3245.89     #TIMING_REPORT
  26example-0.21.04-optimize/acoustic-MD.vs.log:    10.15        3148.79        3158.94     #TIMING_REPORT
+ ~/feram/feram-m.04/26example-BaTiO3-acou..lf.log: 10.14        4075.65        4085.79   8 #TIMING_REPORT
+ ~/feram/feram-m.04/26example-BaTiO3-acou..vs.log: 10.17        4016.88        4027.05   8 #TIMING_REPORT
 
 Xeon E5-2680   1 node (2 chips):
  $ pwd; grep TIMING 26example-BaTiO3-acoustic-MD*/*log
@@ -62,6 +66,13 @@ $ pwd; grep TIMING *log
 acoustic-MD.lf.log:                                10.12        4156.66        4166.78    8     #TIMING_REPORT
 acoustic-MD.vs.log:                                10.14        4231.98        4242.12    8     #TIMING_REPORT
 
+Xeon X5650 (1 or 2 chip, ifort-14.0.2, v0.22.04):
+app26$ pwd; grep TIMING *ifort*/*log
+/home/t-nissie/feram/feram-m.04
+26example-..-06threads/acoustic-MD.lf.log:         22.77        9568.11        9590.88    6     #TIMING_REPORT
+26example-..-06threads/acoustic-MD.vs.log:         22.80        9730.87        9753.67    6     #TIMING_REPORT
+26example-..-12threads/acoustic-MD.lf.log:         22.82        5288.60        5311.42   12     #TIMING_REPORT
+26example-..-12threads/acoustic-MD.vs.log:         22.91        5378.48        5401.39   12     #TIMING_REPORT
 
 Celeron 1037U (1 chip = 2 cores, 1.8GHz, year 2013):
  silver$ date; pwd; grep TIMING *log
