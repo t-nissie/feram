@@ -74,6 +74,14 @@ app26$ pwd; grep TIMING *ifort*/*log
 26example-..-12threads/acoustic-MD.lf.log:         22.82        5288.60        5311.42   12     #TIMING_REPORT
 26example-..-12threads/acoustic-MD.vs.log:         22.91        5378.48        5401.39   12     #TIMING_REPORT
 
+Xeon X5650 (1 or 2 chip, gfortran 4.9.1, v0.22.04):
+app13$ pwd; grep TIMING 26example-BaTiO3-acoustic-MD-gfortran-4.9.1-X5650-*s/*log
+/home/t-nissie/feram/feram-m.04
+26example-..-06threads/acoustic-MD.lf.log:         12.09        8960.20        8972.29    6     #TIMING_REPORT
+26example-..-06threads/acoustic-MD.vs.log:         12.85        9179.83        9192.69    6     #TIMING_REPORT
+26example-..-12threads/acoustic-MD.lf.log:         12.12        5037.36        5049.48   12     #TIMING_REPORT
+26example-..-12threads/acoustic-MD.vs.log:         13.58        5128.37        5141.94   12     #TIMING_REPORT
+
 Celeron 1037U (1 chip = 2 cores, 1.8GHz, year 2013):
  silver$ date; pwd; grep TIMING *log
  Sun Feb 23 06:16:49 JST 2014
