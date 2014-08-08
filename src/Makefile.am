@@ -81,7 +81,7 @@ wave_check_SOURCES = wave_check.f wave_module.F
 fft_check_SOURCES = fft_wrappers.F fft_check.F f90_wisdom.f
 
 CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(EXTRA_PROGRAMS) \
-             defects_maker_check.defects \
+             defects_maker_check.defects wisdom_new \
              elastocaloric770K_check.lf.log \
              elastocaloric770K_check.vs.log
 EXTRA_DIST = define.h \
