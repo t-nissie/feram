@@ -68,17 +68,16 @@ specify CPPFLAGS and LDFLAGS for configure.
  $ ../configure FC=gfortran CPPFLAGS=-I/home/takeshi/include LDFLAGS=-L/home/takeshi/lib
 
 == Linux
-=== Ubuntu 12.10, Ubuntu 13.04 and Debian 7.0 (feram-0.21.00, 2013-05-05)
+=== Debian 7.x and Ubuntu 12.10, 13.04, 13.10 and 14.04 LTS (feram-0.22.04, 2014-08-09)
 FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
-installed into Debian 7.0 (Wheezy) GNU/Linux systems or Ubuntu systems
+installed into Debian 7.x (Wheezy) GNU/Linux systems or Ubuntu systems
 with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
 ==== install required packages
- $ sudo apt-get install liblapack-dev libblas-dev gfortran libfftw3-dev libfftw3-doc gfortran-doc athena-jot
- $ sudo apt-get install autoconf automake libtool autoconf-doc libtool-doc   # For developers
+ $ sudo apt-get install liblapack-dev libblas-dev gfortran libfftw3-dev athena-jot
 ==== compile feram
- $ tar xf feram-0.21.00.tar.xz
- $ mkdir feram-0.21.00/ubuntu-13.04
- $ cd feram-0.21.00/ubuntu-13.04
+ $ tar xf feram-0.22.04.tar.xz
+ $ mkdir feram-0.22.04/ubuntu-14.04
+ $ cd feram-0.22.04/ubuntu-14.04
  $ ../configure && make -j --max-load=10.0
  $ make check   # OPTIONAL. It takes 2 hours.
 
