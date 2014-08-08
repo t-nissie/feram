@@ -63,3 +63,5 @@ Bulk calculations go very fine.
     0.22.03 | without           | paraelectric
     0.22.04 | with              | paraelectric
     0.22.04 | without           | paraelectric
+    0.22.05 | with              | strange peak
+    0.22.05 | without           | OK
