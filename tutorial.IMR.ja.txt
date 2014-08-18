@@ -61,9 +61,11 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  360sin.log:           0.76         433.34         434.10     #TIMING_REPORT
  $ head ~/f/feram/feram-0.22.04/src/slicer.rb
  $ ~/f/feram/feram-0.22.04/src/slicer.rb 360sin.0000005000.coord
-
-さらにn_coord_freq = 500にして、アニメーションの作成も…
-要gifsicleとImageMagick。
+ $ evince 360sin.0000005000-slice-z006.eps
+ $ for c in 360sin.*.coord; do ~/f/feram/feram-0.22.04/src/slicer.rb $c 8; done
+ $ for e in 360sin.*-slice-z008.eps; do convert -density 400 $e -resize 12.5% `basename $e .eps`.gif; done
+ $ gifsicle --colors=256 --delay=2 --loop 360sin.*-slice-z008.gif > 360sin.animation.gif
+ $ gifview 360sin.animation.gif
 =end
 
 == 主催者の準備
@@ -80,6 +82,10 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
 
 === 用意するマシン
 Linuxがベター。MacのXQuartzやWindowsのXエミューレータは遅い。
+Aキーの左をcontrolキーにして、シールを貼っておく。
+XでEmacsを起動してBackSpaceキーが効くかチェックしておくこと。
+要gifsicleとImageMagick。
+
  * guest1 emerald01 HPのデスクトップ(VineLinux 6.2)
  * guest2 emerald02 TOSHIBA dynabook MX/33LWH (Debian 7.5)
  * guest3 platinum  MacBook Air (Early 2008)
