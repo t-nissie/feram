@@ -64,7 +64,7 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  $ evince 360sin.0000005000-slice-z006.eps
  $ for c in 360sin.*.coord; do ~/f/feram/feram-0.22.04/src/slicer.rb $c 8; done
  $ for e in 360sin.*-slice-z008.eps; do convert -density 400 $e -resize 12.5% `basename $e .eps`.gif; done
- $ gifsicle --colors=256 --delay=2 --loop 360sin.*-slice-z008.gif > 360sin.animation.gif
+ $ gifsicle --colors=256 --delay=20 360sin.*-slice-z008.gif > 360sin.animation.gif
  $ gifview 360sin.animation.gif
 =end
 
