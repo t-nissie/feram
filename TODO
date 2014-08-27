@@ -1,8 +1,10 @@
 ToDo:
 o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
   のバグを直す。0.22.04ではバグの再現さえしなくなり、パラの結果が出る。
+  svn diff -r2271:2272 kinetic_energy_dipo.F でバグの再現はするようになったが、これはあくまでquick hack。
+  dead layerがある場合など、c%n_sum_p と p%n_freedom = 3 * p%N とかの比を考慮すること。  
   src/mirror_force_mirror.Fで単にc%acouRとc%dVdacRをミラーすればよいわけではない。
-  acoustic displacementは双極子でないので静電的ミラーではない。
+  acoustic displacementは双極子でないので静電的ミラーではない！！！
 
 o (nightly) automation of unit test with "make check"
 
