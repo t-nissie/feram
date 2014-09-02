@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2012-03-17 13:37:49 takeshi>
+! Time-stamp: <2014-09-02 23:10:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -67,7 +67,7 @@ subroutine read_defects_u(p,c)
      end if
   end if
 
-  c%n_sum_p = count(c%sum_p)   !; write(6,'(a,i8)') 'c%n_sum_p =', c%n_sum_p ; call flush(6)
+  c%n_sum_p = count(c%sum_p);  write(str,'(a,i10)') 'c%n_sum_p =', c%n_sum_p; call msg_ez(UNIT_LOG,str); call flush(UNIT_LOG)
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine read_defects_u
