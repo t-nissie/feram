@@ -26,9 +26,5 @@ real*8 function kinetic_energy_dipo(p,c)
      end do
   end do
 !$omp end parallel do
-  if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
-     kinetic_energy_dipo = tmp_e / c%n_sum_p * p%N / 2
-  else
-     kinetic_energy_dipo = tmp_e / 2
-  end if
+  kinetic_energy_dipo = tmp_e / c%n_sum_p * p%N / 2
 end function kinetic_energy_dipo
