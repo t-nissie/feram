@@ -1,15 +1,15 @@
 %!PS-Adobe-3.0 EPSF-3.0
-%%BoundingBox: 83 409 507 751
+%%BoundingBox: 153 409 425 749
 %%Title: flow
-%%CreationDate: Wed Jan  9 17:48:18 2008
-%%Creator: Tgif-4.1.45-QPL written by William Chia-Wei Cheng (bill.cheng@acm.org)
+%%CreationDate: Sat Sep 27 18:44:08 2014
+%%Creator: Tgif-4.2.5 written by William Chia-Wei Cheng (bill.cheng@acm.org)
 %%ProducedBy: (unknown)
 %%Pages: 1
 %%DocumentFonts: (atend)
 %%EndComments
 %%BeginProlog
 
-/tgifdict 55 dict def
+/tgifdict 56 dict def
 tgifdict begin
 
 /tgifellipsedict 6 dict def
@@ -57,6 +57,7 @@ tgifarrowtipdict /mtrx matrix put
  { exch dup 3 1 roll exch dup 3 1 roll lt { pop } { exch pop } ifelse
  } def
 /TGSW { stringwidth pop } def
+/tgifstrw 0 def
 
 /bd { bind def } bind def
 
@@ -111,7 +112,7 @@ end
 %%EndProlog
 %%Page: 1 1
 
-%%PageBoundingBox: 83 409 507 751
+%%PageBoundingBox: 153 409 425 749
 tgifdict begin
 /tgifsavedpage save def
 
@@ -346,8 +347,11 @@ NP
       GS
         GS
         0
+            /Times-Bold FF [30 0 0 -30 0 0] MS
+            (FFT) TGSW 
+        AD
             /Times-Roman FF [30 0 0 -30 0 0] MS
-            (FFT:) TGSW 
+            (:) TGSW 
         AD
             /Times-Italic FF [30 0 0 -30 0 0] MS
             ( u) TGSW 
@@ -381,9 +385,12 @@ NP
         AD
         GR
       2 DI NE 0 RM
+            1.000 0.000 0.000 RG
+            /Times-Bold FF [30 0 0 -30 0 0] MS
+            (FFT) SH
             0 SG
             /Times-Roman FF [30 0 0 -30 0 0] MS
-            (FFT:) SH
+            (:) SH
             0 SG
             /Times-Italic FF [30 0 0 -30 0 0] MS
             ( u) SH
@@ -562,8 +569,14 @@ NP
       GS
         GS
         0
+            /Times-Bold FF [30 0 0 -30 0 0] MS
+            (I) TGSW 
+        AD
+            /Times-Bold FF [30 0 0 -30 0 0] MS
+            (FFT) TGSW 
+        AD
             /Times-Roman FF [30 0 0 -30 0 0] MS
-            (IFFT:) TGSW 
+            (:) TGSW 
         AD
             /Times-Italic FF [30 0 0 -30 0 0] MS
             ( F) TGSW 
@@ -598,8 +611,14 @@ NP
         GR
       2 DI NE 0 RM
             0 SG
+            /Times-Bold FF [30 0 0 -30 0 0] MS
+            (I) SH
+            1.000 0.000 0.000 RG
+            /Times-Bold FF [30 0 0 -30 0 0] MS
+            (FFT) SH
+            0 SG
             /Times-Roman FF [30 0 0 -30 0 0] MS
-            (IFFT:) SH
+            (:) SH
             0 SG
             /Times-Italic FF [30 0 0 -30 0 0] MS
             ( F) SH
@@ -1039,38 +1058,15 @@ GS
    CP F
 GR
 
-% POLY/OPEN-SPLINE
-0.184 0.310 0.310 RG
-GS
-   NP
-      150 160 M
-      150 150 L
-      160 150 L
-   TGSM
-   1 W
-   S
-GR
-
-% POLY/OPEN-SPLINE
-0.184 0.310 0.310 RG
-GS
-   NP
-      900 160 M
-      900 150 L
-      890 150 L
-   TGSM
-   1 W
-   S
-GR
-
 GR
 tgifsavedpage restore
 end
 showpage
 
 %%Trailer
-%MatchingCreationDate: Wed Jan  9 17:48:18 2008
-%%DocumentFonts: Times-BoldItalic
+%MatchingCreationDate: Sat Sep 27 18:44:08 2014
+%%DocumentFonts: Times-Bold
+%%+ Times-BoldItalic
 %%+ Times-Roman
 %%+ Symbol
 %%+ Times-Italic
