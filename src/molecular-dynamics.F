@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2014-07-01 21:06:45 takeshi>
+! Time-stamp: <2014-10-04 19:44:17 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -70,7 +70,9 @@ subroutine molecular_dynamics(p,c)
         end do
 !$omp end parallel do
         ! We may need mirror of c%E_field around here.
-        if (i_step>=p%n_thermalize .and. mod(i_step-p%n_thermalize, p%n_hl_freq) == 0) then
+        if ((  i_step>=p%n_thermalize          .or. &
+             & p%E_wave_type .eq. 'ramping_on' .or. &
+             & p%E_wave_type .eq. 'ramping_off'     ) .and. mod(i_step-p%n_thermalize, p%n_hl_freq) == 0) then
            do alpha = 1, 3
               u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
            end do
