@@ -2,10 +2,10 @@ feram-0.22.04
 =============
 Dear current and future feram users,
 
-I released feram-0.22.04.tar.xz from
+I released feram-0.22.05.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 
-MD5 (feram-0.22.04.tar.xz) = 051e04a5cddd0301df4e8b71b666c402
+MD5 (feram-0.22.05.tar.xz) = cfc000c83dec955e4b2f50fe9122ca0b
 
 "feram" is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -16,7 +16,10 @@ Enjoy,
 Takeshi
 
 ## Changes
-In this feram-0.22.04, bugs in rnd?.defects files in
+In this feram-0.22.05, a bug in kinetic_energy_dipo.F is
+fixed for defects calculation.
+
+In the feram-0.22.04, bugs in rnd?.defects files in
 src/29example-BaTiO3-new-param-defects/ are fixed.
 See feram-0.22.04/src/29example-BaTiO3-new-param-defects/histogram.jpg .
 
