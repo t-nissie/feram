@@ -1,4 +1,4 @@
-feram-0.22.04
+feram-0.22.05
 =============
 Dear current and future feram users,
 
