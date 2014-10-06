@@ -175,6 +175,8 @@ CMakeとSConsではFortranのプロジェクトもサポートされている。
 
 == まとめ
 autoconfとautomakeとの使い方を説明した。
+configure.acとMakefile.amとを書くことによりパッケージの自動生成が可能になる。
+複数のプラットフォームでMakefileを共通化できる。
 他に共有ライブラリを操るための libtool http://www.gnu.org/software/libtool/ もある。
 これらGNU Autotoolsを活用すれば、簡単に配布用のフリーソフトウェアパッケージを作ることができる。
 
