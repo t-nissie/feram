@@ -1,7 +1,8 @@
 ! diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2014-10-15 16:26:38 t-nissie>
+! Time-stamp: <2014-10-15 16:56:03 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Usage: ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
+!        ./diagonalize15x15 < perovskite-Sigma_o_DS1_DDB
 !!
 #include "define.h"
 
