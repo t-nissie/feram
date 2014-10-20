@@ -10,8 +10,9 @@ Version and date of installation is written in parentheses ().
    --enable-openmp --enable-threads --enable-sse2.
    --enable-avx and --enable-shared are also useful additional configure options.
    Intel MKL contains FFTW3 wrappers.)
- * BLAS and LAPACK libraries (You do NOT have to used optimized BLAS,
-   because LAPACK subroutines are not used in crucial parts of feram.)
+ * Linear algebra library
+   * ATLAS (Automatically Tuned Linear Algebra Software)
+   * BLAS and LAPACK libraries
  * Fortran 90 compiler
    * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
    * Intel Fortran Compiler (ifort; version 11.1 and later) with
@@ -68,12 +69,13 @@ specify CPPFLAGS and LDFLAGS for configure.
  $ ../configure FC=gfortran CPPFLAGS=-I/home/takeshi/include LDFLAGS=-L/home/takeshi/lib
 
 == Linux
-=== Debian 7.x and Ubuntu 12.10, 13.04, 13.10 and 14.04 LTS (feram-0.22.04, 2014-08-09)
-FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
+=== Debian 7.x and Ubuntu 12.10, 13.04, 13.10 and 14.04 LTS (feram-0.22.05, 2014-10-21)
+FFTW3, ATLAS libraries and GNU Fortran (gfortran) can be easily
 installed into Debian 7.x (Wheezy) GNU/Linux systems or Ubuntu systems
 with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
 ==== install required packages
- $ sudo apt-get install liblapack-dev libblas-dev gfortran libfftw3-dev athena-jot
+ $ sudo apt-get install libatlas-base-dev gfortran libfftw3-dev athena-jot
+ $ sudo apt-get --purge remove liblapack-dev liblapack3 liblapack3gf
 ==== compile feram
  $ tar xf feram-0.22.04.tar.xz
  $ mkdir feram-0.22.04/ubuntu-14.04

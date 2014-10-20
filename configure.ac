@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2014-10-06 03:57:27 t-nissie>
+dnl Time-stamp: <2014-10-21 05:57:24 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -103,7 +103,7 @@ AC_ARG_WITH(lapack,[AS_HELP_STRING([--with-lapack=ARG],[LAPACK library.
 case "$with_lapack" in
   lapack | yes | "")
     AC_CHECK_LIB(blas,  dsymv,,[AC_CHECK_LIB(f77blas,  dsymv,,AC_MSG_ERROR([You need  BLAS  library. See config.log.]))])
-    AC_CHECK_LIB(lapack,dsyev,,AC_MSG_ERROR([You need LAPACK library. See config.log.]))
+    AC_CHECK_LIB(lapack,dsyevx,,AC_MSG_ERROR([You need LAPACK library. See config.log.]))
     ;;
   essl)
     AC_CHECK_LIB(esslsmp,dsyevx,,AC_MSG_ERROR([You need ESSL library for LAPACK subroutines. See config.log.]))
