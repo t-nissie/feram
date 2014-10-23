@@ -20,7 +20,7 @@ Version and date of installation is written in parentheses ().
      http://software.intel.com/en-us/articles/intel-compilers/
    * IBM XL Fortran for HITACHI SR16000
    * Fortran 90 (frtpx) for Fujitsu supercomputers: Kei and FX10
- * xz  http://tukaani.org/xz/
+ * xz (data compression software)  http://tukaani.org/xz/
 Modern Linux distributions (Debian, Ubuntu, RedHat, CentOS, etc.) have their
 packages of these software required to compile feram. Check their versions
 with --version option, e.g. make --version, or install them with package
