@@ -77,9 +77,9 @@ with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
  $ sudo apt-get install libatlas-base-dev gfortran libfftw3-dev athena-jot
  $ sudo apt-get --purge remove liblapack-dev liblapack3 liblapack3gf
 ==== compile feram
- $ tar xf feram-0.22.04.tar.xz
- $ mkdir feram-0.22.04/ubuntu-14.04
- $ cd feram-0.22.04/ubuntu-14.04
+ $ tar xf feram-0.22.05.tar.xz
+ $ mkdir feram-0.22.05/build-with-gfortran
+ $ cd feram-0.22.05/build-with-gfortran
  $ ../configure && make -j --max-load=10.0
  $ make check   # OPTIONAL. It takes 2 hours.
 
