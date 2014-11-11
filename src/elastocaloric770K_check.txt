@@ -9,10 +9,12 @@ Results of `grep TIMING *.log`
 ==== elastocaloric770K_check.vs.log
  X5650 1 chip =  6 core:       3.73        2114.44        2118.17    6     #TIMING_REPORT
  X5650 2 chip = 12 core:       3.86        1159.24        1163.10   12     #TIMING_REPORT
+ E5-2680 v3 chip = 24 core:    5.58         580.97         586.56   24     #TIMING_REPORT
  SR16000  8 thds on 1/4 node:  2.98         994.32         997.30    8     #TIMING_REPORT
  SR16000 32 thds on  1  node:  3.12         363.08         366.20   32     #TIMING_REPORT
 ==== elastocaloric770K_check.lf.log
  X5650 1 chip =  6 core:       3.40        2106.04        2109.44    6     #TIMING_REPORT
  X5650 2 chip = 12 core:       3.41        1143.05        1146.46   12     #TIMING_REPORT
+ E5-2680 v3 chip = 24 core:    2.17         582.94         585.11   24     #TIMING_REPORT
  SR16000  8 thds on 1/4 node:  2.74        1005.32        1008.06    8     #TIMING_REPORT
  SR16000 32 thds on  1  node:  2.76         363.94         366.70   32     #TIMING_REPORT
