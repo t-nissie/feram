@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2014-10-04 19:44:17 t-nissie>
+! Time-stamp: <2014-11-24 20:57:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -54,7 +54,7 @@ subroutine molecular_dynamics(p,c)
 
   call reset_Average(avg)
 
-  do i_step = 1, p%n_thermalize+p%n_thermal_conductivity+p%n_average
+  do i_step = 1, p%n_thermalize+p%n_average
 
      if (p%E_wave_type .ne. '') then
         E_field_add(:) = wave(p%E_wave_type, i_step, p%n_thermalize, p%n_E_wave_period, p%external_E_field(:))
@@ -86,7 +86,7 @@ subroutine molecular_dynamics(p,c)
      end if
 
      detail = p%verbose>=2 .or. mod(i_step,p%n_coord_freq).eq.0 &
-          &   .or. i_step.eq.p%n_thermalize+p%n_thermal_conductivity+p%n_average
+          &   .or. i_step.eq.p%n_thermalize+p%n_average
      if (detail) then
         write(message,fmt_time_step) i_step, E_field_add; call msg_ez(UNIT_LOG,message)
      end if
@@ -117,7 +117,7 @@ subroutine molecular_dynamics(p,c)
         call write_Energy(p,c,e,UNIT_LOG)
      end if
 
-     if (i_step <= p%n_thermalize+p%n_thermal_conductivity) cycle
+     if (i_step <= p%n_thermalize) cycle
 
      call add_to_Average(p,c,e,avg,detail)
   end do

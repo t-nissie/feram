@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2013-05-22 18:06:33 takeshi>
+! Time-stamp: <2014-11-24 20:53:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -29,11 +29,7 @@ subroutine leapfrog(p,c,e,i_step)
   Lz_1_4 = p%Lz/4
   Lz_3_4 = Lz_1_4*3
 
-  if (p%delta_e.ne.0.0d0 .and. i_step>p%n_thermalize) then
-     if (p%mass_acou > 0.0d0) then
-        call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'Thermal conductivity simulation with mass_acou>0 is not implemented yet.')
-        stop 1
-     end if
+  if (p%delta_e.ne.0.0d0) then
 !$omp parallel do
      do iz=0,p%Lz-1
         c%e_layer_dipo(iz) = SUM( c%dipoP(:,:,iz,:) * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:) ) / 2

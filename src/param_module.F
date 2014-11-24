@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2014-07-06 21:30:58 takeshi>
+! Time-stamp: <2014-11-24 20:55:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -49,7 +49,6 @@ module Param_module
      !--- Time step -----------------------------------
      real*8 dt          ! Time step width delta t [pico second]
      integer n_thermalize
-     integer n_thermal_conductivity
      integer n_average
      integer n_E_wave_period
      integer n_coord_freq  ! frequency for writing out the coordinates
@@ -142,7 +141,6 @@ contains
     p%epi_strain = 0.0d0
 
     p%n_thermalize =  10000
-    p%n_thermal_conductivity = 0
     p%n_average    = 100000
     p%n_E_wave_period = 0
     p%n_coord_freq = huge(1)   ! Maximum integer. Do not write system by default.
@@ -245,8 +243,6 @@ contains
           read(str,*) dmy1, dmy2, p%dt
        case('n_thermalize')
           read(str,*) dmy1, dmy2, p%n_thermalize
-       case('n_thermal_conductivity')
-          read(str,*) dmy1, dmy2, p%n_thermal_conductivity
        case('n_average'   )
           read(str,*) dmy1, dmy2, p%n_average
        case('n_E_wave_period')
