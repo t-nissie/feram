@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2014-11-25 04:48:59 takeshi>
+! Time-stamp: <2014-11-25 05:19:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -37,7 +37,7 @@ subroutine leapfrog(p,c,e,i_step)
 !$omp end parallel do
 !$omp parallel do
      do iz=0,p%Lz-1
-        c%e_layer_acou(iz) = SUM( c%acouP(:,:,iz,:) * c%acouP(:,:,iz,:) * c%m_inv(:,:,iz,:) ) / 2
+        c%e_layer_acou(iz) = SUM( c%acouP(:,:,iz,:) * c%acouP(:,:,iz,:) ) * p%mass_acou_inv / 2
      end do
 !$omp end parallel do
      c%dipoP(:,:,Lz_1_4,:) = c%dipoP(:,:,Lz_1_4,:) * sqrt((c%e_layer_dipo(Lz_1_4)+Lx_Ly_delta_e)/c%e_layer_dipo(Lz_1_4))
