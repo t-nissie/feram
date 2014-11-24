@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2013-10-04 11:54:09 takeshi>
+! Time-stamp: <2014-11-25 04:42:53 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -34,6 +34,7 @@ module Coord_module
      real*8,     allocatable :: inhomo_coup2_K(:,:,:, :,:) ! FTed potential
      logical,    allocatable :: sum_p(:,:,:) ! .true. if the u(R) is not defect nor mirrored film. This array will be initialized in read_defects_u.F
      real*8,     allocatable :: e_layer_dipo(:)
+     real*8,     allocatable :: e_layer_acou(:)
      real*8                 strain(6)
      real*8                 homogeneous(6,6)
      real*8                 homogeneous_G(6,6)
@@ -259,9 +260,11 @@ contains
     !--- sum_p ------------------------------
     if (allocated(c%sum_p)) deallocate(c%sum_p)
     allocate(c%sum_p(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
-    !--- e_layer_dipo for thermal conductivity----
+    !--- e_layer_dipo and e_layer_and for thermal conductivity----
     if (allocated(c%e_layer_dipo)) deallocate(c%e_layer_dipo)
     allocate(c%e_layer_dipo(0:p%Lz-1))
+    if (allocated(c%e_layer_acou)) deallocate(c%e_layer_acou)
+    allocate(c%e_layer_acou(0:p%Lz-1))
     !--- end --------------------------------
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  alloc_Coord().')
   end subroutine alloc_Coord

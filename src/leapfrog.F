@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2014-11-24 20:53:42 takeshi>
+! Time-stamp: <2014-11-25 04:48:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -35,8 +35,17 @@ subroutine leapfrog(p,c,e,i_step)
         c%e_layer_dipo(iz) = SUM( c%dipoP(:,:,iz,:) * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:) ) / 2
      end do
 !$omp end parallel do
+!$omp parallel do
+     do iz=0,p%Lz-1
+        c%e_layer_acou(iz) = SUM( c%acouP(:,:,iz,:) * c%acouP(:,:,iz,:) * c%m_inv(:,:,iz,:) ) / 2
+     end do
+!$omp end parallel do
      c%dipoP(:,:,Lz_1_4,:) = c%dipoP(:,:,Lz_1_4,:) * sqrt((c%e_layer_dipo(Lz_1_4)+Lx_Ly_delta_e)/c%e_layer_dipo(Lz_1_4))
      c%dipoP(:,:,Lz_3_4,:) = c%dipoP(:,:,Lz_3_4,:) * sqrt((c%e_layer_dipo(Lz_3_4)-Lx_Ly_delta_e)/c%e_layer_dipo(Lz_3_4))
+     ! if (mass_acou>0.0d0) then
+     !    c%acouP(:,:,Lz_1_4,:) =
+     !    c%acouP(:,:,Lz_3_4,:) =
+     ! end if
   end if
 
   if (i_step.eq.0) then
