@@ -83,17 +83,17 @@ with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
  $ ../configure && make -j --max-load=10.0
  $ make check   # OPTIONAL. It takes 2 hours.
 
-=== Fedora 19 (feram-0.21.02, 2013-07-04)
+=== Fedora 21 (feram-0.21.05, 2014-11-05)
 FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
 installed into Fedora systems with yum(8) command. See http://fedoraproject.org .
 ==== install required packages
  # yum install gcc gcc-gfortran
- # yum install fftw-devel blas-devel lapack-devel gnuplot
+ # yum install fftw-devel blas-devel lapack-devel gnuplot csh
  # yum install autoconf.noarch automake.noarch libtool subversion   # For developers
 ==== compile feram
- $ tar xf feram-0.21.02.tar.xz
- $ mkdir feram-0.21.02/fedora19
- $ cd feram-0.21.02/fedora19
+ $ tar xf feram-0.21.05.tar.xz
+ $ mkdir feram-0.21.05/fedora21
+ $ cd feram-0.21.05/fedora21
  $ ../configure && make -j --max-load=10.0
  $ make check   # OPTIONAL. It takes 2 hours.
 
