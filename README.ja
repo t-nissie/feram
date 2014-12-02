@@ -422,10 +422,8 @@ fft_checkの使い方の詳しい説明はsrc/fft_check.htmlにあります．
 
 FFTW wisdomについての詳細は
 http://www.fftw.org/doc/Other-Important-Topics.html
-をご覧下さい．
-
-もしMKLやMATRIX/MPP, SSL II, ACMLなどFFTW以外のFFTライブラリを
-使っている場合はwisdomファイルを準備する必要はありません．
+をご覧下さい．もしMKLの中のFFTW3ラッパーを使っている場合は
+wisdomファイルを準備する必要はありません．
 
 == 出力ファイル
 feram が feram foo123.feram と実行されたなら

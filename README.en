@@ -435,11 +435,8 @@ Lx*Ly*Lz=300*300*300 in the OMP_NUM_THREADS=6 environment.
 See src/fft_check.html for more details on fft_check.
 
 Check http://www.fftw.org/doc/Other-Important-Topics.html for more
-details on FFTW wisdom.
-
-If you are not using the FFTW library but other FFT libraries
-such as MKL, MATRIX/MPP, SSL II, ACML, etc., you do not have to
-prepare the wisdom file.
+details on FFTW wisdom. If you are using the MKL for FFTW3 wrappers,
+you do not have to prepare the wisdom file.
 
 == Output files
 If you execute the feram like `feram foo123.feram`,
