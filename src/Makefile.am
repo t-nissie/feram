@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2014-10-15 18:49:46 t-nissie>
+# Time-stamp: <2014-12-02 10:17:11 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -100,8 +100,6 @@ elastocaloric770K_check.txt \
 elastocaloric770K_check.lf.feram \
 elastocaloric770K_check.vs.feram \
 epit.gp \
-fft_acml.f \
-fft_acml.Makefile \
 fft_check.Makefile.FX10-frtpx-fftw3_omp \
 fft_check.Makefile.Intel-gfortran-fftw3_omp \
 fft_check.Makefile.Intel-ifort-MKL \
