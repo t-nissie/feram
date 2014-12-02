@@ -12,14 +12,12 @@ o (nightly) automation of unit test with "make check"
 
 o (nightly) automation of profiling and timing
 
-o continue_without_restart_file for avoiding huge .coord files
-
-o Reduce memory size using in-place FFT and
-  rank remapping or array dimension changing (See in-place-FFT.ja.txt)
-
-o coord fileの桁数を上げて高精度化。ファイルサイズは大きくなってしまうけど。
-
 o No need to initialize Energy_type ???
+
+o remove redundant procedures:
+  - average_module.F: around u_tmp(:) =  u_tmp(:) + c%dipoR(ix,iy,iz,:)
+  - molecular-dynamics.F: around u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
+  - Then, report uu() and energies in the .hl file.
 
 o e%acou_kinetic=0 if mass_acou<0
 
@@ -81,7 +79,10 @@ o Makefile.amの依存関係。並列コンパイルmake -jでデバグできる
 o 依存関係の自動生成。gfortranに新しく導入される-Mオプションの活用？ makedepf90？
 
 
-o 力の計算の部分をsubroutineにして、leapfrog をもう一度動くようにする。
+o Reduce memory size using in-place FFT and
+  rank remapping or array dimension changing (See in-place-FFT.ja.txt)
+
+o coord fileの桁数を上げて高精度化。ファイルサイズは大きくなってしまうけど。
 
 o Use msg() in write_Param() of param_module.F.
 
@@ -90,8 +91,6 @@ o striped structure を initial configuration にできるようにする.
 o refactoring nose-poincare.F and energy.F
 
 o 3 node parallelization
-
-o replace DSYEV().
 
 o use autoconf and make configure
 
@@ -205,6 +204,9 @@ x acoustic displacement も MD.
 
 x Temperature from averaging acou_kinetic and dipo_kinetic
 
+x continue_without_restart_file for avoiding huge .coord files
+
+x replace DSYEV().
 
 Not ToDo:
 - 使うGPUって環境変数で選べるの？
