@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2014-11-24 20:57:34 takeshi>
+! Time-stamp: <2014-12-02 11:10:00 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -77,8 +77,21 @@ subroutine molecular_dynamics(p,c)
               u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
            end do
            u(:) = u(:) / c%n_sum_p
-           write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5)") &
-                i_step,p%kelvin, E_field_add, c%strain(1:6), u(1:3)
+           write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5,6f4.1,1(1e15.5,12e13.5))") &
+                i_step,p%kelvin, E_field_add, c%strain(1:6), u(1:3), 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, &
+                e%dipo_kinetic    ,&
+                e%dipole_dipole   ,&
+                e%dipole_E_field  ,&
+                e%unharmonic      ,&
+                e%homo_strain     ,&
+                e%homo_coupling   ,&
+                e%inho_strain     ,&
+                e%inho_coupling   ,&
+                e%total           ,&
+                e%H_Nose_Poincare ,&
+                e%total**2        ,&
+                e%dipo_kinetic/c%s_Nose**2 ,&
+                e%acou_kinetic
            flush(UNIT_HL)
            write(fn,'(a,a)') trim(p%filename), '.coord'
            call write_system(p,c,fn)
