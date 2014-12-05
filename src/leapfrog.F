@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2014-12-05 18:41:29 takeshi>
+! Time-stamp: <2014-12-05 19:39:11 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -31,22 +31,29 @@ subroutine leapfrog(p,c,e,i_step)
   Lz_1_4 = p%Lz/4
   Lz_3_4 = Lz_1_4*3
 
-  if (p%delta_e.ne.0.0d0) then
+  if (p%delta_e.ne.0.0d0 .or. p%delta_e_acou.ne.0.0d0) then
 !$omp parallel do
      do iz=0,p%Lz-1
-        c%e_layer_dipo(iz) = SUM( c%dipoP(:,:,iz,:) * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:) ) / 2
+        c%e_layer_dipo(iz)    = SUM( c%dipoP(:,:,iz,:) * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:) ) / 2
      end do
 !$omp end parallel do
+     if (p%mass_acou>0.0d0) then
+!$omp parallel do
+        do iz=0,p%Lz-1
+           c%e_layer_acou(iz) = SUM( c%acouP(:,:,iz,:) * c%acouP(:,:,iz,:) ) * p%mass_acou_inv / 2
+        end do
+!$omp end parallel do
+     else
+        c%e_layer_acou(:) = 0.0d0
+     end if
+  end if
+
+  if (p%delta_e.ne.0.0d0) then
      c%dipoP(:,:,Lz_1_4,:) = c%dipoP(:,:,Lz_1_4,:) * sqrt((c%e_layer_dipo(Lz_1_4)+Lx_Ly_delta_e)/c%e_layer_dipo(Lz_1_4))
      c%dipoP(:,:,Lz_3_4,:) = c%dipoP(:,:,Lz_3_4,:) * sqrt((c%e_layer_dipo(Lz_3_4)-Lx_Ly_delta_e)/c%e_layer_dipo(Lz_3_4))
   end if
 
-  if (p%mass_acou>0.0d0 .and. p%delta_e_acou.ne.0.0d0) then
-!$omp parallel do
-     do iz=0,p%Lz-1
-        c%e_layer_acou(iz) = SUM( c%acouP(:,:,iz,:) * c%acouP(:,:,iz,:) ) * p%mass_acou_inv / 2
-     end do
-!$omp end parallel do
+  if (p%delta_e_acou.ne.0.0d0) then
      c%acouP(:,:,Lz_1_4,:) = c%acouP(:,:,Lz_1_4,:) * sqrt((c%e_layer_acou(Lz_1_4)+Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_1_4))
      c%acouP(:,:,Lz_3_4,:) = c%acouP(:,:,Lz_3_4,:) * sqrt((c%e_layer_acou(Lz_3_4)-Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_3_4))
   end if
