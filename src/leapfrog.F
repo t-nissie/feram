@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2014-11-25 05:19:38 takeshi>
+! Time-stamp: <2014-12-05 18:41:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -16,6 +16,7 @@ subroutine leapfrog(p,c,e,i_step)
   type(Energy_type), intent(out)   :: e
   integer i_step
   real*8 Lx_Ly_delta_e
+  real*8 Lx_Ly_delta_e_acou
   integer Lz_1_4
   integer Lz_3_4
   integer iz,alpha
@@ -25,7 +26,8 @@ subroutine leapfrog(p,c,e,i_step)
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
 
-  Lx_Ly_delta_e = p%Lx * p%Ly * p%delta_e
+  Lx_Ly_delta_e      = p%Lx * p%Ly * p%delta_e
+  Lx_Ly_delta_e_acou = p%Lx * p%Ly * p%delta_e_acou
   Lz_1_4 = p%Lz/4
   Lz_3_4 = Lz_1_4*3
 
@@ -35,17 +37,18 @@ subroutine leapfrog(p,c,e,i_step)
         c%e_layer_dipo(iz) = SUM( c%dipoP(:,:,iz,:) * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:) ) / 2
      end do
 !$omp end parallel do
+     c%dipoP(:,:,Lz_1_4,:) = c%dipoP(:,:,Lz_1_4,:) * sqrt((c%e_layer_dipo(Lz_1_4)+Lx_Ly_delta_e)/c%e_layer_dipo(Lz_1_4))
+     c%dipoP(:,:,Lz_3_4,:) = c%dipoP(:,:,Lz_3_4,:) * sqrt((c%e_layer_dipo(Lz_3_4)-Lx_Ly_delta_e)/c%e_layer_dipo(Lz_3_4))
+  end if
+
+  if (p%mass_acou>0.0d0 .and. p%delta_e_acou.ne.0.0d0) then
 !$omp parallel do
      do iz=0,p%Lz-1
         c%e_layer_acou(iz) = SUM( c%acouP(:,:,iz,:) * c%acouP(:,:,iz,:) ) * p%mass_acou_inv / 2
      end do
 !$omp end parallel do
-     c%dipoP(:,:,Lz_1_4,:) = c%dipoP(:,:,Lz_1_4,:) * sqrt((c%e_layer_dipo(Lz_1_4)+Lx_Ly_delta_e)/c%e_layer_dipo(Lz_1_4))
-     c%dipoP(:,:,Lz_3_4,:) = c%dipoP(:,:,Lz_3_4,:) * sqrt((c%e_layer_dipo(Lz_3_4)-Lx_Ly_delta_e)/c%e_layer_dipo(Lz_3_4))
-     ! if (mass_acou>0.0d0) then
-     !    c%acouP(:,:,Lz_1_4,:) =
-     !    c%acouP(:,:,Lz_3_4,:) =
-     ! end if
+     c%acouP(:,:,Lz_1_4,:) = c%acouP(:,:,Lz_1_4,:) * sqrt((c%e_layer_acou(Lz_1_4)+Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_1_4))
+     c%acouP(:,:,Lz_3_4,:) = c%acouP(:,:,Lz_3_4,:) * sqrt((c%e_layer_acou(Lz_3_4)-Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_3_4))
   end if
 
   if (i_step.eq.0) then

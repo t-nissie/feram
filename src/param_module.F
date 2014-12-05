@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2014-11-24 20:55:03 takeshi>
+! Time-stamp: <2014-12-05 18:39:54 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -83,7 +83,8 @@ module Param_module
      real*8 kappa         ! arbitrary kappa for dipole-dipole-long-range.F
      logical plot_dispersion
      !--- Thermal conductivity ------------------------
-     real*8 delta_e ! [eV/unitcell]
+     real*8 delta_e      ! [eV/unitcell]
+     real*8 delta_e_acou ! [eV/unitcell]
      !--- Verboseness of .log file --------------------
      integer verbose
      !--- DDB2short -----------------------------------
@@ -166,7 +167,8 @@ contains
     p%kappa = 0.0d0
     p%continue = .false.
     p%plot_dispersion = .false.
-    p%delta_e = 0.0d0
+    p%delta_e      = 0.0d0
+    p%delta_e_acou = 0.0d0
     p%verbose = 1
     p%DDB_a = 0.0d0
     p%DDB_b = 0.0d0
@@ -316,6 +318,8 @@ contains
           read(str,*) dmy1, dmy2, p%plot_dispersion
        case('delta_e')
           read(str,*) dmy1, dmy2, p%delta_e
+       case('delta_e_acou')
+          read(str,*) dmy1, dmy2, p%delta_e_acou
        case('verbose')
           read(str,*) dmy1, dmy2, p%verbose
        case('DDB_a')
