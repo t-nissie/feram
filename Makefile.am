@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2014-02-22 15:14:03 takeshi>
+# Time-stamp: <2014-12-17 19:00:47 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -55,7 +55,7 @@ Autotools-memo.%.html: Autotools-memo.%
 dist-hook:
 	rm -rf `find $(distdir) -type d -name .svn`
 #	cd $(distdir)/doc        && $(MAKE)
-#	cd $(distdir)/parameters && $(MAKE)
+	cd $(distdir)/parameters && $(MAKE)
 
 .PHONY: snapshot
 snapshot:
