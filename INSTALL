@@ -83,7 +83,7 @@ with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
  $ ../configure && make -j --max-load=10.0
  $ make check   # OPTIONAL. It takes 2 hours.
 
-=== Fedora 21 (feram-0.21.05, 2014-11-05)
+=== Fedora 21 (feram-0.22.05, 2014-11-05)
 FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
 installed into Fedora systems with yum(8) command. See http://fedoraproject.org .
 ==== install required packages
@@ -91,9 +91,9 @@ installed into Fedora systems with yum(8) command. See http://fedoraproject.org 
  # yum install fftw-devel blas-devel lapack-devel gnuplot csh
  # yum install autoconf.noarch automake.noarch libtool subversion   # For developers
 ==== compile feram
- $ tar xf feram-0.21.05.tar.xz
- $ mkdir feram-0.21.05/fedora21
- $ cd feram-0.21.05/fedora21
+ $ tar xf feram-0.22.05.tar.xz
+ $ mkdir feram-0.22.05/fedora21
+ $ cd feram-0.22.05/fedora21
  $ ../configure && make -j --max-load=10.0
  $ make check   # OPTIONAL. It takes 2 hours.
 
@@ -200,7 +200,7 @@ from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
  $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
 
 === Linux with Intel Fortran Compiler and FFTW library
-Sometimes it is fater than MKL.
+Sometimes it is faster than MKL.
  $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir ifort-12.1-FFTW
@@ -274,8 +274,118 @@ If you want to link FFTW 3.3 rather than FFT in SSL II,
 
 
 == Windows
-=== MinGW
+feram can be compiled on Windows 8.1 with MinGW and TDM64-GCC.
+=== Install MinGW
+Check MinGW (Minimalist GNU for Windows) homepage http://www.mingw.org/ .
+Download mingw-get-setup.exe from http://sourceforge.net/projects/mingw/files/Installer/ .
+Execute mingw-get-setup.exe to install MinGW.
+You do not have to install C and Fortran compilers here.
+Select only "mingw-developer-toolkit".
+You can also select msys-mintty, msys-wget, msys-upzip, msys-zip, etc.
 
+Add "C:\MinGW\bin;" to the PATH environment variable by opening the System control panel,
+going to the Advanced tab, and clicking the Environment Variables button.
+
+Making a shortcut of
+ c:\MinGW\msys\1.0\bin\mintty.exe /bin/bash --login -i
+on your desktop may be useful.
+You can do following compilations and installations on this mintty. 
+
+To add more packages, you can double-click "MinGW Install", select new packages, then
+apply changes. Or you can add packages with mingw-get:
+ $ mingw-get update
+ $ mingw-get upgrade
+ $ mingw-get install msys-mintty msys-wget msys-zip msys-unzip
+
+=== Install TDM64-GCC
+Because gfortran and OpenMP (mingw32-pthreads-w32) in MinGW cannot
+compile feram code correctly, we install and use TDM64-GCC.
+Go to http://tdm-gcc.tdragon.net/ .
+Download and execute tdm64-gcc-4.9.2-3.exe .
+Mark "fortran" and "openmp" in the TDM-GCC Setup.
+Make sure that "C:\TDM-GCC-64\bin;" is *before* "C:\MinGW\bin;" in the
+PATH environment variable.
+Check the version number of gfortran
+ $ gfortran --version
+ GNU Fortran (tdm64-1) 4.9.2
+     :
+
+=== Install FFTW
+Referring to http://www.fftw.org/install/windows.html ,
+you can compile and install FFTW library as:
+ $ cd
+ $ mkdir -p work/fftw
+ $ cd work/fftw
+ $ wget http://fftw.org/fftw-3.3.4.tar.gz
+ $ tar xf fftw-3.3.4.tar.gz
+ $ cd fftw-3.3.4
+ $ mkdir MinGW
+ $ cd MinGW
+ $ ../configure --enable-threads --with-combined-threads --enable-sse2 --enable-avx --enable-shared --with-our-malloc16 --disable-static --with-windows-f77-mangling
+ $ make   # Do not use the -j option.
+ $ make install
+ $ hash -r
+ $ fftw-wisdom --version   # Check its version.
+Note that installed /usr/local/bin/libfftw3-3.dll does not have the OpenMP library, but the threads library.
+
+=== Install BLAS and LAPACK
+ $ wget http://www.netlib.org/lapack/lapack-3.5.0.tgz
+ $ tar xf lapack-3.5.0.tgz
+ $ cd lapack-3.5.0
+ $ cp make.inc.example make.inc
+ $ cd BLAS/src
+ $ make   # Do not use the -j option.
+ $ cd ../..
+ $ make   # Tests fail, but we do not care.
+ $ cp liblapack.a /usr/local/lib/
+ $ cp librefblas.a /usr/local/lib/libblas.a
+
+=== Install feram
+ $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.22.06/feram-0.22.06.tar.xz
+ $ tar xf feram-0.22.06.tar.xz
+ $ cd feram-0.22.06
+ $ mkdir MinGW
+ $ cd MinGW
+ $ ../configure LDFLAGS=-L/usr/local/lib --with-fft=fftw3_combined_threads
+ $ make   # Do not use the -j option.
+ $ objdump.exe -p src/feram.exe
+ 
+ src/feram.exe:     file format pei-x86-64
+ 
+ Characteristics 0x27
+         relocations stripped
+         executable
+         line numbers stripped
+         large address aware
+ 
+ Time/Date               Sun Dec 28 17:45:01 2014
+ Magic                   020b    (PE32+)
+     :
+
+=== GNU Autotools
+Latest autoconf and automake are required for developers of feram.
+
+ $ wget http://ring.tains.tohoku.ac.jp/pub/GNU/autoconf/autoconf-2.69.tar.xz
+ $ tar xz autoconf-2.69.tar.xz
+ $ cd autoconf-2.69
+ $ mkdir MinGW
+ $ cd MinGW
+ $ ../configure
+ $ make
+ $ make install
+ $ hash -r
+ $ autoconf --version
+
+ $ wget http://ring.tains.tohoku.ac.jp/pub/GNU/automake/automake-1.14.1.tar.xz
+ $ tar xz automake-1.14.1.tar.xz
+ $ cd automake-1.14.1
+ $ mkdir MinGW
+ $ cd MinGW
+ $ ../configure
+ $ make
+ $ make install
+ $ hash -r
+ $ automake --version
 
 == Mac OS X
 You can compile feram on Mac OS X with Xcode and its Command Line Tools.
