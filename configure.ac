@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2014-11-24 20:52:03 takeshi>
+dnl Time-stamp: <2014-12-29 07:47:41 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -61,6 +61,7 @@ AC_ARG_WITH(fft,[AS_HELP_STRING([--with-fft=ARG],[FFT library.
                                    ARG must be one of
                                    fftw3_omp (default, fast),
                                    fftw3_threads,
+                                   fftw3_combined_threads (for Windows),
                                    mkl (Intel MKL, FFTW3 wrappers to Intel MKL functions),
                                    ssl2 (Fujitsu SSL II), or
                                    no (error).])])
@@ -76,6 +77,12 @@ case "$with_fft" in
                  [AC_MSG_ERROR([You need FFTW3 library, i.e. libfftw3. See config.log.])])
     AC_CHECK_LIB(fftw3_threads, dfftw_init_threads,,
                  [AC_MSG_ERROR([You need FFTW3 library compiled with --enable-threads, i.e. libfftw3_threads. See config.log.])])
+    ;;
+  fftw3_combined_threads)
+    AC_CHECK_LIB(fftw3, dfftw_execute,,
+                 [AC_MSG_ERROR([You need FFTW3 library, i.e. libfftw3.dll. See config.log.])])
+    AC_CHECK_LIB(fftw3, dfftw_init_threads,,
+                 [AC_MSG_ERROR([Your FFTW3 library does not combine threads. See config.log.])])
     ;;
   mkl)
     AC_CHECK_LIB(mkl_gf_lp64, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
