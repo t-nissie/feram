@@ -273,7 +273,7 @@ If you want to link FFTW 3.3 rather than FFT in SSL II,
  $ ../configure FC=frtpx LDFLAGS=-L/usr/local/fftw/3.3/lib64  CPPFLAGS=-I/usr/local/fftw/3.3/include  --with-fft=fftw3 --with-lapack=ssl2 --host=FX10
 
 
-== Windows
+== Windows (feram-0.22.06, 2014-12-29)
 feram can be compiled on Windows 8.1 with MinGW and TDM64-GCC.
 === Install MinGW
 Check MinGW (Minimalist GNU for Windows) homepage http://www.mingw.org/ .
@@ -388,7 +388,7 @@ Latest autoconf and automake are required for developers of feram.
  $ automake --version
 
 == Mac OS X
-You can compile feram on Mac OS X with Xcode and its Command Line Tools.
+You can easily compile feram on Mac OS X with Xcode and its Command Line Tools.
 
 =end
 # Local variables:
