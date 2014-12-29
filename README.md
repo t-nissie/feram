@@ -1,11 +1,11 @@
-feram-0.22.05
+feram-0.22.06
 =============
 Dear current and future feram users,
 
-I released feram-0.22.05.tar.xz from
+I released feram-0.22.06.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 
-MD5 (feram-0.22.05.tar.xz) = cfc000c83dec955e4b2f50fe9122ca0b
+MD5 (feram-0.22.06.tar.xz) = cd24244a24c5040b24f2a29e0e6eff96
 
 "feram" is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -16,7 +16,17 @@ Enjoy,
 Takeshi
 
 ## Changes
-In this feram-0.22.05, a bug in kinetic_energy_dipo.F is
+From this feram-0.22.06,
+
+* parameters/parameters.html is surely included in the
+  source package.
+* We start to use dsyevx() and zheevx() instead of
+  dsyev() and zheev().
+* Energies will be written into the .hl file.
+* You can compile this feram code on Windows 8.1
+  with MinGW and TDM64-GCC. See INSTALL or INSTALL.html.
+
+In the feram-0.22.05, a bug in kinetic_energy_dipo.F is
 fixed for defects calculation.
 
 In the feram-0.22.04, bugs in rnd?.defects files in
@@ -68,3 +78,5 @@ Bulk calculations go very fine.
     0.22.04 | without           | paraelectric
     0.22.05 | with              | strange peak
     0.22.05 | without           | OK
+    0.22.06 | with              | strange peak
+    0.22.06 | without           | OK
