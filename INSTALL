@@ -273,9 +273,60 @@ If you want to link FFTW 3.3 rather than FFT in SSL II,
  $ ../configure FC=frtpx LDFLAGS=-L/usr/local/fftw/3.3/lib64  CPPFLAGS=-I/usr/local/fftw/3.3/include  --with-fft=fftw3 --with-lapack=ssl2 --host=FX10
 
 
-== Windows (feram-0.22.06, 2014-12-29)
-feram can be compiled on Windows 8.1 with MinGW and TDM64-GCC.
-=== Install MinGW
+
+== Windows
+On Windows OS, you can use feram through Cygwin or MinGW.
+
+=== Through Cygwin of gnupack (feram-0.22.06, 2015-01-05)
+We install Cygwin with gnupack http://gnupack.sourceforge.jp/docs/latest/UsersGuide.html .
+Then, we install gfortran, FFTW3 and LAPACK packages with apt-cyg command.
+Then, we compile and execute feram.
+==== Downlaod and install gnupack
+Download a self-extracting archive gnupack_devel-12.00-2014.12.29.exe
+from http://sourceforge.jp/projects/gnupack/releases/p10360
+and extract it into C:/ .
+==== Install gfortran, FFTW3 and LAPACK
+You can start a UNIX-like terminal with the startup_cygwin.exe command,
+and from the terminal you can install gfortran, FFTW3 and LAPACK.
+ # cd
+ # export LANG=C   # Put it in your .bashrc
+ # apt-cyg update
+ # apt-cyg install gcc4-fortran libfftw3-devel liblapack-devel
+ # cp /usr/lib/lapack/cyg*.dll /usr/bin
+ # gfortran --version
+==== Compile feram
+Now, let's compile and execute feram!
+ # cd
+ # mkdir -p f/feram
+ # cd f/feram
+ # wget http://sourceforge.net/projects/loto/files/feram/feram-0.22.06/feram-0.22.06.tar.xz
+ # tar xf feram-0.22.06.tar.xz
+ # cd feram-0.22.06
+ # mkdir Cygwin
+ # cd Cygwin
+ # ../configure --with-fft=fftw3_threads
+ # make -j4
+ # objdump.exe -p src/feram.exe | head -n 12
+ 
+ src/feram.exe:     file format pei-i386
+ 
+ Characteristics 0x127
+         relocations stripped
+         executable
+         line numbers stripped
+         large address aware
+         32 bit words
+ 
+ Time/Date               Mon Jan  5 05:19:47 2015
+ Magic                   010b    (PE32)
+ # cd src
+ # cp ../../src/elastocaloric770K_check.??.feram .
+ # OMP_NUM_THREADS=4 ./feram.exe elastocaloric770K_check.vs.feram elastocaloric770K_check.lf.feram
+ # make check   # This will be available from feram-0.22.07.
+
+=== Through MinGW (feram-0.22.06, 2014-12-29)
+We compile feram on Windows 8.1 with MinGW and TDM64-GCC.
+==== Install MinGW
 Check MinGW (Minimalist GNU for Windows) homepage http://www.mingw.org/ .
 Download mingw-get-setup.exe from http://sourceforge.net/projects/mingw/files/Installer/ .
 Execute mingw-get-setup.exe to install MinGW.
@@ -297,7 +348,7 @@ apply changes. Or you can add packages with mingw-get:
  $ mingw-get upgrade
  $ mingw-get install msys-mintty msys-wget msys-zip msys-unzip
 
-=== Install TDM64-GCC
+==== Install TDM64-GCC
 Because gfortran and OpenMP (mingw32-pthreads-w32) in MinGW cannot
 compile feram code correctly, we install and use TDM64-GCC.
 Go to http://tdm-gcc.tdragon.net/ .
@@ -310,7 +361,7 @@ Check the version number of gfortran
  GNU Fortran (tdm64-1) 4.9.2
      :
 
-=== Install FFTW
+==== Install FFTW
 Referring to http://www.fftw.org/install/windows.html ,
 you can compile and install FFTW library as:
  $ cd
@@ -327,8 +378,7 @@ you can compile and install FFTW library as:
  $ hash -r
  $ fftw-wisdom --version   # Check its version.
 Note that installed /usr/local/bin/libfftw3-3.dll does not have the OpenMP library, but the threads library.
-
-=== Install BLAS and LAPACK
+==== Install BLAS and LAPACK
  $ wget http://www.netlib.org/lapack/lapack-3.5.0.tgz
  $ tar xf lapack-3.5.0.tgz
  $ cd lapack-3.5.0
@@ -339,8 +389,7 @@ Note that installed /usr/local/bin/libfftw3-3.dll does not have the OpenMP libra
  $ make   # Tests fail, but we do not care.
  $ cp liblapack.a /usr/local/lib/
  $ cp librefblas.a /usr/local/lib/libblas.a
-
-=== Install feram
+==== Install feram
  $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.22.06/feram-0.22.06.tar.xz
  $ tar xf feram-0.22.06.tar.xz
  $ cd feram-0.22.06
@@ -364,9 +413,8 @@ Note that installed /usr/local/bin/libfftw3-3.dll does not have the OpenMP libra
  $ cd src
  $ cp ../../src/elastocaloric770K_check.??.feram .
  $ ./feram.exe elastocaloric770K_check.vs.feram elastocaloric770K_check.lf.feram   # Test.
-
-=== GNU Autotools
-Latest autoconf and automake are required for developers of feram.
+==== GNU Autotools
+The latest autoconf and automake are required for developers of feram.
 
  $ wget http://ring.tains.tohoku.ac.jp/pub/GNU/autoconf/autoconf-2.69.tar.xz
  $ tar xz autoconf-2.69.tar.xz
@@ -389,17 +437,16 @@ Latest autoconf and automake are required for developers of feram.
  $ make install
  $ hash -r
  $ automake --version
-
-=== Ruby, GNUPLOT and Ghostscript
+==== Ruby, GNUPLOT and Ghostscript
 Use good installers for Ruby, GNUPLOT and Ghostscript.
  * Ruby: http://rubyinstaller.org
  * GNUPLOT: gp466-win32-setup.exe in https://sourceforge.net/projects/gnuplot/files/
  * GhostScript: gs915w32.exe from http://www.ghostscript.com
-
-You may have to modify epstopdf.pl for MinGW.
+ * You may have to modify epstopdf.pl for MinGW: http://www.ctan.org/pkg/epstopdf
 
 == Mac OS X
-You can easily compile feram on Mac OS X with Xcode and its Command Line Tools.
+You can easily compile the latest gfortran in GCC package
+and then feram on Mac OS X with Xcode and its Command Line Tools.
 
 =end
 # Local variables:
