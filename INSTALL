@@ -447,7 +447,7 @@ Use good installers for Ruby, GNUPLOT and Ghostscript.
 == Mac OS X (feram-0.22.06, 2015-01-09)
 You can easily compile the latest gfortran in GCC 4.9.2 package
 and then FFTW and feram on Mac OS X with Xcode and its Command Line Tools.
-Mac OS X has LAPACK and BLAS in /usr/lib/.
+Mac OS X has LAPACK and BLAS in /usr/lib/ by default.
 
 Note that /usr/bin/gcc is Apple LLVM, not GCC.
 And LLVM does not have OpenMP yet.
@@ -500,7 +500,8 @@ Basically, these libraries can be installed with configure && make && make insta
  $ ldd src/feram
  $ OMP_NUM_THREADS=2 make check   # OPTIONAL. It takes 2 hours.
 === Homebrew
-Homebrew http://brew.sh/ is an altanative way to install GCC etc. into Mac OS X.
+Homebrew http://brew.sh/ is an altanative way to install gfortran etc. into Mac OS X.
+ $ brew install gcc49 --enable-fortran
 =end
 # Local variables:
 #   mode: RD
