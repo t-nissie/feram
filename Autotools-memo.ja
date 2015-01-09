@@ -101,7 +101,7 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
 === 手順
 configure.ac, Makefile.am, src/Makefile.amを書いて、
  $ autoreconf -v
- $ automake --add-missing   # 初回にautoreconfで実効を要求されたとき
+ $ automake --add-missing   # 初回にautoreconfで実行を要求されたとき
  $ autoreconf -v            # ☆
  $ ./configure
  $ make                     # ソースの編集など開発を進め、最後にmakeでコンパイルできることを確認
