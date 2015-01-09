@@ -488,7 +488,7 @@ Basically, these libraries can be installed with configure && make && make insta
  $ make -j2
  $ make check
  $ sudo make install
-==== compile feram
+=== Compile feram
  $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir Darwin
