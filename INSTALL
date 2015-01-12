@@ -277,13 +277,13 @@ If you want to link FFTW 3.3 rather than FFT in SSL II,
 == Windows
 On Windows OS, you can use feram through Cygwin or MinGW.
 
-=== Through Cygwin of gnupack (feram-0.22.06, 2015-01-05)
+=== Through Cygwin of gnupack (feram-0.22.06, 2015-01-12)
 We install Cygwin with gnupack http://gnupack.sourceforge.jp/docs/latest/UsersGuide.html .
 Then, we install gfortran, FFTW3 and LAPACK packages with apt-cyg command.
 Then, we compile and execute feram.
 ==== Downlaod and install gnupack
-Download a self-extracting archive gnupack_devel-12.00-2014.12.29.exe
-from http://sourceforge.jp/projects/gnupack/releases/p10360
+Download a self-extracting archive gnupack_devel-12.01-2015.01.11.exe
+from http://sourceforge.jp/projects/gnupack/releases/62561
 and extract it into C:/ .
 ==== Install gfortran, FFTW3 and LAPACK
 You can start a UNIX-like terminal with the startup_cygwin.exe command,
@@ -294,6 +294,7 @@ and from the terminal you can install gfortran, FFTW3 and LAPACK.
  # apt-cyg install gcc4-fortran libfftw3-devel liblapack-devel
  # cp /usr/lib/lapack/cyg*.dll /usr/bin
  # gfortran --version
+ GNU Fortran (GCC) 4.9.2
 ==== Compile feram
 Now, let's compile and execute feram!
  # cd
@@ -445,18 +446,23 @@ Use good installers for Ruby, GNUPLOT and Ghostscript.
  * You may have to modify epstopdf.pl for MinGW: http://www.ctan.org/pkg/epstopdf
 
 == Mac OS X (feram-0.22.06, 2015-01-09)
+Three ways of setting up software-developing
+environments on Mac OS X is described below.
+ * From source
+ * With Mac Ports
+ * With Homebrew
+Before everything, you have to install Xcode from Mac App Store.
+It is free of charge. Its Command Line Tools is also useful.
+
+=== From source
 You can easily compile the latest gfortran in GCC 4.9.2 package
-and then FFTW and feram on Mac OS X with Xcode and its Command Line Tools.
+with Xcode and its Command Line Tools on Mac OS X.
+And then, you can compile FFTW with gcc and feram with gfortran.
 Mac OS X has LAPACK and BLAS in /usr/lib/ by default.
 
 Note that /usr/bin/gcc is Apple LLVM, not GCC.
 And LLVM does not have OpenMP yet.
-
-=== Install Xcode and its Command Line Tools
-You can install Xcode from Mac App Store.
-It is free of charge.
-Its Command Line Tools is also useful.
-=== Install libraries for GCC
+==== Install libraries for GCC
 Basically, these libraries can be installed with configure && make && make install manner.
  * The GNU Multiple Precision Arithmetic Library
    * Home page: https://gmplib.org
@@ -470,7 +476,7 @@ Basically, these libraries can be installed with configure && make && make insta
    * Home page: http://mpc.multiprecision.org/
    * Use mpc-1.0.2.tar.gz in http://ring.tains.tohoku.ac.jp/pub/GNU/mpc/ or somewhere.
    * Configure: ./configure --with-gmp=/usr/local --with-mpfr=/usr/local
-=== Install GCC
+==== Install GCC
  $ tar xf gcc-4.9.2.tar.bz2
  $ cd gcc-4.9.2
  $ ./configure --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local \
@@ -478,7 +484,7 @@ Basically, these libraries can be installed with configure && make && make insta
  $ make
  $ make check
  $ sudo make install
-=== Install FFTW3
+==== Install FFTW3
  $ tar xf fftw-3.3.4.tar.gz
  $ cd fftw-3.3.4
  $ mkdir Darwin
@@ -488,7 +494,7 @@ Basically, these libraries can be installed with configure && make && make insta
  $ make -j2
  $ make check
  $ sudo make install
-=== Compile feram
+==== Compile feram
  $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir Darwin
@@ -499,9 +505,15 @@ Basically, these libraries can be installed with configure && make && make insta
  $ ls -l src/feram
  $ ldd src/feram
  $ OMP_NUM_THREADS=2 make check   # OPTIONAL. It takes 2 hours.
-=== Homebrew
+
+=== With Mac Ports
+The MacPorts Project Official Homepage: https://www.macports.org
+Details will be comming soon.
+
+=== With Homebrew
 Homebrew http://brew.sh/ is an altanative way to install gfortran etc. into Mac OS X.
  $ brew install gcc49 --enable-fortran
+Details will be comming soon.
 =end
 # Local variables:
 #   mode: RD
