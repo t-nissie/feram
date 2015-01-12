@@ -1,11 +1,11 @@
-feram-0.22.06
+feram-0.22.07
 =============
 Dear current and future feram users,
 
-I released feram-0.22.06.tar.xz from
+I released feram-0.22.07.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 
-MD5 (feram-0.22.06.tar.xz) = cd24244a24c5040b24f2a29e0e6eff96
+MD5 (feram-0.22.07.tar.xz) = 
 
 "feram" is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -16,7 +16,7 @@ Enjoy,
 Takeshi
 
 ## Changes
-From this feram-0.22.06,
+From the feram-0.22.06,
 
 * parameters/parameters.html is surely included in the
   source package.
