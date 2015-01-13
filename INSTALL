@@ -212,7 +212,7 @@ Sometimes it is faster than MKL.
  $ make feram_mpi                 # OPTIONAL. mpif90 is required.
  $ OMP_NUM_THREADS=6 make check   # OPTIONAL. It takes 2 hours.
 
-=== Linux with OLD Intel Fortran Compiler and FFTW library (feram-0.21.04, 2013-10-08)
+=== Linux with OLD Intel Fortran Compiler (feram-0.21.04, 2013-10-08)
 Old versions (around version 9.1) of ifort (Intel Fortran Compiler) does not
 have FFTW wrappers. You should also edit src/Makefile for changing LIBS.
 
@@ -445,14 +445,16 @@ Use good installers for Ruby, GNUPLOT and Ghostscript.
  * GhostScript: gs915w32.exe from http://www.ghostscript.com
  * You may have to modify epstopdf.pl for MinGW: http://www.ctan.org/pkg/epstopdf
 
-== Mac OS X (feram-0.22.06, 2015-01-09)
+== Mac OS X
 Before everything, you have to install Xcode from Mac App Store.
 It is free of charge. Its Command Line Tools is also useful.
 (Note that /usr/bin/gcc is Apple LLVM, not GCC.
 And LLVM does not have OpenMP yet.)
 
+Mac OS X has LAPACK and BLAS in /usr/lib/ by default.
+
 Three ways of setting up software-developing
-environments on Mac OS X is described below.
+environments on Mac OS X are described below.
  * With Mac Ports
  * With Homebrew
  * From source
@@ -486,11 +488,10 @@ Homebrew http://brew.sh/ is an altanative way to install gfortran etc. into Mac 
  $ brew install gcc49 --enable-fortran
 Details will be comming soon.
 
-=== From source
+=== From sources (feram-0.22.06, 2015-01-09)
 You can easily compile the latest gfortran in GCC 4.9.2 package
 with Xcode and its Command Line Tools on Mac OS X.
 And then, you can compile FFTW with gcc and feram with gfortran.
-Mac OS X has LAPACK and BLAS in /usr/lib/ by default.
 ==== Install libraries for GCC
 Basically, these libraries can be installed with configure && make && make install manner.
  * The GNU Multiple Precision Arithmetic Library
