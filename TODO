@@ -12,6 +12,10 @@ o (nightly) automation of unit test with "make check"
 
 o (nightly) automation of profiling and timing
 
+o Replace jot(1) with seq(1). Do not use --separator option for seq. Use -s.
+
+o Replace colrm(1) with cut(1).  `cut -b -14` is equivalent with `colrm 15`.
+
 o No need to initialize Energy_type ???
 
 o remove redundant procedures:
@@ -72,12 +76,8 @@ o  call dipoFFT(p,c)
 o libbuilt_in_fft 128 256, libbuilt_in_fft -> libminimal_fft
 
 o Makefile.amの依存関係。並列コンパイルmake -jでデバグできる。
-  たとえMakefile.amに依存関係が適切に書かれていても、
-  XL Fortranが書き出すa.lstが並列コンパイルの邪魔をする。
-  a.lstは何？これはmakeの新オプション--output-sync（-O）で回避できる？
 
 o 依存関係の自動生成。gfortranに新しく導入される-Mオプションの活用？ makedepf90？
-
 
 o Reduce memory size using in-place FFT and
   rank remapping or array dimension changing (See in-place-FFT.ja.txt)
@@ -91,8 +91,6 @@ o striped structure を initial configuration にできるようにする.
 o refactoring nose-poincare.F and energy.F
 
 o 3 node parallelization
-
-o use autoconf and make configure
 
 o average 4倍精度に？
 
@@ -207,6 +205,11 @@ x Temperature from averaging acou_kinetic and dipo_kinetic
 x continue_without_restart_file for avoiding huge .coord files
 
 x replace DSYEV().
+
+x たとえMakefile.amに依存関係が適切に書かれていても、
+  XL Fortranが書き出すa.lstが並列コンパイルの邪魔をする。
+  a.lstは何？これはmakeの新オプション--output-sync（-O）で回避できる？
+
 
 Not ToDo:
 - 使うGPUって環境変数で選べるの？
