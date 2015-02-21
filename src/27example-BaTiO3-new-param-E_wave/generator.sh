@@ -4,7 +4,7 @@ for temperature in `jot - 340 560 10`; do
 GPa=`perl -e "print -0.005 * $temperature"`
 cat > $temperature.feram <<EOF
 #--- Method, Temperature, and mass ---------------
-method = 'hl'
+method = 'vs'
 GPa = $GPa
 kelvin = $temperature
 mass_amu = 38.24
@@ -34,14 +34,15 @@ P_gamma = -115.484148812672 [eV/Angstrom^4]
 #--- Time step -----------------------------------
 dt = 0.001 [pico second]
 n_thermalize =   20000
-n_average    = 2000000
-n_hl_freq    =    5000
-n_coord_freq = 4000000
+n_average    =    100000
+n_E_wave_period =  35000
+n_hl_freq    =       100
 coord_directory = 'never'
 distribution_directory = 'never'
+E_wave_type = 'triangular_cos'
 
 #--- External electric field ---------------------
-external_E_field = 0.00 0.00 -0.003
+external_E_field = 0.00 0.00 0.004
 
 #--- From eigenvalues2j --------------------------
 # original  P_kappa2 =    8.1460516421 [eV/Angstrom^2] =    0.0838298622 [Hartree/Bohr^2]
