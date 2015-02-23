@@ -2,7 +2,7 @@
 ##
 for temperature in `jot - 340 560 10`; do
 GPa=`perl -e "print -0.005 * $temperature"`
-cat > $temperature.feram <<EOF
+cat > $temperature-cos.feram <<EOF
 #--- Method, Temperature, and mass ---------------
 method = 'vs'
 GPa = $GPa
@@ -48,7 +48,7 @@ external_E_field = 0.00 0.00 0.004
 # original  P_kappa2 =    8.1460516421 [eV/Angstrom^2] =    0.0838298622 [Hartree/Bohr^2]
 P_kappa2 = 8.53400622096412
 j =  -2.08403 -1.12904  0.68946 -0.61134  0.00000  0.27690  0.00000    [eV/Angstrom^2]
-a0	  =   3.98597    [Angstrom]
+a0          =   3.98597    [Angstrom]
 Z_star      =  10.33000
 epsilon_inf =   6.86915
 
@@ -57,11 +57,13 @@ init_dipo_avg = 0.0   0.0   0.0    [Angstrom]  # Average   of initial dipole dis
 init_dipo_dev = 0.03  0.03  0.03   [Angstrom]  # Deviation of initial dipole displacements
 EOF
 
+sed 's/triangular_cos/triangular_sin/' $temperature-cos.feram > $temperature-sin.feram
+
 cat > $temperature.csh <<EOF
 #!/bin/csh
 # $temperature.csh
 # Author: Takeshi NISHIMATSU
 ##
-../feram $temperature.feram
+../feram $temperature-cos.feram $temperature-sin.feram
 EOF
 done
