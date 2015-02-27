@@ -282,8 +282,8 @@ We install Cygwin with gnupack http://gnupack.sourceforge.jp/docs/latest/UsersGu
 Then, we install gfortran, FFTW3 and LAPACK packages with apt-cyg command.
 Then, we compile and execute feram.
 ==== Downlaod and install gnupack
-Download a self-extracting archive gnupack_devel-12.01-2015.01.11.exe
-from http://sourceforge.jp/projects/gnupack/releases/62561
+Download the latest self-extracting archive gnupack_devel-12.XX-2015.MM.DD.exe
+from http://sourceforge.jp/projects/gnupack/releases/p10360
 and extract it into C:/ .
 ==== Install gfortran, FFTW3 and LAPACK
 You can start a UNIX-like terminal with the startup_cygwin.exe command,
