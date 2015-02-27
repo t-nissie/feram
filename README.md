@@ -16,6 +16,11 @@ Enjoy,
 Takeshi
 
 ## Changes
+From this feram-0.22.07, you can do `make check` on Windows.
+
+A bug in src/27example-BaTiO3-new-param-E_wave/generator.sh is fixed.
+You can generate some input files automatically now.
+
 From the feram-0.22.06,
 
 * parameters/parameters.html is surely included in the
