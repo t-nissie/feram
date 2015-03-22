@@ -1,10 +1,10 @@
 #!/usr/bin/env gnuplot
 # dipole-dipole.gp
-# Time-stamp: <2008-10-21 21:30:23 takeshi>
+# Time-stamp: <2014-10-15 18:41:46 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 set encoding iso_8859_1
-call 'bulk32x32x32.param'
+call 'bulk32x32x32.param.gp'
 c =                  14.399644 * Z_star**2 / epsilon_inf / a0**3
 omega_unit_m = sqrt( 14.399644 * Z_star**2 / epsilon_inf*4*pi / 3 / a0**3 )
 omega_unit = omega_unit_m / sqrt(mass_dipo)
@@ -102,7 +102,7 @@ plot 0 w l lt 2,\
 'bulk32x32x32.dipole-dipole-long+short.dat' using 1:($6/c/2) w l lt 3 lw 3,\
 'bulk32x32x32.dipole-dipole-long+short.dat' using 1:($7/c/2) w l lt 4 lw 3
 
-#set yrange [-15:30]
+set yrange [-15:30]
 set ytics -5
 #set format y "%.3f"
 set ylabel 'Eigenvalues of {/Symbol F}({/Times-Italic k})/2 [eV \305^{-2} unit-cell^{-1}]'

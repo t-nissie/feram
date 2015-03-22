@@ -1,17 +1,17 @@
 = feram tutorial
 == Login
- $ ssh -X -l guestN YourComputer
+ $ ssh -X -l guest2 emerald02.imr.edu
  $ cat /home/t-nissie/f/loto/feram/trunk/tutorial.IMR.ja.txt
 
 == Compile with gfortran (GNU fortran)
  $ cd 
  $ mkdir -p f/feram
  $ cd f/feram
- $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.22.01/feram-0.22.01.tar.xz/download
- $ tar xf feram-0.22.01.tar.xz
+ $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.22.04/feram-0.22.04.tar.xz
+ $ tar xf feram-0.22.04.tar.xz
  $ gfortran --version
- $ mkdir feram-0.22.01/Linux-x86_64-gfortran-4.4
- $ cd feram-0.22.01/Linux-x86_64-gfortran-4.4
+ $ mkdir feram-0.22.04/Linux-x86_64-gfortran-4.8
+ $ cd feram-0.22.04/Linux-x86_64-gfortran-4.8
  $ ../configure
  $ make -j --max-load=10.0
  $ ls src/
@@ -19,13 +19,13 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
 
 == Preparation
  $ cd
- $ mkdir -p feram/feram-0.22.01/
- $ cd feram/feram-0.22.01/
- $ ln -sf ~/f/feram/feram-0.22.01/Linux-x86_64-gfortran-4.4/src/feram .
+ $ mkdir -p feram/feram-0.22.04/
+ $ cd feram/feram-0.22.04/
+ $ ln -sf ~/f/feram/feram-0.22.04/Linux-x86_64-gfortran-4.8/src/feram .
 
 == Execute 26example-BaTiO3-acoustic-MD
- $ cd ~/feram/feram-0.22.01
- $ cp -a ~/f/feram/feram-0.22.01/src/26example-BaTiO3-acoustic-MD/ .
+ $ cd ~/feram/feram-0.22.04
+ $ cp -a ~/f/feram/feram-0.22.04/src/26example-BaTiO3-acoustic-MD/ .
  $ cd 26example-BaTiO3-acoustic-MD
  $ emacs -nw acoustic-MD.vs.feram
  $ emacs -nw acoustic-MD.lf.feram
@@ -37,8 +37,8 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  503.91  0.00000  0.00000  0.00060    0.82641E-02  0.82474E-02 ...
 
 == Execute 27example-BaTiO3-new-param-E_wave
- $ cd ~/feram/feram-0.22.01
- $ cp -a ~/f/feram/feram-0.22.01/src/27example-BaTiO3-new-param-E_wave/ .
+ $ cd ~/feram/feram-0.22.04
+ $ cp -a ~/f/feram/feram-0.22.04/src/27example-BaTiO3-new-param-E_wave/ .
  $ cd 27example-BaTiO3-new-param-E_wave
  $ emacs -nw 360cos.feram
  $ emacs -nw 360sin.feram
@@ -51,24 +51,41 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  $ top   # Toggle SMP view with "1", Quit with "q"
  $ numactl --cpunodebind 1 ../feram 360sin.feram &
  $ ln -s 360sin.param.gp param.gp
- $ head ~/f/feram/feram-0.22.01/src/cross-section-q.sh
- $ ~/f/feram/feram-0.22.01/src/cross-section-q.sh 360sin.0000004000.coord
- $ evince 360sin.0000004000-q-x.eps
+ $ head ~/f/feram/feram-0.22.04/src/cross-section-q.sh
+ $ ~/f/feram/feram-0.22.04/src/cross-section-q.sh 360sin.0000005000.coord
+ $ evince 360sin.0000005000-q-x.eps
  $ ./hysteresis.gp
  $ evince hysteresis.eps
  $ grep TIMING *log
  360cos.log:           0.76         433.39         434.14     #TIMING_REPORT
  360sin.log:           0.76         433.34         434.10     #TIMING_REPORT
- $ head ~/f/feram/feram-0.22.01/src/slicer.rb
- $ ~/f/feram/feram-0.22.01/src/slicer.rb 360sin.0000004000.coord
-
+ $ head ~/f/feram/feram-0.22.04/src/slicer.rb
+ $ ~/f/feram/feram-0.22.04/src/slicer.rb 360sin.0000005000.coord
+ $ evince 360sin.0000005000-slice-z006.eps
+ $ for c in 360sin.*.coord; do ~/f/feram/feram-0.22.04/src/slicer.rb $c 8; done
+ $ for e in 360sin.*-slice-z008.eps; do convert -density 400 $e -resize 12.5% `basename $e .eps`.gif; done
+ $ gifsicle --colors=256 --delay=20 360sin.*-slice-z008.gif > 360sin.animation.gif
+ $ gifview 360sin.animation.gif
 =end
+
 == 主催者の準備
- * 配布印刷物（論文５本、PPTを印刷したやつ、この文章の前半）の準備
+ * 配布印刷物
+   * 論文５本
+   * PPTを印刷したやつ
+   * この文章の前半
+   * MateriApps Live!の取扱説明書
  * 無線LANの準備
  * パソコンを２台ほど準備
  * NUMAの概念図
+ * テーブルタップ
+ * 指し棒またはレーザーポインタ
+
 === 用意するマシン
+Linuxがベター。MacのXQuartzやWindowsのXエミューレータは遅い。
+Aキーの左をcontrolキーにして、シールを貼っておく。
+XでEmacsを起動してBackSpaceキーが効くかチェックしておくこと。
+要gifsicleとImageMagick。
+
  * guest1 emerald01 HPのデスクトップ(VineLinux 6.2)
  * guest2 emerald02 TOSHIBA dynabook MX/33LWH (Debian 7.5)
  * guest3 platinum  MacBook Air (Early 2008)
@@ -85,3 +102,8 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  * この文章の更新
 === ゲストアカウントの消去
  # userdel guest1
+
+# Local variables:
+#   mode: RD
+#   compile-command: "make tutorial.IMR.ja.html"
+# End:

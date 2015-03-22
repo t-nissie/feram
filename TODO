@@ -1,20 +1,27 @@
 ToDo:
-o 使うGPUって環境変数で選べるの？
+o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
+  のバグを直す。0.22.04ではバグの再現さえしなくなり、パラの結果が出る。
+  svn diff -r2271:2272 kinetic_energy_dipo.F でバグの再現はするようになったが、これはあくまでquick hack。
+  dead layerがある場合など、c%n_sum_p と p%n_freedom = 3 * p%N とかの比を考慮すること。  
+  src/mirror_force_mirror.Fで単にc%acouRとc%dVdacRをミラーすればよいわけではない。
+  acoustic displacementは双極子でないので静電的ミラーではない！！！
+
+o slicer.rb -> feram_slicer.rb, eigenvalues2j -> feram_eigenvalues2j, etc.
 
 o (nightly) automation of unit test with "make check"
 
 o (nightly) automation of profiling and timing
 
-o Temperature from averaging acou_kinetic and dipo_kinetic
+o Replace jot(1) with seq(1). Do not use --separator option for seq. Use -s.
 
-o continue_without_restart_file for avoiding huge .coord files
-
-o Reduce memory size using in-place FFT and
-  rank remapping or array dimension changing (See in-place-FFT.ja.txt)
-
-o coord fileの桁数を上げて高精度化。ファイルサイズは大きくなってしまうけど。
+o Replace colrm(1) with cut(1).  `cut -b -14` is equivalent with `colrm 15`.
 
 o No need to initialize Energy_type ???
+
+o remove redundant procedures:
+  - average_module.F: around u_tmp(:) =  u_tmp(:) + c%dipoR(ix,iy,iz,:)
+  - molecular-dynamics.F: around u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
+  - Then, report uu() and energies in the .hl file.
 
 o e%acou_kinetic=0 if mass_acou<0
 
@@ -69,14 +76,13 @@ o  call dipoFFT(p,c)
 o libbuilt_in_fft 128 256, libbuilt_in_fft -> libminimal_fft
 
 o Makefile.amの依存関係。並列コンパイルmake -jでデバグできる。
-  たとえMakefile.amに依存関係が適切に書かれていても、
-  XL Fortranが書き出すa.lstが並列コンパイルの邪魔をする。
-  a.lstは何？これはmakeの新オプション--output-sync（-O）で回避できる？
 
 o 依存関係の自動生成。gfortranに新しく導入される-Mオプションの活用？ makedepf90？
 
+o Reduce memory size using in-place FFT and
+  rank remapping or array dimension changing (See in-place-FFT.ja.txt)
 
-o 力の計算の部分をsubroutineにして、leapfrog をもう一度動くようにする。
+o coord fileの桁数を上げて高精度化。ファイルサイズは大きくなってしまうけど。
 
 o Use msg() in write_Param() of param_module.F.
 
@@ -85,10 +91,6 @@ o striped structure を initial configuration にできるようにする.
 o refactoring nose-poincare.F and energy.F
 
 o 3 node parallelization
-
-o replace DSYEV().
-
-o use autoconf and make configure
 
 o average 4倍精度に？
 
@@ -197,3 +199,18 @@ x -parallel for ifort -> Everythings are parallelized with OpenMP.
 x add seeds to normal_dist(mu,sigma,seed1,seed2). speed up DOUBLE.
 
 x acoustic displacement も MD.
+
+x Temperature from averaging acou_kinetic and dipo_kinetic
+
+x continue_without_restart_file for avoiding huge .coord files
+
+x replace DSYEV().
+
+x たとえMakefile.amに依存関係が適切に書かれていても、
+  XL Fortranが書き出すa.lstが並列コンパイルの邪魔をする。
+  a.lstは何？これはmakeの新オプション--output-sync（-O）で回避できる？
+
+
+Not ToDo:
+- 使うGPUって環境変数で選べるの？
+

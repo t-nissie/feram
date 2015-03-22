@@ -435,11 +435,8 @@ Lx*Ly*Lz=300*300*300 in the OMP_NUM_THREADS=6 environment.
 See src/fft_check.html for more details on fft_check.
 
 Check http://www.fftw.org/doc/Other-Important-Topics.html for more
-details on FFTW wisdom.
-
-If you are not using the FFTW library but other FFT libraries
-such as MKL, MATRIX/MPP, SSL II, ACML, etc., you do not have to
-prepare the wisdom file.
+details on FFTW wisdom. If you are using the MKL for FFTW3 wrappers,
+you do not have to prepare the wisdom file.
 
 == Output files
 If you execute the feram like `feram foo123.feram`,
@@ -603,13 +600,13 @@ How to execute:
  $ mpiexec -np 3 ./feram_mpi foo1.feram foo2.feram foo3.feram &
 
 === README.enとindex.en.html
-index.en.html is automatically generated from README.en with ULMUL http://ulmul.rubyforge.org/ .
+index.en.html is automatically generated from README.en with ULMUL http://t-nissie.users.sourceforge.net/ULMUL/ .
 After editing README.ja (Japanese) or README.en (English), transform them with
  $ make index.en.html index.ja.html
 
 == Copying
 === feram
-Copyright © 2007-2014 by Takeshi Nishimatsu
+Copyright © 2007-2015 by Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
@@ -710,10 +707,7 @@ u.subs_rules = lambda{|s|
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').
   gsub(/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ').
-  gsub(/SourceForge\.net/,'
-<a href="http://sourceforge.net">
-  <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" alt="SourceForge.net Logo" />
-</a>')
+  gsub(/SourceForge\.net/,'<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" alt="SourceForge.net Logo" /></a>')
 # gsub(/\$(.*?)\$/){|s| Regexp.last_match[1].to_mathml}       # There is no equation in this document.
 }
 

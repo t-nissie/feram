@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2014-07-16 06:46:34 takeshi>
+# Time-stamp: <2015-02-27 19:18:03 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -11,7 +11,7 @@ bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j \
                frozen_phonon_X \
                random_field_generator
 EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
-TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh elastocaloric770K_check.csh
+TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh elastocaloric770K_check.sh
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -80,7 +80,10 @@ wave_check_SOURCES = wave_check.f wave_module.F
 
 fft_check_SOURCES = fft_wrappers.F fft_check.F f90_wisdom.f
 
-CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(EXTRA_PROGRAMS) defects_maker_check.defects
+CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(EXTRA_PROGRAMS) \
+             defects_maker_check.defects wisdom_new \
+             elastocaloric770K_check.lf.log \
+             elastocaloric770K_check.vs.log
 EXTRA_DIST = define.h \
 cross-section-dVddi.sh \
 cross-section-p.sh \
@@ -93,11 +96,11 @@ defects_maker_check.gp \
 defects_maker_check.sh \
 defects_maker_check_sphere.gp \
 elastocaloric770K_check.csh \
+elastocaloric770K_check.sh \
+elastocaloric770K_check.txt \
 elastocaloric770K_check.lf.feram \
 elastocaloric770K_check.vs.feram \
 epit.gp \
-fft_acml.f \
-fft_acml.Makefile \
 fft_check.Makefile.FX10-frtpx-fftw3_omp \
 fft_check.Makefile.Intel-gfortran-fftw3_omp \
 fft_check.Makefile.Intel-ifort-MKL \
@@ -114,6 +117,7 @@ feram_mpi.F \
 marsaglia_tsang_uni64_check.gp \
 wave_check.gp \
 03example-BaTiO3-bulk-phase-transition \
+08example-BaTiO3-dispersion \
 09example-BaTiO3-bulk-leap-frog \
 10example-PbTiO3-DDB2short \
 17example-PbTiO3-100-900K \

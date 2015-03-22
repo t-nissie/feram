@@ -1,16 +1,42 @@
 = Test feram automatically
 == How to make check:
  app2      X5650$ taskset -c 6-11 make check
- super3t SR16000$ env XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" make check
+ super3t SR16000$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" make check
+ with numactl(8)$ numactl --cpunodebind=0 make check
 
 == Timing results
 Results of `grep TIMING *.log`
-=== elastocaloric770K_check.vs.log
- X5650 1 chip = 6 core:        3.73        2114.44        2118.17    6     #TIMING_REPORT
+Note that, with a 96x96x96 supercell, use of single chip is
+much more efficient than use of two chips under Sandy Bridge-,
+Ivy Bridge- and Haswell-based Xeon.
+=== feram-0.22.05
+==== elastocaloric770K_check.vs.log
+ X5650 1 chip =  6 core:       3.73        2114.44        2118.17    6     #TIMING_REPORT
+ X5650 2 chip = 12 core:       3.86        1159.24        1163.10   12     #TIMING_REPORT
+ E5-2695 v2 2 chip = 24 cr *0: 5.84         653.73         659.57   24     #TIMING_REPORT
+ E5-2680 v3 2 chip = 24 cr *1: 5.58         580.97         586.56   24     #TIMING_REPORT
+ E5-2680 v3 2 chip = 24 cr *2: 2.69         563.31         566.00   24     #TIMING_REPORT
+ E5-2680 v3 1 chip = 12 cr *2: 2.51         656.61         659.12   12     #TIMING_REPORT
  SR16000  8 thds on 1/4 node:  2.98         994.32         997.30    8     #TIMING_REPORT
  SR16000 32 thds on  1  node:  3.12         363.08         366.20   32     #TIMING_REPORT
-
-=== elastocaloric770K_check.lf.log
- X5650 1 chip = 6 core:        3.40        2106.04        2109.44    6     #TIMING_REPORT
+==== elastocaloric770K_check.lf.log
+ X5650 1 chip =  6 core:       3.40        2106.04        2109.44    6     #TIMING_REPORT
+ X5650 2 chip = 12 core:       3.41        1143.05        1146.46   12     #TIMING_REPORT
+ E5-2695 v2 2 chip = 24 cr *0: 5.67         615.59         621.26   24     #TIMING_REPORT 
+ E5-2680 v3 chip = 24 core *1: 2.17         582.94         585.11   24     #TIMING_REPORT
+ E5-2680 v3 chip = 24 core *2: 2.06         561.13         563.19   24     #TIMING_REPORT
+ E5-2680 v3 1 chip = 12 cr *2: 2.05         647.82         649.88   12     #TIMING_REPORT
  SR16000  8 thds on 1/4 node:  2.74        1005.32        1008.06    8     #TIMING_REPORT
  SR16000 32 thds on  1  node:  2.76         363.94         366.70   32     #TIMING_REPORT
+
+*0: Intel Fortran (ifort) 14.0 and MKL with FCFLAGS="-r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1" (default)
+*1: gfortran-4.4.7 with FCFLAGS="-g -Wall -O3 -funroll-loops -pipe -ffpe-trap=zero,overflow -fopenmp" (default)
+*2: gfortran-4.9.2 with FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'
+
+=== feram-0.22.07
+==== elastocaloric770K_check.1vs.log
+ Core i7-3770K 3.50GHz *1:     3.74        2418.34        2422.08    4     #TIMING_REPORT
+==== elastocaloric770K_check.2lf.log
+ Core i7-3770K 3.50GHz *1:     3.43        2359.65        2363.08    4     #TIMING_REPORT
+
+*1: gfortran-4.8.3 of Cygwin on Windows 8.1. OMP_NUM_THREADS=4 is used to turn-off TH.

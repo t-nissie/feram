@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2014-07-01 21:06:45 takeshi>
+! Time-stamp: <2014-12-02 11:10:00 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -54,7 +54,7 @@ subroutine molecular_dynamics(p,c)
 
   call reset_Average(avg)
 
-  do i_step = 1, p%n_thermalize+p%n_thermal_conductivity+p%n_average
+  do i_step = 1, p%n_thermalize+p%n_average
 
      if (p%E_wave_type .ne. '') then
         E_field_add(:) = wave(p%E_wave_type, i_step, p%n_thermalize, p%n_E_wave_period, p%external_E_field(:))
@@ -70,13 +70,28 @@ subroutine molecular_dynamics(p,c)
         end do
 !$omp end parallel do
         ! We may need mirror of c%E_field around here.
-        if (i_step>=p%n_thermalize .and. mod(i_step-p%n_thermalize, p%n_hl_freq) == 0) then
+        if ((  i_step>=p%n_thermalize          .or. &
+             & p%E_wave_type .eq. 'ramping_on' .or. &
+             & p%E_wave_type .eq. 'ramping_off'     ) .and. mod(i_step-p%n_thermalize, p%n_hl_freq) == 0) then
            do alpha = 1, 3
               u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
            end do
            u(:) = u(:) / c%n_sum_p
-           write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5)") &
-                i_step,p%kelvin, E_field_add, c%strain(1:6), u(1:3)
+           write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5,6f4.1,1(1e15.5,12e13.5))") &
+                i_step,p%kelvin, E_field_add, c%strain(1:6), u(1:3), 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, &
+                e%dipo_kinetic    ,&
+                e%dipole_dipole   ,&
+                e%dipole_E_field  ,&
+                e%unharmonic      ,&
+                e%homo_strain     ,&
+                e%homo_coupling   ,&
+                e%inho_strain     ,&
+                e%inho_coupling   ,&
+                e%total           ,&
+                e%H_Nose_Poincare ,&
+                e%total**2        ,&
+                e%dipo_kinetic/c%s_Nose**2 ,&
+                e%acou_kinetic
            flush(UNIT_HL)
            write(fn,'(a,a)') trim(p%filename), '.coord'
            call write_system(p,c,fn)
@@ -84,7 +99,7 @@ subroutine molecular_dynamics(p,c)
      end if
 
      detail = p%verbose>=2 .or. mod(i_step,p%n_coord_freq).eq.0 &
-          &   .or. i_step.eq.p%n_thermalize+p%n_thermal_conductivity+p%n_average
+          &   .or. i_step.eq.p%n_thermalize+p%n_average
      if (detail) then
         write(message,fmt_time_step) i_step, E_field_add; call msg_ez(UNIT_LOG,message)
      end if
@@ -115,7 +130,7 @@ subroutine molecular_dynamics(p,c)
         call write_Energy(p,c,e,UNIT_LOG)
      end if
 
-     if (i_step <= p%n_thermalize+p%n_thermal_conductivity) cycle
+     if (i_step <= p%n_thermalize) cycle
 
      call add_to_Average(p,c,e,avg,detail)
   end do

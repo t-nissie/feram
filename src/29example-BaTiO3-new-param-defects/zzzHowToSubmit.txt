@@ -1,0 +1,1 @@
+    $ for s in *-two6threads.csh; do submit AEB general -exec $s -J `basename $s .csh`; done

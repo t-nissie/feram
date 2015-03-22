@@ -1,6 +1,6 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2014-07-02 10:31:12 takeshi>
+# Time-stamp: <2014-11-05 14:05:00 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
@@ -14,8 +14,7 @@ n_average=20000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
-temperature=$temperature_start
-while [ `perl -e "print $temperature <= $temperature_goal || 0"` = "1" ] ; do
+for temperature in `seq $temperature_start $temperature_step $temperature_goal`; do
     i=`expr $i + 1`
     filename=heating`printf '%.3d' $i`-"$temperature"K
     cat > $filename.feram <<-EOF
@@ -72,5 +71,4 @@ EOF
     rm -f "$prev_coord" "$filename.restart"
     prev_coord=$filename.`printf '%.10d' $n_coord_freq`.coord
     cat $filename.avg >> heating.avg
-    temperature=`perl -e "print $temperature + $temperature_step"`
 done

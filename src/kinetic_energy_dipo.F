@@ -26,5 +26,5 @@ real*8 function kinetic_energy_dipo(p,c)
      end do
   end do
 !$omp end parallel do
-  kinetic_energy_dipo = tmp_e / 2
+  kinetic_energy_dipo = tmp_e / c%n_sum_p * p%N / 2
 end function kinetic_energy_dipo

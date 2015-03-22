@@ -422,10 +422,8 @@ fft_checkの使い方の詳しい説明はsrc/fft_check.htmlにあります．
 
 FFTW wisdomについての詳細は
 http://www.fftw.org/doc/Other-Important-Topics.html
-をご覧下さい．
-
-もしMKLやMATRIX/MPP, SSL II, ACMLなどFFTW以外のFFTライブラリを
-使っている場合はwisdomファイルを準備する必要はありません．
+をご覧下さい．もしMKLの中のFFTW3ラッパーを使っている場合は
+wisdomファイルを準備する必要はありません．
 
 == 出力ファイル
 feram が feram foo123.feram と実行されたなら
@@ -581,14 +579,14 @@ feramの実行方法:
  $ mpiexec -np 3 ./feram_mpi foo1.feram foo2.feram foo3.feram &
 
 === README.jaとindex.ja.html
-index.ja.htmlはREADME.jaからULMUL http://ulmul.rubyforge.org/
+index.ja.htmlはREADME.jaからULMUL http://t-nissie.users.sourceforge.net/ULMUL/
 によって自動的に生成しています．README.ja（日本語）やREADME.en（英語）を編集したら
  $ make index.en.html index.ja.html
 としてうまく変換できることを確認して下さい．
 
 == ソフトウエアの再配布について
 === feram
-Copyright © 2007-2014 by Takeshi Nishimatsu
+Copyright © 2007-2015 by Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
@@ -686,10 +684,7 @@ u.subs_rules = lambda{|s|
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').
   gsub(/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ').
-  gsub(/SourceForge\.net/,'
-<a href="http://sourceforge.net">
-  <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" alt="SourceForge.net Logo" />
-</a>')
+  gsub(/SourceForge\.net/,'<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" alt="SourceForge.net Logo" /></a>')
 # gsub(/\$(.*?)\$/){|s| Regexp.last_match[1].to_mathml}       # There is no equation in this document.
 }
 

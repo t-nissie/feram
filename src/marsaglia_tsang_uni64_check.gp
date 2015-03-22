@@ -25,7 +25,7 @@ plot 'marsaglia_tsang_uni64_check.dat' title 'data' w points,\
 
 set output
 print 'marsaglia_tsang_uni64_check.eps is generated.'
-!epstopdf.pl marsaglia_tsang_uni64_check.eps
+# !epstopdf.pl marsaglia_tsang_uni64_check.eps
 
 #Local variables:
 #  compile-command: "gnuplot marsaglia_tsang_uni64_check.gp"

@@ -16,6 +16,7 @@ dt = 0.002 [pico second]
 n_thermalize = 1
 n_average    = 1
 n_coord_freq = 3
+distribution_directory = 'never'
 
 #--- On-site (Polynomial of order 4) -------------
 P_kappa2 =    5.502  [eV/Angstrom^2] # P_4(u) = kappa2*u^2 + alpha*u^4

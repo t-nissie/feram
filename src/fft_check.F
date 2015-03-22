@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2014-03-03 06:33:51 takeshi>
+! Time-stamp: <2014-12-02 10:14:39 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -39,7 +39,7 @@ it imports 'wisdom' file in current directory or /etc/fftw/wisdom
 and exports 'wisdom_new' into current directory.
 
 === AMD Core Math Library (ACML)
-Use fft_acml.f and fft_acml.Makefile.
+Use fft_acml.f and fft_acml.Makefile in feram-0.22.05.tar.xz.
  $ make -f fft_acml.Makefile
 Note that FFT in ACML is currently not so good:
  * Slow.

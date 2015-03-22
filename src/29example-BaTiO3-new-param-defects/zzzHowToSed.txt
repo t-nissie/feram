@@ -2,6 +2,7 @@ How to use sed(1):
      $ sed 's/100/000/g' sixd-100-cooling.sh > sixd-000-cooling.sh
      $ sed 's/100/000/g' sixd-100-heating.sh > sixd-000-heating.sh
      $ sed 's/100/000/g' sixd-100-two6threads.csh > sixd-000-two6threads.csh
+     $ chmod 755 sixd-000-*sh   # Do not forget chmod!
 
      $ for f in sixd*sh; do sed 's/sixd/zero/g' $f > `echo $f | sed 's/sixd/zero/'`; done
      $ chmod 755 zero*sh

@@ -1,7 +1,8 @@
 ! diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2013-02-23 17:07:19 takeshi>
+! Time-stamp: <2014-10-15 16:56:03 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Usage: ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
+!        ./diagonalize15x15 < perovskite-Sigma_o_DS1_DDB
 !!
 #include "define.h"
 
@@ -10,18 +11,22 @@ program diagonalize15x15
   integer, parameter :: N_ATOM = 5
   integer, parameter :: N_FREEDOM = N_ATOM*3
   integer, parameter :: LWORK = N_FREEDOM*20   ! for LAPACK zheev
-  integer I, J, alpha, beta, io, info
+  integer I, J, alpha, beta, io, info, ifail
   complex*16 Force_Matrix_Hermetian(N_FREEDOM,N_FREEDOM)
   real*8     Force_Matrix_real_symmetric(N_FREEDOM,N_FREEDOM)
   ! The force matrix (or the second derivative of total energy) becomes
   ! real symmetric, if its k-point has a (very) good symmetry.
   ! The force matrix recorded in the end of each DDB file of ABINIT has a
   ! unit of Hartree/(lattice constant)^2. NOT Hartree/Bohr^2.
-  complex*16 work(LWORK)                       ! for LAPACK zheev
-  real*8    rwork(LWORK)                       ! for LAPACK zheev
-  real*8    eigenvalues(N_FREEDOM)
+  real*8     dwork(LWORK)                       ! for LAPACK
+  complex*16 zwork(LWORK)                       ! for LAPACK
+  real*8     rwork(LWORK)                       ! for LAPACK zheevx
+  real*8    eigenvalues(N_FREEDOM), d_eigenvectors(N_FREEDOM,N_FREEDOM)
+  complex*16                        z_eigenvectors(N_FREEDOM,N_FREEDOM)
   real*8    tmp_r, tmp_i
   real*8    acell(3)
+  real*8    vl,vu
+  integer   il,iu,m,iwork(6*N_FREEDOM)
   character(len=50)  :: fmt_eigen
   character(len=50) ::  c0, c1, c2, c3
   character(len=200) :: str
@@ -60,27 +65,27 @@ program diagonalize15x15
   end do
 
   if (all_real) then
-#if defined(__xlc__)
-     stop 'ESSL does not have dsyev().'
-#else
-     !LAPACK dsyev(JOBZ, UPLO, N,         A,                           LDA,       W,           WORK,  LWORK, INFO)
-     call    dsyev('V',  'L',  N_FREEDOM, Force_Matrix_real_symmetric, N_FREEDOM, eigenvalues, rwork, LWORK, info)
-#endif
+     !LAPACK dsyevx(JOBZ, RANGE, UPLO, N,         A,                           LDA, 
+          !                                        VL, VU, IL, IU, ABSTOL,  M, W,           Z,            LDZ,
+          ! WORK,   LWORK, IWORK, IFAIL, INFO)
+     call    dsyevx('V',  'A',  'L',   N_FREEDOM, Force_Matrix_real_symmetric, N_FREEDOM, &
+          &                                        vl, vu, il, iu, 0.0d0, M, eigenvalues, d_eigenvectors, N_FREEDOM, &
+          & dwork, LWORK, iwork, ifail, info)
      write(fmt_eigen,'(a,i3,a)') '(i2,f11.6,', N_ATOM, '(f11.4,f8.4,f8.4))'
      write(6,'(a)') 'eigenvalues [eV/Angstrom^2] and eigenvectors of the matrix of interatomic force constants (IFCs)'
      do j=1,N_FREEDOM
-        write(6,fmt_eigen) j, eigenvalues(j), (Force_Matrix_real_symmetric(i,j), i=1,N_FREEDOM)
+        write(6,fmt_eigen) j, eigenvalues(j), (d_eigenvectors(i,j), i=1,N_FREEDOM)
      end do
   else
-#if defined(__xlc__)
-     stop 'ESSL does not have zheev().'
-#else
-     !LAPACK zheev(JOBZ,UPLO,N,        A,                     LDA,      W,          WORK,LWORK,RWORK,INFO)
-     call    zheev('V', 'L', N_FREEDOM,Force_Matrix_Hermetian,N_FREEDOM,eigenvalues,work,LWORK,rwork,info)
-#endif
-     write(fmt_eigen,'(a,i3,a)') "(i2,f11.6,", N_ATOM, "((f8.2,f5.2)(f6.2,f5.2)(f6.2,f5.2)))"
+     !LAPACK zheevx(JOBZ, RANGE, UPLO, N,         A,                      LDA, 
+     !                                             VL, VU, IL, IU, ABSTOL, M,  W, Z, LDZ, 
+     !       WORK, LWORK, RWORK, IWORK, IFAIL, INFO)
+     call    zheevx('V',  'A',  'L',   N_FREEDOM, Force_Matrix_Hermetian, N_FREEDOM, &
+          &                                        vl, vu, il, iu, 0.0d0, M, eigenvalues, z_eigenvectors, N_FREEDOM, &
+          & zwork, LWORK, rwork, iwork, ifail, info)
+     write(fmt_eigen,'(a,i3,a)') "(i2,f11.6,", N_ATOM, "(f8.2,f5.2, f6.2,f5.2, f6.2,f5.2))"
      do j=1,N_FREEDOM
-        write(6,fmt_eigen) j, eigenvalues(j), (Force_Matrix_Hermetian(i,j), i=1,N_FREEDOM)
+        write(6,fmt_eigen) j, eigenvalues(j), (z_eigenvectors(i,j), i=1,N_FREEDOM)
      end do
   end if
 end program diagonalize15x15

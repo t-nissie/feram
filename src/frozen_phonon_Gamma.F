@@ -1,5 +1,5 @@
 ! frozen_phonon_Gamma.F -*-f90-*-
-! Time-stamp: <2013-02-06 18:26:25 takeshi>
+! Time-stamp: <2014-10-15 17:20:08 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! reference: R. D. King-Smith and David Vanderbilt: "First-principles investigation of
 !            ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
@@ -9,14 +9,17 @@
 program frozen_phonon_Gamma
   implicit none
   integer, parameter ::       LWORK = 100   ! for LAPACK
-  real*8             :: rwork(LWORK)        ! for LAPACK dsyev
+  real*8             ::  work(LWORK)        ! for LAPACK dsyevx
 
   character (len=30)  dummy
-  integer i, j, i_atom, alpha, info
+  integer i, j, i_atom, alpha, info, ifail
   real*8, parameter :: RATIO_DISPLACEMENT = 0.002d0
   real*8 a1,a2,a3, tmp
   real*8 force_constant_matrix(5,5)
+  real*8 eigenvectors(5,5)
   real*8 eigenvalues(5)
+  real*8    vl,vu
+  integer   il,iu,m,iwork(LWORK)
 
   open(7, FILE='perovskite-frozen-phonon-Gamma.dat', STATUS='OLD')
   read(7,*) dummy, a1,a2,a3
@@ -36,16 +39,16 @@ program frozen_phonon_Gamma
   !   write(6,'(5f11.7)') (force_constant_matrix(i,j),j=1,5)
   !end do
 
-#if defined(__xlc__)
-  stop 'ESSL does not have dsyev().'
-#else
-  !LAPACK dsyev(JOBZ, UPLO, N, A,                   LDA, W,           WORK,  LWORK, INFO)
-  call    dsyev('V',  'L',  5, force_constant_matrix, 5, eigenvalues, rwork, LWORK, info)
-#endif
+  !LAPACK dsyevx(JOBZ, RANGE, UPLO, N, A,                     LDA, 
+       !                                        VL, VU, IL, IU, ABSTOL,  M, W,           Z,            LDZ,
+       ! WORK,   LWORK, IWORK, IFAIL, INFO)
+  call    dsyevx('V',  'A',  'L',   5, force_constant_matrix, 5, &
+       &                                        vl, vu, il, iu, 0.0d0,   M, eigenvalues, eigenvectors, 5, &
+       & work,   LWORK, iwork, ifail, info)
 
   write(6,'(a)') 'eigenvalues [eV/Angstrom^2] and eigenvectors of force_constant_matrix'
   do j=1,5
-     write(6,'(i1,f11.6,5f9.4)') j, eigenvalues(j), (force_constant_matrix(i,j), i=1,5)
+     write(6,'(i1,f11.6,5f9.4)') j, eigenvalues(j), (eigenvectors(i,j), i=1,5)
   end do
 
 

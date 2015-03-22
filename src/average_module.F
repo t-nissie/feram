@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2014-07-05 16:54:25 takeshi>
+! Time-stamp: <2014-11-25 04:55:31 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -22,7 +22,8 @@ module Average_module
      real*8 strain(6)
      real*8 u(3)
      real*8 uu(6)
-     real*8 e_layer_dipo(0:10000)
+     real*8 e_layer_dipo(0:5000)
+     real*8 e_layer_acou(0:5000)
      integer*8, allocatable :: distribution(:,:)   !!! integer*8 !!!
      integer,   allocatable :: distribution3d(:,:,:)
   end type Average_type
@@ -41,6 +42,7 @@ contains
     avg%u(:)              = 0.0d0
     avg%uu(:)             = 0.0d0
     avg%e_layer_dipo(:)   = 0.0d0
+    avg%e_layer_acou(:)   = 0.0d0
 
     if (allocated(avg%distribution))   deallocate(avg%distribution)
     allocate(avg%distribution(3,-max_k:max_k))
@@ -72,8 +74,9 @@ contains
     avg%dipo_kinetic_true = avg%dipo_kinetic_true + e%dipo_kinetic/c%s_Nose**2
     avg%strain(:)         = avg%strain(:)         + c%strain(:)
 
-    if (p%method.eq.'lf') then
+    if (p%method.eq.'lf' .and. p%delta_e.ne.0.0d0) then
        avg%e_layer_dipo(0:p%Lz-1)   = avg%e_layer_dipo(0:p%Lz-1)   + c%e_layer_dipo(0:p%Lz-1)
+       avg%e_layer_acou(0:p%Lz-1)   = avg%e_layer_acou(0:p%Lz-1)   + c%e_layer_acou(0:p%Lz-1)
     end if
 
      u_tmp(1:3) = 0.0d0
@@ -182,11 +185,14 @@ contains
        end if
        if (p%delta_e.ne.0.0d0) then
           avg%e_layer_dipo(0:p%Lz) = avg%e_layer_dipo(0:p%Lz) / p%n_average
+          avg%e_layer_acou(0:p%Lz) = avg%e_layer_acou(0:p%Lz) / p%n_average
           write(fn_T_layer,'(a,a)') trim(p%filename), '.T_layer'
           call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_T_layer)
           open(UNIT=UNIT_T_LAYER,FILE=fn_T_layer)
           do i=0,p%Lz-1
-             write(UNIT_T_LAYER,'(i9,f13.8)') i, avg%e_layer_dipo(i) / p%Lx / p%Ly * 0.666666666666666666666666666667d0 * KELVIN_EV
+             write(UNIT_T_LAYER,'(i6,2f13.8)') i, &
+                  & avg%e_layer_dipo(i) / p%Lx / p%Ly * 2.0d0 / 3.0d0 * KELVIN_EV, &
+                  & avg%e_layer_acou(i) / p%Lx / p%Ly * 2.0d0 / 3.0d0 * KELVIN_EV
           end do
           close(UNIT_T_LAYER)
        end if

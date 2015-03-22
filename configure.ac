@@ -1,11 +1,11 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2014-07-18 12:03:48 t-nissie>
+dnl Time-stamp: <2014-12-29 07:47:41 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.69)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.22.04],[t-nissie{at}imr.tohoku.ac.jp],[feram],[http://loto.sourceforge.net/feram/])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.22.06],[t-nissie{at}imr.tohoku.ac.jp],[feram],[http://loto.sourceforge.net/feram/])
 AC_CONFIG_SRCDIR(src/feram.F)
 AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz])
 AC_CONFIG_HEADERS([config.h])
@@ -46,7 +46,7 @@ case "$FC" in
     test -n "$MPIFC" || MPIFC=mpifrtpx
     ;;
   xlf*)
-    test -n "$FCFLAGS" || FCFLAGS="-q64 -O4 -qsmp=omp -qinfo=all -qreport"
+    test -n "$FCFLAGS" || FCFLAGS="-q64 -O4 -qsmp=omp -qinfo=all"
     test -n "$MPIFC" || MPIFC=mp"$FC"
     LDFLAGS="$LDFLAGS -Wl,-blpdata -Wl,-bmaxdata:90000000000"
     ;;
@@ -61,6 +61,7 @@ AC_ARG_WITH(fft,[AS_HELP_STRING([--with-fft=ARG],[FFT library.
                                    ARG must be one of
                                    fftw3_omp (default, fast),
                                    fftw3_threads,
+                                   fftw3_combined_threads (for Windows),
                                    mkl (Intel MKL, FFTW3 wrappers to Intel MKL functions),
                                    ssl2 (Fujitsu SSL II), or
                                    no (error).])])
@@ -76,6 +77,12 @@ case "$with_fft" in
                  [AC_MSG_ERROR([You need FFTW3 library, i.e. libfftw3. See config.log.])])
     AC_CHECK_LIB(fftw3_threads, dfftw_init_threads,,
                  [AC_MSG_ERROR([You need FFTW3 library compiled with --enable-threads, i.e. libfftw3_threads. See config.log.])])
+    ;;
+  fftw3_combined_threads)
+    AC_CHECK_LIB(fftw3, dfftw_execute,,
+                 [AC_MSG_ERROR([You need FFTW3 library, i.e. libfftw3.dll. See config.log.])])
+    AC_CHECK_LIB(fftw3, dfftw_init_threads,,
+                 [AC_MSG_ERROR([Your FFTW3 library does not combine threads. See config.log.])])
     ;;
   mkl)
     AC_CHECK_LIB(mkl_gf_lp64, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
@@ -103,7 +110,7 @@ AC_ARG_WITH(lapack,[AS_HELP_STRING([--with-lapack=ARG],[LAPACK library.
 case "$with_lapack" in
   lapack | yes | "")
     AC_CHECK_LIB(blas,  dsymv,,[AC_CHECK_LIB(f77blas,  dsymv,,AC_MSG_ERROR([You need  BLAS  library. See config.log.]))])
-    AC_CHECK_LIB(lapack,dsyev,,AC_MSG_ERROR([You need LAPACK library. See config.log.]))
+    AC_CHECK_LIB(lapack,dsyevx,,AC_MSG_ERROR([You need LAPACK library. See config.log.]))
     ;;
   essl)
     AC_CHECK_LIB(esslsmp,dsyevx,,AC_MSG_ERROR([You need ESSL library for LAPACK subroutines. See config.log.]))
