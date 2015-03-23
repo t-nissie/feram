@@ -18,7 +18,7 @@ real*8 function kinetic_energy_acou(p,c)
      do alpha = 1,3
         do iy=0, p%Ly-1
            do ix=0, p%Lx-1
-              tmp_e = tmp_e + c%acouP(ix,iy,iz,alpha)**2
+              tmp_e = tmp_e + c%acouP(alpha,ix,iy,iz)**2
            end do
         end do
      end do

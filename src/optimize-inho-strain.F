@@ -1,5 +1,5 @@
 ! optimize-inho-strain.F   -*-f90-*-
-! Time-stamp: <2013-01-09 23:57:24 takeshi>
+! Time-stamp: <2015-03-23 15:51:20 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -53,7 +53,7 @@ subroutine optimize_inho_strain(p,c)
                  acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * c%inhomo_K_G(alpha,4, ix,iy,iz)
               end do
               !
-              c%acouK(ix,iy,iz,:) = acouK_tmp(:)
+              c%acouK(:,ix,iy,iz) = acouK_tmp(:)
         end do
      end do
   end do

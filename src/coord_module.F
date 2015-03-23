@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-03-23 08:22:07 takeshi>
+! Time-stamp: <2015-03-23 15:42:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -47,8 +47,8 @@ module Coord_module
      integer*8              plans_didiR2C(6)
      integer*8              plans_inhoK2R(6)
      integer*8              plans_dVdacK2R(3)
-     integer*8              plans_acouR2C(3)
-     integer*8              plans_acouC2R(3)
+     type(C_PTR) ::         plan_acouR2C
+     type(C_PTR) ::         plan_acouC2R
      type(C_PTR) ::         plan_dipoT2dVddi
   end type Coord_type
 
@@ -176,34 +176,38 @@ contains
 
     !--- acou -------------------------------
     if (allocated(c%acouR)) deallocate(c%acouR)
-    allocate(c%acouR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(c%acouR(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%acouK)) deallocate(c%acouK)
-    allocate(c%acouK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(c%acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%acouP)) deallocate(c%acouP)
-    allocate(c%acouP(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(c%acouP(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%acouR(:,:,i,:) = 0.0d0
+       c%acouR(:,:,:,i) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%acouK(:,:,i,:) = (0.0d0,0.0d0)
+       c%acouK(:,:,:,i) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%acouP(:,:,i,:) = 0.0d0
+       c%acouP(:,:,:,i) = 0.0d0
     end do
 !$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_plan_dft_r2c_3d(c%plans_acouR2C(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%acouR(0,0,0,alpha), c%acouK(0,0,0,alpha), FFTW_MEASURE)
-       call dfftw_plan_dft_c2r_3d(c%plans_acouC2R(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%acouK(0,0,0,alpha), c%acouR(0,0,0,alpha), FFTW_MEASURE)
-    end do
+    rank = 3
+    howmany = 3
+    stride = howmany
+    dist = 1
+    c%plan_acouR2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+         &                                  c%acouR,d_embed,stride,dist,&
+         &                                  c%acouK,z_embed,stride,dist,FFTW_MEASURE)
+    c%plan_acouC2R = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+         &                                  c%acouK,z_embed,stride,dist,&
+         &                                  c%acouR,d_embed,stride,dist,FFTW_MEASURE)
 #   endif
 
     !--- force on acoustic displacement --------
@@ -293,7 +297,10 @@ contains
     type(Coord_type), intent(inout) :: c
     character(len=*) :: fn
     character(len=FILE_NAME_LEN) :: coord_directory_fn
-    integer ix,iy,iz,i,alpha
+    integer ix,iy,iz,i
+#if defined(HAVE_LIBFFTW3)
+  include 'fftw3.f03'
+#endif
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
@@ -309,24 +316,23 @@ contains
     if (p%mass_acou <= 0.0d0) then
 !$omp parallel do
        do i = 0,p%Lz-1
-          c%acouK(:,:,i,:) = (0.0d0, -1.0d0) * c%acouK(:,:,i,:)
+          c%acouK(:,:,:,i) = (0.0d0, -1.0d0) * c%acouK(:,:,:,i)
        end do
 !$omp end parallel do
 
-#      if defined(HAVE_LIBFFTW3)
-       do alpha = 1, 3
-          call dfftw_execute(c%plans_acouC2R(alpha))
-       end do
-#      else
-       do alpha = 1, 3
-          call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
-               & c%acouR(0,0,0,alpha), c%acouK(0,0,0,alpha))
-       end do
-#      endif
+#    if defined(HAVE_LIBFFTW3)
+       call fftw_execute_dft_c2r(c%plan_acouC2R, c%acouK, c%acouR)
+#    else
+#      error "Not implemented yet."
+       ! do alpha = 1, 3
+       !    call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
+       !         & c%acouR(0,0,0,alpha), c%acouK(0,0,0,alpha))
+       ! end do
+#    endif
 
 !$omp parallel do
        do i = 0,p%Lz-1
-          c%acouR(:,:,i,:) = c%acouR(:,:,i,:) * p%Ninv
+          c%acouR(:,:,:,i) = c%acouR(:,:,:,i) * p%Ninv
        end do
 !$omp end parallel do
     end if
@@ -339,8 +345,8 @@ contains
                      & (c%dipoR(i,ix,iy,iz)         ,i=1,3),&
                      & (c%dipoP(i,ix,iy,iz)/c%s_Nose,i=1,3),&
                      & (c%dVddi(i,ix,iy,iz)         ,i=1,3),&
-                     & (c%acouR(ix,iy,iz,i)         ,i=1,3),&
-                     & (c%acouP(ix,iy,iz,i)         ,i=1,3)
+                     & (c%acouR(i,ix,iy,iz)         ,i=1,3),&
+                     & (c%acouP(i,ix,iy,iz)         ,i=1,3)
           end do
        end do
     end do

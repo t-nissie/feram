@@ -1,5 +1,5 @@
 ! dVddi_inho_coupling.F   -*-f90-*-
-! Time-stamp: <2015-03-22 17:02:09 takeshi>
+! Time-stamp: <2015-03-23 15:25:30 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -28,12 +28,12 @@ subroutine dVddi_inho_coupling(p,c)
         k(2) = k(2) * M_2PI / p%a0
         do ix = 0, p%Lx/2
            k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-           c%inhoK(ix,iy,iz,1) = k(1)*c%acouK(ix,iy,iz,1)
-           c%inhoK(ix,iy,iz,2) = k(2)*c%acouK(ix,iy,iz,2)
-           c%inhoK(ix,iy,iz,3) = k(3)*c%acouK(ix,iy,iz,3)
-           c%inhoK(ix,iy,iz,4) = k(3)*c%acouK(ix,iy,iz,2) + k(2)*c%acouK(ix,iy,iz,3)
-           c%inhoK(ix,iy,iz,5) = k(1)*c%acouK(ix,iy,iz,3) + k(3)*c%acouK(ix,iy,iz,1)
-           c%inhoK(ix,iy,iz,6) = k(2)*c%acouK(ix,iy,iz,1) + k(1)*c%acouK(ix,iy,iz,2)
+           c%inhoK(ix,iy,iz,1) = k(1)*c%acouK(1,ix,iy,iz)
+           c%inhoK(ix,iy,iz,2) = k(2)*c%acouK(2,ix,iy,iz)
+           c%inhoK(ix,iy,iz,3) = k(3)*c%acouK(3,ix,iy,iz)
+           c%inhoK(ix,iy,iz,4) = k(3)*c%acouK(2,ix,iy,iz) + k(2)*c%acouK(3,ix,iy,iz)
+           c%inhoK(ix,iy,iz,5) = k(1)*c%acouK(3,ix,iy,iz) + k(3)*c%acouK(1,ix,iy,iz)
+           c%inhoK(ix,iy,iz,6) = k(2)*c%acouK(1,ix,iy,iz) + k(1)*c%acouK(2,ix,iy,iz)
         end do
      end do
   end do

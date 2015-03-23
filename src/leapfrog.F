@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2015-03-22 17:03:41 takeshi>
+! Time-stamp: <2015-03-23 15:34:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -41,7 +41,7 @@ subroutine leapfrog(p,c,e,i_step)
      if (p%mass_acou>0.0d0) then
 !$omp parallel do
         do iz=0,p%Lz-1
-           c%e_layer_acou(iz) = SUM( c%acouP(:,:,iz,:) * c%acouP(:,:,iz,:) ) * p%mass_acou_inv / 2
+           c%e_layer_acou(iz) = SUM( c%acouP(:,:,:,iz) * c%acouP(:,:,:,iz) ) * p%mass_acou_inv / 2
         end do
 !$omp end parallel do
      else
@@ -55,8 +55,8 @@ subroutine leapfrog(p,c,e,i_step)
   end if
 
   if (p%delta_e_acou.ne.0.0d0) then
-     c%acouP(:,:,Lz_1_4,:) = c%acouP(:,:,Lz_1_4,:) * sqrt((c%e_layer_acou(Lz_1_4)+Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_1_4))
-     c%acouP(:,:,Lz_3_4,:) = c%acouP(:,:,Lz_3_4,:) * sqrt((c%e_layer_acou(Lz_3_4)-Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_3_4))
+     c%acouP(:,:,:,Lz_1_4) = c%acouP(:,:,:,Lz_1_4) * sqrt((c%e_layer_acou(Lz_1_4)+Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_1_4))
+     c%acouP(:,:,:,Lz_3_4) = c%acouP(:,:,:,Lz_3_4) * sqrt((c%e_layer_acou(Lz_3_4)-Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_3_4))
   end if
 
   if (i_step.eq.0) then
@@ -70,7 +70,7 @@ subroutine leapfrog(p,c,e,i_step)
 !$omp parallel do
         do iz=0, p%Lz-1
            do alpha = 1,3
-              c%acouP(:,:,iz,alpha) = c%acouP(:,:,iz,alpha) - p%dt_2 * c%dVdacR(:,:,iz,alpha)
+              c%acouP(alpha,:,:,iz) = c%acouP(alpha,:,:,iz) - p%dt_2 * c%dVdacR(:,:,iz,alpha)
            end do
         end do
 !$omp end parallel do
@@ -86,9 +86,7 @@ subroutine leapfrog(p,c,e,i_step)
      if (p%mass_acou > 0.0d0) then
 !$omp parallel do
         do iz=0, p%Lz-1
-           do alpha = 1,3
-              c%acouR(:,:,iz,alpha) = c%acouR(:,:,iz,alpha) + (p%dt*p%mass_acou_inv) * c%acouP(:,:,iz,alpha)
-           end do
+              c%acouR(:,:,:,iz) = c%acouR(:,:,:,iz) + (p%dt*p%mass_acou_inv) * c%acouP(:,:,:,iz)
         end do
 !$omp end parallel do
      end if
@@ -107,7 +105,7 @@ subroutine leapfrog(p,c,e,i_step)
 !$omp parallel do
         do iz=0, p%Lz-1
            do alpha = 1,3
-              c%acouP(:,:,iz,alpha) = c%acouP(:,:,iz,alpha) - p%dt * c%dVdacR(:,:,iz,alpha)
+              c%acouP(alpha,:,:,iz) = c%acouP(alpha,:,:,iz) - p%dt * c%dVdacR(:,:,iz,alpha)
            end do
         end do
 !$omp end parallel do

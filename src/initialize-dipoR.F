@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2015-03-22 16:57:26 takeshi>
+! Time-stamp: <2015-03-23 15:28:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -30,8 +30,8 @@ subroutine initialize_dipoR(p,c,e)
                    c%dipoR(1:3,ix,iy,iz),&
                    c%dipoP(1:3,ix,iy,iz),&
                    c%dVddi(1:3,ix,iy,iz),&
-                   c%acouR(ix,iy,iz,1:3),&
-                   c%acouP(ix,iy,iz,1:3)
+                   c%acouR(1:3,ix,iy,iz),&
+                   c%acouP(1:3,ix,iy,iz)
            end do
         end do
      end do

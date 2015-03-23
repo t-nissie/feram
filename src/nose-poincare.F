@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2015-03-22 17:05:26 takeshi>
+! Time-stamp: <2015-03-23 15:39:45 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
@@ -15,7 +15,7 @@ subroutine nose_poincare(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   real*8 CB, s_Nose_old, delta_H, kinetic_energy_dipo, dt2s
-  integer iy,iz,alpha
+  integer iy,iz
   external kinetic_energy_dipo
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
