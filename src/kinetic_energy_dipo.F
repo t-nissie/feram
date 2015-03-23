@@ -19,7 +19,7 @@ real*8 function kinetic_energy_dipo(p,c)
         do iy=0, p%Ly-1
            do ix=0, p%Lx-1
               if (c%sum_p(ix, iy, iz)) then
-                 tmp_e = tmp_e + c%dipoP(ix,iy,iz,alpha)**2 * c%m_inv(ix,iy,iz,alpha)
+                 tmp_e = tmp_e + c%dipoP(alpha,ix,iy,iz)**2 * c%m_inv(alpha,ix,iy,iz)
               end if
            end do
         end do

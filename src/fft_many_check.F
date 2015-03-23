@@ -1,5 +1,5 @@
 ! fft_many_check.F -*-f90-*-
-! Time-stamp: <2014-01-15 07:12:20 takeshi>
+! Time-stamp: <2015-03-22 14:48:26 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program fft_many_check
@@ -70,7 +70,7 @@ program fft_many_check
 
   rank = 3
   howmany = 3
-  stride  = howmany
+  stride  = howmanyo
   dist = 1
 
   n_tmp = 2 * howmany * (Lx/2+1) * (Ly+padding_y) * Lz

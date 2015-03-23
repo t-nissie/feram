@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2014-05-09 10:39:53 takeshi>
+! Time-stamp: <2015-03-22 16:28:45 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -22,9 +22,11 @@ subroutine velocity_scaling(p,c,e)
   end if
 
 !$omp parallel do
-     do iz=0, p%Lz-1
-           c%dipoR(:,:,iz,:) = c%dipoR(:,:,iz,:) + p%dt * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:)
+  do iz=0, p%Lz-1
+     do iy=0, p%Ly-1
+        c%dipoR(:,:,iy,iz) = c%dipoR(:,:,iy,iz) + p%dt * c%dipoP(:,:,iy,iz) * c%m_inv(:,:,iy,iz)
      end do
+  end do
 !$omp end parallel do
 
      if (p%mass_acou > 0.0d0) then
@@ -38,25 +40,25 @@ subroutine velocity_scaling(p,c,e)
      call mirror_force_mirror(p,c,e)
 
 !$omp parallel do
-  do iz=0, p%Lz-1
      do alpha = 1,3
-        do iy=0, p%Ly-1
-           do ix=0, p%Lx-1
-              if (c%sum_p(ix, iy, iz)) then
-                 c%dipoP(ix,iy,iz,alpha) = c%dipoP(ix,iy,iz,alpha) - p%dt * c%dVddi(ix,iy,iz,alpha)
-              else
-                 c%dipoP(ix,iy,iz,alpha) = 0.0d0
-              end if
+        do iz=0, p%Lz-1
+           do iy=0, p%Ly-1
+              do ix=0, p%Lx-1
+                 if (c%sum_p(ix, iy, iz)) then
+                    c%dipoP(alpha,ix,iy,iz) = c%dipoP(alpha,ix,iy,iz) - p%dt * c%dVddi(alpha,ix,iy,iz)
+                 else
+                    c%dipoP(alpha,ix,iy,iz) = 0.0d0
+                 end if
+              end do
            end do
         end do
      end do
-  end do
 !$omp end parallel do
      e%dipo_kinetic = kinetic_energy_dipo(p,c)
      scale = sqrt(p%target_kinetic_energy/e%dipo_kinetic)
 !$omp parallel do
      do iz=0, p%Lz-1
-        c%dipoP(:,:,iz,:) = c%dipoP(:,:,iz,:) * scale
+        c%dipoP(:,:,:,iz) = c%dipoP(:,:,:,iz) * scale
      end do
 !$omp end parallel do
 

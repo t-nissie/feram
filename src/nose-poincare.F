@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2013-01-10 16:30:24 takeshi>
+! Time-stamp: <2015-03-22 17:05:26 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
@@ -15,16 +15,14 @@ subroutine nose_poincare(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   real*8 CB, s_Nose_old, delta_H, kinetic_energy_dipo, dt2s
-  integer iz,alpha
+  integer iy,iz,alpha
   external kinetic_energy_dipo
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
   dt2s = p%dt_2*c%s_Nose
 !$omp parallel do
   do iz=0, p%Lz-1
-     do alpha = 1,3
-        c%dipoP(:,:,iz,alpha) = c%dipoP(:,:,iz,alpha) - dt2s * c%dVddi(:,:,iz,alpha) !(35a)
-     end do
+     c%dipoP(:,:,:,iz) = c%dipoP(:,:,:,iz) - dt2s * c%dVddi(:,:,:,iz) !(35a)
   end do
 !$omp end parallel do
   e%dipo_kinetic = kinetic_energy_dipo(p,c)
@@ -39,11 +37,13 @@ subroutine nose_poincare(p,c,e)
                        & ( 1.0d0 - p%dt_2*c%pi_Nose/p%Q_Nose )         !(35c)
 !$omp parallel do
      do iz=0, p%Lz-1
-        c%dipoR(:,:,iz,:) = c%dipoR(:,:,iz,:) &
-             & + p%dt_2 * (1/c%s_Nose+1/s_Nose_old) * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:)   !(35d)
+        do iy=0, p%Ly-1
+           c%dipoR(:,:,iy,iz) = c%dipoR(:,:,iy,iz) &
+                & + p%dt_2 * (1/c%s_Nose+1/s_Nose_old) * c%dipoP(:,:,iy,iz) * c%m_inv(:,:,iy,iz)   !(35d)
+        end do
      end do
 !$omp end parallel do
-                                                                            
+
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'is updated.')
 
   call mirror_force_mirror(p,c,e)
@@ -57,7 +57,7 @@ subroutine nose_poincare(p,c,e)
 
 !$omp parallel do
      do iz=0, p%Lz-1
-        c%dipoP(:,:,iz,:) = c%dipoP(:,:,iz,:) - (p%dt_2*c%s_Nose) * c%dVddi(:,:,iz,:)
+        c%dipoP(:,:,:,iz) = c%dipoP(:,:,:,iz) - (p%dt_2*c%s_Nose) * c%dVddi(:,:,:,iz)
      end do
 !$omp end parallel do
                                                                             !(35f)

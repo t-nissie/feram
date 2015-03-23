@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2014-07-01 18:14:02 takeshi>
+! Time-stamp: <2015-03-22 17:09:35 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -31,7 +31,7 @@ subroutine initialize_E_field(p,c)
         if (ios.ne.0 .or. tmp.eq.'#') cycle
         read(str,*,IOSTAT=ios) ix, iy, iz, tmp_E(:)
         if (ios.eq.0) then
-           c%E_field_local(ix,iy,iz,:) = tmp_E(:)
+           c%E_field_local(:,ix,iy,iz) = tmp_E(:)
         else
            call msg(UNIT_LOG, trim(p%filename)//'.localfield', line_number, 'There is something wrong in this line: ', trim(str))
            call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'there is something wrong in '//trim(p%filename)//'.localfield')
@@ -59,7 +59,7 @@ subroutine initialize_E_field(p,c)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1
-           c%E_field(ix,iy,iz,:) = c%E_field_local(ix,iy,iz,:) + tmp_E(:)
+           c%E_field(:,ix,iy,iz) = c%E_field_local(:,ix,iy,iz) + tmp_E(:)
         end do
      end do
   end do

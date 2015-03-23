@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2014-12-05 18:39:54 takeshi>
+! Time-stamp: <2015-03-22 23:45:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -43,6 +43,7 @@ module Param_module
      character(len=4) :: bulk_or_film
      integer Lx, Ly, Lz ! Integer
      integer gap_id     ! 0, 1, 2
+     integer padding_y
      real*8  gap_dipole_u(3)
      real*8 a0          ! lattice constant [Angstrom]
      real*8 epi_strain
@@ -137,6 +138,7 @@ contains
     p%Ly = 32
     p%Lz = 32
     p%gap_id = 0
+    p%padding_y = 0
     p%gap_dipole_u(:) = 0.0d0
     p%a0 = 4.0d0
     p%epi_strain = 0.0d0
@@ -233,6 +235,8 @@ contains
           end if
        case('L')
           read(str,*) dmy1, dmy2, p%Lx, p%Ly, p%Lz
+       case('padding_y')
+          read(str,*) dmy1, dmy2, p%padding_y
        case('gap_id')
           read(str,*) dmy1, dmy2, p%gap_id
        case('gap_dipole_u')

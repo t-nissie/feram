@@ -1,5 +1,5 @@
 ! dVddi_inho_coupling.F   -*-f90-*-
-! Time-stamp: <2013-01-09 21:54:24 takeshi>
+! Time-stamp: <2015-03-22 17:02:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -64,18 +64,18 @@ subroutine dVddi_inho_coupling(p,c)
                    & + c%inhoR(ix,iy,iz,5) * p%Ninv * c%homogeneous_coupling_2(5,i) &
                    & + c%inhoR(ix,iy,iz,6) * p%Ninv * c%homogeneous_coupling_2(6,i)
            end do
-           c%dVddi(ix,iy,iz,1) = &
-         & c%dVddi(ix,iy,iz,1) + 2 * eta_B_over_2m(1) * c%dipoR(ix,iy,iz,1) &
-         &                     +     eta_B_over_2m(5) * c%dipoR(ix,iy,iz,3) &
-         &                     +     eta_B_over_2m(6) * c%dipoR(ix,iy,iz,2)
-           c%dVddi(ix,iy,iz,2) = &
-         & c%dVddi(ix,iy,iz,2) + 2 * eta_B_over_2m(2) * c%dipoR(ix,iy,iz,2) &
-         &                     +     eta_B_over_2m(4) * c%dipoR(ix,iy,iz,3) &
-         &                     +     eta_B_over_2m(6) * c%dipoR(ix,iy,iz,1)
-           c%dVddi(ix,iy,iz,3) = &
-         & c%dVddi(ix,iy,iz,3) + 2 * eta_B_over_2m(3) * c%dipoR(ix,iy,iz,3) &
-         &                     +     eta_B_over_2m(4) * c%dipoR(ix,iy,iz,2) &
-         &                     +     eta_B_over_2m(5) * c%dipoR(ix,iy,iz,1)
+           c%dVddi(1,ix,iy,iz) = &
+         & c%dVddi(1,ix,iy,iz) + 2 * eta_B_over_2m(1) * c%dipoR(1,ix,iy,iz) &
+         &                     +     eta_B_over_2m(5) * c%dipoR(3,ix,iy,iz) &
+         &                     +     eta_B_over_2m(6) * c%dipoR(2,ix,iy,iz)
+           c%dVddi(2,ix,iy,iz) = &
+         & c%dVddi(2,ix,iy,iz) + 2 * eta_B_over_2m(2) * c%dipoR(2,ix,iy,iz) &
+         &                     +     eta_B_over_2m(4) * c%dipoR(3,ix,iy,iz) &
+         &                     +     eta_B_over_2m(6) * c%dipoR(1,ix,iy,iz)
+           c%dVddi(3,ix,iy,iz) = &
+         & c%dVddi(3,ix,iy,iz) + 2 * eta_B_over_2m(3) * c%dipoR(3,ix,iy,iz) &
+         &                     +     eta_B_over_2m(4) * c%dipoR(2,ix,iy,iz) &
+         &                     +     eta_B_over_2m(5) * c%dipoR(1,ix,iy,iz)
         end do
      end do
   end do

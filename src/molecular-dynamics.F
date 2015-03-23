@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2014-12-02 11:10:00 t-nissie>
+! Time-stamp: <2015-03-22 17:12:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -60,13 +60,11 @@ subroutine molecular_dynamics(p,c)
         E_field_add(:) = wave(p%E_wave_type, i_step, p%n_thermalize, p%n_E_wave_period, p%external_E_field(:))
 !$omp parallel do
         do iz = 0, p%Lz-1
-           do alpha = 1,3
               do iy = 0, p%Ly-1
                  do ix = 0, p%Lx-1
-                    c%E_field(ix,iy,iz,alpha) = c%E_field_local(ix,iy,iz,alpha) + E_field_add(alpha)
+                    c%E_field(:,ix,iy,iz) = c%E_field_local(:,ix,iy,iz) + E_field_add(:)
                  end do
               end do
-           end do
         end do
 !$omp end parallel do
         ! We may need mirror of c%E_field around here.
@@ -74,7 +72,7 @@ subroutine molecular_dynamics(p,c)
              & p%E_wave_type .eq. 'ramping_on' .or. &
              & p%E_wave_type .eq. 'ramping_off'     ) .and. mod(i_step-p%n_thermalize, p%n_hl_freq) == 0) then
            do alpha = 1, 3
-              u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
+              u(alpha) = SUM(c%dipoR(alpha,:,:,:), MASK=c%sum_p(:,:,:))
            end do
            u(:) = u(:) / c%n_sum_p
            write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5,6f4.1,1(1e15.5,12e13.5))") &

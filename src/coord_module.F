@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2014-11-25 04:42:53 takeshi>
+! Time-stamp: <2015-03-23 08:22:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,6 +9,7 @@
 #include "define.h"
 
 module Coord_module
+  use, intrinsic :: iso_c_binding
   implicit none
   type Coord_type
      real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
@@ -42,13 +43,13 @@ module Coord_module
      real*8                 homogeneous_coupling_2(6,6)
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
-     integer*8              plans_dipoR2C(3)
+     type(C_PTR) ::         plan_dipoR2C
      integer*8              plans_didiR2C(6)
      integer*8              plans_inhoK2R(6)
      integer*8              plans_dVdacK2R(3)
      integer*8              plans_acouR2C(3)
      integer*8              plans_acouC2R(3)
-     integer*8              plans_dipoT2dVddi(3)
+     type(C_PTR) ::         plan_dipoT2dVddi
   end type Coord_type
 
 contains
@@ -59,76 +60,92 @@ contains
     type(Coord_type), intent(inout) :: c
     integer i
 #   if defined(HAVE_LIBFFTW3)
-    integer alpha
-#   include "fftw3.f"
+    integer alpha,rank,howmany,stride,dist
+    integer  LzLyLx(3)
+    integer d_embed(3)
+    integer z_embed(3)
+    include 'fftw3.f03'
 #   endif
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
+    LzLyLx(1)  = p%Lz
+    LzLyLx(2)  = p%Ly
+    LzLyLx(3)  = p%Lx
+    d_embed(1) = p%Lz
+    d_embed(2) = p%Ly !+ p%padding_y
+    d_embed(3) = p%Lx            ! Not 2*(Lx/2+1), so far.
+    z_embed(1) = p%Lz
+    z_embed(2) = p%Ly !+ p%padding_y
+    z_embed(3) = p%Lx/2+1
     !--- m_inv ------------------------------
     if (allocated(c%m_inv)) deallocate(c%m_inv)
-    allocate(c%m_inv(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(c%m_inv(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     !--- dipo -------------------------------
     if (allocated(c%dipoR)) deallocate(c%dipoR)
-    allocate(     c%dipoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(     c%dipoR(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%dipoK)) deallocate(c%dipoK)
-    allocate(     c%dipoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3)) !"/2" for real<->complex FFT
+    allocate(     c%dipoK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%dipoR(:,:,i,:) = 0.0d0
+       c%dipoR(:,:,:,i) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%dipoK(:,:,i,:) = (0.0d0,0.0d0)
+       c%dipoK(:,:,:,i) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_plan_dft_r2c_3d(c%plans_dipoR2C(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%dipoR(0,0,0,alpha), c%dipoK(0,0,0,alpha), FFTW_MEASURE)
-    end do
+    rank = 3
+    howmany = 3
+    stride = howmany
+    dist = 1
+    c%plan_dipoR2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+         &                                  c%dipoR,d_embed,stride,dist,&
+         &                                  c%dipoK,z_embed,stride,dist,FFTW_MEASURE)
 #   endif
-
     if (allocated(c%dipoP)) deallocate(c%dipoP)
-    allocate(     c%dipoP(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
-
+    allocate(     c%dipoP(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%dVddi)) deallocate(c%dVddi)
-    allocate(     c%dVddi(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(     c%dVddi(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%dipoT)) deallocate(c%dipoT)
-    allocate(c%dipoT(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(     c%dipoT(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%dVddi(:,:,i,:) = 0.0d0
+       c%dVddi(:,:,:,i) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%dipoT(:,:,i,:) = (0.0d0,0.0d0)
+       c%dipoT(:,:,:,i) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_plan_dft_c2r_3d(c%plans_dipoT2dVddi(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%dipoT(0,0,0,alpha), c%dVddi(0,0,0,alpha), FFTW_MEASURE)
-    end do
+    rank = 3
+    howmany = 3
+    stride = howmany
+    dist = 1
+    c%plan_dipoT2dVddi = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+         &                                      c%dipoT,z_embed,stride,dist,&
+         &                                      c%dVddi,d_embed,stride,dist,FFTW_MEASURE)
 #   endif
 
     if (allocated(c%E_field)) deallocate(c%E_field)
-    allocate(     c%E_field(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(     c%E_field(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%E_field(:,:,i,:) = 0.0d0
+       c%E_field(:,:,:,i) = 0.0d0
     end do
 !$omp end parallel do
 
     if (allocated(c%E_field_local)) deallocate(c%E_field_local)
-    allocate(     c%E_field_local(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(     c%E_field_local(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%E_field_local(:,:,i,:) = 0.0d0
+       c%E_field_local(:,:,:,i) = 0.0d0
     end do
 !$omp end parallel do
 
@@ -319,9 +336,9 @@ contains
        do iy = 0, p%Ly-1
           do ix = 0, p%Lx-1
                 write(UNIT_SYSTEM,'(i4,2i5,3f10.6,6e13.5,6f11.6)') ix, iy, iz, &
-                     & (c%dipoR(ix,iy,iz,i)         ,i=1,3),&
-                     & (c%dipoP(ix,iy,iz,i)/c%s_Nose,i=1,3),&
-                     & (c%dVddi(ix,iy,iz,i)         ,i=1,3),&
+                     & (c%dipoR(i,ix,iy,iz)         ,i=1,3),&
+                     & (c%dipoP(i,ix,iy,iz)/c%s_Nose,i=1,3),&
+                     & (c%dVddi(i,ix,iy,iz)         ,i=1,3),&
                      & (c%acouR(ix,iy,iz,i)         ,i=1,3),&
                      & (c%acouP(ix,iy,iz,i)         ,i=1,3)
           end do
@@ -349,7 +366,7 @@ contains
           yy=iy
        end if
        do ix=0, p%Lx/2
-          write(UNIT_SYSTEM,*) abs(c%dipoK(ix,yy,0,3)), c%dipoK(ix,yy,0,3)
+          write(UNIT_SYSTEM,*) abs(c%dipoK(3,ix,yy,0)), c%dipoK(3,ix,yy,0)
        end do
        write(UNIT_SYSTEM,*) ''
     end do

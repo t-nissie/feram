@@ -1,0 +1,86 @@
+新しいことをやろうとしてbranches/newplanを作ってから８ヶ月も経ってしまった。
+trunkにした変更をbranches/newplanにmergeする。
+
+参考:
+http://cockatiel-cage.hateblo.jp/entry/2012/12/14/122449
+http://www.caldron.jp/~nabetaro/svn/svnbook-1.4-final/svn.branchmerge.copychanges.html
+
+
+$ pwd
+/Users/takeshi/f/loto/feram/branches/newplan
+$ svn info
+Path: .
+Working Copy Root Path: /Users/takeshi/f/loto
+URL: https://svn.code.sf.net/p/loto/code/feram/branches/newplan
+Repository Root: https://svn.code.sf.net/p/loto/code
+Repository UUID: 66b5f4e2-d06a-45f9-b3fd-3971e49ba91e
+Revision: 2368
+Node Kind: directory
+Schedule: normal
+Last Changed Author: t-nissie
+Last Changed Rev: 2250
+Last Changed Date: 2014-07-25 20:04:26 +0900 (金, 25  7 2014)
+
+$ svn log --stop-on-copy
+------------------------------------------------------------------------
+r2250 | t-nissie | 2014-07-25 20:04:26 +0900 (金, 25  7 2014) | 1 line
+
+for testing a new plan of FFTW in a branch
+------------------------------------------------------------------------
+$ svn merge --dry-run -r 2250:HEAD //svn.code.sf.net/p/loto/code/feram/trunk
+$ svn merge -r 2250:HEAD https://svn.code.sf.net/p/loto/code/feram/trunk
+$ svn commit -m "branches/newplan: imported r2250-2368 from trunk."
+Sending        .
+Sending        Autotools-memo.ja
+Sending        INSTALL
+    :
+Sending        tutorial.AICS.en.txt
+Sending        tutorial.IMR.ja.txt
+Transmitting file data ..........................................
+Committed revision 2369.
+$ 
+
+
+app14$ cd f/loto/
+/home/t-nissie/f/loto
+app14$ svn up
+D    feram/branches/newplan/README
+U    feram/branches/newplan/Nightly.en
+U    feram/branches/newplan/README.ja
+        :
+U    feram/branches/newplan/Autotools-memo.ja
+ U   feram/branches/newplan
+U    t-nissie/trunk/cv/index.ja.html
+U    t-nissie/trunk/cv/index.en.html
+Updated to revision 2369.
+app14$
+
+Done:
+ x add padding_y in param_module.F
+ x coord_module.F
+ x dipoFFT.F
+ x dipoP
+ x m_inv
+ x dVddi
+ x dipoT
+
+
+ToDo:
+ * didiR
+ * E_field(ix,iy,iz,alpha)
+
+
+average_module.F:89:                 u_tmp(:) =  u_tmp(:) + c%dipoR(ix,iy,iz,:)
+coord_module.F:15:     real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
+dVddi-dipole-dipole.F:57:  !=== e%dipole_dipole = SUM( c%dipoR(:,:,:,:) * c%dVddi(:,:,:,:) ) / 2 ===========
+dVddi-unharmonic.F:35:     c%dVddi(:,:,iz,alpha) = c%dVddi(:,:,iz,alpha) + c%dipoR(:,:,iz,alpha) * &
+dVddi_inho_coupling.F:68:         & c%dVddi(ix,iy,iz,1) + 2 * eta_B_over_2m(1) * c%dipoR(ix,iy,iz,1) &
+energy_module.F:9:     real*8 acou_kinetic      ! leapfrog.F or nose-poincare.F, initialize in initialize_dipoR.F
+hysteresis_loop.F:80:              u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
+initialize-dipoR.F:71:end subroutine initialize_dipoR
+leapfrog.F:83:           c%dipoR(:,:,iz,alpha) = c%dipoR(:,:,iz,alpha) + p%dt   * c%dipoP(:,:,iz,alpha) * c%M_inv(:,:,iz,alpha)
+mirror_force_mirror.F:51:                 tmp_dipole_E_field = tmp_dipole_E_field + c%dipoR(ix,iy,iz,alpha)*c%E_field(ix,iy,iz,alpha)
+molecular-dynamics.F:77:              u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
+nose-poincare.F:47:  !call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'is updated.')
+read_defects_u.F:64:        c%dipoR(:, :, p%Lz/2, 3) = p%gap_dipole_u(3)
+velocity_scaling.F:26:           c%dipoR(:,:,iz,:) = c%dipoR(:,:,iz,:) + p%dt * c%dipoP(:,:,iz,:) * c%m_inv(:,:,
