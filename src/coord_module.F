@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-03-23 15:42:00 takeshi>
+! Time-stamp: <2015-03-24 19:20:11 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -47,9 +47,7 @@ module Coord_module
      integer*8              plans_didiR2C(6)
      integer*8              plans_inhoK2R(6)
      integer*8              plans_dVdacK2R(3)
-     type(C_PTR) ::         plan_acouR2C
      type(C_PTR) ::         plan_acouC2R
-     type(C_PTR) ::         plan_dipoT2dVddi
   end type Coord_type
 
 contains
@@ -121,15 +119,6 @@ contains
        c%dipoT(:,:,:,i) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-#   if defined(HAVE_LIBFFTW3)
-    rank = 3
-    howmany = 3
-    stride = howmany
-    dist = 1
-    c%plan_dipoT2dVddi = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
-         &                                      c%dipoT,z_embed,stride,dist,&
-         &                                      c%dVddi,d_embed,stride,dist,FFTW_MEASURE)
-#   endif
 
     if (allocated(c%E_field)) deallocate(c%E_field)
     allocate(     c%E_field(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
@@ -202,9 +191,6 @@ contains
     howmany = 3
     stride = howmany
     dist = 1
-    c%plan_acouR2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
-         &                                  c%acouR,d_embed,stride,dist,&
-         &                                  c%acouK,z_embed,stride,dist,FFTW_MEASURE)
     c%plan_acouC2R = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
          &                                  c%acouK,z_embed,stride,dist,&
          &                                  c%acouR,d_embed,stride,dist,FFTW_MEASURE)

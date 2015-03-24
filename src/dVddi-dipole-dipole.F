@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2015-03-23 08:27:19 takeshi>
+! Time-stamp: <2015-03-24 19:17:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -39,7 +39,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
 !write(6,*) c%dipoT(1,1,1,1)
 
 #if defined(HAVE_LIBFFTW3)
-  call fftw_execute_dft_c2r(c%plan_dipoT2dVddi, c%dipoT, c%dVddi)
+  call fftw_execute_dft_c2r(c%plan_acouC2R, c%dipoT, c%dVddi)
 #else
 # error "Not implemented yet."
   ! do alpha = 1, 3

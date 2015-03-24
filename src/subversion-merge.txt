@@ -55,32 +55,22 @@ U    t-nissie/trunk/cv/index.en.html
 Updated to revision 2369.
 app14$
 
+
+
+
 Done:
  x add padding_y in param_module.F
  x coord_module.F
  x dipoFFT.F
- x dipoP
+ x dipoR, dipoK, dipoP
  x m_inv
  x dVddi
  x dipoT
-
+ x acouR, acouK, acouP
+ x E_field(ix,iy,iz,alpha)
+ x Use plan_dipoR2C instead of plan_acouR2C, plan_acouC2R instead of plan_dipoT2dVddi
 
 ToDo:
  * didiR
- * E_field(ix,iy,iz,alpha)
-
-
-average_module.F:89:                 u_tmp(:) =  u_tmp(:) + c%dipoR(ix,iy,iz,:)
-coord_module.F:15:     real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
-dVddi-dipole-dipole.F:57:  !=== e%dipole_dipole = SUM( c%dipoR(:,:,:,:) * c%dVddi(:,:,:,:) ) / 2 ===========
-dVddi-unharmonic.F:35:     c%dVddi(:,:,iz,alpha) = c%dVddi(:,:,iz,alpha) + c%dipoR(:,:,iz,alpha) * &
-dVddi_inho_coupling.F:68:         & c%dVddi(ix,iy,iz,1) + 2 * eta_B_over_2m(1) * c%dipoR(ix,iy,iz,1) &
-energy_module.F:9:     real*8 acou_kinetic      ! leapfrog.F or nose-poincare.F, initialize in initialize_dipoR.F
-hysteresis_loop.F:80:              u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
-initialize-dipoR.F:71:end subroutine initialize_dipoR
-leapfrog.F:83:           c%dipoR(:,:,iz,alpha) = c%dipoR(:,:,iz,alpha) + p%dt   * c%dipoP(:,:,iz,alpha) * c%M_inv(:,:,iz,alpha)
-mirror_force_mirror.F:51:                 tmp_dipole_E_field = tmp_dipole_E_field + c%dipoR(ix,iy,iz,alpha)*c%E_field(ix,iy,iz,alpha)
-molecular-dynamics.F:77:              u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
-nose-poincare.F:47:  !call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'is updated.')
-read_defects_u.F:64:        c%dipoR(:, :, p%Lz/2, 3) = p%gap_dipole_u(3)
-velocity_scaling.F:26:           c%dipoR(:,:,iz,:) = c%dipoR(:,:,iz,:) + p%dt * c%dipoP(:,:,iz,:) * c%m_inv(:,:,
+ * dipoI
+ * dVdacR, dVdacK
