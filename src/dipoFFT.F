@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2015-03-22 14:59:05 takeshi>
+! Time-stamp: <2015-03-25 08:23:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -32,24 +32,23 @@ subroutine dipoFFT(p,c)
 
 !$omp parallel do
   do iz=0, p%Lz-1
-     c%didiR(:,:,iz,1) = c%dipoR(1,:,:,iz) * c%dipoR(1,:,:,iz)
-     c%didiR(:,:,iz,2) = c%dipoR(2,:,:,iz) * c%dipoR(2,:,:,iz)
-     c%didiR(:,:,iz,3) = c%dipoR(3,:,:,iz) * c%dipoR(3,:,:,iz)
-     c%didiR(:,:,iz,4) = c%dipoR(2,:,:,iz) * c%dipoR(3,:,:,iz)
-     c%didiR(:,:,iz,5) = c%dipoR(3,:,:,iz) * c%dipoR(1,:,:,iz)
-     c%didiR(:,:,iz,6) = c%dipoR(1,:,:,iz) * c%dipoR(2,:,:,iz)
+     c%didiR(1,:,:,iz) = c%dipoR(1,:,:,iz) * c%dipoR(1,:,:,iz)
+     c%didiR(2,:,:,iz) = c%dipoR(2,:,:,iz) * c%dipoR(2,:,:,iz)
+     c%didiR(3,:,:,iz) = c%dipoR(3,:,:,iz) * c%dipoR(3,:,:,iz)
+     c%didiR(4,:,:,iz) = c%dipoR(2,:,:,iz) * c%dipoR(3,:,:,iz)
+     c%didiR(5,:,:,iz) = c%dipoR(3,:,:,iz) * c%dipoR(1,:,:,iz)
+     c%didiR(6,:,:,iz) = c%dipoR(1,:,:,iz) * c%dipoR(2,:,:,iz)
   end do
 !$omp end parallel do
 
 #if defined(HAVE_LIBFFTW3)
-  do alpha = 1, 6
-     call dfftw_execute(c%plans_didiR2C(alpha))
-  end do
+  call fftw_execute_dft_r2c(c%plan_didiR2C, c%didiR, c%didiK)
 #else
-  do alpha = 1, 6
-     call fft_3d_r2c_or_c2r_out_of_place(.true., p%Lx, p%Ly, p%Lz, &
-            & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha))
-  end do
+# error "Not implemented yet."
+  ! do alpha = 1, 6
+  !    call fft_3d_r2c_or_c2r_out_of_place(.true., p%Lx, p%Ly, p%Lz, &
+  !           & c%didiR(alpha,0,0,0), c%didiK(alpha,0,0,0))
+  ! end do
 #endif
 
   if (p%verbose>=2) then

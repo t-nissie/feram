@@ -70,7 +70,9 @@ Done:
  x E_field(ix,iy,iz,alpha)
  x Use plan_dipoR2C instead of plan_acouR2C, plan_acouC2R instead of plan_dipoT2dVddi.
  x dVdacR, dVdacK
+ x didiR
 
 ToDo:
- * didiR
+ * inhomo_coup2_K
  * dipoI
+ * fft_3d_3x3upper_r2c.F

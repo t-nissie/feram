@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-03-24 19:59:07 takeshi>
+! Time-stamp: <2015-03-25 08:33:55 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -44,7 +44,7 @@ module Coord_module
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
      type(C_PTR) ::         plan_dipoR2C
-     integer*8              plans_didiR2C(6)
+     type(C_PTR) ::         plan_didiR2C
      integer*8              plans_inhoK2R(6)
      type(C_PTR) ::         plan_acouC2R
   end type Coord_type
@@ -57,7 +57,9 @@ contains
     type(Coord_type), intent(inout) :: c
     integer i
 #   if defined(HAVE_LIBFFTW3)
-    integer alpha,rank,howmany,stride,dist
+    integer alpha,howmany,stride
+    integer, parameter :: rank=3
+    integer, parameter :: dist=1
     integer  LzLyLx(3)
     integer d_embed(3)
     integer z_embed(3)
@@ -93,10 +95,8 @@ contains
     end do
 !$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
-    rank = 3
     howmany = 3
     stride = howmany
-    dist = 1
     c%plan_dipoR2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
          &                                  c%dipoR,d_embed,stride,dist,&
          &                                  c%dipoK,z_embed,stride,dist,FFTW_MEASURE)
@@ -141,25 +141,26 @@ contains
     allocate(     c%dipoI(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" for real<->complex FFT
 
     if (allocated(c%didiR)) deallocate(c%didiR)
-    allocate(     c%didiR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
+    allocate(     c%didiR(6, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%didiK)) deallocate(c%didiK)
-    allocate(     c%didiK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))    !"/2" for real<->complex FFT
+    allocate(     c%didiK(6, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))    !"/2" for real<->complex FFT
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%didiR(:,:,i,:) = 0.0d0
+       c%didiR(:,:,:,i) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%didiK(:,:,i,:) = (0.0d0,0.0d0)
+       c%didiK(:,:,:,i) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 6
-       call dfftw_plan_dft_r2c_3d(c%plans_didiR2C(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha), FFTW_MEASURE)
-    end do
+    howmany = 6
+    stride = howmany
+    c%plan_didiR2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+         &                                  c%didiR,d_embed,stride,dist,&
+         &                                  c%didiK,z_embed,stride,dist,FFTW_MEASURE)
 #   endif
 
     !--- acou -------------------------------
@@ -186,10 +187,8 @@ contains
     end do
 !$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
-    rank = 3
     howmany = 3
     stride = howmany
-    dist = 1
     c%plan_acouC2R = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
          &                                  c%acouK,z_embed,stride,dist,&
          &                                  c%acouR,d_embed,stride,dist,FFTW_MEASURE)

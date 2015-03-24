@@ -1,5 +1,5 @@
 ! dVdac.F   -*-f90-*-
-! Time-stamp: <2015-03-24 19:48:25 takeshi>
+! Time-stamp: <2015-03-25 08:10:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Purpose: calculate  d V / d (acoustic displacement)
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
@@ -31,7 +31,7 @@ subroutine dVdac(p,c)
            do iy = 0, p%Ly-1
               do ix = 0, p%Lx/2
                  c%dVdacK(alpha,ix,iy,iz) = c%dVdacK(alpha,ix,iy,iz) &
-                      & + c%inhomo_coup2_K(ix,iy,iz,alpha,j) * c%didiK(ix,iy,iz,j)
+                      & + c%inhomo_coup2_K(ix,iy,iz,alpha,j) * c%didiK(j,ix,iy,iz)
                  if (j<=3) then
                     c%dVdacK(alpha,ix,iy,iz) = c%dVdacK(alpha,ix,iy,iz) &
                          & + c%inhomo_K(ix,iy,iz,alpha,j) * c%acouK(j,ix,iy,iz)

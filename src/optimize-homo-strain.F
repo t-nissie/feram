@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2013-05-31 08:02:38 takeshi>
+! Time-stamp: <2015-03-25 08:20:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
@@ -24,7 +24,7 @@ subroutine optimize_homo_strain(p,c,e)
   !--- prepare homogeneous_coupling_2_uu ------------------------
   do i = 1, 6
      homogeneous_coupling_2_uu(i) = &
-          & SUM( c%homogeneous_coupling_2(i,:) * dble(c%didiK(0,0,0,:)) )
+          & SUM( c%homogeneous_coupling_2(i,:) * dble(c%didiK(:,0,0,0)) )
   end do
   homogeneous_coupling_2_uu(1:3) = homogeneous_coupling_2_uu(1:3) + p%pNa03(1:3)
 
