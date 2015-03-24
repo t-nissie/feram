@@ -68,9 +68,9 @@ Done:
  x dipoT
  x acouR, acouK, acouP
  x E_field(ix,iy,iz,alpha)
- x Use plan_dipoR2C instead of plan_acouR2C, plan_acouC2R instead of plan_dipoT2dVddi
+ x Use plan_dipoR2C instead of plan_acouR2C, plan_acouC2R instead of plan_dipoT2dVddi.
+ x dVdacR, dVdacK
 
 ToDo:
  * didiR
  * dipoI
- * dVdacR, dVdacK

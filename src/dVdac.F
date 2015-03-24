@@ -1,5 +1,5 @@
 ! dVdac.F   -*-f90-*-
-! Time-stamp: <2015-03-23 15:24:15 takeshi>
+! Time-stamp: <2015-03-24 19:48:25 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Purpose: calculate  d V / d (acoustic displacement)
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
@@ -15,11 +15,12 @@ subroutine dVdac(p,c)
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
   integer :: ix,iy,iz,alpha,j
+  include 'fftw3.f03'
 
 !=== begin: dVdacK = inhomo_K acouK + inhomo_coup2_K didiK ====================================
 !$omp parallel do
   do iz = 0, p%Lz-1
-     c%dVdacK(:,:,iz,:) = (0.0d0, 0.0d0)
+     c%dVdacK(:,:,:,iz) = (0.0d0, 0.0d0)
   end do
 !$omp end parallel do
 
@@ -29,10 +30,10 @@ subroutine dVdac(p,c)
         do iz = 0, p%Lz-1
            do iy = 0, p%Ly-1
               do ix = 0, p%Lx/2
-                 c%dVdacK(ix,iy,iz,alpha) = c%dVdacK(ix,iy,iz,alpha) &
+                 c%dVdacK(alpha,ix,iy,iz) = c%dVdacK(alpha,ix,iy,iz) &
                       & + c%inhomo_coup2_K(ix,iy,iz,alpha,j) * c%didiK(ix,iy,iz,j)
                  if (j<=3) then
-                    c%dVdacK(ix,iy,iz,alpha) = c%dVdacK(ix,iy,iz,alpha) &
+                    c%dVdacK(alpha,ix,iy,iz) = c%dVdacK(alpha,ix,iy,iz) &
                          & + c%inhomo_K(ix,iy,iz,alpha,j) * c%acouK(j,ix,iy,iz)
                  end if
               end do
@@ -45,26 +46,25 @@ subroutine dVdac(p,c)
 
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%dVdacK(:,:,iz,:) = (0.0d0, -1.0d0) * c%dVdacK(:,:,iz,:)
+       c%dVdacK(:,:,:,iz) = (0.0d0, -1.0d0) * c%dVdacK(:,:,:,iz)
     end do
 !$omp end parallel do
 
-    !write(6,'(a,2(f14.7,f12.7))') 'dVdacK', c%dVdacK(0,1,1,1), c%dVdacK(0,15,15,1)
+    !write(6,'(a,2(f14.7,f12.7))') 'dVdacK', c%dVdacK(1,0,1,1), c%dVdacK(1,0,15,15)
 
 #  if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_execute(c%plans_dVdacK2R(alpha))
-    end do
+    call fftw_execute_dft_c2r(c%plan_acouC2R, c%dVdacK, c%dVdacR)
 #  else
-    do alpha = 1, 3
-       call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
-            & c%dVdacR(0,0,0,alpha), c%dVdacK(0,0,0,alpha))
-    end do
+# error "Not implemented yet."
+    ! do alpha = 1, 3
+    !    call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
+    !         & c%dVdacR(0,0,0,alpha), c%dVdacK(0,0,0,alpha))
+    ! end do
 #  endif
 
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%dVdacR(:,:,iz,:) = c%dVdacR(:,:,iz,:) * p%Ninv
+       c%dVdacR(:,:,:,iz) = c%dVdacR(:,:,:,iz) * p%Ninv
     end do
 !$omp end parallel do
 end subroutine dVdac

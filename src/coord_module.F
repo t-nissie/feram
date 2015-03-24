@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-03-24 19:20:11 takeshi>
+! Time-stamp: <2015-03-24 19:59:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -46,7 +46,6 @@ module Coord_module
      type(C_PTR) ::         plan_dipoR2C
      integer*8              plans_didiR2C(6)
      integer*8              plans_inhoK2R(6)
-     integer*8              plans_dVdacK2R(3)
      type(C_PTR) ::         plan_acouC2R
   end type Coord_type
 
@@ -198,9 +197,9 @@ contains
 
     !--- force on acoustic displacement --------
     if (allocated(c%dVdacR)) deallocate(c%dVdacR)
-    allocate(c%dVdacR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(c%dVdacR(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%dVdacK)) deallocate(c%dVdacK)
-    allocate(c%dVdacK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(c%dVdacK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
@@ -212,12 +211,6 @@ contains
        c%dVdacK(:,:,i,:) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-#   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_plan_dft_c2r_3d(c%plans_dVdacK2R(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%dVdacK(0,0,0,alpha), c%dVdacR(0,0,0,alpha), FFTW_MEASURE)
-    end do
-#   endif
 
     !--- inhomogeneous strain ---------------
     if (allocated(c%inhoR)) deallocate(c%inhoR)

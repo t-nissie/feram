@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2015-03-23 15:34:51 takeshi>
+! Time-stamp: <2015-03-24 19:47:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -19,7 +19,7 @@ subroutine leapfrog(p,c,e,i_step)
   real*8 Lx_Ly_delta_e_acou
   integer Lz_1_4
   integer Lz_3_4
-  integer iy,iz,alpha
+  integer iy,iz
   real*8   kinetic_energy_dipo, kinetic_energy_acou
   external kinetic_energy_dipo, kinetic_energy_acou
   if (p%verbose>=2) then
@@ -69,9 +69,7 @@ subroutine leapfrog(p,c,e,i_step)
      if (p%mass_acou > 0.0d0) then
 !$omp parallel do
         do iz=0, p%Lz-1
-           do alpha = 1,3
-              c%acouP(alpha,:,:,iz) = c%acouP(alpha,:,:,iz) - p%dt_2 * c%dVdacR(:,:,iz,alpha)
-           end do
+           c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt_2 * c%dVdacR(:,:,:,iz)
         end do
 !$omp end parallel do
      end if
@@ -104,9 +102,7 @@ subroutine leapfrog(p,c,e,i_step)
      if (p%mass_acou > 0.0d0) then
 !$omp parallel do
         do iz=0, p%Lz-1
-           do alpha = 1,3
-              c%acouP(alpha,:,:,iz) = c%acouP(alpha,:,:,iz) - p%dt * c%dVdacR(:,:,iz,alpha)
-           end do
+           c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt * c%dVdacR(:,:,:,iz)
         end do
 !$omp end parallel do
      end if
