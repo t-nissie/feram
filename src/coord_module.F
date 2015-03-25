@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-03-25 08:33:55 takeshi>
+! Time-stamp: <2015-03-25 10:57:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -202,12 +202,12 @@ contains
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%dVdacR(:,:,i,:) = 0.0d0
+       c%dVdacR(:,:,:,i) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%dVdacK(:,:,i,:) = (0.0d0,0.0d0)
+       c%dVdacK(:,:,:,i) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
 
