@@ -73,9 +73,9 @@ Done:
  x didiR
  x inhoR, inhoK
  x inhomo_coup2_K
-
+ x inhomo_K
 
 ToDo:
  * dipoI
  * fft_3d_3x3upper_r2c.F
- * inhomo_K, print_eigenvalues.F
+ * long_range, short_range, print_eigenvalues.F

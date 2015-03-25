@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2015-03-25 12:18:37 takeshi>
+! Time-stamp: <2015-03-25 13:24:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -73,26 +73,26 @@ subroutine elastic(p,c)
   ! See equation (A1) and (A2) of ref_1
 !
   ! inhomo_K --------------------------------------
-  do beta = 1, 3
-     other1 = mod(beta+1,3)+1
-     other2 = mod(beta,  3)+1
-     !write(6,'(a,3i2)') 'beta, other1, other2', beta, other1, other2
-     do alpha = 1, 3
-        do iz = 0, p%Lz-1
-           k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
-           k(3) = k(3) * M_2PI / p%a0
-           do iy = 0, p%Ly-1
-              k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
-              k(2) = k(2) * M_2PI / p%a0
-              do ix = 0, p%Lx/2
-                 k(1) = dble(ix) / p%Lx * M_2PI / p%a0
+  do iz = 0, p%Lz-1
+     k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
+     k(3) = k(3) * M_2PI / p%a0
+     do iy = 0, p%Ly-1
+        k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
+        k(2) = k(2) * M_2PI / p%a0
+        do ix = 0, p%Lx/2
+           k(1) = dble(ix) / p%Lx * M_2PI / p%a0
+           do beta = 1, 3
+              other1 = mod(beta+1,3)+1
+              other2 = mod(beta,  3)+1
+              !write(6,'(a,3i2)') 'beta, other1, other2', beta, other1, other2
+              do alpha = 1, 3
                  if (alpha.eq.beta) then
-                    c%inhomo_K(ix,iy,iz, alpha,beta) = &
+                    c%inhomo_K(alpha,beta, ix,iy,iz) = &
                          & p%B11 * k(alpha ) * k(alpha ) + &
                          & p%B44 * k(other1) * k(other1) + &
                          & p%B44 * k(other2) * k(other2)
                  else
-                    c%inhomo_K(ix,iy,iz, alpha,beta) = &
+                    c%inhomo_K(alpha,beta, ix,iy,iz) = &
                          & p%B12 * k(alpha ) * k( beta ) + &
                          & p%B44 * k(alpha ) * k( beta )
                  end if
@@ -115,11 +115,11 @@ subroutine elastic(p,c)
            if (ix.ne.0 .or. iy.ne.0 .or. iz.ne.0) then
               do beta = 1, 3
                  c%inhomo_K_G(beta,beta, ix,iy,iz) = &
-                      & sqrt( c%inhomo_K(ix,iy,iz, beta,beta)  - SUM(c%inhomo_K_G(beta, 1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) )
+                      & sqrt( c%inhomo_K(beta,beta, ix,iy,iz)  - SUM(c%inhomo_K_G(beta, 1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) )
                  c%inhomo_K_G(beta,4, ix,iy,iz) = 1.0d0/c%inhomo_K_G(beta,beta, ix,iy,iz)
                  do alpha = beta+1, 3
                     c%inhomo_K_G(alpha,beta, ix,iy,iz) = &
-                         & ( c%inhomo_K(ix,iy,iz, alpha,beta) - SUM(c%inhomo_K_G(alpha,1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) ) &
+                         & ( c%inhomo_K(alpha,beta, ix,iy,iz) - SUM(c%inhomo_K_G(alpha,1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) ) &
                          & * c%inhomo_K_G(beta,4, ix,iy,iz)
                  end do
               end do

@@ -1,5 +1,5 @@
 ! optimize-inho-strain.F   -*-f90-*-
-! Time-stamp: <2015-03-25 12:23:59 takeshi>
+! Time-stamp: <2015-03-25 13:26:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -27,7 +27,7 @@ subroutine optimize_inho_strain(p,c)
   !    inhomo_K(1:3,1:3) * acouK(1:3) = - inhomo_coup2_K(1:3,1:6) * c%didiK(1:6) ,
   ! are solved for all k-points.
   ! * inhomo_K is positive definite real symmetric matrix. See elastic.F and cholesky_d.f.
-  ! * acouK(0,0,0,1:3)=0 is guaranteed by c%inhomo_K_G(1:3,1:4, 0,0,0)=0.
+  ! * acouK(1:3, 0,0,0)=0 is guaranteed by c%inhomo_K_G(1:3,1:4, 0,0,0)=0.
 !$omp parallel do private(iz,iy,ix,alpha,beta,acouK_tmp,tmp)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1

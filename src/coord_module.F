@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-03-25 12:09:24 takeshi>
+! Time-stamp: <2015-03-25 13:20:41 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -30,7 +30,7 @@ module Coord_module
      complex*16, allocatable :: dVdacK(:,:,:,:)
      real*8,     allocatable :: inhoR(:,:,:,:)   ! Only used in optimize-inho-strain.F
      complex*16, allocatable :: inhoK(:,:,:,:)   ! Only used in optimize-inho-strain.F
-     real*8,     allocatable :: inhomo_K(:,:,:, :,:)       ! FTed potential
+     real*8,     allocatable :: inhomo_K(  :,:, :,:,:)     ! FTed potential
      real*8,     allocatable :: inhomo_K_G(:,:, :,:,:)     ! inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
      real*8,     allocatable :: inhomo_coup2_K(:,:, :,:,:) ! FTed potential
      logical,    allocatable :: sum_p(:,:,:) ! .true. if the u(R) is not defect nor mirrored film. This array will be initialized in read_defects_u.F
@@ -236,7 +236,7 @@ contains
 #   endif
 
     if (allocated(c%inhomo_K)) deallocate(c%inhomo_K)
-    allocate(     c%inhomo_K(0:p%Lx/2,0:p%Ly-1,0:p%Lz-1, 3,3))
+    allocate(     c%inhomo_K(3,3, 0:p%Lx/2,0:p%Ly-1,0:p%Lz-1))
 
     if (allocated(c%inhomo_K_G)) deallocate(c%inhomo_K_G)
     allocate(     c%inhomo_K_G(3,4, 0:p%Lx/2,0:p%Ly-1,0:p%Lz-1))

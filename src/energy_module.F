@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2015-03-25 12:23:28 takeshi>
+! Time-stamp: <2015-03-25 13:26:22 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -154,9 +154,9 @@ contains
        do iy = 0, p%Ly-1
           do alpha = 1,3
              do beta = 1,3
-                tmp1 =      dble( conjg(c%acouK(alpha,0,         iy,iz)) * c%inhomo_K(0,         iy,iz,alpha,beta) * c%acouK(beta, 0,         iy,iz)) / 2
-                tmp2 = sum( dble( conjg(c%acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_K(1:p%Lx/2-1,iy,iz,alpha,beta) * c%acouK(beta, 1:p%Lx/2-1,iy,iz)) )
-                tmp3 =      dble( conjg(c%acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_K(  p%Lx/2,  iy,iz,alpha,beta) * c%acouK(beta,   p%Lx/2,  iy,iz)) / 2
+                tmp1 =      dble( conjg(c%acouK(alpha, 0,         iy,iz)) * c%inhomo_K(alpha,beta, 0,         iy,iz) * c%acouK(beta, 0,         iy,iz)) / 2
+                tmp2 = sum( dble( conjg(c%acouK(alpha, 1:p%Lx/2-1,iy,iz)) * c%inhomo_K(alpha,beta, 1:p%Lx/2-1,iy,iz) * c%acouK(beta, 1:p%Lx/2-1,iy,iz)) )
+                tmp3 =      dble( conjg(c%acouK(alpha,   p%Lx/2,  iy,iz)) * c%inhomo_K(alpha,beta,   p%Lx/2,  iy,iz) * c%acouK(beta,   p%Lx/2,  iy,iz)) / 2
                 tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
           end do
