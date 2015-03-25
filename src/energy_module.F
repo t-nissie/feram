@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2015-03-25 08:20:26 takeshi>
+! Time-stamp: <2015-03-25 12:23:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -179,20 +179,20 @@ contains
     integer :: i, alpha, iy,iz
     !--- END of variable definitions -------------------
     tmpS = 0.0d0
-    do i = 1,6
-       do alpha = 1,3
 !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
-          do iz = 0, p%Lz-1
-             do iy = 0, p%Ly-1
-                tmp1 =      dble( conjg(c%acouK(alpha,0,         iy,iz)) * c%inhomo_coup2_K(0,         iy,iz,alpha,i) * c%didiK(i,0,         iy,iz) ) / 2
-                tmp2 = sum( dble( conjg(c%acouK(alpha,1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(1:p%Lx/2-1,iy,iz,alpha,i) * c%didiK(i,1:p%Lx/2-1,iy,iz) ) )
-                tmp3 =      dble( conjg(c%acouK(alpha,  p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(  p%Lx/2,  iy,iz,alpha,i) * c%didiK(i,  p%Lx/2,  iy,iz) ) / 2
+    do iz = 0, p%Lz-1
+       do iy = 0, p%Ly-1
+          do i = 1,6
+             do alpha = 1,3
+                tmp1 =      dble( conjg(c%acouK(alpha, 0,         iy,iz)) * c%inhomo_coup2_K(alpha,i, 0,         iy,iz) * c%didiK(i, 0,         iy,iz) ) / 2
+                tmp2 = sum( dble( conjg(c%acouK(alpha, 1:p%Lx/2-1,iy,iz)) * c%inhomo_coup2_K(alpha,i, 1:p%Lx/2-1,iy,iz) * c%didiK(i, 1:p%Lx/2-1,iy,iz) ) )
+                tmp3 =      dble( conjg(c%acouK(alpha,   p%Lx/2,  iy,iz)) * c%inhomo_coup2_K(alpha,i,   p%Lx/2,  iy,iz) * c%didiK(i,   p%Lx/2,  iy,iz) ) / 2
                 tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
           end do
-!$omp end parallel do
        end do
     end do
+!$omp end parallel do
     e%inho_coupling = tmpS * 2 * p%Ninv
   end subroutine inhomogeneous_coupling_energy
 end module Energy_module

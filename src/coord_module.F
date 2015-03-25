@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-03-25 11:26:49 takeshi>
+! Time-stamp: <2015-03-25 12:09:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -32,7 +32,7 @@ module Coord_module
      complex*16, allocatable :: inhoK(:,:,:,:)   ! Only used in optimize-inho-strain.F
      real*8,     allocatable :: inhomo_K(:,:,:, :,:)       ! FTed potential
      real*8,     allocatable :: inhomo_K_G(:,:, :,:,:)     ! inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
-     real*8,     allocatable :: inhomo_coup2_K(:,:,:, :,:) ! FTed potential
+     real*8,     allocatable :: inhomo_coup2_K(:,:, :,:,:) ! FTed potential
      logical,    allocatable :: sum_p(:,:,:) ! .true. if the u(R) is not defect nor mirrored film. This array will be initialized in read_defects_u.F
      real*8,     allocatable :: e_layer_dipo(:)
      real*8,     allocatable :: e_layer_acou(:)
@@ -242,18 +242,11 @@ contains
     allocate(     c%inhomo_K_G(3,4, 0:p%Lx/2,0:p%Ly-1,0:p%Lz-1))
 
     if (allocated(c%inhomo_coup2_K)) deallocate(c%inhomo_coup2_K)
-#if defined(__xlc__) || defined(__sparc)
-    if (mod(p%Ly,16).eq.0 .and. mod(p%Lz,16).eq.0) then
-       allocate(c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1+3,0:p%Lz-1, 3,6))   ! padding
-    else
-       allocate(c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1  ,0:p%Lz-1, 3,6))
-    end if
-#else
-    allocate(c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1  ,0:p%Lz-1, 3,6))
-#endif
+    allocate(c%inhomo_coup2_K(3,6, 0:p%Lx/2,0:p%Ly-1  ,0:p%Lz-1))
+#   warning "padding_y should be added for SR16000 and FX10."
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%inhomo_coup2_K(:,:,i,:,:) = 0.0d0
+       c%inhomo_coup2_K(:,:, :,:,i) = 0.0d0
     end do
 !$omp end parallel do
 

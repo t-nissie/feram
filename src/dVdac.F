@@ -1,5 +1,5 @@
 ! dVdac.F   -*-f90-*-
-! Time-stamp: <2015-03-25 08:10:47 takeshi>
+! Time-stamp: <2015-03-25 12:17:54 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Purpose: calculate  d V / d (acoustic displacement)
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
@@ -24,24 +24,24 @@ subroutine dVdac(p,c)
   end do
 !$omp end parallel do
 
-  do j = 1, 6
-     do alpha = 1, 3
 !$omp parallel do
-        do iz = 0, p%Lz-1
-           do iy = 0, p%Ly-1
-              do ix = 0, p%Lx/2
-                 c%dVdacK(alpha,ix,iy,iz) = c%dVdacK(alpha,ix,iy,iz) &
-                      & + c%inhomo_coup2_K(ix,iy,iz,alpha,j) * c%didiK(j,ix,iy,iz)
+  do iz = 0, p%Lz-1
+     do iy = 0, p%Ly-1
+        do ix = 0, p%Lx/2
+           do j = 1, 6
+              do alpha = 1, 3
+                    c%dVdacK(alpha, ix,iy,iz) = c%dVdacK(alpha, ix,iy,iz) &
+                         & + c%inhomo_coup2_K(alpha,j, ix,iy,iz) * c%didiK(j, ix,iy,iz)
                  if (j<=3) then
-                    c%dVdacK(alpha,ix,iy,iz) = c%dVdacK(alpha,ix,iy,iz) &
-                         & + c%inhomo_K(ix,iy,iz,alpha,j) * c%acouK(j,ix,iy,iz)
+                    c%dVdacK(alpha, ix,iy,iz) = c%dVdacK(alpha, ix,iy,iz) &
+                         & +       c%inhomo_K(ix,iy,iz, alpha,j) * c%acouK(j, ix,iy,iz)
                  end if
               end do
            end do
         end do
-!$omp end parallel do
      end do
   end do
+!$omp end parallel do
 !=== end:   dVdacK = inhomo_K acouK + inhomo_coup2_K didiK ====================================
 
 !$omp parallel do

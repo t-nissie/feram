@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2011-10-24 12:29:09 takeshi>
+! Time-stamp: <2015-03-25 12:18:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -143,19 +143,19 @@ subroutine elastic(p,c)
                  k(1) = dble(ix) / p%Lx * M_2PI / p%a0
                  if (i.le.3) then
                     if (i.eq.alpha) then
-                       c%inhomo_coup2_K(ix,iy,iz, alpha,i) = k(alpha)*p%B1xx/2
+                       c%inhomo_coup2_K(alpha,i, ix,iy,iz) = k(alpha)*p%B1xx/2
                     else
-                       c%inhomo_coup2_K(ix,iy,iz, alpha,i) = k(alpha)*p%B1yy/2
+                       c%inhomo_coup2_K(alpha,i, ix,iy,iz) = k(alpha)*p%B1yy/2
                     end if
                  else
-                    c%inhomo_coup2_K(ix,iy,iz, alpha,i)=k(ki(alpha,i-3))*p%B4yz
+                       c%inhomo_coup2_K(alpha,i, ix,iy,iz) = k(ki(alpha,i-3))*p%B4yz
                  end if
               end do
            end do
         end do
      end do
   end do
-  !write(6,'(6f10.5)') ((c%inhomo_coup2_K(1,1,1, alpha,i), i=1,6), alpha=1,3)
+  !write(6,'(6f10.5)') ((c%inhomo_coup2_K(alpha,i, 1,1,1), i=1,6), alpha=1,3)
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '')
 end subroutine elastic

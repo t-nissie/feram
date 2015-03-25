@@ -72,8 +72,10 @@ Done:
  x dVdacR, dVdacK
  x didiR
  x inhoR, inhoK
+ x inhomo_coup2_K
+
 
 ToDo:
- * inhomo_coup2_K
  * dipoI
  * fft_3d_3x3upper_r2c.F
+ * inhomo_K, print_eigenvalues.F
