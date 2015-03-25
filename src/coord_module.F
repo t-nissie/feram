@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-03-25 10:57:28 takeshi>
+! Time-stamp: <2015-03-25 11:26:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -45,7 +45,7 @@ module Coord_module
      integer                n_sum_p
      type(C_PTR) ::         plan_dipoR2C
      type(C_PTR) ::         plan_didiR2C
-     integer*8              plans_inhoK2R(6)
+     type(C_PTR) ::         plan_inhoC2R
      type(C_PTR) ::         plan_acouC2R
   end type Coord_type
 
@@ -57,7 +57,7 @@ contains
     type(Coord_type), intent(inout) :: c
     integer i
 #   if defined(HAVE_LIBFFTW3)
-    integer alpha,howmany,stride
+    integer howmany,stride
     integer, parameter :: rank=3
     integer, parameter :: dist=1
     integer  LzLyLx(3)
@@ -213,25 +213,26 @@ contains
 
     !--- inhomogeneous strain ---------------
     if (allocated(c%inhoR)) deallocate(c%inhoR)
-    allocate(c%inhoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
+    allocate(c%inhoR(6, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%inhoK)) deallocate(c%inhoK)
-    allocate(c%inhoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))
+    allocate(c%inhoK(6, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
     !!!first touch
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%inhoR(:,:,i,:) = 0.0d0
+       c%inhoR(:,:,:,i) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
     do i = 0,p%Lz-1
-       c%inhoK(:,:,i,:) = (0.0d0,0.0d0)
+       c%inhoK(:,:,:,i) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
 #   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 6
-       call dfftw_plan_dft_c2r_3d(c%plans_inhoK2R(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%inhoK(0,0,0,alpha), c%inhoR(0,0,0,alpha), FFTW_MEASURE)
-    end do
+    howmany = 6
+    stride = howmany
+    c%plan_inhoC2R = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+         &                                  c%inhoK,z_embed,stride,dist,&
+         &                                  c%inhoR,d_embed,stride,dist,FFTW_MEASURE)
 #   endif
 
     if (allocated(c%inhomo_K)) deallocate(c%inhomo_K)

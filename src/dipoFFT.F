@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2015-03-25 08:23:34 takeshi>
+! Time-stamp: <2015-03-25 11:27:30 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -12,7 +12,7 @@ subroutine dipoFFT(p,c)
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
-  integer alpha,iz
+  integer iz
 #if defined(HAVE_LIBFFTW3)
   include 'fftw3.f03'
 #endif

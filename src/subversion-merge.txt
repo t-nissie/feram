@@ -71,6 +71,7 @@ Done:
  x Use plan_dipoR2C instead of plan_acouR2C, plan_acouC2R instead of plan_dipoT2dVddi.
  x dVdacR, dVdacK
  x didiR
+ x inhoR, inhoK
 
 ToDo:
  * inhomo_coup2_K
