@@ -13,6 +13,11 @@ if [ ! -f elastocaloric770K_check.vs.feram ]; then
 fi
 
 ./feram elastocaloric770K_check.vs.feram elastocaloric770K_check.lf.feram
+
+for f in elastocaloric770K_check.vs.log elastocaloric770K_check.lf.log; do
+    (head -222 $f; echo '=== (snip) ========================'; tail -222 $f) > $f.digest
+done
+
 t_final=`colrm 8 < elastocaloric770K_check.lf.avg`
 if [ `echo "691.00 < $t_final" | bc` = 1  -a `echo "$t_final < 695.00" | bc` = 1 ]; then
     echo $0 : T_final = $t_final seems OK
