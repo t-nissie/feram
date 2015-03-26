@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2015-03-24 19:17:59 takeshi>
+! Time-stamp: <2015-03-26 15:37:23 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -27,7 +27,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
      do alpha = 1,3
         do iy=0, p%Ly-1
            do ix=0, p%Lx/2
-              c%dipoT(alpha,ix,iy,iz) = sum(c%dipoI(ix,iy,iz,alpha,:)*c%dipoK(:,ix,iy,iz))
+              c%dipoT(alpha,ix,iy,iz) = dot_product(c%dipoI(alpha,:, ix,iy,iz), c%dipoK(:, ix,iy,iz))
            end do
         end do
      end do

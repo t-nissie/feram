@@ -56,8 +56,6 @@ Updated to revision 2369.
 app14$
 
 
-
-
 Done:
  x add padding_y in param_module.F
  x coord_module.F
@@ -74,8 +72,13 @@ Done:
  x inhoR, inhoK
  x inhomo_coup2_K
  x inhomo_K
+ x dipoI
 
 ToDo:
- * dipoI
  * fft_3d_3x3upper_r2c.F
- * long_range, short_range, print_eigenvalues.F
+ * long_range, short_range
+ * print_eigenvalues.F
+ * padding_y and 2*(Lx/2+1) in real arrays in coord_module.F and fft_3d_3x3upper_r2c.F
+ * in-place: inhoK -> inhoR
+ * in-place: dipoT -> dVddi
+ * sum -> dot_product

@@ -1,5 +1,5 @@
 ! displacement.F -*-f90-*-
-! Time-stamp: <2009-04-17 16:00:42 takeshi>
+! Time-stamp: <2015-03-26 15:39:11 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: ./displacement < perovskite.out
 !!
@@ -48,7 +48,7 @@ subroutine xred2displacement(xred_dataset,xred)
   do i=1,3
      translation(i) = sum(disp(i,:))/5
      disp(i,:) = disp(i,:) - translation(i)
-     norm = sum(disp(i,:)*disp(i,:))
+     norm = dot_product(disp(i,:),disp(i,:))
      if (norm>1.0d-30) then
         norm = sqrt(norm)
      else

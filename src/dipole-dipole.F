@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2013-07-03 15:50:46 takeshi>
+! Time-stamp: <2015-03-26 15:29:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -44,7 +44,15 @@ subroutine dipole_dipole(p,c)
   end if
 
   call dipole_dipole_short_range(p,short_range)
-  c%dipoI(:,:,:,:,:) = long_range(:,:,:,:,:) + short_range(:,:,:,:,:)
+
+  do iz= 0, p%Lz-1
+     do iy= 0, p%Ly-1
+        do ix= 0, p%Lx/2
+           c%dipoI(:,:, ix,iy,iz) = long_range(ix,iy,iz, :,:) + short_range(ix,iy,iz, :,:)
+        end do
+     end do
+  end do
+  ! c%dipoI(:,:, :,:,:) = long_range(:,:, :,:,:) + short_range(:,:, :,:,:)
 
   ! open(unit=UNIT_QUADRATIC, file=trim(p%filename)//'.dipoI', status='replace')
   !    do iz= 0, p%Lz-1

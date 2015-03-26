@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-03-25 13:20:41 takeshi>
+! Time-stamp: <2015-03-26 15:27:06 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -138,7 +138,7 @@ contains
 !$omp end parallel do
 
     if (allocated(c%dipoI)) deallocate(c%dipoI)
-    allocate(     c%dipoI(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" for real<->complex FFT
+    allocate(     c%dipoI(3, 3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
 
     if (allocated(c%didiR)) deallocate(c%didiR)
     allocate(     c%didiR(6, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))

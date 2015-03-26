@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2015-03-25 08:20:57 takeshi>
+! Time-stamp: <2015-03-26 15:41:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
@@ -24,7 +24,7 @@ subroutine optimize_homo_strain(p,c,e)
   !--- prepare homogeneous_coupling_2_uu ------------------------
   do i = 1, 6
      homogeneous_coupling_2_uu(i) = &
-          & SUM( c%homogeneous_coupling_2(i,:) * dble(c%didiK(:,0,0,0)) )
+          & dot_product( c%homogeneous_coupling_2(i,:), dble(c%didiK(:,0,0,0)) )
   end do
   homogeneous_coupling_2_uu(1:3) = homogeneous_coupling_2_uu(1:3) + p%pNa03(1:3)
 
@@ -60,12 +60,12 @@ subroutine optimize_homo_strain(p,c,e)
   e%homo_strain = 0.0d0
   do i = 1, 6
      e%homo_strain = e%homo_strain + &
-          & c%strain(i) * SUM( c%homogeneous(i,:) * c%strain(:) )
+          & c%strain(i) * dot_product( c%homogeneous(i,:), c%strain(:) )
   end do
   e%homo_strain = e%homo_strain / 2
 
   !--- compute homogeneous coupling energy ----------------------
-  e%homo_coupling = sum( c%strain(:) * homogeneous_coupling_2_uu(:) )
+  e%homo_coupling = dot_product( c%strain(:), homogeneous_coupling_2_uu(:) )
 
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine optimize_homo_strain
