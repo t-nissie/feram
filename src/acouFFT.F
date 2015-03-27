@@ -1,5 +1,5 @@
 ! acouFFT.F -*-f90-*-
-! Time-stamp: <2015-03-27 16:20:38 takeshi>
+! Time-stamp: <2015-03-24 19:10:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -12,6 +12,7 @@ subroutine acouFFT(p,c)
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
+  integer iz
 #if defined(HAVE_LIBFFTW3)
   include 'fftw3.f03'
 #endif
@@ -30,9 +31,15 @@ subroutine acouFFT(p,c)
   ! end do
 #endif
 
-!$omp parallel
-  c%acouK(:,:,:,:) = (0.0d0, 1.0d0) * c%acouK(:,:,:,:)
-!$omp end parallel
+    !write(6,'(a,2(f14.7,f12.7))') '1acouK', c%acouK(1,0,1,1), c%acouK(1,0,15,15)
+
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%acouK(:,:,:,iz) = (0.0d0, 1.0d0) * c%acouK(:,:,:,iz)
+    end do
+!$omp end parallel do
+
+    !write(6,'(a,2(f14.7,f12.7))') '2acouK', c%acouK(1,0,1,1), c%acouK(1,0,15,15)
 
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'acouR -> acouK, done')
