@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-03-27 14:19:19 takeshi>
+# Time-stamp: <2015-03-27 16:10:09 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -32,7 +32,6 @@ feram_SRCS = average_module.F \
 	f90_wisdom.f \
 	feram.F \
 	feram_common.F \
-	fft_wrappers.F \
 	fft_3d_3x3upper_r2c.F \
 	hysteresis_loop.F \
 	initialize_E_field.F \
@@ -80,7 +79,7 @@ random_field_generator_SOURCES = random_field_generator.F marsaglia_tsang_uni64_
 
 wave_check_SOURCES = wave_check.f wave_module.F
 
-fft_check_SOURCES = fft_wrappers.F fft_check.F f90_wisdom.f
+fft_check_SOURCES = fft_check.F f90_wisdom.f
 
 CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(EXTRA_PROGRAMS) \
              defects_maker_check.defects wisdom_new \
@@ -161,7 +160,7 @@ feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 
 feram_common.o:                 param_module.o coord_module.o date_and_time_module.o f90_wisdom.o define.h
 decay-functions.o param_module.o diagonalize15x15.o: define.h
-feram.o feram_mpi.o potentials.o dipole-dipole.o mirror.o read_defects_u.o elastic.o alloc_coord.o write_system.o:\
+feram.o feram_mpi.o potentials.o dipole-dipole.o mirror.o read_defects_u.o elastic.o alloc_coord.o write_system.o dipoFFT.o acouFFT.o:\
                                 param_module.o coord_module.o define.h
 initialize_E_field.o:           param_module.o coord_module.o define.h wave_module.o
 initialize-dipoR.o dVddi-unharmonic.o leapfrog.o optimize-homo-strain.o optimize-homo-strain.o optimize-inho-strain.o:\
@@ -185,14 +184,13 @@ average_module.o:               param_module.o coord_module.o energy_module.o de
 coord_module.o:                 param_module.o         define.h
 dipole-dipole-long-range.o:     param_module.o         define.h fft_3d_3x3upper_r2c.o
 dipole-dipole-short-range.o:    param_module.o         define.h fft_3d_3x3upper_r2c.o
-fft_3d_3x3upper_r2c.o:          param_module.o                fft_wrappers.o
+fft_3d_3x3upper_r2c.o:          param_module.o
 dVddi-dipole-dipole.o:\
-                energy_module.o param_module.o coord_module.o fft_wrappers.o
-dipoFFT.o acouFFT.o:            param_module.o coord_module.o fft_wrappers.o define.h
+                energy_module.o param_module.o coord_module.o
 print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
 eigenvalues2j.o:                param_module.o define.h
 distribution3d2ppm.o:           average_module.o rgb_module.o
-fft_check.o: fft_wrappers.o f90_wisdom.o
+fft_check.o: f90_wisdom.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:
