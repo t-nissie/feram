@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-03-26 15:27:06 takeshi>
+! Time-stamp: <2015-03-27 12:28:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -64,17 +64,11 @@ contains
     integer d_embed(3)
     integer z_embed(3)
     include 'fftw3.f03'
+    LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
+    d_embed(1)=p%Lz; d_embed(2)=p%Ly; d_embed(3)=p%Lx    ! Not 2*(Lx/2+1), so far.
+    z_embed(1)=p%Lz; z_embed(2)=p%Ly; z_embed(3)=p%Lx/2+1
 #   endif
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
-    LzLyLx(1)  = p%Lz
-    LzLyLx(2)  = p%Ly
-    LzLyLx(3)  = p%Lx
-    d_embed(1) = p%Lz
-    d_embed(2) = p%Ly !+ p%padding_y
-    d_embed(3) = p%Lx            ! Not 2*(Lx/2+1), so far.
-    z_embed(1) = p%Lz
-    z_embed(2) = p%Ly !+ p%padding_y
-    z_embed(3) = p%Lx/2+1
     !--- m_inv ------------------------------
     if (allocated(c%m_inv)) deallocate(c%m_inv)
     allocate(c%m_inv(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
