@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-02-27 19:18:03 takeshi>
+# Time-stamp: <2015-03-27 14:19:19 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -15,6 +15,7 @@ TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
+	alloc_coord.F \
 	dVddi-dipole-dipole.F \
 	dVddi-homo-coupling.F \
 	dVddi_inho_coupling.F \
@@ -51,7 +52,8 @@ feram_SRCS = average_module.F \
 	potentials.F \
 	print-eigenvalues.F \
 	velocity_scaling.F \
-	wave_module.F
+	wave_module.F \
+	write_system.F
 feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
 
 diagonalize15x15_SOURCES = diagonalize15x15.F
@@ -159,7 +161,7 @@ feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 
 feram_common.o:                 param_module.o coord_module.o date_and_time_module.o f90_wisdom.o define.h
 decay-functions.o param_module.o diagonalize15x15.o: define.h
-feram.o feram_mpi.o potentials.o dipole-dipole.o mirror.o read_defects_u.o elastic.o:\
+feram.o feram_mpi.o potentials.o dipole-dipole.o mirror.o read_defects_u.o elastic.o alloc_coord.o write_system.o:\
                                 param_module.o coord_module.o define.h
 initialize_E_field.o:           param_module.o coord_module.o define.h wave_module.o
 initialize-dipoR.o dVddi-unharmonic.o leapfrog.o optimize-homo-strain.o optimize-homo-strain.o optimize-inho-strain.o:\
