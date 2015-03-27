@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2015-03-24 19:47:01 takeshi>
+! Time-stamp: <2015-03-27 14:35:10 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -33,8 +33,7 @@ subroutine leapfrog(p,c,e,i_step)
 
   if (p%delta_e.ne.0.0d0 .or. p%delta_e_acou.ne.0.0d0) then
 !$omp parallel do
-#    warning "Take care of p%padding_y !!!"
-     do iz=0,p%Lz-1
+     do iz=0,p%Lz-1     ! Take care of p%padding_y, here
         c%e_layer_dipo(iz)    = SUM( c%dipoP(:,:,:,iz) * c%dipoP(:,:,:,iz) * c%m_inv(:,:,:,iz) ) / 2
      end do
 !$omp end parallel do
