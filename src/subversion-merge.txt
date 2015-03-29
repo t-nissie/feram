@@ -78,6 +78,7 @@ ToDo:
  * fft_3d_3x3upper_r2c.F
  * long_range, short_range
  * print_eigenvalues.F
+ * prepare for padding_y and 2*(Lx/2+1) in summations with m_inv and sum_p
  * padding_y and 2*(Lx/2+1) in real arrays in coord_module.F and fft_3d_3x3upper_r2c.F
  * in-place: inhoK -> inhoR
  * in-place: dipoT -> dVddi
