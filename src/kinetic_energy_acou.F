@@ -9,15 +9,15 @@ real*8 function kinetic_energy_acou(p,c)
   real*8  :: tmp_e
   integer :: alpha, ix,iy,iz
   !--- END of variable definitions -------------------
-  ! You can write it with single line...
-  ! kinetic_energy_acou = SUM( c%acouP(:,:,:,:)**2 * c%m_inv(:,:,:,:) ) / 2
+
+  ! I am not sure whether I should use c%sum_p(ix, iy, iz) here.
 
   tmp_e = 0.0d0
 !$omp parallel do private(iz, alpha, iy, ix) reduction(+:tmp_e)
   do iz=0, p%Lz-1
-     do alpha = 1,3
-        do iy=0, p%Ly-1
-           do ix=0, p%Lx-1
+     do iy=0, p%Ly-1
+        do ix=0, p%Lx-1
+           do alpha = 1,3
               tmp_e = tmp_e + c%acouP(alpha,ix,iy,iz)**2
            end do
         end do
