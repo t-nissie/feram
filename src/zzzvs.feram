@@ -1,7 +1,8 @@
 verbose = 2
 #--- Method, Temperature, and mass ---------------
-method = 'lf'
+method = 'vs'
 GPa = -5.0
+kelvin = 300
 mass_amu = 39.0
 acoustic_mass_amu = 46.44
 

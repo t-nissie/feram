@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2015-03-24 19:46:19 takeshi>
+! Time-stamp: <2015-03-30 05:12:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -15,7 +15,7 @@ subroutine velocity_scaling(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer ix,iy,iz,alpha
-  real*8 scale,kinetic_energy_dipo,kinetic_energy_acou
+  real*8 scale,kinetic_energy_dipo,kinetic_energy_acou,dt_over_m
   external kinetic_energy_dipo,kinetic_energy_acou
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
@@ -29,30 +29,37 @@ subroutine velocity_scaling(p,c,e)
   end do
 !$omp end parallel do
 
-     if (p%mass_acou > 0.0d0) then
+  if (p%mass_acou > 0.0d0) then
+     dt_over_m = p%dt * p%mass_acou_inv
 !$omp parallel do
-        do iz=0, p%Lz-1
-           c%acouR(:,:,:,iz) = c%acouR(:,:,:,iz) + (p%dt*p%mass_acou_inv) * c%acouP(:,:,:,iz)
-        end do
-!$omp end parallel do
-     end if
-
-     call mirror_force_mirror(p,c,e)
-
-!$omp parallel do
-     do alpha = 1,3
-        do iz=0, p%Lz-1
-           do iy=0, p%Ly-1
-              do ix=0, p%Lx-1
-                 if (c%sum_p(ix, iy, iz)) then
-                    c%dipoP(alpha,ix,iy,iz) = c%dipoP(alpha,ix,iy,iz) - p%dt * c%dVddi(alpha,ix,iy,iz)
-                 else
-                    c%dipoP(alpha,ix,iy,iz) = 0.0d0
-                 end if
+     do iz=0, p%Lz-1
+        do iy=0, p%Ly-1
+           do ix=0, p%Lx-1
+              do alpha = 1,3
+                 c%acouR(alpha,ix,iy,iz) = c%acouR(alpha,ix,iy,iz) + dt_over_m*c%acouP(alpha,ix,iy,iz)
               end do
            end do
         end do
      end do
+!$omp end parallel do
+  end if
+
+  call mirror_force_mirror(p,c,e)
+
+!$omp parallel do private(iz, iy, ix, alpha)
+  do iz=0, p%Lz-1
+     do iy=0, p%Ly-1
+        do ix=0, p%Lx-1
+           do alpha = 1,3
+              if (c%sum_p(ix, iy, iz)) then
+                 c%dipoP(alpha,ix,iy,iz) = c%dipoP(alpha,ix,iy,iz) - p%dt * c%dVddi(alpha,ix,iy,iz)
+              else
+                 c%dipoP(alpha,ix,iy,iz) = 0.0d0
+              end if
+           end do
+        end do
+     end do
+  end do
 !$omp end parallel do
      e%dipo_kinetic = kinetic_energy_dipo(p,c)
      scale = sqrt(p%target_kinetic_energy/e%dipo_kinetic)
