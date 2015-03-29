@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2015-03-27 14:35:10 t-nissie>
+! Time-stamp: <2015-03-29 19:47:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -19,7 +19,7 @@ subroutine leapfrog(p,c,e,i_step)
   real*8 Lx_Ly_delta_e_acou
   integer Lz_1_4
   integer Lz_3_4
-  integer iy,iz
+  integer alpha,ix,iy,iz
   real*8   kinetic_energy_dipo, kinetic_energy_acou
   external kinetic_energy_dipo, kinetic_energy_acou
   if (p%verbose>=2) then
@@ -32,15 +32,31 @@ subroutine leapfrog(p,c,e,i_step)
   Lz_3_4 = Lz_1_4*3
 
   if (p%delta_e.ne.0.0d0 .or. p%delta_e_acou.ne.0.0d0) then
-!$omp parallel do
-     do iz=0,p%Lz-1     ! Take care of p%padding_y, here
-        c%e_layer_dipo(iz)    = SUM( c%dipoP(:,:,:,iz) * c%dipoP(:,:,:,iz) * c%m_inv(:,:,:,iz) ) / 2
+!$omp parallel do private(iz, iy, ix, alpha)
+     do iz=0,p%Lz-1
+        do iy=0, p%Ly-1
+           do ix=0, p%Lx-1
+              do alpha = 1,3
+                 c%e_layer_dipo(iz) = c%e_layer_dipo(iz) + &
+                      & c%dipoP(alpha,ix,iy,iz)**2 * &
+                      & c%m_inv(alpha,ix,iy,iz)
+              end do
+           end do
+        end do
+        c%e_layer_dipo(iz) = c%e_layer_dipo(iz) / 2
      end do
 !$omp end parallel do
      if (p%mass_acou>0.0d0) then
-!$omp parallel do
+!$omp parallel do private(iz, iy, ix, alpha)
         do iz=0,p%Lz-1
-           c%e_layer_acou(iz) = SUM( c%acouP(:,:,:,iz) * c%acouP(:,:,:,iz) ) * p%mass_acou_inv / 2
+           do iy=0, p%Ly-1
+              do ix=0, p%Lx-1
+                 do alpha = 1,3
+                    c%e_layer_acou(iz) = c%e_layer_acou(iz) + c%acouP(alpha,ix,iy,iz)**2
+                 end do
+              end do
+           end do
+           c%e_layer_acou(iz) = c%e_layer_acou(iz) * p%mass_acou_inv / 2
         end do
 !$omp end parallel do
      else
