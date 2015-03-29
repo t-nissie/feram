@@ -1,5 +1,5 @@
 ! alloc_coord.F -*-f90-*-
-! Time-stamp: <2015-03-27 14:21:47 takeshi>
+! Time-stamp: <2015-03-29 17:37:22 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -32,6 +32,12 @@ subroutine alloc_Coord(p,c)
   !--- m_inv ------------------------------
   if (allocated(c%m_inv)) deallocate(c%m_inv)
   allocate(c%m_inv(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+!!!first touch
+  !$omp parallel do
+  do i = 0,p%Lz-1
+     c%m_inv(:,:,:,i) = 0.0d0
+  end do
+  !$omp end parallel do
   !--- dipo -------------------------------
   if (allocated(c%dipoR)) deallocate(c%dipoR)
   allocate(     c%dipoR(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
