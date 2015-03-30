@@ -1,5 +1,5 @@
 ! alloc_coord.F -*-f90-*-
-! Time-stamp: <2015-03-29 17:37:22 takeshi>
+! Time-stamp: <2015-03-30 11:02:21 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -204,6 +204,7 @@ subroutine alloc_Coord(p,c)
   if (allocated(c%inhomo_coup2_K)) deallocate(c%inhomo_coup2_K)
   allocate(c%inhomo_coup2_K(3,6, 0:p%Lx/2,0:p%Ly-1  ,0:p%Lz-1))
 
+!!!first touch
   !$omp parallel do
   do i = 0,p%Lz-1
      c%inhomo_coup2_K(:,:, :,:,i) = 0.0d0
@@ -213,6 +214,13 @@ subroutine alloc_Coord(p,c)
   !--- sum_p ------------------------------
   if (allocated(c%sum_p)) deallocate(c%sum_p)
   allocate(c%sum_p(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+!!!first touch
+  !$omp parallel do
+  do i = 0,p%Lz-1
+     c%sum_p(:,:,i) = .false.
+  end do
+  !$omp end parallel do
+
   !--- e_layer_dipo and e_layer_and for thermal conductivity----
   if (allocated(c%e_layer_dipo)) deallocate(c%e_layer_dipo)
   allocate(c%e_layer_dipo(0:p%Lz-1))
