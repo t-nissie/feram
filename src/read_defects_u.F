@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2015-03-30 11:31:51 takeshi>
+! Time-stamp: <2015-03-30 11:39:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -54,17 +54,17 @@ subroutine read_defects_u(p,c)
   end if
 
   if (p%gap_id>0) then
-     c%dipoR(1, :, :, 0) = p%gap_dipole_u(1)
-     c%dipoR(2, :, :, 0) = p%gap_dipole_u(2)
-     c%dipoR(3, :, :, 0) = p%gap_dipole_u(3)
-     c%m_inv(:, :, :, 0) = 0.0d0   ! 1/infinity
-     c%sum_p(:, :, 0)    = .false.
+     c%dipoR(1, 0:p%Lx-1, 0:p%Ly-1, 0) = p%gap_dipole_u(1)
+     c%dipoR(2, 0:p%Lx-1, 0:p%Ly-1, 0) = p%gap_dipole_u(2)
+     c%dipoR(3, 0:p%Lx-1, 0:p%Ly-1, 0) = p%gap_dipole_u(3)
+     c%m_inv(:, 0:p%Lx-1, 0:p%Ly-1, 0) = 0.0d0   ! 1/infinity
+     c%sum_p(   0:p%Lx-1, 0:p%Ly-1, 0) = .false.
      if (p%gap_id.eq.2) then
-        c%dipoR(1, :, :, p%Lz/2) = p%gap_dipole_u(1)
-        c%dipoR(2, :, :, p%Lz/2) = p%gap_dipole_u(2)
-        c%dipoR(3, :, :, p%Lz/2) = p%gap_dipole_u(3)
-        c%m_inv(:, :, :, p%Lz/2) = 0.0d0   ! 1/infinity
-        c%sum_p(:, :, p%Lz/2)    = .false.
+        c%dipoR(1, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = p%gap_dipole_u(1)
+        c%dipoR(2, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = p%gap_dipole_u(2)
+        c%dipoR(3, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = p%gap_dipole_u(3)
+        c%m_inv(:, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = 0.0d0   ! 1/infinity
+        c%sum_p(   0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = .false.
      end if
   end if
 
