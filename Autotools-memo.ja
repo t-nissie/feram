@@ -107,6 +107,7 @@ configure.ac, Makefile.am, src/Makefile.amを書いて、
  $ make                     # ソースの編集など開発を進め、最後にmakeでコンパイルできることを確認
  $ make distclean           # Makefileなどをきれいさっぱり消す
  $ ./configure
+ $ make distcheck           # 配布用パッケージのテスト
  $ make dist                # 配布用パッケージの作成
 新たにconfigure.ac, Makefile.am, src/Makefile.amを書き変えたら☆からやり直す。
 他に
