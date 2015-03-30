@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2015-03-29 19:47:04 takeshi>
+! Time-stamp: <2015-03-30 09:06:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -34,6 +34,7 @@ subroutine leapfrog(p,c,e,i_step)
   if (p%delta_e.ne.0.0d0 .or. p%delta_e_acou.ne.0.0d0) then
 !$omp parallel do private(iz, iy, ix, alpha)
      do iz=0,p%Lz-1
+        c%e_layer_dipo(iz) = 0.0d0
         do iy=0, p%Ly-1
            do ix=0, p%Lx-1
               do alpha = 1,3
@@ -49,6 +50,7 @@ subroutine leapfrog(p,c,e,i_step)
      if (p%mass_acou>0.0d0) then
 !$omp parallel do private(iz, iy, ix, alpha)
         do iz=0,p%Lz-1
+           c%e_layer_acou(iz) = 0.0d0
            do iy=0, p%Ly-1
               do ix=0, p%Lx-1
                  do alpha = 1,3
