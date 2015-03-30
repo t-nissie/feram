@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-03-27 16:10:09 takeshi>
+# Time-stamp: <2015-03-31 06:38:53 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -10,8 +10,8 @@ bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j \
                frozen_phonon_Gamma \
                frozen_phonon_X \
                random_field_generator
-EXTRA_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
-TESTS = fft_check $(EXTRA_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh elastocaloric770K_check.sh
+check_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
+TESTS = fft_check $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh elastocaloric770K_check.sh
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -81,10 +81,12 @@ wave_check_SOURCES = wave_check.f wave_module.F
 
 fft_check_SOURCES = fft_check.F f90_wisdom.f
 
-CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(EXTRA_PROGRAMS) \
+CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(check_PROGRAMS) \
              defects_maker_check.defects wisdom_new \
              elastocaloric770K_check.lf.log \
-             elastocaloric770K_check.vs.log
+             elastocaloric770K_check.lf.log.digest \
+             elastocaloric770K_check.vs.log \
+             elastocaloric770K_check.vs.log.digest
 EXTRA_DIST = define.h \
 cross-section-dVddi.sh \
 cross-section-p.sh \
