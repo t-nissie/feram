@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2015-03-22 15:55:53 takeshi>
+! Time-stamp: <2015-03-30 11:31:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -17,8 +17,9 @@ subroutine read_defects_u(p,c)
   real*8  u(3)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
-  c%m_inv(:,:,:,:) = 1.0d0 / p%mass_dipo
-  c%sum_p(:,:,:) = .true.
+  c%m_inv(1:3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1) = 1.0d0 / p%mass_dipo
+  c%sum_p(     0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1) = .true.
+  !!! They are first-touched in alloc_coord.F.
 
   open(unit=UNIT_DEFECTS_U, file=trim(p%filename)//'.defects', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
