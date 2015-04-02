@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2015-03-30 05:12:42 takeshi>
+! Time-stamp: <2015-04-02 16:47:48 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -23,9 +23,7 @@ subroutine velocity_scaling(p,c,e)
 
 !$omp parallel do
   do iz=0, p%Lz-1
-     do iy=0, p%Ly-1
-        c%dipoR(:,:,iy,iz) = c%dipoR(:,:,iy,iz) + p%dt * c%dipoP(:,:,iy,iz) * c%m_inv(:,:,iy,iz)
-     end do
+     c%dipoR(:,:,:,iz) = c%dipoR(:,:,:,iz) + p%dt * c%dipoP(:,:,:,iz) * c%m_inv(:,:,:,iz)
   end do
 !$omp end parallel do
 
