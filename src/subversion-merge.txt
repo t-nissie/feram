@@ -73,16 +73,20 @@ Done:
  x inhomo_coup2_K
  x inhomo_K
  x dipoI
+ x long_range, short_range
+ x ,i) -> ,iz) in write_system.F and coord_module.F
 
 ToDo:
  * fft_3d_3x3upper_r2c.F
- * long_range, short_range
- * print_eigenvalues.F
+ * dipole-dipole-short-range.F
+ * dipole-dipole-long-range.F
+
  * prepare for padding_y and 2*(Lx/2+1)
    * in summations with m_inv and sum_p 
    * in mirror.F
    * around acouR(:,:,:,iz)
-   * ,i) -> ,iz) in write_system.F and coord_module.F
+   * print_eigenvalues.F
+
  * padding_y and 2*(Lx/2+1) in real arrays in coord_module.F and fft_3d_3x3upper_r2c.F
  * in-place: inhoK -> inhoR
  * in-place: dipoT -> dVddi

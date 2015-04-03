@@ -1,5 +1,5 @@
 ! dipole-dipole-short-range.F -*-f90-*-
-! Time-stamp: <2013-07-03 15:50:46 takeshi>
+! Time-stamp: <2015-04-03 17:52:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -12,7 +12,7 @@ subroutine dipole_dipole_short_range(p,short_range)
   implicit none
   !--- arguments -------------------------------------
   type(Param_type), intent(in)  :: p
-  real*8,           intent(out) :: short_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3) !"/2" for real<->complex FFT
+  real*8,           intent(out) :: short_range(3, 3,  0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1) !"/2" for real<->complex FFT
   !--- allocatable arrays ----------------------------
   real*8,     allocatable :: TMPreal(:,:,:,:,:)
   complex*16, allocatable :: TMPcomplex(:,:,:,:,:)
@@ -25,7 +25,11 @@ subroutine dipole_dipole_short_range(p,short_range)
 
   allocate(   TMPreal(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3, 3))
   allocate(TMPcomplex(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" for real<->complex FFT
-  TMPreal(:,:,:,:,:)=0.0d0
+!$omp parallel do
+  do iz = 0, p%Lz-1
+     TMPreal(:,:,iz, :,:)=0.0d0
+  end do
+!$omp end parallel do
 
   do alpha = 1, 3
      TMPreal(0, 0, 0, alpha, alpha) = p%P_kappa2 * 2
@@ -111,7 +115,19 @@ subroutine dipole_dipole_short_range(p,short_range)
                  !(e) in TABLE 1 of ref_1 is incorrect.
 
   call fft_3d_3x3upper_r2c(p, TMPreal, TMPcomplex)
-  short_range(:,:,:,:,:) = dble(TMPcomplex(:,:,:,:,:))
+
+  ! This can be short_range(:,:,:,:,:) = dble(TMPcomplex(:,:,:,:,:)) in future.
+!$omp parallel do
+  do iz = 0, p%Lz-1
+     do iy = 0, p%Ly-1
+        do ix = 0, p%Lx/2
+           short_range(:,:,ix,iy,iz) = dble(TMPcomplex(ix,iy,iz,:,:))
+        end do
+     end do
+  end do
+!$omp end parallel do
+
+
   deallocate(TMPreal,TMPcomplex)
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')

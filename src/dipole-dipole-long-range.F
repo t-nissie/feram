@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2013-07-03 15:50:46 takeshi>
+! Time-stamp: <2015-04-03 17:49:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 !UINLINE decay-functions.f
@@ -12,7 +12,7 @@ subroutine dipole_dipole_long_range(p,long_range)
   implicit none
   !--- arguments -------------------------------------
   type(Param_type), intent(in)     :: p
-  real*8,           intent(out)    :: long_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3) !"/2" for real<->complex FFT
+  real*8,           intent(out)    :: long_range(3, 3,  0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1) !"/2" for real<->complex FFT
   !--- local -----------------------------------------
   real*8,     allocatable :: TMPreal(:,:,:,:,:)
   complex*16, allocatable :: TMPcomplex(:,:,:,:,:)
@@ -89,7 +89,18 @@ subroutine dipole_dipole_long_range(p,long_range)
   !--- END of real-space summation -------------------------
 
   call fft_3d_3x3upper_r2c(p, TMPreal, TMPcomplex)
-  long_range(:,:,:,:,:) = dble(TMPcomplex(:,:,:,:,:))
+
+  ! This can be long_range(:,:,:,:,:) = dble(TMPcomplex(:,:,:,:,:)) in future.
+!$omp parallel do
+  do iz = 0, p%Lz-1
+     do iy = 0, p%Ly-1
+        do ix = 0, p%Lx/2
+           long_range(:,:, ix,iy,iz) = dble(TMPcomplex(ix,iy,iz, :,:))
+        end do
+     end do
+  end do
+!$omp end parallel do
+
   deallocate(TMPreal,TMPcomplex)
 !
   !--- BEGIN of reciplocal-space summation -----------------
@@ -113,8 +124,8 @@ subroutine dipole_dipole_long_range(p,long_range)
                             & nx.eq.0 .and. ny.eq.0 .and. nz.eq.0) cycle
                           kG(1) = two_pi_over_a*(k(1)+nx)
                           kGkG = kG(1)**2 + kG(2)**2 + kG(3)**2
-                          long_range(ix,iy,iz,alpha,beta) = &
-                               & long_range(ix,iy,iz,alpha,beta) &
+                          long_range(alpha,beta, ix,iy,iz) = &
+                               & long_range(alpha,beta, ix,iy,iz) &
                                & + four_pi_over_unit_cell_volume * kG(alpha) * kG(beta) &
                                &   * exp(-kGkG/four_kappa2) / kGkG
                        end do
@@ -128,13 +139,6 @@ subroutine dipole_dipole_long_range(p,long_range)
      end do
   end do
   !--- END of reciplocal-space summation -------------------
-
-  !--- BEGIN of Gamma=0 part -------------------------------
-  !do alpha = 1, 3
-  !   long_range(0, 0, 0, alpha, alpha) = &
-  ! & long_range(0, 0, 0, alpha, alpha) + four_pi_over_unit_cell_volume/3
-  !end do
-  !--- END of Gamma=0 part ---------------------------------
 
   long_range(:,:,:,:,:) = long_range(:,:,:,:,:) &
        &               * (HARTREE_BOHR * p%Z_star**2 / p%epsilon_inf)
