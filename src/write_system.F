@@ -1,5 +1,5 @@
 ! write_system.F -*-f90-*-
-! Time-stamp: <2015-03-27 14:06:51 t-nissie>
+! Time-stamp: <2015-04-03 11:06:26 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -17,7 +17,7 @@ subroutine write_system(p,c,fn)
   type(Coord_type), intent(inout) :: c
   character(len=*) :: fn
   character(len=FILE_NAME_LEN) :: coord_directory_fn
-  integer ix,iy,iz,i
+  integer alpha,ix,iy,iz
 #if defined(HAVE_LIBFFTW3)
   include 'fftw3.f03'
 #endif
@@ -35,8 +35,8 @@ subroutine write_system(p,c,fn)
   
   if (p%mass_acou <= 0.0d0) then
 !$omp parallel do
-     do i = 0,p%Lz-1
-        c%acouK(:,:,:,i) = (0.0d0, -1.0d0) * c%acouK(:,:,:,i)
+     do iz = 0,p%Lz-1
+        c%acouK(:,:,:,iz) = (0.0d0, -1.0d0) * c%acouK(:,:,:,iz)
      end do
 !$omp end parallel do
 
@@ -51,8 +51,8 @@ subroutine write_system(p,c,fn)
 #  endif
 
 !$omp parallel do
-     do i = 0,p%Lz-1
-        c%acouR(:,:,:,i) = c%acouR(:,:,:,i) * p%Ninv
+     do iz = 0,p%Lz-1
+        c%acouR(:,:,:,iz) = c%acouR(:,:,:,iz) * p%Ninv
      end do
 !$omp end parallel do
   end if
@@ -62,11 +62,11 @@ subroutine write_system(p,c,fn)
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1
            write(UNIT_SYSTEM,'(i4,2i5,3f10.6,6e13.5,6f11.6)') ix, iy, iz, &
-                & (c%dipoR(i,ix,iy,iz)         ,i=1,3),&
-                & (c%dipoP(i,ix,iy,iz)/c%s_Nose,i=1,3),&
-                & (c%dVddi(i,ix,iy,iz)         ,i=1,3),&
-                & (c%acouR(i,ix,iy,iz)         ,i=1,3),&
-                & (c%acouP(i,ix,iy,iz)         ,i=1,3)
+                & (c%dipoR(alpha,ix,iy,iz)         ,alpha=1,3),&
+                & (c%dipoP(alpha,ix,iy,iz)/c%s_Nose,alpha=1,3),&
+                & (c%dVddi(alpha,ix,iy,iz)         ,alpha=1,3),&
+                & (c%acouR(alpha,ix,iy,iz)         ,alpha=1,3),&
+                & (c%acouP(alpha,ix,iy,iz)         ,alpha=1,3)
         end do
      end do
   end do

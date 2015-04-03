@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-04-01 10:03:52 takeshi>
+! Time-stamp: <2015-04-03 11:03:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -56,7 +56,7 @@ contains
     implicit none
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
-    integer i
+    integer iz
 #  if defined(HAVE_LIBFFTW3)
     include 'fftw3.f03'
     integer howmany,stride
@@ -75,8 +75,8 @@ contains
     allocate(c%m_inv(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%m_inv(:,:,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%m_inv(:,:,:,iz) = 0.0d0
     end do
     !$omp end parallel do
     !--- dipo -------------------------------
@@ -86,13 +86,13 @@ contains
     allocate(     c%dipoK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dipoR(:,:,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%dipoR(:,:,:,iz) = 0.0d0
     end do
     !$omp end parallel do
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dipoK(:,:,:,i) = (0.0d0,0.0d0)
+    do iz = 0,p%Lz-1
+       c%dipoK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
     !$omp end parallel do
 #  if defined(HAVE_LIBFFTW3)
@@ -110,13 +110,13 @@ contains
     allocate(     c%dipoT(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dVddi(:,:,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%dVddi(:,:,:,iz) = 0.0d0
     end do
     !$omp end parallel do
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dipoT(:,:,:,i) = (0.0d0,0.0d0)
+    do iz = 0,p%Lz-1
+       c%dipoT(:,:,:,iz) = (0.0d0,0.0d0)
     end do
     !$omp end parallel do
 
@@ -124,8 +124,8 @@ contains
     allocate(     c%E_field(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%E_field(:,:,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%E_field(:,:,:,iz) = 0.0d0
     end do
     !$omp end parallel do
 
@@ -133,8 +133,8 @@ contains
     allocate(     c%E_field_local(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%E_field_local(:,:,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%E_field_local(:,:,:,iz) = 0.0d0
     end do
     !$omp end parallel do
 
@@ -147,13 +147,13 @@ contains
     allocate(     c%didiK(6, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))    !"/2" for real<->complex FFT
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%didiR(:,:,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%didiR(:,:,:,iz) = 0.0d0
     end do
     !$omp end parallel do
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%didiK(:,:,:,i) = (0.0d0,0.0d0)
+    do iz = 0,p%Lz-1
+       c%didiK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
     !$omp end parallel do
 #  if defined(HAVE_LIBFFTW3)
@@ -173,18 +173,18 @@ contains
     allocate(c%acouP(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%acouR(:,:,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%acouR(:,:,:,iz) = 0.0d0
     end do
     !$omp end parallel do
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%acouK(:,:,:,i) = (0.0d0,0.0d0)
+    do iz = 0,p%Lz-1
+       c%acouK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
     !$omp end parallel do
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%acouP(:,:,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%acouP(:,:,:,iz) = 0.0d0
     end do
     !$omp end parallel do
 #  if defined(HAVE_LIBFFTW3)
@@ -202,13 +202,13 @@ contains
     allocate(c%dVdacK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dVdacR(:,:,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%dVdacR(:,:,:,iz) = 0.0d0
     end do
     !$omp end parallel do
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dVdacK(:,:,:,i) = (0.0d0,0.0d0)
+    do iz = 0,p%Lz-1
+       c%dVdacK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
     !$omp end parallel do
 
@@ -219,13 +219,13 @@ contains
     allocate(c%inhoK(6, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%inhoR(:,:,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%inhoR(:,:,:,iz) = 0.0d0
     end do
     !$omp end parallel do
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%inhoK(:,:,:,i) = (0.0d0,0.0d0)
+    do iz = 0,p%Lz-1
+       c%inhoK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
     !$omp end parallel do
 #  if defined(HAVE_LIBFFTW3)
@@ -247,8 +247,8 @@ contains
 
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%inhomo_coup2_K(:,:, :,:,i) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%inhomo_coup2_K(:,:, :,:,iz) = 0.0d0
     end do
     !$omp end parallel do
 
@@ -257,8 +257,8 @@ contains
     allocate(c%sum_p(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
     !$omp parallel do
-    do i = 0,p%Lz-1
-       c%sum_p(:,:,i) = .false.
+    do iz = 0,p%Lz-1
+       c%sum_p(:,:,iz) = .false.
     end do
     !$omp end parallel do
 
