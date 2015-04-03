@@ -43,3 +43,13 @@ Ivy Bridge- and Haswell-based Xeon.
 
 *1: gfortran-4.8.3 of Cygwin on Windows 8.1. OMP_NUM_THREADS=4 is used to turn-off TH.
 *2: /home/t-nissie/f/loto/feram/trunk/0.22.06-r2366-2015-02-28-gfortran-4.9.1-app3t/src/
+
+=== feram newplan r2415
+==== elastocaloric770K_check.vs.log
+ X5650 2 chip = 12 core *1:    7.73        1283.51        1291.24   12     #TIMING_REPORT
+ SR16000 32 thds on  1  node:  6.19         303.50         309.69   32     #TIMING_REPORT
+==== elastocaloric770K_check.lf.log
+ X5650 2 chip = 12 core *1:    3.45        1278.21        1281.66   12     #TIMING_REPORT
+ SR16000 32 thds on  1  node:  2.78         297.21         299.99   32     #TIMING_REPORT
+*1: ~/f/loto/feram/branches/newplan/0.22.06-r2415-2015-04-03-newplan-gfortran-4.9.1-app2/src/
+*2: ~/f/loto/feram/branches/newplan/0.22.06-r2415-2015-04-03-newplan-xlf-14.01-SR16000/src/
