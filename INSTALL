@@ -253,7 +253,8 @@ IBM XL Fortran (xlf90_r) version 13.1 or higher is required.
  $ ../configure FC=xlf90_r CPPFLAGS=-I/sysap/fftw_xlc/fftw-3.3.2a/include LDFLAGS=-L/sysap/fftw_xlc/fftw-3.3.2a/lib --with-lapack=essl
  $ cd src
  $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-style comments
- $ emacs Makefile   # DEFS = -DHAVE_CONFIG_H  =>  DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg
+ $ mv Makefile Makefile~
+ $ sed 's/DEFS = -DHAVE_CONFIG_H/DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg/' Makefile~ > Makefile
  $ make -j10
  $ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" make check   # OPTIONAL. It takes 30 minutes.
  $ make feram_mpi   # OPTIONAL
