@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-04-03 11:03:34 takeshi>
+! Time-stamp: <2015-04-04 16:13:19 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -74,27 +74,27 @@ contains
     if (allocated(c%m_inv)) deallocate(c%m_inv)
     allocate(c%m_inv(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%m_inv(:,:,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
+!$omp end parallel do
     !--- dipo -------------------------------
     if (allocated(c%dipoR)) deallocate(c%dipoR)
     allocate(     c%dipoR(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%dipoK)) deallocate(c%dipoK)
     allocate(     c%dipoK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%dipoR(:,:,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%dipoK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
-    !$omp end parallel do
+!$omp end parallel do
 #  if defined(HAVE_LIBFFTW3)
     howmany = 3
     stride = howmany
@@ -109,34 +109,34 @@ contains
     if (allocated(c%dipoT)) deallocate(c%dipoT)
     allocate(     c%dipoT(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%dVddi(:,:,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%dipoT(:,:,:,iz) = (0.0d0,0.0d0)
     end do
-    !$omp end parallel do
+!$omp end parallel do
 
     if (allocated(c%E_field)) deallocate(c%E_field)
     allocate(     c%E_field(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%E_field(:,:,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
+!$omp end parallel do
 
     if (allocated(c%E_field_local)) deallocate(c%E_field_local)
     allocate(     c%E_field_local(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%E_field_local(:,:,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
+!$omp end parallel do
 
     if (allocated(c%dipoI)) deallocate(c%dipoI)
     allocate(     c%dipoI(3, 3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
@@ -146,16 +146,16 @@ contains
     if (allocated(c%didiK)) deallocate(c%didiK)
     allocate(     c%didiK(6, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))    !"/2" for real<->complex FFT
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%didiR(:,:,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%didiK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
-    !$omp end parallel do
+!$omp end parallel do
 #  if defined(HAVE_LIBFFTW3)
     howmany = 6
     stride = howmany
@@ -172,21 +172,21 @@ contains
     if (allocated(c%acouP)) deallocate(c%acouP)
     allocate(c%acouP(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%acouR(:,:,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%acouK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%acouP(:,:,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
+!$omp end parallel do
 #  if defined(HAVE_LIBFFTW3)
     howmany = 3
     stride = howmany
@@ -201,16 +201,16 @@ contains
     if (allocated(c%dVdacK)) deallocate(c%dVdacK)
     allocate(c%dVdacK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%dVdacR(:,:,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%dVdacK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
-    !$omp end parallel do
+!$omp end parallel do
 
     !--- inhomogeneous strain ---------------
     if (allocated(c%inhoR)) deallocate(c%inhoR)
@@ -218,16 +218,16 @@ contains
     if (allocated(c%inhoK)) deallocate(c%inhoK)
     allocate(c%inhoK(6, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%inhoR(:,:,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
-    !$omp parallel do
+!$omp end parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%inhoK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
-    !$omp end parallel do
+!$omp end parallel do
 #  if defined(HAVE_LIBFFTW3)
     howmany = 6
     stride = howmany
@@ -246,21 +246,21 @@ contains
     allocate(c%inhomo_coup2_K(3,6, 0:p%Lx/2,0:p%Ly-1  ,0:p%Lz-1))
 
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%inhomo_coup2_K(:,:, :,:,iz) = 0.0d0
     end do
-    !$omp end parallel do
+!$omp end parallel do
 
     !--- sum_p ------------------------------
     if (allocated(c%sum_p)) deallocate(c%sum_p)
     allocate(c%sum_p(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
-    !$omp parallel do
+!$omp parallel do
     do iz = 0,p%Lz-1
        c%sum_p(:,:,iz) = .false.
     end do
-    !$omp end parallel do
+!$omp end parallel do
 
     !--- e_layer_dipo and e_layer_and for thermal conductivity----
     if (allocated(c%e_layer_dipo)) deallocate(c%e_layer_dipo)
