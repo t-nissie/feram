@@ -1,11 +1,12 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-04-01 10:01:09 takeshi>
+# Time-stamp: <2015-04-04 17:09:35 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
 bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j \
+               feram_fftw_wisdom \
                fft_check distribution3d2ppm \
                frozen_phonon_Gamma \
                frozen_phonon_X \
@@ -53,6 +54,8 @@ feram_SRCS = average_module.F \
 	wave_module.F \
 	write_system.F
 feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
+
+feram_fftw_wisdom_SOURCES = feram_fftw_wisdom.F
 
 diagonalize15x15_SOURCES = diagonalize15x15.F
 

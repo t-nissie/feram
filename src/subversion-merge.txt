@@ -80,6 +80,7 @@ ToDo:
  * fft_3d_3x3upper_r2c.F
  * dipole-dipole-short-range.F
  * dipole-dipole-long-range.F
+ * feram_fftw_wisdom.F
 
  * prepare for padding_y and 2*(Lx/2+1)
    * in summations with m_inv and sum_p 
