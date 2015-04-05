@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2014-07-16 07:28:51 takeshi>
+! Time-stamp: <2015-04-05 17:18:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -23,9 +23,10 @@ subroutine feram_common(fn)
   integer           :: count_rate, count_max, i
 
 # if defined(HAVE_LIBFFTW3)
+  include 'fftw3.f03'
   integer :: ireturn, ios
-  call dfftw_init_threads(ireturn)
-  call dfftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
+  ireturn = fftw_init_threads()
+  call fftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
 # endif
 
   fn_len_trim = len_trim(fn)
