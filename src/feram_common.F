@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-04-05 17:18:08 takeshi>
+! Time-stamp: <2015-04-07 08:07:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -25,8 +25,8 @@ subroutine feram_common(fn)
 # if defined(HAVE_LIBFFTW3)
   include 'fftw3.f03'
   integer :: ireturn, ios
-  ireturn = fftw_init_threads()
-  call fftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
+  ireturn = fftw_init_threads()   ! It is safe to call this function many times. See fftw3/threads/api.c.
+  call fftw_plan_with_nthreads(OMP_GET_MAX_THREADS())   ! Also safe. See "Usage of Multi-threaded FFTW" in doc.
 # endif
 
   fn_len_trim = len_trim(fn)
@@ -110,10 +110,7 @@ subroutine feram_common(fn)
        & OMP_GET_MAX_THREADS(), "     #TIMING_REPORT"
   call msg_ez(UNIT_LOG, message)
 
+  ! We do NOT call fftw_cleanup_threads().
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'love && peace && free_software')
   close(unit=UNIT_LOG)
-
-# if defined(HAVE_LIBFFTW3)
-  call dfftw_cleanup_threads(ireturn)
-# endif
 end subroutine feram_common

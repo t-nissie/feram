@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-04-04 16:13:19 takeshi>
+! Time-stamp: <2015-04-07 07:51:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -43,10 +43,10 @@ module Coord_module
      real*8                 homogeneous_coupling_2(6,6)
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
-     type(C_PTR) ::         plan_dipoR2C
-     type(C_PTR) ::         plan_didiR2C
-     type(C_PTR) ::         plan_inhoC2R
-     type(C_PTR) ::         plan_acouC2R
+     type(C_PTR) ::         plan_dipoR2C = c_null_ptr
+     type(C_PTR) ::         plan_didiR2C = c_null_ptr
+     type(C_PTR) ::         plan_inhoC2R = c_null_ptr
+     type(C_PTR) ::         plan_acouC2R = c_null_ptr
   end type Coord_type
 
 contains
@@ -68,6 +68,10 @@ contains
     LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
     d_embed(1)=p%Lz; d_embed(2)=p%Ly; d_embed(3)=p%Lx    ! Not 2*(Lx/2+1), so far.
     z_embed(1)=p%Lz; z_embed(2)=p%Ly; z_embed(3)=p%Lx/2+1
+    call fftw_destroy_plan(c%plan_dipoR2C)
+    call fftw_destroy_plan(c%plan_didiR2C)   ! It is safe to destroy c_null_ptr.
+    call fftw_destroy_plan(c%plan_inhoC2R)   ! See fftw3/api/apiplan.c.
+    call fftw_destroy_plan(c%plan_acouC2R)
 #  endif
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
     !--- m_inv ------------------------------
