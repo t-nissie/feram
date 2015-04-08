@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-04-07 08:07:14 takeshi>
+! Time-stamp: <2015-04-08 20:52:18 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -73,7 +73,8 @@ subroutine feram_common(fn)
   call  make_Param(p)
   call write_Param(p)
   if (.not. p%continue) call alloc_Coord(p,c)
-  call  potentials(p,c)
+  call dipole_dipole(p,c)
+  call elastic(p,c)
   !Instead, read_defects_u(p,c) is called in initialize_dipoR()! call make_mass_matrix(p,c)
 
   call system_clock(count_array(1))
