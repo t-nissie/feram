@@ -1,4 +1,6 @@
 ToDo:
+o Discard hysteresis_loop.F. Use n_E_wave_period and E_wave_type.
+
 o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
   のバグを直す。0.22.04ではバグの再現さえしなくなり、パラの結果が出る。
   svn diff -r2271:2272 kinetic_energy_dipo.F でバグの再現はするようになったが、これはあくまでquick hack。
@@ -25,8 +27,6 @@ o remove redundant procedures:
 
 o e%acou_kinetic=0 if mass_acou<0
 
-o Needs mirror of c%E_field in hysteresis_loop.F, maybe.
-
 o 'md' have to be changed to 'np' Nose-Poincare.
 o Nose-Poincareでもacoustic displacementのMDができるように．
 o Imprement Nose:JPhysSocJpn:70:p75-77:2001
@@ -42,10 +42,6 @@ o Copyright
 o Examples
 
 o In initialize-dipoR.F, c%dipoP() must be multiplied by c%s_Nose after read ???
-
-o "if (.not. continue) call initialize_dipoR()" is both in hysteresis_loop.F and molecular-dynamics.F.
-
-o When n_hysteresis_loop_continue is given, the .hl file must no REPLACEd, must be APPENDed.
 
 o FILENAME.avgの出力の見直し polarization -> <u_z> とか
 
