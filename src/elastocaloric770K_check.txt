@@ -53,3 +53,10 @@ Ivy Bridge- and Haswell-based Xeon.
  SR16000 32 thds on  1  node:  2.78         297.21         299.99   32     #TIMING_REPORT
 *1: ~/f/loto/feram/branches/newplan/0.22.06-r2415-2015-04-03-newplan-gfortran-4.9.1-app2/src/
 *2: ~/f/loto/feram/branches/newplan/0.22.06-r2415-2015-04-03-newplan-xlf-14.01-SR16000/src/
+
+=== feram newplan r2426
+==== elastocaloric770K_check.vs.log
+ E5462 2 chip = 8 core *1:    14.43        4963.37        4977.79    8     #TIMING_REPORT
+==== elastocaloric770K_check.lf.log
+ E5462 2 chip = 8 core *1:     5.32        4938.10        4943.42    8     #TIMING_REPORT
+*1: Mac Pro (Early 2008)
