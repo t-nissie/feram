@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-04-07 07:51:49 takeshi>
+! Time-stamp: <2015-04-14 13:45:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -66,7 +66,7 @@ contains
     integer d_embed(3)
     integer z_embed(3)
     LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
-    d_embed(1)=p%Lz; d_embed(2)=p%Ly; d_embed(3)=p%Lx    ! Not 2*(Lx/2+1), so far.
+    d_embed(1)=p%Lz; d_embed(2)=p%Ly; d_embed(3)=2*(p%Lx/2+1)
     z_embed(1)=p%Lz; z_embed(2)=p%Ly; z_embed(3)=p%Lx/2+1
     call fftw_destroy_plan(c%plan_dipoR2C)
     call fftw_destroy_plan(c%plan_didiR2C)   ! It is safe to destroy c_null_ptr.
@@ -76,7 +76,7 @@ contains
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
     !--- m_inv ------------------------------
     if (allocated(c%m_inv)) deallocate(c%m_inv)
-    allocate(c%m_inv(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(c%m_inv(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
@@ -85,7 +85,7 @@ contains
 !$omp end parallel do
     !--- dipo -------------------------------
     if (allocated(c%dipoR)) deallocate(c%dipoR)
-    allocate(     c%dipoR(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(     c%dipoR(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%dipoK)) deallocate(c%dipoK)
     allocate(     c%dipoK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
   !!!first touch
@@ -107,9 +107,9 @@ contains
          &                                  c%dipoK,z_embed,stride,dist,FFTW_MEASURE)
 #  endif
     if (allocated(c%dipoP)) deallocate(c%dipoP)
-    allocate(     c%dipoP(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(     c%dipoP(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%dVddi)) deallocate(c%dVddi)
-    allocate(     c%dVddi(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(     c%dVddi(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%dipoT)) deallocate(c%dipoT)
     allocate(     c%dipoT(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
@@ -125,7 +125,7 @@ contains
 !$omp end parallel do
 
     if (allocated(c%E_field)) deallocate(c%E_field)
-    allocate(     c%E_field(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(     c%E_field(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
@@ -134,7 +134,7 @@ contains
 !$omp end parallel do
 
     if (allocated(c%E_field_local)) deallocate(c%E_field_local)
-    allocate(     c%E_field_local(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(     c%E_field_local(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
@@ -146,7 +146,7 @@ contains
     allocate(     c%dipoI(3, 3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
 
     if (allocated(c%didiR)) deallocate(c%didiR)
-    allocate(     c%didiR(6, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(     c%didiR(6, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%didiK)) deallocate(c%didiK)
     allocate(     c%didiK(6, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))    !"/2" for real<->complex FFT
   !!!first touch
@@ -170,11 +170,11 @@ contains
 
     !--- acou -------------------------------
     if (allocated(c%acouR)) deallocate(c%acouR)
-    allocate(c%acouR(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(c%acouR(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%acouK)) deallocate(c%acouK)
     allocate(c%acouK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%acouP)) deallocate(c%acouP)
-    allocate(c%acouP(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(c%acouP(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
@@ -201,7 +201,7 @@ contains
 
     !--- force on acoustic displacement --------
     if (allocated(c%dVdacR)) deallocate(c%dVdacR)
-    allocate(c%dVdacR(3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(c%dVdacR(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%dVdacK)) deallocate(c%dVdacK)
     allocate(c%dVdacK(3, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
@@ -218,7 +218,7 @@ contains
 
     !--- inhomogeneous strain ---------------
     if (allocated(c%inhoR)) deallocate(c%inhoR)
-    allocate(c%inhoR(6, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(c%inhoR(6, 0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
     if (allocated(c%inhoK)) deallocate(c%inhoK)
     allocate(c%inhoK(6, 0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
@@ -258,7 +258,7 @@ contains
 
     !--- sum_p ------------------------------
     if (allocated(c%sum_p)) deallocate(c%sum_p)
-    allocate(c%sum_p(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(c%sum_p(0:2*(p%Lx/2+1)-1, 0:p%Ly-1, 0:p%Lz-1))
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
