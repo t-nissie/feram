@@ -179,6 +179,17 @@ Specifies the structure of the system.
 System size, L_x, L_y and L_z. They must be equal or larger than 4.
  L = 32 32 4
 
+===== padding_y
+Padding for speeding up the calculations.
+You do not have to give this value,
+if you cannot understand it.
+Best padding_y is system-dependent,
+but for 64x64x64 and 96x96x96
+ padding_y = 5
+for 128x128x128
+ padding_y = 1
+may be good. Its default value is 3.
+
 ===== gap_id
 0: There is no dead layer.
 1: Single dead layer is on the bottom electrode.

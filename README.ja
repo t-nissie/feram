@@ -157,6 +157,15 @@ method = 'vs'もしくはmethod = 'lf'で使って下さい．
 System size, L_x, L_y and L_z. They must be equal or larger than 4.
  L = 32 32 4
 
+===== padding_y
+計算の高速化のためのy方向のパディングの値。
+最適なパディングの値はシステムやコンパイラに依存するが、
+64x64x64 と 96x96x96 のシステムサイズなら
+ padding_y = 5
+128x128x128 なら
+ padding_y = 1
+がよいであろう。padding_yの既定値は3である．
+
 ===== gap_id
 0: dead layer はなし．
 1: 片側だけに dead layer がある．
