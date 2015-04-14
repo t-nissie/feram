@@ -113,14 +113,14 @@ foo123.log, foo123.cood, ... などとなります．
 'mc'を指定するとモンテカルロシミュレーションを行います．まだインプリメントされていません．
 
  method = 'hl'
-'hl'の機能はちかぢか削除されます。
+'hl'の機能はちかぢか削除されます．
 ヒステリシスループ (hysteresis loop) のシミュレーションには
-n_E_wave_periodとE_wave_typeとを使って下さい。
+n_E_wave_periodとE_wave_typeとを使って下さい．
 
 ===== GPa
 圧力をGPa単位で．過小評価されるTcを負圧をかけることにより補正することがある．
  GPa = -5.0
-また、３つの値を指定することにより垂直応力をかけることもできる．
+また，３つの値を指定することにより垂直応力をかけることもできる．
  GPa = 0.0 0.0 -3.0
 
 ===== kelvin
@@ -132,7 +132,7 @@ Rにあるunit cellの双極子の長さu(R)の有効質量．
 単位はatomic mass unit．
 
 ===== acoustic_mass_amu
-もしacoustic_mass_amuが設定されないと、音響変位，すなわち局所歪みは{u(R)}を元に最適化される．
+もしacoustic_mass_amuが設定されないと，音響変位，すなわち局所歪みは{u(R)}を元に最適化される．
 acoustic_mass_amuとして音響変位の有効質量が
  acoustic_mass_amu = 46.44
 と与えられると，音響変位についても分子動力学計算が行われる．
@@ -158,13 +158,13 @@ System size, L_x, L_y and L_z. They must be equal or larger than 4.
  L = 32 32 4
 
 ===== padding_y
-計算の高速化のためのy方向のパディングの値。
-最適なパディングの値はシステムやコンパイラに依存するが、
+計算の高速化のためのy方向のパディングの値．
+最適なパディングの値はシステムやコンパイラに依存するが，
 64x64x64 と 96x96x96 のシステムサイズなら
  padding_y = 5
 128x128x128 なら
  padding_y = 1
-がよいであろう。padding_yの既定値は3である．
+がよいであろう．padding_yの既定値は3である．
 
 ===== gap_id
 0: dead layer はなし．
@@ -201,11 +201,11 @@ thermalizeにかけるステップ数，物理量の平均を取るのにかけ�
  n_hl_freq    =  5000
 
 ===== n_E_wave_period, E_wave_type
-external_E_fieldの振幅を持つ外部電場を時間により振動させるときの周期。
-E_wave_typeに'triangular_sin'か'triangular_cos'を指定する。
-src/27example-BaTiO3-new-param-E_wave/ 以下に例がある。
-n_E_wave_periodは４で割り切れる正の整数でなくてはならない。
-'ramping_off'と'ramping_on'も使うことができる。
+external_E_fieldの振幅を持つ外部電場を時間により振動させるときの周期．
+E_wave_typeに'triangular_sin'か'triangular_cos'を指定する．
+src/27example-BaTiO3-new-param-E_wave/ 以下に例がある．
+n_E_wave_periodは４で割り切れる正の整数でなくてはならない．
+'ramping_off'と'ramping_on'も使うことができる．
 \Fig:E_wave doc/figures/E_wave.jpg
   Four options of E_wave_type.
 /Fig:E_wave
@@ -246,7 +246,7 @@ distribution_files/ ディレクトリに書き出されます．とくに後者
 methodが'md', 'lf', 'mc'のときはこの電場で一定．
 methodが'hl'のヒステリシスの計算ではn_averageステップの間に電場が+Eから-Eまで変化する．
  external_E_field = 0.00 0.00 -0.01
-また、E_wave_typeを指定すると、Eはn_E_wave_periodの周期で振動する。
+また，E_wave_typeを指定すると，Eはn_E_wave_periodの周期で振動する．
 
 ===== P_kappa2, P_alpha, P_gamma
 4次の多項式の係数．
@@ -454,8 +454,8 @@ verbose = 2 のとき，.logファイルにはイテレーション毎にメッ�
  $ feram foo123.feram
  $ gnuplot plot.gp
 
-計算時間が.logファイルの最後に秒を単位として書き出されます。
-ただし、SR16000とFX10の場合、計算時間が１日（86,400秒）を越えるとカウンタが一度リセットされてしまいます。
+計算時間が.logファイルの最後に秒を単位として書き出されます．
+ただし，SR16000とFX10の場合，計算時間が１日（86,400秒）を越えるとカウンタが一度リセットされてしまいます．
       :
    ../../src/feram_common.F: 95: DATE_AND_TIME: 2014-07-14T14:37:23.360+0900
    t_initialization,  t_simulation,       t_total, n_threads
