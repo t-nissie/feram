@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-04-15 17:03:27 takeshi>
+! Time-stamp: <2015-04-15 17:24:40 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 program feram_fftw_wisdom
@@ -47,7 +47,7 @@ program feram_fftw_wisdom
      Ly =  96
      Lz =  96
      padding_y = 3
-  else if (i.eq.4) then
+  else if (i.eq.5) then
      call get_command_argument(1,str); read(str,*) N_TIMES
      call get_command_argument(2,str); read(str,*) Lx
      call get_command_argument(3,str); read(str,*) Ly
