@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-04-06 10:51:50 takeshi>
+! Time-stamp: <2015-04-15 17:03:27 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program feram_fftw_wisdom
@@ -27,6 +27,7 @@ program feram_fftw_wisdom
   integer :: Lx
   integer :: Ly
   integer :: Lz
+  integer :: padding_y
   integer, parameter :: rank=3
   integer, parameter :: dist=1
   real*8  :: N_inv
@@ -45,26 +46,26 @@ program feram_fftw_wisdom
      Lx =  96
      Ly =  96
      Lz =  96
-     !padding_y = 3
+     padding_y = 3
   else if (i.eq.4) then
      call get_command_argument(1,str); read(str,*) N_TIMES
      call get_command_argument(2,str); read(str,*) Lx
      call get_command_argument(3,str); read(str,*) Ly
      call get_command_argument(4,str); read(str,*) Lz
-     !call get_command_argument(5,str); read(str,*) padding_y
+     call get_command_argument(5,str); read(str,*) padding_y
   else
      write(0,'(a,a,i3,a)') __FILE__, ':', __LINE__, ': Illegal number of arguments.'
      stop 1
   end if
 
-  LzLyLx( 1)=Lz; LzLyLx( 2)=Ly; LzLyLx( 3)=Lx    ! padding_y will be introduced.
-  d_embed(1)=Lz; d_embed(2)=Ly; d_embed(3)=Lx    ! Not 2*(Lx/2+1), so far.
-  z_embed(1)=Lz; z_embed(2)=Ly; z_embed(3)=Lx/2+1
+  LzLyLx( 1)=Lz; LzLyLx( 2)=Ly;           LzLyLx( 3)=Lx
+  d_embed(1)=Lz; d_embed(2)=Ly+padding_y; d_embed(3)=2*(Lx/2+1)
+  z_embed(1)=Lz; z_embed(2)=Ly+padding_y; z_embed(3)=   Lx/2+1
   N = Lx * Ly *Lz
   N_inv = 1.0d0/N
 
-  allocate(dipoR(3, 0:Lx-1, 0:Ly-1, 0:Lz-1))
-  allocate(dipoK(3, 0:Lx/2, 0:Ly-1, 0:Lz-1)) !"/2" for real<->complex FFT
+  allocate(dipoR(3, 0:2*(Lx/2+1)-1, 0:Ly+padding_y-1, 0:Lz-1))
+  allocate(dipoK(3, 0:Lx/2,         0:Ly+padding_y-1, 0:Lz-1)) !"/2" for real<->complex FFT
 
 !!!first touch
 !$omp parallel do
@@ -112,7 +113,7 @@ program feram_fftw_wisdom
   g_ri = f_r / t_ri
 
   ! Use the same output format with fft_many_check.F
-  write(6,'(i8,4i5,i11,L3,  f8.3,f8.3)') N_TIMES, Lx, Ly, Lz, 0, N, .false.,  t_ri, g_ri
+  write(6,'(i8,4i5,i11,L3,  f8.3,f8.3)') N_TIMES, Lx, Ly, Lz, padding_y, N, .false.,  t_ri, g_ri
 
   call fftw_destroy_plan(plan_R2C_3)
   call fftw_destroy_plan(plan_C2R_3)

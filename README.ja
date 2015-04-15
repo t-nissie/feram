@@ -159,12 +159,14 @@ System size, L_x, L_y and L_z. They must be equal or larger than 4.
 
 ===== padding_y
 計算の高速化のためのy方向のパディングの値．
-最適なパディングの値はシステムやコンパイラに依存するが，
+最適なパディングの値はシステムやコンパイラに依存します．
 64x64x64 と 96x96x96 のシステムサイズなら
  padding_y = 5
 128x128x128 なら
  padding_y = 1
-がよいであろう．padding_yの既定値は3である．
+など，いちどベンチマークを取って最適値を出しておくとよいでしょう．
+padding_yの既定値は3です．
+詳しくは src/coord_module.F を参照してください．
 
 ===== gap_id
 0: dead layer はなし．
@@ -400,11 +402,11 @@ Position must be given in the unit of a0.
 FFTW用のwisdomファイルを用意することによって，feramの初期化の計算時間を
 短縮することができます．具体的には.logファイルに"Ready for simulation!!!"
 というメッセージが出るのが早くなります．wisdomファイルはferamと同時に
-src/内にビルドされるfft_checkコマンドで生成できます．たとえば，
+src/内にビルドされるferam_fftw_wisdomコマンドで生成できます．たとえば，
 src/18example-benchmark/ディレクトリ内で，forward.feramのシステム
 サイズLx*Ly*Lz=32*32*243の計算をするなら，
- $ w   # Before executing fft_check, confirm that load average is zero and there is no background job.
- $ OMP_NUM_THREADS=6 ../fft_check 1000 32 32 243
+ $ w   # Before executing feram_fftw_wisdom, confirm that load average is zero and there is no background job.
+ $ OMP_NUM_THREADS=6 ../feram_fftw_wisdom 1000 32 32 243 3
        :
    It takes a few minutes or a few hours depending on the system size.
    '1000' in the command line arguments is the number of iterations of
@@ -415,7 +417,7 @@ src/18example-benchmark/ディレクトリ内で，forward.feramのシステム
  $ grep FFTW_WISDOM forward.log
    feram_common.F: 47: FFTW_WISDOM: Successfully imported FFTW wisdom in current directory.
  $ w
- $ OMP_NUM_THREADS=6 ../fft_check 100 300 300 300
+ $ OMP_NUM_THREADS=6 ../feram_fftw_wisdom 100 300 300 300
  $ sudo cp wisdom_new /etc/fftw/wisdom
  $ rm wisdom wisdom_new
  $ OMP_NUM_THREADS=6 ../feram epit300x300x300.feram &
@@ -426,8 +428,6 @@ src/18example-benchmark/ディレクトリ内で，forward.feramのシステム
 この/etc/fftw/wisdomはOMP_NUM_THREADS=6環境下で
 Lx*Ly*Lz=32*32*243にもLx*Ly*Lz=300*300*300にも
 使うことができます．
-
-fft_checkの使い方の詳しい説明はsrc/fft_check.htmlにあります．
 
 FFTW wisdomについての詳細は
 http://www.fftw.org/doc/Other-Important-Topics.html
@@ -688,7 +688,6 @@ u.subs_rules = lambda{|s|
   gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').
-  gsub(/(src\/fft_check\.html)/,           '<a href="\1">\1</a>').
   gsub(/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2').
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').

@@ -415,13 +415,13 @@ Position must be given in the unit of a0.
 By preparing an FFTW wisdom file in your current directory,
 you can reduce initial computational time, i.e. computational
 time before the "Ready for simulation!!!" message. You can
-generate an FFTW wisdom file with `fft_check` command, which
+generate an FFTW wisdom file with `feram_fftw_wisdom` command, which
 will be built in the src/ directory besides `feram` command.
 In the src/18example-benchmark/ directory, for example, you
 can generate an FFTW wisdom file of system size Lx*Ly*Lz=32*32*243
 for the forward.feram input file,
- $ w   # Before executing fft_check, confirm that load average is zero and there is no background job.
- $ OMP_NUM_THREADS=6 ../fft_check 1000 32 32 243
+ $ w   # Before executing feram_fftw_wisdom, confirm that load average is zero and there is no background job.
+ $ OMP_NUM_THREADS=6 ../feram_fftw_wisdom 1000 32 32 243 3
        :
    It takes a few minutes or a few hours depending on the system size.
    '1000' in the command line arguments is the number of iterations of
@@ -432,7 +432,7 @@ for the forward.feram input file,
  $ grep FFTW_WISDOM forward.log
    feram_common.F: 47: FFTW_WISDOM: Successfully imported FFTW wisdom in current directory.
  $ w
- $ OMP_NUM_THREADS=6 ../fft_check 100 300 300 300
+ $ OMP_NUM_THREADS=6 ../feram_fftw_wisdom 100 300 300 300
  $ sudo cp wisdom_new /etc/fftw/wisdom
  $ rm wisdom wisdom_new
  $ OMP_NUM_THREADS=6 ../feram epit300x300x300.feram &
@@ -442,8 +442,6 @@ for the forward.feram input file,
 Here, /etc/fftw/wisdom is the system wisdom. In this case, you
 can use this /etc/fftw/wisdom for both Lx*Ly*Lz=32*32*243 and
 Lx*Ly*Lz=300*300*300 in the OMP_NUM_THREADS=6 environment.
-
-See src/fft_check.html for more details on fft_check.
 
 Check http://www.fftw.org/doc/Other-Important-Topics.html for more
 details on FFTW wisdom. If you are using the MKL for FFTW3 wrappers,
@@ -713,7 +711,6 @@ u.subs_rules = lambda{|s|
   gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').
-  gsub(/(src\/fft_check\.html)/,           '<a href="\1">\1</a>').
   gsub(/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2').
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').
