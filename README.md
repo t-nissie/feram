@@ -1,13 +1,13 @@
-feram-0.22.07
+feram-0.23.00
 =============
 Dear current and future feram users,
 
-I released feram-0.22.07.tar.xz from
+I released feram-0.23.00.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 
-MD5 (feram-0.22.07.tar.xz) = 
+MD5 (feram-0.23.00.tar.xz) = 
 
-"feram" is a fast molecular dynamics (MD) simulator
+`feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
 
@@ -16,50 +16,23 @@ Enjoy,
 Takeshi
 
 ## Changes
-From this feram-0.22.07, you can do `make check` on Windows.
+From this feram-0.23.00, internal data structure is largely modified.
+You may be able to speed up your calculations with the `padding_y` tag.
+It is developed under a branch of subversion,
+https://sourceforge.net/p/loto/code/HEAD/tree/feram/branches/newplan/ .
+See README.en or README.ja and src/coord_module.F.
+
+From this feram-0.23.00, you can do `make check` on Windows.
 
 A bug in src/27example-BaTiO3-new-param-E_wave/generator.sh is fixed.
 You can generate some input files automatically now.
 
-From the feram-0.22.06,
-
-* parameters/parameters.html is surely included in the
-  source package.
-* We start to use dsyevx() and zheevx() instead of
-  dsyev() and zheev().
-* Energies will be written into the .hl file.
-* You can compile this feram code on Windows 8.1
-  with MinGW and TDM64-GCC. See INSTALL or INSTALL.html.
-
-In the feram-0.22.05, a bug in kinetic_energy_dipo.F is
-fixed for defects calculation.
-
-In the feram-0.22.04, bugs in rnd?.defects files in
-src/29example-BaTiO3-new-param-defects/ are fixed.
-See feram-0.22.04/src/29example-BaTiO3-new-param-defects/histogram.jpg .
-
-In the feram-0.22.03, bugs in kinetic_energy_dipo.F
-and velocity_scaling.F are fixed.
-Now, you can safely perform simulations with defects.
-
-From the feram-0.22.02, a new exapmle src/28example-PbTiO3-elastocaloric-770K/
-is included in the package. See http://arxiv.org/abs/1404.5459 ,
-though we will revise this preprint soon.
-
-From the feram-0.22.01, in a leapfrog method with acoustic_mass_amu,
-final temperature is reported form an average of dipolar and acoustic
-kinetic energies. See subroutine divide_and_write_Average() in
-src/average_module.F.
-
-A new feature is available form the feram-0.22.00,
-tags of n_E_wave_period and E_wave_type.
-n_E_wave_period is the period of alternating external electric field
-which have external_E_field amplitude. Set 'triangular_sin' or
-'triangular_cos' to E_wave_type. See example files in
-src/27example-BaTiO3-new-param-E_wave/ .
-
-
 ## Known bug
+OpenMP-parallelization does not work efficiently over two or
+more NUMA chips of Intel Xeon CPUs which is released after
+2011 (Sandy Bridge, Ivy Bridge, Haswell, Broadwell, ...).
+Execute feram within single chip by using numactl(8) command.
+
 Hysteresis loop calculations of **film** goes wrong.
 A strange peak appears in the beginning.
 See src/23example-BaTiO3-new-param-hl-film-acoustic-mass/.
@@ -85,3 +58,5 @@ Bulk calculations go very fine.
     0.22.05 | without           | OK
     0.22.06 | with              | strange peak
     0.22.06 | without           | OK
+    0.23.00 | with              | strange peak
+    0.23.00 | without           | OK
