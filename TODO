@@ -8,6 +8,8 @@ o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
   src/mirror_force_mirror.Fで単にc%acouRとc%dVdacRをミラーすればよいわけではない。
   acoustic displacementは双極子でないので静電的ミラーではない！！！
 
+o Use SSE or AVX with the latest assembler and FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'.
+
 o slicer.rb -> feram_slicer.rb, eigenvalues2j -> feram_eigenvalues2j, etc.
 
 o (nightly) automation of unit test with "make check"
