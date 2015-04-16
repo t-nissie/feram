@@ -10,6 +10,8 @@ Note that, with a 64x64x64 supercell, use of single chip is
 much more efficient than use of two chips under Sandy Bridge-,
 Ivy Bridge-, Haswell- Broadwell-based Xeon.
 
+elastocaloric770K_check.sh consumes only 0.25 GB.
+
 === feram-0.22.05
 ==== elastocaloric770K_check.vs.log
  X5650 1 chip =  6 core:       3.73        2114.44        2118.17    6     #TIMING_REPORT
@@ -26,9 +28,11 @@ Ivy Bridge-, Haswell- Broadwell-based Xeon.
 ==== elastocaloric770K_check.vs.log
  X5650 1 chip =  6 core:
  X5650 2 chip = 12 core:
+ SR16000 32 thds on  1  node:  3.13         352.74         355.87   32     #TIMING_REPORT
 ==== elastocaloric770K_check.lf.log
  X5650 1 chip =  6 core:
  X5650 2 chip = 12 core:
+ SR16000 32 thds on  1  node:  2.76         362.96         365.72   32     #TIMING_REPORT
 
 === feram-0.23.00
 ==== elastocaloric770K_check.vs.log
