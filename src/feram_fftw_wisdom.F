@@ -1,7 +1,11 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-04-17 12:48:22 takeshi>
+! Time-stamp: <2015-04-17 22:21:40 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
+
 program feram_fftw_wisdom
   use, intrinsic :: iso_c_binding
   implicit none
@@ -153,7 +157,9 @@ program feram_fftw_wisdom
   call fftw_destroy_plan(plan_R2C)
   deallocate(dipoR)
   deallocate(dipoK)
+#ifndef WITH_FFT_MKL
   ireturn = fftw_export_wisdom_to_filename('wisdom_new')
+#endif
   call fftw_cleanup_threads()
 
 end program feram_fftw_wisdom
