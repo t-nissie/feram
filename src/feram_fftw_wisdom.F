@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-04-15 17:24:40 t-nissie>
+! Time-stamp: <2015-04-17 12:48:22 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program feram_fftw_wisdom
@@ -18,8 +18,8 @@ program feram_fftw_wisdom
 
   integer :: OMP_GET_MAX_THREADS
   integer :: ireturn
-  type(C_PTR) :: plan_R2C_3
-  type(C_PTR) :: plan_C2R_3
+  type(C_PTR) :: plan_R2C
+  type(C_PTR) :: plan_C2R
 
   include 'fftw3.f03'
   integer howmany,stride
@@ -42,10 +42,10 @@ program feram_fftw_wisdom
   i = command_argument_count()
   if (i.eq.0) then
      ! default values
-     N_TIMES = 100
-     Lx =  96
-     Ly =  96
-     Lz =  96
+     N_TIMES = 1000
+     Lx =  64
+     Ly =  64
+     Lz =  64
      padding_y = 3
   else if (i.eq.5) then
      call get_command_argument(1,str); read(str,*) N_TIMES
@@ -81,10 +81,10 @@ program feram_fftw_wisdom
 
   howmany = 3
   stride = howmany
-  plan_R2C_3 = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+  plan_R2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
        &                              dipoR,d_embed,stride,dist,&
        &                              dipoK,z_embed,stride,dist,FFTW_MEASURE)
-  plan_C2R_3 = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+  plan_C2R = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
        &                              dipoK,z_embed,stride,dist,&
        &                              dipoR,d_embed,stride,dist,FFTW_MEASURE)
 
@@ -96,13 +96,13 @@ program feram_fftw_wisdom
 
   call system_clock(c_ri(0))
   do i = 1, N_TIMES
-     call fftw_execute_dft_r2c(plan_R2C_3, dipoR, dipoK)
+     call fftw_execute_dft_r2c(plan_R2C, dipoR, dipoK)
 !$omp parallel do
      do iz = 0,Lz-1
         dipoK(:,:,:,iz) = dipoK(:,:,:,iz) * N_inv
      end do
 !$omp end parallel do
-     call fftw_execute_dft_c2r(plan_C2R_3, dipoK, dipoR)
+     call fftw_execute_dft_c2r(plan_C2R, dipoK, dipoR)
   end do
   call system_clock(c_ri(1), count_rate, count_max)
   write(6,*) dipoR(1,0,1,2)
@@ -115,8 +115,42 @@ program feram_fftw_wisdom
   ! Use the same output format with fft_many_check.F
   write(6,'(i8,4i5,i11,L3,  f8.3,f8.3)') N_TIMES, Lx, Ly, Lz, padding_y, N, .false.,  t_ri, g_ri
 
-  call fftw_destroy_plan(plan_R2C_3)
-  call fftw_destroy_plan(plan_C2R_3)
+  call fftw_destroy_plan(plan_R2C)
+  call fftw_destroy_plan(plan_C2R)
+  deallocate(dipoR)
+  deallocate(dipoK)
+
+  allocate(dipoR(6, 0:2*(Lx/2+1)-1, 0:Ly+padding_y-1, 0:Lz-1))
+  allocate(dipoK(6, 0:Lx/2,         0:Ly+padding_y-1, 0:Lz-1)) !"/2" for real<->complex FFT
+
+!!!first touch
+!$omp parallel do
+  do iz = 0,Lz-1
+     dipoR(:,:,:,iz) = 0.1d0
+  end do
+!$omp end parallel do
+!$omp parallel do
+  do iz = 0,Lz-1
+     dipoK(:,:,:,iz) = (0.0d0,0.0d0)
+  end do
+!$omp end parallel do
+
+  howmany = 6
+  stride = howmany
+  plan_R2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+       &                              dipoR,d_embed,stride,dist,&
+       &                              dipoK,z_embed,stride,dist,FFTW_MEASURE)
+
+!$omp parallel do
+  do iz = 0,Lz-1
+     dipoR(:,:,:,iz) = 0.1d0
+  end do
+!$omp end parallel do
+
+  call fftw_execute_dft_r2c(plan_R2C, dipoR, dipoK)
+  write(6,*) dipoK(1,0,0,0)/N
+
+  call fftw_destroy_plan(plan_R2C)
   deallocate(dipoR)
   deallocate(dipoK)
   ireturn = fftw_export_wisdom_to_filename('wisdom_new')
