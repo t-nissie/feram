@@ -51,20 +51,20 @@ elastocaloric770K_check.sh consumes only 0.25 GB.
  X5650 2 chip = 12 core:        7.46        1300.21        1307.67   12     #TIMING_REPORT
  SR16000  8 thds on 1/4 node:   5.31         817.13         822.44    8     #TIMING_REPORT
  SR16000 32 thds on 1 node *1:  6.21         307.17         313.38   32     #TIMING_REPORT
- E5-2680 1 chip =  8 core *2:   5.42        1024.75        1030.16    8     #TIMING_REPORT
- E5-2680 2 chip = 16 core *3:   5.88         977.70         983.58   16     #TIMING_REPORT
+ E5-2680 1 chip =  8 core *2:   5.40         997.37        1002.77    8     #TIMING_REPORT
+ E5-2680 2 chip = 16 core *2:   5.90         969.28         975.18   16     #TIMING_REPORT
 ==== elastocaloric770K_check.lf.log
  X5650 1 chip =  6 core:        3.43        2371.53        2374.95    6     #TIMING_REPORT
  X5650 2 chip = 12 core:        3.43        1302.37        1305.79   12     #TIMING_REPORT      
  SR16000  8 thds on 1/4 node:   2.87         783.22         786.09    8     #TIMING_REPORT
  SR16000 32 thds on 1 node *1:  3.49         297.96         301.45   32     #TIMING_REPORT
- E5-2680 1 chip =  8 core *2:   2.78        1017.31        1020.09    8     #TIMING_REPORT
- E5-2680 2 chip = 16 core *3:   2.79         980.38         983.17   16     #TIMING_REPORT
+ E5-2680 1 chip =  8 core *2:   2.76         993.22         995.97    8     #TIMING_REPORT
+ E5-2680 2 chip = 16 core *2:   2.82         976.35         979.17   16     #TIMING_REPORT
 
 *1: Single node of SR16000 can hit 285 sec, if padding_y = 5 is given. Check it:
     $ cd ~/f/loto/feram/branches/newplan/0.22.06-r2429-2015-04-14-newplan-xlf-padding_y_5/src/
     $ ls zzz0*/*digest
     $ grep TIMING zzz0*/*vs.log.digest
     $ grep TIMING zzz0*/*lf.log.digest
-*2: ~/f/loto/feram/branches/newplan/0.22.06-r2435-2015-04-16-newplan-gfortran-4.8.2-emerald01/src/
-*3: ~/f/loto/feram/branches/newplan/0.22.06-r2435-2015-04-16-newplan-gfortran-4.8.2-emerald02/src/
+*2: ~/f/loto/feram/branches/newplan/0.22.06-r2440-2015-04-17-newplan-gfortran-4.8.2-emerald/src/
+    ../configure FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'
