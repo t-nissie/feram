@@ -1,18 +1,21 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-04-08 20:53:38 takeshi>
+# Time-stamp: <2015-04-20 06:55:59 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
 F77=$(FC)
 AM_FFLAGS=@FCFLAGS@
-bin_PROGRAMS = feram diagonalize15x15 displacement eigenvalues2j \
+bin_PROGRAMS = feram \
+               feram_diagonalize15x15 \
+               feram_displacement \
+               feram_eigenvalues2j \
                feram_fftw_wisdom \
-               fft_check distribution3d2ppm \
+               distribution3d2ppm \
                frozen_phonon_Gamma \
                frozen_phonon_X \
                random_field_generator
-check_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
-TESTS = fft_check $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh elastocaloric770K_check.sh
+check_PROGRAMS = fft_check marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
+TESTS = $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh elastocaloric770K_check.sh
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -56,13 +59,13 @@ feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
 
 feram_fftw_wisdom_SOURCES = feram_fftw_wisdom.F
 
-diagonalize15x15_SOURCES = diagonalize15x15.F
+feram_diagonalize15x15_SOURCES = feram_diagonalize15x15.F
 
-displacement_SOURCES = displacement.F
+feram_displacement_SOURCES = feram_displacement.F
 
 distribution3d2ppm_SOURCES = distribution3d2ppm.F rgb_module.f
 
-eigenvalues2j_SOURCES = eigenvalues2j.F msg.F param_module.F
+feram_eigenvalues2j_SOURCES = feram_eigenvalues2j.F msg.F param_module.F
 
 frozen_phonon_Gamma_SOURCES = frozen_phonon_Gamma.F
 
@@ -162,7 +165,7 @@ feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	$(MPIFC) $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(LIBS)
 
 feram_common.o:                 param_module.o coord_module.o date_and_time_module.o f90_wisdom.o define.h
-decay-functions.o param_module.o diagonalize15x15.o: define.h
+decay-functions.o param_module.o feram_diagonalize15x15.o: define.h
 feram.o feram_mpi.o dipole-dipole.o mirror.o read_defects_u.o elastic.o write_system.o dipoFFT.o acouFFT.o:\
                                 param_module.o coord_module.o define.h
 initialize_E_field.o:           param_module.o coord_module.o define.h wave_module.o
@@ -190,8 +193,8 @@ dipole-dipole-short-range.o:    param_module.o         define.h fft_3d_3x3upper_
 fft_3d_3x3upper_r2c.o:          param_module.o
 dVddi-dipole-dipole.o:\
                 energy_module.o param_module.o coord_module.o
-print-eigenvalues.o eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
-eigenvalues2j.o:                param_module.o define.h
+print-eigenvalues.o feram_eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
+feram_eigenvalues2j.o:          param_module.o define.h
 distribution3d2ppm.o:           average_module.o rgb_module.o
 fft_check.o: f90_wisdom.o
 
