@@ -1,5 +1,5 @@
-! eigenvalues2j.F -*-f90-*-
-! Time-stamp: <2012-08-22 13:43:57 t-nissie>
+! feram_eigenvalues2j.F -*-f90-*-
+! Time-stamp: <2015-04-20 07:11:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -13,7 +13,7 @@
 #  define get_command_argument getarg
 #endif
 
-program eigenvalues2j
+program feram_eigenvalues2j
   use Param_module
   implicit none
   type(Param_type) :: p
@@ -25,13 +25,13 @@ program eigenvalues2j
   logical           :: j5j7zero
   character(len=110)           :: message
   character(len=FILE_NAME_LEN) :: fn_log
-  if (command_argument_count().ne.1) stop 'eigenvalues2j.F:28: Only one input file is required.'
+  if (command_argument_count().ne.1) stop 'feram_eigenvalues2j.F:28: Only one input file is required.'
   call get_command_argument(1,p%filename)
   write(fn_log,'(a,a)') trim(p%filename), '.log'
   open(unit=UNIT_LOG,file=fn_log,status='replace')
   write(6,'(a,a)') trim(fn_log), ':1: In this file, there will be the calculated results.'
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'eigenvalues2j', &
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'feram_eigenvalues2j', &
        & 'calculates coefficients j of short range interaction from eigenvalues if IFC matrices.')
   call  read_Param(p,p%filename)
   call  make_Param(p)
@@ -97,7 +97,7 @@ program eigenvalues2j
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(fn_log))
   close(unit=UNIT_LOG)
-end program eigenvalues2j
+end program feram_eigenvalues2j
 
 subroutine write_kappa2_and_j_i(str,c)
   implicit none
@@ -110,5 +110,5 @@ subroutine write_kappa2_and_j_i(str,c)
 end subroutine write_kappa2_and_j_i
 
 !local variables:
-!  compile-command: "make -k eigenvalues2j && ./eigenvalues2j eigenvalues2j.in && cat eigenvalues2j.in.log"
+!  compile-command: "make -k feram_eigenvalues2j && ./feram_eigenvalues2j feram_eigenvalues2j.in && cat feram_eigenvalues2j.in.log"
 !End:

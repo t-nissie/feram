@@ -1,12 +1,12 @@
-! diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2014-10-15 16:56:03 t-nissie>
+! feram_diagonalize15x15.F -*-f90-*-
+! Time-stamp: <2015-04-20 07:05:25 takeshi>
 ! Author: Takeshi NISHIMATSU
-! Usage: ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
-!        ./diagonalize15x15 < perovskite-Sigma_o_DS1_DDB
+! Usage: ./feram_diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
+!        ./feram_diagonalize15x15 < perovskite-Sigma_o_DS1_DDB
 !!
 #include "define.h"
 
-program diagonalize15x15
+program feram_diagonalize15x15
   implicit none
   integer, parameter :: N_ATOM = 5
   integer, parameter :: N_FREEDOM = N_ATOM*3
@@ -88,8 +88,8 @@ program diagonalize15x15
         write(6,fmt_eigen) j, eigenvalues(j), (z_eigenvectors(i,j), i=1,N_FREEDOM)
      end do
   end if
-end program diagonalize15x15
+end program feram_diagonalize15x15
 
 !local variables:
-!  compile-command: "make -k diagonalize15x15 && ./diagonalize15x15 < perovskite-Gamma_o_DS3_DDB"
+!  compile-command: "make -k feram_diagonalize15x15 && ./feram_diagonalize15x15 < perovskite-Gamma_o_DS3_DDB"
 !End:

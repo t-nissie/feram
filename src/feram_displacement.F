@@ -1,9 +1,9 @@
-! displacement.F -*-f90-*-
-! Time-stamp: <2015-03-26 15:39:11 takeshi>
+! feram_displacement.F -*-f90-*-
+! Time-stamp: <2015-04-20 07:09:46 takeshi>
 ! Author: Takeshi NISHIMATSU
-! Usage: ./displacement < perovskite.out
+! Usage: ./feram_displacement < perovskite.out
 !!
-program displacement
+program feram_displacement
   implicit none
   integer           :: io
   integer           :: i
@@ -14,7 +14,7 @@ program displacement
   do
      read(5, '(a)', IOSTAT=io) str
      if (index(str,'after computation').ne.0) exit
-     if (io.ne.0) stop 'displacement: Could not find "after computation"'
+     if (io.ne.0) stop 'feram_displacement: Could not find "after computation"'
   end do
 
   do
@@ -28,7 +28,7 @@ program displacement
         call xred2displacement(xred_dataset,xred)
      end if
   end do
-end program displacement
+end program feram_displacement
 
 subroutine xred2displacement(xred_dataset,xred)
   implicit none
@@ -67,5 +67,5 @@ end subroutine xred2displacement
 
 
 !local variables:
-!  compile-command: "make -k displacement && ./displacement < ~/Desktop/perovskite-optcell2-110.out"
+!  compile-command: "make -k feram_displacement && ./feram_displacement < ~/Desktop/perovskite-optcell2-110.out"
 !End:
