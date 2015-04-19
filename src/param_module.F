@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2015-03-22 23:45:33 takeshi>
+! Time-stamp: <2015-04-19 17:44:36 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -138,7 +138,7 @@ contains
     p%Ly = 32
     p%Lz = 32
     p%gap_id = 0
-    p%padding_y = 0
+    p%padding_y = 3
     p%gap_dipole_u(:) = 0.0d0
     p%a0 = 4.0d0
     p%epi_strain = 0.0d0
@@ -387,6 +387,8 @@ contains
     character (len=300) :: str
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_Param(), Parameters for convenience.')
     write(str,'(a,i11)')    'N = Lx * Ly * Lz          =', p%N
+    call msg_ez(UNIT_LOG,str)
+    write(str,'(a,i11)')    'padding_y                 =', p%padding_y
     call msg_ez(UNIT_LOG,str)
     write(str,'(a,e15.7)')  'Ninv = 1/N                =', p%Ninv
     call msg_ez(UNIT_LOG,str)
