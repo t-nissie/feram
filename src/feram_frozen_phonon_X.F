@@ -1,12 +1,12 @@
-! frozen_phonon_X.F -*-f90-*-
-! Time-stamp: <2014-10-15 17:29:42 t-nissie>
+! feram_frozen_phonon_X.F -*-f90-*-
+! Time-stamp: <2015-04-20 07:35:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! reference: R. D. King-Smith and David Vanderbilt: "First-principles investigation of
 !            ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
 !!
 #include "define.h"
 
-program frozen_phonon_X
+program feram_frozen_phonon_X
   implicit none
   integer, parameter ::        LWORK = 300   ! for LAPACK
   real*8             ::   work(LWORK)        ! for LAPACK dsyevx
@@ -52,8 +52,8 @@ program frozen_phonon_X
      write(6,'(i2,f11.6,5(f10.3,2f7.3))') j, eigenvalues(j), (eigenvectors(i,j), i=1,15)
   end do
 
-end program frozen_phonon_X
+end program feram_frozen_phonon_X
 
 !local variables:
-!  compile-command: "make -k frozen_phonon_X && ./frozen_phonon_X'
+!  compile-command: "make -k feram_frozen_phonon_X && ./feram_frozen_phonon_X'
 !End:

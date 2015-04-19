@@ -1,12 +1,12 @@
-! frozen_phonon_Gamma.F -*-f90-*-
-! Time-stamp: <2014-10-15 17:20:08 t-nissie>
+! feram_frozen_phonon_Gamma.F -*-f90-*-
+! Time-stamp: <2015-04-20 07:34:40 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! reference: R. D. King-Smith and David Vanderbilt: "First-principles investigation of
 !            ferroelectricity in perovskite compounds", Phys. Rev. B, vol.49, pp.5828-5844 (1994).
 !!
 #include "define.h"
 
-program frozen_phonon_Gamma
+program feram_frozen_phonon_Gamma
   implicit none
   integer, parameter ::       LWORK = 100   ! for LAPACK
   real*8             ::  work(LWORK)        ! for LAPACK dsyevx
@@ -52,8 +52,8 @@ program frozen_phonon_Gamma
   end do
 
 
-end program frozen_phonon_Gamma
+end program feram_frozen_phonon_Gamma
 
 !local variables:
-!  compile-command: "make -k frozen_phonon_Gamma && ./frozen_phonon_Gamma'
+!  compile-command: "make -k feram_frozen_phonon_Gamma && ./feram_frozen_phonon_Gamma'
 !End:

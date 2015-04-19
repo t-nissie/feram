@@ -1,14 +1,14 @@
-! random_field_generator.f -*-f90-*-
-! Time-stamp: <2013-10-10 18:06:26 takeshi>
+! feram_random_field_generator.f -*-f90-*-
+! Time-stamp: <2015-04-20 07:36:13 takeshi>
 ! Author: Takeshi NISHIMATSU
-! Usage: ./random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
-!        ./random_field_generator 32 32 243  0.0 0.0 0.0  0.0005 0.0005 0.0005  123456789 987654321
+! Usage: ./feram_random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
+!        ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.0005 0.0005 0.0005  123456789 987654321
 !!
 #if defined(__PGI) || defined(__sparc)
 #  define command_argument_count iargc
 #  define get_command_argument getarg
 #endif
-program random_field_generator
+program feram_random_field_generator
   use marsaglia_tsang_uni64_module
   implicit none
   integer :: Lx,Ly,Lz
@@ -49,7 +49,7 @@ program random_field_generator
         end do
      end do
   end do
-end program random_field_generator
+end program feram_random_field_generator
 !local variables:
-!  compile-command: "make -k random_field_generator"
+!  compile-command: "make -k feram_random_field_generator"
 !End:

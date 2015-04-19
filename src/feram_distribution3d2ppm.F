@@ -1,5 +1,5 @@
-! distribution3d2ppm.F -*-f90-*-
-! Time-stamp: <2012-10-19 20:36:33 t-nissie>
+! feram_distribution3d2ppm.F -*-f90-*-
+! Time-stamp: <2015-04-20 07:33:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined(__PGI) || defined(__sparc)
@@ -7,18 +7,18 @@
 #  define get_command_argument getarg
 #endif
 
-program distribution3d2ppm
+program feram_distribution3d2ppm
   implicit none
   integer i, argn, command_argument_count
   character(len=300) :: fn
   argn = command_argument_count()
   do i=1,argn
      call get_command_argument(i,fn)
-     call distribution3d2ppm_main(fn)
+     call feram_distribution3d2ppm_main(fn)
   end do
-end program distribution3d2ppm
+end program feram_distribution3d2ppm
 
-subroutine distribution3d2ppm_main(fn)
+subroutine feram_distribution3d2ppm_main(fn)
   use rgb_module
   use average_module, only : max_k
   implicit none
@@ -79,4 +79,4 @@ subroutine distribution3d2ppm_main(fn)
   close(8)
 
   deallocate(distribution3d)
-end subroutine distribution3d2ppm_main
+end subroutine feram_distribution3d2ppm_main
