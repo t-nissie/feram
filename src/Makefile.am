@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-04-20 06:55:59 takeshi>
+# Time-stamp: <2015-04-20 07:30:24 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -10,10 +10,10 @@ bin_PROGRAMS = feram \
                feram_displacement \
                feram_eigenvalues2j \
                feram_fftw_wisdom \
-               distribution3d2ppm \
-               frozen_phonon_Gamma \
-               frozen_phonon_X \
-               random_field_generator
+               feram_distribution3d2ppm \
+               feram_frozen_phonon_Gamma \
+               feram_frozen_phonon_X \
+               feram_random_field_generator
 check_PROGRAMS = fft_check marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
 TESTS = $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh elastocaloric770K_check.sh
 
@@ -63,13 +63,13 @@ feram_diagonalize15x15_SOURCES = feram_diagonalize15x15.F
 
 feram_displacement_SOURCES = feram_displacement.F
 
-distribution3d2ppm_SOURCES = distribution3d2ppm.F rgb_module.f
+feram_distribution3d2ppm_SOURCES = feram_distribution3d2ppm.F rgb_module.f
 
 feram_eigenvalues2j_SOURCES = feram_eigenvalues2j.F msg.F param_module.F
 
-frozen_phonon_Gamma_SOURCES = frozen_phonon_Gamma.F
+feram_frozen_phonon_Gamma_SOURCES = feram_frozen_phonon_Gamma.F
 
-frozen_phonon_X_SOURCES = frozen_phonon_X.F
+feram_frozen_phonon_X_SOURCES = feram_frozen_phonon_X.F
 
 rgb_check_SOURCES = rgb_check.f rgb_module.f
 
@@ -79,7 +79,7 @@ marsaglia_tsang_uni64_check_SOURCES  = marsaglia_tsang_uni64_check.F  marsaglia_
 
 marsaglia_tsang_uni64_timing_SOURCES = marsaglia_tsang_uni64_timing.f marsaglia_tsang_uni64_module.f
 
-random_field_generator_SOURCES = random_field_generator.F marsaglia_tsang_uni64_module.f
+feram_random_field_generator_SOURCES = feram_random_field_generator.F marsaglia_tsang_uni64_module.f
 
 wave_check_SOURCES = wave_check.f wave_module.F
 
@@ -178,7 +178,7 @@ molecular-dynamics.o:\
 dVddi-homo-coupling.o dVddi-unharmonic.o kinetic_energy_dipo.o kinetic_energy_acou.o:\
                                 param_module.o coord_module.o
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
-marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o random_field_generator.o: marsaglia_tsang_uni64_module.o
+marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o feram_random_field_generator.o: marsaglia_tsang_uni64_module.o
 wave_check.o:                   wave_module.o
 rgb_check.o:                    rgb_module.o
 mirror_force_mirror.o:          param_module.o coord_module.o energy_module.o
@@ -193,9 +193,9 @@ dipole-dipole-short-range.o:    param_module.o         define.h fft_3d_3x3upper_
 fft_3d_3x3upper_r2c.o:          param_module.o
 dVddi-dipole-dipole.o:\
                 energy_module.o param_module.o coord_module.o
-print-eigenvalues.o feram_eigenvalues2j.o frozen_phonon_Gamma.o frozen_phonon_X.o: define.h
+print-eigenvalues.o feram_eigenvalues2j.o feram_frozen_phonon_Gamma.o feram_frozen_phonon_X.o: define.h
 feram_eigenvalues2j.o:          param_module.o define.h
-distribution3d2ppm.o:           average_module.o rgb_module.o
+feram_distribution3d2ppm.o:     average_module.o rgb_module.o
 fft_check.o: f90_wisdom.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
