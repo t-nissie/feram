@@ -1,5 +1,5 @@
 ! fft_check.F -*-f90-*-
-! Time-stamp: <2014-12-02 10:14:39 t-nissie>
+! Time-stamp: <2015-04-20 10:58:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #ifdef FFT_CHECK_DOCUMENT
@@ -21,7 +21,7 @@ thin-film ferroelectrics and GPLed free software.
 Home page of feram is http://loto.sourceforge.net/feram/ .
 
 == How to build fft_check
-Although fft_check can be built by the usual 'configure && make' manner
+Although fft_check can be built by the usual 'configure && make fft_check' manner
 along with feram (see ../INSTALL), makefiles for several compilers and
 architectures are provided in names of fft_check.Makefile.*.
 You can build fft_check with GNU Fortran (gfortran), Intel Fortran (ifort),
@@ -245,13 +245,16 @@ it reduces computational speed. To avoid "bank conflict",
 However, introduction of "padding" make code complicated.
 Therefore, "padding" is not introduced in this fft_check.F.
 
+See feram_fftw_wisdom.F for an example of usage of padding and
+fftw_plan_many_*().
+
 == fft_check_mpi.F, an MPI-parallelized large-scale FFT benchmark program
 You can find an MPI-parallelized large-scale FFT benchmark program at
 https://github.com/t-nissie/fft_check_mpi .
 It is written in Fortran, using FFTW, parallelized with MPI.
 
 == Copying and author
-Copyright © 2007-2013 by Takeshi Nishimatsu
+Copyright © 2007-2015 by Takeshi Nishimatsu
 
 fft_check is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
