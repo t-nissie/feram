@@ -47,24 +47,20 @@ elastocaloric770K_check.sh consumes only 0.25 GB.
 
 === feram-0.23.00
 ==== elastocaloric770K_check.vs.log
- X5650 1 chip =  6 core:        7.02        2423.27        2430.28    6     #TIMING_REPORT
- X5650 2 chip = 12 core:        7.46        1300.21        1307.67   12     #TIMING_REPORT
- SR16000  8 thds on 1/4 node:   5.31         817.13         822.44    8     #TIMING_REPORT
- SR16000 32 thds on 1 node *1:  6.21         307.17         313.38   32     #TIMING_REPORT
- E5-2680 1 chip =  8 core *2:   5.40         997.37        1002.77    8     #TIMING_REPORT
- E5-2680 2 chip = 16 core *2:   5.90         969.28         975.18   16     #TIMING_REPORT
+ X5650 1 chip =  6 core:       7.02        2423.27        2430.28    6     #TIMING_REPORT
+ X5650 2 chip = 12 core:       7.46        1300.21        1307.67   12     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node:  5.49         939.14         944.63    8     #TIMING_REPORT
+ SR16000 32 thds on 1 node *1: 5.73         281.30         287.03   32     #TIMING_REPORT
+ E5-2680 1 chip =  8 core *2:  4.69        1001.72        1006.41    8     #TIMING_REPORT
+ E5-2680 2 chip = 16 core *2:  5.25         857.23         862.48   16     #TIMING_REPORT
 ==== elastocaloric770K_check.lf.log
- X5650 1 chip =  6 core:        3.43        2371.53        2374.95    6     #TIMING_REPORT
- X5650 2 chip = 12 core:        3.43        1302.37        1305.79   12     #TIMING_REPORT      
- SR16000  8 thds on 1/4 node:   2.87         783.22         786.09    8     #TIMING_REPORT
- SR16000 32 thds on 1 node *1:  3.49         297.96         301.45   32     #TIMING_REPORT
- E5-2680 1 chip =  8 core *2:   2.76         993.22         995.97    8     #TIMING_REPORT
- E5-2680 2 chip = 16 core *2:   2.82         976.35         979.17   16     #TIMING_REPORT
+ X5650 1 chip =  6 core:       3.43        2371.53        2374.95    6     #TIMING_REPORT
+ X5650 2 chip = 12 core:       3.43        1302.37        1305.79   12     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node:  2.87         906.52         909.39    8     #TIMING_REPORT
+ SR16000 32 thds on 1 node *1: 2.86         271.85         274.71   32     #TIMING_REPORT
+ E5-2680 1 chip =  8 core *2:  2.78         994.16         996.94    8     #TIMING_REPORT
+ E5-2680 2 chip = 16 core *2:  2.79         850.79         853.58   16     #TIMING_REPORT
 
-*1: Single node of SR16000 can hit 285 sec, if padding_y = 5 is given. Check it:
-    $ cd ~/f/loto/feram/branches/newplan/0.22.06-r2429-2015-04-14-newplan-xlf-padding_y_5/src/
-    $ ls zzz0*/*digest
-    $ grep TIMING zzz0*/*vs.log.digest
-    $ grep TIMING zzz0*/*lf.log.digest
+*1: ~/f/loto/feram/branches/newplan/0.22.06-r2452-2015-04-20-newplan-xlf-14.01-SR16000/src/
 *2: ~/f/loto/feram/branches/newplan/0.22.06-r2440-2015-04-17-newplan-gfortran-4.8.2-emerald/src/
     ../configure FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'
