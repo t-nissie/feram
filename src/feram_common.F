@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-04-08 20:52:18 takeshi>
+! Time-stamp: <2015-04-20 11:38:44 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -24,7 +24,7 @@ subroutine feram_common(fn)
 
 # if defined(HAVE_LIBFFTW3)
   include 'fftw3.f03'
-  integer :: ireturn, ios
+  integer :: ireturn
   ireturn = fftw_init_threads()   ! It is safe to call this function many times. See fftw3/threads/api.c.
   call fftw_plan_with_nthreads(OMP_GET_MAX_THREADS())   ! Also safe. See "Usage of Multi-threaded FFTW" in doc.
 # endif
@@ -48,26 +48,20 @@ subroutine feram_common(fn)
   write(message,'(i5)') OMP_GET_MAX_THREADS()
   call msg(UNIT_LOG, __FILE__, __LINE__, 'N_THREADS', message)
 
-# if defined(HAVE_LIBFFTW3)
-  open(unit=UNIT_WISDOM, file='wisdom', status='old', action='read', iostat=ios)
-  if (ios.eq.0) then
-     call import_wisdom_from_file(ireturn,UNIT_WISDOM)
-     close(UNIT_WISDOM)
-     if (ireturn.eq.1) then
-        call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Successfully imported FFTW wisdom in current directory.')
-     else
-        call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Failed to import FFTW wisdom in current directory.')
-     end if
+#if defined(HAVE_LIBFFTW3) && !defined(WITH_FFT_MKL)
+  ireturn = fftw_import_wisdom_from_filename('wisdom')
+  if (ireturn.eq.1) then
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Successfully imported FFTW wisdom in current directory.')
   else
-     call    msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'FFTW wisdom is not in current directory.')
-     call dfftw_import_system_wisdom(ireturn)
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Failed to import FFTW wisdom in current directory.')
+     ireturn = fftw_import_system_wisdom()
      if (ireturn.eq.1) then
         call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Successfully imported FFTW system wisdom, /etc/fftw/wisdom.')
      else
         call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Could not import FFTW system wisdom. All FFTW plans will be made by myself.')
      end if
-  endif
-# endif
+  end if
+#endif
 
   call  read_Param(p,fn)
   call  make_Param(p)

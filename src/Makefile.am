@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-04-20 11:08:23 takeshi>
+# Time-stamp: <2015-04-20 11:24:28 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -32,7 +32,6 @@ feram_SRCS = average_module.F \
 	dipole-dipole-short-range.F \
 	dipole-dipole.F \
 	elastic.F \
-	f90_wisdom.f \
 	feram.F \
 	feram_common.F \
 	fft_3d_3x3upper_r2c.F \
@@ -164,7 +163,7 @@ feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	         $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
 	$(MPIFC) $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(LIBS)
 
-feram_common.o:                 param_module.o coord_module.o date_and_time_module.o f90_wisdom.o define.h
+feram_common.o:                 param_module.o coord_module.o date_and_time_module.o define.h
 decay-functions.o param_module.o feram_diagonalize15x15.o: define.h
 feram.o feram_mpi.o dipole-dipole.o mirror.o read_defects_u.o elastic.o write_system.o dipoFFT.o acouFFT.o:\
                                 param_module.o coord_module.o define.h
