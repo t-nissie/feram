@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-04-20 07:30:24 takeshi>
+# Time-stamp: <2015-04-20 11:08:23 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -15,7 +15,7 @@ bin_PROGRAMS = feram \
                feram_frozen_phonon_X \
                feram_random_field_generator
 check_PROGRAMS = fft_check marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
-TESTS = $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh elastocaloric770K_check.sh
+TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp defects_maker_check.sh elastocaloric770K_check.sh
 
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
