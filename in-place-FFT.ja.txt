@@ -21,7 +21,7 @@ dipoFFT.Fで両方が作られる．
 dVddi-unharmonic.FでdidiRが使われるのでin-placeにはできない．
 
 == inhoK → inhoR
-両方とも optimize-inho-strain.F内でしか使われないのでin-placeにできる．
+両方とも dVddi_inho_coupling.F 内でしか使われないのでin-placeにできる．
 
 == dipoT → dVddi
 dipoTがdVddi-dipole-dipole.F内で一時的に使われるだけなので
