@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram/parameters/
-# Time-stamp: <2011-08-20 00:33:46 takeshi>
+# Time-stamp: <2015-04-22 18:43:50 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 srcdir = @srcdir@
@@ -30,10 +30,6 @@ sourceforge: parameters.html parameters.txt favicon.ico style.css brdmin.patch b
                                             $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/force-constant-matrix/
 	scp BaTiO3-first-principles/force-constant-matrix/*.in\
                                             $(SOURCEFORGE_FERAM)/parameters/BaTiO3-first-principles/force-constant-matrix/
-
-.PRECIOUS: Makefile
-Makefile: $(srcdir)/Makefile.in
-	cd .. && ./config.status parameters/$@
 
 %.jpg: %.eps
 	gs -q -sDEVICE=ppm -sPAPERSIZE=a4 -r90x90 -dSAFER -dNOPAUSE -dBATCH -sOutputFile=- -q $< | \
