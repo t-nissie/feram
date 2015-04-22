@@ -190,11 +190,14 @@ from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
  $ . /opt/intel/mkl/bin/mklvars.sh intel64   # ~/.bashrc or somewhere.
  $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
- $ mkdir ifort-11.1
- $ cd ifort-11.1
+ $ ifort --version
+ ifort (IFORT) 14.0.2 20140120
+ $ mkdir ifort-14.0.2
+ $ cd ifort-14.0.2
  $ ../configure --help
  $ ../configure FC=ifort CPPFLAGS="-I$MKLROOT/include/fftw" --with-fft=mkl --with-lapack=mkl
  $ cd src
+ $ cp SOMEWHERE/fftw3.f03 .
  $ make -j --max-load=10.0
  $ make feram_mpi                 # OPTIONAL. mpif90 is required.
  $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
@@ -211,35 +214,6 @@ Sometimes it is faster than MKL.
  $ make -j --max-load=10.0
  $ make feram_mpi                 # OPTIONAL. mpif90 is required.
  $ OMP_NUM_THREADS=6 make check   # OPTIONAL. It takes 2 hours.
-
-=== Linux with OLD Intel Fortran Compiler (feram-0.21.04, 2013-10-08)
-Old versions (around version 9.1) of ifort (Intel Fortran Compiler) does not
-have FFTW wrappers. You should also edit src/Makefile for changing LIBS.
-
-Configure options for fftw-3.3.4 are:
- $ ../configure --prefix=/users/takeshi/Linux-x86_64 --enable-openmp --enable-threads --enable-sse2 CC=icc F77=ifort FC=ifort
-
-Compile feram as:
- $ tar xf feram-X.YY.ZZ.tar.xz
- $ cd feram-X.YY.ZZ
- $ mkdir ifort-9.1-FFTW
- $ cd ifort-9.1-FFTW
- $ ../configure --help
- $ ../configure FC=ifort CPPFLAGS=-I/users/takeshi/Linux-x86_64/include LDFLAGS="-L/nfs/apps/intel/mkl/9.0/lib/em64t -L/users/takeshi/Linux-x86_64/lib" --with-lapack=mkl
- $ emacs src/Makefile   # Edit LIBS as below diff
- $ diff -u src/Makefile~ src/Makefile
- --- src/Makefile~      2013-10-08 11:58:19.369218529 +0200
- +++ src/Makefile       2013-10-08 12:00:21.795094709 +0200
- @@ -477,7 +477,7 @@
-  INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-  LDFLAGS = -L/nfs/apps/intel/mkl/9.0/lib/em64t -L/users/takeshi/Linux-x86_64/lib -L/usr/local/lib
-  LIBOBJS = 
- -LIBS = -lfftw3_omp -lfftw3  -lmkl_core -lmkl_intel_thread -lmkl_gf_lp64
- +LIBS = -lfftw3_omp -lfftw3 -lmkl -lmkl_lapack
-  LTLIBOBJS = 
-  MAKEINFO = ${SHELL} /users/takeshi/f/loto/feram/trunk/missing makeinfo
-  MKDIR_P = /bin/mkdir -p
- $ make -j --max-load=10.0
 
 
 == Super computers
