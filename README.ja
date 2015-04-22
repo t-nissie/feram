@@ -377,9 +377,9 @@ feramを次のようにパラメータ・ファイル "foo123.feram" を引数�
 局所場の単位は V/Angstrom です．このファイルが見つからない場合，
 局所場はもちろんどこのサイトでも０になります．
 
-各サイトにランダムな局所場をかける場合は付属のrandom_field_generatorを使って.localfieldファイルを作るとよいでしょう．
- $ ./random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
- $ ./random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
+各サイトにランダムな局所場をかける場合は付属のferam_random_field_generatorを使って.localfieldファイルを作るとよいでしょう．
+ $ ./feram_random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
+ $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
 
 
 === ionic.configuration file

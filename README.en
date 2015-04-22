@@ -391,9 +391,9 @@ The unit of local field is V/Angstrom.
 If feram cannot find both ionic.configuration and .localfield,
 it will set the local field to ZERO for all sites.
 
-Use attached random_field_generator for generating ramdom fields.
- $ ./random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
- $ ./random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
+Use attached feram_random_field_generator for generating ramdom fields.
+ $ ./feram_random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
+ $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
 
 === ionic.configuration file
 (Not implemented yet.)
