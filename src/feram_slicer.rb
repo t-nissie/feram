@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
-# slicer.rb
-# Time-stamp: <2006-02-01 13:13:54 t-nissie>
+# feram_slicer.rb
+# Time-stamp: <2015-04-23 14:45:18 takeshi>
 # Author: Takeshi NISHIMATSU
-# Usage: ./slicer.rb coord-file [const_z]
+# Usage: ./feram_slicer.rb coord-file [const_z]
 ##
 class EPSF
   X_OFFSET =  50
@@ -17,7 +17,7 @@ class EPSF
   def header(l_x,l_y)
     @epsf << "%!PS-Adobe-3.0
 %%BoundingBox: #{X_OFFSET} #{Y_OFFSET} #{X_OFFSET+X_WIDTH*l_x} #{Y_OFFSET+Y_HEIGHT*l_y}
-%%Creator: slicer.rb by Takeshi NISHIMATSU
+%%Creator: feram_slicer.rb by Takeshi NISHIMATSU
 %%Orientation: Portrait
 %%Title: slice.eps
 %%EndComments

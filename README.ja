@@ -487,15 +487,15 @@ foo123.distribution3dに書き出されます．
 
 === foo123.nnnnnnnnnn.coord
 n_coord_freqイテレーション毎にこのファイルに系のスナップショットが記録されます．
-nnnnnnnnnnがイテレーションです．このファイルは src/slice.rb (Ruby script) や
-cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
-(Bourne Shell scripts) で可視化することができます．停電や時間切れなどで
-計算が止まってしまった場合には，このファイルを.restartファイルとして計算を
-再開することができます．
+nnnnnnnnnnがイテレーションです．このファイルは feram_slicer.rb (Ruby script) や
+feram_cross_section_q.sh, feram_cross_section_p.sh, and
+feram_cross_section_dVddi.sh (Bourne Shell scripts) で可視化することができます．
+停電や時間切れなどで計算が止まってしまった場合には，
+このファイルを.restartファイルとして計算を再開することができます．
 
 === foo123.param.gp
 GNUPLOT用のパラメーターファイルです．
-param.gpにファイル名を変更してからcross-section-q.shなどで使います．
+param.gpにファイル名を変更してからcross_section_q.shなどで使います．
 
 == シミュレーションの例
 ソフトウエアパッケージの次のディレクトリに入力ファイル（と結果）が入っています．

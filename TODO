@@ -10,7 +10,7 @@ o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
 
 o Use SSE or AVX with the latest assembler and FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'.
 
-o slicer.rb -> feram_slicer.rb, eigenvalues2j -> feram_eigenvalues2j, etc.
+o TESTS for fera_slicer.rb and feram_cross-section-q.sh
 
 o (nightly) automation of unit test with "make check"
 
@@ -207,6 +207,8 @@ x replace DSYEV().
 x たとえMakefile.amに依存関係が適切に書かれていても、
   XL Fortranが書き出すa.lstが並列コンパイルの邪魔をする。
   a.lstは何？これはmakeの新オプション--output-sync（-O）で回避できる？
+
+x slicer.rb -> feram_slicer.rb, eigenvalues2j -> feram_eigenvalues2j, etc.
 
 
 Not ToDo:

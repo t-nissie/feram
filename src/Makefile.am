@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-04-23 12:06:46 takeshi>
+# Time-stamp: <2015-04-23 14:53:04 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -10,11 +10,12 @@ bin_PROGRAMS = feram \
                feram_displacement \
                feram_eigenvalues2j \
                feram_fftw_wisdom \
-               feram_defects_maker.rb \
                feram_distribution3d2ppm \
                feram_frozen_phonon_Gamma \
                feram_frozen_phonon_X \
                feram_random_field_generator
+dist_bin_SCRIPTS = feram_defects_maker.rb \
+                   feram_slicer.rb
 check_PROGRAMS = fft_check marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
 TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp feram_defects_maker_check.sh
 
@@ -118,7 +119,7 @@ fft_check.Makefile.SR16000-xlf90_r-fftw_xlc \
 fft_check.html \
 inhomo-K.gp \
 plot.gp \
-slicer.rb \
+feram_slicer.rb \
 splot.gp \
 feram_mpi.F \
 marsaglia_tsang_uni64_check.gp \

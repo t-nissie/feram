@@ -506,14 +506,15 @@ Please see src/hysteresis_loop.F.
 
 === foo123.nnnnnnnnnn.coord
 Snapshot of dipoles at nnnnnnnnnn-th iteration.
-This file can be visualized with slice.rb (Ruby script) and
-cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
-(Bourne Shell scripts). cross-section-p.sh and cross-section-dVddi.sh
-are symbolic links or copy of cross-section-q.sh.
+This file can be visualized with feram_slicer.rb (Ruby script) and
+feram_cross_section_q.sh, feram_cross_section_p.sh, and
+feram_cross_section_dVddi.sh (Bourne Shell scripts).
+feram_cross_section_p.sh and feram_cross_section_dVddi.sh
+are symbolic links or copy of feram_cross_section_q.sh.
 
 === foo123.param.gp
 Parameter file for GNUPLOT.
-rename it to param.gp, then use it with cross-section-q.sh etc.
+rename it to param.gp, then use it with cross_section_q.sh etc.
 
 === foo123.dipole-dipole-long+short.dat
 
