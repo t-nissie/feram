@@ -3,7 +3,7 @@ feram-0.23.00unstable
 Dear current and future feram users,
 
 I released feram-0.23.00unstable.tar.xz from
-http://sourceforge.net/projects/loto/files/feram/ .
+https://sourceforge.net/projects/loto/files/feram/unstable/ .
 Please note that version 0.23.?? will be UNSTABLE experimental releases.
 
 MD5 (feram-0.23.00unstable.tar.xz) = c0440fddbeb51ae93c76d9a7711e9de0

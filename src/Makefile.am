@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-04-23 17:36:32 takeshi>
+# Time-stamp: <2015-04-23 18:08:43 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -14,7 +14,8 @@ bin_PROGRAMS = feram \
                feram_frozen_phonon_Gamma \
                feram_frozen_phonon_X \
                feram_random_field_generator
-dist_bin_SCRIPTS = feram_cross_section_dVddi.sh \
+dist_bin_SCRIPTS = feram_coord2dist.rb \
+                   feram_cross_section_dVddi.sh \
                    feram_cross_section_p.sh \
                    feram_cross_section_q.sh \
                    feram_defects_maker.rb \
@@ -99,7 +100,6 @@ EXTRA_DIST = define.h \
 feram_cross_section_dVddi.sh \
 feram_cross_section_p.sh \
 cholesky_d.f \
-coord2dist.rb \
 decay-test.gp \
 feram_defects_maker_check.gp \
 feram_defects_maker_check.sh \
