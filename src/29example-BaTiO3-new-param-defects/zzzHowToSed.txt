@@ -16,9 +16,9 @@ How to use sed(1):
      $
 
 How to make .defects files:
-     $ SOMEWHERE/defects_maker.rb 16 16 16 'rand 0.2'  84 > rnd2.defects
-     $ SOMEWHERE/defects_maker.rb 16 16 16 'rand 0.2' 126 > rnd3.defects
-     $ SOMEWHERE/defects_maker.rb 16 16 16 'rand 0.2' 168 > rnd4.defects
+     $ SOMEWHERE/feram_defects_maker.rb 16 16 16 'rand 0.2'  84 > rnd2.defects
+     $ SOMEWHERE/feram_defects_maker.rb 16 16 16 'rand 0.2' 126 > rnd3.defects
+     $ SOMEWHERE/feram_defects_maker.rb 16 16 16 'rand 0.2' 168 > rnd4.defects
 
 How to submit jobs on app:
      $ for r in *.csh; do submit AEB general -exec $r -J `basename $r .csh`; done
