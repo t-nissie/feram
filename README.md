@@ -6,7 +6,7 @@ I released feram-0.23.00unstable.tar.xz from
 http://sourceforge.net/projects/loto/files/feram/ .
 Please note that version 0.23.?? will be UNSTABLE experimental releases.
 
-MD5 (feram-0.23.00unstable.tar.xz) = 
+MD5 (feram-0.23.00unstable.tar.xz) = c0440fddbeb51ae93c76d9a7711e9de0
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
