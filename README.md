@@ -25,6 +25,9 @@ See README.en or README.ja and src/coord_module.F.
 
 From this feram-0.23.00unstable, you can do `make check` on Windows.
 
+From this feram-0.23.00unstable, some tools are renamed by
+adding feram_ in their heads.
+
 A bug in src/27example-BaTiO3-new-param-E_wave/generator.sh is fixed.
 You can generate some input files automatically now.
 

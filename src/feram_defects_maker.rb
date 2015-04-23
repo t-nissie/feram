@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
-# defects_maker.rb
-# Time-stamp: <2014-06-21 14:12:39 takeshi>
+# feram_defects_maker.rb
+# Time-stamp: <2015-04-23 11:55:31 takeshi>
 # Author: Takeshi NISHIMATSU
 # Reference: 渡辺宙志 (Hiroshi Watanabe): 『一様乱数を使う (Using RNG)』
 #            http://apollon.issp.u-tokyo.ac.jp/~watanabe/pdf/prob.pdf [in Japanese]
-# Usage:   ./defects_maker.rb Lx Ly Lz fixed_dipole n_defects [seed]
-# Example: ./defects_maker.rb 16 16 81 '0.00 0.00 0.05' 100
-# Example: ./defects_maker.rb 16 16 81 'rand 0.05'      100 2134567890
+# Usage:   ./feram_defects_maker.rb Lx Ly Lz fixed_dipole n_defects [seed]
+# Example: ./feram_defects_maker.rb 16 16 81 '0.00 0.00 0.05' 100
+# Example: ./feram_defects_maker.rb 16 16 81 'rand 0.05'      100 2134567890
 ##
 include Math
 Lx = ARGV[0].to_i

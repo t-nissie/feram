@@ -1,8 +1,8 @@
 #!/usr/bin/env gnuplot
-# defects_maker_check_sphere.gp
-# Time-stamp: <2014-06-20 12:18:59 takeshi>
+# feram_defects_maker_check_sphere.gp
+# Time-stamp: <2015-04-23 11:55:31 takeshi>
 # Author: Takeshi NISHIMATSU
-# Usage: gnuplot -e 'basename="defects_maker_check"; binwidth=1.8' defects_maker_check_sphere.gp
+# Usage: gnuplot -e 'basename="feram_defects_maker_check"; binwidth=1.8' feram_defects_maker_check_sphere.gp
 ##
 set title 'randomly placed points on a sphere'
 set terminal postscript portrait color dashed "Times-Roman" 24
