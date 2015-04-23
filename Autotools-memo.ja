@@ -137,9 +137,10 @@ Makefile.amの中のEXTRA_DISTに次のように加えておく必要がある�
 とTESTS変数で指定するする。
 === automakeのオプション
 automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定する。例えば
- AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz])
+ AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax])
 では、automakeのバージョン1.14.1以上を使用することを強制し、
 パッケージをtar.gzでなくtar.xzで作るように指定している。
+また、長いディレクトリ名／ファイル名でもパッケージに入るようなtarのオプションを指定している。
 === コンパイラとコンパイラオプションの設定と決定
 C, Fortran, C++コンパイラとそのオプションはそれぞれ
 AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
