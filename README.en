@@ -376,7 +376,7 @@ for simulations of defects in ferroelectrics.
  position_x position_y position_z    fixed_u_x fixed_u_y fixed_u_z [Angstrom]
     :
 
-Use src/defects_maker.rb to make this .defects file.
+Use src/feram_defects_maker.rb to make this .defects file.
 
 === .localfield input file
 If you executed feram with a parameter file "foo123.feram" as
