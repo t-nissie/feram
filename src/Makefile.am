@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-04-23 14:53:04 takeshi>
+# Time-stamp: <2015-04-23 17:36:32 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -14,7 +14,10 @@ bin_PROGRAMS = feram \
                feram_frozen_phonon_Gamma \
                feram_frozen_phonon_X \
                feram_random_field_generator
-dist_bin_SCRIPTS = feram_defects_maker.rb \
+dist_bin_SCRIPTS = feram_cross_section_dVddi.sh \
+                   feram_cross_section_p.sh \
+                   feram_cross_section_q.sh \
+                   feram_defects_maker.rb \
                    feram_slicer.rb
 check_PROGRAMS = fft_check marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
 TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp feram_defects_maker_check.sh
@@ -93,13 +96,11 @@ CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check
              elastocaloric770K_check.vs.log \
              elastocaloric770K_check.vs.log.digest
 EXTRA_DIST = define.h \
-cross-section-dVddi.sh \
-cross-section-p.sh \
-cross-section-q.sh \
+feram_cross_section_dVddi.sh \
+feram_cross_section_p.sh \
 cholesky_d.f \
 coord2dist.rb \
 decay-test.gp \
-feram_defects_maker.rb \
 feram_defects_maker_check.gp \
 feram_defects_maker_check.sh \
 feram_defects_maker_check_sphere.gp \
@@ -119,7 +120,6 @@ fft_check.Makefile.SR16000-xlf90_r-fftw_xlc \
 fft_check.html \
 inhomo-K.gp \
 plot.gp \
-feram_slicer.rb \
 splot.gp \
 feram_mpi.F \
 marsaglia_tsang_uni64_check.gp \

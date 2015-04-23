@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
-# coord2dist.rb
-# Time-stamp: <2012-03-21 08:46:10 takeshi>
+# feram_coord2dist.rb
+# Time-stamp: <2015-04-23 17:40:43 takeshi>
 # Author: Takeshi NISHIMATSU
-# Usage: ./coord2dist.rb --help
-#        ./coord2dist.rb -r 0.5 -s 0.1 coord_file1 coord_file2 coord_file3 ...
+# Usage: ./feram_coord2dist.rb --help
+#        ./feram_coord2dist.rb -r 0.5 -s 0.1 coord_file1 coord_file2 coord_file3 ...
 ##
 
 # Default values
@@ -44,5 +44,5 @@ n.times{|i|
 }
 
 #Local variables:
-#  compile-command: "ruby coord2dist.rb -r 0.5 -s 0.1 coord2dist.coord > coord2dist.dist && cat coord2dist.dist"
+#  compile-command: "ruby feram_coord2dist.rb -r 0.5 -s 0.1 feram_coord2dist.coord > feram_coord2dist.dist && cat feram_coord2dist.dist"
 #End:

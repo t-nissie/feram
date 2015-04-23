@@ -1,12 +1,12 @@
 #!/bin/sh
-# cross-section-q.sh
-# Time-stamp: <2011-07-29 12:51:40 takeshi>
+# feram_cross_section_q.sh
+# Time-stamp: <2015-04-23 15:40:57 takeshi>
 # Author: Takeshi NISHIMATSU
-# Usage: ./cross-section-X.sh coord-file [FACTOR] [CONST_Alpha] [Alpha] [ratio] [max_z]
+# Usage: ./feram_cross_section_X.sh coord-file [FACTOR] [CONST_Alpha] [Alpha] [ratio] [max_z]
 #  (X=q, p, dVddi; Alpha=x,y,z)
-# Example1: ./cross-section-q.sh 150K0000000.coord
-# Example2: ./cross-section-p.sh 150K0000000.coord 0.5 10
-# Example3: /SOMEWHERE/cross-section-q.sh 140K0050000.coord 4.0 10 y 0.9
+# Example1: ./feram_cross_section_q.sh 150K0000000.coord
+# Example2: ./feram_cross_section_p.sh 150K0000000.coord 0.5 10
+# Example3: /SOMEWHERE/feram_cross_section_q.sh 140K0050000.coord 4.0 10 y 0.9
 # Arguments:
 #  [FACTOR]      X*[FACTOR] will be the length of each arrow.
 #                Default values depend on X=q, p, dVddi.
@@ -22,15 +22,15 @@ FILENAME=$1
 BASENAME=`basename $1 .coord`
 
 case "$0" in
-    *cross-section-q.sh)
+    *feram_cross_section_q.sh)
 	EPSFILE=$BASENAME-q
 	COLOR='$6'
 	FACTOR=5.0 ;;
-    *cross-section-p.sh)
+    *feram_cross_section_p.sh)
 	EPSFILE=$BASENAME-p
 	COLOR='$9'
 	FACTOR=0.2 ;;
-    *cross-section-dVddi.sh)
+    *feram_cross_section_dVddi.sh)
 	EPSFILE=$BASENAME-dVddi
 	COLOR='$12'
 	FACTOR=0.5 ;;
@@ -59,13 +59,13 @@ case "$4" in
 	H_COORD='$1'
 	V_COORD='$2'
         case "$0" in
-	    *cross-section-q.sh)
+	    *feram_cross_section_q.sh)
 		H_VALUE='$4'
 		V_VALUE='$5' ;;
-	    *cross-section-p.sh)
+	    *feram_cross_section_p.sh)
 		H_VALUE='$7'
 		V_VALUE='$8' ;;
-	    *cross-section-dVddi.sh)
+	    *feram_cross_section_dVddi.sh)
 		H_VALUE='$10'
 		V_VALUE='$11';;
 	esac
@@ -77,13 +77,13 @@ case "$4" in
 	H_COORD='$1'
 	V_COORD='$3'
         case "$0" in
-	    *cross-section-q.sh)
+	    *feram_cross_section_q.sh)
 		H_VALUE='$4'
 		V_VALUE='$6' ;;
-	    *cross-section-p.sh)
+	    *feram_cross_section_p.sh)
 		H_VALUE='$7'
 		V_VALUE='$9' ;;
-	    *cross-section-dVddi.sh)
+	    *feram_cross_section_dVddi.sh)
 		H_VALUE='$10'
 		V_VALUE='$12';;
 	esac
@@ -95,13 +95,13 @@ case "$4" in
 	H_COORD='$2'
 	V_COORD='$3'
         case "$0" in
-	    *cross-section-q.sh)
+	    *feram_cross_section_q.sh)
 		H_VALUE='$5'
 		V_VALUE='$6' ;;
-	    *cross-section-p.sh)
+	    *feram_cross_section_p.sh)
 		H_VALUE='$8'
 		V_VALUE='$9' ;;
-	    *cross-section-dVddi.sh)
+	    *feram_cross_section_dVddi.sh)
 		H_VALUE='$11'
 		V_VALUE='$12';;
 	esac
