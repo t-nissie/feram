@@ -51,7 +51,7 @@ elastocaloric770K_check.sh consumes only 0.25 GB.
 ==== elastocaloric770K_check.vs.log
  X5650 1 chip =  6 core:       7.02        2423.27        2430.28    6     #TIMING_REPORT
  X5650 2 chip = 12 core:       7.46        1300.21        1307.67   12     #TIMING_REPORT
- SR16000  8 thds on 1/4 node:  5.49         939.14         944.63    8     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node:  5.32         825.71         831.03    8     #TIMING_REPORT
  SR16000 32 thds on 1 node *1: 5.73         281.30         287.03   32     #TIMING_REPORT
  E5-2680 1 chip =  8 core *2:  4.69        1001.72        1006.41    8     #TIMING_REPORT
  E5-2680 2 chip = 16 core *2:  3.57         937.21         940.78   16     #TIMING_REPORT
@@ -59,11 +59,13 @@ elastocaloric770K_check.sh consumes only 0.25 GB.
 ==== elastocaloric770K_check.lf.log
  X5650 1 chip =  6 core:       3.43        2371.53        2374.95    6     #TIMING_REPORT
  X5650 2 chip = 12 core:       3.43        1302.37        1305.79   12     #TIMING_REPORT
- SR16000  8 thds on 1/4 node:  2.87         906.52         909.39    8     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node:  3.64         796.66         800.30    8     #TIMING_REPORT
  SR16000 32 thds on 1 node *1: 2.86         271.85         274.71   32     #TIMING_REPORT
  E5-2680 1 chip =  8 core *2:  2.78         994.16         996.94    8     #TIMING_REPORT
  E5-2680 2 chip = 16 core *2:  2.85         974.70         977.55   16     #TIMING_REPORT
  Core i7 3770K 3.5GHz HT-on:   3.34        2218.30        2221.64    8     #TIMING_REPORT
-*1: ~/f/loto/feram/branches/newplan/0.22.06-r2452-2015-04-20-newplan-xlf-14.01-SR16000/src/
+*1: ~/feram/feram-n.00/elastocaloric770K_executed/
+    ../configure FC=xlf90_r CPPFLAGS=-I/sysap/fftw_xlc_simd/include \
+                             LDFLAGS=-L/sysap/fftw_xlc_simd/lib --with-lapack=essl
 *2: ~/f/loto/feram/branches/newplan/0.22.06-r2452-2015-04-20-newplan-gfortran-4.8.2-emerald/src/
     ../configure FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'
