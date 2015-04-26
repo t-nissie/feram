@@ -1,5 +1,5 @@
 ! dVddi_inho_coupling.F   -*-f90-*-
-! Time-stamp: <2015-04-26 17:45:42 takeshi>
+! Time-stamp: <2015-04-26 19:01:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -19,9 +19,21 @@ subroutine dVddi_inho_coupling(p,c)
   !--- END of variable definitions -------------------
 #if defined(HAVE_LIBFFTW3)
   include 'fftw3.f03'
+  integer(C_SIZE_T) :: n_alloc_inho
+  complex*16,pointer :: inhoK_linear(:)
+  complex*16,pointer :: inhoK(:,:,:,:)
+  real*8,    pointer :: inhoR_linear(:)
+  real*8,    pointer :: inhoR(:,:,:,:)
+  integer            :: howmany
 #endif
+  howmany = 6
+  n_alloc_inho = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
+  call c_f_pointer(c%inho_ptr, inhoK_linear, [n_alloc_inho])
+  call c_f_pointer(c%inho_ptr, inhoR_linear, [n_alloc_inho * 2])
+  inhoK(1:howmany, 0:p%Lx/2,         0:p%Ly+p%padding_y-1, 0:p%Lz-1) => inhoK_linear
+  inhoR(1:howmany, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) => inhoR_linear
 
-  !--- acouK -> c%inhoK -FFT-> c%inhoR (inho. strain in real space) --------
+  !--- acouK -> inhoK -FFT-> inhoR (inho. strain in real space) --------
 !$omp parallel do private(iz,iy,ix,k)
   do iz = 0, p%Lz-1
      k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
@@ -31,40 +43,40 @@ subroutine dVddi_inho_coupling(p,c)
         k(2) = k(2) * M_2PI / p%a0
         do ix = 0, p%Lx/2
            k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-           c%inhoK(1,ix,iy,iz) = k(1)*c%acouK(1,ix,iy,iz)
-           c%inhoK(2,ix,iy,iz) = k(2)*c%acouK(2,ix,iy,iz)
-           c%inhoK(3,ix,iy,iz) = k(3)*c%acouK(3,ix,iy,iz)
-           c%inhoK(4,ix,iy,iz) = k(3)*c%acouK(2,ix,iy,iz) + k(2)*c%acouK(3,ix,iy,iz)
-           c%inhoK(5,ix,iy,iz) = k(1)*c%acouK(3,ix,iy,iz) + k(3)*c%acouK(1,ix,iy,iz)
-           c%inhoK(6,ix,iy,iz) = k(2)*c%acouK(1,ix,iy,iz) + k(1)*c%acouK(2,ix,iy,iz)
+           inhoK(1,ix,iy,iz) = k(1)*c%acouK(1,ix,iy,iz)
+           inhoK(2,ix,iy,iz) = k(2)*c%acouK(2,ix,iy,iz)
+           inhoK(3,ix,iy,iz) = k(3)*c%acouK(3,ix,iy,iz)
+           inhoK(4,ix,iy,iz) = k(3)*c%acouK(2,ix,iy,iz) + k(2)*c%acouK(3,ix,iy,iz)
+           inhoK(5,ix,iy,iz) = k(1)*c%acouK(3,ix,iy,iz) + k(3)*c%acouK(1,ix,iy,iz)
+           inhoK(6,ix,iy,iz) = k(2)*c%acouK(1,ix,iy,iz) + k(1)*c%acouK(2,ix,iy,iz)
         end do
      end do
   end do
 !$omp end parallel do
 
 #if defined(HAVE_LIBFFTW3)
-  call fftw_execute_dft_c2r(c%plan_c2r_6_out, c%inhoK, c%inhoR)
+  call fftw_execute_dft_c2r(c%plan_c2r_6_in, inhoK, inhoR)
 #else
 # error "Not implemented yet."
   ! do alpha = 1, 6
   !    call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
-  !         & c%inhoR(0,0,0,alpha), c%inhoK(0,0,0,alpha))
+  !         & inhoR(0,0,0,alpha), inhoK(0,0,0,alpha))
   ! end do
 #endif
 
-  !--- c%inhoR -> inhomogeneous coupling part of dVddi -------------------
+  !--- inhoR -> inhomogeneous coupling part of dVddi -------------------
 !$omp parallel do private(iz,iy,ix,i,eta_B_over_2m)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1
            do i = 1, 6
               eta_B_over_2m(i) = &
-                   &   c%inhoR(1,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(1,i) &
-                   & + c%inhoR(2,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(2,i) &
-                   & + c%inhoR(3,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(3,i) &
-                   & + c%inhoR(4,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(4,i) &
-                   & + c%inhoR(5,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(5,i) &
-                   & + c%inhoR(6,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(6,i)
+                   &   inhoR(1,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(1,i) &
+                   & + inhoR(2,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(2,i) &
+                   & + inhoR(3,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(3,i) &
+                   & + inhoR(4,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(4,i) &
+                   & + inhoR(5,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(5,i) &
+                   & + inhoR(6,ix,iy,iz) * p%Ninv * c%homogeneous_coupling_2(6,i)
            end do
            c%dVddi(1,ix,iy,iz) = &
          & c%dVddi(1,ix,iy,iz) + 2 * eta_B_over_2m(1) * c%dipoR(1,ix,iy,iz) &
