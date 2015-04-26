@@ -1,5 +1,5 @@
 ! write_system.F -*-f90-*-
-! Time-stamp: <2015-04-03 11:06:26 takeshi>
+! Time-stamp: <2015-04-26 17:47:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -41,7 +41,7 @@ subroutine write_system(p,c,fn)
 !$omp end parallel do
 
 #  if defined(HAVE_LIBFFTW3)
-     call fftw_execute_dft_c2r(c%plan_acouC2R, c%acouK, c%acouR)
+     call fftw_execute_dft_c2r(c%plan_c2r_3_out, c%acouK, c%acouR)
 #  else
 #    error "Not implemented yet."
        ! do alpha = 1, 3

@@ -1,5 +1,5 @@
 ! acouFFT.F -*-f90-*-
-! Time-stamp: <2015-03-24 19:10:17 takeshi>
+! Time-stamp: <2015-04-26 17:36:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -22,7 +22,7 @@ subroutine acouFFT(p,c)
   end if
 
 #if defined(HAVE_LIBFFTW3)
-  call fftw_execute_dft_r2c(c%plan_dipoR2C, c%acouR, c%acouK)
+  call fftw_execute_dft_r2c(c%plan_r2c_3_out, c%acouR, c%acouK)
 #else
 # error "Not implemented yet."
   ! do alpha = 1, 3

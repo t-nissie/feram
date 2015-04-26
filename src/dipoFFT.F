@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2015-03-25 11:27:30 takeshi>
+! Time-stamp: <2015-04-26 17:43:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -21,7 +21,7 @@ subroutine dipoFFT(p,c)
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dipoR -> dipoK, didiR, didiK')
   end if
 #if defined(HAVE_LIBFFTW3)
-  call fftw_execute_dft_r2c(c%plan_dipoR2C, c%dipoR, c%dipoK)
+  call fftw_execute_dft_r2c(c%plan_r2c_3_out, c%dipoR, c%dipoK)
 #else
 # error "Not implemented yet."
 !  do alpha = 1, 3
@@ -42,7 +42,7 @@ subroutine dipoFFT(p,c)
 !$omp end parallel do
 
 #if defined(HAVE_LIBFFTW3)
-  call fftw_execute_dft_r2c(c%plan_didiR2C, c%didiR, c%didiK)
+  call fftw_execute_dft_r2c(c%plan_r2c_6_out, c%didiR, c%didiK)
 #else
 # error "Not implemented yet."
   ! do alpha = 1, 6

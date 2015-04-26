@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-04-14 15:41:01 takeshi>
+! Time-stamp: <2015-04-26 17:47:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -43,10 +43,10 @@ module Coord_module
      real*8                 homogeneous_coupling_2(6,6)
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
-     type(C_PTR) ::         plan_dipoR2C = c_null_ptr
-     type(C_PTR) ::         plan_didiR2C = c_null_ptr
-     type(C_PTR) ::         plan_inhoC2R = c_null_ptr
-     type(C_PTR) ::         plan_acouC2R = c_null_ptr
+     type(C_PTR) ::         plan_r2c_3_out = c_null_ptr
+     type(C_PTR) ::         plan_r2c_6_out = c_null_ptr
+     type(C_PTR) ::         plan_c2r_6_out = c_null_ptr
+     type(C_PTR) ::         plan_c2r_3_out = c_null_ptr
   end type Coord_type
 
 contains
@@ -68,10 +68,10 @@ contains
     LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
     d_embed(1)=p%Lz; d_embed(2)=p%Ly+p%padding_y; d_embed(3)=2*(p%Lx/2+1)
     z_embed(1)=p%Lz; z_embed(2)=p%Ly+p%padding_y; z_embed(3)=p%Lx/2+1
-    call fftw_destroy_plan(c%plan_dipoR2C)
-    call fftw_destroy_plan(c%plan_didiR2C)   ! It is safe to destroy c_null_ptr.
-    call fftw_destroy_plan(c%plan_inhoC2R)   ! See fftw3/api/apiplan.c.
-    call fftw_destroy_plan(c%plan_acouC2R)
+    call fftw_destroy_plan(c%plan_r2c_3_out)
+    call fftw_destroy_plan(c%plan_r2c_6_out)   ! It is safe to destroy c_null_ptr.
+    call fftw_destroy_plan(c%plan_c2r_6_out)   ! See fftw3/api/apiplan.c.
+    call fftw_destroy_plan(c%plan_c2r_3_out)
 #  endif
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
     !--- m_inv ------------------------------
@@ -102,7 +102,7 @@ contains
 #  if defined(HAVE_LIBFFTW3)
     howmany = 3
     stride = howmany
-    c%plan_dipoR2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+    c%plan_r2c_3_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
          &                                  c%dipoR,d_embed,stride,dist,&
          &                                  c%dipoK,z_embed,stride,dist,FFTW_MEASURE)
 #  endif
@@ -163,7 +163,7 @@ contains
 #  if defined(HAVE_LIBFFTW3)
     howmany = 6
     stride = howmany
-    c%plan_didiR2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+    c%plan_r2c_6_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
          &                                  c%didiR,d_embed,stride,dist,&
          &                                  c%didiK,z_embed,stride,dist,FFTW_MEASURE)
 #  endif
@@ -194,7 +194,7 @@ contains
 #  if defined(HAVE_LIBFFTW3)
     howmany = 3
     stride = howmany
-    c%plan_acouC2R = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+    c%plan_c2r_3_out = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
          &                                  c%acouK,z_embed,stride,dist,&
          &                                  c%acouR,d_embed,stride,dist,FFTW_MEASURE)
 #  endif
@@ -235,7 +235,7 @@ contains
 #  if defined(HAVE_LIBFFTW3)
     howmany = 6
     stride = howmany
-    c%plan_inhoC2R = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+    c%plan_c2r_6_out = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
          &                                  c%inhoK,z_embed,stride,dist,&
          &                                  c%inhoR,d_embed,stride,dist,FFTW_MEASURE)
 #  endif

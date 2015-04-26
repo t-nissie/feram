@@ -1,5 +1,5 @@
 ! dVdac.F   -*-f90-*-
-! Time-stamp: <2015-03-25 13:21:29 takeshi>
+! Time-stamp: <2015-04-26 17:47:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Purpose: calculate  d V / d (acoustic displacement)
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
@@ -53,7 +53,7 @@ subroutine dVdac(p,c)
     !write(6,'(a,2(f14.7,f12.7))') 'dVdacK', c%dVdacK(1,0,1,1), c%dVdacK(1,0,15,15)
 
 #  if defined(HAVE_LIBFFTW3)
-    call fftw_execute_dft_c2r(c%plan_acouC2R, c%dVdacK, c%dVdacR)
+    call fftw_execute_dft_c2r(c%plan_c2r_3_out, c%dVdacK, c%dVdacR)
 #  else
 # error "Not implemented yet."
     ! do alpha = 1, 3

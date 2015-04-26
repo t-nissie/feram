@@ -1,5 +1,5 @@
 ! dVddi_inho_coupling.F   -*-f90-*-
-! Time-stamp: <2015-03-25 11:29:55 takeshi>
+! Time-stamp: <2015-04-26 17:45:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -43,7 +43,7 @@ subroutine dVddi_inho_coupling(p,c)
 !$omp end parallel do
 
 #if defined(HAVE_LIBFFTW3)
-  call fftw_execute_dft_c2r(c%plan_inhoC2R, c%inhoK, c%inhoR)
+  call fftw_execute_dft_c2r(c%plan_c2r_6_out, c%inhoK, c%inhoR)
 #else
 # error "Not implemented yet."
   ! do alpha = 1, 6
