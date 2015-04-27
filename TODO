@@ -1,5 +1,12 @@
 ToDo:
+o Perform in-place FFT in feram_fftw_wisdom.F
+
+o Compile FFTW3 with icc and ifort and link it with ifort
+
+o Remove "#if defined(HAVE_LIBFFTW3)" so that we always use FFTW
+
 o Discard hysteresis_loop.F. Use n_E_wave_period and E_wave_type.
+o src/hysteresis_loop.F DETAILED_MESSAGES
 
 o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
   のバグを直す。0.22.04ではバグの再現さえしなくなり、パラの結果が出る。
@@ -10,7 +17,7 @@ o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
 
 o Use SSE or AVX with the latest assembler and FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'.
 
-o TESTS for fera_slicer.rb and feram_cross-section-q.sh
+o TESTS for feram_slicer.rb and feram_cross-section-q.sh
 
 o (nightly) automation of unit test with "make check"
 
@@ -49,9 +56,9 @@ o FILENAME.avgの出力の見直し polarization -> <u_z> とか
 
 o plot_dispersion = .ture. のとき32x32x32を使う。FILENAME.param.gp は無くす方向で。
 
-o slice.rb マニュアル
+o feram_slicer.rb マニュアル
 
-o cross-section マニュアル
+o feram_cross_section マニュアル
 
 o dVddi_... -> dV_du_...
 
@@ -70,8 +77,6 @@ o  call dipoFFT(p,c)
    call optimize_homo_strain(p,c,e)
    call optimize_inho_strain(p,c,e)
        は nose-poincare.F, leapfrog.F, initialize_dipoR.F に共通なのでまとめる。
-
-o libbuilt_in_fft 128 256, libbuilt_in_fft -> libminimal_fft
 
 o Makefile.amの依存関係。並列コンパイルmake -jでデバグできる。
 
@@ -98,8 +103,6 @@ o (coord を かきだし はじめる ところ おわる ところ AVERAGE の
 
 o p, q, qdot にして, いつmassで割るか考える.
 
-o src/hysteresis_loop.F DETAILED_MESSAGES
-
 o dipoA_dipole_dipole() を dipoA = dipoA + dipoA_dipole_dipole に.
 
 o Q_nose must be a function of T, N and delta_t. AUTOMATIC determination.
@@ -110,8 +113,6 @@ o Automatical determination of kappa
 o strain energy の 計算をする部分を分離.
 
 o compare 16x16x16, 32x32x32 
-
-o LargeKappa.gp
 
 o dipoI(:,:,:,3,3) Upper Triangle だけにする？
   FFTの計算はUpper Triangle だけやってC.C.をこぴーするようにした.
