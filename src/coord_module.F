@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-04-26 19:11:54 takeshi>
+! Time-stamp: <2015-04-28 11:19:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -66,9 +66,7 @@ contains
     integer z_embed(3)
 
     integer(C_SIZE_T) :: n_alloc_inho
-    complex*16,pointer :: inhoK_linear(:)
     complex*16,pointer :: inhoK(:,:,:,:)
-    real*8,    pointer :: inhoR_linear(:)
     real*8,    pointer :: inhoR(:,:,:,:)
 
     LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
@@ -227,13 +225,11 @@ contains
     if (c_associated(c%inho_ptr)) call fftw_free(c%inho_ptr)
     n_alloc_inho = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
     c%inho_ptr = fftw_alloc_complex(n_alloc_inho)
-    call c_f_pointer(c%inho_ptr, inhoK_linear, [n_alloc_inho])
-    call c_f_pointer(c%inho_ptr, inhoR_linear, [n_alloc_inho * 2])
-    inhoK(1:howmany, 0:p%Lx/2,         0:p%Ly+p%padding_y-1, 0:p%Lz-1) => inhoK_linear
-    inhoR(1:howmany, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) => inhoR_linear
-!!!first touch
+    call c_f_pointer(c%inho_ptr, inhoK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+    call c_f_pointer(c%inho_ptr, inhoR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+!!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.
 !$omp parallel do
-    do iz = 0,p%Lz-1
+    do iz = 1, p%Lz
        inhoK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
