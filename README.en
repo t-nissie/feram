@@ -79,7 +79,7 @@ Use taskset(1) or numactl(8) to retrieve or set a process's CPU affinity.
 
 
 == Input files
-=== parameter file
+=== parameter input file (.feram file)
 The parameter file for feram is a text file consisting of
 comment lines and 'tag = value(s)' lines. Filenames of
 parameter files may be foo123 or foo123.feram. In these
@@ -96,6 +96,10 @@ Blank lines are also ignored.
  
  # Here are two more
  # comment lines.
+
+===== shebang: "#!/usr/local/bin/feram" or "#!./feram"
+You can write a shebang at the first line of a .feram input file
+and execute the file as a script.
 
 ==== Tags
 You must put ' = ', space-equal-space, between tag and value(s) as:
