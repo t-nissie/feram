@@ -14,9 +14,8 @@ Version and date of installation is written in parentheses ().
    * ATLAS (Automatically Tuned Linear Algebra Software)
    * BLAS and LAPACK libraries
  * Fortran 90 compiler
-   * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
-   * Intel Fortran Compiler (ifort; version 11.1 and later) with
-     Intel Math Kernel Library (MKL; version 10.2 and later)
+   * gfortran coming with GCC-4.8 or higher  http://gcc.gnu.org/
+   * Intel Fortran Compiler (ifort; version 15.0.2 and later)
      http://software.intel.com/en-us/articles/intel-compilers/
    * IBM XL Fortran for HITACHI SR16000
    * Fortran 90 (frtpx) for Fujitsu supercomputers: Kei and FX10
