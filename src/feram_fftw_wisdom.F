@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-04-17 22:21:40 t-nissie>
+! Time-stamp: <2015-04-30 17:41:06 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -10,7 +10,7 @@ program feram_fftw_wisdom
   use, intrinsic :: iso_c_binding
   implicit none
   character(len=100) :: str
-  integer i,iz
+  integer i,ix,iy,iz
   real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
   complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoQ
 
@@ -109,7 +109,21 @@ program feram_fftw_wisdom
      call fftw_execute_dft_c2r(plan_C2R, dipoK, dipoR)
   end do
   call system_clock(c_ri(1), count_rate, count_max)
-  write(6,*) dipoR(1,0,1,2)
+!$omp parallel do private(iz, iy, ix, i)
+  do iz = 0, Lz-1
+     do iy = 0, Ly-1
+        do ix = 0, Lx-1
+           do i = 1, howmany
+              if (abs(dipoR(i,ix,iy,iz)-0.1d0)>1.0d-15) then
+                 write(0,'(a,a,i3,a,4(i5,a),f21.16)')   __FILE__, ':', __LINE__ ,  &
+                      & ': Error in accuracy at d(',i,',',ix,',',iy,',',iz,') =',dipoR(i,ix,iy,iz)
+                 stop 1
+              end if
+           end do
+        end do
+     end do
+  end do
+!$omp end parallel do
 
   t_ri = dble(c_ri(1)-c_ri(0))/count_rate
   if (t_ri<0.0d0) t_ri=t_ri+dble(count_max)/count_rate
