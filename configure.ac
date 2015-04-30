@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2015-04-23 11:13:02 takeshi>
+dnl Time-stamp: <2015-04-30 10:45:50 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -35,7 +35,7 @@ case "$FC" in
     gfortran --version | head -1 | grep -v 4.8.0 || AC_MSG_ERROR([Do NOT use gfortran 4.8.0. Use 4.8.1 or higher. See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=56696 .])
     ;;
   ifort)
-    test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1"
+    test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -warn all -openmp -parallel -qopt-report=2"
     ;;
   frt)
     test -n "$FCFLAGS" || FCFLAGS="-Kimpact -Am -SSL2 -KOMP"
