@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-04-30 17:41:06 takeshi>
+! Time-stamp: <2015-04-30 18:32:05 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -109,15 +109,16 @@ program feram_fftw_wisdom
      call fftw_execute_dft_c2r(plan_C2R, dipoK, dipoR)
   end do
   call system_clock(c_ri(1), count_rate, count_max)
+
 !$omp parallel do private(iz, iy, ix, i)
   do iz = 0, Lz-1
      do iy = 0, Ly-1
         do ix = 0, Lx-1
            do i = 1, howmany
-              if (abs(dipoR(i,ix,iy,iz)-0.1d0)>1.0d-15) then
+              if (isnan(dipoR(i,ix,iy,iz)) .or. abs(dipoR(i,ix,iy,iz)-0.1d0)>1.0d-15) then
                  write(0,'(a,a,i3,a,4(i5,a),f21.16)')   __FILE__, ':', __LINE__ ,  &
                       & ': Error in accuracy at d(',i,',',ix,',',iy,',',iz,') =',dipoR(i,ix,iy,iz)
-                 stop 1
+                 stop 2
               end if
            end do
         end do
