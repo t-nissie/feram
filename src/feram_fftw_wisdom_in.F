@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom_in.F -*-f90-*-
-! Time-stamp: <2015-05-01 14:59:16 takeshi>
+! Time-stamp: <2015-05-01 17:55:40 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine feram_fftw_wisdom_in(howmany, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2c, plan_c2r)
@@ -27,6 +27,8 @@ subroutine feram_fftw_wisdom_in(howmany, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2
   real*8,    pointer :: inhoR(:,:,:,:)
 
   integer :: count_begin, count_end, count_rate, count_max
+
+  logical :: isnan   ! IBM XL Fortran (xlf) version 14.1 reauires it.
 
   LzLyLx( 1)=Lz; LzLyLx( 2)=Ly;           LzLyLx( 3)=Lx
   d_embed(1)=Lz; d_embed(2)=Ly+padding_y; d_embed(3)=2*(Lx/2+1)
