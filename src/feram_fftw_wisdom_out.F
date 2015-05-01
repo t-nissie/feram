@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom_out.F -*-f90-*-
-! Time-stamp: <2015-05-01 12:18:49 takeshi>
+! Time-stamp: <2015-05-01 13:54:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine feram_fftw_wisdom_out(howmany, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2c, plan_c2r)
@@ -90,8 +90,6 @@ subroutine feram_fftw_wisdom_out(howmany, N_TIMES, Lx, Ly, Lz, padding_y, plan_r
   call feram_fftw_wisdom_timing(howmany, N_TIMES, Lx, Ly, Lz, padding_y, .false., &
      &                              count_begin, count_end, count_rate, count_max)
 
-  call fftw_destroy_plan(plan_r2c)
-  call fftw_destroy_plan(plan_c2r)
   deallocate(dipoR)
   deallocate(dipoK)
 end subroutine feram_fftw_wisdom_out

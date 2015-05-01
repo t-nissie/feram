@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-05-01 12:18:33 takeshi>
+! Time-stamp: <2015-05-01 13:47:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -22,14 +22,13 @@ program feram_fftw_wisdom
   type(C_PTR) :: plan_c2r_3_out = c_null_ptr
 
   type(C_PTR) :: plan_r2c_6_out = c_null_ptr
-  type(C_PTR) :: plan_c2r_6_out = c_null_ptr   ! It is not used in feram.
+  type(C_PTR) :: plan_c2r_6_out = c_null_ptr
 
-  ! type(C_PTR)             :: inho_ptr = c_null_ptr
-  ! integer(C_SIZE_T) :: n_alloc_inho
-  ! complex*16,pointer :: inhoK(:,:,:,:)
-  ! real*8,    pointer :: inhoR(:,:,:,:)
-  ! type(C_PTR) ::         plan_r2c_6_in  = c_null_ptr   ! It is not used in feram.
-  ! type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr
+  type(C_PTR) :: plan_r2c_3_in  = c_null_ptr
+  type(C_PTR) :: plan_c2r_3_in  = c_null_ptr
+
+  type(C_PTR) :: plan_r2c_6_in  = c_null_ptr
+  type(C_PTR) :: plan_c2r_6_in  = c_null_ptr
 
   ireturn = fftw_init_threads()
   call fftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
@@ -58,63 +57,21 @@ program feram_fftw_wisdom
   call feram_fftw_wisdom_out(6, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2c_6_out, &
        &                                                        plan_c2r_6_out)
 
-! !=== plan_????? ===============================================================================
-!   allocate(dipoR(6, 0:2*(Lx/2+1)-1, 0:Ly+padding_y-1, 0:Lz-1))
-!   allocate(dipoK(6, 0:Lx/2,         0:Ly+padding_y-1, 0:Lz-1)) !"/2" for real<->complex FFT
-! !!!first touch
-! !$omp parallel do
-!   do iz = 0,Lz-1
-!      dipoR(:,:,:,iz) = 0.1d0
-!   end do
-! !$omp end parallel do
-! !$omp parallel do
-!   do iz = 0,Lz-1
-!      dipoK(:,:,:,iz) = (0.0d0,0.0d0)
-!   end do
-! !$omp end parallel do
+  call feram_fftw_wisdom_in(3, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2c_3_in, &
+       &                                                       plan_c2r_3_in)
+  call feram_fftw_wisdom_in(6, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2c_6_in, &
+       &                                                       plan_c2r_6_in)
 
-!   howmany = 6
-!   stride = howmany
-!   plan_R2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
-!        &                              dipoR,d_embed,stride,dist,&
-!        &                              dipoK,z_embed,stride,dist,FFTW_MEASURE)
-
-! !$omp parallel do
-!   do iz = 0,Lz-1
-!      dipoR(:,:,:,iz) = 0.1d0
-!   end do
-! !$omp end parallel do
-
-!   call fftw_execute_dft_r2c(plan_R2C, dipoR, dipoK)
-!   write(6,*) dipoK(1,0,0,0)/N
-
-!   call fftw_destroy_plan(plan_R2C)
-!   deallocate(dipoR)
-!   deallocate(dipoK)
-
-! !=== plan_c2r_6_in ===============================================================================
-!   howmany = 6
-!   n_alloc_inho = howmany * (Lx/2+1) * (Ly+padding_y) * Lz
-!   inho_ptr = fftw_alloc_complex(n_alloc_inho)
-!   call c_f_pointer(inho_ptr, inhoK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
-!     call c_f_pointer(inho_ptr, inhoR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
-! !!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.
-! !$omp parallel do
-!     do iz = 1, p%Lz
-!        inhoK(:,:,:,iz) = (0.0d0,0.0d0)
-!     end do
-! !$omp end parallel do
-!     stride = howmany
-!     plan_c2r_6_in = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
-!          &                                   inhoK,z_embed,stride,dist,&
-!          &                                   inhoR,d_embed,stride,dist,FFTW_MEASURE)
-
-
-
-
+  call fftw_destroy_plan(plan_r2c_3_out)
+  call fftw_destroy_plan(plan_c2r_3_out)
+  call fftw_destroy_plan(plan_r2c_6_out)
+  call fftw_destroy_plan(plan_c2r_6_out)
+  call fftw_destroy_plan(plan_r2c_3_in)
+  call fftw_destroy_plan(plan_c2r_3_in)
+  call fftw_destroy_plan(plan_r2c_6_in)
+  call fftw_destroy_plan(plan_c2r_6_in)
 #ifndef WITH_FFT_MKL
   ireturn = fftw_export_wisdom_to_filename('wisdom_new')
 #endif
   call fftw_cleanup_threads()
-
 end program feram_fftw_wisdom
