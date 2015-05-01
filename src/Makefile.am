@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-04-23 18:08:43 takeshi>
+# Time-stamp: <2015-05-01 12:15:49 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -62,7 +62,7 @@ feram_SRCS = average_module.F \
 	write_system.F
 feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
 
-feram_fftw_wisdom_SOURCES = feram_fftw_wisdom.F
+feram_fftw_wisdom_SOURCES = feram_fftw_wisdom.F feram_fftw_wisdom_out.F feram_fftw_wisdom_timing.F
 
 feram_diagonalize15x15_SOURCES = feram_diagonalize15x15.F
 
@@ -197,6 +197,7 @@ dVddi-dipole-dipole.o:\
 print-eigenvalues.o feram_eigenvalues2j.o feram_frozen_phonon_Gamma.o feram_frozen_phonon_X.o: define.h
 feram_eigenvalues2j.o:          param_module.o define.h
 feram_distribution3d2ppm.o:     average_module.o rgb_module.o
+feram_fftw_wisdom.o:            feram_fftw_wisdom_out.o feram_fftw_wisdom_timing.o
 fft_check.o: f90_wisdom.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf

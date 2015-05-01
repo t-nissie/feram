@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-04-28 11:19:15 takeshi>
+! Time-stamp: <2015-05-01 10:53:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -43,9 +43,9 @@ module Coord_module
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
      type(C_PTR) ::         plan_r2c_3_out = c_null_ptr
+     type(C_PTR) ::         plan_c2r_3_out = c_null_ptr
      type(C_PTR) ::         plan_r2c_6_out = c_null_ptr
      type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr
-     type(C_PTR) ::         plan_c2r_3_out = c_null_ptr
   end type Coord_type
 
 contains

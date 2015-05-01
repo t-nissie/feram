@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-04-30 18:32:05 t-nissie>
+! Time-stamp: <2015-05-01 12:18:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,49 +9,40 @@
 program feram_fftw_wisdom
   use, intrinsic :: iso_c_binding
   implicit none
-  character(len=100) :: str
-  integer i,ix,iy,iz
-  real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
-  complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoQ
-
-  integer                 :: c_ri(0:1)   ! count
-  real*8                  :: t_ri        ! time
-  real*8                  :: g_ri        ! GFLOPS
-  real*8                  :: f_r         ! The numbers of floating point operations in [G]
-  integer                 :: count_rate, count_max
-
-  integer :: OMP_GET_MAX_THREADS
-  integer :: ireturn
-  type(C_PTR) :: plan_R2C
-  type(C_PTR) :: plan_C2R
-
   include 'fftw3.f03'
-  integer howmany,stride
   integer :: N_TIMES
   integer :: Lx
   integer :: Ly
   integer :: Lz
   integer :: padding_y
-  integer, parameter :: rank=3
-  integer, parameter :: dist=1
-  real*8  :: N_inv
-  integer :: N
-  integer ::  LzLyLx(3)
-  integer :: d_embed(3)
-  integer :: z_embed(3)
+  character(len=100) :: str
+  integer :: OMP_GET_MAX_THREADS
+  integer :: narg, ireturn
+  type(C_PTR) :: plan_r2c_3_out = c_null_ptr
+  type(C_PTR) :: plan_c2r_3_out = c_null_ptr
+
+  type(C_PTR) :: plan_r2c_6_out = c_null_ptr
+  type(C_PTR) :: plan_c2r_6_out = c_null_ptr   ! It is not used in feram.
+
+  ! type(C_PTR)             :: inho_ptr = c_null_ptr
+  ! integer(C_SIZE_T) :: n_alloc_inho
+  ! complex*16,pointer :: inhoK(:,:,:,:)
+  ! real*8,    pointer :: inhoR(:,:,:,:)
+  ! type(C_PTR) ::         plan_r2c_6_in  = c_null_ptr   ! It is not used in feram.
+  ! type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr
 
   ireturn = fftw_init_threads()
   call fftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
 
-  i = command_argument_count()
-  if (i.eq.0) then
+  narg = command_argument_count()
+  if (narg.eq.0) then
      ! default values
      N_TIMES = 1000
      Lx =  64
      Ly =  64
      Lz =  64
      padding_y = 3
-  else if (i.eq.5) then
+  else if (narg.eq.5) then
      call get_command_argument(1,str); read(str,*) N_TIMES
      call get_command_argument(2,str); read(str,*) Lx
      call get_command_argument(3,str); read(str,*) Ly
@@ -62,116 +53,65 @@ program feram_fftw_wisdom
      stop 1
   end if
 
-  LzLyLx( 1)=Lz; LzLyLx( 2)=Ly;           LzLyLx( 3)=Lx
-  d_embed(1)=Lz; d_embed(2)=Ly+padding_y; d_embed(3)=2*(Lx/2+1)
-  z_embed(1)=Lz; z_embed(2)=Ly+padding_y; z_embed(3)=   Lx/2+1
-  N = Lx * Ly *Lz
-  N_inv = 1.0d0/N
+  call feram_fftw_wisdom_out(3, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2c_3_out, &
+       &                                                        plan_c2r_3_out)
+  call feram_fftw_wisdom_out(6, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2c_6_out, &
+       &                                                        plan_c2r_6_out)
 
-  allocate(dipoR(3, 0:2*(Lx/2+1)-1, 0:Ly+padding_y-1, 0:Lz-1))
-  allocate(dipoK(3, 0:Lx/2,         0:Ly+padding_y-1, 0:Lz-1)) !"/2" for real<->complex FFT
+! !=== plan_????? ===============================================================================
+!   allocate(dipoR(6, 0:2*(Lx/2+1)-1, 0:Ly+padding_y-1, 0:Lz-1))
+!   allocate(dipoK(6, 0:Lx/2,         0:Ly+padding_y-1, 0:Lz-1)) !"/2" for real<->complex FFT
+! !!!first touch
+! !$omp parallel do
+!   do iz = 0,Lz-1
+!      dipoR(:,:,:,iz) = 0.1d0
+!   end do
+! !$omp end parallel do
+! !$omp parallel do
+!   do iz = 0,Lz-1
+!      dipoK(:,:,:,iz) = (0.0d0,0.0d0)
+!   end do
+! !$omp end parallel do
 
-!!!first touch
-!$omp parallel do
-  do iz = 0,Lz-1
-     dipoR(:,:,:,iz) = 0.1d0
-  end do
-!$omp end parallel do
-!$omp parallel do
-  do iz = 0,Lz-1
-     dipoK(:,:,:,iz) = (0.0d0,0.0d0)
-  end do
-!$omp end parallel do
+!   howmany = 6
+!   stride = howmany
+!   plan_R2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+!        &                              dipoR,d_embed,stride,dist,&
+!        &                              dipoK,z_embed,stride,dist,FFTW_MEASURE)
 
-  howmany = 3
-  stride = howmany
-  plan_R2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
-       &                              dipoR,d_embed,stride,dist,&
-       &                              dipoK,z_embed,stride,dist,FFTW_MEASURE)
-  plan_C2R = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
-       &                              dipoK,z_embed,stride,dist,&
-       &                              dipoR,d_embed,stride,dist,FFTW_MEASURE)
+! !$omp parallel do
+!   do iz = 0,Lz-1
+!      dipoR(:,:,:,iz) = 0.1d0
+!   end do
+! !$omp end parallel do
 
-!$omp parallel do
-  do iz = 0,Lz-1
-     dipoR(:,:,:,iz) = 0.1d0
-  end do
-!$omp end parallel do
+!   call fftw_execute_dft_r2c(plan_R2C, dipoR, dipoK)
+!   write(6,*) dipoK(1,0,0,0)/N
 
-  call system_clock(c_ri(0))
-  do i = 1, N_TIMES
-     call fftw_execute_dft_r2c(plan_R2C, dipoR, dipoK)
-!$omp parallel do
-     do iz = 0,Lz-1
-        dipoK(:,:,:,iz) = dipoK(:,:,:,iz) * N_inv
-     end do
-!$omp end parallel do
-     call fftw_execute_dft_c2r(plan_C2R, dipoK, dipoR)
-  end do
-  call system_clock(c_ri(1), count_rate, count_max)
+!   call fftw_destroy_plan(plan_R2C)
+!   deallocate(dipoR)
+!   deallocate(dipoK)
 
-!$omp parallel do private(iz, iy, ix, i)
-  do iz = 0, Lz-1
-     do iy = 0, Ly-1
-        do ix = 0, Lx-1
-           do i = 1, howmany
-              if (isnan(dipoR(i,ix,iy,iz)) .or. abs(dipoR(i,ix,iy,iz)-0.1d0)>1.0d-15) then
-                 write(0,'(a,a,i3,a,4(i5,a),f21.16)')   __FILE__, ':', __LINE__ ,  &
-                      & ': Error in accuracy at d(',i,',',ix,',',iy,',',iz,') =',dipoR(i,ix,iy,iz)
-                 stop 2
-              end if
-           end do
-        end do
-     end do
-  end do
-!$omp end parallel do
+! !=== plan_c2r_6_in ===============================================================================
+!   howmany = 6
+!   n_alloc_inho = howmany * (Lx/2+1) * (Ly+padding_y) * Lz
+!   inho_ptr = fftw_alloc_complex(n_alloc_inho)
+!   call c_f_pointer(inho_ptr, inhoK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+!     call c_f_pointer(inho_ptr, inhoR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+! !!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.
+! !$omp parallel do
+!     do iz = 1, p%Lz
+!        inhoK(:,:,:,iz) = (0.0d0,0.0d0)
+!     end do
+! !$omp end parallel do
+!     stride = howmany
+!     plan_c2r_6_in = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+!          &                                   inhoK,z_embed,stride,dist,&
+!          &                                   inhoR,d_embed,stride,dist,FFTW_MEASURE)
 
-  t_ri = dble(c_ri(1)-c_ri(0))/count_rate
-  if (t_ri<0.0d0) t_ri=t_ri+dble(count_max)/count_rate
-  f_r = log(dble(N)) / log(2.0d0) / 1.0d9 * N_TIMES * 5 * N * howmany
-  g_ri = f_r / t_ri
 
-  ! Use the same output format with fft_many_check.F
-  write(6,'(i8,4i5,i11,L3,  f8.3,f8.3)') N_TIMES, Lx, Ly, Lz, padding_y, N, .false.,  t_ri, g_ri
 
-  call fftw_destroy_plan(plan_R2C)
-  call fftw_destroy_plan(plan_C2R)
-  deallocate(dipoR)
-  deallocate(dipoK)
 
-  allocate(dipoR(6, 0:2*(Lx/2+1)-1, 0:Ly+padding_y-1, 0:Lz-1))
-  allocate(dipoK(6, 0:Lx/2,         0:Ly+padding_y-1, 0:Lz-1)) !"/2" for real<->complex FFT
-
-!!!first touch
-!$omp parallel do
-  do iz = 0,Lz-1
-     dipoR(:,:,:,iz) = 0.1d0
-  end do
-!$omp end parallel do
-!$omp parallel do
-  do iz = 0,Lz-1
-     dipoK(:,:,:,iz) = (0.0d0,0.0d0)
-  end do
-!$omp end parallel do
-
-  howmany = 6
-  stride = howmany
-  plan_R2C = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
-       &                              dipoR,d_embed,stride,dist,&
-       &                              dipoK,z_embed,stride,dist,FFTW_MEASURE)
-
-!$omp parallel do
-  do iz = 0,Lz-1
-     dipoR(:,:,:,iz) = 0.1d0
-  end do
-!$omp end parallel do
-
-  call fftw_execute_dft_r2c(plan_R2C, dipoR, dipoK)
-  write(6,*) dipoK(1,0,0,0)/N
-
-  call fftw_destroy_plan(plan_R2C)
-  deallocate(dipoR)
-  deallocate(dipoK)
 #ifndef WITH_FFT_MKL
   ireturn = fftw_export_wisdom_to_filename('wisdom_new')
 #endif
