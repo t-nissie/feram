@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom_in.F -*-f90-*-
-! Time-stamp: <2015-05-01 17:55:40 takeshi>
+! Time-stamp: <2015-05-06 06:43:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine feram_fftw_wisdom_in(howmany, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2c, plan_c2r)
@@ -49,10 +49,10 @@ subroutine feram_fftw_wisdom_in(howmany, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2
     stride = howmany
     plan_r2c = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
          &                                   inhoR,d_embed,stride,dist,&
-         &                                   inhoK,z_embed,stride,dist,FFTW_MEASURE)
+         &                                   inhoK,z_embed,stride,dist,FFTW_PATIENT)
     plan_c2r = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
          &                                   inhoK,z_embed,stride,dist,&
-         &                                   inhoR,d_embed,stride,dist,FFTW_MEASURE)
+         &                                   inhoR,d_embed,stride,dist,FFTW_PATIENT)
 
 !$omp parallel do
   do iz = 1,Lz
@@ -88,7 +88,7 @@ subroutine feram_fftw_wisdom_in(howmany, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2
   end do
 !$omp end parallel do
 
-  call feram_fftw_wisdom_timing(howmany, N_TIMES, Lx, Ly, Lz, padding_y, .true., &
+  call feram_fftw_wisdom_timing(howmany, N_TIMES, Lx, Ly, Lz, padding_y, '  in', &
      &                              count_begin, count_end, count_rate, count_max)
 
   call fftw_free(inho_ptr)
