@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-04-20 11:38:44 takeshi>
+! Time-stamp: <2015-05-07 15:44:17 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -49,7 +49,7 @@ subroutine feram_common(fn)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'N_THREADS', message)
 
 #if defined(HAVE_LIBFFTW3) && !defined(WITH_FFT_MKL)
-  ireturn = fftw_import_wisdom_from_filename('wisdom')
+  ireturn = fftw_import_wisdom_from_filename(C_CHAR_"wisdom"//C_NULL_CHAR)
   if (ireturn.eq.1) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Successfully imported FFTW wisdom in current directory.')
   else
