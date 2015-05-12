@@ -22,6 +22,9 @@ dVddi-unharmonic.FでdidiRが使われるのでin-placeにはできない．
 
 == inhoK → inhoR
 両方とも dVddi_inho_coupling.F 内でしか使われないのでin-placeにできる．
+r2480, r2483 (and r2490) の coord_module.F と dVddi_inho_coupling.F と
+に対する変更でin-placeにできたが、xlf version 14, 15でICEになるので
+r2479の状態（planの名前をわかりやすく変えた直後の状態）に戻した (2015-05-12)。
 
 == dipoT → dVddi
 dipoTがdVddi-dipole-dipole.F内で一時的に使われるだけなので
