@@ -13,7 +13,7 @@ a0 =  3.94         latice constant a0 [Angstrom]
 #--- Time step -----------------------------------
 dt = 0.001 [pico second]
 n_thermalize =     20000
-n_average    =    800000
+n_average    =    320000
 n_E_wave_period =  80000
 n_hl_freq    =       100
 n_coord_freq =   4000000
