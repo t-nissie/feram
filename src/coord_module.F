@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-04-26 17:47:03 takeshi>
+! Time-stamp: <2015-05-15 22:21:43 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -36,6 +36,7 @@ module Coord_module
      logical,    allocatable :: sum_p(:,:,:) ! .true. if the u(R) is not defect nor mirrored film. This array will be initialized in read_defects_u.F
      real*8,     allocatable :: e_layer_dipo(:)
      real*8,     allocatable :: e_layer_acou(:)
+     integer,    allocatable :: n_sum_layer(:)
      real*8                 strain(6)
      real*8                 homogeneous(6,6)
      real*8                 homogeneous_G(6,6)
@@ -271,6 +272,16 @@ contains
     allocate(c%e_layer_dipo(0:p%Lz-1))
     if (allocated(c%e_layer_acou)) deallocate(c%e_layer_acou)
     allocate(c%e_layer_acou(0:p%Lz-1))
+    if (allocated(c%n_sum_layer)) deallocate(c%n_sum_layer)
+    allocate(c%n_sum_layer(0:p%Lz-1))
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%e_layer_dipo(iz) = 0.0d0
+       c%e_layer_acou(iz) = 0.0d0
+       c%n_sum_layer( iz) = p%Lx * p%Ly
+    end do
+!$omp end parallel do
     !--- end --------------------------------
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'alloc_Coord().')
   end subroutine alloc_Coord

@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2015-03-31 16:41:06 takeshi>
+! Time-stamp: <2015-05-15 22:39:40 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -45,7 +45,7 @@ subroutine leapfrog(p,c,e,i_step)
               end do
            end do
         end do
-        c%e_layer_dipo(iz) = c%e_layer_dipo(iz) / 2
+        c%e_layer_dipo(iz) = c%e_layer_dipo(iz) / 2 * p%Lx * p%Ly / c%n_sum_layer(iz)
      end do
 !$omp end parallel do
      if (p%mass_acou>0.0d0) then
