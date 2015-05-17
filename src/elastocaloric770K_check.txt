@@ -12,7 +12,7 @@ Ivy Bridge-, Haswell- Broadwell-based Xeon.
 
 elastocaloric770K_check.sh consumes only 0.25 GB.
 
-=== feram-0.22.05
+=== r2292 feram-0.22.05
 ==== elastocaloric770K_check.vs.log
  X5650 1 chip =  6 core:       3.73        2114.44        2118.17    6     #TIMING_REPORT
  X5650 2 chip = 12 core:       3.86        1159.24        1163.10   12     #TIMING_REPORT
@@ -24,7 +24,7 @@ elastocaloric770K_check.sh consumes only 0.25 GB.
  SR16000  8 thds on 1/4 node:  2.74        1005.32        1008.06    8     #TIMING_REPORT
  SR16000 32 thds on  1  node:  2.76         363.94         366.70   32     #TIMING_REPORT
 
-=== feram-0.22.06
+=== r2338 feram-0.22.06
 ==== elastocaloric770K_check.vs.log
  X5650 1 chip =  6 core:       3.76        2150.98        2154.74    6     #TIMING_REPORT
  X5650 2 chip = 12 core:       3.91        1170.36        1174.27   12     #TIMING_REPORT
@@ -47,7 +47,7 @@ elastocaloric770K_check.sh consumes only 0.25 GB.
 *2: ~/f/feram/feram-0.22.06/Linux-x86_64-gfortran-4.8.2-emerald/src/zzz-1chip/
     ../configure FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'
 
-=== feram-0.23.00
+=== r2474 feram-0.23.00unstable
 ==== elastocaloric770K_check.vs.log
  X5650 1 chip =  6 core:       7.02        2423.27        2430.28    6     #TIMING_REPORT
  X5650 2 chip = 12 core:       7.46        1300.21        1307.67   12     #TIMING_REPORT
@@ -79,3 +79,6 @@ elastocaloric770K_check.lf.log:
  E5-2680 1 chip =  8 core *2:  2.79         989.64         992.43    8     #TIMING_REPORT
  E5-2680 2 chip = 16 core *2:  2.90         871.99         874.89   16     #TIMING_REPORT
 *2: /home/t-nissie/f/loto/feram/branches/newplan/0.23.00-r2480-2015-04-26-newplan-gfortran-4.8.2-emerald/src/zzz-2-node
+
+
+=== r2504 (rewind to out-of-place FFT: inhoK -> inhoR)
