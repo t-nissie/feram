@@ -1,3 +1,4 @@
+#!./feram
 verbose = 2
 #--- Method, Temperature, and mass ---------------
 method = 'md'

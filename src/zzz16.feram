@@ -1,3 +1,4 @@
+#!./feram
 #--- Method, Temperature, and mass ---------------
 method = 'md'
 GPa = -0.21
