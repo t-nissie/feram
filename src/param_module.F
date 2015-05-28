@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2015-04-19 17:44:36 takeshi>
+! Time-stamp: <2015-05-28 20:49:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -57,6 +57,7 @@ module Param_module
      integer n_hysteresis_loop_continue
      character (len=FILE_NAME_LEN) coord_directory
      character (len=FILE_NAME_LEN) distribution_directory
+     logical output_into_current_directory
      !!--- External electric field ---------------------
      real*8    external_E_field(3)  ! External electric field [V/Angstrom]
      character(len=30) :: E_wave_type    ! 'triangular_sin', 'triangular_cos'  !Not yet: 'sin', 'cos'
@@ -115,7 +116,7 @@ contains
     type(Param_type),intent(inout) :: p
     character(len=*),intent(in)    :: fn
     character (len=300) str
-    character (len=30)  name, dmy1, dmy2
+    character (len=40)  name, dmy1, dmy2
     integer io, iosGPa, line_number, i
     real*8 mass_amu
     real*8 acoustic_mass_amu
@@ -151,6 +152,7 @@ contains
     p%n_hysteresis_loop_continue = 1
     p%coord_directory = ''
     p%distribution_directory = ''
+    p%output_into_current_directory = .false.
 
     p%external_E_field(:) = 0.0d0
     p%E_wave_type = ''
@@ -274,6 +276,9 @@ contains
           read(str,*) dmy1, dmy2, p%coord_directory
        case('distribution_directory')
           read(str,*) dmy1, dmy2, p%distribution_directory
+       case('output_into_current_directory')
+          read(str,*) dmy1, dmy2, p%output_into_current_directory
+          if (p%output_into_current_directory) p%filename = basename(p%filename)
        case('P_kappa2')
           read(str,*) dmy1, dmy2, p%P_kappa2
        case('P_alpha')
@@ -429,4 +434,18 @@ contains
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '  write_Param().')
   end subroutine write_Param
+
+  function basename(fn)
+    implicit none
+    character(len=FILE_NAME_LEN) :: basename
+    character(len=*), intent(in) :: fn
+    integer :: len, pos
+    len = len_trim(fn)
+    pos = index(fn,'/',back=.true.)
+    if (pos.gt.0) then
+       basename = fn(pos+1:len)
+    else
+       basename = fn
+    end if
+  end function basename
 end module Param_module

@@ -1,4 +1,5 @@
 #!./feram
+output_into_current_directory = .true.
 #--- Method, Temperature, and mass ---------------
 method = 'md'
 GPa = -0.21

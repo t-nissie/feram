@@ -1,5 +1,6 @@
 #!./feram
 verbose = 2
+output_into_current_directory = .true.
 #--- Method, Temperature, and mass ---------------
 method = 'vs'
 kelvin = 575

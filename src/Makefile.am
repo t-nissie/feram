@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-05-27 21:27:56 takeshi>
+# Time-stamp: <2015-05-28 20:38:48 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -25,7 +25,6 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          zzz16.feram \
          zzzgap.feram \
          zzzlf.feram \
-         zzzmd.feram \
          zzznp.feram \
          zzzvs.feram
 feram_MODULES = param_module.F coord_module.F energy_module.F
@@ -96,6 +95,7 @@ wave_check_SOURCES = wave_check.f wave_module.F
 fft_check_SOURCES = fft_check.F f90_wisdom.f
 
 CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(check_PROGRAMS) \
+             zzz*.log zzz16.*.coord zzzgap.*.fft \
              feram_defects_maker_check.defects wisdom_new \
              elastocaloric770K_check.lf.log \
              elastocaloric770K_check.lf.log.digest \
@@ -150,7 +150,6 @@ wave_check.gp \
 zzz16.feram \
 zzzgap.feram \
 zzzlf.feram \
-zzzmd.feram \
 zzznp.feram \
 zzzvs.feram
 
