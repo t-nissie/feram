@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-05-28 20:38:48 takeshi>
+# Time-stamp: <2015-05-28 23:49:13 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -22,11 +22,11 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_slicer.rb
 check_PROGRAMS = fft_check marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
 TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp feram_defects_maker_check.sh \
-         zzz16.feram \
-         zzzgap.feram \
-         zzzlf.feram \
-         zzznp.feram \
-         zzzvs.feram
+         zzz16.feram_check \
+         zzzgap.feram_check \
+         zzzlf.feram_check \
+         zzznp.feram_check \
+         zzzvs.feram_check
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
 	dVddi-dipole-dipole.F \
@@ -147,11 +147,11 @@ wave_check.gp \
 28example-PbTiO3-elastocaloric-770K \
 29example-BaTiO3-new-param-defects \
 30example-BaTiO3-new-param-ramping-off \
-zzz16.feram \
-zzzgap.feram \
-zzzlf.feram \
-zzznp.feram \
-zzzvs.feram
+zzz16.feram_check \
+zzzgap.feram_check \
+zzzlf.feram_check \
+zzznp.feram_check \
+zzzvs.feram_check
 
 # all: plot.ps # 300K0000000.ps decay-test.ps
 
