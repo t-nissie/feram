@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2015-05-28 20:49:00 takeshi>
+! Time-stamp: <2015-05-28 22:50:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -57,7 +57,6 @@ module Param_module
      integer n_hysteresis_loop_continue
      character (len=FILE_NAME_LEN) coord_directory
      character (len=FILE_NAME_LEN) distribution_directory
-     logical output_into_current_directory
      !!--- External electric field ---------------------
      real*8    external_E_field(3)  ! External electric field [V/Angstrom]
      character(len=30) :: E_wave_type    ! 'triangular_sin', 'triangular_cos'  !Not yet: 'sin', 'cos'
@@ -152,7 +151,6 @@ contains
     p%n_hysteresis_loop_continue = 1
     p%coord_directory = ''
     p%distribution_directory = ''
-    p%output_into_current_directory = .false.
 
     p%external_E_field(:) = 0.0d0
     p%E_wave_type = ''
@@ -276,9 +274,6 @@ contains
           read(str,*) dmy1, dmy2, p%coord_directory
        case('distribution_directory')
           read(str,*) dmy1, dmy2, p%distribution_directory
-       case('output_into_current_directory')
-          read(str,*) dmy1, dmy2, p%output_into_current_directory
-          if (p%output_into_current_directory) p%filename = basename(p%filename)
        case('P_kappa2')
           read(str,*) dmy1, dmy2, p%P_kappa2
        case('P_alpha')
