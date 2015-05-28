@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-05-07 15:44:17 t-nissie>
+! Time-stamp: <2015-05-28 23:09:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -31,8 +31,12 @@ subroutine feram_common(fn)
 
   fn_len_trim = len_trim(fn)
   suffix = index(fn,'.feram',back=.true.)
-  if (suffix.gt.0 .and. suffix.eq.fn_len_trim-5) then
-     p%filename = fn(1:fn_len_trim-6)
+  if (suffix.gt.0) then
+     if (suffix.eq.fn_len_trim-5) then
+        p%filename = fn(1:fn_len_trim-6)
+     else if (index(fn,'.feram_check',back=.true.).gt.0) then
+        p%filename = basename(fn(1:fn_len_trim-12))
+     end if
   else
      p%filename = fn
   end if
