@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2015-05-28 22:50:29 takeshi>
+! Time-stamp: <2015-05-29 07:01:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -429,18 +429,4 @@ contains
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '  write_Param().')
   end subroutine write_Param
-
-  function basename(fn)
-    implicit none
-    character(len=FILE_NAME_LEN) :: basename
-    character(len=*), intent(in) :: fn
-    integer :: len, pos
-    len = len_trim(fn)
-    pos = index(fn,'/',back=.true.)
-    if (pos.gt.0) then
-       basename = fn(pos+1:len)
-    else
-       basename = fn
-    end if
-  end function basename
 end module Param_module

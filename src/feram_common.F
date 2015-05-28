@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-05-28 23:09:12 takeshi>
+! Time-stamp: <2015-05-29 07:07:26 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -14,7 +14,7 @@ subroutine feram_common(fn)
   type(Param_type),save :: p
   type(Coord_type),save :: c
   character(len=FILE_NAME_LEN), intent(in) :: fn
-  character(len=FILE_NAME_LEN)             :: fn_log
+  character(len=FILE_NAME_LEN)             :: fn_log, basename
   integer                                  :: fn_len_trim, suffix
   integer                                  :: OMP_GET_MAX_THREADS
   character(len=70) :: message
@@ -34,8 +34,8 @@ subroutine feram_common(fn)
   if (suffix.gt.0) then
      if (suffix.eq.fn_len_trim-5) then
         p%filename = fn(1:fn_len_trim-6)
-     else if (index(fn,'.feram_check',back=.true.).gt.0) then
-        p%filename = basename(fn(1:fn_len_trim-12))
+     else if (index(fn,'.feram_check',back=.true.).eq.fn_len_trim-11) then
+        p%filename = basename(fn(1:fn_len_trim-12))  ! for `make distcheck`
      end if
   else
      p%filename = fn
@@ -113,3 +113,17 @@ subroutine feram_common(fn)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'love && peace && free_software')
   close(unit=UNIT_LOG)
 end subroutine feram_common
+
+function basename(fn)
+  implicit none
+  character(len=FILE_NAME_LEN) :: basename
+  character(len=*), intent(in) :: fn
+  integer :: len, pos
+  len = len_trim(fn)
+  pos = index(fn,'/',back=.true.)
+  if (pos.gt.0) then
+     basename = fn(pos+1:len)
+  else
+     basename = fn
+  end if
+end function basename
