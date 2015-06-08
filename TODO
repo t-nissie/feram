@@ -1,8 +1,4 @@
 ToDo:
-o Perform in-place FFT in feram_fftw_wisdom.F
-
-o Compile FFTW3 with icc and ifort and link it with ifort
-
 o Remove "#if defined(HAVE_LIBFFTW3)" so that we always use FFTW
 
 o Discard hysteresis_loop.F. Use n_E_wave_period and E_wave_type.
