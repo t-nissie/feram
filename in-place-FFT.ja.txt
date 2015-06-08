@@ -25,6 +25,12 @@ dVddi-unharmonic.FでdidiRが使われるのでin-placeにはできない．
 r2480, r2483 (and r2490) の coord_module.F と dVddi_inho_coupling.F と
 に対する変更でin-placeにできたが、xlf version 14, 15でICEになるので
 r2479の状態（planの名前をわかりやすく変えた直後の状態）に戻した (2015-05-12)。
+See IV73550 INTERNAL COMPILER ERROR WITH C_PTR IN DERIVED TYPE DEFINITION
+http://www-01.ibm.com/support/docview.wss?crawler=1&uid=swg1IV73550
+なお，当該C_PTRを構造体の後ろの方に置けばこのICEは回避できる．
+一方，Core i7でFFTW_MEASUREだと遅いin-place FFTのコードレットが選ばれてしまう．
+FFTW_PATIENTでは十分速いコードレットが選ばれるが，選ぶのにやたら時間がかかる場合がある．
+よって，安定版の0.24.00には，out-of-placeのみを使うことにする．
 
 == dipoT → dVddi
 dipoTがdVddi-dipole-dipole.F内で一時的に使われるだけなので
