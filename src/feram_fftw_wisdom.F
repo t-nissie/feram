@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-05-07 15:30:10 t-nissie>
+! Time-stamp: <2015-06-08 18:10:36 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -18,11 +18,11 @@ program feram_fftw_wisdom
   character(len=100) :: str
   integer :: OMP_GET_MAX_THREADS
   integer :: narg, ireturn
-  type(C_PTR) :: plan_r2c_3_in  = c_null_ptr
-  type(C_PTR) :: plan_c2r_3_in  = c_null_ptr
-
-  type(C_PTR) :: plan_r2c_6_in  = c_null_ptr
-  type(C_PTR) :: plan_c2r_6_in  = c_null_ptr
+! type(C_PTR) :: plan_r2c_3_in  = c_null_ptr
+! type(C_PTR) :: plan_c2r_3_in  = c_null_ptr
+!
+! type(C_PTR) :: plan_r2c_6_in  = c_null_ptr
+! type(C_PTR) :: plan_c2r_6_in  = c_null_ptr
 
   type(C_PTR) :: plan_r2c_3_out = c_null_ptr
   type(C_PTR) :: plan_c2r_3_out = c_null_ptr
@@ -52,10 +52,10 @@ program feram_fftw_wisdom
      stop 1
   end if
 
-  call feram_fftw_wisdom_in(3, N_TIMES, Lx, Ly, Lz, padding_y,  plan_r2c_3_in, &
-       &                                                        plan_c2r_3_in)
-  call feram_fftw_wisdom_in(6, N_TIMES, Lx, Ly, Lz, padding_y,  plan_r2c_6_in, &
-       &                                                        plan_c2r_6_in)
+! call feram_fftw_wisdom_in(3, N_TIMES, Lx, Ly, Lz, padding_y,  plan_r2c_3_in, &
+!      &                                                        plan_c2r_3_in)
+! call feram_fftw_wisdom_in(6, N_TIMES, Lx, Ly, Lz, padding_y,  plan_r2c_6_in, &
+!      &                                                        plan_c2r_6_in)
 
   call feram_fftw_wisdom_out(3, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2c_3_out, &
        &                                                        plan_c2r_3_out)
@@ -65,10 +65,10 @@ program feram_fftw_wisdom
 #ifndef WITH_FFT_MKL
   ireturn = fftw_export_wisdom_to_filename(C_CHAR_"wisdom_new"//C_NULL_CHAR)
 #endif
-  call fftw_destroy_plan(plan_r2c_3_in)
-  call fftw_destroy_plan(plan_c2r_3_in)
-  call fftw_destroy_plan(plan_r2c_6_in)
-  call fftw_destroy_plan(plan_c2r_6_in)
+! call fftw_destroy_plan(plan_r2c_3_in)
+! call fftw_destroy_plan(plan_c2r_3_in)
+! call fftw_destroy_plan(plan_r2c_6_in)
+! call fftw_destroy_plan(plan_c2r_6_in)
   call fftw_destroy_plan(plan_r2c_3_out)
   call fftw_destroy_plan(plan_c2r_3_out)
   call fftw_destroy_plan(plan_r2c_6_out)

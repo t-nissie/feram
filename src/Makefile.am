@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-05-28 23:49:13 takeshi>
+# Time-stamp: <2015-06-08 18:03:38 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -66,7 +66,7 @@ feram_SRCS = average_module.F \
 	write_system.F
 feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
 
-feram_fftw_wisdom_SOURCES = feram_fftw_wisdom.F feram_fftw_wisdom_in.F feram_fftw_wisdom_out.F feram_fftw_wisdom_timing.F
+feram_fftw_wisdom_SOURCES = feram_fftw_wisdom.F feram_fftw_wisdom_timing.F feram_fftw_wisdom_out.F #feram_fftw_wisdom_in.F
 
 feram_diagonalize15x15_SOURCES = feram_diagonalize15x15.F
 
@@ -109,6 +109,7 @@ decay-test.gp \
 feram_defects_maker_check.gp \
 feram_defects_maker_check.sh \
 feram_defects_maker_check_sphere.gp \
+feram_fftw_wisdom_in.F \
 elastocaloric770K_check.csh \
 elastocaloric770K_check.sh \
 elastocaloric770K_check.txt \
@@ -207,7 +208,7 @@ dVddi-dipole-dipole.o:\
 print-eigenvalues.o feram_eigenvalues2j.o feram_frozen_phonon_Gamma.o feram_frozen_phonon_X.o: define.h
 feram_eigenvalues2j.o:          param_module.o define.h
 feram_distribution3d2ppm.o:     average_module.o rgb_module.o
-feram_fftw_wisdom.o:            feram_fftw_wisdom_in.o feram_fftw_wisdom_out.o feram_fftw_wisdom_timing.o
+feram_fftw_wisdom.o:            feram_fftw_wisdom_timing.o feram_fftw_wisdom_out.o #feram_fftw_wisdom_in.o
 fft_check.o: f90_wisdom.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
