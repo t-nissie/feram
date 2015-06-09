@@ -184,7 +184,7 @@ from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
 It would be better to use Intel Fortran (ifort) version 15.0.2 or higher.
 If you are using version 14.0.2 of Intel Fortran (ifort),
 the FFTW3 libraries should be compiled with icc or
-gcc version 4.6 or lower to avoid miss-match of ABI.
+gcc version 4.6 or lower to avoid missmatch of ABI.
  $ . /opt/intel/bin/ifortvars.sh intel64     # Put these two lines in your
  $ . /opt/intel/mkl/bin/mklvars.sh intel64   # ~/.bashrc or somewhere.
  $ tar xf feram-X.YY.ZZ.tar.xz
@@ -206,7 +206,7 @@ gcc version 4.6 or lower to avoid miss-match of ABI.
 
 
 === Linux with Intel Fortran Compiler and FFTW wrappers in Intel MKL
-Currently, feram-0.23.?? compiled with this method is VERY SLOW,
+Currently, feram-0.23.?? and feram-0.24.?? compiled with this method is VERY SLOW,
 because fftw_plan_many_dft_r2c() and fftw_plan_many_dft_c2r() in
 Intel MKL 11.2 are not optimized.
  $ . /opt/intel/bin/ifortvars.sh intel64     # Put these two lines in your

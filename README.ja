@@ -402,9 +402,11 @@ This file is required for the calculation of the local field.
 Position must be given in the unit of a0.
 
 === FFTW wisdom file
-必須ではありませんが，FFTW用のwisdomファイルを用意することによって
-feramの初期化の計算時間を短縮することができます．
-具体的には.logファイルに "Ready for simulation!!!" というメッセージが出るのが早くなります．
+必須ではありませんが，FFTW用のwisdomファイルを用意すると，
+より最適なFFTのサブルーチンが選ばれるので，
+全体の計算時間を短縮できることがあります．
+逆に全体の計算時間が長くなってしまうこともあります．
+トライ・アンド・エラーで最適な計算条件を探してください．
 
 wisdomファイルはferamと同時にsrc/内にビルドされるferam_fftw_wisdomコマンドで生成できます．
 たとえば，src/18example-benchmark/ ディレクトリ内で
@@ -418,7 +420,10 @@ forward.feram のシステムサイズ Lx*Ly*Lz=32*32*243 の計算をするな�
  $ OMP_NUM_THREADS=6 ../feram forward.feram
  $ grep FFTW_WISDOM forward.log
    feram_common.F: 47: FFTW_WISDOM: Successfully imported FFTW wisdom in current directory.
-とします．feram_fftw_wisdomに与えるコマンドライン引数は
+ $ grep TIMING_REPORT forward.log
+とします．
+
+feram_fftw_wisdomに与えるコマンドライン引数は
  feram_fftw_wisdom <N_TIMES> <Lx> <Ly> <Lz> <padding_y>
 です．
 
