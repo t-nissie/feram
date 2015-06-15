@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2015-04-26 17:43:42 takeshi>
+! Time-stamp: <2015-06-15 17:27:38 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -12,7 +12,7 @@ subroutine dipoFFT(p,c)
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
-  integer iz
+  integer ix,iy,iz
 #if defined(HAVE_LIBFFTW3)
   include 'fftw3.f03'
 #endif
@@ -30,14 +30,18 @@ subroutine dipoFFT(p,c)
 !  end do
 #endif
 
-!$omp parallel do
+!$omp parallel do private(iz, iy, ix)
   do iz=0, p%Lz-1
-     c%didiR(1,:,:,iz) = c%dipoR(1,:,:,iz) * c%dipoR(1,:,:,iz)
-     c%didiR(2,:,:,iz) = c%dipoR(2,:,:,iz) * c%dipoR(2,:,:,iz)
-     c%didiR(3,:,:,iz) = c%dipoR(3,:,:,iz) * c%dipoR(3,:,:,iz)
-     c%didiR(4,:,:,iz) = c%dipoR(2,:,:,iz) * c%dipoR(3,:,:,iz)
-     c%didiR(5,:,:,iz) = c%dipoR(3,:,:,iz) * c%dipoR(1,:,:,iz)
-     c%didiR(6,:,:,iz) = c%dipoR(1,:,:,iz) * c%dipoR(2,:,:,iz)
+     do iy = 0, p%Ly-1
+        do ix = 0, p%Lx-1
+           c%didiR(1,ix,iy,iz) = c%dipoR(1,ix,iy,iz) * c%dipoR(1,ix,iy,iz)
+           c%didiR(2,ix,iy,iz) = c%dipoR(2,ix,iy,iz) * c%dipoR(2,ix,iy,iz)
+           c%didiR(3,ix,iy,iz) = c%dipoR(3,ix,iy,iz) * c%dipoR(3,ix,iy,iz)
+           c%didiR(4,ix,iy,iz) = c%dipoR(2,ix,iy,iz) * c%dipoR(3,ix,iy,iz)
+           c%didiR(5,ix,iy,iz) = c%dipoR(3,ix,iy,iz) * c%dipoR(1,ix,iy,iz)
+           c%didiR(6,ix,iy,iz) = c%dipoR(1,ix,iy,iz) * c%dipoR(2,ix,iy,iz)
+        end do
+     end do
   end do
 !$omp end parallel do
 
