@@ -102,8 +102,6 @@ o (coord を かきだし はじめる ところ おわる ところ AVERAGE の
 
 o p, q, qdot にして, いつmassで割るか考える.
 
-o dipoA_dipole_dipole() を dipoA = dipoA + dipoA_dipole_dipole に.
-
 o Q_nose must be a function of T, N and delta_t. AUTOMATIC determination.
 
 o Automatical determination of kappa
@@ -113,8 +111,8 @@ o strain energy の 計算をする部分を分離.
 
 o compare 16x16x16, 32x32x32 
 
-o dipoI(:,:,:,3,3) Upper Triangle だけにする？
-  FFTの計算はUpper Triangle だけやってC.C.をこぴーするようにした.
+o dipoI(3,3,:,:,:) Upper Triangle だけにする？
+  FFTの計算はUpper Triangle だけやってC.C.をコピーするようにした.
   配列は3x3のまま.
   どのくらいメモリを減らせる？
 
@@ -130,7 +128,8 @@ o mass の 9648.53377163899 を define.h へ
 
 o children, parents, use
 
-o input file parserをつくる, input file と param.gp とをきょうつうか
+o input file parserを作る。どんなparser？
+  input file と param.gp とを共通化？
   タイトルも引数で指定できるようにしないと面倒臭い。
 
 o call msg() DEPTH or p%message_depth
