@@ -1,5 +1,5 @@
 ! dVdac.F   -*-f90-*-
-! Time-stamp: <2015-06-21 22:04:53 takeshi>
+! Time-stamp: <2015-06-21 22:16:44 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Purpose: calculate  d V / d (acoustic displacement)
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
@@ -14,7 +14,7 @@ subroutine dVdac(p,c)
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
-  integer :: ix,iy,iz,alpha
+  integer :: ix,iy,iz
   include 'fftw3.f03'
 
 !=== begin: dVdacK = inhomo_K acouK + inhomo_coup2_K didiK ====================================
@@ -28,11 +28,9 @@ subroutine dVdac(p,c)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx/2
-           do alpha = 1, 3
-              c%dVdacK(alpha, ix,iy,iz) = c%dVdacK(alpha, ix,iy,iz) &
-                & + dot_product(c%inhomo_coup2_K(alpha,1:6, ix,iy,iz), c%didiK(1:6, ix,iy,iz)) &
-                & + dot_product(c%inhomo_K(      alpha,1:3, ix,iy,iz), c%acouK(1:3, ix,iy,iz))
-           end do
+           c%dVdacK(:, ix,iy,iz) = c%dVdacK(:, ix,iy,iz) &
+                & + matmul(c%inhomo_coup2_K(1:3,1:6, ix,iy,iz), c%didiK(1:6, ix,iy,iz)) &
+                & + matmul(c%inhomo_K(      1:3,1:3, ix,iy,iz), c%acouK(1:3, ix,iy,iz))
         end do
      end do
   end do
