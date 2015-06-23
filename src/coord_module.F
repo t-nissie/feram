@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-05-15 22:21:43 takeshi>
+! Time-stamp: <2015-06-23 14:11:30 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -145,6 +145,12 @@ contains
 
     if (allocated(c%dipoI)) deallocate(c%dipoI)
     allocate(     c%dipoI(3, 3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%dipoI(:,:, :,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
 
     if (allocated(c%didiR)) deallocate(c%didiR)
     allocate(     c%didiR(6, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
@@ -251,6 +257,16 @@ contains
     allocate(c%inhomo_coup2_K(3,6, 0:p%Lx/2,0:p%Ly+p%padding_y-1  ,0:p%Lz-1))
 
   !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%inhomo_K(:,:, :,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%inhomo_K_G(:,:, :,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
 !$omp parallel do
     do iz = 0,p%Lz-1
        c%inhomo_coup2_K(:,:, :,:,iz) = 0.0d0
