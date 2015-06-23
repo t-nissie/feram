@@ -1,5 +1,5 @@
 ! dVddi_inho_coupling.F   -*-f90-*-
-! Time-stamp: <2015-04-26 17:45:42 takeshi>
+! Time-stamp: <2015-06-23 14:28:23 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -10,16 +10,11 @@ subroutine dVddi_inho_coupling(p,c)
   use Param_module
   use Coord_module
   implicit none
-  !--- arguments -------------------------------------
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
-  !--- local -----------------------------------------
   real*8                  :: k(3), eta_B_over_2m(6)
   integer                 :: i, ix,iy,iz
-  !--- END of variable definitions -------------------
-#if defined(HAVE_LIBFFTW3)
   include 'fftw3.f03'
-#endif
 
   !--- acouK -> c%inhoK -FFT-> c%inhoR (inho. strain in real space) --------
 !$omp parallel do private(iz,iy,ix,k)
@@ -42,15 +37,7 @@ subroutine dVddi_inho_coupling(p,c)
   end do
 !$omp end parallel do
 
-#if defined(HAVE_LIBFFTW3)
   call fftw_execute_dft_c2r(c%plan_c2r_6_out, c%inhoK, c%inhoR)
-#else
-# error "Not implemented yet."
-  ! do alpha = 1, 6
-  !    call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
-  !         & c%inhoR(0,0,0,alpha), c%inhoK(0,0,0,alpha))
-  ! end do
-#endif
 
   !--- c%inhoR -> inhomogeneous coupling part of dVddi -------------------
 !$omp parallel do private(iz,iy,ix,i,eta_B_over_2m)

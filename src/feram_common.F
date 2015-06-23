@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-05-29 07:07:26 takeshi>
+! Time-stamp: <2015-06-23 14:28:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -22,12 +22,10 @@ subroutine feram_common(fn)
   real*8            :: time_array(1:2)
   integer           :: count_rate, count_max, i
 
-# if defined(HAVE_LIBFFTW3)
   include 'fftw3.f03'
   integer :: ireturn
   ireturn = fftw_init_threads()   ! It is safe to call this function many times. See fftw3/threads/api.c.
   call fftw_plan_with_nthreads(OMP_GET_MAX_THREADS())   ! Also safe. See "Usage of Multi-threaded FFTW" in doc.
-# endif
 
   fn_len_trim = len_trim(fn)
   suffix = index(fn,'.feram',back=.true.)

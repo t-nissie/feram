@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-06-23 14:11:30 takeshi>
+! Time-stamp: <2015-06-23 14:26:18 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -58,7 +58,7 @@ contains
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
     integer iz
-#  if defined(HAVE_LIBFFTW3)
+
     include 'fftw3.f03'
     integer howmany,stride
     integer, parameter :: rank=3
@@ -73,7 +73,7 @@ contains
     call fftw_destroy_plan(c%plan_r2c_6_out)   ! It is safe to destroy c_null_ptr.
     call fftw_destroy_plan(c%plan_c2r_6_out)   ! See fftw3/api/apiplan.c.
     call fftw_destroy_plan(c%plan_c2r_3_out)
-#  endif
+
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
     !--- m_inv ------------------------------
     if (allocated(c%m_inv)) deallocate(c%m_inv)
@@ -100,13 +100,12 @@ contains
        c%dipoK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-#  if defined(HAVE_LIBFFTW3)
     howmany = 3
     stride = howmany
     c%plan_r2c_3_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
          &                                  c%dipoR,d_embed,stride,dist,&
          &                                  c%dipoK,z_embed,stride,dist,FFTW_MEASURE)
-#  endif
+
     if (allocated(c%dipoP)) deallocate(c%dipoP)
     allocate(     c%dipoP(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%dVddi)) deallocate(c%dVddi)
@@ -167,13 +166,11 @@ contains
        c%didiK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-#  if defined(HAVE_LIBFFTW3)
     howmany = 6
     stride = howmany
     c%plan_r2c_6_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
          &                                  c%didiR,d_embed,stride,dist,&
          &                                  c%didiK,z_embed,stride,dist,FFTW_MEASURE)
-#  endif
 
     !--- acou -------------------------------
     if (allocated(c%acouR)) deallocate(c%acouR)
@@ -198,13 +195,11 @@ contains
        c%acouP(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
-#  if defined(HAVE_LIBFFTW3)
     howmany = 3
     stride = howmany
     c%plan_c2r_3_out = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
          &                                  c%acouK,z_embed,stride,dist,&
          &                                  c%acouR,d_embed,stride,dist,FFTW_MEASURE)
-#  endif
 
     !--- force on acoustic displacement --------
     if (allocated(c%dVdacR)) deallocate(c%dVdacR)
@@ -239,13 +234,11 @@ contains
        c%inhoK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-#  if defined(HAVE_LIBFFTW3)
     howmany = 6
     stride = howmany
     c%plan_c2r_6_out = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
          &                                  c%inhoK,z_embed,stride,dist,&
          &                                  c%inhoR,d_embed,stride,dist,FFTW_MEASURE)
-#  endif
 
     if (allocated(c%inhomo_K)) deallocate(c%inhomo_K)
     allocate(     c%inhomo_K(3,3, 0:p%Lx/2,0:p%Ly+p%padding_y-1,0:p%Lz-1))

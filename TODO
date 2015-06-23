@@ -2,8 +2,6 @@ ToDo:
 o dVdac.F の do j=1,6; do alpha=1,3 のループを
   展開して、if (j<=3) をなくせばさらに速くなるはず。
 
-o Remove "#if defined(HAVE_LIBFFTW3)" so that we always use FFTW
-
 o Discard hysteresis_loop.F. Use n_E_wave_period and E_wave_type.
 o src/hysteresis_loop.F DETAILED_MESSAGES
 
@@ -208,6 +206,8 @@ x たとえMakefile.amに依存関係が適切に書かれていても、
   a.lstは何？これはmakeの新オプション--output-sync（-O）で回避できる？
 
 x slicer.rb -> feram_slicer.rb, eigenvalues2j -> feram_eigenvalues2j, etc.
+
+x Remove "#if defined(HAVE_LIBFFTW3)" so that we always use FFTW
 
 
 Not ToDo:

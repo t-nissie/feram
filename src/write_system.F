@@ -1,5 +1,5 @@
 ! write_system.F -*-f90-*-
-! Time-stamp: <2015-04-26 17:47:00 takeshi>
+! Time-stamp: <2015-06-23 14:34:41 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -18,9 +18,7 @@ subroutine write_system(p,c,fn)
   character(len=*) :: fn
   character(len=FILE_NAME_LEN) :: coord_directory_fn
   integer alpha,ix,iy,iz
-#if defined(HAVE_LIBFFTW3)
   include 'fftw3.f03'
-#endif
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
@@ -40,15 +38,7 @@ subroutine write_system(p,c,fn)
      end do
 !$omp end parallel do
 
-#  if defined(HAVE_LIBFFTW3)
      call fftw_execute_dft_c2r(c%plan_c2r_3_out, c%acouK, c%acouR)
-#  else
-#    error "Not implemented yet."
-       ! do alpha = 1, 3
-       !    call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
-       !         & c%acouR(0,0,0,alpha), c%acouK(0,0,0,alpha))
-       ! end do
-#  endif
 
 !$omp parallel do
      do iz = 0,p%Lz-1
