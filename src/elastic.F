@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2015-03-25 13:24:15 takeshi>
+! Time-stamp: <2015-06-23 17:02:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -73,6 +73,7 @@ subroutine elastic(p,c)
   ! See equation (A1) and (A2) of ref_1
 !
   ! inhomo_K --------------------------------------
+!$omp parallel do private(iz,iy,ix,alpha,beta,k,other1,other2)
   do iz = 0, p%Lz-1
      k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
      k(3) = k(3) * M_2PI / p%a0
@@ -101,6 +102,7 @@ subroutine elastic(p,c)
         end do
      end do
   end do
+!$omp end parallel do
 
   if (p%plot_dispersion) then
      write(fn,'(a,a)') trim(p%filename),'.inhomo-K.dat'
@@ -108,7 +110,13 @@ subroutine elastic(p,c)
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME',fn)
   end if
 
-  c%inhomo_K_G(:,:, :,:,:)=0.0d0
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%inhomo_K_G(:,:, :,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+
+!$omp parallel do private(iz,iy,ix,alpha,beta)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx/2
@@ -127,6 +135,7 @@ subroutine elastic(p,c)
         end do
      end do
   end do
+!$omp end parallel do
 
 
   ! inhomo_coup2_K -----------------------------
