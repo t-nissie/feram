@@ -1,14 +1,14 @@
-feram-0.23.01unstable
+feram-0.23.02unstable
 =====================
 Dear current and future feram users,
 
-I released feram-0.23.01unstable.tar.xz from
+I released feram-0.23.02unstable.tar.xz from
 https://sourceforge.net/projects/loto/files/feram/unstable/ .
 Please note that version 0.23.?? will be *UNSTABLE*
 *experimental* releases. You can still use the latest stable
 version of feram-0.22.06.tar.xz.
 
-MD5 (feram-0.23.01unstable.tar.xz) = ae0f798725a0d223240de8229e1e4437
+MD5 (feram-0.23.02unstable.tar.xz) = 
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -19,10 +19,12 @@ Enjoy,
 Takeshi
 
 ## Changes
-In this feram-0.23.01unstable, a bug in src/leapfrog.F is fixed and
+fft_check is moved into https://github.com/t-nissie/fft_check .
+
+In the feram-0.23.01unstable, a bug in src/leapfrog.F is fixed and
 simulations of thermal conductivity can be done with .defects files.
 
-From this feram-0.23.01unstable, `make check` and `make distcheck`
+From the feram-0.23.01unstable, `make check` and `make distcheck`
 execute five integration tests for feram with src/zzz*.feram_check.
 It is useful for developers. See src/Makefile.am and src/feram_common.F.
 
