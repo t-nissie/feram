@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-06-08 18:03:38 t-nissie>
+# Time-stamp: <2015-06-24 22:16:35 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -20,7 +20,7 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_cross_section_q.sh \
                    feram_defects_maker.rb \
                    feram_slicer.rb
-check_PROGRAMS = fft_check marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
+check_PROGRAMS = marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
 TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp feram_defects_maker_check.sh \
          zzz16.feram_check \
          zzzgap.feram_check \
@@ -92,8 +92,6 @@ feram_random_field_generator_SOURCES = feram_random_field_generator.F marsaglia_
 
 wave_check_SOURCES = wave_check.f wave_module.F
 
-fft_check_SOURCES = fft_check.F f90_wisdom.f
-
 CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(check_PROGRAMS) \
              zzz*.log zzz16.*.coord zzzgap.*.fft \
              feram_defects_maker_check.defects wisdom_new \
@@ -116,14 +114,6 @@ elastocaloric770K_check.txt \
 elastocaloric770K_check.lf.feram \
 elastocaloric770K_check.vs.feram \
 epit.gp \
-fft_check.Makefile.FX10-frtpx-fftw3_omp \
-fft_check.Makefile.Intel-gfortran-fftw3_omp \
-fft_check.Makefile.Intel-ifort-MKL \
-fft_check.Makefile.Intel-ifort-fftw3_omp \
-fft_check.Makefile.SR16000-ofort90-fftw \
-fft_check.Makefile.SR16000-ofort90-matmpp \
-fft_check.Makefile.SR16000-xlf90_r-fftw_xlc \
-fft_check.html \
 inhomo-K.gp \
 plot.gp \
 splot.gp \
@@ -209,7 +199,6 @@ print-eigenvalues.o feram_eigenvalues2j.o feram_frozen_phonon_Gamma.o feram_froz
 feram_eigenvalues2j.o:          param_module.o define.h
 feram_distribution3d2ppm.o:     average_module.o rgb_module.o
 feram_fftw_wisdom.o:            feram_fftw_wisdom_timing.o feram_fftw_wisdom_out.o #feram_fftw_wisdom_in.o
-fft_check.o: f90_wisdom.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:
@@ -224,16 +213,3 @@ pdf: feram.pdf coord_module.pdf param_module.pdf
 	a2ps --prologue=color --portrait --columns=1 --margin=3 \
 	--borders=off \
 	-f 11.0 --pretty-print=for90-free -o - $< > $@
-
-fft_check.html:  fft_check.F
-	sed -n '/#ifdef FFT_CHECK_DOCUMENT/,/#endif/p' $< | ulmul2html5 -s ../style.css -n 'Takeshi Nishimatsu' \
-	| sed -e 's%\.\./INSTALL%<a href="../INSTALL.html">../INSTALL</a>%' > $@
-
-fft_check_mpi.html:  fft_check_mpi.F
-	sed -n '/#ifdef FFT_CHECK_MPI_DOCUMENT/,/#endif/p' $< | ulmul2html5 -s ../style.css -n 'Takeshi Nishimatsu' > $@
-#diff: param.F
-#	diff -u -w $< $(INPUT_FILE) ; true
-#	egrep 'read.* DUMMY' $< | cut -b 20- > param.read_dummy
-#	diff -u -w param.read_dummy $(INPUT_FILE) ; true
-#	egrep "write.*'!" $< | cut -b 21- | sed "s/'$$//" > param.write_dummy
-#	diff -u -w param.read_dummy param.write_dummy
