@@ -1,4 +1,7 @@
 ToDo:
+o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
+  https://gcc.gnu.org/onlinedocs/gfortran/Code-Gen-Options.html
+
 o cufft_*をgistかどこかに移動。
 
 o dVdac.F の do j=1,6; do alpha=1,3 のループを
