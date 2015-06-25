@@ -1,5 +1,5 @@
 ! optimize-inho-strain.F   -*-f90-*-
-! Time-stamp: <2015-03-26 15:41:20 takeshi>
+! Time-stamp: <2015-06-25 15:56:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -36,7 +36,7 @@ subroutine optimize_inho_strain(p,c)
                  acouK_tmp(alpha) = &
                       & - dot_product(c%inhomo_coup2_K(alpha,:, ix,iy,iz), c%didiK(:, ix,iy,iz))
               end do
-              ! See [2] of cholesky_d.f
+              ! See [2] of cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621
               do alpha = 1, 3
                  tmp = (0.0d0,0.0d0)
                  do beta = 1, alpha-1
@@ -44,7 +44,7 @@ subroutine optimize_inho_strain(p,c)
                  end do
                  acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * c%inhomo_K_G(alpha,4, ix,iy,iz)
               end do
-              ! See [3] of cholesky_d.f
+              ! See [3] of cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621
               do alpha = 3, 1, -1
                  tmp = (0.0d0,0.0d0)
                  do beta = alpha+1, 3
