@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-06-24 22:16:35 takeshi>
+# Time-stamp: <2015-06-25 16:02:16 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -102,7 +102,6 @@ CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check
 EXTRA_DIST = define.h \
 feram_cross_section_dVddi.sh \
 feram_cross_section_p.sh \
-cholesky_d.f \
 decay-test.gp \
 feram_defects_maker_check.gp \
 feram_defects_maker_check.sh \
