@@ -54,7 +54,7 @@ program cufft_check
   ret = cufftPlan3d(plan_forward, Lz, Ly, Lx, CUFFT_Z2Z)   !Note order of Lz, Ly, Lx!
   write(0,*) 'plan z2z', ret
 
-  ret = cudaMalloc(c_loc(devptr), 16*N)   # max: 2**31=2GiB
+  ret = cudaMalloc(c_loc(devptr), 16*N)   ! max: 2**31=2GiB
   write(0,*) 'malloc 1', ret
 
   ret = cudaMemcpy(devptr, c_loc(z), 16*N, cudaMemcpyHostToDevice)
@@ -119,7 +119,7 @@ program cufft_check
   ret = cufftPlan3d(plan_backward, Lz, Ly, Lx, CUFFT_Z2D)   !Note order of Lz, Ly, Lx!
   write(0,*) 'plan z2d', ret
 
-  ret = cudaMalloc(c_loc(devptr), 16*N_half)   # max: 2**31=2GiB
+  ret = cudaMalloc(c_loc(devptr), 16*N_half)   ! max: 2**31=2GiB
   write(0,*) 'malloc 2', ret
 
   ret = cudaMemcpy(devptr, c_loc(d), 16*N_half, cudaMemcpyHostToDevice)
