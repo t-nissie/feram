@@ -1,6 +1,4 @@
 ToDo:
-o continue = .true. でも、前に続けるべき計算がなかったら、エラーで止まるようにする。
-
 o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
   https://gcc.gnu.org/onlinedocs/gfortran/Code-Gen-Options.html
   GCC 6で入る機能かもしれない。
@@ -217,6 +215,7 @@ x slicer.rb -> feram_slicer.rb, eigenvalues2j -> feram_eigenvalues2j, etc.
 
 x Remove "#if defined(HAVE_LIBFFTW3)" so that we always use FFTW
 
+x continue = .true. でも、前に続けるべき計算がなかったら、エラーで止まるようにする。
 
 Not ToDo:
 - 使うGPUって環境変数で選べるの？

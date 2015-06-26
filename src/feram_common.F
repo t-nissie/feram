@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-06-23 14:28:51 takeshi>
+! Time-stamp: <2015-06-26 14:47:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -68,7 +68,14 @@ subroutine feram_common(fn)
   call  read_Param(p,fn)
   call  make_Param(p)
   call write_Param(p)
-  if (.not. p%continue) call alloc_Coord(p,c)
+  if (p%continue) then
+     if (.not.allocated(c%dipoR)) then
+        write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': continue=.true. but cannot continue the calculation, because there is no previous result.'
+        stop 1
+     end if
+  else
+     call alloc_Coord(p,c)
+  end if
   call dipole_dipole(p,c)
   call elastic(p,c)
   !Instead, read_defects_u(p,c) is called in initialize_dipoR()! call make_mass_matrix(p,c)
