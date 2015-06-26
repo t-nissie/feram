@@ -3,7 +3,10 @@ o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
   https://gcc.gnu.org/onlinedocs/gfortran/Code-Gen-Options.html
   GCC 6で入る機能かもしれない。
 
-o cufft_*をgistかどこかに移動。
+o CUDA化。cuFFTとcuBLASとを使えるようにする。
+  * PGI CUDA Fortranは使わない。
+  * src/cufft_module.fを通し、できるだけCを使わずにFortran 2003だけで書く。
+  * 将来的にはcoord_module.Fの中の大きな配列をGPUに置いたままにする？
 
 o Discard hysteresis_loop.F. Use n_E_wave_period and E_wave_type.
 o src/hysteresis_loop.F DETAILED_MESSAGES
@@ -96,6 +99,10 @@ o refactoring nose-poincare.F and energy.F
 o 3 node parallelization
 
 o average 4倍精度に？
+
+o 精度の選択がconfigureへのオプションでできるようにしたい
+  --with-precision=single
+  --with-precision=double
 
 o start.coord があれば読み込む。alloc_Coord(p,c) で？
 
