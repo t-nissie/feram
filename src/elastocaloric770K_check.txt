@@ -89,10 +89,10 @@ elastocaloric770K_check.lf.log:
  E5-2680    2 chip = 16 core *2: 2.87         823.30         826.17   16     #TIMING_REPORT
  E5-2680 v3 1 chip = 12 core *3: 4.53         688.05         692.58   12     #TIMING_REPORT
  E5-2680 v3 2 chip = 24 core *3: 2.14         503.33         505.47   24     #TIMING_REPORT
- SR16000  8 thds on 1/4 node *4:
- SR16000  8 thds on 2/4 node *4:
- SR16000  8 thds on 3/4 node *4:
- SR16000 32 thds on  1  node *4:
+ SR16000  8 thds on 1/4 node *4: 5.25         894.95         900.20    8     #TIMING_REPORT
+ SR16000 16 thds on 2/4 node *4: 5.53         560.84         566.37   16     #TIMING_REPORT
+ SR16000 24 thds on 3/4 node *4: 5.74         430.24         435.98   24     #TIMING_REPORT
+ SR16000 32 thds on  1  node *4: 5.94         306.01         311.95   32     #TIMING_REPORT
 ==== elastocaloric770K_check.lf.log:
  X5650 1 chip =  6 core *1:      3.49        2162.07        2165.56    6     #TIMING_REPORT
  X5650 2 chip = 12 core *1:      3.79        1182.21        1185.99   12     #TIMING_REPORT
