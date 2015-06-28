@@ -35,5 +35,5 @@
 Author of this document: Takeshi Nishimatsu <t-nissie@imr.tohoku.ac.jp>
 
 # Local variables:
-#   compile-command: "a2ps --medium=A4 --truncate-lines=yes --no-header --left-title=`date '+%Y-%m-%d'` --center-title='feram and fft_check BechmarkHowTo.en' --right-title='Takeshi Nishimatsu' --footer='' --columns=1 --borders=off -f11.0 --portrait --output=- BenchmarkHowTo.en > feram-fft_check-`date '+%Y-%m-%d'`.ps && ps2pdf -sPAPERSIZE=a4 feram-fft_check-`date '+%Y-%m-%d'`.ps"
+#   compile-command: "a2ps --medium=A4 --truncate-lines=yes --no-header --left-title=`date '+%Y-%m-%d'` --center-title='feram BechmarkHowTo.en' --right-title='Takeshi Nishimatsu' --footer='' --columns=1 --borders=off -f11.0 --portrait --output=- BenchmarkHowTo.en > BenchmarkHowTo-`date '+%Y-%m-%d'`.ps && ps2pdf -sPAPERSIZE=a4 BenchmarkHowTo-`date '+%Y-%m-%d'`.ps"
 # End:
