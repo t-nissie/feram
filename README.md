@@ -21,6 +21,9 @@ Takeshi
 ## Changes
 fft_check is moved into https://github.com/t-nissie/fft_check .
 
+In this feram-0.23.02unstable, there were some changes in the
+source code for further speed up.
+
 In the feram-0.23.01unstable, a bug in src/leapfrog.F is fixed and
 simulations of thermal conductivity can be done with .defects files.
 
