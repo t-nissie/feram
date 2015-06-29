@@ -1,6 +1,4 @@
 ToDo:
-o configure.acでulmul2html5のversionが0.5.3以上であることをチェック。
-
 o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
   https://gcc.gnu.org/onlinedocs/gfortran/Code-Gen-Options.html
   GCC 6で入る機能かもしれない。
@@ -225,3 +223,4 @@ x Remove "#if defined(HAVE_LIBFFTW3)" so that we always use FFTW
 
 x continue = .true. でも、前に続けるべき計算がなかったら、エラーで止まるようにする。
 
+x configure.acでulmul2html5のversionが0.5.3であることをチェック。
