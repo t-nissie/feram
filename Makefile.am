@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2015-04-23 11:48:33 takeshi>
+# Time-stamp: <2015-06-29 13:33:51 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -50,7 +50,7 @@ tutorial.%.html: tutorial.%.txt
 
 Autotools-memo.%.html: Autotools-memo.%
 	ulmul2html5 -s style.css\
-                    -l `echo $< | sed 's/Autotools-memo\.//'`\
+                    -l `basename $< | sed 's/Autotools-memo\.//'`\
                     -n 'Takeshi Nishimatsu' $< > $@
 
 dist-hook:
