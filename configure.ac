@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2015-06-28 19:38:59 t-nissie>
+dnl Time-stamp: <2015-06-29 16:02:23 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -148,6 +148,9 @@ case "$FC" in
     AC_FC_FREEFORM()
     ;;
 esac
+
+## ulmul2html5
+/usr/bin/which ulmul2html5 > /dev/null && ( ulmul2html5 --version | grep 0.5.3 || AC_MSG_ERROR([ulmul2html5 exists, but old.]) )
 
 ## Finalize.
 AC_SUBST(CPPFLAGS)
