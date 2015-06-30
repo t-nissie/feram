@@ -1,14 +1,12 @@
-feram-0.23.02unstable
-=====================
+feram-0.24.00
+=============
 Dear current and future feram users,
 
-I released feram-0.23.02unstable.tar.xz from
+I released feram-0.24.00.tar.xz from
 https://sourceforge.net/projects/loto/files/feram/unstable/ .
-Please note that version 0.23.?? will be *UNSTABLE*
-*experimental* releases. You can still use the latest stable
-version of feram-0.22.06.tar.xz.
+This is a stable release, I hope.
 
-MD5 (feram-0.23.02unstable.tar.xz) = 
+MD5 (feram-0.24.00) = 
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -21,7 +19,9 @@ Takeshi
 ## Changes
 fft_check is moved into https://github.com/t-nissie/fft_check .
 
-In this feram-0.23.02unstable, there were some changes in the
+From this feram-0.24.00, the default value of padding_y became 1 instead of 3.
+
+In the feram-0.23.02unstable, there were some changes in the
 source code for further speed up.
 
 In the feram-0.23.01unstable, a bug in src/leapfrog.F is fixed and

@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-06-08 18:10:36 t-nissie>
+! Time-stamp: <2015-06-30 12:36:05 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -40,7 +40,7 @@ program feram_fftw_wisdom
      Lx =  64
      Ly =  64
      Lz =  64
-     padding_y = 3
+     padding_y = 1
   else if (narg.eq.5) then
      call get_command_argument(1,str); read(str,*) N_TIMES
      call get_command_argument(2,str); read(str,*) Lx

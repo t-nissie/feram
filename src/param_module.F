@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2015-05-29 07:01:01 takeshi>
+! Time-stamp: <2015-06-30 12:36:10 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -138,7 +138,7 @@ contains
     p%Ly = 32
     p%Lz = 32
     p%gap_id = 0
-    p%padding_y = 3
+    p%padding_y = 1
     p%gap_dipole_u(:) = 0.0d0
     p%a0 = 4.0d0
     p%epi_strain = 0.0d0
