@@ -1,12 +1,12 @@
 ! feram_fftw_wisdom_in.F -*-f90-*-
-! Time-stamp: <2015-05-06 06:43:33 takeshi>
+! Time-stamp: <2015-06-30 18:33:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
-subroutine feram_fftw_wisdom_in(howmany, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2c, plan_c2r)
+subroutine feram_fftw_wisdom_in(howmany, N_TIMES, Lx, Ly, Lz, padding_y, flags, plan_r2c, plan_c2r)
   use, intrinsic :: iso_c_binding
   implicit none
   include 'fftw3.f03'
-  integer, intent(in) :: howmany, N_TIMES, Lx, Ly, Lz, padding_y
+  integer, intent(in) :: howmany, N_TIMES, Lx, Ly, Lz, padding_y, flags
   type(C_PTR), intent(out) :: plan_r2c, plan_c2r
 
   integer :: stride
@@ -49,10 +49,10 @@ subroutine feram_fftw_wisdom_in(howmany, N_TIMES, Lx, Ly, Lz, padding_y, plan_r2
     stride = howmany
     plan_r2c = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
          &                                   inhoR,d_embed,stride,dist,&
-         &                                   inhoK,z_embed,stride,dist,FFTW_PATIENT)
+         &                                   inhoK,z_embed,stride,dist,flags)
     plan_c2r = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
          &                                   inhoK,z_embed,stride,dist,&
-         &                                   inhoR,d_embed,stride,dist,FFTW_PATIENT)
+         &                                   inhoR,d_embed,stride,dist,flags)
 
 !$omp parallel do
   do iz = 1,Lz
