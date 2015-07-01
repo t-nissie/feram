@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-06-30 18:52:20 takeshi>
+! Time-stamp: <2015-07-01 18:11:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -10,12 +10,12 @@ program feram_fftw_wisdom
   use, intrinsic :: iso_c_binding
   implicit none
   include 'fftw3.f03'
-  integer :: N_TIMES
-  integer :: Lx
-  integer :: Ly
-  integer :: Lz
-  integer :: padding_y
-  integer :: flags
+  integer :: N_TIMES = 100
+  integer :: Lx = 64
+  integer :: Ly = 64
+  integer :: Lz = 64
+  integer :: padding_y = 1
+  integer :: flags = FFTW_MEASURE
   character(len=100) :: str
   integer :: OMP_GET_MAX_THREADS
   integer :: narg, ireturn
@@ -37,12 +37,6 @@ program feram_fftw_wisdom
   narg = command_argument_count()
   if (narg.eq.0) then
      ! default values
-     N_TIMES = 100
-     Lx =  64
-     Ly =  64
-     Lz =  64
-     padding_y = 1
-     flags = FFTW_MEASURE
   else if (narg.eq.6) then
      call get_command_argument(1,str); read(str,*) N_TIMES
      call get_command_argument(2,str); read(str,*) Lx
