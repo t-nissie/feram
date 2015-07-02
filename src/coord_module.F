@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-06-25 15:59:03 takeshi>
+! Time-stamp: <2015-07-02 19:49:45 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -28,8 +28,6 @@ module Coord_module
      real*8,     allocatable :: acouP(:,:,:,:)
      real*8,     allocatable :: dVdacR(:,:,:,:)
      complex*16, allocatable :: dVdacK(:,:,:,:)
-     real*8,     allocatable :: inhoR(:,:,:,:)   ! Only used in optimize-inho-strain.F
-     complex*16, allocatable :: inhoK(:,:,:,:)   ! Only used in optimize-inho-strain.F
      real*8,     allocatable :: inhomo_K(  :,:, :,:,:)     ! FTed potential. See cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621 .
      real*8,     allocatable :: inhomo_K_G(:,:, :,:,:)     ! inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
      real*8,     allocatable :: inhomo_coup2_K(:,:, :,:,:) ! FTed potential
@@ -44,9 +42,10 @@ module Coord_module
      real*8                 homogeneous_coupling_2(6,6)
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
+     type(C_PTR) ::         inho_ptr = c_null_ptr
      type(C_PTR) ::         plan_r2c_3_out = c_null_ptr
      type(C_PTR) ::         plan_r2c_6_out = c_null_ptr
-     type(C_PTR) ::         plan_c2r_6_out = c_null_ptr
+     type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr
      type(C_PTR) ::         plan_c2r_3_out = c_null_ptr
   end type Coord_type
 
@@ -66,12 +65,17 @@ contains
     integer  LzLyLx(3)
     integer d_embed(3)
     integer z_embed(3)
+
+    integer(C_SIZE_T) :: n_alloc_inho
+    complex*16,pointer :: inhoK(:,:,:,:)
+    real*8,    pointer :: inhoR(:,:,:,:)
+
     LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
     d_embed(1)=p%Lz; d_embed(2)=p%Ly+p%padding_y; d_embed(3)=2*(p%Lx/2+1)
     z_embed(1)=p%Lz; z_embed(2)=p%Ly+p%padding_y; z_embed(3)=p%Lx/2+1
     call fftw_destroy_plan(c%plan_r2c_3_out)
     call fftw_destroy_plan(c%plan_r2c_6_out)   ! It is safe to destroy c_null_ptr.
-    call fftw_destroy_plan(c%plan_c2r_6_out)   ! See fftw3/api/apiplan.c.
+    call fftw_destroy_plan(c%plan_c2r_6_in )   ! See fftw3/api/apiplan.c.
     call fftw_destroy_plan(c%plan_c2r_3_out)
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
@@ -219,26 +223,22 @@ contains
 !$omp end parallel do
 
     !--- inhomogeneous strain ---------------
-    if (allocated(c%inhoR)) deallocate(c%inhoR)
-    allocate(c%inhoR(6, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
-    if (allocated(c%inhoK)) deallocate(c%inhoK)
-    allocate(c%inhoK(6, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
-  !!!first touch
-!$omp parallel do
-    do iz = 0,p%Lz-1
-       c%inhoR(:,:,:,iz) = 0.0d0
-    end do
-!$omp end parallel do
-!$omp parallel do
-    do iz = 0,p%Lz-1
-       c%inhoK(:,:,:,iz) = (0.0d0,0.0d0)
-    end do
-!$omp end parallel do
     howmany = 6
+    if (c_associated(c%inho_ptr)) call fftw_free(c%inho_ptr)
+    n_alloc_inho = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
+    c%inho_ptr = fftw_alloc_complex(n_alloc_inho)
+    call c_f_pointer(c%inho_ptr, inhoK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+    call c_f_pointer(c%inho_ptr, inhoR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+!!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.
+!$omp parallel do
+    do iz = 1, p%Lz
+       inhoK(:,:,:,iz) = (0.0d0,0.0d0)
+    end do
+!$omp end parallel do
     stride = howmany
-    c%plan_c2r_6_out = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
-         &                                  c%inhoK,z_embed,stride,dist,&
-         &                                  c%inhoR,d_embed,stride,dist,FFTW_MEASURE)
+    c%plan_c2r_6_in = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+         &                                   inhoK,z_embed,stride,dist,&
+         &                                   inhoR,d_embed,stride,dist,FFTW_MEASURE)
 
     if (allocated(c%inhomo_K)) deallocate(c%inhomo_K)
     allocate(     c%inhomo_K(3,3, 0:p%Lx/2,0:p%Ly+p%padding_y-1,0:p%Lz-1))
