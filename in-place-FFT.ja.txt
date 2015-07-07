@@ -1,16 +1,17 @@
-= 0.19.03 r1346 2012-07-13 の段階でin-placeのFFTが使えるかどうか検討
-coord_module.F の中のplansは次の７つ:
- plans_dipoR2C(3)     dipoR → dipoK
- plans_didiR2C(6)     didiR → didiK
- plans_inhoK2R(6)     inhoK → inhoR
- plans_dVdacK2R(3)    dVdacK → dVdacR
- plans_acouR2C(3)     acouR → acouK      plans_dipoR2Cと共用できるけど。
- plans_acouC2R(3)     acouK → acouR
- plans_dipoT2dVddi(3) dipoT → dVddi
+= in-placeのFFTが使えるかどうか検討
+== plans
+Done:
+ plan_c2r_6_in      inhoK->inhoR   (dVddi_inho_coupling.F)
 
-rank remapping or array dimension changing を使うと奇麗に見やすく書けると思う
-  r(0:2*(Lx/2+1)-1, 0:Ly-1, 0:local_Lz-1) => r_tmp
-  c(0:Lx/2,         0:Lz-1, 0:local_Ly-1) => c_tmp
+Yet:
+ plan_r2c_3_out     dipoR->dipoK   (dipoFFT.F)
+ plan_r2c_3_out     acouR->acouK   (acouFFT.F)
+
+ plan_c2r_3_out     acouK->acouR   (write_system.F. It is not crucial for seed.)
+ plan_c2r_3_out     dVdacK->dVdacR (dVdac.F. Next target for in-place.)
+ plan_c2r_3_out     dipoT->dVddi   (dVddi-dipole-dipole.F. Next target for in-place.)
+
+ plan_r2c_6_out     didiR->didiK   (dipoFFT.F)
 
 == dipoR → dipoK
 直後にdipoRを使うのでin-placeにはできない．
@@ -19,18 +20,6 @@ rank remapping or array dimension changing を使うと奇麗に見やすく書�
 dipoFFT.Fで両方が作られる．
 その直後にdVddi-dipole-dipole.FでdidiKが，
 dVddi-unharmonic.FでdidiRが使われるのでin-placeにはできない．
-
-== inhoK → inhoR
-in-place done.
-両方とも dVddi_inho_coupling.F 内でしか使われないのでin-placeにできる．
-r2480, r2483 (and r2490) の coord_module.F と dVddi_inho_coupling.F と
-に対する変更でin-placeにできたが、xlf version 14, 15でICEになるので
-r2479の状態（planの名前をわかりやすく変えた直後の状態）に戻した (2015-05-12)。
-See IV73550 INTERNAL COMPILER ERROR WITH C_PTR IN DERIVED TYPE DEFINITION
-http://www-01.ibm.com/support/docview.wss?crawler=1&uid=swg1IV73550
-なお，当該C_PTRを構造体の後ろの方に置けばこのICEは回避できる．
-一方，Core i7でFFTW_MEASUREだと遅いin-place FFTのコードレットが選ばれてしまう．
-FFTW_PATIENTでは十分速いコードレットが選ばれるが，選ぶのにやたら時間がかかる場合がある．
 
 == dipoT → dVddi
 dipoTがdVddi-dipole-dipole.F内で一時的に使われるだけなので
@@ -45,3 +34,16 @@ in-placeにできる．最も簡単そう．
  * coord_module.F, dVddi-dipole-dipole.F 書き換え.
  * timing3
  * verbose = 2 でdebug3
+
+== inhoK → inhoR
+紆余曲折あったがr2572でin-placeにした https://sourceforge.net/p/loto/code/2572/ .
+dVddi_inho_coupling.F で rank remapping or array dimension changing を使って奇麗に書いている
+    inhoK(1:howmany, 0:p%Lx/2,         0:p%Ly+p%padding_y-1, 0:p%Lz-1) => inhoK_linear
+    inhoR(1:howmany, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) => inhoR_linear
+coord_module.F で type(C_PTR)::inho_ptr=c_null_ptr は最後の方に置かないとxlfでICEになってしまう．
+See IV73550 INTERNAL COMPILER ERROR WITH C_PTR IN DERIVED TYPE DEFINITION
+http://www-01.ibm.com/support/docview.wss?crawler=1&uid=swg1IV73550
+
+== plan and wisdom
+Core i7でFFTW_MEASUREだと遅いin-place FFTのコードレットが選ばれてしまうことがある．
+FFTW_PATIENTでは十分速いコードレットが選ばれるが，選ぶのにやたら時間がかかる場合がある．

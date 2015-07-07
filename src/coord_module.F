@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-07-02 19:49:45 t-nissie>
+! Time-stamp: <2015-07-07 16:13:10 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -43,10 +43,12 @@ module Coord_module
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
      type(C_PTR) ::         inho_ptr = c_null_ptr
-     type(C_PTR) ::         plan_r2c_3_out = c_null_ptr
-     type(C_PTR) ::         plan_r2c_6_out = c_null_ptr
-     type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr
-     type(C_PTR) ::         plan_c2r_3_out = c_null_ptr
+     ! These plans are odered as in feram_fftw_wisdom.F.
+     type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr   ! inhoK->inhoR (dVddi_inho_coupling.F)
+     type(C_PTR) ::         plan_r2c_3_out = c_null_ptr   ! dipoR->dipoK (dipoFFT.F), acouR->acouK (acouFFT.F)
+     type(C_PTR) ::         plan_c2r_3_out = c_null_ptr   ! dVdacK->dVdacR (dVdac.F), dipoT->dVddi (dVddi-dipole-dipole.F)
+                                                          ! acouK->acouR (write_system(). It is not crucial for seed.)
+     type(C_PTR) ::         plan_r2c_6_out = c_null_ptr   ! didiR->didiK (dipoFFT.F)
   end type Coord_type
 
 contains
