@@ -1,6 +1,7 @@
 = in-placeのFFTが使えるかどうか検討
 == plans
 Done:
+ plan_c2r_3_in      dVdacK->dVdacR (dVdac.F, leapfrog.F, velocity_scaling.F)
  plan_c2r_6_in      inhoK->inhoR   (dVddi_inho_coupling.F)
 
 Yet:
@@ -8,7 +9,6 @@ Yet:
  plan_r2c_3_out     acouR->acouK   (acouFFT.F)
 
  plan_c2r_3_out     acouK->acouR   (write_system.F. It is not crucial for seed.)
- plan_c2r_3_out     dVdacK->dVdacR (dVdac.F. Next target for in-place.)
  plan_c2r_3_out     dipoT->dVddi   (dVddi-dipole-dipole.F. Next target for in-place.)
 
  plan_r2c_6_out     didiR->didiK   (dipoFFT.F)
@@ -23,8 +23,9 @@ dVddi-unharmonic.FでdidiRが使われるのでin-placeにはできない．
 
 == dipoT → dVddi
 dipoTがdVddi-dipole-dipole.F内で一時的に使われるだけなので
-in-placeにできる．最も簡単そう．
-
+in-placeにできる．
+ただし、dVddiはたくさんのファイルのたくさんのところで
+使われているので書き換えが面倒か？
 次の手順で書き換える:
  * timing1
  * verbose = 2 でdebug1
@@ -43,6 +44,9 @@ dVddi_inho_coupling.F で rank remapping or array dimension changing を使っ�
 coord_module.F で type(C_PTR)::inho_ptr=c_null_ptr は最後の方に置かないとxlfでICEになってしまう．
 See IV73550 INTERNAL COMPILER ERROR WITH C_PTR IN DERIVED TYPE DEFINITION
 http://www-01.ibm.com/support/docview.wss?crawler=1&uid=swg1IV73550
+
+== dVdacK → dVdacR
+r2578.
 
 == plan and wisdom
 Core i7でFFTW_MEASUREだと遅いin-place FFTのコードレットが選ばれてしまうことがある．

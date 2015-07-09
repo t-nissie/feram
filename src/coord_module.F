@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-07-07 16:13:10 takeshi>
+! Time-stamp: <2015-07-09 15:43:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -26,8 +26,6 @@ module Coord_module
      real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
      complex*16, allocatable :: acouK(:,:,:,:)   ! Acoustic displacements
      real*8,     allocatable :: acouP(:,:,:,:)
-     real*8,     allocatable :: dVdacR(:,:,:,:)
-     complex*16, allocatable :: dVdacK(:,:,:,:)
      real*8,     allocatable :: inhomo_K(  :,:, :,:,:)     ! FTed potential. See cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621 .
      real*8,     allocatable :: inhomo_K_G(:,:, :,:,:)     ! inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
      real*8,     allocatable :: inhomo_coup2_K(:,:, :,:,:) ! FTed potential
@@ -43,7 +41,9 @@ module Coord_module
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
      type(C_PTR) ::         inho_ptr = c_null_ptr
+     type(C_PTR) ::         dVdac_ptr = c_null_ptr
      ! These plans are odered as in feram_fftw_wisdom.F.
+     type(C_PTR) ::         plan_c2r_3_in  = c_null_ptr   ! dVdacK->dVdacR (dVdac.F)
      type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr   ! inhoK->inhoR (dVddi_inho_coupling.F)
      type(C_PTR) ::         plan_r2c_3_out = c_null_ptr   ! dipoR->dipoK (dipoFFT.F), acouR->acouK (acouFFT.F)
      type(C_PTR) ::         plan_c2r_3_out = c_null_ptr   ! dVdacK->dVdacR (dVdac.F), dipoT->dVddi (dVddi-dipole-dipole.F)
@@ -68,9 +68,11 @@ contains
     integer d_embed(3)
     integer z_embed(3)
 
-    integer(C_SIZE_T) :: n_alloc_inho
-    complex*16,pointer :: inhoK(:,:,:,:)
-    real*8,    pointer :: inhoR(:,:,:,:)
+    integer(C_SIZE_T) :: n_alloc
+    complex*16,pointer :: dVdacK(:,:,:,:)
+    real*8,    pointer :: dVdacR(:,:,:,:)
+    complex*16,pointer ::  inhoK(:,:,:,:)
+    real*8,    pointer ::  inhoR(:,:,:,:)
 
     LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
     d_embed(1)=p%Lz; d_embed(2)=p%Ly+p%padding_y; d_embed(3)=2*(p%Lx/2+1)
@@ -208,27 +210,28 @@ contains
          &                                  c%acouR,d_embed,stride,dist,FFTW_MEASURE)
 
     !--- force on acoustic displacement --------
-    if (allocated(c%dVdacR)) deallocate(c%dVdacR)
-    allocate(c%dVdacR(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
-    if (allocated(c%dVdacK)) deallocate(c%dVdacK)
-    allocate(c%dVdacK(3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
-  !!!first touch
+    howmany = 3
+    if (c_associated(c%dVdac_ptr)) call fftw_free(c%dVdac_ptr)
+    n_alloc = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
+    c%dVdac_ptr = fftw_alloc_complex(n_alloc)
+    call c_f_pointer(c%dVdac_ptr, dVdacK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+    call c_f_pointer(c%dVdac_ptr, dVdacR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+!!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.
 !$omp parallel do
-    do iz = 0,p%Lz-1
-       c%dVdacR(:,:,:,iz) = 0.0d0
+    do iz = 1, p%Lz
+       dVdacK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-!$omp parallel do
-    do iz = 0,p%Lz-1
-       c%dVdacK(:,:,:,iz) = (0.0d0,0.0d0)
-    end do
-!$omp end parallel do
+    stride = howmany
+    c%plan_c2r_3_in = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+         &                                   dVdacK,z_embed,stride,dist,&
+         &                                   dVdacR,d_embed,stride,dist,FFTW_MEASURE)
 
     !--- inhomogeneous strain ---------------
     howmany = 6
     if (c_associated(c%inho_ptr)) call fftw_free(c%inho_ptr)
-    n_alloc_inho = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
-    c%inho_ptr = fftw_alloc_complex(n_alloc_inho)
+    n_alloc = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
+    c%inho_ptr = fftw_alloc_complex(n_alloc)
     call c_f_pointer(c%inho_ptr, inhoK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
     call c_f_pointer(c%inho_ptr, inhoR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
 !!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.

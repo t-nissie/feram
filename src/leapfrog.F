@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2015-05-15 22:39:40 takeshi>
+! Time-stamp: <2015-07-09 16:02:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -23,6 +23,17 @@ subroutine leapfrog(p,c,e,i_step)
   integer alpha,ix,iy,iz
   real*8   kinetic_energy_dipo, kinetic_energy_acou
   external kinetic_energy_dipo, kinetic_energy_acou
+  integer(C_SIZE_T) :: n_alloc_dVdac
+  real*8,    pointer :: dVdacR_linear(:)
+  real*8,    pointer :: dVdacR(:,:,:,:)
+  integer, parameter :: howmany = 3
+
+  if (p%mass_acou>0.0d0) then
+     n_alloc_dVdac = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
+     call c_f_pointer(c%dVdac_ptr, dVdacR_linear, [n_alloc_dVdac * 2])
+     dVdacR(1:howmany, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) => dVdacR_linear
+  end if
+
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
@@ -87,7 +98,7 @@ subroutine leapfrog(p,c,e,i_step)
      if (p%mass_acou > 0.0d0) then
 !$omp parallel do
         do iz=0, p%Lz-1
-           c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt_2 * c%dVdacR(:,:,:,iz)
+           c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt_2 * dVdacR(:,:,:,iz)
         end do
 !$omp end parallel do
      end if
@@ -127,7 +138,7 @@ subroutine leapfrog(p,c,e,i_step)
      if (p%mass_acou > 0.0d0) then
 !$omp parallel do
         do iz=0, p%Lz-1
-           c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt * c%dVdacR(:,:,:,iz)
+           c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt * dVdacR(:,:,:,iz)
         end do
 !$omp end parallel do
         if (p%verbose>=2) then

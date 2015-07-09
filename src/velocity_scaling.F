@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2015-04-02 16:47:48 takeshi>
+! Time-stamp: <2015-07-09 16:05:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -17,6 +17,17 @@ subroutine velocity_scaling(p,c,e)
   integer ix,iy,iz,alpha
   real*8 scale,kinetic_energy_dipo,kinetic_energy_acou,dt_over_m
   external kinetic_energy_dipo,kinetic_energy_acou
+  integer(C_SIZE_T) :: n_alloc_dVdac
+  real*8,    pointer :: dVdacR_linear(:)
+  real*8,    pointer :: dVdacR(:,:,:,:)
+  integer, parameter :: howmany = 3
+
+  if (p%mass_acou>0.0d0) then
+     n_alloc_dVdac = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
+     call c_f_pointer(c%dVdac_ptr, dVdacR_linear, [n_alloc_dVdac * 2])
+     dVdacR(1:howmany, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) => dVdacR_linear
+  end if
+
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
@@ -71,7 +82,7 @@ subroutine velocity_scaling(p,c,e)
      if (p%mass_acou > 0.0d0) then
 !$omp parallel do
         do iz=0, p%Lz-1
-           c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt * c%dVdacR(:,:,:,iz)
+           c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt * dVdacR(:,:,:,iz)
         end do
 !$omp end parallel do
         !write(6,'(a, 3(f13.7,2f12.7))') 'acouR', c%acouR(:,0,0,0), c%acouP(:,0,0,0), c%dVdacR(:,0,0,0)
