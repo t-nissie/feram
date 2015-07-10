@@ -1,4 +1,4 @@
-= in-placeのFFTが使えるかどうか検討
+= Availability of in-place FFT
 == plans
 Done:
  plan_c2r_3_in      dVdacK->dVdacR (dVdac.F, leapfrog.F, velocity_scaling.F)
@@ -8,7 +8,7 @@ Yet:
  plan_r2c_3_out     dipoR->dipoK   (dipoFFT.F)
  plan_r2c_3_out     acouR->acouK   (acouFFT.F)
 
- plan_c2r_3_out     acouK->acouR   (write_system.F. It is not crucial for seed.)
+ plan_c2r_3_out     acouK->acouR   (write_system.F. It is not crucial for speed.)
  plan_c2r_3_out     dipoT->dVddi   (dVddi-dipole-dipole.F. Next target for in-place.)
 
  plan_r2c_6_out     didiR->didiK   (dipoFFT.F)

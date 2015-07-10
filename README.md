@@ -6,7 +6,7 @@ I released feram-0.24.00.tar.xz from
 https://sourceforge.net/projects/loto/files/feram/unstable/ .
 This is a stable release, I hope.
 
-MD5 (feram-0.24.00) = 
+MD5 (feram-0.24.00) = f86f0df68cc5164de31d920273d427d8
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -17,9 +17,14 @@ Enjoy,
 Takeshi
 
 ## Changes
-fft_check is moved into https://github.com/t-nissie/fft_check .
+From this feram-0.24.00, the default value of padding_y became 1
+instead of 3.
 
-From this feram-0.24.00, the default value of padding_y became 1 instead of 3.
+From this feram-0.24.00, the in-place FFT is introduced for
+two arrays dVdacK->dVdacR (src/dVdac.F, src/leapfrog.F and
+src/velocity_scaling.F) and inhoK->inhoR (src/dVddi_inho_coupling.F)
+with plans of plan_c2r_3_in and plan_c2r_6_in, respectively.
+See src/coord_module.F.
 
 In the feram-0.23.02unstable, there were some changes in the
 source code for further speed up.
@@ -32,10 +37,6 @@ execute five integration tests for feram with src/zzz*.feram_check.
 It is useful for developers. See src/Makefile.am and src/feram_common.F.
 
 From the feram-0.23.00unstable, internal data structure is largely modified.
-You may be able to speed up your calculations with the `padding_y` tag.
-It is developed under a branch of subversion,
-https://sourceforge.net/p/loto/code/HEAD/tree/feram/branches/newplan/ .
-See README.en or README.ja and src/coord_module.F.
 
 From the feram-0.23.00unstable, you can do `make check` on Windows.
 
@@ -80,5 +81,7 @@ Bulk calculations go very fine.
     0.22.05 | without           | OK
     0.22.06 | with              | strange peak
     0.22.06 | without           | OK
-    0.23.00 | with              | strange peak
-    0.23.00 | without           | OK
+    0.23.0? | with              | strange peak
+    0.23.0? | without           | OK
+    0.24.00 | with              | strange peak
+    0.24.00 | without           | OK

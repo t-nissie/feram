@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-07-02 19:54:11 t-nissie>
+# Time-stamp: <2015-07-10 12:05:12 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -135,6 +135,8 @@ wave_check.gp \
 28example-PbTiO3-elastocaloric-770K \
 29example-BaTiO3-new-param-defects \
 30example-BaTiO3-new-param-ramping-off \
+31example-BaTiO3-new-param-thermal-conductivity \
+32example-BaTiO3-old-64x64x1024-benchmark \
 zzz16.feram_check \
 zzzgap.feram_check \
 zzzlf.feram_check \
