@@ -3,14 +3,18 @@ feram-0.24.00
 Dear current and future feram users,
 
 I released feram-0.24.00.tar.xz from
-https://sourceforge.net/projects/loto/files/feram/unstable/ .
+https://sourceforge.net/projects/loto/files/feram/feram-0.24.00/ .
 This is a stable release, I hope.
 
-MD5 (feram-0.24.00) = f86f0df68cc5164de31d920273d427d8
+MD5 (feram-0.24.00.tar.xz) = f86f0df68cc5164de31d920273d427d8
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
 http://loto.sourceforge.net/feram/ .
+
+I also released a *slideshare* of 5 pages from
+http://www.slideshare.net/TakeshiNishimatsu/feram-20150711slideshare
+for this feram-0.24.00. You can download a PDF file from this URL.
 
 Enjoy,
 
@@ -42,9 +46,6 @@ From the feram-0.23.00unstable, you can do `make check` on Windows.
 
 From the feram-0.23.00unstable, some tools are renamed by
 adding feram_ in their heads.
-
-A bug in src/27example-BaTiO3-new-param-E_wave/generator.sh is fixed.
-You can generate some input files automatically now.
 
 ## Known bug
 OpenMP-parallelization does not work efficiently over two or
