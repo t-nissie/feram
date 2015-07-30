@@ -1,5 +1,5 @@
 ! write_system.F -*-f90-*-
-! Time-stamp: <2015-07-29 21:08:53 takeshi>
+! Time-stamp: <2015-07-30 11:14:35 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -51,7 +51,7 @@ subroutine write_system(p,c,fn)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1
-           write(UNIT_SYSTEM,'(i4,2i5,3f10.6,6e13.5,6f13.6)') ix, iy, iz, &
+           write(UNIT_SYSTEM,'(i4,2i5,3f10.6,9e14.6,3f13.6)') ix, iy, iz, &
                 & (c%dipoR(alpha,ix,iy,iz)         ,alpha=1,3),&
                 & (c%dipoP(alpha,ix,iy,iz)/c%s_Nose,alpha=1,3),&
                 & (c%dVddi(alpha,ix,iy,iz)         ,alpha=1,3),&
