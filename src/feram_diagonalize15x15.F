@@ -1,5 +1,5 @@
 ! feram_diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2015-04-20 07:05:25 takeshi>
+! Time-stamp: <2015-07-30 16:53:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: ./feram_diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
 !        ./feram_diagonalize15x15 < perovskite-Sigma_o_DS1_DDB
@@ -11,7 +11,7 @@ program feram_diagonalize15x15
   integer, parameter :: N_ATOM = 5
   integer, parameter :: N_FREEDOM = N_ATOM*3
   integer, parameter :: LWORK = N_FREEDOM*20   ! for LAPACK zheev
-  integer I, J, alpha, beta, io, info, ifail
+  integer I, J, alpha, beta, io, info
   complex*16 Force_Matrix_Hermetian(N_FREEDOM,N_FREEDOM)
   real*8     Force_Matrix_real_symmetric(N_FREEDOM,N_FREEDOM)
   ! The force matrix (or the second derivative of total energy) becomes
@@ -26,7 +26,7 @@ program feram_diagonalize15x15
   real*8    tmp_r, tmp_i
   real*8    acell(3)
   real*8    vl,vu
-  integer   il,iu,m,iwork(6*N_FREEDOM)
+  integer   il,iu,m,iwork(6*N_FREEDOM),ifail(N_FREEDOM)
   character(len=50)  :: fmt_eigen
   character(len=50) ::  c0, c1, c2, c3
   character(len=200) :: str
