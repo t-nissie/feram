@@ -1,4 +1,8 @@
 ToDo:
+o Fix "610.1vs.defects:***: EOF: reached." in msg.F.
+  See /home/t-nissie/feram/feram-o.00/directECE-on-0.005TGPa-parallel/BTOnew-050/ .
+  また、欠陥の情報も2lfの計算に引き継がれてるかチェックが必要。引き継がれているはずだけど。
+
 o mass_acou<0.0d0 なら acoustic 関連の配列で要らないモノは確保しない。
 
 o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
