@@ -8,15 +8,13 @@ Version and date of installation is written in parentheses ().
  * FFTW3 library  http://www.fftw.org/ (For Intel and AMD machines.
    version 3.3 or higher. Configure FFTW3 library with options of
    --enable-openmp --enable-threads --enable-sse2.
-   --enable-avx and --enable-shared are also useful additional configure options.
-   Intel MKL contains FFTW3 wrappers.)
+   --enable-avx and --enable-shared are also useful additional configure options.)
  * Linear algebra library
    * ATLAS (Automatically Tuned Linear Algebra Software)
    * BLAS and LAPACK libraries
  * Fortran 90 compiler
-   * gfortran coming with GCC-4.2.2 or higher  http://gcc.gnu.org/
-   * Intel Fortran Compiler (ifort; version 11.1 and later) with
-     Intel Math Kernel Library (MKL; version 10.2 and later)
+   * gfortran coming with GCC-4.8 or higher  http://gcc.gnu.org/
+   * Intel Fortran Compiler (ifort; version 14.0.2 and later)
      http://software.intel.com/en-us/articles/intel-compilers/
    * IBM XL Fortran for HITACHI SR16000
    * Fortran 90 (frtpx) for Fujitsu supercomputers: Kei and FX10
@@ -28,8 +26,8 @@ managers (apt-get, yum, etc.).
 
 == Useful software
 These software are useful for executing feram and analyzing calculated results.
- * gnuplot (version 4.6 or higher)  http://www.gnuplot.info/
- * Ruby (version 1.8.6 or higher)  http://www.ruby-lang.org/
+ * gnuplot (version 4.6)  http://www.gnuplot.info/
+ * Ruby (version 2.1 or higher)  http://www.ruby-lang.org/
  * jot (Every Linux distributions are presenting jot packages. Or, find its source athena-jot_9.0.orig.tar.gz in the Net.)
  * epstopdf.pl http://www.ctan.org/pkg/epstopdf
    ftp://ctan.tug.org/tex-archive/support/epstopdf/epstopdf.pl
@@ -46,23 +44,20 @@ follow this quick compilation instruction.
  $ tar xf feram-X.YY.ZZ.tar.xz   # If you do not have the latest tar(1),
                                  # $ xz -cd feram-X.YY.ZZ.tar.xz | tar xf -
  $ cd feram-X.YY.ZZ
- $ mkdir Linux-i686-gfortran-4.3.5
- $ cd Linux-i686-gfortran-4.3.5
+ $ mkdir build-gfortran-4.8      # Use a build directory.
+ $ cd $_
  $ ../configure --help
  $ ../configure
  $ cd src
  $ make -j --max-load=10.0
- $ make feram_mpi   # OPTIONAL. mpif90 is required.
- $ OMP_NUM_THREADS=6 make check   # OPTIONAL. It takes 2 hours.
  $ ls -l feram*
- $ cp -r ../../src/11example-BaTiO3-new-hysteresis-loop .
- $ cd 11example-BaTiO3-new-hysteresis-loop
- $ ../feram hysteresis_d0.feram &         # test run
- $ ../feram hysteresis_d1_backwrd.feram & # 1day/1file
- $ ../feram hysteresis_d1_forward.feram &
- $ ../feram hysteresis_d2.feram &
- $ gnuplot all.gp  # plot a hysteresis loop
- $ gv all.eps      # preview
+ $ make feram_mpi                # OPTIONAL. mpif90 is required.
+ $ OMP_NUM_THREADS=6 make check  # OPTIONAL
+ $ sudo make install             # OPTIONAL. feram and tools are installed into /usr/local/bin/.
+ $ cp -r ../../src/27example-BaTiO3-new-param-E_wave .
+ $ cd 27example-BaTiO3-new-param-E_wave
+ $ ../feram 360cos.feram 360sin.feram
+ $ gnuplot hysteresis.gp  # plot a hysteresis loop
 
 If you installed FFTW3 into your home directory,
 specify CPPFLAGS and LDFLAGS for configure.
@@ -81,7 +76,7 @@ with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
  $ mkdir feram-0.22.05/build-with-gfortran
  $ cd feram-0.22.05/build-with-gfortran
  $ ../configure && make -j --max-load=10.0
- $ make check   # OPTIONAL. It takes 2 hours.
+ $ make check   # OPTIONAL
 
 === Fedora 21 (feram-0.22.05, 2014-11-05)
 FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
@@ -95,7 +90,7 @@ installed into Fedora systems with yum(8) command. See http://fedoraproject.org 
  $ mkdir feram-0.22.05/fedora21
  $ cd feram-0.22.05/fedora21
  $ ../configure && make -j --max-load=10.0
- $ make check   # OPTIONAL. It takes 2 hours.
+ $ make check   # OPTIONAL
 
 === CentOS 6.2 (feram-0.18.05, 2012-03-28)
 CentOS 6.2 can be installed to your x86_64 system with DVD and
@@ -140,8 +135,8 @@ Select "Software Development Workstation" in the setup.
  $ ../configure
  $ cd src
  $ make -j --max-load=10.0
- $ OMP_NUM_THREADS=6  make check   # OPTIONAL. It takes 2 hours.
- $ OMP_NUM_THREADS=12 make check   # OPTIONAL. It takes 2 hours.
+ $ OMP_NUM_THREADS=6  make check   # OPTIONAL
+ $ OMP_NUM_THREADS=12 make check   # OPTIONAL
  $ ls -l feram
  $ ldd feram
 
@@ -180,82 +175,71 @@ from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
  $ ../configure
  $ cd src
  $ make -j --max-load=10.0
- $ OMP_NUM_THREADS=6  make check   # OPTIONAL. It takes 2 hours.
- $ OMP_NUM_THREADS=12 make check   # OPTIONAL. It takes 2 hours.
+ $ OMP_NUM_THREADS=6  make check   # OPTIONAL
+ $ OMP_NUM_THREADS=12 make check   # OPTIONAL
  $ ls -l feram
  $ ldd feram
 
-=== Linux with Intel Fortran Compiler and FFTW wrappers in Intel MKL
+=== Linux with Intel Fortran Compiler and FFTW library
+It would be better to use Intel Fortran (ifort) version 15.0.2 or higher.
+If you are using version 14.0.2 of Intel Fortran (ifort),
+the FFTW3 libraries should be compiled with icc or
+gcc version 4.6 or lower to avoid missmatch of ABI.
  $ . /opt/intel/bin/ifortvars.sh intel64     # Put these two lines in your
  $ . /opt/intel/mkl/bin/mklvars.sh intel64   # ~/.bashrc or somewhere.
  $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
- $ mkdir ifort-11.1
- $ cd ifort-11.1
+ $ ifort --version
+ ifort (IFORT) 14.0.2 20140120
+ $ mkdir ifort-14.0.2-FFTW
+ $ cd    ifort-14.0.2-FFTW
+ $ ../configure --help
+ $ strings /home/t-nissie/Linux-x86_64/lib64/libfftw3.a | grep GCC | uniq
+ GCC: (GNU) 4.4.6 20110731 (Red Hat 4.4.6-3)
+ $ ../configure FC=ifort CPPFLAGS=-I/home/t-nissie/Linux-x86_64/lib64/include LDFLAGS=-L/home/t-nissie/Linux-x86_64/lib64 --with-fft=fftw3_omp --with-lapack=mkl
+ $ cd src
+ $ make -j --max-load=10.0
+ $ export LD_LIBRARY_PATH=/home/t-nissie/Linux-x86_64/lib64:$LD_LIBRARY_PATH
+ $ ldd feram
+ $ make feram_mpi                 # OPTIONAL. mpif90 is required.
+ $ OMP_NUM_THREADS=6 make check   # OPTIONAL
+
+
+=== Linux with Intel Fortran Compiler and FFTW wrappers in Intel MKL
+Currently, feram-0.23.?? and feram-0.24.?? compiled with this method is VERY SLOW,
+because fftw_plan_many_dft_r2c() and fftw_plan_many_dft_c2r() in
+Intel MKL 11.2 are not optimized.
+ $ . /opt/intel/bin/ifortvars.sh intel64     # Put these two lines in your
+ $ . /opt/intel/mkl/bin/mklvars.sh intel64   # ~/.bashrc or somewhere.
+ $ tar xf feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ ifort --version
+ ifort (IFORT) 14.0.2 20140120
+ $ mkdir ifort-14.0.2-MKL
+ $ cd    ifort-14.0.2-MKL
  $ ../configure --help
  $ ../configure FC=ifort CPPFLAGS="-I$MKLROOT/include/fftw" --with-fft=mkl --with-lapack=mkl
  $ cd src
+ $ cp SOMEWHERE/fftw3.f03 .
  $ make -j --max-load=10.0
  $ make feram_mpi                 # OPTIONAL. mpif90 is required.
- $ OMP_NUM_THREADS=6 make check   # OPTIONAL. Test RNG and FFT.
-
-=== Linux with Intel Fortran Compiler and FFTW library
-Sometimes it is faster than MKL.
- $ tar xf feram-X.YY.ZZ.tar.xz
- $ cd feram-X.YY.ZZ
- $ mkdir ifort-12.1-FFTW
- $ cd ifort-12.1-FFTW
- $ ../configure --help
- $ ../configure FC=ifort CPPFLAGS=-I/uhome/s21584/Linux-x86_64/include LDFLAGS=-L/uhome/s21584/Linux-x86_64/lib --with-fft=fftw3_omp --with-lapack=mkl
- $ cd src
- $ make -j --max-load=10.0
- $ make feram_mpi                 # OPTIONAL. mpif90 is required.
- $ OMP_NUM_THREADS=6 make check   # OPTIONAL. It takes 2 hours.
-
-=== Linux with OLD Intel Fortran Compiler (feram-0.21.04, 2013-10-08)
-Old versions (around version 9.1) of ifort (Intel Fortran Compiler) does not
-have FFTW wrappers. You should also edit src/Makefile for changing LIBS.
-
-Configure options for fftw-3.3.4 are:
- $ ../configure --prefix=/users/takeshi/Linux-x86_64 --enable-openmp --enable-threads --enable-sse2 CC=icc F77=ifort FC=ifort
-
-Compile feram as:
- $ tar xf feram-X.YY.ZZ.tar.xz
- $ cd feram-X.YY.ZZ
- $ mkdir ifort-9.1-FFTW
- $ cd ifort-9.1-FFTW
- $ ../configure --help
- $ ../configure FC=ifort CPPFLAGS=-I/users/takeshi/Linux-x86_64/include LDFLAGS="-L/nfs/apps/intel/mkl/9.0/lib/em64t -L/users/takeshi/Linux-x86_64/lib" --with-lapack=mkl
- $ emacs src/Makefile   # Edit LIBS as below diff
- $ diff -u src/Makefile~ src/Makefile
- --- src/Makefile~      2013-10-08 11:58:19.369218529 +0200
- +++ src/Makefile       2013-10-08 12:00:21.795094709 +0200
- @@ -477,7 +477,7 @@
-  INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-  LDFLAGS = -L/nfs/apps/intel/mkl/9.0/lib/em64t -L/users/takeshi/Linux-x86_64/lib -L/usr/local/lib
-  LIBOBJS = 
- -LIBS = -lfftw3_omp -lfftw3  -lmkl_core -lmkl_intel_thread -lmkl_gf_lp64
- +LIBS = -lfftw3_omp -lfftw3 -lmkl -lmkl_lapack
-  LTLIBOBJS = 
-  MAKEINFO = ${SHELL} /users/takeshi/f/loto/feram/trunk/missing makeinfo
-  MKDIR_P = /bin/mkdir -p
- $ make -j --max-load=10.0
-
+ $ OMP_NUM_THREADS=6 make check   # OPTIONAL
 
 == Super computers
 === HITACHI SR16000 with IBM xlf90_r, FFTW 3.3 and dsyevx in ESSL (libesslsmp)
-IBM XL Fortran (xlf90_r) version 13.1 or higher is required.
+IBM XL Fortran (xlf90_r) version 15.1 or higher is required.
  $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir SR16000-xlf
  $ cd SR16000-xlf
  $ xlf90_r -qversion   # Displays the official compiler product name and version information
- $ ../configure FC=xlf90_r CPPFLAGS=-I/sysap/fftw_xlc/fftw-3.3.2a/include LDFLAGS=-L/sysap/fftw_xlc/fftw-3.3.2a/lib --with-lapack=essl
+ $ ../configure FC=xlf90_r CPPFLAGS=-I/sysap/fftw_xlc_simd/include LDFLAGS=-L/sysap/fftw_xlc_simd/lib --with-lapack=essl
  $ cd src
  $ grep -v cppoptions /etc/xlf.cfg.71 > myxlf.cfg   # Enable C-style comments
- $ emacs Makefile   # DEFS = -DHAVE_CONFIG_H  =>  DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg
+ $ mv Makefile Makefile~
+ $ sed 's/DEFS = -DHAVE_CONFIG_H/DEFS = -WF,-DHAVE_CONFIG_H -Fmyxlf.cfg/' Makefile~ > Makefile
  $ make -j10
- $ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" make check   # OPTIONAL. It takes 30 minutes.
+ $ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" make check   # OPTIONAL
  $ make feram_mpi   # OPTIONAL
 
 === Fujitsu Kei and FX10 with their cross compiler frtpx and mpifrtpx
@@ -267,11 +251,6 @@ IBM XL Fortran (xlf90_r) version 13.1 or higher is required.
  $ cd src
  $ make
  $ make feram_mpi   # OPTIONAL
-
-If you want to link FFTW 3.3 rather than FFT in SSL II,
- $ ../configure FC=frtpx LDFLAGS=-L/home2/apps/fftw/3.3/lib64 CPPFLAGS=-I/home2/apps/fftw/3.3/include --with-fft=fftw3 --with-lapack=ssl2 --host=Kei
- $ ../configure FC=frtpx LDFLAGS=-L/usr/local/fftw/3.3/lib64  CPPFLAGS=-I/usr/local/fftw/3.3/include  --with-fft=fftw3 --with-lapack=ssl2 --host=FX10
-
 
 
 == Windows
@@ -529,7 +508,7 @@ Basically, these libraries can be installed with configure && make && make insta
  $ make -j2
  $ ls -l src/feram
  $ ldd src/feram
- $ OMP_NUM_THREADS=2 make check   # OPTIONAL. It takes 2 hours.
+ $ OMP_NUM_THREADS=2 make check   # OPTIONAL
 =end
 # Local variables:
 #   mode: RD

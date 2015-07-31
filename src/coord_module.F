@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2014-11-25 04:42:53 takeshi>
+! Time-stamp: <2015-07-09 15:43:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,6 +9,7 @@
 #include "define.h"
 
 module Coord_module
+  use, intrinsic :: iso_c_binding
   implicit none
   type Coord_type
      real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
@@ -25,16 +26,13 @@ module Coord_module
      real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
      complex*16, allocatable :: acouK(:,:,:,:)   ! Acoustic displacements
      real*8,     allocatable :: acouP(:,:,:,:)
-     real*8,     allocatable :: dVdacR(:,:,:,:)
-     complex*16, allocatable :: dVdacK(:,:,:,:)
-     real*8,     allocatable :: inhoR(:,:,:,:)   ! Only used in optimize-inho-strain.F
-     complex*16, allocatable :: inhoK(:,:,:,:)   ! Only used in optimize-inho-strain.F
-     real*8,     allocatable :: inhomo_K(:,:,:, :,:)       ! FTed potential
+     real*8,     allocatable :: inhomo_K(  :,:, :,:,:)     ! FTed potential. See cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621 .
      real*8,     allocatable :: inhomo_K_G(:,:, :,:,:)     ! inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
-     real*8,     allocatable :: inhomo_coup2_K(:,:,:, :,:) ! FTed potential
+     real*8,     allocatable :: inhomo_coup2_K(:,:, :,:,:) ! FTed potential
      logical,    allocatable :: sum_p(:,:,:) ! .true. if the u(R) is not defect nor mirrored film. This array will be initialized in read_defects_u.F
      real*8,     allocatable :: e_layer_dipo(:)
      real*8,     allocatable :: e_layer_acou(:)
+     integer,    allocatable :: n_sum_layer(:)
      real*8                 strain(6)
      real*8                 homogeneous(6,6)
      real*8                 homogeneous_G(6,6)
@@ -42,295 +40,265 @@ module Coord_module
      real*8                 homogeneous_coupling_2(6,6)
      real*8                 s_Nose, pi_Nose, H0! for Nose-Poincare Thermostat
      integer                n_sum_p
-     integer*8              plans_dipoR2C(3)
-     integer*8              plans_didiR2C(6)
-     integer*8              plans_inhoK2R(6)
-     integer*8              plans_dVdacK2R(3)
-     integer*8              plans_acouR2C(3)
-     integer*8              plans_acouC2R(3)
-     integer*8              plans_dipoT2dVddi(3)
+     type(C_PTR) ::         inho_ptr = c_null_ptr
+     type(C_PTR) ::         dVdac_ptr = c_null_ptr
+     ! These plans are odered as in feram_fftw_wisdom.F.
+     type(C_PTR) ::         plan_c2r_3_in  = c_null_ptr   ! dVdacK->dVdacR (dVdac.F)
+     type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr   ! inhoK->inhoR (dVddi_inho_coupling.F)
+     type(C_PTR) ::         plan_r2c_3_out = c_null_ptr   ! dipoR->dipoK (dipoFFT.F), acouR->acouK (acouFFT.F)
+     type(C_PTR) ::         plan_c2r_3_out = c_null_ptr   ! dVdacK->dVdacR (dVdac.F), dipoT->dVddi (dVddi-dipole-dipole.F)
+                                                          ! acouK->acouR (write_system(). It is not crucial for seed.)
+     type(C_PTR) ::         plan_r2c_6_out = c_null_ptr   ! didiR->didiK (dipoFFT.F)
   end type Coord_type
 
 contains
   subroutine alloc_Coord(p,c)
+    use, intrinsic :: iso_c_binding
     use Param_module
     implicit none
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
-    integer i
-#   if defined(HAVE_LIBFFTW3)
-    integer alpha
-#   include "fftw3.f"
-#   endif
+    integer iz
+
+    include 'fftw3.f03'
+    integer howmany,stride
+    integer, parameter :: rank=3
+    integer, parameter :: dist=1
+    integer  LzLyLx(3)
+    integer d_embed(3)
+    integer z_embed(3)
+
+    integer(C_SIZE_T) :: n_alloc
+    complex*16,pointer :: dVdacK(:,:,:,:)
+    real*8,    pointer :: dVdacR(:,:,:,:)
+    complex*16,pointer ::  inhoK(:,:,:,:)
+    real*8,    pointer ::  inhoR(:,:,:,:)
+
+    LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
+    d_embed(1)=p%Lz; d_embed(2)=p%Ly+p%padding_y; d_embed(3)=2*(p%Lx/2+1)
+    z_embed(1)=p%Lz; z_embed(2)=p%Ly+p%padding_y; z_embed(3)=p%Lx/2+1
+    call fftw_destroy_plan(c%plan_r2c_3_out)
+    call fftw_destroy_plan(c%plan_r2c_6_out)   ! It is safe to destroy c_null_ptr.
+    call fftw_destroy_plan(c%plan_c2r_6_in )   ! See fftw3/api/apiplan.c.
+    call fftw_destroy_plan(c%plan_c2r_3_out)
+
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
     !--- m_inv ------------------------------
     if (allocated(c%m_inv)) deallocate(c%m_inv)
-    allocate(c%m_inv(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(c%m_inv(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%m_inv(:,:,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
     !--- dipo -------------------------------
     if (allocated(c%dipoR)) deallocate(c%dipoR)
-    allocate(     c%dipoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(     c%dipoR(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%dipoK)) deallocate(c%dipoK)
-    allocate(     c%dipoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3)) !"/2" for real<->complex FFT
-    !!!first touch
+    allocate(     c%dipoK(3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+  !!!first touch
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dipoR(:,:,i,:) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%dipoR(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dipoK(:,:,i,:) = (0.0d0,0.0d0)
+    do iz = 0,p%Lz-1
+       c%dipoK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-#   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_plan_dft_r2c_3d(c%plans_dipoR2C(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%dipoR(0,0,0,alpha), c%dipoK(0,0,0,alpha), FFTW_MEASURE)
-    end do
-#   endif
+    howmany = 3
+    stride = howmany
+    c%plan_r2c_3_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+         &                                  c%dipoR,d_embed,stride,dist,&
+         &                                  c%dipoK,z_embed,stride,dist,FFTW_MEASURE)
 
     if (allocated(c%dipoP)) deallocate(c%dipoP)
-    allocate(     c%dipoP(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
-
+    allocate(     c%dipoP(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%dVddi)) deallocate(c%dVddi)
-    allocate(     c%dVddi(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(     c%dVddi(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%dipoT)) deallocate(c%dipoT)
-    allocate(c%dipoT(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
-    !!!first touch
+    allocate(     c%dipoT(3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+  !!!first touch
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dVddi(:,:,i,:) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%dVddi(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dipoT(:,:,i,:) = (0.0d0,0.0d0)
+    do iz = 0,p%Lz-1
+       c%dipoT(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-#   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_plan_dft_c2r_3d(c%plans_dipoT2dVddi(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%dipoT(0,0,0,alpha), c%dVddi(0,0,0,alpha), FFTW_MEASURE)
-    end do
-#   endif
 
     if (allocated(c%E_field)) deallocate(c%E_field)
-    allocate(     c%E_field(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
-    !!!first touch
+    allocate(     c%E_field(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+  !!!first touch
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%E_field(:,:,i,:) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%E_field(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 
     if (allocated(c%E_field_local)) deallocate(c%E_field_local)
-    allocate(     c%E_field_local(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
-    !!!first touch
+    allocate(     c%E_field_local(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+  !!!first touch
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%E_field_local(:,:,i,:) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%E_field_local(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 
     if (allocated(c%dipoI)) deallocate(c%dipoI)
-    allocate(     c%dipoI(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" for real<->complex FFT
+    allocate(     c%dipoI(3, 3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%dipoI(:,:, :,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
 
     if (allocated(c%didiR)) deallocate(c%didiR)
-    allocate(     c%didiR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
+    allocate(     c%didiR(6, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%didiK)) deallocate(c%didiK)
-    allocate(     c%didiK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))    !"/2" for real<->complex FFT
-    !!!first touch
+    allocate(     c%didiK(6, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))    !"/2" for real<->complex FFT
+  !!!first touch
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%didiR(:,:,i,:) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%didiR(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%didiK(:,:,i,:) = (0.0d0,0.0d0)
+    do iz = 0,p%Lz-1
+       c%didiK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-#   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 6
-       call dfftw_plan_dft_r2c_3d(c%plans_didiR2C(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%didiR(0,0,0,alpha), c%didiK(0,0,0,alpha), FFTW_MEASURE)
-    end do
-#   endif
+    howmany = 6
+    stride = howmany
+    c%plan_r2c_6_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+         &                                  c%didiR,d_embed,stride,dist,&
+         &                                  c%didiK,z_embed,stride,dist,FFTW_MEASURE)
 
     !--- acou -------------------------------
     if (allocated(c%acouR)) deallocate(c%acouR)
-    allocate(c%acouR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(c%acouR(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%acouK)) deallocate(c%acouK)
-    allocate(c%acouK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
+    allocate(c%acouK(3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%acouP)) deallocate(c%acouP)
-    allocate(c%acouP(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
-    !!!first touch
+    allocate(c%acouP(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+  !!!first touch
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%acouR(:,:,i,:) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%acouR(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%acouK(:,:,i,:) = (0.0d0,0.0d0)
+    do iz = 0,p%Lz-1
+       c%acouK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%acouP(:,:,i,:) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%acouP(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
-#   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_plan_dft_r2c_3d(c%plans_acouR2C(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%acouR(0,0,0,alpha), c%acouK(0,0,0,alpha), FFTW_MEASURE)
-       call dfftw_plan_dft_c2r_3d(c%plans_acouC2R(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%acouK(0,0,0,alpha), c%acouR(0,0,0,alpha), FFTW_MEASURE)
-    end do
-#   endif
+    howmany = 3
+    stride = howmany
+    c%plan_c2r_3_out = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+         &                                  c%acouK,z_embed,stride,dist,&
+         &                                  c%acouR,d_embed,stride,dist,FFTW_MEASURE)
 
     !--- force on acoustic displacement --------
-    if (allocated(c%dVdacR)) deallocate(c%dVdacR)
-    allocate(c%dVdacR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3))
-    if (allocated(c%dVdacK)) deallocate(c%dVdacK)
-    allocate(c%dVdacK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3))
-    !!!first touch
+    howmany = 3
+    if (c_associated(c%dVdac_ptr)) call fftw_free(c%dVdac_ptr)
+    n_alloc = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
+    c%dVdac_ptr = fftw_alloc_complex(n_alloc)
+    call c_f_pointer(c%dVdac_ptr, dVdacK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+    call c_f_pointer(c%dVdac_ptr, dVdacR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+!!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%dVdacR(:,:,i,:) = 0.0d0
+    do iz = 1, p%Lz
+       dVdacK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-!$omp parallel do
-    do i = 0,p%Lz-1
-       c%dVdacK(:,:,i,:) = (0.0d0,0.0d0)
-    end do
-!$omp end parallel do
-#   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_plan_dft_c2r_3d(c%plans_dVdacK2R(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%dVdacK(0,0,0,alpha), c%dVdacR(0,0,0,alpha), FFTW_MEASURE)
-    end do
-#   endif
+    stride = howmany
+    c%plan_c2r_3_in = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+         &                                   dVdacK,z_embed,stride,dist,&
+         &                                   dVdacR,d_embed,stride,dist,FFTW_MEASURE)
 
     !--- inhomogeneous strain ---------------
-    if (allocated(c%inhoR)) deallocate(c%inhoR)
-    allocate(c%inhoR(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 6))
-    if (allocated(c%inhoK)) deallocate(c%inhoK)
-    allocate(c%inhoK(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 6))
-    !!!first touch
+    howmany = 6
+    if (c_associated(c%inho_ptr)) call fftw_free(c%inho_ptr)
+    n_alloc = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
+    c%inho_ptr = fftw_alloc_complex(n_alloc)
+    call c_f_pointer(c%inho_ptr, inhoK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+    call c_f_pointer(c%inho_ptr, inhoR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
+!!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%inhoR(:,:,i,:) = 0.0d0
+    do iz = 1, p%Lz
+       inhoK(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
-!$omp parallel do
-    do i = 0,p%Lz-1
-       c%inhoK(:,:,i,:) = (0.0d0,0.0d0)
-    end do
-!$omp end parallel do
-#   if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 6
-       call dfftw_plan_dft_c2r_3d(c%plans_inhoK2R(alpha), p%Lx, p%Ly, p%Lz, &
-            & c%inhoK(0,0,0,alpha), c%inhoR(0,0,0,alpha), FFTW_MEASURE)
-    end do
-#   endif
+    stride = howmany
+    c%plan_c2r_6_in = fftw_plan_many_dft_c2r(rank,LzLyLx,howmany,&
+         &                                   inhoK,z_embed,stride,dist,&
+         &                                   inhoR,d_embed,stride,dist,FFTW_MEASURE)
 
     if (allocated(c%inhomo_K)) deallocate(c%inhomo_K)
-    allocate(     c%inhomo_K(0:p%Lx/2,0:p%Ly-1,0:p%Lz-1, 3,3))
+    allocate(     c%inhomo_K(3,3, 0:p%Lx/2,0:p%Ly+p%padding_y-1,0:p%Lz-1))
 
     if (allocated(c%inhomo_K_G)) deallocate(c%inhomo_K_G)
-    allocate(     c%inhomo_K_G(3,4, 0:p%Lx/2,0:p%Ly-1,0:p%Lz-1))
+    allocate(     c%inhomo_K_G(3,4, 0:p%Lx/2,0:p%Ly+p%padding_y-1,0:p%Lz-1))
 
     if (allocated(c%inhomo_coup2_K)) deallocate(c%inhomo_coup2_K)
-#if defined(__xlc__) || defined(__sparc)
-    if (mod(p%Ly,16).eq.0 .and. mod(p%Lz,16).eq.0) then
-       allocate(c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1+3,0:p%Lz-1, 3,6))   ! padding
-    else
-       allocate(c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1  ,0:p%Lz-1, 3,6))
-    end if
-#else
-    allocate(c%inhomo_coup2_K(0:p%Lx/2,0:p%Ly-1  ,0:p%Lz-1, 3,6))
-#endif
+    allocate(c%inhomo_coup2_K(3,6, 0:p%Lx/2,0:p%Ly+p%padding_y-1  ,0:p%Lz-1))
+
+  !!!first touch
 !$omp parallel do
-    do i = 0,p%Lz-1
-       c%inhomo_coup2_K(:,:,i,:,:) = 0.0d0
+    do iz = 0,p%Lz-1
+       c%inhomo_K(:,:, :,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%inhomo_K_G(:,:, :,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%inhomo_coup2_K(:,:, :,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 
     !--- sum_p ------------------------------
     if (allocated(c%sum_p)) deallocate(c%sum_p)
-    allocate(c%sum_p(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1))
+    allocate(c%sum_p(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%sum_p(:,:,iz) = .false.
+    end do
+!$omp end parallel do
+
     !--- e_layer_dipo and e_layer_and for thermal conductivity----
     if (allocated(c%e_layer_dipo)) deallocate(c%e_layer_dipo)
     allocate(c%e_layer_dipo(0:p%Lz-1))
     if (allocated(c%e_layer_acou)) deallocate(c%e_layer_acou)
     allocate(c%e_layer_acou(0:p%Lz-1))
-    !--- end --------------------------------
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  alloc_Coord().')
-  end subroutine alloc_Coord
-
-  subroutine write_system(p,c,fn)
-    use Param_module
-    implicit none
-    type(Param_type), intent(in) :: p
-    type(Coord_type), intent(inout) :: c
-    character(len=*) :: fn
-    character(len=FILE_NAME_LEN) :: coord_directory_fn
-    integer ix,iy,iz,i,alpha
-
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
-
-    if (p%coord_directory.eq.'never') then
-       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'never write .coord files.')
-       return
-    else if (p%coord_directory.eq.'') then
-       coord_directory_fn = trim(fn)
-    else
-       coord_directory_fn = trim(p%coord_directory) // '/' // trim(fn)
-    end if
-
-    if (p%mass_acou <= 0.0d0) then
+    if (allocated(c%n_sum_layer)) deallocate(c%n_sum_layer)
+    allocate(c%n_sum_layer(0:p%Lz-1))
+  !!!first touch
 !$omp parallel do
-       do i = 0,p%Lz-1
-          c%acouK(:,:,i,:) = (0.0d0, -1.0d0) * c%acouK(:,:,i,:)
-       end do
-!$omp end parallel do
-
-#      if defined(HAVE_LIBFFTW3)
-       do alpha = 1, 3
-          call dfftw_execute(c%plans_acouC2R(alpha))
-       end do
-#      else
-       do alpha = 1, 3
-          call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
-               & c%acouR(0,0,0,alpha), c%acouK(0,0,0,alpha))
-       end do
-#      endif
-
-!$omp parallel do
-       do i = 0,p%Lz-1
-          c%acouR(:,:,i,:) = c%acouR(:,:,i,:) * p%Ninv
-       end do
-!$omp end parallel do
-    end if
-
-    open(unit=UNIT_SYSTEM, file=coord_directory_fn, status='replace')
-    do iz = 0, p%Lz-1
-       do iy = 0, p%Ly-1
-          do ix = 0, p%Lx-1
-                write(UNIT_SYSTEM,'(i4,2i5,3f10.6,6e13.5,6f11.6)') ix, iy, iz, &
-                     & (c%dipoR(ix,iy,iz,i)         ,i=1,3),&
-                     & (c%dipoP(ix,iy,iz,i)/c%s_Nose,i=1,3),&
-                     & (c%dVddi(ix,iy,iz,i)         ,i=1,3),&
-                     & (c%acouR(ix,iy,iz,i)         ,i=1,3),&
-                     & (c%acouP(ix,iy,iz,i)         ,i=1,3)
-          end do
-       end do
+    do iz = 0,p%Lz-1
+       c%e_layer_dipo(iz) = 0.0d0
+       c%e_layer_acou(iz) = 0.0d0
+       c%n_sum_layer( iz) = p%Lx * p%Ly
     end do
-    close(UNIT_SYSTEM)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(coord_directory_fn))
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
-  end subroutine write_system
+!$omp end parallel do
+    !--- end --------------------------------
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'alloc_Coord().')
+  end subroutine alloc_Coord
 
   subroutine write_fft(p,c,fn)
     use Param_module
@@ -349,7 +317,7 @@ contains
           yy=iy
        end if
        do ix=0, p%Lx/2
-          write(UNIT_SYSTEM,*) abs(c%dipoK(ix,yy,0,3)), c%dipoK(ix,yy,0,3)
+          write(UNIT_SYSTEM,*) abs(c%dipoK(3,ix,yy,0)), c%dipoK(3,ix,yy,0)
        end do
        write(UNIT_SYSTEM,*) ''
     end do
@@ -357,5 +325,4 @@ contains
     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME', fn)
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   end subroutine write_fft
-
 end module Coord_module

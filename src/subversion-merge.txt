@@ -1,0 +1,88 @@
+新しいことをやろうとしてbranches/newplanを作ってから８ヶ月も経ってしまった。
+trunkにした変更をbranches/newplanにmergeする。
+
+参考:
+http://cockatiel-cage.hateblo.jp/entry/2012/12/14/122449
+http://www.caldron.jp/~nabetaro/svn/svnbook-1.4-final/svn.branchmerge.copychanges.html
+
+
+$ pwd
+/Users/takeshi/f/loto/feram/branches/newplan
+$ svn info
+Path: .
+Working Copy Root Path: /Users/takeshi/f/loto
+URL: https://svn.code.sf.net/p/loto/code/feram/branches/newplan
+Repository Root: https://svn.code.sf.net/p/loto/code
+Repository UUID: 66b5f4e2-d06a-45f9-b3fd-3971e49ba91e
+Revision: 2368
+Node Kind: directory
+Schedule: normal
+Last Changed Author: t-nissie
+Last Changed Rev: 2250
+Last Changed Date: 2014-07-25 20:04:26 +0900 (金, 25  7 2014)
+
+$ svn log --stop-on-copy
+------------------------------------------------------------------------
+r2250 | t-nissie | 2014-07-25 20:04:26 +0900 (金, 25  7 2014) | 1 line
+
+for testing a new plan of FFTW in a branch
+------------------------------------------------------------------------
+$ svn merge --dry-run -r 2250:HEAD //svn.code.sf.net/p/loto/code/feram/trunk
+$ svn merge -r 2250:HEAD https://svn.code.sf.net/p/loto/code/feram/trunk
+$ svn commit -m "branches/newplan: imported r2250-2368 from trunk."
+Sending        .
+Sending        Autotools-memo.ja
+Sending        INSTALL
+    :
+Sending        tutorial.AICS.en.txt
+Sending        tutorial.IMR.ja.txt
+Transmitting file data ..........................................
+Committed revision 2369.
+$ 
+
+
+app14$ cd f/loto/
+/home/t-nissie/f/loto
+app14$ svn up
+D    feram/branches/newplan/README
+U    feram/branches/newplan/Nightly.en
+U    feram/branches/newplan/README.ja
+        :
+U    feram/branches/newplan/Autotools-memo.ja
+ U   feram/branches/newplan
+U    t-nissie/trunk/cv/index.ja.html
+U    t-nissie/trunk/cv/index.en.html
+Updated to revision 2369.
+app14$
+
+
+Done:
+ x add padding_y in param_module.F
+ x coord_module.F
+ x dipoFFT.F
+ x dipoR, dipoK, dipoP
+ x m_inv
+ x dVddi
+ x dipoT
+ x acouR, acouK, acouP
+ x E_field(ix,iy,iz,alpha)
+ x Use plan_dipoR2C instead of plan_acouR2C, plan_acouC2R instead of plan_dipoT2dVddi.
+ x dVdacR, dVdacK
+ x didiR
+ x inhoR, inhoK
+ x inhomo_coup2_K
+ x inhomo_K
+ x dipoI
+ x long_range, short_range
+ x ,i) -> ,iz) in write_system.F and coord_module.F
+ x padding_y and 2*(Lx/2+1)
+
+ToDo:
+ * fft_3d_3x3upper_r2c.F
+ * dipole-dipole-short-range.F
+ * dipole-dipole-long-range.F
+ * feram_fftw_wisdom.F
+
+ * in-place: inhoK -> inhoR
+ * in-place: dipoT -> dVddi
+ * sum -> dot_product

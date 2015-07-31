@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2014-07-16 07:28:51 takeshi>
+! Time-stamp: <2015-06-26 14:47:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -14,7 +14,7 @@ subroutine feram_common(fn)
   type(Param_type),save :: p
   type(Coord_type),save :: c
   character(len=FILE_NAME_LEN), intent(in) :: fn
-  character(len=FILE_NAME_LEN)             :: fn_log
+  character(len=FILE_NAME_LEN)             :: fn_log, basename
   integer                                  :: fn_len_trim, suffix
   integer                                  :: OMP_GET_MAX_THREADS
   character(len=70) :: message
@@ -22,16 +22,19 @@ subroutine feram_common(fn)
   real*8            :: time_array(1:2)
   integer           :: count_rate, count_max, i
 
-# if defined(HAVE_LIBFFTW3)
-  integer :: ireturn, ios
-  call dfftw_init_threads(ireturn)
-  call dfftw_plan_with_nthreads(OMP_GET_MAX_THREADS())
-# endif
+  include 'fftw3.f03'
+  integer :: ireturn
+  ireturn = fftw_init_threads()   ! It is safe to call this function many times. See fftw3/threads/api.c.
+  call fftw_plan_with_nthreads(OMP_GET_MAX_THREADS())   ! Also safe. See "Usage of Multi-threaded FFTW" in doc.
 
   fn_len_trim = len_trim(fn)
   suffix = index(fn,'.feram',back=.true.)
-  if (suffix.gt.0 .and. suffix.eq.fn_len_trim-5) then
-     p%filename = fn(1:fn_len_trim-6)
+  if (suffix.gt.0) then
+     if (suffix.eq.fn_len_trim-5) then
+        p%filename = fn(1:fn_len_trim-6)
+     else if (index(fn,'.feram_check',back=.true.).eq.fn_len_trim-11) then
+        p%filename = basename(fn(1:fn_len_trim-12))  ! for `make distcheck`
+     end if
   else
      p%filename = fn
   end if
@@ -47,32 +50,34 @@ subroutine feram_common(fn)
   write(message,'(i5)') OMP_GET_MAX_THREADS()
   call msg(UNIT_LOG, __FILE__, __LINE__, 'N_THREADS', message)
 
-# if defined(HAVE_LIBFFTW3)
-  open(unit=UNIT_WISDOM, file='wisdom', status='old', action='read', iostat=ios)
-  if (ios.eq.0) then
-     call import_wisdom_from_file(ireturn,UNIT_WISDOM)
-     close(UNIT_WISDOM)
-     if (ireturn.eq.1) then
-        call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Successfully imported FFTW wisdom in current directory.')
-     else
-        call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Failed to import FFTW wisdom in current directory.')
-     end if
+#if defined(HAVE_LIBFFTW3) && !defined(WITH_FFT_MKL)
+  ireturn = fftw_import_wisdom_from_filename(C_CHAR_"wisdom"//C_NULL_CHAR)
+  if (ireturn.eq.1) then
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Successfully imported FFTW wisdom in current directory.')
   else
-     call    msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'FFTW wisdom is not in current directory.')
-     call dfftw_import_system_wisdom(ireturn)
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Failed to import FFTW wisdom in current directory.')
+     ireturn = fftw_import_system_wisdom()
      if (ireturn.eq.1) then
         call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Successfully imported FFTW system wisdom, /etc/fftw/wisdom.')
      else
         call msg(UNIT_LOG, __FILE__, __LINE__, 'FFTW_WISDOM', 'Could not import FFTW system wisdom. All FFTW plans will be made by myself.')
      end if
-  endif
-# endif
+  end if
+#endif
 
   call  read_Param(p,fn)
   call  make_Param(p)
   call write_Param(p)
-  if (.not. p%continue) call alloc_Coord(p,c)
-  call  potentials(p,c)
+  if (p%continue) then
+     if (.not.allocated(c%dipoR)) then
+        write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': continue=.true. but cannot continue the calculation, because there is no previous result.'
+        stop 1
+     end if
+  else
+     call alloc_Coord(p,c)
+  end if
+  call dipole_dipole(p,c)
+  call elastic(p,c)
   !Instead, read_defects_u(p,c) is called in initialize_dipoR()! call make_mass_matrix(p,c)
 
   call system_clock(count_array(1))
@@ -109,10 +114,21 @@ subroutine feram_common(fn)
        & OMP_GET_MAX_THREADS(), "     #TIMING_REPORT"
   call msg_ez(UNIT_LOG, message)
 
+  ! We do NOT call fftw_cleanup_threads().
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'love && peace && free_software')
   close(unit=UNIT_LOG)
-
-# if defined(HAVE_LIBFFTW3)
-  call dfftw_cleanup_threads(ireturn)
-# endif
 end subroutine feram_common
+
+function basename(fn)
+  implicit none
+  character(len=FILE_NAME_LEN) :: basename
+  character(len=*), intent(in) :: fn
+  integer :: len, pos
+  len = len_trim(fn)
+  pos = index(fn,'/',back=.true.)
+  if (pos.gt.0) then
+     basename = fn(pos+1:len)
+  else
+     basename = fn
+  end if
+end function basename

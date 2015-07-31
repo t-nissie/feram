@@ -6,40 +6,114 @@
 
 == Timing results
 Results of `grep TIMING *.log`
-Note that, with a 96x96x96 supercell, use of single chip is
+Note that, with a 64x64x64 supercell, use of single chip is
 much more efficient than use of two chips under Sandy Bridge-,
-Ivy Bridge- and Haswell-based Xeon.
-=== feram-0.22.05
+Ivy Bridge-, Haswell- Broadwell-based Xeon.
+
+elastocaloric770K_check.sh consumes only 0.25 GB.
+
+=== r2292 feram-0.22.05
 ==== elastocaloric770K_check.vs.log
  X5650 1 chip =  6 core:       3.73        2114.44        2118.17    6     #TIMING_REPORT
  X5650 2 chip = 12 core:       3.86        1159.24        1163.10   12     #TIMING_REPORT
- E5-2695 v2 2 chip = 24 cr *0: 5.84         653.73         659.57   24     #TIMING_REPORT
- E5-2680 v3 2 chip = 24 cr *1: 5.58         580.97         586.56   24     #TIMING_REPORT
- E5-2680 v3 2 chip = 24 cr *2: 2.69         563.31         566.00   24     #TIMING_REPORT
- E5-2680 v3 1 chip = 12 cr *2: 2.51         656.61         659.12   12     #TIMING_REPORT
  SR16000  8 thds on 1/4 node:  2.98         994.32         997.30    8     #TIMING_REPORT
  SR16000 32 thds on  1  node:  3.12         363.08         366.20   32     #TIMING_REPORT
 ==== elastocaloric770K_check.lf.log
  X5650 1 chip =  6 core:       3.40        2106.04        2109.44    6     #TIMING_REPORT
  X5650 2 chip = 12 core:       3.41        1143.05        1146.46   12     #TIMING_REPORT
- E5-2695 v2 2 chip = 24 cr *0: 5.67         615.59         621.26   24     #TIMING_REPORT 
- E5-2680 v3 chip = 24 core *1: 2.17         582.94         585.11   24     #TIMING_REPORT
- E5-2680 v3 chip = 24 core *2: 2.06         561.13         563.19   24     #TIMING_REPORT
- E5-2680 v3 1 chip = 12 cr *2: 2.05         647.82         649.88   12     #TIMING_REPORT
  SR16000  8 thds on 1/4 node:  2.74        1005.32        1008.06    8     #TIMING_REPORT
  SR16000 32 thds on  1  node:  2.76         363.94         366.70   32     #TIMING_REPORT
 
-*0: Intel Fortran (ifort) 14.0 and MKL with FCFLAGS="-r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1" (default)
-*1: gfortran-4.4.7 with FCFLAGS="-g -Wall -O3 -funroll-loops -pipe -ffpe-trap=zero,overflow -fopenmp" (default)
-*2: gfortran-4.9.2 with FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'
+=== r2338 feram-0.22.06
+==== elastocaloric770K_check.vs.log
+ X5650 1 chip =  6 core:       3.76        2150.98        2154.74    6     #TIMING_REPORT
+ X5650 2 chip = 12 core:       3.91        1170.36        1174.27   12     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node:  2.97         944.31         947.28    8     #TIMING_REPORT
+ SR16000 32 thds on 1 node *1: 3.13         352.74         355.87   32     #TIMING_REPORT
+ E5-2680 1 chip =  8 core *2:  3.04         985.11         988.15    8     #TIMING_REPORT
+ E5-2680 2 chip = 16 core *2:  3.17        1106.52        1109.68   16     #TIMING_REPORT
+ Core i7 3770K 3.5GHz HT-on:   3.59        2482.88        2486.47    8     #TIMING_REPORT
+==== elastocaloric770K_check.lf.log
+ X5650 1 chip =  6 core:       3.40        2099.81        2103.21    6     #TIMING_REPORT
+ X5650 2 chip = 12 core:       3.42        1149.46        1152.88   12     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node:  2.74         982.56         985.30    8     #TIMING_REPORT
+ SR16000 32 thds on 1 node *1: 2.76         362.96         365.72   32     #TIMING_REPORT
+ E5-2680 1 chip =  8 core *2:  2.76         977.17         979.92    8     #TIMING_REPORT
+ E5-2680 2 chip = 16 core *2:  2.88         996.27         999.15   16     #TIMING_REPORT
+ Core i7 3770K 3.5GHz HT-on:   3.31        2419.86        2423.17    8     #TIMING_REPORT
+*1: ~/f/feram/feram-0.22.06/SR16000-fftw_xlc_simd-super3t/src/ Faster than original FFTW3.
+    ../configure FC=xlf90_r CPPFLAGS=-I/sysap/fftw_xlc_simd/include \
+                             LDFLAGS=-L/sysap/fftw_xlc_simd/lib --with-lapack=essl
+*2: ~/f/feram/feram-0.22.06/Linux-x86_64-gfortran-4.8.2-emerald/src/zzz-1chip/
+    ../configure FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'
 
-=== feram-0.22.07
-==== elastocaloric770K_check.1vs.log
- Core i7-3770K 3.50GHz *1:     3.74        2418.34        2422.08    4     #TIMING_REPORT
- X5650 2 chip = 12 core *2:    3.90        1212.40        1216.31   12     #TIMING_REPORT
-==== elastocaloric770K_check.2lf.log
- Core i7-3770K 3.50GHz *1:     3.43        2359.65        2363.08    4     #TIMING_REPORT
- X5650 2 chip = 12 core *2:    3.41        1207.39        1210.80   12     #TIMING_REPORT
+=== r2474 feram-0.23.00unstable
+==== elastocaloric770K_check.vs.log
+ X5650 1 chip =  6 core:       7.02        2423.27        2430.28    6     #TIMING_REPORT
+ X5650 2 chip = 12 core:       7.46        1300.21        1307.67   12     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node:  5.32         825.71         831.03    8     #TIMING_REPORT
+ SR16000 32 thds on 1 node *1: 5.73         281.30         287.03   32     #TIMING_REPORT
+ E5-2680 1 chip =  8 core *2:  4.69        1001.72        1006.41    8     #TIMING_REPORT
+ E5-2680 2 chip = 16 core *2:  3.57         937.21         940.78   16     #TIMING_REPORT
+ Core i7 3770K 3.5GHz HT-on:   5.70        2269.00        2274.70    8     #TIMING_REPORT
+==== elastocaloric770K_check.lf.log
+ X5650 1 chip =  6 core:       3.43        2371.53        2374.95    6     #TIMING_REPORT
+ X5650 2 chip = 12 core:       3.43        1302.37        1305.79   12     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node:  3.64         796.66         800.30    8     #TIMING_REPORT
+ SR16000 32 thds on 1 node *1: 2.86         271.85         274.71   32     #TIMING_REPORT
+ E5-2680 1 chip =  8 core *2:  2.78         994.16         996.94    8     #TIMING_REPORT
+ E5-2680 2 chip = 16 core *2:  2.85         974.70         977.55   16     #TIMING_REPORT
+ Core i7 3770K 3.5GHz HT-on:   3.34        2218.30        2221.64    8     #TIMING_REPORT
+*1: ~/feram/feram-n.00/elastocaloric770K_executed/
+    ../configure FC=xlf90_r CPPFLAGS=-I/sysap/fftw_xlc_simd/include \
+                             LDFLAGS=-L/sysap/fftw_xlc_simd/lib --with-lapack=essl
+*2: ~/f/loto/feram/branches/newplan/0.22.06-r2452-2015-04-20-newplan-gfortran-4.8.2-emerald/src/
+    ../configure FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'
 
-*1: gfortran-4.8.3 of Cygwin on Windows 8.1. OMP_NUM_THREADS=4 is used to turn-off TH.
-*2: /home/t-nissie/f/loto/feram/trunk/0.22.06-r2366-2015-02-28-gfortran-4.9.1-app3t/src/
+
+=== r2480 (inhoK -> inhoR in-place)
+==== elastocaloric770K_check.vs.log:
+ E5-2680 1 chip =  8 core *2:  4.51        1000.31        1004.82    8     #TIMING_REPORT
+ E5-2680 2 chip = 16 core *2:  5.17         905.10         910.27   16     #TIMING_REPORT
+elastocaloric770K_check.lf.log:
+ E5-2680 1 chip =  8 core *2:  2.79         989.64         992.43    8     #TIMING_REPORT
+ E5-2680 2 chip = 16 core *2:  2.90         871.99         874.89   16     #TIMING_REPORT
+*2: /home/t-nissie/f/loto/feram/branches/newplan/0.23.00-r2480-2015-04-26-newplan-gfortran-4.8.2-emerald/src/zzz-2-node
+
+
+=== r2551 (almost feram-0.23.02unstable, inhoK -> inhoR rewind to out-of-place)
+==== elastocaloric770K_check.vs.log:
+ X5650 1 chip =  6 core *1:      6.25        2400.47        2406.72    6     #TIMING_REPORT
+ X5650 2 chip = 12 core *1:      6.90        1187.31        1194.20   12     #TIMING_REPORT
+ E5-2680    1 chip =  8 core *2: 4.66        1019.53        1024.19    8     #TIMING_REPORT
+ E5-2680    2 chip = 16 core *2: 2.87         823.30         826.17   16     #TIMING_REPORT
+ E5-2680 v3 1 chip = 12 core *3: 4.53         688.05         692.58   12     #TIMING_REPORT
+ E5-2680 v3 2 chip = 24 core *3: 2.14         503.33         505.47   24     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node *4: 5.25         894.95         900.20    8     #TIMING_REPORT
+ SR16000 16 thds on 2/4 node *4: 5.53         560.84         566.37   16     #TIMING_REPORT
+ SR16000 24 thds on 3/4 node *4: 5.74         430.24         435.98   24     #TIMING_REPORT
+ SR16000 32 thds on  1  node *4: 5.94         306.01         311.95   32     #TIMING_REPORT
+==== elastocaloric770K_check.lf.log:
+ X5650 1 chip =  6 core *1:      3.49        2162.07        2165.56    6     #TIMING_REPORT
+ X5650 2 chip = 12 core *1:      3.79        1182.21        1185.99   12     #TIMING_REPORT
+ E5-2680    1 chip =  8 core *2: 2.76        1012.07        1014.83    8     #TIMING_REPORT
+ E5-2680    2 chip = 16 core *2: 2.76         815.16         817.93   16     #TIMING_REPORT
+ E5-2680 v3 1 chip = 12 core *3: 2.10         675.06         677.17   12     #TIMING_REPORT
+ E5-2680 v3 2 chip = 24 core *3: 2.11         513.16         515.27   24     #TIMING_REPORT
+ SR16000  8 thds on 1/4 node *4: 2.81         961.67         964.48    8     #TIMING_REPORT
+ SR16000 32 thds on 1 node   *4: 2.83         284.24         287.07   32     #TIMING_REPORT
+
+*1: ~/f/loto/feram/branches/newplan/0.23.01-r2551-2015-06-26-newplan-newplan-gfortran-5.1.0-app4t/ 
+*2: ~/f/loto/feram/branches/newplan/0.23.01-r2551-2015-06-26-newplan-gfortran-4.8.2-emerald01/src/with-wisdom/
+*3: ~/f/loto/feram/branches/newplan/0.23.01-r2551-2015-06-26-newplan-gfortran-4.9.2-amesist/src/with-wisdom/
+*4: ~/f/loto/feram/branches/newplan/0.23.01-r2551-2015-06-26-newplan-xlf-14.01-ESSL-5.2-SR16000/src/zzzz-8-16-24-32/
+
+~/f/loto/feram/branches/newplan/0.23.01-r2551-2015-06-26-newplan-gfortran-4.9.2-amesist/src/perf24/
+# Overhead  Command          Shared Object  Symbol
+# ........  .......  .....................  ...............................
+    25.93%    feram  libgomp.so.1.0.0       [.] gomp_team_barrier_wait_end
+     9.02%    feram  libfftw3.so.3.4.4      [.] r2cf_64
+     6.17%    feram  libfftw3.so.3.4.4      [.] n1bv_64
+     6.13%    feram  libgfortran.so.3.0.0   [.] _gfortran_matmul_c8
+     6.08%    feram  libfftw3.so.3.4.4      [.] r2cb_64
+     4.60%    feram  libfftw3.so.3.4.4      [.] n1fv_64

@@ -10,8 +10,13 @@ Heating-up and cooling-down simulations of BaTiO3.
 -----------------------------------------------------
 version           CPU      s/shot/slot   script
 -----------------------------------------------------
-0.21.02   Intel Xeon E5-2680   185   two8threads.csh
 0.21.00   Intel  Xeon  X5650   260   two6threads.csh
+
+0.21.02   Intel Xeon E5-2680   185   two8threads.csh
 0.21.02   Intel  Xeon  E5462   869   two4threads.csh
 0.21.02   AMD   Opteron  275  2443   two2threads.csh
+
+0.22.06   Intel  Xeon  X5650   262   two6threads.csh
+
+newplan r2415    Xeon  X5650   260   two6threads.csh
 -----------------------------------------------------

@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2014-11-25 04:55:31 takeshi>
+! Time-stamp: <2015-03-22 14:31:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -86,8 +86,8 @@ contains
        do iy = 0, p%Ly-1
           do ix = 0, p%Lx-1
              if (c%sum_p(ix,iy,iz)) then
-                 u_tmp(:) =  u_tmp(:) + c%dipoR(ix,iy,iz,:)
-                uu_tmp(:) = uu_tmp(:) + c%dipoR(ix,iy,iz,:)**2
+                 u_tmp(:) =  u_tmp(:) + c%dipoR(:,ix,iy,iz)
+                uu_tmp(:) = uu_tmp(:) + c%dipoR(:,ix,iy,iz)**2
              end if
           end do
        end do
@@ -110,7 +110,7 @@ contains
              do ix = 0, p%Lx-1
                 if (c%sum_p(ix,iy,iz)) then
                    do alpha = 1, 3
-                      k = nint(c%dipoR(ix,iy,iz,alpha)*step_inv)
+                      k = nint(c%dipoR(alpha,ix,iy,iz)*step_inv)
                       if (abs(k)<=max_k) tmp_distribution(alpha,k) = tmp_distribution(alpha,k) + 1
                    end do
                 end if
@@ -124,9 +124,9 @@ contains
           do iy = 0, p%Ly-1
              do ix = 0, p%Lx-1
                 if (c%sum_p(ix,iy,iz)) then
-                   kx = nint(c%dipoR(ix,iy,iz,1)*step_inv); if (abs(kx)>max_k) cycle
-                   ky = nint(c%dipoR(ix,iy,iz,2)*step_inv); if (abs(ky)>max_k) cycle
-                   kz = nint(c%dipoR(ix,iy,iz,3)*step_inv); if (abs(kz)>max_k) cycle
+                   kx = nint(c%dipoR(1,ix,iy,iz)*step_inv); if (abs(kx)>max_k) cycle
+                   ky = nint(c%dipoR(2,ix,iy,iz)*step_inv); if (abs(ky)>max_k) cycle
+                   kz = nint(c%dipoR(3,ix,iy,iz)*step_inv); if (abs(kz)>max_k) cycle
                    avg%distribution3d(kx,ky,kz) = avg%distribution3d(kx,ky,kz) + 1
                 end if
              end do

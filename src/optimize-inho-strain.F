@@ -1,5 +1,5 @@
 ! optimize-inho-strain.F   -*-f90-*-
-! Time-stamp: <2013-01-09 23:57:24 takeshi>
+! Time-stamp: <2015-06-25 16:03:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -26,17 +26,18 @@ subroutine optimize_inho_strain(p,c)
   ! Linear equations for acouK,
   !    inhomo_K(1:3,1:3) * acouK(1:3) = - inhomo_coup2_K(1:3,1:6) * c%didiK(1:6) ,
   ! are solved for all k-points.
-  ! * inhomo_K is positive definite real symmetric matrix. See elastic.F and cholesky_d.f.
-  ! * acouK(0,0,0,1:3)=0 is guaranteed by c%inhomo_K_G(1:3,1:4, 0,0,0)=0.
+  ! * inhomo_K is positive definite real symmetric matrix. See elastic.F
+  !   and cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621 .
+  ! * acouK(1:3, 0,0,0)=0 is guaranteed by c%inhomo_K_G(1:3,1:4, 0,0,0)=0.
 !$omp parallel do private(iz,iy,ix,alpha,beta,acouK_tmp,tmp)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx/2
               do alpha = 1, 3
                  acouK_tmp(alpha) = &
-                      & - SUM(c%inhomo_coup2_K(ix,iy,iz,alpha,:) * c%didiK(ix,iy,iz,:))
+                      & - dot_product(c%inhomo_coup2_K(alpha,:, ix,iy,iz), c%didiK(:, ix,iy,iz))
               end do
-              ! See [2] of cholesky_d.f
+              ! See [2] of cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621
               do alpha = 1, 3
                  tmp = (0.0d0,0.0d0)
                  do beta = 1, alpha-1
@@ -44,7 +45,7 @@ subroutine optimize_inho_strain(p,c)
                  end do
                  acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * c%inhomo_K_G(alpha,4, ix,iy,iz)
               end do
-              ! See [3] of cholesky_d.f
+              ! See [3] of cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621
               do alpha = 3, 1, -1
                  tmp = (0.0d0,0.0d0)
                  do beta = alpha+1, 3
@@ -53,7 +54,7 @@ subroutine optimize_inho_strain(p,c)
                  acouK_tmp(alpha) = (acouK_tmp(alpha)-tmp) * c%inhomo_K_G(alpha,4, ix,iy,iz)
               end do
               !
-              c%acouK(ix,iy,iz,:) = acouK_tmp(:)
+              c%acouK(:,ix,iy,iz) = acouK_tmp(:)
         end do
      end do
   end do

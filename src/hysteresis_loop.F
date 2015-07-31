@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2014-06-05 11:56:19 t-nissie>
+! Time-stamp: <2015-03-22 17:08:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -48,13 +48,11 @@ subroutine hysteresis_loop(p,c)
         E_field_add = p%external_E_field - 2 * p%external_E_field * (i_step-p%n_thermalize)/p%n_average
 !$omp parallel do
         do iz = 0, p%Lz-1
-           do alpha = 1,3
               do iy = 0, p%Ly-1
                  do ix = 0, p%Lx-1
-                    c%E_field(ix,iy,iz,alpha) = c%E_field_local(ix,iy,iz,alpha) + E_field_add(alpha)
+                    c%E_field(:,ix,iy,iz) = c%E_field_local(:,ix,iy,iz) + E_field_add(:)
                  end do
               end do
-           end do
         end do
 !$omp end parallel do
      end if
@@ -77,7 +75,7 @@ subroutine hysteresis_loop(p,c)
      if (i_step>=p%n_thermalize) then
         if (mod(i_step-p%n_thermalize, p%n_hl_freq) == 0) then
            do alpha = 1, 3
-              u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
+              u(alpha) = SUM(c%dipoR(alpha,:,:,:), MASK=c%sum_p(:,:,:))
            end do
            u(:) = u(:) / c%n_sum_p
            write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5)") &

@@ -1,5 +1,5 @@
 ! print-eigenvalues.F -*-f90-*-
-! Time-stamp: <2014-10-15 18:39:00 t-nissie>
+! Time-stamp: <2015-04-03 18:00:25 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -7,7 +7,7 @@ subroutine print_eigenvalues(Lx, Ly, Lz, phi, filename)
   implicit none
   !--- arguments -------------------------------------
   integer,      intent(in) :: Lx, Ly, Lz
-  real*8,       intent(in) :: phi(0:Lx/2, 0:Ly-1, 0:Lz-1, 3, 3) !"/2" for real<->complex FFT
+  real*8,       intent(in) :: phi(3, 3,  0:Lx/2, 0:Ly-1, 0:Lz-1) !"/2" for real<->complex FFT
   character(*), intent(in) :: filename
   !--- etc -------------------------------------------
   integer ix, iy, iz
@@ -78,7 +78,7 @@ subroutine print_eigenvalues_sub(Lx, Ly, Lz, phi, ix, iy, iz, unit, len)
   implicit none
   !--- arguments -------------------------------------
   integer, intent(in)    :: Lx, Ly, Lz
-  real*8,  intent(in)    :: phi(0:Lx/2, 0:Ly-1, 0:Lz-1, 3, 3) !"/2" for real<->complex FFT
+  real*8,  intent(in)    :: phi(3, 3,  0:Lx/2, 0:Ly-1, 0:Lz-1) !"/2" for real<->complex FFT
   integer, intent(in)    :: ix, iy, iz, unit
   real*8,  intent(inout) :: len
   !--- etc -------------------------------------------
@@ -101,13 +101,13 @@ subroutine print_eigenvalues_sub(Lx, Ly, Lz, phi, ix, iy, iz, unit, len)
   last_ix = ix
   last_iy = iy
   last_iz = iz
-  tmp(:,:) = phi(ix,iy,iz,:,:)
+  tmp(:,:) = phi(:,:, ix,iy,iz)
   !LAPACK dsyevx(JOBZ, RANGE, UPLO, N, A, LDA, VL, VU, IL, IU, ABSTOL,  M, W,           Z,    LDZ,
        ! WORK,   LWORK, IWORK, IFAIL, INFO)
   call    dsyevx('N',  'A',  'U',   3, tmp, 3, vl, vu, il, iu, 0.0d0,   M, eigenvalues, dummy, 3, &
        & work,   LWORK, iwork, ifail, info)
   write(unit,'(f10.5,3i4,3e25.16E3)') len,ix,iy,iz,(eigenvalues(beta), beta=1,3)
-  tmp(:,:) = dble(phi(ix,iy,iz,:,:))
+  tmp(:,:) = dble(phi(:,:, ix,iy,iz))
   write(unit,'(2("#",e15.6E3,e16.6E3,e16.6E3,/),"#",e15.6E3,e16.6E3,e16.6E3)') &
  & ((tmp(alpha,beta),              beta=1,3), alpha=1,3)
 end subroutine print_eigenvalues_sub

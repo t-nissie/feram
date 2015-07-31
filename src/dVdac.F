@@ -1,5 +1,5 @@
 ! dVdac.F   -*-f90-*-
-! Time-stamp: <2013-08-09 12:18:08 t-nissie>
+! Time-stamp: <2015-07-09 15:54:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Purpose: calculate  d V / d (acoustic displacement)
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
@@ -14,57 +14,49 @@ subroutine dVdac(p,c)
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
-  integer :: ix,iy,iz,alpha,j
+  integer :: ix,iy,iz
+  include 'fftw3.f03'
+  integer(C_SIZE_T) :: n_alloc_dVdac
+  complex*16,pointer :: dVdacK_linear(:)
+  complex*16,pointer :: dVdacK(:,:,:,:)
+  real*8,    pointer :: dVdacR_linear(:)
+  real*8,    pointer :: dVdacR(:,:,:,:)
+  integer, parameter :: howmany = 3
+  n_alloc_dVdac = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
+  call c_f_pointer(c%dVdac_ptr, dVdacK_linear, [n_alloc_dVdac])
+  call c_f_pointer(c%dVdac_ptr, dVdacR_linear, [n_alloc_dVdac * 2])
+  dVdacK(1:howmany, 0:p%Lx/2,         0:p%Ly+p%padding_y-1, 0:p%Lz-1) => dVdacK_linear
+  dVdacR(1:howmany, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) => dVdacR_linear
 
-!=== begin: dVdacK = inhomo_K acouK + inhomo_coup2_K didiK ====================================
 !$omp parallel do
   do iz = 0, p%Lz-1
-     c%dVdacK(:,:,iz,:) = (0.0d0, 0.0d0)
+     dVdacK(:,:,:,iz) = (0.0d0, 0.0d0)
   end do
 !$omp end parallel do
 
-  do j = 1, 6
-     do alpha = 1, 3
 !$omp parallel do
-        do iz = 0, p%Lz-1
-           do iy = 0, p%Ly-1
-              do ix = 0, p%Lx/2
-                 c%dVdacK(ix,iy,iz,alpha) = c%dVdacK(ix,iy,iz,alpha) &
-                      & + c%inhomo_coup2_K(ix,iy,iz,alpha,j) * c%didiK(ix,iy,iz,j)
-                 if (j<=3) then
-                    c%dVdacK(ix,iy,iz,alpha) = c%dVdacK(ix,iy,iz,alpha) &
-                         & + c%inhomo_K(ix,iy,iz,alpha,j) * c%acouK(ix,iy,iz,j)
-                 end if
-              end do
-           end do
+  do iz = 0, p%Lz-1
+     do iy = 0, p%Ly-1
+        do ix = 0, p%Lx/2
+           dVdacK(1:3, ix,iy,iz) = dVdacK(1:3, ix,iy,iz) &
+                &   + matmul(c%inhomo_coup2_K(1:3,1:6, ix,iy,iz), c%didiK(1:6, ix,iy,iz)) &
+                &   + matmul(c%inhomo_K(      1:3,1:3, ix,iy,iz), c%acouK(1:3, ix,iy,iz))
         end do
-!$omp end parallel do
      end do
   end do
-!=== end:   dVdacK = inhomo_K acouK + inhomo_coup2_K didiK ====================================
+!$omp end parallel do
 
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%dVdacK(:,:,iz,:) = (0.0d0, -1.0d0) * c%dVdacK(:,:,iz,:)
+       dVdacK(:,:,:,iz) = (0.0d0, -1.0d0) * dVdacK(:,:,:,iz)
     end do
 !$omp end parallel do
 
-    !write(6,'(a,2(f14.7,f12.7))') 'dVdacK', c%dVdacK(0,1,1,1), c%dVdacK(0,15,15,1)
-
-#  if defined(HAVE_LIBFFTW3)
-    do alpha = 1, 3
-       call dfftw_execute(c%plans_dVdacK2R(alpha))
-    end do
-#  else
-    do alpha = 1, 3
-       call fft_3d_r2c_or_c2r_out_of_place(.false., p%Lx, p%Ly, p%Lz, &
-            & c%dVdacR(0,0,0,alpha), c%dVdacK(0,0,0,alpha))
-    end do
-#  endif
+    call fftw_execute_dft_c2r(c%plan_c2r_3_in, dVdacK, dVdacR)
 
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%dVdacR(:,:,iz,:) = c%dVdacR(:,:,iz,:) * p%Ninv
+       dVdacR(:,:,:,iz) = dVdacR(:,:,:,iz) * p%Ninv
     end do
 !$omp end parallel do
 end subroutine dVdac

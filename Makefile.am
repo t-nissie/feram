@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2015-01-11 10:35:49 takeshi>
+# Time-stamp: <2015-07-10 12:14:46 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -9,6 +9,7 @@ EXTRA_DIST = README.en \
              index.en.html \
              README.ja \
              index.ja.html \
+             README.md \
              INSTALL \
              INSTALL.html \
              Autotools-memo.ja \
@@ -20,6 +21,7 @@ EXTRA_DIST = README.en \
              doc \
              parameters \
              animations \
+             in-place-FFT.ja.txt \
              logo.eps \
              logo.jpg \
              logo.obj
@@ -49,7 +51,7 @@ tutorial.%.html: tutorial.%.txt
 
 Autotools-memo.%.html: Autotools-memo.%
 	ulmul2html5 -s style.css\
-                    -l `echo $< | sed 's/Autotools-memo\.//'`\
+                    -l `basename $< | sed 's/Autotools-memo\.//'`\
                     -n 'Takeshi Nishimatsu' $< > $@
 
 dist-hook:

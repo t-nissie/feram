@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2013-07-03 15:50:46 takeshi>
+! Time-stamp: <2015-04-03 17:58:19 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -19,10 +19,19 @@ subroutine dipole_dipole(p,c)
   !--- END of variable definitions -------------------
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'construction of dipole-dipole interaction.')
 
-  allocate( long_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" for real<->complex FFT
-            long_range(:,:,:,:,:) = 0.0d0
-  allocate(short_range(0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1, 3, 3)) !"/2" for real<->complex FFT
-           short_range(:,:,:,:,:) = 0.0d0
+  allocate( long_range(3, 3,  0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+!$omp parallel do
+  do iz = 0, p%Lz-1
+     long_range(:,:, :,:,iz) = 0.0d0
+  end do
+!$omp end parallel do
+
+  allocate(short_range(3, 3,  0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+!$omp parallel do
+  do iz = 0, p%Lz-1
+     short_range(:,:, :,:,iz) = 0.0d0
+  end do
+!$omp end parallel do
 
   open(unit=UNIT_QUADRATIC, file=trim(p%filename)//'.quadratic', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
@@ -31,9 +40,9 @@ subroutine dipole_dipole(p,c)
         do iy= 0, p%Ly-1
            do ix= 0, p%Lx/2
               read(UNIT_QUADRATIC,*)
-              read(UNIT_QUADRATIC,*) long_range(ix,iy,iz,1,:)
-              read(UNIT_QUADRATIC,*) long_range(ix,iy,iz,2,:)
-              read(UNIT_QUADRATIC,*) long_range(ix,iy,iz,3,:)
+              read(UNIT_QUADRATIC,*) long_range(1,:, ix,iy,iz)
+              read(UNIT_QUADRATIC,*) long_range(2,:, ix,iy,iz)
+              read(UNIT_QUADRATIC,*) long_range(3,:, ix,iy,iz)
            end do
         end do
      end do
@@ -44,7 +53,17 @@ subroutine dipole_dipole(p,c)
   end if
 
   call dipole_dipole_short_range(p,short_range)
-  c%dipoI(:,:,:,:,:) = long_range(:,:,:,:,:) + short_range(:,:,:,:,:)
+
+  ! This can be c%dipoI(:,:, :,:,:) = long_range(:,:, :,:,:) + short_range(:,:, :,:,:) in future.
+!$omp parallel do
+  do iz= 0, p%Lz-1
+     do iy= 0, p%Ly-1
+        do ix= 0, p%Lx/2
+           c%dipoI(:,:, ix,iy,iz) = long_range(:,:, ix,iy,iz) + short_range(:,:, ix,iy,iz)
+        end do
+     end do
+  end do
+!$omp end parallel do
 
   ! open(unit=UNIT_QUADRATIC, file=trim(p%filename)//'.dipoI', status='replace')
   !    do iz= 0, p%Lz-1

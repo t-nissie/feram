@@ -1,4 +1,22 @@
 ToDo:
+o Fix "610.1vs.defects:***: EOF: reached." in msg.F.
+  See /home/t-nissie/feram/feram-o.00/directECE-on-0.005TGPa-parallel/BTOnew-050/ .
+  また、欠陥の情報も2lfの計算に引き継がれてるかチェックが必要。引き継がれているはずだけど。
+
+o mass_acou<0.0d0 なら acoustic 関連の配列で要らないモノは確保しない。
+
+o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
+  https://gcc.gnu.org/onlinedocs/gfortran/Code-Gen-Options.html
+  GCC 6で入る機能かもしれない。
+
+o CUDA化。cuFFTとcuBLASとを使えるようにする。
+  * PGI CUDA Fortranは使わない。
+  * src/cufft_module.fを通し、できるだけCを使わずにFortran 2003だけで書く。
+  * 将来的にはcoord_module.Fの中の大きな配列をGPUに置いたままにする？
+
+o Discard hysteresis_loop.F. Use n_E_wave_period and E_wave_type.
+o src/hysteresis_loop.F DETAILED_MESSAGES
+
 o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
   のバグを直す。0.22.04ではバグの再現さえしなくなり、パラの結果が出る。
   svn diff -r2271:2272 kinetic_energy_dipo.F でバグの再現はするようになったが、これはあくまでquick hack。
@@ -6,7 +24,9 @@ o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
   src/mirror_force_mirror.Fで単にc%acouRとc%dVdacRをミラーすればよいわけではない。
   acoustic displacementは双極子でないので静電的ミラーではない！！！
 
-o slicer.rb -> feram_slicer.rb, eigenvalues2j -> feram_eigenvalues2j, etc.
+o Use SSE or AVX with the latest assembler and FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'.
+
+o TESTS for feram_slicer.rb and feram_cross-section-q.sh
 
 o (nightly) automation of unit test with "make check"
 
@@ -25,8 +45,6 @@ o remove redundant procedures:
 
 o e%acou_kinetic=0 if mass_acou<0
 
-o Needs mirror of c%E_field in hysteresis_loop.F, maybe.
-
 o 'md' have to be changed to 'np' Nose-Poincare.
 o Nose-Poincareでもacoustic displacementのMDができるように．
 o Imprement Nose:JPhysSocJpn:70:p75-77:2001
@@ -43,17 +61,13 @@ o Examples
 
 o In initialize-dipoR.F, c%dipoP() must be multiplied by c%s_Nose after read ???
 
-o "if (.not. continue) call initialize_dipoR()" is both in hysteresis_loop.F and molecular-dynamics.F.
-
-o When n_hysteresis_loop_continue is given, the .hl file must no REPLACEd, must be APPENDed.
-
 o FILENAME.avgの出力の見直し polarization -> <u_z> とか
 
 o plot_dispersion = .ture. のとき32x32x32を使う。FILENAME.param.gp は無くす方向で。
 
-o slice.rb マニュアル
+o feram_slicer.rb マニュアル
 
-o cross-section マニュアル
+o feram_cross_section マニュアル
 
 o dVddi_... -> dV_du_...
 
@@ -72,8 +86,6 @@ o  call dipoFFT(p,c)
    call optimize_homo_strain(p,c,e)
    call optimize_inho_strain(p,c,e)
        は nose-poincare.F, leapfrog.F, initialize_dipoR.F に共通なのでまとめる。
-
-o libbuilt_in_fft 128 256, libbuilt_in_fft -> libminimal_fft
 
 o Makefile.amの依存関係。並列コンパイルmake -jでデバグできる。
 
@@ -94,15 +106,15 @@ o 3 node parallelization
 
 o average 4倍精度に？
 
+o 精度の選択がconfigureへのオプションでできるようにしたい
+  --with-precision=single
+  --with-precision=double
+
 o start.coord があれば読み込む。alloc_Coord(p,c) で？
 
 o (coord を かきだし はじめる ところ おわる ところ AVERAGE の あいだだけ)
 
 o p, q, qdot にして, いつmassで割るか考える.
-
-o src/hysteresis_loop.F DETAILED_MESSAGES
-
-o dipoA_dipole_dipole() を dipoA = dipoA + dipoA_dipole_dipole に.
 
 o Q_nose must be a function of T, N and delta_t. AUTOMATIC determination.
 
@@ -113,10 +125,8 @@ o strain energy の 計算をする部分を分離.
 
 o compare 16x16x16, 32x32x32 
 
-o LargeKappa.gp
-
-o dipoI(:,:,:,3,3) Upper Triangle だけにする？
-  FFTの計算はUpper Triangle だけやってC.C.をこぴーするようにした.
+o dipoI(3,3,:,:,:) Upper Triangle だけにする？
+  FFTの計算はUpper Triangle だけやってC.C.をコピーするようにした.
   配列は3x3のまま.
   どのくらいメモリを減らせる？
 
@@ -132,13 +142,16 @@ o mass の 9648.53377163899 を define.h へ
 
 o children, parents, use
 
-o input file parserをつくる, input file と param.gp とをきょうつうか
+o input file parserを作る。どんなparser？
+  input file と param.gp とを共通化？
   タイトルも引数で指定できるようにしないと面倒臭い。
 
 o call msg() DEPTH or p%message_depth
 
 o Use class of Fortran 2003: class Ferroelectrics has a Param, a Coord and a Energy
 
+Not ToDo:
+- 使うGPUって環境変数で選べるの？
 
 Done:
 x plot_dispersion = .ture. で分散関係が出力されるようにする。
@@ -210,7 +223,10 @@ x たとえMakefile.amに依存関係が適切に書かれていても、
   XL Fortranが書き出すa.lstが並列コンパイルの邪魔をする。
   a.lstは何？これはmakeの新オプション--output-sync（-O）で回避できる？
 
+x slicer.rb -> feram_slicer.rb, eigenvalues2j -> feram_eigenvalues2j, etc.
 
-Not ToDo:
-- 使うGPUって環境変数で選べるの？
+x Remove "#if defined(HAVE_LIBFFTW3)" so that we always use FFTW
 
+x continue = .true. でも、前に続けるべき計算がなかったら、エラーで止まるようにする。
+
+x configure.acでulmul2html5のversionが0.5.3であることをチェック。

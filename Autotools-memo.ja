@@ -77,6 +77,7 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  config.status  configure を実行すると出来るスクリプト。foo.in から foo を作るのは実はこいつ。
  install-sh     automake --add-missing が用意してくれるスクリプト。make installのときに使われることがある。
  missing        automake --add-missing が用意してくれるスクリプト。忘れ物を教えてくれる。
+ depcomp        ファイルの依存関係が解決できないときに automake --add-missing が用意してくれることのあるスクリプト。
  test-driver    Makefile.amにTESTSの項目がある場合、automakeが用意してくれるのスクリプト。
                 make checkのときに使われ、カラフルな表示やログファイルの書き出しをしてくれる。
 
@@ -94,7 +95,7 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  * AC_LANG(Fortran), AC_PROG_FC(gfortran ifort)などを使う。
  * 関係する変数はFC, FCFLAGS, FCLIBS, CPPFLAGSなど。
  * Fortranでもcpp（Cプリプロセッサ）を使うと便利。
-   その場合、ソースのファイルの名拡張子は.Fを使う。.F90はGNU makeのデフォルトでないので使わない。
+   その場合、ソースのファイル名の拡張子は.Fを使う。.F90はGNU makeのデフォルトでないので使わない。
  * AC_FC_FREEFORM()で自由形式のオプションがわかる。
  * C言語のプロジェクトの場合はファイル間の依存関係を自動的に調べてくれるが、
    Fortranの場合はMakefile.amに依存関係を書いておくことがまだ必要。
@@ -107,6 +108,7 @@ configure.ac, Makefile.am, src/Makefile.amを書いて、
  $ make                     # ソースの編集など開発を進め、最後にmakeでコンパイルできることを確認
  $ make distclean           # Makefileなどをきれいさっぱり消す
  $ ./configure
+ $ make distcheck           # 配布用パッケージをテストしてから作成（オプションは DISTCHECK_CONFIGURE_FLAGS で指定できる）
  $ make dist                # 配布用パッケージの作成
 新たにconfigure.ac, Makefile.am, src/Makefile.amを書き変えたら☆からやり直す。
 他に
@@ -135,10 +137,11 @@ Makefile.amの中のEXTRA_DISTに次のように加えておく必要がある�
 とTESTS変数で指定するする。
 === automakeのオプション
 automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定する。例えば
- AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz])
+ AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax])
 では、automakeのバージョン1.14.1以上を使用することを強制し、
 パッケージをtar.gzでなくtar.xzで作るように指定している。
-=== コンパイラオプション
+また、長いディレクトリ名／ファイル名でもパッケージに入るようなtarのオプションを指定している。
+=== コンパイラとコンパイラオプションの設定と決定
 C, Fortran, C++コンパイラとそのオプションはそれぞれ
 AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
 configure.ac の中で決定する。コンパイラは CC, FC, CXX に、
@@ -151,6 +154,23 @@ configure.ac の中で決定する。コンパイラは CC, FC, CXX に、
  CFLAGS="$cflags_save"
  test -n "$CFLAGS" || CFLAGS="-g -Wall -O3"
 などとAC_PROG_*()の前後でsave/restoreし、その後に独自設定をする。
+=== configureにオプションや変数を与える方法
+configureにオプションや変数を与える方法は
+ $ ./configure --help
+で表示されるように、
+ $ ./configure --enable-openmp --with-lapack=mkl CPPFLAGS=-I/home/t-nissie/include
+などと
+ * --enable-FEATURE, --disable-FEATURE
+ * --with-PACKAGE, --without-PACKAGE
+ * FOO='bar baz'と変数を設定
+の３つがある。それぞれconfigure.acの中で
+ * AC_ARG_ENABLE(openmp, [AC_HELP_STRING([--enable-openmp],[use OpenMP directives for parallelism])], enable_openmp=$enableval, enable_openmp=no)
+ * AC_ARG_WITH(lapack,[AS_HELP_STRING([--with-lapack=ARG],[LAPACK library.])])
+ * AC_ARG_VAR(CPPFLAGS, [C preprocessor (CPP) Flags, e.g. -I<include dir>])
+と設定する。
+
+configureに与えられた引数はconfig.logの先頭に記録されるので、後々の再確認に便利である。
+ただし、''や""のクォーテイションは消えてしまう。
 
 == Autotoolsの使用方法として参考になるパッケージ
 === LHa for Unix

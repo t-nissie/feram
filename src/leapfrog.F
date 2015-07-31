@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2014-12-05 19:39:11 takeshi>
+! Time-stamp: <2015-07-09 16:02:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -17,11 +17,23 @@ subroutine leapfrog(p,c,e,i_step)
   integer i_step
   real*8 Lx_Ly_delta_e
   real*8 Lx_Ly_delta_e_acou
+  real*8 dt_over_m
   integer Lz_1_4
   integer Lz_3_4
-  integer iz,alpha
+  integer alpha,ix,iy,iz
   real*8   kinetic_energy_dipo, kinetic_energy_acou
   external kinetic_energy_dipo, kinetic_energy_acou
+  integer(C_SIZE_T) :: n_alloc_dVdac
+  real*8,    pointer :: dVdacR_linear(:)
+  real*8,    pointer :: dVdacR(:,:,:,:)
+  integer, parameter :: howmany = 3
+
+  if (p%mass_acou>0.0d0) then
+     n_alloc_dVdac = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
+     call c_f_pointer(c%dVdac_ptr, dVdacR_linear, [n_alloc_dVdac * 2])
+     dVdacR(1:howmany, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) => dVdacR_linear
+  end if
+
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
   end if
@@ -32,15 +44,33 @@ subroutine leapfrog(p,c,e,i_step)
   Lz_3_4 = Lz_1_4*3
 
   if (p%delta_e.ne.0.0d0 .or. p%delta_e_acou.ne.0.0d0) then
-!$omp parallel do
+!$omp parallel do private(iz, iy, ix, alpha)
      do iz=0,p%Lz-1
-        c%e_layer_dipo(iz)    = SUM( c%dipoP(:,:,iz,:) * c%dipoP(:,:,iz,:) * c%m_inv(:,:,iz,:) ) / 2
+        c%e_layer_dipo(iz) = 0.0d0
+        do iy=0, p%Ly-1
+           do ix=0, p%Lx-1
+              do alpha = 1,3
+                 c%e_layer_dipo(iz) = c%e_layer_dipo(iz) + &
+                      & c%dipoP(alpha,ix,iy,iz)**2 * &
+                      & c%m_inv(alpha,ix,iy,iz)
+              end do
+           end do
+        end do
+        c%e_layer_dipo(iz) = c%e_layer_dipo(iz) / 2 * p%Lx * p%Ly / c%n_sum_layer(iz)
      end do
 !$omp end parallel do
      if (p%mass_acou>0.0d0) then
-!$omp parallel do
+!$omp parallel do private(iz, iy, ix, alpha)
         do iz=0,p%Lz-1
-           c%e_layer_acou(iz) = SUM( c%acouP(:,:,iz,:) * c%acouP(:,:,iz,:) ) * p%mass_acou_inv / 2
+           c%e_layer_acou(iz) = 0.0d0
+           do iy=0, p%Ly-1
+              do ix=0, p%Lx-1
+                 do alpha = 1,3
+                    c%e_layer_acou(iz) = c%e_layer_acou(iz) + c%acouP(alpha,ix,iy,iz)**2
+                 end do
+              end do
+           end do
+           c%e_layer_acou(iz) = c%e_layer_acou(iz) * p%mass_acou_inv / 2
         end do
 !$omp end parallel do
      else
@@ -49,71 +79,71 @@ subroutine leapfrog(p,c,e,i_step)
   end if
 
   if (p%delta_e.ne.0.0d0) then
-     c%dipoP(:,:,Lz_1_4,:) = c%dipoP(:,:,Lz_1_4,:) * sqrt((c%e_layer_dipo(Lz_1_4)+Lx_Ly_delta_e)/c%e_layer_dipo(Lz_1_4))
-     c%dipoP(:,:,Lz_3_4,:) = c%dipoP(:,:,Lz_3_4,:) * sqrt((c%e_layer_dipo(Lz_3_4)-Lx_Ly_delta_e)/c%e_layer_dipo(Lz_3_4))
+     c%dipoP(:,:,:,Lz_1_4) = c%dipoP(:,:,:,Lz_1_4) * sqrt((c%e_layer_dipo(Lz_1_4)+Lx_Ly_delta_e)/c%e_layer_dipo(Lz_1_4))
+     c%dipoP(:,:,:,Lz_3_4) = c%dipoP(:,:,:,Lz_3_4) * sqrt((c%e_layer_dipo(Lz_3_4)-Lx_Ly_delta_e)/c%e_layer_dipo(Lz_3_4))
   end if
 
   if (p%delta_e_acou.ne.0.0d0) then
-     c%acouP(:,:,Lz_1_4,:) = c%acouP(:,:,Lz_1_4,:) * sqrt((c%e_layer_acou(Lz_1_4)+Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_1_4))
-     c%acouP(:,:,Lz_3_4,:) = c%acouP(:,:,Lz_3_4,:) * sqrt((c%e_layer_acou(Lz_3_4)-Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_3_4))
+     c%acouP(:,:,:,Lz_1_4) = c%acouP(:,:,:,Lz_1_4) * sqrt((c%e_layer_acou(Lz_1_4)+Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_1_4))
+     c%acouP(:,:,:,Lz_3_4) = c%acouP(:,:,:,Lz_3_4) * sqrt((c%e_layer_acou(Lz_3_4)-Lx_Ly_delta_e_acou)/c%e_layer_acou(Lz_3_4))
   end if
 
   if (i_step.eq.0) then
      call mirror_force_mirror(p,c,e)
 !$omp parallel do
      do iz=0, p%Lz-1
-        do alpha = 1,3
-           c%dipoP(:,:,iz,alpha) = c%dipoP(:,:,iz,alpha) - p%dt_2 * c%dVddi(:,:,iz,alpha)
-        end do
+        c%dipoP(:,:,:,iz) = c%dipoP(:,:,:,iz) - p%dt_2 * c%dVddi(:,:,:,iz)
      end do
 !$omp end parallel do
      if (p%mass_acou > 0.0d0) then
 !$omp parallel do
         do iz=0, p%Lz-1
-           do alpha = 1,3
-              c%acouP(:,:,iz,alpha) = c%acouP(:,:,iz,alpha) - p%dt_2 * c%dVdacR(:,:,iz,alpha)
-           end do
+           c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt_2 * dVdacR(:,:,:,iz)
         end do
 !$omp end parallel do
      end if
   else
 !$omp parallel do
      do iz=0, p%Lz-1
-        do alpha = 1,3
-           c%dipoR(:,:,iz,alpha) = c%dipoR(:,:,iz,alpha) + p%dt   * c%dipoP(:,:,iz,alpha) * c%M_inv(:,:,iz,alpha)
-        end do
+        c%dipoR(:,:,:,iz)  =  c%dipoR(:,:,:,iz)  +  p%dt * c%dipoP(:,:,:,iz) * c%m_inv(:,:,:,iz)
      end do
 !$omp end parallel do
+     if (p%verbose>=2) then
+        call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'is updated.')
+     end if
+
      if (p%mass_acou > 0.0d0) then
+        dt_over_m = p%dt * p%mass_acou_inv
 !$omp parallel do
         do iz=0, p%Lz-1
-           do alpha = 1,3
-              c%acouR(:,:,iz,alpha) = c%acouR(:,:,iz,alpha) + (p%dt*p%mass_acou_inv) * c%acouP(:,:,iz,alpha)
-           end do
+           c%acouR(:,:,:,iz) = c%acouR(:,:,:,iz) + dt_over_m * c%acouP(:,:,:,iz)
         end do
 !$omp end parallel do
-     end if
-     if (p%verbose>=2) then
-        call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'updated.')
+        if (p%verbose>=2) then
+           call msg(UNIT_LOG, __FILE__, __LINE__, 'acouR', 'is updated.')
+        end if
      end if
 
      call mirror_force_mirror(p,c,e)
 
 !$omp parallel do
      do iz=0, p%Lz-1
-        do alpha = 1,3
-           c%dipoP(:,:,iz,alpha) = c%dipoP(:,:,iz,alpha) - p%dt * c%dVddi(:,:,iz,alpha)
-        end do
+        c%dipoP(:,:,:,iz) = c%dipoP(:,:,:,iz) - p%dt * c%dVddi(:,:,:,iz)
      end do
 !$omp end parallel do
+     if (p%verbose>=2) then
+        call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoP', 'is updated.')
+     end if
+
      if (p%mass_acou > 0.0d0) then
 !$omp parallel do
         do iz=0, p%Lz-1
-           do alpha = 1,3
-              c%acouP(:,:,iz,alpha) = c%acouP(:,:,iz,alpha) - p%dt * c%dVdacR(:,:,iz,alpha)
-           end do
+           c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt * dVdacR(:,:,:,iz)
         end do
 !$omp end parallel do
+        if (p%verbose>=2) then
+           call msg(UNIT_LOG, __FILE__, __LINE__, 'acouP', 'is updated.')
+        end if
      end if
   end if
 
@@ -123,6 +153,6 @@ subroutine leapfrog(p,c,e,i_step)
   end if
 
   if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   end if
 end subroutine leapfrog

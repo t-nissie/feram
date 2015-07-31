@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2013-10-15 13:54:14 takeshi>
+! Time-stamp: <2015-03-23 15:28:04 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -27,11 +27,11 @@ subroutine initialize_dipoR(p,c,e)
         do iy = 0, p%Ly-1
            do ix = 0, p%Lx-1
               read(UNIT_SYSTEM,*) dummy_x, dummy_y, dummy_z, &
-                   c%dipoR(ix,iy,iz,1:3),&
-                   c%dipoP(ix,iy,iz,1:3),&
-                   c%dVddi(ix,iy,iz,1:3),&
-                   c%acouR(ix,iy,iz,1:3),&
-                   c%acouP(ix,iy,iz,1:3)
+                   c%dipoR(1:3,ix,iy,iz),&
+                   c%dipoP(1:3,ix,iy,iz),&
+                   c%dVddi(1:3,ix,iy,iz),&
+                   c%acouR(1:3,ix,iy,iz),&
+                   c%acouP(1:3,ix,iy,iz)
            end do
         end do
      end do
@@ -44,10 +44,10 @@ subroutine initialize_dipoR(p,c,e)
         do iz = 0, p%Lz-1
            do iy = 0, p%Ly-1
               do ix = 0, p%Lx-1
-                 c%dipoR(ix,iy,iz,alpha) = &
+                 c%dipoR(alpha,ix,iy,iz) = &
                       & normal_dist(p%init_dipo_avg(alpha),p%init_dipo_dev(alpha))
                  if ( cos(M_2PI*(p%k_stripe(1)*ix+p%k_stripe(2)*iy+p%k_stripe(3)*iz+1.0d-4)) < 0.0d0 ) then
-                    c%dipoR(ix,iy,iz,alpha) = -c%dipoR(ix,iy,iz,alpha)
+                    c%dipoR(alpha,ix,iy,iz) = -c%dipoR(alpha,ix,iy,iz)
                  end if
               end do
            end do

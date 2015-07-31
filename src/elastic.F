@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2011-10-24 12:29:09 takeshi>
+! Time-stamp: <2015-06-25 15:57:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -73,26 +73,27 @@ subroutine elastic(p,c)
   ! See equation (A1) and (A2) of ref_1
 !
   ! inhomo_K --------------------------------------
-  do beta = 1, 3
-     other1 = mod(beta+1,3)+1
-     other2 = mod(beta,  3)+1
-     !write(6,'(a,3i2)') 'beta, other1, other2', beta, other1, other2
-     do alpha = 1, 3
-        do iz = 0, p%Lz-1
-           k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
-           k(3) = k(3) * M_2PI / p%a0
-           do iy = 0, p%Ly-1
-              k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
-              k(2) = k(2) * M_2PI / p%a0
-              do ix = 0, p%Lx/2
-                 k(1) = dble(ix) / p%Lx * M_2PI / p%a0
+!$omp parallel do private(iz,iy,ix,alpha,beta,k,other1,other2)
+  do iz = 0, p%Lz-1
+     k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
+     k(3) = k(3) * M_2PI / p%a0
+     do iy = 0, p%Ly-1
+        k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
+        k(2) = k(2) * M_2PI / p%a0
+        do ix = 0, p%Lx/2
+           k(1) = dble(ix) / p%Lx * M_2PI / p%a0
+           do beta = 1, 3
+              other1 = mod(beta+1,3)+1
+              other2 = mod(beta,  3)+1
+              !write(6,'(a,3i2)') 'beta, other1, other2', beta, other1, other2
+              do alpha = 1, 3
                  if (alpha.eq.beta) then
-                    c%inhomo_K(ix,iy,iz, alpha,beta) = &
+                    c%inhomo_K(alpha,beta, ix,iy,iz) = &
                          & p%B11 * k(alpha ) * k(alpha ) + &
                          & p%B44 * k(other1) * k(other1) + &
                          & p%B44 * k(other2) * k(other2)
                  else
-                    c%inhomo_K(ix,iy,iz, alpha,beta) = &
+                    c%inhomo_K(alpha,beta, ix,iy,iz) = &
                          & p%B12 * k(alpha ) * k( beta ) + &
                          & p%B44 * k(alpha ) * k( beta )
                  end if
@@ -101,6 +102,7 @@ subroutine elastic(p,c)
         end do
      end do
   end do
+!$omp end parallel do
 
   if (p%plot_dispersion) then
      write(fn,'(a,a)') trim(p%filename),'.inhomo-K.dat'
@@ -108,18 +110,25 @@ subroutine elastic(p,c)
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME',fn)
   end if
 
-  c%inhomo_K_G(:,:, :,:,:)=0.0d0
+  ! See [1] of cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%inhomo_K_G(:,:, :,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+
+!$omp parallel do private(iz,iy,ix,alpha,beta)
   do iz = 0, p%Lz-1
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx/2
            if (ix.ne.0 .or. iy.ne.0 .or. iz.ne.0) then
               do beta = 1, 3
                  c%inhomo_K_G(beta,beta, ix,iy,iz) = &
-                      & sqrt( c%inhomo_K(ix,iy,iz, beta,beta)  - SUM(c%inhomo_K_G(beta, 1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) )
+                      & sqrt( c%inhomo_K(beta,beta, ix,iy,iz)  - SUM(c%inhomo_K_G(beta, 1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) )
                  c%inhomo_K_G(beta,4, ix,iy,iz) = 1.0d0/c%inhomo_K_G(beta,beta, ix,iy,iz)
                  do alpha = beta+1, 3
                     c%inhomo_K_G(alpha,beta, ix,iy,iz) = &
-                         & ( c%inhomo_K(ix,iy,iz, alpha,beta) - SUM(c%inhomo_K_G(alpha,1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) ) &
+                         & ( c%inhomo_K(alpha,beta, ix,iy,iz) - SUM(c%inhomo_K_G(alpha,1:beta-1, ix,iy,iz)*c%inhomo_K_G(beta,1:beta-1, ix,iy,iz)) ) &
                          & * c%inhomo_K_G(beta,4, ix,iy,iz)
                  end do
               end do
@@ -127,6 +136,7 @@ subroutine elastic(p,c)
         end do
      end do
   end do
+!$omp end parallel do
 
 
   ! inhomo_coup2_K -----------------------------
@@ -143,19 +153,19 @@ subroutine elastic(p,c)
                  k(1) = dble(ix) / p%Lx * M_2PI / p%a0
                  if (i.le.3) then
                     if (i.eq.alpha) then
-                       c%inhomo_coup2_K(ix,iy,iz, alpha,i) = k(alpha)*p%B1xx/2
+                       c%inhomo_coup2_K(alpha,i, ix,iy,iz) = k(alpha)*p%B1xx/2
                     else
-                       c%inhomo_coup2_K(ix,iy,iz, alpha,i) = k(alpha)*p%B1yy/2
+                       c%inhomo_coup2_K(alpha,i, ix,iy,iz) = k(alpha)*p%B1yy/2
                     end if
                  else
-                    c%inhomo_coup2_K(ix,iy,iz, alpha,i)=k(ki(alpha,i-3))*p%B4yz
+                       c%inhomo_coup2_K(alpha,i, ix,iy,iz) = k(ki(alpha,i-3))*p%B4yz
                  end if
               end do
            end do
         end do
      end do
   end do
-  !write(6,'(6f10.5)') ((c%inhomo_coup2_K(1,1,1, alpha,i), i=1,6), alpha=1,3)
+  !write(6,'(6f10.5)') ((c%inhomo_coup2_K(alpha,i, 1,1,1), i=1,6), alpha=1,3)
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '')
 end subroutine elastic

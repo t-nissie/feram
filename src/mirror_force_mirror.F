@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2013-01-17 12:51:04 t-nissie>
+! Time-stamp: <2015-03-22 17:10:13 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -37,7 +37,7 @@ subroutine mirror_force_mirror(p,c,e)
   else
 !$omp parallel do
      do iz = 0, p%Lz-1
-     c%dVddi(:,:,iz,:) = c%dVddi(:,:,iz,:) - p%Z_star*c%E_field(:,:,iz,:)
+     c%dVddi(:,:,:,iz) = c%dVddi(:,:,:,iz) - p%Z_star*c%E_field(:,:,:,iz)
      end do
 !$omp end parallel do
 
@@ -48,7 +48,7 @@ subroutine mirror_force_mirror(p,c,e)
          do iy = 0, p%Ly-1
             do ix = 0, p%Lx-1
               do alpha = 1, 3
-                 tmp_dipole_E_field = tmp_dipole_E_field + c%dipoR(ix,iy,iz,alpha)*c%E_field(ix,iy,iz,alpha)
+                 tmp_dipole_E_field = tmp_dipole_E_field + c%dipoR(alpha,ix,iy,iz)*c%E_field(alpha,ix,iy,iz)
               end do
            end do
         end do

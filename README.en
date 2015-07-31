@@ -79,7 +79,7 @@ Use taskset(1) or numactl(8) to retrieve or set a process's CPU affinity.
 
 
 == Input files
-=== parameter file
+=== parameter input file (.feram file)
 The parameter file for feram is a text file consisting of
 comment lines and 'tag = value(s)' lines. Filenames of
 parameter files may be foo123 or foo123.feram. In these
@@ -96,6 +96,10 @@ Blank lines are also ignored.
  
  # Here are two more
  # comment lines.
+
+===== shebang: "#!/usr/local/bin/feram" or "#!./feram"
+You can write a shebang at the first line of a .feram input file
+and execute the file as a script.
 
 ==== Tags
 You must put ' = ', space-equal-space, between tag and value(s) as:
@@ -178,6 +182,17 @@ Specifies the structure of the system.
 ===== L
 System size, L_x, L_y and L_z. They must be equal or larger than 4.
  L = 32 32 4
+
+===== padding_y
+Padding for speeding up the calculations.
+You do not have to give this value,
+if you cannot understand it.
+Best padding_y is system-dependent,
+but for 64x64x64 and 96x96x96
+ padding_y = 5
+for 128x128x128
+ padding_y = 1
+may be good. Its default value is 3.
 
 ===== gap_id
 0: There is no dead layer.
@@ -365,7 +380,7 @@ for simulations of defects in ferroelectrics.
  position_x position_y position_z    fixed_u_x fixed_u_y fixed_u_z [Angstrom]
     :
 
-Use src/defects_maker.rb to make this .defects file.
+Use src/feram_defects_maker.rb to make this .defects file.
 
 === .localfield input file
 If you executed feram with a parameter file "foo123.feram" as
@@ -380,9 +395,9 @@ The unit of local field is V/Angstrom.
 If feram cannot find both ionic.configuration and .localfield,
 it will set the local field to ZERO for all sites.
 
-Use attached random_field_generator for generating ramdom fields.
- $ ./random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
- $ ./random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
+Use attached feram_random_field_generator for generating ramdom fields.
+ $ ./feram_random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
+ $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
 
 === ionic.configuration file
 (Not implemented yet.)
@@ -402,15 +417,17 @@ Position must be given in the unit of a0.
 
 === FFTW wisdom file
 By preparing an FFTW wisdom file in your current directory,
-you can reduce initial computational time, i.e. computational
-time before the "Ready for simulation!!!" message. You can
-generate an FFTW wisdom file with `fft_check` command, which
-will be built in the src/ directory besides `feram` command.
+you can reduce the total computational time.
+Sometimes, however, this trick fails and the computational times increases.
+You should optimize the computational condition with trial-and-error.
+
+You can generate an FFTW wisdom file with `feram_fftw_wisdom` command,
+which will be built in the src/ directory besides `feram` command.
 In the src/18example-benchmark/ directory, for example, you
 can generate an FFTW wisdom file of system size Lx*Ly*Lz=32*32*243
 for the forward.feram input file,
- $ w   # Before executing fft_check, confirm that load average is zero and there is no background job.
- $ OMP_NUM_THREADS=6 ../fft_check 1000 32 32 243
+ $ w   # Before executing feram_fftw_wisdom, confirm that load average is zero and there is no background job.
+ $ OMP_NUM_THREADS=6 ../feram_fftw_wisdom 1000 32 32 243 3
        :
    It takes a few minutes or a few hours depending on the system size.
    '1000' in the command line arguments is the number of iterations of
@@ -420,19 +437,10 @@ for the forward.feram input file,
  $ OMP_NUM_THREADS=6 ../feram forward.feram
  $ grep FFTW_WISDOM forward.log
    feram_common.F: 47: FFTW_WISDOM: Successfully imported FFTW wisdom in current directory.
- $ w
- $ OMP_NUM_THREADS=6 ../fft_check 100 300 300 300
- $ sudo cp wisdom_new /etc/fftw/wisdom
- $ rm wisdom wisdom_new
- $ OMP_NUM_THREADS=6 ../feram epit300x300x300.feram &
- $ grep FFTW_WISDOM epit300x300x300.log
-  feram_common.F: 52: FFTW_WISDOM: FFTW wisdom is not in current directory.
-  feram_common.F: 55: FFTW_WISDOM: Successfully imported FFTW system wisdom, /etc/fftw/wisdom.
-Here, /etc/fftw/wisdom is the system wisdom. In this case, you
-can use this /etc/fftw/wisdom for both Lx*Ly*Lz=32*32*243 and
-Lx*Ly*Lz=300*300*300 in the OMP_NUM_THREADS=6 environment.
+ $ grep TIMING_REPORT forward.log
 
-See src/fft_check.html for more details on fft_check.
+Command line arguments for feram_fftw_wisdom are
+ feram_fftw_wisdom <N_TIMES> <Lx> <Ly> <Lz> <padding_y>
 
 Check http://www.fftw.org/doc/Other-Important-Topics.html for more
 details on FFTW wisdom. If you are using the MKL for FFTW3 wrappers,
@@ -497,14 +505,15 @@ Please see src/hysteresis_loop.F.
 
 === foo123.nnnnnnnnnn.coord
 Snapshot of dipoles at nnnnnnnnnn-th iteration.
-This file can be visualized with slice.rb (Ruby script) and
-cross-section-q.sh, cross-section-p.sh, and cross-section-dVddi.sh
-(Bourne Shell scripts). cross-section-p.sh and cross-section-dVddi.sh
-are symbolic links or copy of cross-section-q.sh.
+This file can be visualized with feram_slicer.rb (Ruby script) and
+feram_cross_section_q.sh, feram_cross_section_p.sh, and
+feram_cross_section_dVddi.sh (Bourne Shell scripts).
+feram_cross_section_p.sh and feram_cross_section_dVddi.sh
+are symbolic links or copy of feram_cross_section_q.sh.
 
 === foo123.param.gp
 Parameter file for GNUPLOT.
-rename it to param.gp, then use it with cross-section-q.sh etc.
+rename it to param.gp, then use it with cross_section_q.sh etc.
 
 === foo123.dipole-dipole-long+short.dat
 
@@ -702,7 +711,6 @@ u.subs_rules = lambda{|s|
   gsub(/(\S*\/?COPYING)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(\S*\/?LICENSE)(\s|$|\.)/,         '<a href="\1">\1</a>\2').
   gsub(/(parameters\/parameters\.html)/,   '<a href="\1">\1</a>').
-  gsub(/(src\/fft_check\.html)/,           '<a href="\1">\1</a>').
   gsub(/(examples\/\S*)(\s|$)/,            '<a href="\1">\1</a>\2').
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').

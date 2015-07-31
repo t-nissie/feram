@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2014-09-03 11:55:51 t-nissie>
+! Time-stamp: <2015-05-15 22:28:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -17,8 +17,9 @@ subroutine read_defects_u(p,c)
   real*8  u(3)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
-  c%m_inv(:,:,:,:) = 1.0d0 / p%mass_dipo
-  c%sum_p(:,:,:) = .true.
+  c%m_inv(1:3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1) = 1.0d0 / p%mass_dipo
+  c%sum_p(     0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1) = .true.
+  !!! They are first-touched in alloc_coord.F.
 
   open(unit=UNIT_DEFECTS_U, file=trim(p%filename)//'.defects', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
@@ -32,8 +33,8 @@ subroutine read_defects_u(p,c)
         if (ios.ne.0 .or. tmp.eq.'#') cycle
         read(str,*,IOSTAT=ios) ix, iy, iz, u(:)
         if (ios.eq.0) then
-           c%dipoR(ix, iy, iz, :) = u(:)
-           c%m_inv(ix, iy, iz, :) = 0.0d0   ! 1/infinity
+           c%dipoR(:, ix, iy, iz) = u(:)
+           c%m_inv(:, ix, iy, iz) = 0.0d0   ! 1/infinity
            c%sum_p(ix, iy, iz) = .false.
         else
            call msg(UNIT_LOG, trim(p%filename)//'.defects', line_number, 'There is something wrong in this line: ', trim(str))
@@ -53,21 +54,26 @@ subroutine read_defects_u(p,c)
   end if
 
   if (p%gap_id>0) then
-     c%dipoR(:, :, 0, 1) = p%gap_dipole_u(1)
-     c%dipoR(:, :, 0, 2) = p%gap_dipole_u(2)
-     c%dipoR(:, :, 0, 3) = p%gap_dipole_u(3)
-     c%m_inv(:, :, 0, :) = 0.0d0   ! 1/infinity
-     c%sum_p(:, :, 0)    = .false.
+     c%dipoR(1, 0:p%Lx-1, 0:p%Ly-1, 0) = p%gap_dipole_u(1)
+     c%dipoR(2, 0:p%Lx-1, 0:p%Ly-1, 0) = p%gap_dipole_u(2)
+     c%dipoR(3, 0:p%Lx-1, 0:p%Ly-1, 0) = p%gap_dipole_u(3)
+     c%m_inv(:, 0:p%Lx-1, 0:p%Ly-1, 0) = 0.0d0   ! 1/infinity
+     c%sum_p(   0:p%Lx-1, 0:p%Ly-1, 0) = .false.
      if (p%gap_id.eq.2) then
-        c%dipoR(:, :, p%Lz/2, 1) = p%gap_dipole_u(1)
-        c%dipoR(:, :, p%Lz/2, 2) = p%gap_dipole_u(2)
-        c%dipoR(:, :, p%Lz/2, 3) = p%gap_dipole_u(3)
-        c%m_inv(:, :, p%Lz/2, :) = 0.0d0   ! 1/infinity
-        c%sum_p(:, :, p%Lz/2)    = .false.
+        c%dipoR(1, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = p%gap_dipole_u(1)
+        c%dipoR(2, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = p%gap_dipole_u(2)
+        c%dipoR(3, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = p%gap_dipole_u(3)
+        c%m_inv(:, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = 0.0d0   ! 1/infinity
+        c%sum_p(   0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = .false.
      end if
   end if
 
   c%n_sum_p = count(c%sum_p);  write(str,'(a,i10)') 'c%n_sum_p =', c%n_sum_p; call msg_ez(UNIT_LOG,str)
+!$omp parallel do
+  do iz = 0, p%Lz-1
+     c%n_sum_layer(iz) = count(c%sum_p(:,:,iz))
+  end do
+!$omp end parallel do
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   flush(UNIT_LOG)

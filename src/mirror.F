@@ -1,5 +1,5 @@
 ! mirror.F -*-f90-*-
-! Time-stamp: <2012-04-12 11:24:50 user2001>
+! Time-stamp: <2015-04-14 15:41:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -11,7 +11,7 @@ subroutine mirror(p, dipo)
   implicit none
   !--- arguments -------------------------------------
   type(Param_type),   intent(in)    :: p
-  real*8 :: dipo(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1, 3)
+  real*8 :: dipo(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)
   integer iz
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
@@ -19,17 +19,17 @@ subroutine mirror(p, dipo)
   if (p%gap_id==0) then ! There is no dead layers.
 !$omp parallel do
      do iz = 0, p%Lz/2-1
-        dipo(:,:,p%Lz-1-iz,1) = -dipo(:,:,iz,1)
-        dipo(:,:,p%Lz-1-iz,2) = -dipo(:,:,iz,2)
-        dipo(:,:,p%Lz-1-iz,3) =  dipo(:,:,iz,3)
+        dipo(1,:,:,p%Lz-1-iz) = -dipo(1,:,:,iz)
+        dipo(2,:,:,p%Lz-1-iz) = -dipo(2,:,:,iz)
+        dipo(3,:,:,p%Lz-1-iz) =  dipo(3,:,:,iz)
      end do
 !$omp end parallel do
   else                                        ! There are single or double dead layer(s).
 !$omp parallel do
      do iz = 1, (p%Lz+1)/2-1
-        dipo(:,:,p%Lz-iz,1) = -dipo(:,:,iz,1)
-        dipo(:,:,p%Lz-iz,2) = -dipo(:,:,iz,2)
-        dipo(:,:,p%Lz-iz,3) =  dipo(:,:,iz,3)
+        dipo(1,:,:,p%Lz-iz) = -dipo(1,:,:,iz)
+        dipo(2,:,:,p%Lz-iz) = -dipo(2,:,:,iz)
+        dipo(3,:,:,p%Lz-iz) =  dipo(3,:,:,iz)
      end do
 !$omp end parallel do
   end if

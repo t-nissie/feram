@@ -1,13 +1,13 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2014-12-29 07:47:41 takeshi>
+dnl Time-stamp: <2015-07-10 15:19:03 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.69)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.22.06],[t-nissie{at}imr.tohoku.ac.jp],[feram],[http://loto.sourceforge.net/feram/])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.24.00],[t-nissie{at}imr.tohoku.ac.jp],[feram],[http://loto.sourceforge.net/feram/])
 AC_CONFIG_SRCDIR(src/feram.F)
-AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz])
+AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax])
 AC_CONFIG_HEADERS([config.h])
 
 ## fftw3.f must be in /usr/include/, /usr/local/include/.
@@ -35,7 +35,7 @@ case "$FC" in
     gfortran --version | head -1 | grep -v 4.8.0 || AC_MSG_ERROR([Do NOT use gfortran 4.8.0. Use 4.8.1 or higher. See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=56696 .])
     ;;
   ifort)
-    test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -warn all -openmp -openmp-report2 -parallel -par-report1"
+    test -n "$FCFLAGS" || FCFLAGS="-r8 -O3 -warn all -openmp -parallel -qopt-report=2"
     ;;
   frt)
     test -n "$FCFLAGS" || FCFLAGS="-Kimpact -Am -SSL2 -KOMP"
@@ -85,7 +85,7 @@ case "$with_fft" in
                  [AC_MSG_ERROR([Your FFTW3 library does not combine threads. See config.log.])])
     ;;
   mkl)
-    AC_CHECK_LIB(mkl_gf_lp64, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
+    AC_CHECK_LIB(mkl_gf_lp64, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) AC_DEFINE([WITH_FFT_MKL], [1], [Use FFTW3 wrappers to Intel MKL functions]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
                  AC_MSG_ERROR([You need Intel Math Kernel Library (MKL). See config.log.]),[-lmkl_core -lmkl_intel_thread])
     ;;
   ssl2)
@@ -135,19 +135,24 @@ esac
 
 ## free-form
 case "$FC" in
-  gfortran*)
+  *gfortran*)
     FCFLAGS="$FCFLAGS -ffree-form -ffree-line-length-none"
     ;;
-  frt*)
+  *frt*)
     FCFLAGS="$FCFLAGS -Free"
     ;;
-  xlf*)
+  *xlf*)
     FCFLAGS="$FCFLAGS -qfree=f90"
     ;;
   *)
     AC_FC_FREEFORM()
     ;;
 esac
+
+## ulmul2html5
+if /usr/bin/which ulmul2html5 > /dev/null 2>&1 ; then
+    ulmul2html5 --version | grep 0.5.3 || AC_MSG_ERROR([ulmul2html5 exists, but old.])
+fi
 
 ## Finalize.
 AC_SUBST(CPPFLAGS)

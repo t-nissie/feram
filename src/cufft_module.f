@@ -1,5 +1,5 @@
 ! cufft_module.f -*-f90-*-
-! Time-stamp: <2013-12-25 11:03:14 takeshi>
+! Time-stamp: <2015-06-27 17:28:01 t-nissie>
 ! Author: Takeshi NISHIMATSU
 ! Reference: http://www.softek.co.jp/SPG/Pgi/TIPS/public/accel/cufft.html
 !!
@@ -66,6 +66,18 @@ module cufft_module
        integer(c_int)        :: plan
        integer(c_int), value :: nx, ny, nz, type
      end function cufftPlan3d
+  end interface
+
+  interface cufftPlanMany
+     function cufftPlanMany(plan, rank, n, inembed, istride, idist, &
+          &                                onembed, ostride, odist, type, batch) bind(C,name='cufftPlanMany')
+       use, intrinsic :: iso_c_binding
+       implicit none
+       integer(c_int)        :: cufftPlanMany
+       integer(c_int)        :: plan
+       type(c_ptr),value     :: n, inembed, onembed
+       integer(c_int), value :: rank, istride, idist, ostride, odist, type, batch
+     end function cufftPlanMany
   end interface
 
   interface cufftExecZ2Z
