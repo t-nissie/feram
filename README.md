@@ -1,12 +1,12 @@
-feram-0.24.00
+feram-0.24.01
 =============
 Dear current and future feram users,
 
-I released feram-0.24.00.tar.xz from
-https://sourceforge.net/projects/loto/files/feram/feram-0.24.00/ .
+I released feram-0.24.01.tar.xz from
+https://sourceforge.net/projects/loto/files/feram/feram-0.24.01/ .
 This is a stable release, I hope.
 
-MD5 (feram-0.24.00.tar.xz) = f86f0df68cc5164de31d920273d427d8
+MD5 (feram-0.24.01.tar.xz) = 
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -14,17 +14,25 @@ http://loto.sourceforge.net/feram/ .
 
 I also released a *slideshare* of 5 pages from
 http://www.slideshare.net/TakeshiNishimatsu/feram-20150711slideshare
-for this feram-0.24.00. You can download a PDF file from this URL.
+for the feram-0.24.??. You can download a PDF file from this URL.
 
 Enjoy,
 
 Takeshi
 
 ## Changes
-From this feram-0.24.00, the default value of padding_y became 1
+In this feram-0.24.01, a bug on writing/reading .coord files is
+fixed. See https://sourceforge.net/p/loto/code/2581/ and
+https://sourceforge.net/p/loto/code/2582/ .
+
+Now, feram's development repository came back to
+https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/ .
+https://sourceforge.net/p/loto/code/HEAD/tree/feram/branches/newplan/ was removed.
+
+From the feram-0.24.00, the default value of padding_y became 1
 instead of 3.
 
-From this feram-0.24.00, the in-place FFT is introduced for
+From the feram-0.24.00, the in-place FFT is introduced for
 two arrays dVdacK->dVdacR (src/dVdac.F, src/leapfrog.F and
 src/velocity_scaling.F) and inhoK->inhoR (src/dVddi_inho_coupling.F)
 with plans of plan_c2r_3_in and plan_c2r_6_in, respectively.
@@ -84,5 +92,5 @@ Bulk calculations go very fine.
     0.22.06 | without           | OK
     0.23.0? | with              | strange peak
     0.23.0? | without           | OK
-    0.24.00 | with              | strange peak
-    0.24.00 | without           | OK
+    0.24.0? | with              | strange peak
+    0.24.0? | without           | OK
