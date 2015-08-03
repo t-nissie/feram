@@ -6,7 +6,7 @@ I released feram-0.24.01.tar.xz from
 https://sourceforge.net/projects/loto/files/feram/feram-0.24.01/ .
 This is a stable release, I hope.
 
-MD5 (feram-0.24.01.tar.xz) = 
+MD5 (feram-0.24.01.tar.xz) = 2fe4a04a520e73873777c8724129ca99
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is

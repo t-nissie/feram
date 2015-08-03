@@ -51,8 +51,6 @@ o Imprement Nose:JPhysSocJpn:70:p75-77:2001
 
 o Use -simd=aggressive ???
 
-o Do not make fft.F module. It receives complex as real.
-
 o Error messages to stderr.
 
 o Copyright
@@ -101,8 +99,6 @@ o Use msg() in write_Param() of param_module.F.
 o striped structure を initial configuration にできるようにする.
 
 o refactoring nose-poincare.F and energy.F
-
-o 3 node parallelization
 
 o average 4倍精度に？
 
@@ -230,3 +226,5 @@ x Remove "#if defined(HAVE_LIBFFTW3)" so that we always use FFTW
 x continue = .true. でも、前に続けるべき計算がなかったら、エラーで止まるようにする。
 
 x configure.acでulmul2html5のversionが0.5.3であることをチェック。
+
+x Do not make fft.F module. (Done in feram-0.22.00)
