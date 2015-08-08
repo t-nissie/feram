@@ -24,6 +24,17 @@ Takeshi
 In this feram-0.24.01, a bug on writing/reading .coord files is
 fixed. See https://sourceforge.net/p/loto/code/2581/ and
 https://sourceforge.net/p/loto/code/2582/ .
+You can check this fix by counting the number of lines of
+resulting *ing.avg files in src/29example-BaTiO3-new-param-defects/.
+They must have 651 lines.
+    $ pwd
+    /SOMEWHERE/src/29example-BaTiO3-new-param-defects
+    $ for s in *g.sh; do numactl --cpubind=0 ./$s; done   # It will take 1 week or so.
+    $ wc -l *ing.avg
+     651 anti-000-cooling.avg
+     651 anti-000-heating.avg
+     651 anti-070-cooling.avg
+               :
 
 Now, feram's development repository came back to
 https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/ .
