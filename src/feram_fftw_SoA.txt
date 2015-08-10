@@ -1,0 +1,63 @@
+takeshi@emerald01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/*fft*log
+model name	: Intel(R) Xeon(R) CPU E5-2680 0 @ 2.70GHz
+  $ ../configure FCFLAGS=-g -Wall -Ofast -msse4.2 -pipe -fopenmp
+/home/takeshi/f/loto/feram/trunk/0.24.01-rev2590-2015-08-10-gfortran-4.8.2-CentOS6.5-msse4.2-emerald01
+==> src/feram_fftw_SoA.log <==
+     100  1   64   64   64    1     262144  in   8   0.046  51.289
+     100  3   64   64   64    1     262144  in   8   0.266  26.609
+     100  6   64   64   64    1     262144  in   8   0.264  53.620
+     100  1   64   64   64    1     262144  in   8   0.045  52.429
+     100  3   64   64   64    1     262144  in   8   0.272  26.022
+     100  6   64   64   64    1     262144  in   8   0.329  43.027
+==> src/feram_fftw_wisdom.log <==
+     100  3   64   64   64    1     262144  in   8   0.154  45.960
+     100  6   64   64   64    1     262144  in   8   0.275  51.476
+     100  3   64   64   64    1     262144 out   8   0.116  61.016
+     100  6   64   64   64    1     262144 out   8   0.356  39.763
+takeshi@emerald01$ cd src
+takeshi@emerald01$ numactl --cpubind 1 ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_SoA.F:51: flags = FFTW_PATIENT
+     100  1   64   64   64    1     262144  in   8   0.042  56.174
+     100  3   64   64   64    1     262144  in   8   0.113  62.636
+     100  6   64   64   64    1     262144  in   8   0.227  62.360
+     100  1   64   64   64    1     262144  in   8   0.043  54.867
+     100  3   64   64   64    1     262144  in   8   0.114  62.087
+     100  6   64   64   64    1     262144  in   8   0.308  45.960
+takeshi@emerald01$ numactl --cpubind 1 ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_wisdom.F:49: flags = FFTW_PATIENT
+     100  3   64   64   64    1     262144  in   8   0.150  47.186
+     100  6   64   64   64    1     262144  in   8   0.275  51.476
+     100  3   64   64   64    1     262144 out   8   0.117  60.495
+     100  6   64   64   64    1     262144 out   8   0.347  40.795
+
+takeshi@americium01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/*fft*log
+model name	: Intel(R) Xeon(R) CPU E5-2680 v3 @ 2.50GHz
+  $ ../configure FCFLAGS=-g -Wall -Ofast -mavx2 -pipe -fopenmp
+/home/takeshi/f/loto/feram/trunk/0.24.01-rev2590-2015-08-10-gfortran-4.8.3-CentOS7-mavx2-americium01
+==> src/feram_fftw_SoA.log <==
+     100  1   64   64   64    1     262144  in  12   0.047  50.198
+     100  3   64   64   64    1     262144  in  12   0.295  23.993
+     100  6   64   64   64    1     262144  in  12   0.282  50.198
+     100  1   64   64   64    1     262144  in  12   0.046  51.289
+     100  3   64   64   64    1     262144  in  12   0.297  23.831
+     100  6   64   64   64    1     262144  in  12   0.283  50.020
+==> src/feram_fftw_wisdom.log <==
+     100  3   64   64   64    1     262144  in  12   0.110  64.344
+     100  6   64   64   64    1     262144  in  12   0.193  73.346
+     100  3   64   64   64    1     262144 out  12   0.089  79.527
+     100  6   64   64   64    1     262144 out  12   0.180  78.643
+takeshi@americium01$ cd src/
+takeshi@americium01$ numactl --cpubind 1 ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_SoA.F:51: flags = FFTW_PATIENT
+     100  1   64   64   64    1     262144  in  12   0.033  71.494
+     100  3   64   64   64    1     262144  in  12   0.083  85.276
+     100  6   64   64   64    1     262144  in  12   0.169  83.762
+     100  1   64   64   64    1     262144  in  12   0.036  65.536
+     100  3   64   64   64    1     262144  in  12   0.083  85.276
+     100  6   64   64   64    1     262144  in  12   0.176  80.431
+takeshi@americium01$ numactl --cpubind 1 ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_wisdom.F:49: flags = FFTW_PATIENT
+     100  3   64   64   64    1     262144  in  12   0.099  71.494
+     100  6   64   64   64    1     262144  in  12   0.170  83.269
+     100  3   64   64   64    1     262144 out  12   0.080  88.474
+     100  6   64   64   64    1     262144 out  12   0.172  82.301
