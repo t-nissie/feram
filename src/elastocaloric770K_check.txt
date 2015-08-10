@@ -117,3 +117,19 @@ elastocaloric770K_check.lf.log:
      6.13%    feram  libgfortran.so.3.0.0   [.] _gfortran_matmul_c8
      6.08%    feram  libfftw3.so.3.4.4      [.] r2cb_64
      4.60%    feram  libfftw3.so.3.4.4      [.] n1fv_64
+
+=== r2590 (around feram-0.24.01)
+wisdom files were prepared with FFTW_PATIENT for each CPU.
+==== elastocaloric770K_check.vs.log:
+ E5-2680    1 chip =  8 core *1: 2.82         949.55         952.38    8     #TIMING_REPORT
+ E5-2680 v3 1 chip = 12 core *2: 2.56         640.03         642.59   12     #TIMING_REPORT
+==== elastocaloric770K_check.lf.log:
+ E5-2680    1 chip =  8 core *1: 2.75         940.34         943.09    8     #TIMING_REPORT
+ E5-2680 v3 1 chip = 12 core *2: 2.33         628.18         630.52   12     #TIMING_REPORT
+
+*1 /home/takeshi/f/loto/feram/trunk/0.24.01-rev2590-2015-08-10-gfortran-4.8.2-CentOS6.5-msse4.2-emerald01/src/
+   ../configure FCFLAGS=-g -Wall -Ofast -msse4.2 -pipe -fopenmp
+   Intel Xeon E5-2680 2.70GHz, DDR3 1600 MHz
+*2 /home/takeshi/f/loto/feram/trunk/0.24.01-rev2590-2015-08-10-gfortran-4.8.3-CentOS7-mavx2-americium01/src/
+   ../configure FCFLAGS=-g -Wall -Ofast -mavx2 -pipe -fopenmp
+   Intel Xeon E5-2680 v3 2.50 GHz, DDR4 2133 MHz
