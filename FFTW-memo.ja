@@ -1,0 +1,62 @@
+= FFTWについてのメモ
+このメモはNUMAアーキテクチャーのコンピューター１ノードで高速フーリエ変換ライブラリFFTWを高速に動かす方法の日本語のメモ。
+Fortranを使う。
+guruやgenfftなどFFTWの深部については触れない。
+基本的には公式サイト http://www.fftw.org を参照すべき。
+
+== フーリエ級数展開と高速フーリエ変換
+
+=== FFT8
+
+=== FFT9
+
+=== 実数⇄複素数
+
+
+== 高速フーリエ変換の歴史
+ * 1805年ごろ、ガウスは地球磁気の研究に関連してフーリエ級数展開の高速な計算方法を開発し、データ数が２の冪乗の場合についてを論文に記述（ラテン語）。
+ * 1965年、J. W. Cooley と J. W. Tukey が（再）発見したCooley-Tukey型FFTアルゴリズムをFFTと呼ぶ。
+ * 1997年、MITのMatteo FrigoとSteven G. Johnsonらが超高速なライブラリFFTWを発表。Intelのプロセッサの普及とあいまって2010年ごろにそのAPIがデファクトスタンダードとなる。
+
+== FFTW
+ * FFTW一択。なんでもかんでもとにかく速い。
+ * デファクトスタンダード。プログラムはFFTWのAPIで直接書くべき。cuFFTやMKLにはラッパがある。
+ * 「FFTWより速い」と謳うライブラリの
+   99%は速度を比較するときにFFTWの使い方を間違っている。
+   3%は精度が悪い（普通は気にならない程度。例: Intel MKL。おそらく意図的ではない。）。
+ * cuFFT
+ * Xeon Phiは？
+ * SX-ACEは知らね
+ * Debian GNU/Linux, Ubuntu, RHEL, CentOSにはパッケージでインストールできる。
+ * MPI版もある。hybrid並列もできる。
+
+=== 領域を動的に確保する配列で実数⇄複素数のin-placeの高速フーリエ変換 (FFT) をFFTW3で美しく行う方法
+ * use, intrinsic :: iso_c_binding
+ * Cのポインタを使うと綺麗に書ける。
+
+=== libfftw3_omp or libfftw3_threads
+
+=== SoA or AoS
+ * FFTWなら
+ * FFT以外のところで局所化すると高速化する場合がある
+ * GPUでは局所的にしても高速化しない
+
+=== in-place or out-of-place
+
+=== padding
+
+=== plan
+　　　　　　　    plan　　　　 　planで配列の内容を　　FFTの実行   　　　　
+ FFTW_ESTIMATE すぐ           壊さない            遅い
+ FFTW_MEASURE  数秒　　　　　　　壊す      　       十分速い　　 　　　　
+ FFTW_PATIENT  数十秒〜数時間   壊す               速いがたまにしくじる  
+
+=== wisdom
+ * planにかかる時間の短縮
+ * 計算結果の安定化
+
+=== HTまたはSMTの on or off
+
+=== Turbo Boost (TB)
+ * CPUの温度
+
