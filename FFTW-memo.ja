@@ -1,8 +1,9 @@
 = FFTWについてのメモ
-このメモはNUMAアーキテクチャーのコンピューター１ノードで高速フーリエ変換ライブラリFFTWを高速に動かす方法の日本語のメモ。
+高速フーリエ変換ライブラリFFTWを高速に動かす方法の日本語のメモ。
+基本的には公式サイト http://www.fftw.org を参照すべき。
+本メモはNUMAアーキテクチャーの１ノードをターゲットとする。
 Fortranを使う。
 guruやgenfftなどFFTWの深部については触れない。
-基本的には公式サイト http://www.fftw.org を参照すべき。
 
 == フーリエ級数展開と高速フーリエ変換
 
@@ -30,10 +31,6 @@ guruやgenfftなどFFTWの深部については触れない。
  * Debian GNU/Linux, Ubuntu, RHEL, CentOSにはパッケージでインストールできる。
  * MPI版もある。hybrid並列もできる。
 
-=== 領域を動的に確保する配列で実数⇄複素数のin-placeの高速フーリエ変換 (FFT) をFFTW3で美しく行う方法
- * use, intrinsic :: iso_c_binding
- * Cのポインタを使うと綺麗に書ける。
-
 === libfftw3_omp or libfftw3_threads
 
 === SoA or AoS
@@ -41,9 +38,9 @@ guruやgenfftなどFFTWの深部については触れない。
  * FFT以外のところで局所化すると高速化する場合がある
  * GPUでは局所的にしても高速化しない
 
-=== in-place or out-of-place
-
 === padding
+
+=== 1 CPU or 1 node
 
 === plan
 　　　　　　　    plan　　　　 　planで配列の内容を　　FFTの実行   　　　　
@@ -60,3 +57,8 @@ guruやgenfftなどFFTWの深部については触れない。
 === Turbo Boost (TB)
  * CPUの温度
 
+=== in-place or out-of-place
+
+=== 領域を動的に確保する配列で実数⇄複素数のin-placeの高速フーリエ変換 (FFT) をFFTW3で美しく行う方法
+ * use, intrinsic :: iso_c_binding
+ * Cのポインタを使うと綺麗に書ける。
