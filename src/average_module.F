@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2015-03-22 14:31:58 takeshi>
+! Time-stamp: <2015-08-28 21:40:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -201,7 +201,7 @@ contains
     write(fn_avg,'(a,a)') trim(p%filename), '.avg'
     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_avg)
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
-    write(UNIT_AVG,"(f8.3,3f9.5,1(e15.5,5e13.5),1(e15.5,2e13.5),1(e15.5,5e13.5),1(1e15.5,12e13.5))")&
+    write(UNIT_AVG,"(f8.3,3f9.5,1(e15.5,5e13.5),1(e15.5,2e13.5),1(e15.5,5e13.5),1(1e17.7,12e15.7))")&
          p%kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
          avg%energy%dipo_kinetic    ,&
          avg%energy%dipole_dipole   ,&
