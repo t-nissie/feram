@@ -1,12 +1,12 @@
-feram-0.24.01
+feram-0.24.02
 =============
 Dear current and future feram users,
 
-I released feram-0.24.01.tar.xz from
-https://sourceforge.net/projects/loto/files/feram/feram-0.24.01/ .
+I released feram-0.24.02.tar.xz from
+https://sourceforge.net/projects/loto/files/feram/feram-0.24.02/ .
 This is a stable release, I hope.
 
-MD5 (feram-0.24.01.tar.xz) = 2fe4a04a520e73873777c8724129ca99
+MD5 (feram-0.24.02.tar.xz) = 
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -21,7 +21,13 @@ Enjoy,
 Takeshi
 
 ## Changes
-In this feram-0.24.01, a bug on writing/reading .coord files is
+In this feram-0.24.02, I added 2 digits for energies in the .avg file.
+See https://sourceforge.net/p/loto/code/2595/ .
+
+In this feram-0.24.02, I added a new test, feram_fftw_SoA.F.
+It's just for benchmarks. This change is not important.
+
+In the feram-0.24.01, a bug on writing/reading .coord files is
 fixed. See https://sourceforge.net/p/loto/code/2581/ and
 https://sourceforge.net/p/loto/code/2582/ .
 You can check this fix by counting the number of lines of
