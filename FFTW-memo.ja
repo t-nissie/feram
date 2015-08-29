@@ -58,6 +58,14 @@ guruやgenfftなどFFTWの深部については触れない。
  * CPUの温度
 
 === in-place or out-of-place
+ * in-place **FFTの元と先の配列が同じ**
+   * メモリ使用量を削減できる。feramの0.23.02→0.24.00のin-place化などで64x64x1024なら3.13GB→2.73GB と (3+6)x33x65x1024x16≒316MB 以上削減。
+   * real⇄complexの場合、配列の確保が少し面倒。Fortranの場合、C_PTRを駆使するとrealとcomplexの２つの別の配列のようにアクセスができる。
+ * out-of-place **FFTの元と先の配列が異なる**
+   * メモリ使用量がin-placeの２倍。
+   * real⇄complexの場合、それぞれN, N/2+1と、配列の大きさが異なっていてもよい。コードはシンプル。
+ * FFTWならin-placeもout-of-placeも計算速度はほぼ同じ。
+
 
 === 領域を動的に確保する配列で実数⇄複素数のin-placeの高速フーリエ変換 (FFT) をFFTW3で美しく行う方法
  * use, intrinsic :: iso_c_binding
