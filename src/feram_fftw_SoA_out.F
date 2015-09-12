@@ -1,5 +1,5 @@
 ! feram_fftw_SoA_out.F -*-f90-*-
-! Time-stamp: <2015-08-07 21:14:59 takeshi>
+! Time-stamp: <2015-09-13 08:02:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine feram_fftw_SoA_out(howmany, N_TIMES, Lx, Ly, Lz, padding_y, flags, plan_r2c, plan_c2r)
@@ -91,7 +91,7 @@ subroutine feram_fftw_SoA_out(howmany, N_TIMES, Lx, Ly, Lz, padding_y, flags, pl
   end do
 !$omp end parallel do
 
-  call feram_fftw_wisdom_timing(howmany, N_TIMES, Lx, Ly, Lz, padding_y, '  in', &
+  call feram_fftw_wisdom_timing(howmany, N_TIMES, Lx, Ly, Lz, padding_y, ' out', &
      &                              count_begin, count_end, count_rate, count_max)
 
   deallocate(dipoR)
