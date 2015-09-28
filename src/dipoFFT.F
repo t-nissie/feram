@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2015-06-23 14:28:43 takeshi>
+! Time-stamp: <2015-09-28 17:23:20 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -34,8 +34,21 @@ subroutine dipoFFT(p,c)
      end do
   end do
 !$omp end parallel do
-
   call fftw_execute_dft_r2c(c%plan_r2c_6_out, c%didiR, c%didiK)
+
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       do iy=0, p%Ly-1
+          do ix=0, p%Lx-1
+             c%Z_u_R(:,ix,iy,iz) = c%ZstarR(ix,iy,iz) * c%dipoR(:,ix,iy,iz)
+          end do
+       end do
+    end do
+!$omp end parallel do
+  call fftw_execute_dft_r2c(c%plan_r2c_3_out, c%Z_u_R, c%Z_u_K)
+
+  !write(6,*) c%dipoK(2,1,0,0)
+  !write(6,*) c%Z_u_K(2,1,0,0)
 
   if (p%verbose>=2) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'END', &

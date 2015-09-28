@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2015-04-03 17:49:47 takeshi>
+! Time-stamp: <2015-09-28 17:40:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 !UINLINE decay-functions.f
@@ -12,7 +12,7 @@ subroutine dipole_dipole_long_range(p,long_range)
   implicit none
   !--- arguments -------------------------------------
   type(Param_type), intent(in)     :: p
-  real*8,           intent(out)    :: long_range(3, 3,  0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1) !"/2" for real<->complex FFT
+  real*8,           intent(out)    :: long_range(3, 3,  0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) !"/2" for real<->complex FFT
   !--- local -----------------------------------------
   real*8,     allocatable :: TMPreal(:,:,:,:,:)
   complex*16, allocatable :: TMPcomplex(:,:,:,:,:)
@@ -140,7 +140,6 @@ subroutine dipole_dipole_long_range(p,long_range)
   end do
   !--- END of reciplocal-space summation -------------------
 
-  long_range(:,:,:,:,:) = long_range(:,:,:,:,:) &
-       &               * (HARTREE_BOHR * p%Z_star**2 / p%epsilon_inf)
+  long_range(:,:,:,:,:) = long_range(:,:,:,:,:) * (HARTREE_BOHR / p%epsilon_inf)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine dipole_dipole_long_range

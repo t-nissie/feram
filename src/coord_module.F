@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-07-09 15:43:47 takeshi>
+! Time-stamp: <2015-09-28 16:55:18 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -14,13 +14,18 @@ module Coord_module
   type Coord_type
      real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
-     complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoQ
+     complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoR
+     real*8,     allocatable :: ZstarR(:,:,:)    ! Z_start(R)
+     real*8,     allocatable :: Z_u_R(:,:,:,:)   ! Z_start(R)*u(R)
+     complex*16, allocatable :: Z_u_K(:,:,:,:)   ! FT of Z_u_R(:,:,:,:)
      real*8,     allocatable :: dipoP(:,:,:,:)   ! Momenta
      real*8,     allocatable :: dVddi(:,:,:,:)   ! dV/dq for dipole
+     real*8,     allocatable :: dVddi_long(:,:,:,:)  ! T for temporary
      complex*16, allocatable :: dipoT(:,:,:,:)   ! Only used in dVddi_dipole_dipole.F
      real*8,     allocatable :: E_field(:,:,:,:) ! external and local electric field
      real*8,     allocatable :: E_field_local(:,:,:,:) ! initial external electric field
-     real*8,     allocatable :: dipoI(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8!!!
+     real*8,     allocatable ::  long_range(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8!!!
+     real*8,     allocatable :: short_range(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8!!!
      real*8,     allocatable :: didiR(:,:,:,:)   ! 6 kind of dipoR*dipoR
      complex*16, allocatable :: didiK(:,:,:,:)   ! 6 kind of dipoR*dipoR
      real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
@@ -46,8 +51,7 @@ module Coord_module
      type(C_PTR) ::         plan_c2r_3_in  = c_null_ptr   ! dVdacK->dVdacR (dVdac.F)
      type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr   ! inhoK->inhoR (dVddi_inho_coupling.F)
      type(C_PTR) ::         plan_r2c_3_out = c_null_ptr   ! dipoR->dipoK (dipoFFT.F), acouR->acouK (acouFFT.F)
-     type(C_PTR) ::         plan_c2r_3_out = c_null_ptr   ! dVdacK->dVdacR (dVdac.F), dipoT->dVddi (dVddi-dipole-dipole.F)
-                                                          ! acouK->acouR (write_system(). It is not crucial for seed.)
+     type(C_PTR) ::         plan_c2r_3_out = c_null_ptr   ! dipoT->dVddi (dVddi-dipole-dipole.F), acouK->acouR (write_system(). It is not crucial for speed.)
      type(C_PTR) ::         plan_r2c_6_out = c_null_ptr   ! didiR->didiK (dipoFFT.F)
   end type Coord_type
 
@@ -58,7 +62,7 @@ contains
     implicit none
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
-    integer iz
+    integer ix,iy,iz
 
     include 'fftw3.f03'
     integer howmany,stride
@@ -92,6 +96,7 @@ contains
        c%m_inv(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
+
     !--- dipo -------------------------------
     if (allocated(c%dipoR)) deallocate(c%dipoR)
     allocate(     c%dipoR(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
@@ -114,16 +119,58 @@ contains
          &                                  c%dipoR,d_embed,stride,dist,&
          &                                  c%dipoK,z_embed,stride,dist,FFTW_MEASURE)
 
+    !--- Z_star(R) -------------------------------
+    if (allocated(c%ZstarR)) deallocate(c%ZstarR)
+    allocate(     c%ZstarR(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%ZstarR(:,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       do iy=0, p%Ly-1
+          do ix=0, p%Lx-1
+             c%ZstarR(ix,iy,iz) = p%Z_star
+          end do
+       end do
+    end do
+!$omp end parallel do
+
+    !--- Z(R)*u(R) -------------------------------
+    if (allocated(c%Z_u_R)) deallocate(c%Z_u_R)
+    allocate(     c%Z_u_R(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    if (allocated(c%Z_u_K)) deallocate(c%Z_u_K)
+    allocate(     c%Z_u_K(3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%Z_u_R(:,:,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%Z_u_K(:,:,:,iz) = (0.0d0,0.0d0)
+    end do
+!$omp end parallel do
+
     if (allocated(c%dipoP)) deallocate(c%dipoP)
     allocate(     c%dipoP(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%dVddi)) deallocate(c%dVddi)
     allocate(     c%dVddi(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    if (allocated(c%dVddi_long)) deallocate(c%dVddi_long)
+    allocate(c%dVddi_long(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%dipoT)) deallocate(c%dipoT)
     allocate(     c%dipoT(3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
        c%dVddi(:,:,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%dVddi_long(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
@@ -150,12 +197,21 @@ contains
     end do
 !$omp end parallel do
 
-    if (allocated(c%dipoI)) deallocate(c%dipoI)
-    allocate(     c%dipoI(3, 3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+    if (allocated(c%long_range)) deallocate(c%long_range)
+    allocate(     c%long_range(3, 3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%dipoI(:,:, :,:,iz) = 0.0d0
+       c%long_range(:,:, :,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+
+    if (allocated(c%short_range)) deallocate(c%short_range)
+    allocate(     c%short_range(3, 3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%short_range(:,:, :,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 

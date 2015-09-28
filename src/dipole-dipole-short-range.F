@@ -1,5 +1,5 @@
 ! dipole-dipole-short-range.F -*-f90-*-
-! Time-stamp: <2015-04-03 17:52:17 takeshi>
+! Time-stamp: <2015-09-28 17:40:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -12,7 +12,7 @@ subroutine dipole_dipole_short_range(p,short_range)
   implicit none
   !--- arguments -------------------------------------
   type(Param_type), intent(in)  :: p
-  real*8,           intent(out) :: short_range(3, 3,  0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1) !"/2" for real<->complex FFT
+  real*8,           intent(out) :: short_range(3, 3,  0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) !"/2" for real<->complex FFT
   !--- allocatable arrays ----------------------------
   real*8,     allocatable :: TMPreal(:,:,:,:,:)
   complex*16, allocatable :: TMPcomplex(:,:,:,:,:)
