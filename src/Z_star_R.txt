@@ -1,16 +1,24 @@
 = Z_star_R
-== はじめに
+== 履歴
 r2602 https://sourceforge.net/p/loto/code/2602/ が元
 
 r2603で
     svn copy https://svn.code.sf.net/p/loto/code/feram/trunk https://svn.code.sf.net/p/loto/code/feram/branches/z_star_r -m 'for R-dep Z*'
 とした
 
+r2605: The first step of Z_star_R. It cleared TESTS. https://sourceforge.net/p/loto/code/2605/
+
 
 == ToDo
 o dipole-dipole-long-range.F, dipole-dipole-short-range.F をc%を使うように書き直す。配列の構造が違うので*超注意*が必要。
 
 o print-eigenvalues.F で c%long_range に Z_star**2 がかけられていないのをどうしたものか。
+
+o energy_module.F で dipole_dipole を long_range と short_range とに分ける
+
+o ZstarRを読み込めるようにする。
+
+o 0.24.02とベンチマークで比較。
 
 
 == Done
