@@ -1,0 +1,32 @@
+r2602 https://sourceforge.net/p/loto/code/2602/ が元
+
+r2603で
+    svn copy https://svn.code.sf.net/p/loto/code/feram/trunk https://svn.code.sf.net/p/loto/code/feram/branches/z_star_r -m 'for R-dep Z*'
+とした
+
+Z_starが出てくるのは
+mirror_force_mirror.F:40:     c%dVddi(:,:,:,iz) = c%dVddi(:,:,:,iz) - p%Z_star*c%E_field(:,:,:,iz)
+param_module.F:82:     real*8 Z_star        ! Born effective charge
+ていど。
+
+
+o dVddi-dipole-dipole.F でdipoIを使って力とエネルギーを計算してる。dipoIを分ける。
+
+o dipole-dipole-long-range.F, dipole-dipole-short-range.F をc%を使うように書き直す。
+
+
+Done:
+x param_module.Fで
+  dipoIを c%dipoI(:,:, ix,iy,iz) = long_range(:,:, ix,iy,iz) + short_range(:,:, ix,iy,iz) に分ける。
+
+x dipole-dipole.Fの
+  open(unit=UNIT_QUADRATIC, file=trim(p%filename)//'.quadratic', status='old', action='read', iostat=ios)
+  の機能は停止。
+
+x dipole-dipole-long-range.FでZ_star**2を掛けない。
+
+x Z_u_R(:,:,:,:), Z_u_K(:,:,:,:) を coord_module.F に加える。
+
+x feram_eigenvalues2j.F:61:  b(0) = p%DDB_a  -  ( -4.188790 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / ...
+  ここにあるZ_starは気にしなくてよい。
+
