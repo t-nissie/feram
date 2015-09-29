@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2015-03-25 13:26:22 takeshi>
+! Time-stamp: <2015-09-29 13:14:20 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -8,7 +8,8 @@ module Energy_module
                               ! calculated in
      real*8 acou_kinetic      ! leapfrog.F or nose-poincare.F, initialize in initialize_dipoR.F
      real*8 dipo_kinetic      ! leapfrog.F or nose-poincare.F, initialize in initialize_dipoR.F
-     real*8 dipole_dipole     ! subroutine write_Energy() below
+     real*8 short_range       ! dVddi-dipole-dipole.F
+     real*8 long_range        ! dVddi-dipole-dipole.F
      real*8 dipole_E_field    ! -m.E, dVddi_E_field.F
      real*8 unharmonic        ! dVddi-unharmonic.F
      real*8 homo_strain       ! optimize-homo-strain.F
@@ -32,7 +33,8 @@ contains
 
     add_Energy%acou_kinetic    = a%acou_kinetic    + b%acou_kinetic
     add_Energy%dipo_kinetic    = a%dipo_kinetic    + b%dipo_kinetic
-    add_Energy%dipole_dipole   = a%dipole_dipole   + b%dipole_dipole
+    add_Energy%short_range     = a%short_range     + b%short_range
+    add_Energy%long_range      = a%long_range      + b%long_range
     add_Energy%dipole_E_field  = a%dipole_E_field  + b%dipole_E_field
     add_Energy%unharmonic      = a%unharmonic      + b%unharmonic
     add_Energy%homo_strain     = a%homo_strain     + b%homo_strain
@@ -52,7 +54,8 @@ contains
 
     div_Energy%acou_kinetic    = a%acou_kinetic    / n
     div_Energy%dipo_kinetic    = a%dipo_kinetic    / n
-    div_Energy%dipole_dipole   = a%dipole_dipole   / n
+    div_Energy%short_range     = a%short_range     / n
+    div_Energy%long_range      = a%long_range      / n
     div_Energy%dipole_E_field  = a%dipole_E_field  / n
     div_Energy%unharmonic      = a%unharmonic      / n
     div_Energy%homo_strain     = a%homo_strain     / n
@@ -69,7 +72,8 @@ contains
     real*8 :: sum_potential_energies
     type(Energy_type), intent(in) :: e
     sum_potential_energies &
-         = e%dipole_dipole &
+         = e%short_range   &
+         + e%long_range    &
          + e%dipole_E_field&
          + e%unharmonic    &
          + e%homo_strain   &
@@ -95,7 +99,8 @@ contains
     write(message,fmt) 'acou_kinetic   ', e%acou_kinetic*p%Ninv;    call msg_ez(fd,message)
     write(message,fmt) 'dipo_kinetic   ', e%dipo_kinetic/c%s_Nose**2*p%Ninv
                                                                     call msg_ez(fd,message)
-    write(message,fmt) 'dipole_dipole  ', e%dipole_dipole*p%Ninv;   call msg_ez(fd,message)
+    write(message,fmt) 'short_range    ', e%short_range*p%Ninv;     call msg_ez(fd,message)
+    write(message,fmt) 'long_range     ', e%long_range*p%Ninv;      call msg_ez(fd,message)
     write(message,fmt) 'dipole_E_field ', e%dipole_E_field*p%Ninv;  call msg_ez(fd,message)
     write(message,fmt) 'unharmonic     ', e%unharmonic*p%Ninv;      call msg_ez(fd,message)
     write(message,fmt) 'homo_strain    ', e%homo_strain*p%Ninv;     call msg_ez(fd,message)

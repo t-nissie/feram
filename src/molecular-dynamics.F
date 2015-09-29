@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2015-03-22 17:12:00 takeshi>
+! Time-stamp: <2015-09-29 13:15:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -75,10 +75,11 @@ subroutine molecular_dynamics(p,c)
               u(alpha) = SUM(c%dipoR(alpha,:,:,:), MASK=c%sum_p(:,:,:))
            end do
            u(:) = u(:) / c%n_sum_p
-           write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5,6f4.1,1(1e15.5,12e13.5))") &
+           write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5,6f4.1,1(1e15.5,13e13.5))") &
                 i_step,p%kelvin, E_field_add, c%strain(1:6), u(1:3), 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, &
                 e%dipo_kinetic    ,&
-                e%dipole_dipole   ,&
+                e%short_range     ,&
+                e%long_range      ,&
                 e%dipole_E_field  ,&
                 e%unharmonic      ,&
                 e%homo_strain     ,&
