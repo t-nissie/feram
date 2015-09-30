@@ -8,6 +8,7 @@
 #define UNIT_LOG 18
 #define UNIT_WISDOM 20
 #define UNIT_QUADRATIC 22
+#define UNIT_Z_STAR 24
 
 /* length */
 #define FILE_NAME_LEN 300

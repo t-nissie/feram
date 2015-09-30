@@ -8,7 +8,8 @@ r2603で
 
 r2605: The first step of Z_star_R. It cleared TESTS. https://sourceforge.net/p/loto/code/2605/
 
-r2607: energy_module.F で dipole_dipole を long_range と short_range とに分ける
+r2607: energy_module.F で dipole_dipole を long_range と short_range とに分けた
+　　　　24example-BaTiO3-new-param-heating-coolingと29example-BaTiO3-new-param-defectsとは動いたみたい
 
 == ToDo
 o dipole-dipole-long-range.F, dipole-dipole-short-range.F をc%を使うように書き直す。配列の構造が違うので*超注意*が必要。
@@ -18,6 +19,8 @@ o print-eigenvalues.F で c%long_range に Z_star**2 がかけられていない
 o ZstarRを読み込めるようにする。
 
 o 0.24.02とベンチマークで比較。
+
+o Something for 'film' or 'epit' in read_Z_star.F
 
 
 == Done
