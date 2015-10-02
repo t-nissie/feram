@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-06-26 14:47:49 takeshi>
+! Time-stamp: <2015-10-02 21:17:21 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -33,7 +33,7 @@ subroutine feram_common(fn)
      if (suffix.eq.fn_len_trim-5) then
         p%filename = fn(1:fn_len_trim-6)
      else if (index(fn,'.feram_check',back=.true.).eq.fn_len_trim-11) then
-        p%filename = basename(fn(1:fn_len_trim-12))  ! for `make distcheck`
+        p%filename = basename(fn(1:fn_len_trim-12)) ! ../../src/zzz16.feram_check -> zzz16 for `make distcheck`
      end if
   else
      p%filename = fn

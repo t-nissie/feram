@@ -1,8 +1,4 @@
 ToDo:
-o zzz16.feram_check -> check16.feram。
-  ぜんぶ16x16x16にして、wisdomを使えるように。
-  要feram_common.F l.35あたりの変更。
-
 o Fix "610.1vs.defects:***: EOF: reached." in msg.F.
   See /home/t-nissie/feram/feram-o.00/directECE-on-0.005TGPa-parallel/BTOnew-050/ .
   また、欠陥の情報も2lfの計算に引き継がれてるかチェックが必要。引き継がれているはずだけど。
@@ -232,3 +228,8 @@ x continue = .true. でも、前に続けるべき計算がなかったら、エ
 x configure.acでulmul2html5のversionが0.5.3であることをチェック。
 
 x Do not make fft.F module. (Done in feram-0.22.00)
+
+x .feram_checkは`make distcheck`のためなので、
+  zzz16.feram_check -> check16.feram はしない。
+  zzzgap.feram_checkを16x16x16にして、wisdomを使えるようにした。
+  See feram_common.F, around basename().
