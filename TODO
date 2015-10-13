@@ -3,7 +3,10 @@ o Fix "610.1vs.defects:***: EOF: reached." in msg.F.
   See /home/t-nissie/feram/feram-o.00/directECE-on-0.005TGPa-parallel/BTOnew-050/ .
   また、欠陥の情報も2lfの計算に引き継がれてるかチェックが必要。引き継がれているはずだけど。
 
+o mass_dipole も mass_acou も R-dep できるようにする。
+
 o mass_acou<0.0d0 なら acoustic 関連の配列で要らないモノは確保しない。
+  Confirm e%acou_kinetic=0 if mass_acou<0
 
 o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
   https://gcc.gnu.org/onlinedocs/gfortran/Code-Gen-Options.html
@@ -42,8 +45,6 @@ o remove redundant procedures:
   - average_module.F: around u_tmp(:) =  u_tmp(:) + c%dipoR(ix,iy,iz,:)
   - molecular-dynamics.F: around u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
   - Then, report uu() and energies in the .hl file.
-
-o e%acou_kinetic=0 if mass_acou<0
 
 o 'md' have to be changed to 'np' Nose-Poincare.
 o Nose-Poincareでもacoustic displacementのMDができるように．
@@ -233,3 +234,5 @@ x .feram_checkは`make distcheck`のためなので、
   zzz16.feram_check -> check16.feram はしない。
   zzzgap.feram_checkを16x16x16にして、wisdomを使えるようにした。
   See feram_common.F, around basename().
+
+x Z_star(R) in feram-0.25.00unstable
