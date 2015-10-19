@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2015-09-29 13:15:50 takeshi>
+! Time-stamp: <2015-10-19 19:32:26 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -13,6 +13,7 @@ subroutine molecular_dynamics(p,c)
   use Energy_module
   use Average_module
   use wave_module
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type) :: p

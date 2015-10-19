@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2015-03-22 17:09:35 takeshi>
+! Time-stamp: <2015-10-19 19:31:48 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -7,6 +7,7 @@ subroutine initialize_E_field(p,c)
   use Param_module
   use Coord_module
   use wave_module
+  use msg_module
   implicit none
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c

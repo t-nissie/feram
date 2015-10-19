@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2015-09-28 17:23:20 takeshi>
+! Time-stamp: <2015-10-19 19:30:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,6 +9,7 @@
 subroutine dipoFFT(p,c)
   use Param_module
   use Coord_module
+  use msg_module
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c

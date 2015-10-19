@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2015-09-29 13:15:06 takeshi>
+! Time-stamp: <2015-10-19 19:40:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -55,6 +55,7 @@ contains
   subroutine add_to_Average(p,c,e,avg,detail) ! We use p implicitly. Don't worry about compile warning on it.
     use Param_module
     use Coord_module
+    use msg_module
     implicit none
     !--- arguments -------------------------------------
     type(Param_type),   intent(in)    :: p
@@ -146,6 +147,7 @@ contains
   subroutine divide_and_write_Average(p,c,avg)
     use Param_module
     use Coord_module
+    use msg_module
     implicit none
     type(Param_type),   intent(inout) :: p   ! may alter p%kelvin
     type(Coord_type),   intent(in)    :: c

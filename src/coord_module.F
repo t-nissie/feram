@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-09-28 16:55:18 takeshi>
+! Time-stamp: <2015-10-19 22:22:44 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -59,6 +59,7 @@ contains
   subroutine alloc_Coord(p,c)
     use, intrinsic :: iso_c_binding
     use Param_module
+    use msg_module
     implicit none
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
@@ -358,6 +359,7 @@ contains
 
   subroutine write_fft(p,c,fn)
     use Param_module
+    use msg_module
     implicit none
     type(Param_type), intent(in) :: p
     type(Coord_type), intent(in) :: c

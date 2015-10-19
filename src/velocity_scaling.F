@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2015-07-09 16:05:24 takeshi>
+! Time-stamp: <2015-10-19 19:43:58 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -10,6 +10,7 @@ subroutine velocity_scaling(p,c,e)
   use Param_module
   use Coord_module
   use Energy_module
+  use msg_module
   implicit none
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c

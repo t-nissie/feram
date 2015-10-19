@@ -1,5 +1,5 @@
 ! feram_eigenvalues2j.F -*-f90-*-
-! Time-stamp: <2015-09-16 09:50:52 takeshi>
+! Time-stamp: <2015-10-19 22:28:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -15,6 +15,7 @@
 
 program feram_eigenvalues2j
   use Param_module
+  use msg_module
   implicit none
   type(Param_type) :: p
   integer command_argument_count, INFO, IPIV(8)
@@ -100,6 +101,7 @@ program feram_eigenvalues2j
 end program feram_eigenvalues2j
 
 subroutine write_kappa2_and_j_i(str,c)
+  use msg_module
   implicit none
   character (len=*)            :: str
   real*8                       :: c

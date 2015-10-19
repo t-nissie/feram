@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2015-04-02 13:52:38 takeshi>
+! Time-stamp: <2015-10-19 19:37:00 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
@@ -10,6 +10,7 @@ subroutine nose_poincare(p,c,e)
   use Param_module
   use Coord_module
   use Energy_module
+  use msg_module
   implicit none
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c

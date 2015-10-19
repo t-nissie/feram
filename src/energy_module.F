@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2015-09-29 13:14:20 takeshi>
+! Time-stamp: <2015-10-19 19:30:48 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -85,6 +85,7 @@ contains
   subroutine write_Energy(p,c,e,fd)
     use Param_module
     use Coord_module
+    use msg_module
     implicit none
     !--- arguments -------------------------------------
     type(Param_type),  intent(in)    :: p

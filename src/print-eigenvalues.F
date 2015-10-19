@@ -1,9 +1,10 @@
 ! print-eigenvalues.F -*-f90-*-
-! Time-stamp: <2015-04-03 18:00:25 takeshi>
+! Time-stamp: <2015-10-19 19:43:22 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
 subroutine print_eigenvalues(Lx, Ly, Lz, phi, filename)
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   integer,      intent(in) :: Lx, Ly, Lz

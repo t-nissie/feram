@@ -1,7 +1,9 @@
-! msg.F -*-f90-*-
-! Time-stamp: <2015-10-19 18:34:45 takeshi>
+! msg_module.F -*-f90-*-
+! Time-stamp: <2015-10-19 19:26:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
+module msg_module
+contains
 subroutine msg(fd, filename, line, begin_or_end, message)
   implicit none
   !--- arguments -------------------------------------
@@ -43,3 +45,4 @@ subroutine msg_ez(fd, message)
   character(*), intent(in) :: message
   call msg(fd, '', 0, '', message)
 end subroutine msg_ez
+end module msg_module

@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2015-07-09 16:02:04 takeshi>
+! Time-stamp: <2015-10-19 19:32:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -10,6 +10,7 @@ subroutine leapfrog(p,c,e,i_step)
   use Param_module
   use Coord_module
   use Energy_module
+  use msg_module
   implicit none
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c

@@ -1,11 +1,12 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2015-09-05 22:50:32 takeshi>
+! Time-stamp: <2015-10-19 19:30:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
 subroutine dipole_dipole(p,c)
   use Param_module
   use Coord_module
+  use msg_module
   implicit none
   type(Param_type), intent(in)    :: p
   type(Coord_type), intent(inout) :: c

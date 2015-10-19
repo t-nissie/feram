@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2015-03-26 15:41:04 takeshi>
+! Time-stamp: <2015-10-19 19:38:02 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
@@ -8,6 +8,7 @@ subroutine optimize_homo_strain(p,c,e)
   use Param_module
   use Coord_module
   use Energy_module
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type),  intent(in)    :: p

@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2015-06-30 12:36:10 takeshi>
+! Time-stamp: <2015-10-19 19:42:53 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -111,6 +111,7 @@ module Param_module
 
 contains
   subroutine read_Param(p,fn)
+    use msg_module
     implicit none
     type(Param_type),intent(inout) :: p
     character(len=*),intent(in)    :: fn
@@ -352,6 +353,7 @@ contains
   end subroutine read_Param
 
   subroutine make_Param(p)
+    use msg_module
     implicit none
     type(Param_type),intent(inout) :: p
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'make_Param().')
@@ -381,6 +383,7 @@ contains
   end subroutine make_Param
 
   subroutine write_Param(p)
+    use msg_module
     implicit none
     type(Param_type),intent(in) :: p
     character (len=100) :: fn

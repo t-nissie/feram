@@ -1,5 +1,5 @@
 ! mirror.F -*-f90-*-
-! Time-stamp: <2015-04-14 15:41:16 takeshi>
+! Time-stamp: <2015-10-19 19:32:11 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -8,6 +8,7 @@
 #include "define.h"
 subroutine mirror(p, dipo)
   use Param_module
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type),   intent(in)    :: p

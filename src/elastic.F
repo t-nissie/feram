@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2015-06-25 15:57:42 takeshi>
+! Time-stamp: <2015-10-19 19:30:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -7,6 +7,7 @@
 subroutine elastic(p,c)
   use Param_module
   use Coord_module
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type), intent(in)    :: p

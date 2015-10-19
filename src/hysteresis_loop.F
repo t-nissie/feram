@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2015-03-22 17:08:52 takeshi>
+! Time-stamp: <2015-10-19 19:31:27 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -10,6 +10,7 @@ subroutine hysteresis_loop(p,c)
   use Param_module
   use Coord_module
   use Energy_module
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type) :: p

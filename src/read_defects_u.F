@@ -1,5 +1,5 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2015-05-15 22:28:03 takeshi>
+! Time-stamp: <2015-10-19 19:43:51 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
 ! Parents: initialize-dipoR.F
@@ -8,6 +8,7 @@
 subroutine read_defects_u(p,c)
   use Param_module
   use Coord_module
+  use msg_module
   implicit none
   type(Param_type), intent(in)    :: p
   type(Coord_type), intent(inout) :: c

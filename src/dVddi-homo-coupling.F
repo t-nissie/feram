@@ -1,10 +1,11 @@
 ! dVddi-homo-coupling.F   -*-f90-*-
-! Time-stamp: <2015-06-15 17:34:45 t-nissie>
+! Time-stamp: <2015-10-19 19:29:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine dVddi_homo_coupling(p,c) ! We use p implicitly. Don't worry about compile warning on it.
   use Param_module
   use Coord_module
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type), intent(in)     :: p

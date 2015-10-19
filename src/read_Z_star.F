@@ -1,5 +1,5 @@
 ! read_Z_star.F -*-f90-*-
-! Time-stamp: <2015-09-30 19:49:23 takeshi>
+! Time-stamp: <2015-10-19 19:43:41 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: read foo.Z_star and prepare ZstarR(:,:,:).
 ! Parents: initialize-dipoR.F
@@ -8,6 +8,7 @@
 subroutine read_Z_star(p,c)
   use Param_module
   use Coord_module
+  use msg_module
   implicit none
   type(Param_type), intent(in)    :: p
   type(Coord_type), intent(inout) :: c

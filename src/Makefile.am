@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-10-19 18:51:07 takeshi>
+# Time-stamp: <2015-10-19 22:27:27 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -58,7 +58,7 @@ feram_SRCS = average_module.F \
 	mirror.F \
 	mirror_force_mirror.F \
 	molecular-dynamics.F \
-	msg.F \
+	msg_module.F \
 	nose-poincare.F \
 	optimize-homo-strain.F \
 	optimize-inho-strain.F \
@@ -78,7 +78,7 @@ feram_displacement_SOURCES = feram_displacement.F
 
 feram_distribution3d2ppm_SOURCES = feram_distribution3d2ppm.F rgb_module.f
 
-feram_eigenvalues2j_SOURCES = feram_eigenvalues2j.F msg.F param_module.F
+feram_eigenvalues2j_SOURCES = feram_eigenvalues2j.F msg_module.F param_module.F
 
 feram_frozen_phonon_Gamma_SOURCES = feram_frozen_phonon_Gamma.F
 
@@ -96,7 +96,7 @@ feram_random_field_generator_SOURCES = feram_random_field_generator.F marsaglia_
 
 wave_check_SOURCES = wave_check.f wave_module.F
 
-msg_check_SOURCES = msg_check.F msg.F
+msg_check_SOURCES = msg_check.F msg_module.F
 
 CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(check_PROGRAMS) \
              zzz*.log zzz16.*.coord zzzgap.*.fft \
@@ -174,39 +174,40 @@ feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 
 feram_common.o:                 param_module.o coord_module.o date_and_time_module.o define.h
 decay-functions.o param_module.o feram_diagonalize15x15.o: define.h
-feram.o feram_mpi.o dipole-dipole.o mirror.o read_defects_u.o read_Z_star.o elastic.o write_system.o dipoFFT.o acouFFT.o:\
-                                param_module.o coord_module.o define.h
-initialize_E_field.o:           param_module.o coord_module.o define.h wave_module.o
-initialize-dipoR.o dVddi-unharmonic.o leapfrog.o optimize-homo-strain.o optimize-homo-strain.o optimize-inho-strain.o:\
-                energy_module.o param_module.o coord_module.o
-dVddi_inho_coupling.o energy_module.o dVdac.o: \
+feram.o feram_mpi.o:            param_module.o coord_module.o define.h
+dipole-dipole.o mirror.o read_defects_u.o read_Z_star.o elastic.o write_system.o dipoFFT.o acouFFT.o:\
+                                param_module.o coord_module.o define.h               msg_module.o
+initialize_E_field.o:           param_module.o coord_module.o define.h wave_module.o msg_module.o
+dVddi_inho_coupling.o dVdac.o kinetic_energy_acou.o:\
                                 param_module.o coord_module.o
-molecular-dynamics.o:\
-                energy_module.o param_module.o coord_module.o average_module.o wave_module.o
-dVddi-homo-coupling.o dVddi-unharmonic.o kinetic_energy_dipo.o kinetic_energy_acou.o:\
-                                param_module.o coord_module.o
-initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o
+molecular-dynamics.o:           param_module.o coord_module.o energy_module.o average_module.o wave_module.o msg_module.o
+dVddi-homo-coupling.o dVddi-unharmonic.o kinetic_energy_dipo.o energy_module.o:\
+                                param_module.o coord_module.o msg_module.o
+initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o msg_module.o
 marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o feram_random_field_generator.o: marsaglia_tsang_uni64_module.o
 wave_check.o:                   wave_module.o
 rgb_check.o:                    rgb_module.o
-mirror_force_mirror.o:          param_module.o coord_module.o energy_module.o
 nose-poincare.o velocity_scaling.o:\
-                                param_module.o coord_module.o energy_module.o kinetic_energy_dipo.o
+                                param_module.o coord_module.o energy_module.o kinetic_energy_dipo.o msg_module.o
 leapfrog.o:                     param_module.o coord_module.o energy_module.o kinetic_energy_dipo.o define.h
-hysteresis_loop.o:              param_module.o coord_module.o energy_module.o define.h velocity_scaling.o
-average_module.o:               param_module.o coord_module.o energy_module.o define.h
-coord_module.o:                 param_module.o         define.h
-dipole-dipole-long-range.o:     param_module.o         define.h fft_3d_3x3upper_r2c.o
-dipole-dipole-short-range.o:    param_module.o         define.h fft_3d_3x3upper_r2c.o
+hysteresis_loop.o:              param_module.o coord_module.o energy_module.o define.h msg_module.o velocity_scaling.o
+dVddi-dipole-dipole.o optimize-homo-strain.o:\
+                                param_module.o coord_module.o energy_module.o          msg_module.o
+mirror_force_mirror.o dVddi-unharmonic.o optimize-homo-strain.o optimize-inho-strain.o:\
+                                param_module.o coord_module.o energy_module.o
+dipole-dipole-long-range.o dipole-dipole-short-range.o:\
+                                param_module.o         define.h fft_3d_3x3upper_r2c.o  msg_module.o
 fft_3d_3x3upper_r2c.o:          param_module.o
-dVddi-dipole-dipole.o:\
-                energy_module.o param_module.o coord_module.o
-print-eigenvalues.o feram_eigenvalues2j.o feram_frozen_phonon_Gamma.o feram_frozen_phonon_X.o: define.h
-feram_eigenvalues2j.o:          param_module.o define.h
+feram_frozen_phonon_Gamma.o feram_frozen_phonon_X.o: define.h
+feram_eigenvalues2j.o:          param_module.o define.h msg_module.o
 feram_distribution3d2ppm.o:     average_module.o rgb_module.o
 feram_fftw_wisdom.o:            feram_fftw_wisdom_timing.o feram_fftw_wisdom_out.o feram_fftw_wisdom_in.o
 feram_fftw_SoA.o:               feram_fftw_wisdom_timing.o feram_fftw_SoA_out.o feram_fftw_SoA_in.o
-msg_check.o:                    msg.o
+msg_check.o:                    msg_module.o
+msg_module.o:                       define.h
+param_module.o print-eigenvalues.o: define.h msg_module.o
+coord_module.o:                     define.h msg_module.o param_module.o
+average_module.o:                   define.h msg_module.o param_module.o energy_module.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:

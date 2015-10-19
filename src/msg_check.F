@@ -1,5 +1,5 @@
 ! msg_check.F -*-f90-*-
-! Time-stamp: <2015-10-19 18:04:17 takeshi>
+! Time-stamp: <2015-10-19 19:42:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -8,6 +8,7 @@
 #include "define.h"
 
 subroutine msg_check_sub(ia)
+  use msg_module
   implicit none
   integer, intent(in) :: ia
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'subroutine msg_check_sub')
@@ -16,7 +17,7 @@ subroutine msg_check_sub(ia)
 end subroutine msg_check_sub
 
 program msg_check
-!  use msg_module
+  use msg_module
   implicit none
   open(unit=UNIT_LOG,file='msg_check.output',status='replace')
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)

@@ -1,5 +1,5 @@
 ! write_system.F -*-f90-*-
-! Time-stamp: <2015-07-30 11:14:35 takeshi>
+! Time-stamp: <2015-10-19 19:44:06 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -12,6 +12,7 @@ subroutine write_system(p,c,fn)
   use, intrinsic :: iso_c_binding
   use Param_module
   use Coord_module
+  use msg_module
   implicit none
   type(Param_type), intent(in) :: p
   type(Coord_type), intent(inout) :: c

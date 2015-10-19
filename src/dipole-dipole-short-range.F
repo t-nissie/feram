@@ -1,5 +1,5 @@
 ! dipole-dipole-short-range.F -*-f90-*-
-! Time-stamp: <2015-09-28 17:40:15 takeshi>
+! Time-stamp: <2015-10-19 19:30:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -9,6 +9,7 @@
 #include "define.h"
 subroutine dipole_dipole_short_range(p,short_range)
   use Param_module
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type), intent(in)  :: p
