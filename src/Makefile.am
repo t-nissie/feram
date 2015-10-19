@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-10-03 17:11:35 t-nissie>
+# Time-stamp: <2015-10-19 18:51:07 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -21,7 +21,7 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_defects_maker.rb \
                    feram_fcc_maker.rb \
                    feram_slicer.rb
-check_PROGRAMS = feram_fftw_SoA marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check
+check_PROGRAMS = feram_fftw_SoA marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check msg_check
 TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp feram_defects_maker_check.sh \
          zzz16.feram_check \
          zzzgap.feram_check \
@@ -96,13 +96,16 @@ feram_random_field_generator_SOURCES = feram_random_field_generator.F marsaglia_
 
 wave_check_SOURCES = wave_check.f wave_module.F
 
+msg_check_SOURCES = msg_check.F msg.F
+
 CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(check_PROGRAMS) \
              zzz*.log zzz16.*.coord zzzgap.*.fft \
              feram_defects_maker_check.defects wisdom_new wisdom_SoA \
              elastocaloric770K_check.lf.log \
              elastocaloric770K_check.lf.log.digest \
              elastocaloric770K_check.vs.log \
-             elastocaloric770K_check.vs.log.digest
+             elastocaloric770K_check.vs.log.digest \
+             msg_check.output
 EXTRA_DIST = define.h \
 feram_cross_section_dVddi.sh \
 feram_cross_section_p.sh \
@@ -203,6 +206,7 @@ feram_eigenvalues2j.o:          param_module.o define.h
 feram_distribution3d2ppm.o:     average_module.o rgb_module.o
 feram_fftw_wisdom.o:            feram_fftw_wisdom_timing.o feram_fftw_wisdom_out.o feram_fftw_wisdom_in.o
 feram_fftw_SoA.o:               feram_fftw_wisdom_timing.o feram_fftw_SoA_out.o feram_fftw_SoA_in.o
+msg_check.o:                    msg.o
 
 pdf: feram.pdf coord_module.pdf param_module.pdf
 .ps.pdf:
