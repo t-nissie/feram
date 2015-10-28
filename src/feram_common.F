@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:31:04 takeshi>
+! Time-stamp: <2015-10-28 18:01:23 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -43,6 +43,8 @@ subroutine feram_common(fn)
   fn_log = trim(p%filename) // '.log'
   open(unit=UNIT_LOG,file=fn_log,status='replace')
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
+  call hostnm(message)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'HOSTNAME', message)
 
   call system_clock(count_array(0))
   call date_and_time2message(message)

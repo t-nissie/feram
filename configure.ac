@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2015-10-01 19:04:00 takeshi>
+dnl Time-stamp: <2015-10-28 17:53:53 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -49,6 +49,7 @@ case "$FC" in
     test -n "$FCFLAGS" || FCFLAGS="-q64 -O4 -qsmp=omp -qinfo=all"
     test -n "$MPIFC" || MPIFC=mp"$FC"
     LDFLAGS="$LDFLAGS -Wl,-blpdata -Wl,-bmaxdata:90000000000"
+    AC_DEFINE([hostnm], [hostnm_], [This subroutine retrieves the host name of the system on which the program is running.])
     ;;
   *)
     test -n "$FCFLAGS" || FCFLAGS="-O2"
