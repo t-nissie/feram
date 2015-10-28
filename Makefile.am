@@ -1,6 +1,6 @@
 # Makefile.am for feram
 # Process this file with automake to create Makefile.in
-# Time-stamp: <2015-07-10 12:14:46 takeshi>
+# Time-stamp: <2015-10-28 11:55:51 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 AUTOMAKE_OPTIONS = foreign
@@ -41,7 +41,7 @@ logo.jpg: logo.eps
 	 | pnmcrop -white | cjpeg -quality 80 > $@
 
 index.%.html: README.%
-	ruby $< $< | sed -e 's%</h1>%</h1><div class="navi">[<a href="index.en.html">English</a>/<a href="index.ja.html">Japanese</a>]</div>%' > $@
+	ruby $< $< | sed -e 's%</h1>%</h1><div class="navi">[<a href="index.en.html">English</a>/<a href="index.ja.html">Japanese</a>]</div> <figure><img src="feram_logo.svg" width=300 alt="feram logo" /></figure>%' > $@
 
 INSTALL.html: INSTALL
 	ulmul2html5 -s style.css -n 'Takeshi Nishimatsu' $< > $@

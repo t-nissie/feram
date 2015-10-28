@@ -675,6 +675,9 @@ This project is/was partially supported by:
  * Tohoku University  http://www.tohoku.ac.jp/
  * Institute of Materials Research (IMR)  http://www.imr.tohoku.ac.jp/
 
+TOHOKU_LOGO
+KAKENHI_LOGO
+
 http://loto.sourceforge.net/feram/ is hosted by SourceForge.net .
 
 =end
@@ -715,6 +718,8 @@ u.subs_rules = lambda{|s|
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').
   gsub(/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ').
+  gsub(/TOHOKU_LOGO/, '<img src="http://www.tohoku.ac.jp/japanese/profile/about/03/about0301/logo_e_n.png" alt="Tohoku University Logo" />').
+  gsub(/KAKENHI_LOGO/, '<img src="http://www.mext.go.jp/a_menu/shinkou/hojyo/__icsFiles/artimage/2012/06/13/c_scn04_04/KAKENHIlogoS.jpg" alt="Kakenhig Logo" />').
   gsub(/SourceForge\.net/,'<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" alt="SourceForge.net Logo" /></a>')
 # gsub(/\$(.*?)\$/){|s| Regexp.last_match[1].to_mathml}       # There is no equation in this document.
 }
