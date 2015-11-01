@@ -1,5 +1,5 @@
 ! feram_fftw_SoA.F -*-f90-*-
-! Time-stamp: <2015-08-07 21:18:11 takeshi>
+! Time-stamp: <2015-11-01 18:27:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program feram_fftw_SoA
@@ -61,6 +61,12 @@ program feram_fftw_SoA
   call feram_fftw_SoA_in( 1, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
        &                                                        plan_r2c_1_in, &
        &                                                        plan_c2r_1_in)
+  call feram_fftw_SoA_out(1, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
+       &                                                        plan_r2c_1_out, &
+       &                                                        plan_c2r_1_out)
+
+  write(6,'(a)') ''
+
   call feram_fftw_SoA_in( 3, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
        &                                                        plan_r2c_3_in, &
        &                                                        plan_c2r_3_in)
@@ -68,9 +74,6 @@ program feram_fftw_SoA
        &                                                        plan_r2c_6_in, &
        &                                                        plan_c2r_6_in)
 
-  call feram_fftw_SoA_out(1, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
-       &                                                        plan_r2c_1_out, &
-       &                                                        plan_c2r_1_out)
   call feram_fftw_SoA_out(3, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
        &                                                        plan_r2c_3_out, &
        &                                                        plan_c2r_3_out)
@@ -96,5 +99,5 @@ program feram_fftw_SoA
   call fftw_cleanup_threads()
 end program feram_fftw_SoA
 !local variables:
-!  compile-command: "make -k -f feram_fftw_SoA.Makefile.Intel-gfortran-fftw3_omp && OMP_NUM_THREADS=2 ./feram_fftw_SoA 100 128 128 64 3 T"
+!  compile-command: "make -k -f feram_fftw_wisdom.Makefile.gfortran && OMP_NUM_THREADS=2 ./feram_fftw_SoA 100 128 128 64 1 FFTW_MEASURE"
 !End:
