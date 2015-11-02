@@ -1,11 +1,7 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-07-02 19:55:18 t-nissie>
+! Time-stamp: <2015-11-02 11:56:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
-#if defined HAVE_CONFIG_H
-#  include "config.h"
-#endif
-
 program feram_fftw_wisdom
   use, intrinsic :: iso_c_binding
   implicit none
@@ -16,7 +12,7 @@ program feram_fftw_wisdom
   integer :: Lz = 64
   integer :: padding_y = 1
   integer :: flags = FFTW_MEASURE
-  character(len=100) :: str
+  character(len=100) :: str = 'FFTW_MEASURE'
   integer :: OMP_GET_MAX_THREADS
   integer :: narg, ireturn
   type(C_PTR) :: plan_r2c_3_in  = c_null_ptr
@@ -44,17 +40,24 @@ program feram_fftw_wisdom
      call get_command_argument(4,str); read(str,*) Lz
      call get_command_argument(5,str); read(str,*) padding_y
      call get_command_argument(6,str); read(str,*)
-     if (str.eq.'FFTW_PATIENT') then
+     select case(str)
+     case(     'FFTW_ESTIMATE')
+        flags = FFTW_ESTIMATE
+     case(     'FFTW_PATIENT')
         flags = FFTW_PATIENT
-        write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': flags = FFTW_PATIENT'
-     else
+     case(     'FFTW_MEASURE')
         flags = FFTW_MEASURE
-        write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': flags = FFTW_MEASURE'
-     end if
+     case(     'FFTW_EXHAUSTIVE')
+        flags = FFTW_EXHAUSTIVE
+     case default
+        write(0,   '(a,a,i2,a)') __FILE__, ':', __LINE__, ': No such FFTW flag.'
+        stop 2
+     end select
   else
      write(0,   '(a,a,i2,a)') __FILE__, ':', __LINE__, ': Illegal number of arguments.'
      stop 1
   end if
+  write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': flags = '//trim(str)
 
    call feram_fftw_wisdom_in(3, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
        &                                                        plan_r2c_3_in, &
