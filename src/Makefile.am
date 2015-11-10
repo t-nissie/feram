@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-10-31 09:41:45 takeshi>
+# Time-stamp: <2015-11-10 12:09:09 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -98,7 +98,12 @@ wave_check_SOURCES = wave_check.f wave_module.F
 
 msg_check_SOURCES = msg_check.F msg_module.F
 
-CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm feram_mpi $(check_PROGRAMS) \
+CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm $(check_PROGRAMS) \
+             feram_mpi \
+             feram_mpi.o \
+             feram_mpi_check.F \
+             feram_mpi_check.o \
+             feram_mpi_common_check.o \
              zzz*.log zzz16.*.coord zzzgap.*.fft \
              feram_defects_maker_check.defects wisdom_new wisdom_SoA \
              elastocaloric770K_check.lf.log \
@@ -172,6 +177,19 @@ feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	$(MPIFC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
 	         $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
 	$(MPIFC) $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ $(feram_OBJECTS:feram.o=feram_mpi.o) $(LIBS)
+
+feram_mpi_check.F: $(srcdir)/feram_mpi.F
+	sed 's/feram_common/feram_mpi_common_check/' $< > $@
+
+feram_mpi_check$(EXEEXT): feram_mpi_check.F $(srcdir)/feram_mpi_common_check.F
+	$(MPIFC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	         $(AM_FFLAGS) $(FFLAGS) -c  $<
+	$(MPIFC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
+	         $(AM_FFLAGS) $(FFLAGS) -c  $(srcdir)/feram_mpi_common_check.F
+	$(MPIFC) $(AM_FFLAGS) $(FFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@ feram_mpi_check.o feram_mpi_common_check.o
+
+
+
 
 feram_common.o:                 param_module.o coord_module.o date_and_time_module.o define.h
 decay-functions.o param_module.o feram_diagonalize15x15.o: define.h
