@@ -61,3 +61,73 @@ takeshi@americium01$ numactl --cpubind 1 ./feram_fftw_wisdom 100 64 64 64 1 FFTW
      100  6   64   64   64    1     262144  in  12   0.170  83.269
      100  3   64   64   64    1     262144 out  12   0.080  88.474
      100  6   64   64   64    1     262144 out  12   0.172  82.301
+
+== ~/benchmark/feram_fft_wisdom/r2634-app4t-gfortran-5.2.0/
+app14$ cat /proc/cpuinfo | grep Xeon | tail -1
+model name	: Intel(R) Xeon(R) CPU           X5650  @ 2.67GHz
+app14$
+app14$ taskset -c 6-11 ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && taskset -c 6-11 ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENT
+feram_fftw_SoA.F:66: flags = FFTW_PATIENT
+     500  1   64   64   64    1     262144  in   6   0.364  32.408
+     500  1   64   64   64    1     262144 out   6   0.396  29.789
+
+     500  3   64   64   64    1     262144  in   6   1.099  32.201
+     500  6   64   64   64    1     262144  in   6   2.378  29.764
+     500  3   64   64   64    1     262144 out   6   1.341  26.390
+     500  6   64   64   64    1     262144 out   6   3.573  19.809
+feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
+     500  3   64   64   64    1     262144  in   6   1.245  28.425
+     500  6   64   64   64    1     262144  in   6   2.782  25.442
+     500  3   64   64   64    1     262144 out   6   1.438  24.610
+     500  6   64   64   64    1     262144 out   6   4.035  17.541
+app14$
+app14$
+app14$ ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENT
+feram_fftw_SoA.F:66: flags = FFTW_PATIENT
+     500  1   64   64   64    1     262144  in  12   0.275  42.896
+     500  1   64   64   64    1     262144 out  12   0.286  41.246
+
+     500  3   64   64   64    1     262144  in  12   0.813  43.529
+     500  6   64   64   64    1     262144  in  12   1.645  43.027
+     500  3   64   64   64    1     262144 out  12   0.858  41.246
+     500  6   64   64   64    1     262144 out  12   2.130  33.230
+feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
+     500  3   64   64   64    1     262144  in  12   1.006  35.178
+     500  6   64   64   64    1     262144  in  12   1.799  39.343
+     500  3   64   64   64    1     262144 out  12   0.867  40.818
+     500  6   64   64   64    1     262144 out  12   2.408  29.393
+
+
+app14$ pwd
+/home/t-nissie/benchmark/feram_fft_wisdom/r2634-app4t-gfortran-5.2.0-threads
+app14$
+app14$ taskset -c 6-11 ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && taskset -c 6-11 ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENT
+feram_fftw_SoA.F:66: flags = FFTW_PATIENT
+     500  1   64   64   64    1     262144  in   6   0.731  16.137
+     500  1   64   64   64    1     262144 out   6   0.746  15.813
+
+     500  3   64   64   64    1     262144  in   6   2.132  16.599
+     500  6   64   64   64    1     262144  in   6   3.275  21.612
+     500  3   64   64   64    1     262144 out   6   2.108  16.788
+     500  6   64   64   64    1     262144 out   6   4.449  15.909
+feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
+     500  3   64   64   64    1     262144  in   6   2.063  17.154
+     500  6   64   64   64    1     262144  in   6   4.052  17.468
+     500  3   64   64   64    1     262144 out   6   2.525  14.016
+     500  6   64   64   64    1     262144 out   6   5.298  13.360
+app14$
+app14$
+app14$ ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENTferam_fftw_SoA.F:66: flags = FFTW_PATIENT
+     500  1   64   64   64    1     262144  in  12   1.037  11.376
+     500  1   64   64   64    1     262144 out  12   1.083  10.892
+
+     500  3   64   64   64    1     262144  in  12   2.080  17.014
+     500  6   64   64   64    1     262144  in  12   3.294  21.487
+     500  3   64   64   64    1     262144 out  12   2.284  15.495
+     500  6   64   64   64    1     262144 out  12   3.864  18.318
+feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
+     500  3   64   64   64    1     262144  in  12   2.255  15.694
+     500  6   64   64   64    1     262144  in  12   3.795  18.651
+     500  3   64   64   64    1     262144 out  12   2.189  16.167
+     500  6   64   64   64    1     262144 out  12   4.212  16.804
+app14$
