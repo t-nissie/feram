@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-10-19 22:22:44 takeshi>
+! Time-stamp: <2015-11-13 18:35:50 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -270,7 +270,7 @@ contains
     howmany = 3
     if (c_associated(c%dVdac_ptr)) call fftw_free(c%dVdac_ptr)
     n_alloc = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
-    c%dVdac_ptr = fftw_alloc_complex(n_alloc)
+    c%dVdac_ptr = fftw_malloc(n_alloc * 16)   ! 16 for complex*16
     call c_f_pointer(c%dVdac_ptr, dVdacK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
     call c_f_pointer(c%dVdac_ptr, dVdacR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
 !!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.
@@ -288,7 +288,7 @@ contains
     howmany = 6
     if (c_associated(c%inho_ptr)) call fftw_free(c%inho_ptr)
     n_alloc = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
-    c%inho_ptr = fftw_alloc_complex(n_alloc)
+    c%inho_ptr = fftw_malloc(n_alloc * 16)   ! 16 for complex*16
     call c_f_pointer(c%inho_ptr, inhoK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
     call c_f_pointer(c%inho_ptr, inhoR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
 !!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.

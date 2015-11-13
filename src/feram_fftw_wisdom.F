@@ -1,7 +1,10 @@
 ! feram_fftw_wisdom.F -*-f90-*-
-! Time-stamp: <2015-11-02 11:56:09 takeshi>
+! Time-stamp: <2015-11-13 18:34:07 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 program feram_fftw_wisdom
   use, intrinsic :: iso_c_binding
   implicit none
