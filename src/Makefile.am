@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-11-10 12:09:09 takeshi>
+# Time-stamp: <2015-11-14 15:30:34 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -116,6 +116,8 @@ feram_cross_section_dVddi.sh \
 feram_cross_section_p.sh \
 decay-test.gp \
 feram_fftw_wisdom.Makefile.SR16000-xlf90_r-fftw_xlc_simd \
+feram_fftw_wisdom.Makefile.gfortran \
+feram_fftw_wisdom.Makefile.ifort-with-MKL \
 feram_defects_maker_check.gp \
 feram_defects_maker_check.sh \
 feram_defects_maker_check_sphere.gp \
