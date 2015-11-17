@@ -99,6 +99,8 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  * AC_FC_FREEFORM()で自由形式のオプションがわかる。
  * C言語のプロジェクトの場合はファイル間の依存関係を自動的に調べてくれるが、
    Fortranの場合はMakefile.amに依存関係を書いておくことがまだ必要。
+ * C言語のプロジェクトの場合はAC_CHECK_HEADERS([fftw3.h])でヘッダファイルの有無を調べることができるが、
+   Fortranの場合はAC_CHECK_HEADERS([fftw3.f])やAC_CHECK_HEADERS([fftw3.f03])とするのはまだ困難。
 === 手順
 configure.ac, Makefile.am, src/Makefile.amを書いて、
  $ autoreconf -v
