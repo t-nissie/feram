@@ -116,6 +116,7 @@ configure.ac, Makefile.am, src/Makefile.amを書いて、
 他に
  $ make clean
  $ make check
+ $ sudo make uninstall      # make installしたファイルの消去
 などが便利。
 === make checkでテストの自動化
 src/Makefile.amに
@@ -134,7 +135,7 @@ Makefile.amの中のEXTRA_DISTに次のように加えておく必要がある�
 テストの結果がfoo.sh.trsとbar.trsとbaz.trsとに保存される。
 テスト全体のまとめがtest-suite.logに保存される。
 
-一部のテストだけを選択的に繰り返し行いたい場合は
+一部のテストだけを選択的に行いたい場合は
  $ make check TESTS='foo.sh bar'
 とTESTS変数で指定するする。
 === automakeのオプション
