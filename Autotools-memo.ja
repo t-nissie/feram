@@ -16,9 +16,12 @@ FortranのプロジェクトにAutotoolsを使う場合の注意点も書いて�
  $ make check
  $ sudo make install
 AutotoolsはそんなGNU流のフリーソフトウェアパッケージの
-構築を半自動化するためのツールである。最終目的はmake dist
+構築を半自動化するための開発者用のツールである。最終目的はmake dist
 で foo-1.2.tar.gzなどという[パッケージ名]-[version].tar.gz
 形式のパッケージが自動生成できるようになること。
+
+注意: Autotoolsは開発者用のツールである。パッケージfoo-1.2.tar.gzのユーザは
+そのマシンにAutotoolsをインストールする必要はないし、Autotoolsについて知っている必要もない。
 
 == 必要なもの
 GNUの２つのパッケージautoconfとautomakeとを開発用のマシン
