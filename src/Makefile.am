@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-11-14 15:30:34 takeshi>
+# Time-stamp: <2015-11-29 18:14:15 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -99,6 +99,7 @@ wave_check_SOURCES = wave_check.f wave_module.F
 msg_check_SOURCES = msg_check.F msg_module.F
 
 CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm $(check_PROGRAMS) \
+             *.optrpt \
              feram_mpi \
              feram_mpi.o \
              feram_mpi_check.F \
