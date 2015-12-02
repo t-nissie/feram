@@ -227,7 +227,10 @@ Intel MKL 11.2 are not optimized.
 
 == Super computers
 === HITACHI SR16000 with IBM xlf90_r, FFTW 3.3 and dsyevx in ESSL (libesslsmp)
-IBM XL Fortran (xlf90_r) version 15.1 or higher is required.
+IBM XL Fortran (xlf90_r) version 14.01.0000.0012 or higher is required.
+(Without XL Fortran for AIX Fix Pack 12 (August 2015 Update) for 14.1,
+you cannot compile src/coord_module.F correctly.
+See http://www-01.ibm.com/support/docview.wss?uid=swg1IV73551 .)
  $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
  $ mkdir SR16000-xlf
