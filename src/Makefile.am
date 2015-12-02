@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-11-29 18:14:15 t-nissie>
+# Time-stamp: <2015-12-02 16:39:11 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -64,8 +64,7 @@ feram_SRCS = average_module.F \
 	optimize-inho-strain.F \
 	print-eigenvalues.F \
 	velocity_scaling.F \
-	wave_module.F \
-	write_system.F
+	wave_module.F
 feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
 
 feram_fftw_wisdom_SOURCES = feram_fftw_wisdom.F feram_fftw_wisdom_timing.F feram_fftw_wisdom_out.F feram_fftw_wisdom_in.F
@@ -197,7 +196,7 @@ feram_mpi_check$(EXEEXT): feram_mpi_check.F $(srcdir)/feram_mpi_common_check.F
 feram_common.o:                 param_module.o coord_module.o date_and_time_module.o define.h
 decay-functions.o param_module.o feram_diagonalize15x15.o: define.h
 feram.o feram_mpi.o:            param_module.o coord_module.o define.h
-dipole-dipole.o mirror.o read_defects_u.o read_Z_star.o elastic.o write_system.o dipoFFT.o acouFFT.o:\
+dipole-dipole.o mirror.o read_defects_u.o read_Z_star.o elastic.o dipoFFT.o acouFFT.o:\
                                 param_module.o coord_module.o define.h               msg_module.o
 initialize_E_field.o:           param_module.o coord_module.o define.h wave_module.o msg_module.o
 dVddi_inho_coupling.o dVdac.o kinetic_energy_acou.o:\
