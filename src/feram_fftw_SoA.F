@@ -1,5 +1,5 @@
 ! feram_fftw_SoA.F -*-f90-*-
-! Time-stamp: <2015-11-13 18:34:53 t-nissie>
+! Time-stamp: <2015-12-09 14:55:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -48,7 +48,7 @@ program feram_fftw_SoA
      call get_command_argument(3,str); read(str,*) Ly
      call get_command_argument(4,str); read(str,*) Lz
      call get_command_argument(5,str); read(str,*) padding_y
-     call get_command_argument(6,str); read(str,*)
+     call get_command_argument(6,str)
      select case(str)
      case(     'FFTW_ESTIMATE')
         flags = FFTW_ESTIMATE

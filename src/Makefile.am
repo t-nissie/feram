@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-12-02 16:39:11 t-nissie>
+# Time-stamp: <2015-12-09 14:59:52 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -101,6 +101,7 @@ CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check
              *.optrpt \
              feram_mpi \
              feram_mpi.o \
+             feram_mpi_check \
              feram_mpi_check.F \
              feram_mpi_check.o \
              feram_mpi_common_check.o \
