@@ -273,7 +273,7 @@ and from the terminal you can install gfortran, FFTW3 and LAPACK.
  # cd
  # export LANG=C   # It may be unnecessary. Add it if apt-cyg does not work properly.
  # apt-cyg update
- # apt-cyg install gcc-fortran libfftw3-devel libfftw3-omp3 liblapack-devel
+ # apt-cyg install gcc-fortran libfftw3-devel libfftw3-omp3 liblapack-devel gnuplot
  # cp /usr/lib/lapack/cyg*.dll /usr/bin   # Copy DLLs under the PATH.
  # gfortran --version
  GNU Fortran (GCC) 4.9.3
