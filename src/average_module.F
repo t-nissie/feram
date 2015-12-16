@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2015-11-18 09:50:20 takeshi>
+! Time-stamp: <2015-12-16 18:10:22 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -241,7 +241,6 @@ contains
          p%kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
          avg%energy%dipo_kinetic    ,&
          avg%energy%long_range      ,&
-         avg%energy%short_range     ,&
          avg%energy%dipole_E_field  ,&
          avg%energy%unharmonic      ,&
          avg%energy%homo_strain     ,&
@@ -252,7 +251,9 @@ contains
          avg%energy%H_Nose_Poincare ,&
          avg%e2                     ,&
          avg%dipo_kinetic_true      ,&
-         avg%energy%acou_kinetic,          avg%p(1:3), avg%pp(1:6)
+         avg%energy%acou_kinetic    ,&
+         avg%energy%short_range     ,&
+         avg%p(1:3), avg%pp(1:6)
     close(UNIT_AVG)
 
     if (p%distribution_directory.eq.'never') then
