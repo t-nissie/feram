@@ -107,29 +107,28 @@ installed into CentOS 7 systems with yum(8) command.
  $ make -j4
  $ make check   # OPTIONAL
 
-=== CentOS 6.2 (feram-0.18.05, 2012-03-28)
-CentOS 6.2 can be installed to your x86_64 system with DVD and
+=== CentOS 6.x (feram-0.24.02)
+CentOS 6.x can be installed to your x86_64 system with DVD or
 CD-ROM images in http://isoredirect.centos.org/centos/6/isos/x86_64/ .
 
-Network installation is also available with a CD-ROM image of
-CentOS-6.2-x86_64-netinstall.iso. See
-http://www.if-not-true-then-false.com/2011/centos-6-netinstall-network-installation/
-for more details.
-
-Select "Software Development Workstation" in the setup.
-
-==== check the version of gfortran
+==== check the version of gfortran and GNUPLOT
+Default version of gfortran in CentOS 6.x is 4.4.6.
+However, you need gfortran-4.8 or higher to compile feram.
+Please install the latest GCC.
  $ gfortran --version
- GNU Fortran (GCC) 4.4.6 ...
+ GNU Fortran (GCC) 4.8.3 ...
 
-==== install fftw-3.3.1.tar.gz
- $ tar zxf fftw-3.3.1.tar.gz
- $ cd fftw-3.3.1
- $ mkdir CentOS
- $ cd CentOS
+To `make check`, you need version 4.6 or 5.0 of GNUPLOT.
+ $ gnuplot --version
+ gnuplot 4.6 patchlevel 7
+
+==== install fftw-3.3.4.tar.gz
+ $ tar zxf fftw-3.3.4.tar.gz
+ $ cd fftw-3.3.4
+ $ mkdir CentOS6
+ $ cd CentOS6
  $ ../configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-openmp --enable-threads --enable-sse2 --enable-avx --enable-shared
- $ emacs tools/Makefile   # Edit LIBFFTWTHREADS to link libfftw3_omp, not libfftw3_threads.
- $ make -j --max-load=10.0
+ $ make -j4
  $ make check
  $ su
  # make install
@@ -141,59 +140,18 @@ Select "Software Development Workstation" in the setup.
  # exit
 
 ==== compile feram
- $ export LD_LIBRARY_PATH=/usr/local/lib64   # Do not forget it.
- $ tar xf feram-0.18.05.tar.xz
- $ cd feram-0.18.05
- $ mkdir CentOS
- $ cd CentOS
+ $ export LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
+ $ tar xf feram-0.24.02.tar.xz
+ $ cd feram-0.24.02
+ $ mkdir CentOS6
+ $ cd CentOS6
  $ ../configure --help
  $ ../configure
- $ cd src
- $ make -j --max-load=10.0
+ $ make -j4
  $ OMP_NUM_THREADS=6  make check   # OPTIONAL
  $ OMP_NUM_THREADS=12 make check   # OPTIONAL
- $ ls -l feram
- $ ldd feram
-
-=== Slackware64 14.1 (feram-0.22.00, 2014-01-20)
-==== install BLAS and LAPACK
-Download blas-20110419-x86_64-1_uqv.txz and lapack-3.4.1-x86_64-1_uqv.txz
-from http://www.vislab.uq.edu.au/slackware64/14.1/ and install them.
- $ wget http://www.vislab.uq.edu.au/slackware64/14.1/blas-20110419-x86_64-1_uqv.txz
- $ wget http://www.vislab.uq.edu.au/slackware64/14.1/lapack-3.4.1-x86_64-1_uqv.txz
- $ su
- $ installpkg blas-20110419-x86_64-1_uqv.txz
- $ installpkg lapack-3.4.1-x86_64-1_uqv.txz
-
-==== install fftw-3.3.4.tar.gz
- $ wget http://www.fftw.org/fftw-3.3.4.tar.gz
- $ tar xf fftw-3.3.4.tar.gz
- $ cd fftw-3.3.4
- $ mkdir Slackware
- $ cd Slackware
- $ ../configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-openmp --enable-threads --enable-sse2 --enable-avx --enable-mpi --enable-shared
- $ emacs tools/Makefile   # Edit LIBFFTWTHREADS to link libfftw3_omp, not libfftw3_threads.
- $ make -j --max-load=10.0
- $ make check
- $ su
- # make install
- # ldconfig
- # exit
-
-==== compile feram
- $ export LD_LIBRARY_PATH=/usr/local/lib64   # Do not forget it.
- $ tar xf feram-0.22.00.tar.xz
- $ cd feram-0.22.00
- $ mkdir Slackware
- $ cd Slackware
- $ ../configure --help
- $ ../configure
- $ cd src
- $ make -j --max-load=10.0
- $ OMP_NUM_THREADS=6  make check   # OPTIONAL
- $ OMP_NUM_THREADS=12 make check   # OPTIONAL
- $ ls -l feram
- $ ldd feram
+ $ ls -l src/feram
+ $ ldd   src/feram
 
 === Linux with Intel Fortran Compiler and FFTW library
 It would be better to use Intel Fortran (ifort) version 15.0.2 or higher.
@@ -504,7 +462,6 @@ Basically, these libraries can be installed with configure && make && make insta
  $ ./configure --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local \
    -enable-languages=c,c++,fortran,go,objc CC=/usr/bin/gcc CXX=/usr/bin/g++
  $ make
- $ make check
  $ sudo make install
 ==== Install FFTW3
  $ tar xf fftw-3.3.4.tar.gz
