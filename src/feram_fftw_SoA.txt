@@ -168,3 +168,75 @@ feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
      200  6   64   64   64    1     262144  in   4   3.844   7.4
      200  3   64   64   64    1     262144 out   4   0.843  16.8
      200  6   64   64   64    1     262144 out   4   2.203  12.9
+
+
+SR16000
+super4t$ pwd
+/home/t-nissie/f/feram/feram-0.25.03unstable/SR16000-fftw_xlc_simd-super3t/src
+super4t$ head feram_fftw_*log
+==> feram_fftw_SoA.log <==
+../../src/feram_fftw_SoA.F:69: flags = FFTW_MEASURE
+     100  1   64   64   64    1     262144  in  32   0.020 118.0
+     100  1   64   64   64    1     262144 out  32   0.020 118.0
+
+     100  3   64   64   64    1     262144  in  32   0.330  21.4
+     100  6   64   64   64    1     262144  in  32   0.340  41.6
+     100  3   64   64   64    1     262144 out  32   0.360  19.7
+     100  6   64   64   64    1     262144 out  32   0.360  39.3
+PASS feram_fftw_SoA (exit status: 0)
+
+==> feram_fftw_wisdom.log <==
+../../src/feram_fftw_wisdom.F:63: flags = FFTW_MEASURE
+     100  3   64   64   64    1     262144  in  32   0.060 118.0
+     100  6   64   64   64    1     262144  in  32   0.120 118.0
+     100  3   64   64   64    1     262144 out  32   0.050 141.6
+     100  6   64   64   64    1     262144 out  32   0.110 128.7
+PASS feram_fftw_wisdom (exit status: 0)
+super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_SoA 1000 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+    1000  1   64   64   64    1     262144  in  32   0.190 124.2
+    1000  1   64   64   64    1     262144 out  32   0.200 118.0
+
+    1000  3   64   64   64    1     262144  in  32   0.580 122.0
+    1000  6   64   64   64    1     262144  in  32   1.170 121.0
+    1000  3   64   64   64    1     262144 out  32   0.560 126.4
+    1000  6   64   64   64    1     262144 out  32   1.130 125.3
+super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_wisdom 1000 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+    1000  3   64   64   64    1     262144  in  32   0.640 110.6
+    1000  6   64   64   64    1     262144  in  32   1.120 126.4
+    1000  3   64   64   64    1     262144 out  32   0.510 138.8
+    1000  6   64   64   64    1     262144 out  32   1.030 137.4
+super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=64:stride=1:startproc=0" ./feram_fftw_SoA 1000 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+    1000  1   64   64   64    1     262144  in  64   0.240  98.3
+    1000  1   64   64   64    1     262144 out  64   0.230 102.6
+
+    1000  3   64   64   64    1     262144  in  64   0.670 105.6
+    1000  6   64   64   64    1     262144  in  64   1.370 103.3
+    1000  3   64   64   64    1     262144 out  64   0.650 108.9
+    1000  6   64   64   64    1     262144 out  64   1.310 108.1
+super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=64:stride=1:startproc=0" ./feram_fftw_wisdom 1000 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+    1000  3   64   64   64    1     262144  in  64   1.660  42.6
+    1000  6   64   64   64    1     262144  in  64   1.830  77.4
+    1000  3   64   64   64    1     262144 out  64   0.580 122.0
+    1000  6   64   64   64    1     262144 out  64   1.000 141.6
+Note that there is a large difference between SMT off and on.
+
+super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_SoA 100 128 128 128 1 FFTW_PATIENT
+../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+     100  1  128  128  128    1    2097152  in  32   0.150 146.8
+     100  1  128  128  128    1    2097152 out  32   0.140 157.3
+
+     100  3  128  128  128    1    2097152  in  32   0.430 153.6
+     100  6  128  128  128    1    2097152  in  32   0.890 148.5
+     100  3  128  128  128    1    2097152 out  32   0.420 157.3
+     100  6  128  128  128    1    2097152 out  32   1.000 132.1
+super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_wisdom 100 128 128 128 1 FFTW_PATIENT
+../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+     100  3  128  128  128    1    2097152  in  32   0.470 140.6
+     100  6  128  128  128    1    2097152  in  32   0.940 140.6
+     100  3  128  128  128    1    2097152 out  32   0.430 153.6
+     100  6  128  128  128    1    2097152 out  32   0.990 133.5
+super4t$
