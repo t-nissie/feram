@@ -1,34 +1,61 @@
-takeshi@emerald01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/*fft*log
+emerald01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/feram_fftw*log
 model name	: Intel(R) Xeon(R) CPU E5-2680 0 @ 2.70GHz
   $ ../configure FCFLAGS=-g -Wall -Ofast -msse4.2 -pipe -fopenmp
-/home/takeshi/f/loto/feram/trunk/0.24.01-rev2590-2015-08-10-gfortran-4.8.2-CentOS6.5-msse4.2-emerald01
+/home/t-nissie/f/feram/feram-0.25.03unstable/Linux-x86_64-gfortran-6.0.0-emerald01
 ==> src/feram_fftw_SoA.log <==
-     100  1   64   64   64    1     262144  in   8   0.046  51.289
-     100  3   64   64   64    1     262144  in   8   0.266  26.609
-     100  6   64   64   64    1     262144  in   8   0.264  53.620
-     100  1   64   64   64    1     262144  in   8   0.045  52.429
-     100  3   64   64   64    1     262144  in   8   0.272  26.022
-     100  6   64   64   64    1     262144  in   8   0.329  43.027
+../../src/feram_fftw_SoA.F:69: flags = FFTW_MEASURE
+     100  1   64   64   64    1     262144  in   8   0.046  51.3
+     100  1   64   64   64    1     262144 out   8   0.045  52.4
+
+     100  3   64   64   64    1     262144  in   8   0.265  26.7
+     100  6   64   64   64    1     262144  in   8   0.262  54.0
+     100  3   64   64   64    1     262144 out   8   0.274  25.8
+     100  6   64   64   64    1     262144 out   8   0.334  42.4
+PASS feram_fftw_SoA (exit status: 0)
+
 ==> src/feram_fftw_wisdom.log <==
-     100  3   64   64   64    1     262144  in   8   0.154  45.960
-     100  6   64   64   64    1     262144  in   8   0.275  51.476
-     100  3   64   64   64    1     262144 out   8   0.116  61.016
-     100  6   64   64   64    1     262144 out   8   0.356  39.763
-takeshi@emerald01$ cd src
-takeshi@emerald01$ numactl --cpubind 1 ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_SoA.F:51: flags = FFTW_PATIENT
-     100  1   64   64   64    1     262144  in   8   0.042  56.174
-     100  3   64   64   64    1     262144  in   8   0.113  62.636
-     100  6   64   64   64    1     262144  in   8   0.227  62.360
-     100  1   64   64   64    1     262144  in   8   0.043  54.867
-     100  3   64   64   64    1     262144  in   8   0.114  62.087
-     100  6   64   64   64    1     262144  in   8   0.308  45.960
-takeshi@emerald01$ numactl --cpubind 1 ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_wisdom.F:49: flags = FFTW_PATIENT
-     100  3   64   64   64    1     262144  in   8   0.150  47.186
-     100  6   64   64   64    1     262144  in   8   0.275  51.476
-     100  3   64   64   64    1     262144 out   8   0.117  60.495
-     100  6   64   64   64    1     262144 out   8   0.347  40.795
+../../src/feram_fftw_wisdom.F:63: flags = FFTW_MEASURE
+     100  3   64   64   64    1     262144  in   8   0.149  47.5
+     100  6   64   64   64    1     262144  in   8   0.274  51.7
+     100  3   64   64   64    1     262144 out   8   0.115  61.5
+     100  6   64   64   64    1     262144 out   8   0.346  40.9
+PASS feram_fftw_wisdom (exit status: 0)
+emerald01$ cd src
+/home/t-nissie/f/feram/feram-0.25.03unstable/Linux-x86_64-gfortran-6.0.0-emerald01/src
+emerald01$ numactl --cpubind 1 ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+     100  1   64   64   64    1     262144  in   8   0.043  54.9
+     100  1   64   64   64    1     262144 out   8   0.044  53.6
+
+     100  3   64   64   64    1     262144  in   8   0.114  62.1
+     100  6   64   64   64    1     262144  in   8   0.228  62.1
+     100  3   64   64   64    1     262144 out   8   0.112  63.2
+     100  6   64   64   64    1     262144 out   8   0.306  46.3
+emerald01$ numactl --cpubind 1 ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+     100  3   64   64   64    1     262144  in   8   0.150  47.2
+     100  6   64   64   64    1     262144  in   8   0.274  51.7
+     100  3   64   64   64    1     262144 out   8   0.115  61.5
+     100  6   64   64   64    1     262144 out   8   0.347  40.8
+Note that, for SoA, FFTW_PATIENT gives much better wisdom than FFTW_MEASURE.
+
+emerald01$ ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+     100  1   64   64   64    1     262144  in  16   0.033  71.5
+     100  1   64   64   64    1     262144 out  16   0.033  71.5
+
+     100  3   64   64   64    1     262144  in  16   0.096  73.7
+     100  6   64   64   64    1     262144  in  16   0.190  74.5
+     100  3   64   64   64    1     262144 out  16   0.098  72.2
+     100  6   64   64   64    1     262144 out  16   0.195  72.6
+emerald01$ ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
+../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+     100  3   64   64   64    1     262144  in  16   0.113  62.6
+     100  6   64   64   64    1     262144  in  16   0.211  67.1
+     100  3   64   64   64    1     262144 out  16   0.096  73.7
+     100  6   64   64   64    1     262144 out  16   0.187  75.7
+Note that pluralization beyond NUMA does not give good efficiency.
+
 
 takeshi@americium01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/*fft*log
 model name	: Intel(R) Xeon(R) CPU E5-2680 v3 @ 2.50GHz
