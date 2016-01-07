@@ -1,6 +1,6 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2013-05-23 18:58:29 t-nissie>
+# Time-stamp: <2016-01-07 21:32:48 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
@@ -10,7 +10,7 @@ n_average=200000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
-for temperature in `jot - 170 350  5` ; do
+for temperature in `seq 170 -5 350` ; do
     i=`expr $i + 1`
     filename=heating`printf '%.3d' $i`-"$temperature"K
     cat > $filename.feram <<-EOF
