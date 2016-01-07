@@ -32,6 +32,7 @@ o (nightly) automation of unit test with "make check"
 o (nightly) automation of profiling and timing
 
 o Replace colrm(1) with cut(1).  `cut -b -14` is equivalent with `colrm 15`.
+  Cygwin may not have colrm by default. http://qiita.com/mdstoy/items/9108b7c44be409d4b74f
 
 o No need to initialize Energy_type ???
 
