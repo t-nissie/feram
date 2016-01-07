@@ -26,7 +26,7 @@ rm -f wisdom
 ../fft_check 10000 32 32 243
 mv wisdom_new wisdom
 
-for j in `jot 10`; do
+for j in `seq 10`; do
     ../feram forward.feram
     grep TIMING_REPORT forward.log >> timingQTN16.dat
 done

@@ -14,6 +14,6 @@
 #
 export MEMORY_AFFINITY=MCM
 export HF_ERR_STATUS_MODE=1
-for i in `jot 16  1`; do
+for i in `seq 16`; do
     HF_90OPTS="-FPRUNST(THREADNUM($i))" OMP_NUM_THREADS=$i ../feram forward.feram
 done

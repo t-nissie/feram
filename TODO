@@ -31,8 +31,6 @@ o (nightly) automation of unit test with "make check"
 
 o (nightly) automation of profiling and timing
 
-o Replace jot(1) with seq(1). Do not use --separator option for seq. Use -s.
-
 o Replace colrm(1) with cut(1).  `cut -b -14` is equivalent with `colrm 15`.
 
 o No need to initialize Energy_type ???
@@ -236,3 +234,5 @@ x Z_star(R) in feram-0.25.00unstable
 x Fix "610.1vs.defects:***: EOF: reached." in msg.F.
   See /home/t-nissie/feram/feram-o.00/directECE-on-0.005TGPa-parallel/BTOnew-050/ .
   また、欠陥の情報も2lfの計算に引き継がれてるかチェックが必要。引き継がれているはずだけど。
+
+x Replace jot(1) with seq(1). Do not use --separator option for seq. Use -s.

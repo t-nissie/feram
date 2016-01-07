@@ -7,8 +7,8 @@
 # $Author$
 ##
 rm -f timing.dat
-for i in `jot 12`; do
-    for j in `jot 5`; do
+for i in `seq 12`; do
+    for j in `seq 5`; do
 	OMP_NUM_THREADS=$i time -o timing.dat -f "$i %e %U %S %R" -a ../feram forward.feram
     done
 done

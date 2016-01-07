@@ -28,7 +28,6 @@ managers (apt-get, yum, etc.).
 These software are useful for executing feram and analyzing calculated results.
  * gnuplot (version 4.6)  http://www.gnuplot.info/
  * Ruby (version 2.1 or higher)  http://www.ruby-lang.org/
- * jot (Every Linux distributions are presenting jot packages. Or, find its source athena-jot_9.0.orig.tar.gz in the Net.)
  * epstopdf.pl http://www.ctan.org/pkg/epstopdf
    ftp://ctan.tug.org/tex-archive/support/epstopdf/epstopdf.pl
  * tar (version 1.22 or higher)  http://www.gnu.org/software/tar/

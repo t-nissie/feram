@@ -1,6 +1,6 @@
 #!/bin/sh
 # coolflm.sh
-# Time-stamp: <2014-07-02 10:30:55 takeshi>
+# Time-stamp: <2016-01-07 21:41:15 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f coolflm.avg
@@ -10,7 +10,7 @@ n_average=20000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
-for temperature in `jot - 1000 300 -1`; do
+for temperature in `seq 1000 -1 300`; do
     i=`expr $i + 1`
     filename=coolflm`printf '%.3d' $i`-"$temperature"K
     cat > $filename.feram <<-EOF

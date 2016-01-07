@@ -1,6 +1,6 @@
 #!/bin/sh
 ##
-for temperature in `jot - 360 560 100`; do
+for temperature in `seq 360 100 560`; do
 GPa=`perl -e "print -0.005 * $temperature"`
 cat > $temperature.feram <<EOF
 #--- Method, Temperature, and mass ---------------
