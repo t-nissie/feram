@@ -31,9 +31,6 @@ o (nightly) automation of unit test with "make check"
 
 o (nightly) automation of profiling and timing
 
-o Replace colrm(1) with cut(1).  `cut -b -14` is equivalent with `colrm 15`.
-  Cygwin may not have colrm by default. http://qiita.com/mdstoy/items/9108b7c44be409d4b74f
-
 o No need to initialize Energy_type ???
 
 o remove redundant procedures:
@@ -237,3 +234,9 @@ x Fix "610.1vs.defects:***: EOF: reached." in msg.F.
   また、欠陥の情報も2lfの計算に引き継がれてるかチェックが必要。引き継がれているはずだけど。
 
 x Replace jot(1) with seq(1). Do not use --separator option for seq. Use -s.
+
+x Replace colrm(1) with cut(1).  `cut -b -14` is equivalent with `colrm 15`.
+  We do not do it, because all the systems may have `colrm` by default.
+  Cygwin may not? http://qiita.com/mdstoy/items/9108b7c44be409d4b74f
+  src/elastocaloric770K_check.csh:32:set t_final=`colrm 8 < elastocaloric770K_check.lf.avg`
+  src/elastocaloric770K_check.sh:21:t_final=`colrm 8 < elastocaloric770K_check.lf.avg`
