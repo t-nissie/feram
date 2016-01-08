@@ -1,6 +1,6 @@
 #!/bin/sh
 # cooling.sh
-# Time-stamp: <2014-07-04 13:24:50 takeshi>
+# Time-stamp: <2016-01-08 12:10:32 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f cooling.avg
@@ -10,7 +10,7 @@ temperature_goal=30
 temperature_step=-2
 
 n_thermalize=40000
-n_average=20000
+n_average=200000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0

@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # strain-susceptibility.gp
-# Time-stamp: <2013-04-24 09:46:49 takeshi>
+# Time-stamp: <2016-01-08 12:49:56 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 set terminal postscript port enhanced color dashed "Times-Roman" 20
@@ -31,13 +31,13 @@ plot 'heating.avg' using 1:5 t 'heating' w l lt 1 lw 2,\
 
 set format y '%.0f'
 
-N                = 16 * 16 * 16          # unit
+N                = 16 ** 3               # unit
 k_B              = 1.3806503e-23         # J/K
 epsilon_0        = 8.854e-12             # F/m
 a_0              = 3.98597*1.0e-10       # m
 unit_cell_volume = a_0**3                # m^-3
-Z_star           = 10.33*1.60217733e-19  # Coulomb
-C = Z_star**2 * 1.0e-10**2 / epsilon_0 / unit_cell_volume / k_B
+elem_charge      = 1.60217733e-19        # Coulomb
+C = elem_charge**2 * 1.0e-10**2 / epsilon_0 / unit_cell_volume / k_B
 # print C
 
 set ylabel '{/Symbol e}_r'
@@ -49,9 +49,9 @@ set yrange [0:20000]
 
 set origin 0,0.36
 set label 1 at 320, 17000 'heating'
-plot 'heating.avg' using 1:(C*($14-N*$11**2)/$1) title '{/Symbol e}_{xx}' with l, \
-     'heating.avg' using 1:(C*($15-N*$12**2)/$1) title '{/Symbol e}_{yy}' with l, \
-     'heating.avg' using 1:(C*($16-N*$13**2)/$1) title '{/Symbol e}_{zz}' with l
+plot 'heating.avg' using 1:(C*($37-N*$34**2)/$1) title '{/Symbol e}_{xx}' with l, \
+     'heating.avg' using 1:(C*($38-N*$35**2)/$1) title '{/Symbol e}_{yy}' with l, \
+     'heating.avg' using 1:(C*($39-N*$36**2)/$1) title '{/Symbol e}_{zz}' with l
 
 set xlabel '{/Times-Italic T} [K]'
 set format x '%.0f'
@@ -59,13 +59,13 @@ set format x '%.0f'
 set size 1.0,0.383
 set origin 0,0.005
 set label 1 at 320, 17000 'cooling'
-plot 'cooling.avg' using 1:(C*($14-N*$11**2)/$1) title '{/Symbol e}_{xx}' with l, \
-     'cooling.avg' using 1:(C*($15-N*$12**2)/$1) title '{/Symbol e}_{yy}' with l, \
-     'cooling.avg' using 1:(C*($16-N*$13**2)/$1) title '{/Symbol e}_{zz}' with l
+plot 'cooling.avg' using 1:(C*($37-N*$34**2)/$1) title '{/Symbol e}_{xx}' with l, \
+     'cooling.avg' using 1:(C*($38-N*$35**2)/$1) title '{/Symbol e}_{yy}' with l, \
+     'cooling.avg' using 1:(C*($39-N*$36**2)/$1) title '{/Symbol e}_{zz}' with l
 
 set nomultiplot
 set output
-!ps2pdf -sPAPERSIZE=letter strain-susceptibility.eps > strain-susceptibility.pdf
+!epstopdf strain-susceptibility.eps
 
 #Local variables:
 #  compile-command: "gnuplot strain-susceptibility.gp"
