@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # strain-susceptibility.gp
-# Time-stamp: <2016-01-08 12:49:56 t-nissie>
+# Time-stamp: <2016-01-14 12:16:30 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 set terminal postscript port enhanced color dashed "Times-Roman" 20
@@ -19,7 +19,7 @@ set label 1 at 320, 0.02 'strain'
 set format y '%.3f'
 set format x ''
 set key left
-set xrange [0:600]
+set xrange [0:800]
 set yrange [-0.005:0.025]
 set ylabel 'strain'
 plot 'heating.avg' using 1:5 t 'heating' w l lt 1 lw 2,\
