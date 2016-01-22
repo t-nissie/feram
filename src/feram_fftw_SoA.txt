@@ -1,269 +1,305 @@
-emerald01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/feram_fftw*log
-model name	: Intel(R) Xeon(R) CPU E5-2680 0 @ 2.70GHz
-  $ ../configure FCFLAGS=-g -Wall -Ofast -msse4.2 -pipe -fopenmp
-/home/t-nissie/f/feram/feram-0.25.03unstable/Linux-x86_64-gfortran-6.0.0-emerald01
-==> src/feram_fftw_SoA.log <==
-../../src/feram_fftw_SoA.F:69: flags = FFTW_MEASURE
-     100  1   64   64   64    1     262144  in   8   0.046  51.3
-     100  1   64   64   64    1     262144 out   8   0.045  52.4
+benchmark with feram_fftw_SoA and feram_fftw_wisdom
+===================================================
+## Intel Xeon CPU E5-2680
+    emerald01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/feram_fftw*log
+    model name	: Intel(R) Xeon(R) CPU E5-2680 0 @ 2.70GHz
+      $ ../configure FCFLAGS=-g -Wall -Ofast -msse4.2 -pipe -fopenmp
+    /home/t-nissie/f/feram/feram-0.25.03unstable/Linux-x86_64-gfortran-6.0.0-emerald01
+    ==> src/feram_fftw_SoA.log <==
+    ../../src/feram_fftw_SoA.F:69: flags = FFTW_MEASURE
+         100  1   64   64   64    1     262144  in   8   0.046  51.3
+         100  1   64   64   64    1     262144 out   8   0.045  52.4
+    
+         100  3   64   64   64    1     262144  in   8   0.265  26.7
+         100  6   64   64   64    1     262144  in   8   0.262  54.0
+         100  3   64   64   64    1     262144 out   8   0.274  25.8
+         100  6   64   64   64    1     262144 out   8   0.334  42.4
+    PASS feram_fftw_SoA (exit status: 0)
+    
+    ==> src/feram_fftw_wisdom.log <==
+    ../../src/feram_fftw_wisdom.F:63: flags = FFTW_MEASURE
+         100  3   64   64   64    1     262144  in   8   0.149  47.5
+         100  6   64   64   64    1     262144  in   8   0.274  51.7
+         100  3   64   64   64    1     262144 out   8   0.115  61.5
+         100  6   64   64   64    1     262144 out   8   0.346  40.9
+    PASS feram_fftw_wisdom (exit status: 0)
+    
+    emerald01$ cd src/
+    emerald01$ numactl --cpubind 1 ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
+    ../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+         100  1   64   64   64    1     262144  in   8   0.043  54.9
+         100  1   64   64   64    1     262144 out   8   0.044  53.6
+    
+         100  3   64   64   64    1     262144  in   8   0.114  62.1
+         100  6   64   64   64    1     262144  in   8   0.228  62.1
+         100  3   64   64   64    1     262144 out   8   0.112  63.2
+         100  6   64   64   64    1     262144 out   8   0.306  46.3
+    emerald01$ numactl --cpubind 1 ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
+    ../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+         100  3   64   64   64    1     262144  in   8   0.150  47.2
+         100  6   64   64   64    1     262144  in   8   0.274  51.7
+         100  3   64   64   64    1     262144 out   8   0.115  61.5
+         100  6   64   64   64    1     262144 out   8   0.347  40.8
 
-     100  3   64   64   64    1     262144  in   8   0.265  26.7
-     100  6   64   64   64    1     262144  in   8   0.262  54.0
-     100  3   64   64   64    1     262144 out   8   0.274  25.8
-     100  6   64   64   64    1     262144 out   8   0.334  42.4
-PASS feram_fftw_SoA (exit status: 0)
+Note that, for SoA, FFTW_PATIENT gives much better wisdom than FFTW_MEASURE does.
 
-==> src/feram_fftw_wisdom.log <==
-../../src/feram_fftw_wisdom.F:63: flags = FFTW_MEASURE
-     100  3   64   64   64    1     262144  in   8   0.149  47.5
-     100  6   64   64   64    1     262144  in   8   0.274  51.7
-     100  3   64   64   64    1     262144 out   8   0.115  61.5
-     100  6   64   64   64    1     262144 out   8   0.346  40.9
-PASS feram_fftw_wisdom (exit status: 0)
-emerald01$ cd src
-/home/t-nissie/f/feram/feram-0.25.03unstable/Linux-x86_64-gfortran-6.0.0-emerald01/src
-emerald01$ numactl --cpubind 1 ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
-     100  1   64   64   64    1     262144  in   8   0.043  54.9
-     100  1   64   64   64    1     262144 out   8   0.044  53.6
+    emerald01$ ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
+    ../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+         100  1   64   64   64    1     262144  in  16   0.033  71.5
+         100  1   64   64   64    1     262144 out  16   0.033  71.5
+    
+         100  3   64   64   64    1     262144  in  16   0.096  73.7
+         100  6   64   64   64    1     262144  in  16   0.190  74.5
+         100  3   64   64   64    1     262144 out  16   0.098  72.2
+         100  6   64   64   64    1     262144 out  16   0.195  72.6
+    emerald01$ ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
+    ../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+         100  3   64   64   64    1     262144  in  16   0.113  62.6
+         100  6   64   64   64    1     262144  in  16   0.211  67.1
+         100  3   64   64   64    1     262144 out  16   0.096  73.7
+         100  6   64   64   64    1     262144 out  16   0.187  75.7
 
-     100  3   64   64   64    1     262144  in   8   0.114  62.1
-     100  6   64   64   64    1     262144  in   8   0.228  62.1
-     100  3   64   64   64    1     262144 out   8   0.112  63.2
-     100  6   64   64   64    1     262144 out   8   0.306  46.3
-emerald01$ numactl --cpubind 1 ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
-     100  3   64   64   64    1     262144  in   8   0.150  47.2
-     100  6   64   64   64    1     262144  in   8   0.274  51.7
-     100  3   64   64   64    1     262144 out   8   0.115  61.5
-     100  6   64   64   64    1     262144 out   8   0.347  40.8
-Note that, for SoA, FFTW_PATIENT gives much better wisdom than FFTW_MEASURE.
+Note that parallelization beyond NUMA does not give good efficiency.
 
-emerald01$ ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
-     100  1   64   64   64    1     262144  in  16   0.033  71.5
-     100  1   64   64   64    1     262144 out  16   0.033  71.5
+## Intel Xeon CPU E5-2680 v3
+    americium01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/*fft*log
+    model name	: Intel(R) Xeon(R) CPU E5-2680 v3 @ 2.50GHz
+      $ ../configure FCFLAGS=-g -Wall -Ofast -mavx2 -pipe -fopenmp
+    /home/takeshi/f/loto/feram/trunk/0.24.01-rev2590-2015-08-10-gfortran-4.8.3-CentOS7-mavx2-americium01
+    ==> src/feram_fftw_SoA.log <==
+         100  1   64   64   64    1     262144  in  12   0.047  50.198
+         100  3   64   64   64    1     262144  in  12   0.295  23.993
+         100  6   64   64   64    1     262144  in  12   0.282  50.198
+         100  1   64   64   64    1     262144  in  12   0.046  51.289
+         100  3   64   64   64    1     262144  in  12   0.297  23.831
+         100  6   64   64   64    1     262144  in  12   0.283  50.020
+    ==> src/feram_fftw_wisdom.log <==
+         100  3   64   64   64    1     262144  in  12   0.110  64.344
+         100  6   64   64   64    1     262144  in  12   0.193  73.346
+         100  3   64   64   64    1     262144 out  12   0.089  79.527
+         100  6   64   64   64    1     262144 out  12   0.180  78.643
 
-     100  3   64   64   64    1     262144  in  16   0.096  73.7
-     100  6   64   64   64    1     262144  in  16   0.190  74.5
-     100  3   64   64   64    1     262144 out  16   0.098  72.2
-     100  6   64   64   64    1     262144 out  16   0.195  72.6
-emerald01$ ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
-     100  3   64   64   64    1     262144  in  16   0.113  62.6
-     100  6   64   64   64    1     262144  in  16   0.211  67.1
-     100  3   64   64   64    1     262144 out  16   0.096  73.7
-     100  6   64   64   64    1     262144 out  16   0.187  75.7
-Note that pluralization beyond NUMA does not give good efficiency.
+    takeshi@americium01$ cd src/
+    takeshi@americium01$ numactl --cpubind 1 ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
+    ../../src/feram_fftw_SoA.F:51: flags = FFTW_PATIENT
+         100  1   64   64   64    1     262144  in  12   0.033  71.494
+         100  3   64   64   64    1     262144  in  12   0.083  85.276
+         100  6   64   64   64    1     262144  in  12   0.169  83.762
+         100  1   64   64   64    1     262144  in  12   0.036  65.536
+         100  3   64   64   64    1     262144  in  12   0.083  85.276
+         100  6   64   64   64    1     262144  in  12   0.176  80.431
+    takeshi@americium01$ numactl --cpubind 1 ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
+    ../../src/feram_fftw_wisdom.F:49: flags = FFTW_PATIENT
+         100  3   64   64   64    1     262144  in  12   0.099  71.494
+         100  6   64   64   64    1     262144  in  12   0.170  83.269
+         100  3   64   64   64    1     262144 out  12   0.080  88.474
+         100  6   64   64   64    1     262144 out  12   0.172  82.301
 
-
-takeshi@americium01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/*fft*log
-model name	: Intel(R) Xeon(R) CPU E5-2680 v3 @ 2.50GHz
-  $ ../configure FCFLAGS=-g -Wall -Ofast -mavx2 -pipe -fopenmp
-/home/takeshi/f/loto/feram/trunk/0.24.01-rev2590-2015-08-10-gfortran-4.8.3-CentOS7-mavx2-americium01
-==> src/feram_fftw_SoA.log <==
-     100  1   64   64   64    1     262144  in  12   0.047  50.198
-     100  3   64   64   64    1     262144  in  12   0.295  23.993
-     100  6   64   64   64    1     262144  in  12   0.282  50.198
-     100  1   64   64   64    1     262144  in  12   0.046  51.289
-     100  3   64   64   64    1     262144  in  12   0.297  23.831
-     100  6   64   64   64    1     262144  in  12   0.283  50.020
-==> src/feram_fftw_wisdom.log <==
-     100  3   64   64   64    1     262144  in  12   0.110  64.344
-     100  6   64   64   64    1     262144  in  12   0.193  73.346
-     100  3   64   64   64    1     262144 out  12   0.089  79.527
-     100  6   64   64   64    1     262144 out  12   0.180  78.643
-takeshi@americium01$ cd src/
-takeshi@americium01$ numactl --cpubind 1 ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_SoA.F:51: flags = FFTW_PATIENT
-     100  1   64   64   64    1     262144  in  12   0.033  71.494
-     100  3   64   64   64    1     262144  in  12   0.083  85.276
-     100  6   64   64   64    1     262144  in  12   0.169  83.762
-     100  1   64   64   64    1     262144  in  12   0.036  65.536
-     100  3   64   64   64    1     262144  in  12   0.083  85.276
-     100  6   64   64   64    1     262144  in  12   0.176  80.431
-takeshi@americium01$ numactl --cpubind 1 ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_wisdom.F:49: flags = FFTW_PATIENT
-     100  3   64   64   64    1     262144  in  12   0.099  71.494
-     100  6   64   64   64    1     262144  in  12   0.170  83.269
-     100  3   64   64   64    1     262144 out  12   0.080  88.474
-     100  6   64   64   64    1     262144 out  12   0.172  82.301
-
-== ~/benchmark/feram_fft_wisdom/r2634-app4t-gfortran-5.2.0/
-app14$ cat /proc/cpuinfo | grep Xeon | tail -1
-model name	: Intel(R) Xeon(R) CPU           X5650  @ 2.67GHz
-app14$
-app14$ taskset -c 6-11 ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && taskset -c 6-11 ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENT
-feram_fftw_SoA.F:66: flags = FFTW_PATIENT
-     500  1   64   64   64    1     262144  in   6   0.364  32.408
-     500  1   64   64   64    1     262144 out   6   0.396  29.789
-
-     500  3   64   64   64    1     262144  in   6   1.099  32.201
-     500  6   64   64   64    1     262144  in   6   2.378  29.764
-     500  3   64   64   64    1     262144 out   6   1.341  26.390
-     500  6   64   64   64    1     262144 out   6   3.573  19.809
-feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
-     500  3   64   64   64    1     262144  in   6   1.245  28.425
-     500  6   64   64   64    1     262144  in   6   2.782  25.442
-     500  3   64   64   64    1     262144 out   6   1.438  24.610
-     500  6   64   64   64    1     262144 out   6   4.035  17.541
-app14$
-app14$
-app14$ ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENT
-feram_fftw_SoA.F:66: flags = FFTW_PATIENT
-     500  1   64   64   64    1     262144  in  12   0.275  42.896
-     500  1   64   64   64    1     262144 out  12   0.286  41.246
-
-     500  3   64   64   64    1     262144  in  12   0.813  43.529
-     500  6   64   64   64    1     262144  in  12   1.645  43.027
-     500  3   64   64   64    1     262144 out  12   0.858  41.246
-     500  6   64   64   64    1     262144 out  12   2.130  33.230
-feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
-     500  3   64   64   64    1     262144  in  12   1.006  35.178
-     500  6   64   64   64    1     262144  in  12   1.799  39.343
-     500  3   64   64   64    1     262144 out  12   0.867  40.818
-     500  6   64   64   64    1     262144 out  12   2.408  29.393
-
-
-app14$ pwd
-/home/t-nissie/benchmark/feram_fft_wisdom/r2634-app4t-gfortran-5.2.0-threads
-app14$
-app14$ taskset -c 6-11 ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && taskset -c 6-11 ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENT
-feram_fftw_SoA.F:66: flags = FFTW_PATIENT
-     500  1   64   64   64    1     262144  in   6   0.731  16.137
-     500  1   64   64   64    1     262144 out   6   0.746  15.813
-
-     500  3   64   64   64    1     262144  in   6   2.132  16.599
-     500  6   64   64   64    1     262144  in   6   3.275  21.612
-     500  3   64   64   64    1     262144 out   6   2.108  16.788
-     500  6   64   64   64    1     262144 out   6   4.449  15.909
-feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
-     500  3   64   64   64    1     262144  in   6   2.063  17.154
-     500  6   64   64   64    1     262144  in   6   4.052  17.468
-     500  3   64   64   64    1     262144 out   6   2.525  14.016
-     500  6   64   64   64    1     262144 out   6   5.298  13.360
-app14$
-app14$
-app14$ ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENTferam_fftw_SoA.F:66: flags = FFTW_PATIENT
-     500  1   64   64   64    1     262144  in  12   1.037  11.376
-     500  1   64   64   64    1     262144 out  12   1.083  10.892
-
-     500  3   64   64   64    1     262144  in  12   2.080  17.014
-     500  6   64   64   64    1     262144  in  12   3.294  21.487
-     500  3   64   64   64    1     262144 out  12   2.284  15.495
-     500  6   64   64   64    1     262144 out  12   3.864  18.318
-feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
-     500  3   64   64   64    1     262144  in  12   2.255  15.694
-     500  6   64   64   64    1     262144  in  12   3.795  18.651
-     500  3   64   64   64    1     262144 out  12   2.189  16.167
-     500  6   64   64   64    1     262144 out  12   4.212  16.804
-app14$
+## Intel Xeon X5650
+    == ~/benchmark/feram_fft_wisdom/r2634-app4t-gfortran-5.2.0/
+    app14$ cat /proc/cpuinfo | grep Xeon | tail -1
+    model name	: Intel(R) Xeon(R) CPU           X5650  @ 2.67GHz
+    app14$
+    app14$ taskset -c 6-11 ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && taskset -c 6-11 ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENT
+    feram_fftw_SoA.F:66: flags = FFTW_PATIENT
+         500  1   64   64   64    1     262144  in   6   0.364  32.408
+         500  1   64   64   64    1     262144 out   6   0.396  29.789
+    
+         500  3   64   64   64    1     262144  in   6   1.099  32.201
+         500  6   64   64   64    1     262144  in   6   2.378  29.764
+         500  3   64   64   64    1     262144 out   6   1.341  26.390
+         500  6   64   64   64    1     262144 out   6   3.573  19.809
+    feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
+         500  3   64   64   64    1     262144  in   6   1.245  28.425
+         500  6   64   64   64    1     262144  in   6   2.782  25.442
+         500  3   64   64   64    1     262144 out   6   1.438  24.610
+         500  6   64   64   64    1     262144 out   6   4.035  17.541
+    app14$
+    app14$
+    app14$ ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENT
+    feram_fftw_SoA.F:66: flags = FFTW_PATIENT
+         500  1   64   64   64    1     262144  in  12   0.275  42.896
+         500  1   64   64   64    1     262144 out  12   0.286  41.246
+    
+         500  3   64   64   64    1     262144  in  12   0.813  43.529
+         500  6   64   64   64    1     262144  in  12   1.645  43.027
+         500  3   64   64   64    1     262144 out  12   0.858  41.246
+         500  6   64   64   64    1     262144 out  12   2.130  33.230
+    feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
+         500  3   64   64   64    1     262144  in  12   1.006  35.178
+         500  6   64   64   64    1     262144  in  12   1.799  39.343
+         500  3   64   64   64    1     262144 out  12   0.867  40.818
+         500  6   64   64   64    1     262144 out  12   2.408  29.393
 
 
+    app14$ pwd
+    /home/t-nissie/benchmark/feram_fft_wisdom/r2634-app4t-gfortran-5.2.0-threads
+    app14$
+    app14$ taskset -c 6-11 ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && taskset -c 6-11 ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENT
+    feram_fftw_SoA.F:66: flags = FFTW_PATIENT
+         500  1   64   64   64    1     262144  in   6   0.731  16.137
+         500  1   64   64   64    1     262144 out   6   0.746  15.813
+    
+         500  3   64   64   64    1     262144  in   6   2.132  16.599
+         500  6   64   64   64    1     262144  in   6   3.275  21.612
+         500  3   64   64   64    1     262144 out   6   2.108  16.788
+         500  6   64   64   64    1     262144 out   6   4.449  15.909
+    feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
+         500  3   64   64   64    1     262144  in   6   2.063  17.154
+         500  6   64   64   64    1     262144  in   6   4.052  17.468
+         500  3   64   64   64    1     262144 out   6   2.525  14.016
+         500  6   64   64   64    1     262144 out   6   5.298  13.360
+    app14$
+    app14$
+    app14$ ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENTferam_fftw_SoA.F:66: flags = FFTW_PATIENT
+         500  1   64   64   64    1     262144  in  12   1.037  11.376
+         500  1   64   64   64    1     262144 out  12   1.083  10.892
+    
+         500  3   64   64   64    1     262144  in  12   2.080  17.014
+         500  6   64   64   64    1     262144  in  12   3.294  21.487
+         500  3   64   64   64    1     262144 out  12   2.284  15.495
+         500  6   64   64   64    1     262144 out  12   3.864  18.318
+    feram_fftw_wisdom.F:60: flags = FFTW_PATIENT
+         500  3   64   64   64    1     262144  in  12   2.255  15.694
+         500  6   64   64   64    1     262144  in  12   3.795  18.651
+         500  3   64   64   64    1     262144 out  12   2.189  16.167
+         500  6   64   64   64    1     262144 out  12   4.212  16.804
+    app14$
 
 
-# cat /proc/cpuinfo | grep i7 | tail -1
-model name      : Intel(R) Core(TM) i7-3770K CPU @ 3.50GHz
-# ./feram_fftw_SoA.exe    200 64 64 64 1 FFTW_PATIENT
-feram_fftw_SoA.F:69: flags = FFTW_PATIENT
-     200  1   64   64   64    1     262144  in   8   0.250  18.9
-     200  1   64   64   64    1     262144 out   8   0.234  20.2
+## Intel Core i7-3770K 3.50GHz
+This section should be revised with an optimized FFTW3 library.
 
-     200  3   64   64   64    1     262144  in   8   0.703  20.1
-     200  6   64   64   64    1     262144  in   8   1.625  17.4
-     200  3   64   64   64    1     262144 out   8   0.797  17.8
-     200  6   64   64   64    1     262144 out   8   1.797  15.8
-# ./feram_fftw_wisdom.exe 200 64 64 64 1 FFTW_PATIENT
-feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
-     200  3   64   64   64    1     262144  in   8   1.781   7.9
-     200  6   64   64   64    1     262144  in   8   3.594   7.9
-     200  3   64   64   64    1     262144 out   8   0.750  18.9
-     200  6   64   64   64    1     262144 out   8   2.016  14.0
+    # cat /proc/cpuinfo | grep i7 | tail -1
+    model name      : Intel(R) Core(TM) i7-3770K CPU @ 3.50GHz
+    # ./feram_fftw_SoA.exe    200 64 64 64 1 FFTW_PATIENT
+    feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+         200  1   64   64   64    1     262144  in   8   0.250  18.9
+         200  1   64   64   64    1     262144 out   8   0.234  20.2
+    
+         200  3   64   64   64    1     262144  in   8   0.703  20.1
+         200  6   64   64   64    1     262144  in   8   1.625  17.4
+         200  3   64   64   64    1     262144 out   8   0.797  17.8
+         200  6   64   64   64    1     262144 out   8   1.797  15.8
+    # ./feram_fftw_wisdom.exe 200 64 64 64 1 FFTW_PATIENT
+    feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+         200  3   64   64   64    1     262144  in   8   1.781   7.9
+         200  6   64   64   64    1     262144  in   8   3.594   7.9
+         200  3   64   64   64    1     262144 out   8   0.750  18.9
+         200  6   64   64   64    1     262144 out   8   2.016  14.0
+    
+    # OMP_NUM_THREADS=4 ./feram_fftw_SoA.exe    200 64 64 64 1 FFTW_PATIENT
+    feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+         200  1   64   64   64    1     262144  in   4   0.234  20.2
+         200  1   64   64   64    1     262144 out   4   0.234  20.2
+    
+         200  3   64   64   64    1     262144  in   4   0.703  20.1
+         200  6   64   64   64    1     262144  in   4   1.672  16.9
+         200  3   64   64   64    1     262144 out   4   0.812  17.4
+         200  6   64   64   64    1     262144 out   4   1.828  15.5
+    # OMP_NUM_THREADS=4 ./feram_fftw_wisdom.exe 200 64 64 64 1 FFTW_PATIENT
+    feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+         200  3   64   64   64    1     262144  in   4   1.797   7.9
+         200  6   64   64   64    1     262144  in   4   3.844   7.4
+         200  3   64   64   64    1     262144 out   4   0.843  16.8
+         200  6   64   64   64    1     262144 out   4   2.203  12.9
 
-# OMP_NUM_THREADS=4 ./feram_fftw_SoA.exe    200 64 64 64 1 FFTW_PATIENT
-feram_fftw_SoA.F:69: flags = FFTW_PATIENT
-     200  1   64   64   64    1     262144  in   4   0.234  20.2
-     200  1   64   64   64    1     262144 out   4   0.234  20.2
+    
+## SR16000 (2011)
+    super4t$ pwd
+    /home/t-nissie/f/feram/feram-0.25.03unstable/SR16000-fftw_xlc_simd-super3t/src
+    super4t$ head feram_fftw_*log
+    ==> feram_fftw_SoA.log <==
+    ../../src/feram_fftw_SoA.F:69: flags = FFTW_MEASURE
+         100  1   64   64   64    1     262144  in  32   0.020 118.0
+         100  1   64   64   64    1     262144 out  32   0.020 118.0
+    
+         100  3   64   64   64    1     262144  in  32   0.330  21.4
+         100  6   64   64   64    1     262144  in  32   0.340  41.6
+         100  3   64   64   64    1     262144 out  32   0.360  19.7
+         100  6   64   64   64    1     262144 out  32   0.360  39.3
+    PASS feram_fftw_SoA (exit status: 0)
+    
+    ==> feram_fftw_wisdom.log <==
+    ../../src/feram_fftw_wisdom.F:63: flags = FFTW_MEASURE
+         100  3   64   64   64    1     262144  in  32   0.060 118.0
+         100  6   64   64   64    1     262144  in  32   0.120 118.0
+         100  3   64   64   64    1     262144 out  32   0.050 141.6
+         100  6   64   64   64    1     262144 out  32   0.110 128.7
+    PASS feram_fftw_wisdom (exit status: 0)
+    super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_SoA 1000 64 64 64 1 FFTW_PATIENT
+    ../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+        1000  1   64   64   64    1     262144  in  32   0.190 124.2
+        1000  1   64   64   64    1     262144 out  32   0.200 118.0
+    
+        1000  3   64   64   64    1     262144  in  32   0.580 122.0
+        1000  6   64   64   64    1     262144  in  32   1.170 121.0
+        1000  3   64   64   64    1     262144 out  32   0.560 126.4
+        1000  6   64   64   64    1     262144 out  32   1.130 125.3
+    super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_wisdom 1000 64 64 64 1 FFTW_PATIENT
+    ../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+        1000  3   64   64   64    1     262144  in  32   0.640 110.6
+        1000  6   64   64   64    1     262144  in  32   1.120 126.4
+        1000  3   64   64   64    1     262144 out  32   0.510 138.8
+        1000  6   64   64   64    1     262144 out  32   1.030 137.4
+    super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=64:stride=1:startproc=0" ./feram_fftw_SoA 1000 64 64 64 1 FFTW_PATIENT
+    ../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+        1000  1   64   64   64    1     262144  in  64   0.240  98.3
+        1000  1   64   64   64    1     262144 out  64   0.230 102.6
+    
+        1000  3   64   64   64    1     262144  in  64   0.670 105.6
+        1000  6   64   64   64    1     262144  in  64   1.370 103.3
+        1000  3   64   64   64    1     262144 out  64   0.650 108.9
+        1000  6   64   64   64    1     262144 out  64   1.310 108.1
+    super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=64:stride=1:startproc=0" ./feram_fftw_wisdom 1000 64 64 64 1 FFTW_PATIENT
+    ../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+        1000  3   64   64   64    1     262144  in  64   1.660  42.6
+        1000  6   64   64   64    1     262144  in  64   1.830  77.4
+        1000  3   64   64   64    1     262144 out  64   0.580 122.0
+        1000  6   64   64   64    1     262144 out  64   1.000 141.6
+    Note that there is a large difference between SMT off and on.
+    
+    super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_SoA 100 128 128 128 1 FFTW_PATIENT
+    ../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+         100  1  128  128  128    1    2097152  in  32   0.150 146.8
+         100  1  128  128  128    1    2097152 out  32   0.140 157.3
+    
+         100  3  128  128  128    1    2097152  in  32   0.430 153.6
+         100  6  128  128  128    1    2097152  in  32   0.890 148.5
+         100  3  128  128  128    1    2097152 out  32   0.420 157.3
+         100  6  128  128  128    1    2097152 out  32   1.000 132.1
+    super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_wisdom 100 128 128 128 1 FFTW_PATIENT
+    ../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+         100  3  128  128  128    1    2097152  in  32   0.470 140.6
+         100  6  128  128  128    1    2097152  in  32   0.940 140.6
+         100  3  128  128  128    1    2097152 out  32   0.430 153.6
+         100  6  128  128  128    1    2097152 out  32   0.990 133.5
+    super4t$
 
-     200  3   64   64   64    1     262144  in   4   0.703  20.1
-     200  6   64   64   64    1     262144  in   4   1.672  16.9
-     200  3   64   64   64    1     262144 out   4   0.812  17.4
-     200  6   64   64   64    1     262144 out   4   1.828  15.5
-# OMP_NUM_THREADS=4 ./feram_fftw_wisdom.exe 200 64 64 64 1 FFTW_PATIENT
-feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
-     200  3   64   64   64    1     262144  in   4   1.797   7.9
-     200  6   64   64   64    1     262144  in   4   3.844   7.4
-     200  3   64   64   64    1     262144 out   4   0.843  16.8
-     200  6   64   64   64    1     262144 out   4   2.203  12.9
 
+## AMD Opteron 2435 (2010)
+    diamond04$ date; grep Opteron /proc/cpuinfo | tail -n 1
+    Thu Jan 21 16:19:26 JST 2016
+    model name	: Six-Core AMD Opteron(tm) Processor 2435
+    diamond04$ numactl --cpubind 1 ./feram_fftw_SoA
+    ../../src/feram_fftw_SoA.F:69: flags = FFTW_MEASURE
+         100  1   64   64   64    1     262144  in   6   0.223  10.6
+         100  1   64   64   64    1     262144 out   6   0.204  11.6
+    
+         100  3   64   64   64    1     262144  in   6   0.623  11.4
+         100  6   64   64   64    1     262144  in   6   1.043  13.6
+         100  3   64   64   64    1     262144 out   6   0.914   7.7
+         100  6   64   64   64    1     262144 out   6   1.465   9.7
+    diamond04$ numactl --cpubind 1 ./feram_fftw_wisdom
+    ../../src/feram_fftw_wisdom.F:63: flags = FFTW_MEASURE
+         100  3   64   64   64    1     262144  in   6   0.588  12.0
+         100  6   64   64   64    1     262144  in   6   1.230  11.5
+         100  3   64   64   64    1     262144 out   6   0.701  10.1
+         100  6   64   64   64    1     262144 out   6   1.573   9.0
+    diamond04$
 
-SR16000
-super4t$ pwd
-/home/t-nissie/f/feram/feram-0.25.03unstable/SR16000-fftw_xlc_simd-super3t/src
-super4t$ head feram_fftw_*log
-==> feram_fftw_SoA.log <==
-../../src/feram_fftw_SoA.F:69: flags = FFTW_MEASURE
-     100  1   64   64   64    1     262144  in  32   0.020 118.0
-     100  1   64   64   64    1     262144 out  32   0.020 118.0
-
-     100  3   64   64   64    1     262144  in  32   0.330  21.4
-     100  6   64   64   64    1     262144  in  32   0.340  41.6
-     100  3   64   64   64    1     262144 out  32   0.360  19.7
-     100  6   64   64   64    1     262144 out  32   0.360  39.3
-PASS feram_fftw_SoA (exit status: 0)
-
-==> feram_fftw_wisdom.log <==
-../../src/feram_fftw_wisdom.F:63: flags = FFTW_MEASURE
-     100  3   64   64   64    1     262144  in  32   0.060 118.0
-     100  6   64   64   64    1     262144  in  32   0.120 118.0
-     100  3   64   64   64    1     262144 out  32   0.050 141.6
-     100  6   64   64   64    1     262144 out  32   0.110 128.7
-PASS feram_fftw_wisdom (exit status: 0)
-super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_SoA 1000 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
-    1000  1   64   64   64    1     262144  in  32   0.190 124.2
-    1000  1   64   64   64    1     262144 out  32   0.200 118.0
-
-    1000  3   64   64   64    1     262144  in  32   0.580 122.0
-    1000  6   64   64   64    1     262144  in  32   1.170 121.0
-    1000  3   64   64   64    1     262144 out  32   0.560 126.4
-    1000  6   64   64   64    1     262144 out  32   1.130 125.3
-super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_wisdom 1000 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
-    1000  3   64   64   64    1     262144  in  32   0.640 110.6
-    1000  6   64   64   64    1     262144  in  32   1.120 126.4
-    1000  3   64   64   64    1     262144 out  32   0.510 138.8
-    1000  6   64   64   64    1     262144 out  32   1.030 137.4
-super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=64:stride=1:startproc=0" ./feram_fftw_SoA 1000 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
-    1000  1   64   64   64    1     262144  in  64   0.240  98.3
-    1000  1   64   64   64    1     262144 out  64   0.230 102.6
-
-    1000  3   64   64   64    1     262144  in  64   0.670 105.6
-    1000  6   64   64   64    1     262144  in  64   1.370 103.3
-    1000  3   64   64   64    1     262144 out  64   0.650 108.9
-    1000  6   64   64   64    1     262144 out  64   1.310 108.1
-super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=64:stride=1:startproc=0" ./feram_fftw_wisdom 1000 64 64 64 1 FFTW_PATIENT
-../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
-    1000  3   64   64   64    1     262144  in  64   1.660  42.6
-    1000  6   64   64   64    1     262144  in  64   1.830  77.4
-    1000  3   64   64   64    1     262144 out  64   0.580 122.0
-    1000  6   64   64   64    1     262144 out  64   1.000 141.6
-Note that there is a large difference between SMT off and on.
-
-super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_SoA 100 128 128 128 1 FFTW_PATIENT
-../../src/feram_fftw_SoA.F:69: flags = FFTW_PATIENT
-     100  1  128  128  128    1    2097152  in  32   0.150 146.8
-     100  1  128  128  128    1    2097152 out  32   0.140 157.3
-
-     100  3  128  128  128    1    2097152  in  32   0.430 153.6
-     100  6  128  128  128    1    2097152  in  32   0.890 148.5
-     100  3  128  128  128    1    2097152 out  32   0.420 157.3
-     100  6  128  128  128    1    2097152 out  32   1.000 132.1
-super4t$ MALLOCMULTIHEAP=true XLSMPOPTS="spins=0:yields=0:parthds=32:stride=2:startproc=0" ./feram_fftw_wisdom 100 128 128 128 1 FFTW_PATIENT
-../../src/feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
-     100  3  128  128  128    1    2097152  in  32   0.470 140.6
-     100  6  128  128  128    1    2097152  in  32   0.940 140.6
-     100  3  128  128  128    1    2097152 out  32   0.430 153.6
-     100  6  128  128  128    1    2097152 out  32   0.990 133.5
-super4t$
+<!--
+Local variables:
+  compile-command: "gfm2html.rb --readme -l ja -n 'Takeshi Nishimatsu' -s ../style.css feram_fftw_SoA.txt > feram_fftw_SoA.html"
+End:
+-->
