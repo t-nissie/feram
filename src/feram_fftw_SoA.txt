@@ -1,6 +1,6 @@
 benchmark with feram_fftw_SoA and feram_fftw_wisdom
 ===================================================
-## Intel Xeon CPU E5-2680
+## Intel Xeon E5-2680 (2012) TDP=130 W/chip
     emerald01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/feram_fftw*log
     model name	: Intel(R) Xeon(R) CPU E5-2680 0 @ 2.70GHz
       $ ../configure FCFLAGS=-g -Wall -Ofast -msse4.2 -pipe -fopenmp
@@ -61,7 +61,7 @@ Note that, for SoA, FFTW_PATIENT gives much better wisdom than FFTW_MEASURE does
 
 Note that parallelization beyond NUMA does not give good efficiency.
 
-## Intel Xeon CPU E5-2680 v3
+## Intel Xeon CPU E5-2680 v3 (2014) TDP=120 W/chip
     americium01$ grep E5 /proc/cpuinfo | head -1; grep FCF config.log | head -1 ; pwd; head src/*fft*log
     model name	: Intel(R) Xeon(R) CPU E5-2680 v3 @ 2.50GHz
       $ ../configure FCFLAGS=-g -Wall -Ofast -mavx2 -pipe -fopenmp
@@ -95,7 +95,7 @@ Note that parallelization beyond NUMA does not give good efficiency.
          100  3   64   64   64    1     262144 out  12   0.080  88.474
          100  6   64   64   64    1     262144 out  12   0.172  82.301
 
-## Intel Xeon X5650
+## Intel Xeon X5650 (2010) TDP=95 W/chip
     == ~/benchmark/feram_fft_wisdom/r2634-app4t-gfortran-5.2.0/
     app14$ cat /proc/cpuinfo | grep Xeon | tail -1
     model name	: Intel(R) Xeon(R) CPU           X5650  @ 2.67GHz
@@ -167,7 +167,7 @@ Note that parallelization beyond NUMA does not give good efficiency.
     app14$
 
 
-## Intel Core i7-3770K 3.50GHz
+## Intel Core i7-3770K 3.50GHz (2012)  TDP=77 W/chip
 This section should be revised with an optimized FFTW3 library.
 According to fftw3.cygport of fftw3-3.3.4-2-src.tar.xz in
 http://ftp.yz.yamagata-u.ac.jp/pub/cygwin/x86_64/release/fftw3/ ,
@@ -208,7 +208,7 @@ configure options of --enable-sse2 and --enable-avx are not given.
          200  6   64   64   64    1     262144 out   4   2.203  12.9
 
     
-## SR16000 (2011)
+## SR16000 (2011) TDP=250 W/chip
     super4t$ pwd
     /home/t-nissie/f/feram/feram-0.25.03unstable/SR16000-fftw_xlc_simd-super3t/src
     super4t$ head feram_fftw_*log
@@ -280,7 +280,7 @@ configure options of --enable-sse2 and --enable-avx are not given.
     super4t$
 
 
-## AMD Opteron 2435 (2010)
+## AMD Opteron 2435 (2010) TDP=75 W/chip
     diamond04$ date; grep Opteron /proc/cpuinfo | tail -n 1
     Thu Jan 21 16:19:26 JST 2016
     model name	: Six-Core AMD Opteron(tm) Processor 2435
