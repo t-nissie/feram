@@ -169,6 +169,9 @@ Note that parallelization beyond NUMA does not give good efficiency.
 
 ## Intel Core i7-3770K 3.50GHz
 This section should be revised with an optimized FFTW3 library.
+According to fftw3.cygport of fftw3-3.3.4-2-src.tar.xz in
+http://ftp.yz.yamagata-u.ac.jp/pub/cygwin/x86_64/release/fftw3/ ,
+configure options of --enable-sse2 and --enable-avx are not given.
 
     # cat /proc/cpuinfo | grep i7 | tail -1
     model name      : Intel(R) Core(TM) i7-3770K CPU @ 3.50GHz
