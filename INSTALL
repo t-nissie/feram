@@ -36,6 +36,7 @@ These software are useful for executing feram and analyzing calculated results.
 == Requirements for developing feram
  * autoconf (version 2.69 or higher)    http://www.gnu.org/software/autoconf/
  * automake (version 1.14.1 or higher)  http://www.gnu.org/software/automake/
+ * ULMUL    (version 0.5.3)             https://rubygems.org/gems/ulmul
 
 == Quick compilation
 If you have all the required libraries,
