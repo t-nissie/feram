@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # polarization.gp
-# Time-stamp: <2014-10-25 18:40:07 t-nissie>
+# Time-stamp: <2016-02-22 10:47:14 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 set encoding iso_8859_1  # for Angstrom
@@ -36,7 +36,7 @@ set size 1.0,0.535
 set yrange [-5:45]
 #set ytics 5
 set format y '%.0f'
-set ylabel '{/Times-Italic P_z} [{/Symbol m}C cm^{-2}]'
+set ylabel '{/Times-Italic P}_{/Symbol a} [{/Symbol m}C cm^{-2}]'
 set xlabel '{/Times-Italic T} [K]'
 set key right top
 set label 1 at 50,36 '(b)'
