@@ -1,4 +1,7 @@
 ToDo:
+o まずacouF.Fとcoord_module.Fとから "!$omp parallel workshare" を使う？
+  src/omp_workshare_check.fを見よ。ただし、SoAに戻すとしたら障害になる。
+
 o mass_dipole も mass_acou も R-dep できるようにする。
 
 o mass_acou<0.0d0 なら acoustic 関連の配列で要らないモノは確保しない。
