@@ -5,7 +5,8 @@
 # $Rev: 1340 $
 # $Author: t-nissie $
 ##
-set terminal postscript landscape enhanced color dashed "Times-Roman,20"
+set terminal postscript eps enhanced color dashed "Times-Roman,24"
+set encoding iso_8859_1
 set output 'wave_check.eps'
 set title 'wave\_check.f checks wave\_module.F'
 set xtics 4
