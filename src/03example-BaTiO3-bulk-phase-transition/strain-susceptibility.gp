@@ -1,15 +1,16 @@
 #!/usr/bin/env gnuplot
 # strain-susceptibility.gp
-# Time-stamp: <2012-04-12 14:55:33 takeshi>
+# Time-stamp: <2016-02-25 21:00:53 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
-set terminal postscript port enhanced color dashed "Times-Roman" 20
+set terminal postscript eps enhanced color dashed "Times-Roman" 15
+w=0.6
+set size w,1.0
 set output 'strain-susceptibility.eps'
-
 set multiplot
 set lmargin 10
 
-set size 1.0,0.33
+set size w,0.33
 
 set origin 0.0,0.66
 
@@ -56,8 +57,8 @@ plot '24x24x24-20000-200000/heating.avg' using 1:(C*($14-N*$11**2)/$1) title '{/
 
 set xlabel '{/Times-Italic T} [K]'
 set format x '%.0f'
-     
-set size 1.0,0.383
+
+set size w,0.383
 set origin 0,0.005
 set label 1 at 320, 17000 'cooling'
 plot '24x24x24-20000-200000/cooling.avg' using 1:(C*($14-N*$11**2)/$1) title '{/Symbol e}_{xx}' with l, \
@@ -66,7 +67,7 @@ plot '24x24x24-20000-200000/cooling.avg' using 1:(C*($14-N*$11**2)/$1) title '{/
 
 set nomultiplot
 set output
-!ps2pdf -sPAPERSIZE=letter strain-susceptibility.eps > strain-susceptibility.pdf
+!epstopdf strain-susceptibility.eps
 
 #Local variables:
 #  compile-command: "gnuplot strain-susceptibility.gp"
