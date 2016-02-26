@@ -206,6 +206,7 @@ X Window Systemのアプリケーションのためには
 ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられることがある。
 マシンに依存するXのライブラリの場所などを解決してくれる。
 最近はAutotoolsが使われることが多い。
+Wikipedia: https://en.wikipedia.org/wiki/Imake
 参考: http://d.hatena.ne.jp/torazuka/20110508/imake
 
 == libtoolとは
