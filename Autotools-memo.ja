@@ -185,6 +185,9 @@ http://www2m.biglobe.ne.jp/~dolphin/lha/lha-unix.htm
 === ntp
 大規模。libtoolも使われている。
 http://support.ntp.org/bin/view/Main/WebHome
+=== xtalgrowth
+小規模。Cで書かれたX Window Systemのアプリケーション。
+http://loto.sourceforge.net/xtalgrowth/
 === feram
 小規模。Fortranで書かれている。
 http://loto.sourceforge.net/feram/
@@ -202,6 +205,7 @@ CMakeとSConsではFortranのプロジェクトもサポートされている。
 X Window Systemのアプリケーションのためには
 ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられることがある。
 マシンに依存するXのライブラリの場所などを解決してくれる。
+最近はAutotoolsが使われることが多い。
 参考: http://d.hatena.ne.jp/torazuka/20110508/imake
 
 == まとめ
