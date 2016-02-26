@@ -1,5 +1,5 @@
 ! msg_module.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:26:16 takeshi>
+! Time-stamp: <2016-02-26 12:41:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module msg_module
@@ -19,11 +19,11 @@ subroutine msg(fd, filename, line, begin_or_end, message)
   !---------------------------------------------------
 
   if (begin_or_end.eq.'') then
-     write(fmt_str,'(a,i3.3,a)') '(', indent*level(fd), 'x,a)'
+     write(fmt_str,'(a,i3.3,a)') '(', indent*level(fd)+indent/2, 'x,a)'
      write(fd,fmt_str) trim(message)
   else
-     if (begin_or_end.eq.'END') then
-        level(fd) = level(fd) - 1
+     if (begin_or_end.eq.'BEGIN') then
+        level(fd) = level(fd) + 1
      end if
      if (level(fd).gt.0) then
         write(fmt_str,'(a,i3.3,a)') '(', indent*level(fd), 'x,7a)'
@@ -33,8 +33,8 @@ subroutine msg(fd, filename, line, begin_or_end, message)
      write(line_str,'(i20)') line
      line_str = adjustl(line_str)
      write(fd,fmt_str) filename, ':', trim(line_str), ': ', begin_or_end, ': ', trim(message)
-     if (begin_or_end.eq.'BEGIN') then
-        level(fd) = level(fd) + 1
+     if (begin_or_end.eq.'END') then
+        level(fd) = level(fd) - 1
      end if
   end if
 end subroutine msg

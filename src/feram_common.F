@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-12-17 20:03:16 takeshi>
+! Time-stamp: <2016-02-26 12:41:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -42,7 +42,7 @@ subroutine feram_common(fn)
 
   fn_log = trim(p%filename) // '.log'
   open(unit=UNIT_LOG,file=fn_log,status='replace')
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'START', PACKAGE_STRING)
   call hostnm(message)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'HOSTNAME', message)
 
@@ -114,7 +114,7 @@ subroutine feram_common(fn)
   call msg_ez(UNIT_LOG, message)
 
   ! We do NOT call fftw_cleanup_threads().
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'love && peace && free_software')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'FINISH', 'love && peace && free_software')
   close(unit=UNIT_LOG)
 end subroutine feram_common
 
