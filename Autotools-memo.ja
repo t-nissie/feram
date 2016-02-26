@@ -208,11 +208,15 @@ ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられる�
 最近はAutotoolsが使われることが多い。
 参考: http://d.hatena.ne.jp/torazuka/20110508/imake
 
+== libtoolとは
+Autotoolsの仲間には他に libtool http://www.gnu.org/software/libtool/ がある。
+共有ライブラリのビルドするときにautoconfとautomakeとともに使ってマシン依存性を解決する。
+参考: http://klabgames.tech.blog.jp.klab.com/archives/1047107113.html
+
 == まとめ
 autoconfとautomakeとの使い方を説明した。
 configure.acとMakefile.amとを書くことによりパッケージの自動生成が可能になる。
 複数のプラットフォームでMakefileを共通化できる。
-他に共有ライブラリを操るための libtool http://www.gnu.org/software/libtool/ もある。
 これらGNU Autotoolsを活用すれば、簡単に配布用のフリーソフトウェアパッケージを作ることができる。
 
 == 著者
