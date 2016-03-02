@@ -52,6 +52,10 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  % cat acoustic-MD.lf.avg
  503.91  0.00000  0.00000  0.00060    0.82641E-02  0.82474E-02 ...
 
+ % qstat -u YourUsername   # 自分のジョブだけを表示
+ % qdel JOB_ID             # ジョブを消す
+
+
 == Execute 27example-BaTiO3-new-param-E_wave
  % cd ~/feram/feram-0.24.02
  % cp -a ~/f/feram/feram-0.24.02/src/27example-BaTiO3-new-param-E_wave/ .
