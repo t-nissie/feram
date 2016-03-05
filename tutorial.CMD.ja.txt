@@ -2,16 +2,50 @@
 == Login
  $ ssh -X -l YourUsername cmd2.phys.sci.osaka-u.ac.jp
  % gfortran --version
- % cat .cshrc                # 自分の.cshrcがないかどうかチェック
- % cp .cshrc .cshrc.BACKUP   # 自分の.cshrcがあったら、バックアップしておく
+ % head .cshrc .tcshrc .profile   # 自分の.cshrcなどがないかどうかチェック
+ % cp .cshrc .cshrc.BACKUP        # 自分の.cshrcがあったら、バックアップしておく
  % cp /home/CMD/teac20/.cshrc .
  % exit
 
  $ ssh -X -l YourUsername cmd2.phys.sci.osaka-u.ac.jp
  % which gfortran
  % gfortran --version
- % cat /home/CMD/teac20/f/loto/feram/branches/z_star_r/tutorial.CMD.ja.txt
+ % cat /home/CMD/teac20/f/loto/feram/branches/z_star_r/tutorial.CMD.ja.txt   # 本ドキュメント
  % cp /home/CMD/teac20/.emacs .   # if you prefer
+
+参考 .cshrc
+ setenv LD_LIBRARY_PATH /home/CMD/teac20/Linux-x86_64/lib64:$LD_LIBRARY_PATH
+ setenv PATH /home/CMD/teac20/Linux-x86_64/bin:/usr/sge/bin/linux-x64:/usr/local/bin:/bin:/usr/bin:$PATH
+ 
+ set prompt = '%m% '
+ 
+ unalias mc
+ alias h 'history'
+ alias pu 'pushd'
+ alias pu1 'pushd'
+ alias pu2 'pushd +2'
+ alias pu3 'pushd +3'
+ alias pu4 'pushd +4'
+ alias pu5 'pushd +5'
+ alias pu6 'pushd +6'
+ alias pu7 'pushd +7'
+ alias pu8 'pushd +8'
+ alias pu9 'pushd +9'
+ alias po 'popd'
+ alias po1 'popd +1'
+ alias po2 'popd +2'
+ alias po3 'popd +3'
+ alias po4 'popd +4'
+ alias po5 'popd +5'
+ alias po6 'popd +6'
+ alias po7 'popd +7'
+ alias po8 'popd +8'
+ alias po9 'popd +9'
+ alias dirs 'dirs -v'
+ alias di 'dirs -v'
+ alias ls 'ls -G'
+ alias ll "ls -lG"
+ alias la "ls -laG"
 
 == Compile with gfortran (GNU fortran)
  % cd
