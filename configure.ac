@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2015-12-21 11:57:52 takeshi>
+dnl Time-stamp: <2016-03-02 16:15:18 t-nissie>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -86,7 +86,7 @@ case "$with_fft" in
                  [AC_MSG_ERROR([Your FFTW3 library does not combine threads. See config.log.])])
     ;;
   mkl)
-    AC_CHECK_LIB(mkl_gf_lp64, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) AC_DEFINE([WITH_FFT_MKL], [1], [Use FFTW3 wrappers to Intel MKL functions]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
+    AC_CHECK_LIB(mkl_intel_lp64, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) AC_DEFINE([WITH_FFT_MKL], [1], [Use FFTW3 wrappers to Intel MKL functions]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_intel_lp64 $LIBS"],
                  AC_MSG_ERROR([You need Intel Math Kernel Library (MKL). See config.log.]),[-lmkl_core -lmkl_intel_thread])
     ;;
   ssl2)
@@ -118,12 +118,12 @@ case "$with_lapack" in
     ;;  
   mkl)
     case "$LIBS" in
-      *mkl_gf_lp64*)
-        AC_MSG_NOTICE([lapack... It seems that there is -lmkl_gf_lp64 already in LIBS.])
+      *mkl_intel_lp64*)
+        AC_MSG_NOTICE([lapack... It seems that there is -lmkl_intel_lp64 already in LIBS.])
         ;;
       *)
-        AC_MSG_NOTICE([lapack... Add -lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 at the tail of LIBS.])
-        LIBS="$LIBS -lmkl_core -lmkl_intel_thread -lmkl_gf_lp64"
+        AC_MSG_NOTICE([lapack... Add -lmkl_core -lmkl_intel_thread -lmkl_intel_lp64 at the tail of LIBS.])
+        LIBS="$LIBS -lmkl_core -lmkl_intel_thread -lmkl_intel_lp64"
         ;;
     esac
     ;;
