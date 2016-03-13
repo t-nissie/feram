@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2015-12-09 14:59:52 takeshi>
+# Time-stamp: <2016-03-14 00:03:40 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -236,7 +236,7 @@ pdf: feram.pdf coord_module.pdf param_module.pdf
 	ps2pdf -sPAPERSIZE=a4 $< $@
 
 .F.ps:
-	a2ps --prologue=color --portrait --columns=1 --margin=3 \
+	LANG=C a2ps --medium=a4 --prologue=color --portrait --columns=1 --margin=3 \
 	--borders=off \
 	-f 9.7 --pretty-print=for90-free -o - $< > $@
 
