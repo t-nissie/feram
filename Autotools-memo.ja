@@ -195,14 +195,31 @@ http://loto.sourceforge.net/feram/
  * Makefile.am     https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/Makefile.am
  * src/Makefile.am https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/src/Makefile.am
 
+== configureとmakeとの高速化
+大規模なプロジェクトではconfigureとmakeとにかかる時間が増大し、開発者をイライラさせる。
+特にconfigureスクリプトは並列化が難しく、簡単には高速化できない。
+以下にconfigureとmakeとの高速化の手法とそれらを解説しているページへのリンクを揚げた。
+=== configureの高速化
+ * Ref: http://superuser.com/questions/298779/is-it-possible-to-speed-up-configure
+=== makeの高速化
+ * RAMディスク（Linuxのtmpfsなど）やSSDなど高速なファイルシステム上でmakeする。
+ * NFSなど遅いファイルシステム上でmakeしない。
+ * make -j8と並列実行させる。
+ * gcc, gfortranで-pipeオプションを使用する。
+   * NFS上でmakeしなくてはいけない時には特に有効。
+   * その他の場合は、キャッシュが効くためか、たいして高速化しないこともある。
+ * Ref1: http://nippondanji.blogspot.jp/2011/04/mysql-5530.html
+ * Ref2: http://stackoverflow.com/questions/1512933/when-should-i-use-gccs-pipe-option
+
 == Autotoolsの代わりになるもの
-改良版のAutotoolsを目指していくつかのパッケージングツール／ビルドツールが開発されている。
+改良版のAutotoolsやより高速なmakeを目指していくつかのパッケージングツール／ビルドツールが開発されている。
 CMakeとSConsではFortranのプロジェクトもサポートされている。
  * CMake http://www.cmake.org/
  * SCons http://www.scons.org/
- * Ninja https://github.com/martine/ninja
+ * Ninja https://ninja-build.org
+OCamlで書かれた OMake http://omake.metaprl.org/index.html というのもあるが、多少古い。
 
-X Window Systemのアプリケーションのためには
+古いX Window Systemのアプリケーションのためには
 ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられることがある。
 マシンに依存するXのライブラリの場所などを解決してくれる。
 最近はAutotoolsが使われることが多い。
