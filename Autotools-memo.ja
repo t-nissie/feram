@@ -205,8 +205,8 @@ http://loto.sourceforge.net/feram/
  * RAMディスク（Linuxのtmpfsなど）やSSDなど高速なファイルシステム上でmakeする。
  * NFSなど遅いファイルシステム上でmakeしない。
  * make -j8と並列実行させる。
- * gcc, gfortranで-pipeオプションを使用する。
-   * NFS上でmakeしなくてはいけない時には特に有効。
+ * gcc, g++, gfortranで-pipeオプションを使用する。
+   * NFS上でmakeしなくてはいけないときには特に有効。
    * その他の場合は、キャッシュが効くためか、たいして高速化しないこともある。
  * Ref1: http://nippondanji.blogspot.jp/2011/04/mysql-5530.html
  * Ref2: http://stackoverflow.com/questions/1512933/when-should-i-use-gccs-pipe-option
