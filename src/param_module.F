@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-03-14 23:19:29 takeshi>
+! Time-stamp: <2016-03-15 00:20:38 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -317,7 +317,6 @@ contains
              read(str,*) dmy1, dmy2, p%Z_star(1)
              p%Z_star(2:RELAXOR_MAX) = p%Z_star(1)
           end if
-          write(6,'(a,3f6.3)') p%Z_star(1:RELAXOR_MAX)
        case('epsilon_inf')
           read(str,*) dmy1, dmy2, p%epsilon_inf
        case('kappa')
