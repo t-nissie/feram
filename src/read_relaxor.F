@@ -1,5 +1,5 @@
 ! read_relaxor.F -*-f90-*-
-! Time-stamp: <2016-03-14 23:25:59 takeshi>
+! Time-stamp: <2016-03-15 01:40:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: read foo.relaxor and prepare Z_starR(:,:,:).
 ! Parents: initialize-dipoR.F
@@ -40,6 +40,7 @@ subroutine read_relaxor(p,c)
      call       msg(UNIT_LOG, trim(p%filename)//'.relaxor', line_number, 'EOF', 'reached.')
      call       msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.relaxor was found and read successfully.')
      close(UNIT_RELAXOR)
+     write(6,'(4f7.3)') c%Z_starR(:,0,0)
   else
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE_NOT_FOUND', '.relaxor file was NOT found.')
   end if

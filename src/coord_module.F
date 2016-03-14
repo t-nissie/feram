@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-03-14 23:37:47 takeshi>
+! Time-stamp: <2016-03-15 01:50:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -63,7 +63,7 @@ contains
     implicit none
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
-    integer iz
+    integer ix,iy,iz
 
     include 'fftw3.f03'
     integer howmany,stride
@@ -125,7 +125,16 @@ contains
     allocate(     c%Z_starR(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%Z_starR(:,:,iz) = p%Z_star(1)
+       c%Z_starR(:,:,iz) = 0.0d0   ! It may be important that the padding area is 0.0d0.
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       do iy=0, p%Ly-1
+          do ix=0, p%Lx-1
+             c%Z_starR(ix,iy,iz) = p%Z_star(1)
+          end do
+       end do
     end do
 !$omp end parallel do
 
