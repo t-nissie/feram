@@ -40,15 +40,16 @@ GNU M4も最新のものを用意したほうがよい。
 == コマンドとファイル
 Autotools (autoconf and automake) では Fig:process に示すとおり
 いくつかのコマンドとファイルとによって処理が進む。
-前半部分はautoreconfが自動的にやってくれる。
+前半の茶色の太い破線で囲まれた部分をautoreconfが自動的にやってくれる。
 以下に関連すコマンドとファイルを列挙した。
-\Fig:process http://upload.wikimedia.org/wikipedia/commons/8/84/Autoconf-automake-process.svg
+\Fig:process doc/figures/autoreconf-automake-process.svg
 Autotools（autoconf と automake）による作業の流れ。
-実際はautoreconfが自動でやってくれる。
-（By Jdthood (Own work) [CC-BY-SA-3.0], via Wikimedia Commons.
-この図はクリエイティブコモンズライセンスの下に
+実際は茶色の太い破線で囲まれた部分をautoreconfが自動でやってくれる。
+（この図はクリエイティブコモンズライセンス[CC-BY-SA-3.0]の下に
 http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
-から配布されているもの。）
+として配布されているJdthoodによるオリジナルに
+Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加えたもの。
+ファイル名はautoreconf-automake-process.svgとした。）
 /Fig:process
 
 === 関連コマンド
