@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:30:01 takeshi>
+! Time-stamp: <2016-03-14 23:06:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -41,7 +41,7 @@ subroutine dipoFFT(p,c)
     do iz = 0,p%Lz-1
        do iy=0, p%Ly-1
           do ix=0, p%Lx-1
-             c%Z_u_R(:,ix,iy,iz) = c%ZstarR(ix,iy,iz) * c%dipoR(:,ix,iy,iz)
+             c%Z_u_R(:,ix,iy,iz) = c%Z_starR(ix,iy,iz) * c%dipoR(:,ix,iy,iz)
           end do
        end do
     end do

@@ -1,5 +1,5 @@
 ! feram_eigenvalues2j.F -*-f90-*-
-! Time-stamp: <2015-10-19 22:28:47 takeshi>
+! Time-stamp: <2016-03-14 22:49:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -59,13 +59,13 @@ program feram_eigenvalues2j
      j5j7zero = .false.
   end if
 
-  b(0) = p%DDB_a  -  ( -4.188790d0 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(a) 4*pi/3
-  b(1) = p%DDB_b  -  (  9.687445d0 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(b)
-  b(2) = p%DDB_c  -  ( -4.843723d0 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(c)
-  b(3) = p%DDB_d  -  ( -5.353578d0 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(d)
-  b(4) = p%DDB_e  -  (  2.676787d0 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(e)
-  b(5) = p%DDB_f  -  (  0.0d0      * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(f)
-  b(6) = p%DDB_g  -  (  5.864529d0 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(g)
+  b(0) = p%DDB_a  -  ( -4.188790d0 * p%Z_star(1)**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(a) 4*pi/3
+  b(1) = p%DDB_b  -  (  9.687445d0 * p%Z_star(1)**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(b)
+  b(2) = p%DDB_c  -  ( -4.843723d0 * p%Z_star(1)**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(c)
+  b(3) = p%DDB_d  -  ( -5.353578d0 * p%Z_star(1)**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(d)
+  b(4) = p%DDB_e  -  (  2.676787d0 * p%Z_star(1)**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(e)
+  b(5) = p%DDB_f  -  (  0.0d0      * p%Z_star(1)**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(f)
+  b(6) = p%DDB_g  -  (  5.864529d0 * p%Z_star(1)**2 * HARTREE_BOHR / p%epsilon_inf / p%a0**3 )  !(g)
   b(7) = 0.0d0
 
   b(:) = 0.5d0 * b(:)

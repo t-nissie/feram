@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2015-03-22 17:10:13 takeshi>
+! Time-stamp: <2016-03-14 23:42:05 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -10,7 +10,7 @@ subroutine mirror_force_mirror(p,c,e)
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
-  integer ix,iy,iz, alpha
+  integer ix,iy,iz
   real*8 tmp_dipole_E_field
 
   ! mirror
@@ -37,24 +37,27 @@ subroutine mirror_force_mirror(p,c,e)
   else
 !$omp parallel do
      do iz = 0, p%Lz-1
-     c%dVddi(:,:,:,iz) = c%dVddi(:,:,:,iz) - p%Z_star*c%E_field(:,:,:,iz)
-     end do
-!$omp end parallel do
-
-     tmp_dipole_E_field = 0.0d0
-! HITACHI's compiler is too fool to parallelize e%dipole_E_field = - p%Z_star * sum(c%dipoR(:,:,:,:)*c%E_field(:,:,:,:)).
-!$omp parallel do reduction(+:tmp_dipole_E_field)
-      do iz = 0, p%Lz-1
-         do iy = 0, p%Ly-1
-            do ix = 0, p%Lx-1
-              do alpha = 1, 3
-                 tmp_dipole_E_field = tmp_dipole_E_field + c%dipoR(alpha,ix,iy,iz)*c%E_field(alpha,ix,iy,iz)
-              end do
+        do iy = 0, p%Ly-1
+           do ix = 0, p%Lx-1
+              c%dVddi(:,ix,iy,iz) = c%dVddi(:,ix,iy,iz) - c%Z_starR(ix,iy,iz) * c%E_field(:,ix,iy,iz)
            end do
         end do
      end do
 !$omp end parallel do
-     e%dipole_E_field = - p%Z_star * tmp_dipole_E_field
+
+     tmp_dipole_E_field = 0.0d0
+!$omp parallel do reduction(+:tmp_dipole_E_field)
+     do iz = 0, p%Lz-1
+        do iy = 0, p%Ly-1
+           do ix = 0, p%Lx-1
+              tmp_dipole_E_field = tmp_dipole_E_field + c%Z_starR(ix,iy,iz) * &
+                   &                        dot_product(c%dipoR(:,ix,iy,iz),  &
+                   &                                  c%E_field(:,ix,iy,iz))
+           end do
+        end do
+     end do
+!$omp end parallel do
+     e%dipole_E_field = - tmp_dipole_E_field
   end if
 
   call optimize_homo_strain(p,c,e)

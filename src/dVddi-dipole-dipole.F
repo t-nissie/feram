@@ -1,5 +1,5 @@
 ! dVddi-dipole-dipole.F -*-f90-*-
-! Time-stamp: <2015-09-29 13:09:05 takeshi>
+! Time-stamp: <2016-03-14 23:07:25 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -55,7 +55,7 @@ subroutine dVddi_dipole_dipole(p,c,e)
   do iz=0, p%Lz-1
      do iy=0, p%Ly-1
         do ix=0, p%Lx-1
-           c%dVddi_long(:,ix,iy,iz) = c%ZstarR(ix,iy,iz) * c%dVddi_long(:,ix,iy,iz) * p%Ninv
+           c%dVddi_long(:,ix,iy,iz) = c%Z_starR(ix,iy,iz) * c%dVddi_long(:,ix,iy,iz) * p%Ninv
         end do
      end do
   end do

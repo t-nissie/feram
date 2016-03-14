@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-12-02 16:38:30 t-nissie>
+! Time-stamp: <2016-03-14 23:37:47 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -15,7 +15,7 @@ module Coord_module
      real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
      complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoR
-     real*8,     allocatable :: ZstarR(:,:,:)    ! Z_start(R)
+     real*8,     allocatable :: Z_starR(:,:,:)   ! Z_start(R)
      real*8,     allocatable :: Z_u_R(:,:,:,:)   ! Z_start(R)*u(R)
      complex*16, allocatable :: Z_u_K(:,:,:,:)   ! FT of Z_u_R(:,:,:,:)
      real*8,     allocatable :: dipoP(:,:,:,:)   ! Momenta
@@ -63,7 +63,7 @@ contains
     implicit none
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
-    integer ix,iy,iz
+    integer iz
 
     include 'fftw3.f03'
     integer howmany,stride
@@ -121,20 +121,11 @@ contains
          &                                  c%dipoK,z_embed,stride,dist,FFTW_MEASURE)
 
     !--- Z_star(R) -------------------------------
-    if (allocated(c%ZstarR)) deallocate(c%ZstarR)
-    allocate(     c%ZstarR(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    if (allocated(c%Z_starR)) deallocate(c%Z_starR)
+    allocate(     c%Z_starR(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%ZstarR(:,:,iz) = 0.0d0
-    end do
-!$omp end parallel do
-!$omp parallel do
-    do iz = 0,p%Lz-1
-       do iy=0, p%Ly-1
-          do ix=0, p%Lx-1
-             c%ZstarR(ix,iy,iz) = p%Z_star
-          end do
-       end do
+       c%Z_starR(:,:,iz) = p%Z_star(1)
     end do
 !$omp end parallel do
 

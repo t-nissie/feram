@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:30:29 takeshi>
+! Time-stamp: <2016-03-14 22:48:31 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -29,8 +29,8 @@ subroutine dipole_dipole(p,c)
   do iz= 0, p%Lz-1
      do iy= 0, p%Ly-1
         do ix= 0, p%Lx/2
-           dipoI(:,:, ix,iy,iz) = p%Z_star**2 * c%long_range(:,:, ix,iy,iz) + c%short_range(:,:, ix,iy,iz)
-        end do
+           dipoI(:,:, ix,iy,iz) = p%Z_star(1)**2 * c%long_range(:,:, ix,iy,iz) + c%short_range(:,:, ix,iy,iz)
+        end do           ! We use p%Z_star(1), because dipoI is only for the dispersion plot.
      end do
   end do
 !$omp end parallel do

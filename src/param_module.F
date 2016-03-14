@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:42:53 takeshi>
+! Time-stamp: <2016-03-14 23:19:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -79,7 +79,7 @@ module Param_module
      real*8  init_dipo_avg(3) ! Average   of initial dipole displacements
      real*8  init_dipo_dev(3) ! Deviation of initial dipole displacements
      real*8  k_stripe(3)      ! wave number of striped domain structure in 2*pi/a_0 unit
-     real*8 Z_star        ! Born effective charge
+     real*8 Z_star(1:RELAXOR_MAX)        ! Born effective charge
      real*8 epsilon_inf   ! relative dielectric constant of core ions
      real*8 kappa         ! arbitrary kappa for dipole-dipole-long-range.F
      logical plot_dispersion
@@ -117,7 +117,7 @@ contains
     character(len=*),intent(in)    :: fn
     character (len=300) str
     character (len=40)  name, dmy1, dmy2
-    integer io, iosGPa, line_number, i
+    integer ios_read, line_number, i
     real*8 mass_amu
     real*8 acoustic_mass_amu
 
@@ -187,11 +187,11 @@ contains
     ! Read parameters from the imput file
     line_number = 0
     do
-       read(UNIT_INPUT, '(a)', IOSTAT=io) str
-       if (io.ne.0) exit
+       read(UNIT_INPUT, '(a)', IOSTAT=ios_read) str
+       if (ios_read.ne.0) exit
        line_number = line_number + 1
-       read(str,*,IOSTAT=io) name   ! extract name of a parameter
-       if (io.ne.0 .or. name(1:1).eq.'#') then
+       read(str,*,IOSTAT=ios_read) name   ! extract name of a parameter
+       if (ios_read.ne.0 .or. name(1:1).eq.'#') then
           call msg_ez(UNIT_LOG,str)
           cycle
        end if
@@ -204,8 +204,8 @@ contains
           read(str,*) dmy1, dmy2, p%E_wave_type
           p%E_field_always_zero = .false.
        case('GPa')
-          read(str,*,IOSTAT=iosGPa) dmy1, dmy2, p%GPa(1), p%GPa(2), p%GPa(3)
-          if (iosGPa.ne.0) then
+          read(str,*,IOSTAT=ios_read) dmy1, dmy2, p%GPa(1), p%GPa(2), p%GPa(3)
+          if (ios_read.ne.0) then
              write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
              write(0,'(a,a,i3,a)')   __FILE__, ':', __LINE__ ,  ': Hydrostatic pressure is applied.'
              read(str,*) dmy1, dmy2, p%GPa(1)
@@ -312,7 +312,12 @@ contains
        case('k_stripe')
           read(str,*) dmy1, dmy2, (p%k_stripe(i),i=1,3)
        case('Z_star')
-          read(str,*) dmy1, dmy2, p%Z_star
+          read(str,*,IOSTAT=ios_read) dmy1, dmy2, p%Z_star(1:RELAXOR_MAX)
+          if (ios_read.ne.0) then
+             read(str,*) dmy1, dmy2, p%Z_star(1)
+             p%Z_star(2:RELAXOR_MAX) = p%Z_star(1)
+          end if
+          write(6,'(a,3f6.3)') p%Z_star(1:RELAXOR_MAX)
        case('epsilon_inf')
           read(str,*) dmy1, dmy2, p%epsilon_inf
        case('kappa')
@@ -424,7 +429,7 @@ contains
 &                                  'B1xx        =', p%B1xx,       &
 &                                  'B1yy        =', p%B1yy,       &
 &                                  'B4yz        =', p%B4yz,       &
-&                                  'Z_star      =', p%Z_star,     &
+&                                  'Z_star      =', p%Z_star(1),  &   ! We should not use the .param.gp file.
 &                                  'epsilon_inf =', p%epsilon_inf
 
     close(UNIT_SYSTEM)
