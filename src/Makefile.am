@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-03-14 00:03:40 takeshi>
+# Time-stamp: <2016-03-14 23:48:02 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -53,7 +53,7 @@ feram_SRCS = average_module.F \
 	kinetic_energy_acou.F \
 	leapfrog.F \
 	read_defects_u.F \
-	read_Z_star.F \
+	read_relaxor.F \
 	marsaglia_tsang_uni64_module.f \
 	mirror.F \
 	mirror_force_mirror.F \
@@ -197,7 +197,7 @@ feram_mpi_check$(EXEEXT): feram_mpi_check.F $(srcdir)/feram_mpi_common_check.F
 feram_common.o:                 param_module.o coord_module.o date_and_time_module.o define.h
 decay-functions.o param_module.o feram_diagonalize15x15.o: define.h
 feram.o feram_mpi.o:            param_module.o coord_module.o define.h
-dipole-dipole.o mirror.o read_defects_u.o read_Z_star.o elastic.o dipoFFT.o acouFFT.o:\
+dipole-dipole.o mirror.o read_defects_u.o read_relaxor.o elastic.o dipoFFT.o acouFFT.o:\
                                 param_module.o coord_module.o define.h               msg_module.o
 initialize_E_field.o:           param_module.o coord_module.o define.h wave_module.o msg_module.o
 dVddi_inho_coupling.o dVdac.o kinetic_energy_acou.o:\
