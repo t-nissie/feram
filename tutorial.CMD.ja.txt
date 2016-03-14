@@ -13,7 +13,8 @@
  % cat /home/CMD/teac20/f/loto/feram/branches/z_star_r/tutorial.CMD.ja.txt   # 本ドキュメント
  % cp /home/CMD/teac20/.emacs .   # if you prefer
 
-参考 .cshrc
+西松の/home/CMD/teac20/.cshrc。参考まで。
+/home/CMD/teac20/Linux-x86_64/以下にインストールしたgfortran version6やFFTWが使えるようになる。
  setenv LD_LIBRARY_PATH /home/CMD/teac20/Linux-x86_64/lib64:$LD_LIBRARY_PATH
  setenv PATH /home/CMD/teac20/Linux-x86_64/bin:/usr/sge/bin/linux-x64:/usr/local/bin:/bin:/usr/bin:$PATH
  
