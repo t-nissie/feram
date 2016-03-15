@@ -384,22 +384,30 @@ feramを次のようにパラメータ・ファイル "foo123.feram" を引数�
  $ ./feram_random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
  $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
 
+=== .relaxor file
+各サイトのイオンを指定します．
+リラクサー (relaxor) を想定しています．
+このファイルがなければ普通のABO3。
+ion_kindは1〜3（最大値はsrc/define.hで指定）．
+デフォルトが1なので，次の例の１行目は省略可．
 
-=== ionic.configuration file
-(Not implemented yet.)
-This file is required for the calculation of the local field.
-
- 0.0 0.0 0.0   +3.0
- 0.5 0.0 0.0   -2.0
- 0.0 0.5 0.0   -2.0
- 0.0 0.0 0.5   -2.0
+ 0 0 0   1
+ 1 0 0   2
+ 2 0 0   3
+ 3 0 0   2
     :
     :
- position_x position_y position_z    effective_charge_of_the_ion
+ position_x position_y position_z ion_kind
     :
     :
 
-Position must be given in the unit of a0.
+ion_kindにより変えることができるのは，
+Z_star, mass, ...．
+.feramインプットファイルで，
+
+ Z_star = 2.0 5.0 4.0
+
+などと３つ指定する．
 
 === FFTW wisdom file
 必須ではありませんが，FFTW用のwisdomファイルを用意すると，
