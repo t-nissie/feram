@@ -217,8 +217,9 @@ http://loto.sourceforge.net/feram/
 CMakeとSConsではFortranのプロジェクトもサポートされている。
  * CMake http://www.cmake.org/
  * SCons http://www.scons.org/
+ * GYP   https://chromium.googlesource.com/external/gyp
  * Ninja https://ninja-build.org
-OCamlで書かれた OMake http://omake.metaprl.org/index.html というのもあるが、多少古い。
+ * OMake http://omake.metaprl.org/index.html （OCamlで書かれている。）
 
 古いX Window Systemのアプリケーションのためには
 ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられることがある。
