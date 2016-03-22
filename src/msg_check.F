@@ -1,5 +1,5 @@
 ! msg_check.F -*-f90-*-
-! Time-stamp: <2015-10-28 17:29:00 takeshi>
+! Time-stamp: <2016-03-22 19:43:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -21,12 +21,12 @@ program msg_check
   implicit none
   character(len=100) :: hn
   open(unit=UNIT_LOG,file='msg_check.output',status='replace')
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'START', PACKAGE_STRING)
   call hostnm(hn)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'HOSTNAME', hn)
   call msg_ez(UNIT_LOG, 'Hello, world!')
   call msg_check_sub(99999)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ' love && peace && free_software')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'FINISH', 'love && peace && free_software')
   close(unit=UNIT_LOG)
 end program msg_check
 !Local variables:

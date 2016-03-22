@@ -1,5 +1,5 @@
 ! msg_module.F -*-f90-*-
-! Time-stamp: <2016-02-26 12:41:12 takeshi>
+! Time-stamp: <2016-03-22 19:51:54 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module msg_module
@@ -10,32 +10,18 @@ subroutine msg(fd, filename, line, begin_or_end, message)
   integer,      intent(in) :: fd
   character(*), intent(in) :: filename
   integer,      intent(in) :: line
-  character(*), intent(in) :: begin_or_end !'BEGIN', 'END', 'FATAL', 'FILE', 'WARNING', 'COMMENT'
+  character(*), intent(in) :: begin_or_end !'START', 'FINISH', 'BEGIN', 'END', 'FATAL', 'FILE', 'WARNING', 'COMMENT'
   character(*), intent(in) :: message
   !--- variables -------------------------------------
   integer, parameter :: indent=2
   integer, save      :: level(256)=0   ! for fd = 1 ... 256
-  character(20)      :: fmt_str, line_str
   !---------------------------------------------------
-
   if (begin_or_end.eq.'') then
-     write(fmt_str,'(a,i3.3,a)') '(', indent*level(fd)+indent/2, 'x,a)'
-     write(fd,fmt_str) trim(message)
+     write(fd,'(a,a)') repeat(' ', indent*level(fd)+indent/2), trim(message)
   else
-     if (begin_or_end.eq.'BEGIN') then
-        level(fd) = level(fd) + 1
-     end if
-     if (level(fd).gt.0) then
-        write(fmt_str,'(a,i3.3,a)') '(', indent*level(fd), 'x,7a)'
-     else
-        fmt_str =                                           '(7a)'
-     end if
-     write(line_str,'(i20)') line
-     line_str = adjustl(line_str)
-     write(fd,fmt_str) filename, ':', trim(line_str), ': ', begin_or_end, ': ', trim(message)
-     if (begin_or_end.eq.'END') then
-        level(fd) = level(fd) - 1
-     end if
+     if (begin_or_end.eq.'BEGIN') level(fd) = level(fd) + 1
+     write(fd,'(3a,i0,4a)') repeat('  ', level(fd)), filename, ':', line, ': ', begin_or_end, ': ', trim(message)
+     if (begin_or_end.eq.'END')   level(fd) = level(fd) - 1
   end if
 end subroutine msg
 
