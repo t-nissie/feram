@@ -388,7 +388,7 @@ feramを次のようにパラメータ・ファイル "foo123.feram" を引数�
 各サイトのイオンを指定します．
 リラクサー (relaxor) を想定しています．
 このファイルがなければ普通のABO3。
-ion_kindは1〜3（最大値はsrc/define.hで指定）．
+i_relaxorは1〜3（最大値はsrc/define.hで指定）．
 デフォルトが1なので，次の例の１行目は省略可．
 
  0 0 0   1
@@ -397,11 +397,11 @@ ion_kindは1〜3（最大値はsrc/define.hで指定）．
  3 0 0   2
     :
     :
- position_x position_y position_z ion_kind
+ position_x position_y position_z i_relaxor
     :
     :
 
-ion_kindにより変えることができるのは，
+i_relaxorにより変えることができるのは，
 Z_star, mass, ...．
 .feramインプットファイルで，
 

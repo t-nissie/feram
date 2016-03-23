@@ -138,7 +138,7 @@ When 2 is given for verbose tag, messages will be written to .log file in every 
 'mc' is for a Monte Carlo simulation, but it is NOT IMPLEMENTED YET.
 
  method = 'hl'
-This 'hl' feature will be obsolere.
+This 'hl' feature will be obsolete.
 For simulations of hysteresis loops,
 use n_E_wave_period and E_wave_type instead.
 
@@ -164,7 +164,7 @@ If it is set to the effective mass of acoustic displacements
 molecular dynamics is performed on acoustic displacements.
 Its unit is atomic mass unit.
 Generally, it is average of mass of 5 atoms.
-You cannot use method = 'md' togeter with acoustic_mass_amu, currently.
+You cannot use method = 'md' together with acoustic_mass_amu, currently.
 
 ===== Q_Nose
 Q_Nose for Nose-Poincare thermostat.
@@ -301,7 +301,7 @@ Elastic Coupling
  B4yz =   -7.75 [eV/Angstrom^2]
 
 ===== seed
-Two integers for Marsaglia-Tsang 64-bit uiniversal RNG (random number generator).
+Two integers for Marsaglia-Tsang 64-bit universal RNG (random number generator).
  seed = 123384 8984847
 Its default values are 123456789 987654321.
 It may be a good idea to generate the seed with jot(1) command.
@@ -349,7 +349,7 @@ and, in bar.feram,
  continue = .true.
 is declared, simulation of bar.feram uses results of foo.feram as initial configurations.
 The .restart file will not be used.
-Deafault value of continue is .false..
+Default value of continue is .false..
 
 === .restart input file
 If you executed feram with a parameter file "foo123.feram" as
@@ -359,7 +359,7 @@ initial configurations. If there is no such file, feram
 starts from a random configurations.
 
 === .quadratic input file
-Qudratic inter-atomic force constant (IFC) matrices can be
+Quadratic inter-atomic force constant (IFC) matrices can be
 read from .quadratic file. Set all j1-j7 to ZERO. Use P_kappa2
 for *elevation*. (Lx/2+1)*Ly*Lz 3x3 matrices are required.
 See src/25example-BaTiO3-read-quadratic/ for more details.
@@ -395,25 +395,33 @@ The unit of local field is V/Angstrom.
 If feram cannot find both ionic.configuration and .localfield,
 it will set the local field to ZERO for all sites.
 
-Use attached feram_random_field_generator for generating ramdom fields.
+Use attached feram_random_field_generator for generating random fields.
  $ ./feram_random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
  $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
 
-=== ionic.configuration file
-(Not implemented yet.)
-This file is required for the calculation of the local field.
+=== .relaxor file
+.relaxor input file specifies ionic configurations.
+If there is no .relaxor file, the system is an ordinary ABO3 crystal.
+i_relaxor must be from 1 to 3 (RELAXOR_MAX is defined in src/define.h).
 
- 0.0 0.0 0.0   +3.0
- 0.5 0.0 0.0   -2.0
- 0.0 0.5 0.0   -2.0
- 0.0 0.0 0.5   -2.0
+ 0 0 0   1
+ 1 0 0   2
+ 2 0 0   3
+ 3 0 0   2
     :
     :
- position_x position_y position_z    effective_charge_of_the_ion
+ position_x position_y position_z i_relaxor
     :
     :
 
-Position must be given in the unit of a0.
+You can omit the fist line of this example,
+because the default value for i_relaxor is 1.
+Z_star, mass, ... can be changed with
+the .relaxor input file.
+The value should be written in .feram input file.
+
+ Z_star = 2.0 5.0 4.0
+
 
 === FFTW wisdom file
 By preparing an FFTW wisdom file in your current directory,
