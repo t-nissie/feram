@@ -1,0 +1,19 @@
+#!/usr/bin/csh -f
+#@ job_name = perovskite-B1112
+#@ output = $(job_name).$(jobid).$(stepid).out
+#@ error  = $(job_name).$(jobid).$(stepid).err
+#@ job_type = parallel
+#@ total_tasks = 20
+#@ stack_limit = 960mb
+#@ task_affinity = cpu(1)
+#@ cpus_per_core = 1
+#@ queue
+# Usage: submit EJCF general -jcf perovskite-B1112.jcf
+##
+poe /usr/local/bin/abinit < perovskite-B1112.files > perovskite-B1112.log
+
+sed -n '/after computation/,$p' perovskite-B1112.out | egrep  'acell[1-9] '  > tmp.acell
+sed -n '/after computation/,$p' perovskite-B1112.out | egrep 'etotal[1-9] '  | paste tmp.acell - > perovskite-B1112.dat1
+
+sed -n '/after computation/,$p' perovskite-B1112.out | egrep  'acell1[0-9] ' > tmp.acell
+sed -n '/after computation/,$p' perovskite-B1112.out | egrep 'etotal1[0-9] ' | paste tmp.acell - > perovskite-B1112.dat2
