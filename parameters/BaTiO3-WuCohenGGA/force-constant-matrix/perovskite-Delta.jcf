@@ -1,0 +1,13 @@
+#!/usr/bin/csh -f
+#@ job_name = perovskite-Delta
+#@ output = $(job_name).$(jobid).$(stepid).out
+#@ error  = $(job_name).$(jobid).$(stepid).err
+#@ job_type = parallel
+#@ total_tasks = 32
+#@ stack_limit = 960mb
+#@ task_affinity = cpu(1)
+#@ cpus_per_core = 1
+#@ queue
+# Usage: submit EJCF general -jcf perovskite-Delta.jcf
+##
+poe /usr/local/bin/abinit < perovskite-Delta.files > perovskite-Delta.log

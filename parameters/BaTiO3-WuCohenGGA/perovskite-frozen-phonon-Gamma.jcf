@@ -1,0 +1,22 @@
+#!/usr/bin/csh -f
+#@ job_name = perovskite-frozen-phonon-Gamma
+#@ output = $(job_name).$(jobid).$(stepid).out
+#@ error  = $(job_name).$(jobid).$(stepid).err
+#@ job_type = parallel
+#@ total_tasks = 32
+#@ stack_limit = 960mb
+#@ task_affinity = cpu(1)
+#@ cpus_per_core = 1
+#@ queue
+# Usage: submit EJCF general -jcf perovskite-frozen-phonon-Gamma.jcf
+##
+poe /usr/local/bin/abinit < perovskite-frozen-phonon-Gamma.files > perovskite-frozen-phonon-Gamma.log
+
+sed -n '/after computation/,$p' perovskite-frozen-phonon-Gamma.out | grep acell > perovskite-frozen-phonon-Gamma.dat
+tail -21 perovskite-frozen-phonon-Gamma_o_DS1_DDB >> perovskite-frozen-phonon-Gamma.dat
+tail -21 perovskite-frozen-phonon-Gamma_o_DS2_DDB >> perovskite-frozen-phonon-Gamma.dat
+tail -21 perovskite-frozen-phonon-Gamma_o_DS3_DDB >> perovskite-frozen-phonon-Gamma.dat
+tail -21 perovskite-frozen-phonon-Gamma_o_DS4_DDB >> perovskite-frozen-phonon-Gamma.dat
+tail -21 perovskite-frozen-phonon-Gamma_o_DS5_DDB >> perovskite-frozen-phonon-Gamma.dat
+
+rm -f *WFK perovskite-frozen-phonon-Gamma_LOG*
