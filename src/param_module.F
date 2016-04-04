@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-03-15 02:12:46 takeshi>
+! Time-stamp: <2016-04-04 20:47:55 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -313,7 +313,11 @@ contains
           read(str,*) dmy1, dmy2, (p%k_stripe(i),i=1,3)
        case('Z_star')
           read(str,*,IOSTAT=ios_read) dmy1, dmy2, p%Z_star(1:RELAXOR_MAX)
-          if (ios_read.ne.0) then
+          if (ios_read.eq.0) then
+             write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
+             write(0,'(a,a,i3,a,i1,a)')   __FILE__, ':', __LINE__ , &
+                  & ': ', RELAXOR_MAX, ' values for Z_star are given.'
+          else
              read(str,*) dmy1, dmy2, p%Z_star(1)
              p%Z_star(2:RELAXOR_MAX) = p%Z_star(1)
           end if
