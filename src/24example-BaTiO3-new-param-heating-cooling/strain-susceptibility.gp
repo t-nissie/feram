@@ -1,23 +1,21 @@
 #!/usr/bin/env gnuplot
 # strain-susceptibility.gp
-# Time-stamp: <2016-01-14 12:16:30 t-nissie>
+# Time-stamp: <2016-04-04 19:51:26 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
-set terminal postscript port enhanced color dashed "Times-Roman" 20
+set terminal postscript eps enhanced color dashed "Times-Roman" 30
 set output 'strain-susceptibility.eps'
 
+set size 1.0,3.0
 set multiplot
 set lmargin 11
-
-set size 1.0,0.33
-
-set origin 0.0,0.66
+set size 1.0,1.0
+set origin 0.0,2.0
 
 set xtics 100
 
 set label 1 at 320, 0.02 'strain'
 set format y '%.3f'
-set format x ''
 set key left
 set xrange [0:800]
 set yrange [-0.005:0.025]
@@ -29,6 +27,7 @@ plot 'heating.avg' using 1:5 t 'heating' w l lt 1 lw 2,\
      'cooling.avg' using 1:6 t ''        w l lt 3 lw 2,\
      'cooling.avg' using 1:7 t ''        w l lt 3 lw 2
 
+set tmargin 0
 set format y '%.0f'
 
 N                = 16 ** 3               # unit
@@ -47,7 +46,7 @@ set yrange [0:20000]
 # 1 2  3  4  5   6   7   8   9   10  11 12 13 14   15   16   17   18   19    20   21
 # T Ex Ey Ez exx eyy ezz eyz ezx ezy ux uy uz uxux uyuy uzuz uyuz uzux uzuy
 
-set origin 0,0.36
+set origin 0.0,1.0
 set label 1 at 320, 17000 'heating'
 plot 'heating.avg' using 1:(C*($37-N*$34**2)/$1) title '{/Symbol e}_{xx}' with l, \
      'heating.avg' using 1:(C*($38-N*$35**2)/$1) title '{/Symbol e}_{yy}' with l, \
@@ -56,8 +55,7 @@ plot 'heating.avg' using 1:(C*($37-N*$34**2)/$1) title '{/Symbol e}_{xx}' with l
 set xlabel '{/Times-Italic T} [K]'
 set format x '%.0f'
      
-set size 1.0,0.383
-set origin 0,0.005
+set origin 0,0.0
 set label 1 at 320, 17000 'cooling'
 plot 'cooling.avg' using 1:(C*($37-N*$34**2)/$1) title '{/Symbol e}_{xx}' with l, \
      'cooling.avg' using 1:(C*($38-N*$35**2)/$1) title '{/Symbol e}_{yy}' with l, \
