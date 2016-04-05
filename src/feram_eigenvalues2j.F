@@ -1,5 +1,5 @@
 ! feram_eigenvalues2j.F -*-f90-*-
-! Time-stamp: <2016-03-14 22:49:57 takeshi>
+! Time-stamp: <2016-04-05 21:53:45 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -31,7 +31,7 @@ program feram_eigenvalues2j
   write(fn_log,'(a,a)') trim(p%filename), '.log'
   open(unit=UNIT_LOG,file=fn_log,status='replace')
   write(6,'(a,a)') trim(fn_log), ':1: In this file, there will be the calculated results.'
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'START', PACKAGE_STRING)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'feram_eigenvalues2j', &
        & 'calculates coefficients j of short range interaction from eigenvalues if IFC matrices.')
   call  read_Param(p,p%filename)
@@ -91,12 +91,12 @@ program feram_eigenvalues2j
   call msg_ez(UNIT_LOG, message)
   write(message,'(a,f9.5,a)') 'a0          = ', p%a0, '    [Angstrom]'
   call msg_ez(UNIT_LOG, message)
-  write(message,'(a,f9.5)')   'Z_star      = ', p%Z_star
+  write(message,'(a,f9.5)')   'Z_star(1)   = ', p%Z_star(1)
   call msg_ez(UNIT_LOG, message)
   write(message,'(a,f9.5)')   'epsilon_inf = ', p%epsilon_inf
   call msg_ez(UNIT_LOG, message)
 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(fn_log))
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'FINISH', trim(fn_log))
   close(unit=UNIT_LOG)
 end program feram_eigenvalues2j
 
