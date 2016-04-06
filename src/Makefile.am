@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-03-14 23:48:02 takeshi>
+# Time-stamp: <2016-04-06 12:37:11 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -22,7 +22,9 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_fcc_maker.rb \
                    feram_slicer.rb
 check_PROGRAMS = feram_fftw_SoA marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check msg_check
-TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp feram_defects_maker_check.sh \
+TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp \
+         feram_defects_maker_check.sh \
+         feram_eigenvalues2j_check.sh \
          zzz16.feram_check \
          zzzgap.feram_check \
          zzzlf.feram_check \
@@ -107,6 +109,8 @@ CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check
              feram_mpi_common_check.o \
              zzz*.log zzz16.*.coord zzzgap.*.fft \
              feram_defects_maker_check.defects wisdom_new wisdom_SoA \
+             feram_eigenvalues2j_check.in \
+             feram_eigenvalues2j_check.in.log \
              elastocaloric770K_check.lf.log \
              elastocaloric770K_check.lf.log.digest \
              elastocaloric770K_check.vs.log \
@@ -122,6 +126,7 @@ feram_fftw_wisdom.Makefile.ifort-with-MKL \
 feram_defects_maker_check.gp \
 feram_defects_maker_check.sh \
 feram_defects_maker_check_sphere.gp \
+feram_eigenvalues2j_check.sh \
 elastocaloric770K_check.csh \
 elastocaloric770K_check.sh \
 elastocaloric770K_check.txt \
