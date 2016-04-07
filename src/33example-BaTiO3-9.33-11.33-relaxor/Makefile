@@ -1,7 +1,7 @@
-# -*-Makefile-*-
+# -*-Makefile-*- for src/33example-BaTiO3-9.33-11.33-relaxor/
 ##
 DIR24 = ../24example-BaTiO3-new-param-heating-cooling
-all: random orderd
+all: random orderd orderd.gp
 	sed -e 's/10\.33000/9.33 11.33 9.33/'\
             -e 's/cooling/random-cooling/'\
             -e '/fi$$/a ln -sf random $$filename.relaxor' $(DIR24)/cooling.sh > random-cooling.sh
