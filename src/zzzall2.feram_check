@@ -1,4 +1,10 @@
 #!./feram
+# use this zzzall2.feram_check with
+# ./feram_all_maker.rb  16 16 16 2   > zzzall2.relaxor
+# or
+# ./feram_NaCl_maker.rb 16 16 16 2 3 > zzzall2.relaxor
+# then compare zzzall2.log with zzzlf.log
+##
 verbose = 2
 #--- Method, Temperature, and mass ---------------
 method = 'lf'
