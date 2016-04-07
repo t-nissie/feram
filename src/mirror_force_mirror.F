@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2016-04-07 19:11:39 takeshi>
+! Time-stamp: <2016-04-07 21:16:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -24,7 +24,7 @@ subroutine mirror_force_mirror(p,c,e)
 
   ! FFT
   call    dipoFFT(p,c)
-  if (p%mass_acou > 0.0d0) then
+  if (p%mass_acou(1) > 0.0d0) then
      call acouFFT(p,c)
   end if
 
@@ -63,7 +63,7 @@ subroutine mirror_force_mirror(p,c,e)
   call optimize_homo_strain(p,c,e)
   call dVddi_homo_coupling(p,c)
 
-  if (p%mass_acou > 0.0d0) then
+  if (p%mass_acou(1) > 0.0d0) then
      call dVdac(p,c)
   else
      call optimize_inho_strain(p,c)

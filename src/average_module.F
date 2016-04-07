@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2015-12-16 18:10:22 takeshi>
+! Time-stamp: <2016-04-07 20:47:10 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -213,7 +213,7 @@ contains
     end if
 
     if (p%method.eq.'lf') then
-       if (p%mass_acou > 0.0d0) then
+       if (p%mass_acou(1) > 0.0d0) then
           p%kelvin = ( avg%dipo_kinetic_true + &   ! average two kinetic energies
                &       avg%energy%acou_kinetic ) / 3 * KELVIN_EV
        else

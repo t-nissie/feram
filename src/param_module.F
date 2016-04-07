@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-04-07 20:17:09 takeshi>
+! Time-stamp: <2016-04-07 20:43:06 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -35,8 +35,7 @@ module Param_module
      real*8 kelvin       ! [K]
      real*8 target_kinetic_energy
      real*8 mass_dipo(1:RELAXOR_MAX) ! [eV Angstrom^-2 ps^2]
-     real*8 mass_acou    ! [eV Angstrom^-2 ps^2]
-     real*8 mass_acou_inv
+     real*8 mass_acou(1:RELAXOR_MAX) ! [eV Angstrom^-2 ps^2]
      real*8 Q_Nose       ! [eV ps^2]
      !--- System geometry -----------------------------
      character(len=4) :: bulk_or_film
@@ -118,7 +117,7 @@ contains
     character (len=40)  name, dmy1, dmy2
     integer ios_read, line_number, i
     real*8 mass_amu(1:RELAXOR_MAX)
-    real*8 acoustic_mass_amu
+    real*8 acoustic_mass_amu(1:RELAXOR_MAX)
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'read_Param().')
     open(UNIT_INPUT, FILE=fn, STATUS='OLD')
@@ -131,7 +130,6 @@ contains
     p%target_kinetic_energy = 0.0d0
     p%mass_dipo(:) = 100.0d0 / 9648.53377163899d0
     p%mass_acou = -100.0d0
-    p%mass_acou_inv = 1.0d0
     p%Q_Nose = 0.1d0
     p%bulk_or_film = 'bulk'
     p%Lx = 32
@@ -230,9 +228,16 @@ contains
              write(0,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
              stop ": You cannot use method = 'md' togeter with acoustic_mass_amu."
           end if
-          read(str,*) dmy1, dmy2, acoustic_mass_amu  ! [amu]
-          p%mass_acou = acoustic_mass_amu / 9648.53377163899d0
-          p%mass_acou_inv = 1.0d0 / p%mass_acou
+          read(str,*,IOSTAT=ios_read) dmy1, dmy2, acoustic_mass_amu(1:RELAXOR_MAX)
+          if (ios_read.eq.0) then
+             write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
+             write(0,'(a,a,i3,a,i1,a)')   __FILE__, ':', __LINE__ , &
+                  & ': ', RELAXOR_MAX, ' values for acoustic_mass_amu are given.'
+          else
+             read(str,*) dmy1, dmy2, acoustic_mass_amu(1)
+             acoustic_mass_amu(2:RELAXOR_MAX) = acoustic_mass_amu(1)
+          end if
+          p%mass_acou(:) = acoustic_mass_amu(:) / 9648.53377163899d0
        case('Q_Nose')
           read(str,*) dmy1, dmy2, p%Q_Nose
        case('bulk_or_film')

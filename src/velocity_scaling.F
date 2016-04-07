@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2016-04-07 19:21:00 takeshi>
+! Time-stamp: <2016-04-07 21:16:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -16,14 +16,14 @@ subroutine velocity_scaling(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer ix,iy,iz,alpha
-  real*8 scale,kinetic_energy_dipo,kinetic_energy_acou,dt_over_m
+  real*8 scale,kinetic_energy_dipo,kinetic_energy_acou
   external kinetic_energy_dipo,kinetic_energy_acou
   integer(C_SIZE_T) :: n_alloc_dVdac
   real*8,    pointer :: dVdacR_linear(:)
   real*8,    pointer :: dVdacR(:,:,:,:)
   integer, parameter :: howmany = 3
 
-  if (p%mass_acou>0.0d0) then
+  if (p%mass_acou(1)>0.0d0) then
      n_alloc_dVdac = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
      call c_f_pointer(c%dVdac_ptr, dVdacR_linear, [n_alloc_dVdac * 2])
      dVdacR(1:howmany, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) => dVdacR_linear
@@ -45,14 +45,13 @@ subroutine velocity_scaling(p,c,e)
   end do
 !$omp end parallel do
 
-  if (p%mass_acou > 0.0d0) then
-     dt_over_m = p%dt * p%mass_acou_inv
+  if (p%mass_acou(1) > 0.0d0) then
 !$omp parallel do
      do iz=0, p%Lz-1
         do iy=0, p%Ly-1
            do ix=0, p%Lx-1
               do alpha = 1,3
-                 c%acouR(alpha,ix,iy,iz) = c%acouR(alpha,ix,iy,iz) + dt_over_m*c%acouP(alpha,ix,iy,iz)
+                 c%acouR(alpha,ix,iy,iz) = c%acouR(alpha,ix,iy,iz) + p%dt * c%acouP(alpha,ix,iy,iz) * c%mass_acou_inv(ix,iy,iz)
               end do
            end do
         end do
@@ -86,7 +85,7 @@ subroutine velocity_scaling(p,c,e)
 !$omp end parallel do
 
 
-     if (p%mass_acou > 0.0d0) then
+     if (p%mass_acou(1) > 0.0d0) then
 !$omp parallel do
         do iz=0, p%Lz-1
            c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt * dVdacR(:,:,:,iz)

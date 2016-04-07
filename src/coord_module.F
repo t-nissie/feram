@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-04-07 20:09:05 takeshi>
+! Time-stamp: <2016-04-07 20:46:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -13,6 +13,7 @@ module Coord_module
   implicit none
   type Coord_type
      real*8,     allocatable :: mass_dipo_inv(:,:,:)   ! inverse of mass_dipo
+     real*8,     allocatable :: mass_acou_inv(:,:,:)   ! inverse of mass_dipo
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
      complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoR
      logical                 :: relaxor_flag = .false.
@@ -104,6 +105,22 @@ contains
 !$omp parallel do
     do iz = 0,p%Lz-1
        c%mass_dipo_inv(0:p%Lx-1, 0:p%Ly-1, iz) = mass_inv_tmp
+    end do
+!$omp end parallel do
+
+    !--- mass_acou_inv ------------------------------
+    if (allocated(c%mass_acou_inv)) deallocate(c%mass_acou_inv)
+    allocate(c%mass_acou_inv(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%mass_acou_inv(:,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+    mass_inv_tmp = 1.0d0 / p%mass_acou(1)
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%mass_acou_inv(0:p%Lx-1, 0:p%Ly-1, iz) = mass_inv_tmp
     end do
 !$omp end parallel do
 
@@ -397,16 +414,14 @@ contains
     else
        coord_directory_fn = trim(p%coord_directory) // '/' // trim(fn)
     end if
-  
-    if (p%mass_acou <= 0.0d0) then
+
+    if (p%mass_acou(1) <= 0.0d0) then
 !$omp parallel do
        do iz = 0,p%Lz-1
           c%acouK(:,:,:,iz) = (0.0d0, -1.0d0) * c%acouK(:,:,:,iz)
        end do
 !$omp end parallel do
-
        call fftw_execute_dft_c2r(c%plan_c2r_3_out, c%acouK, c%acouR)
-
 !$omp parallel do
        do iz = 0,p%Lz-1
           c%acouR(:,:,:,iz) = c%acouR(:,:,:,iz) * p%Ninv

@@ -1,5 +1,5 @@
 ! read_relaxor.F -*-f90-*-
-! Time-stamp: <2016-04-07 20:06:41 takeshi>
+! Time-stamp: <2016-04-07 21:17:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: read foo.relaxor and prepare Z_starR(:,:,:).
 ! Parents: initialize-dipoR.F
@@ -34,6 +34,7 @@ subroutine read_relaxor(p,c)
            c%relaxor(ix, iy, iz) = i_relaxor
            c%Z_starR(ix, iy, iz) = p%Z_star(i_relaxor)
            c%mass_dipo_inv(ix, iy, iz) = 1.0d0 / p%mass_dipo(i_relaxor)
+           c%mass_acou_inv(ix, iy, iz) = 1.0d0 / p%mass_acou(i_relaxor)
         else
            call msg(UNIT_LOG, trim(p%filename)//'.relaxor', line_number, 'There is something wrong in this line: ', trim(str))
            call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'there is something wrong in the .relaxor file.')

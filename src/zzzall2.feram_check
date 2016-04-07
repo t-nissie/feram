@@ -10,7 +10,7 @@ verbose = 2
 method = 'lf'
 GPa = -5.0
 mass_amu = 39.0 39.0 39.0
-acoustic_mass_amu = 46.44
+acoustic_mass_amu = 46.44 46.44 46.44
 
 #--- System geometry -----------------------------
 bulk_or_film = 'bulk'
