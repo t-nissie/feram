@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-04-07 12:16:59 takeshi>
+! Time-stamp: <2016-04-07 16:17:10 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -15,6 +15,7 @@ module Coord_module
      real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
      complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoR
+     logical                 :: relaxor_flag = .false.
      integer,    allocatable :: relaxor(:,:,:)
      real*8,     allocatable :: Z_starR(:,:,:)   ! Z_start(R)
      real*8,     allocatable :: Z_u_R(:,:,:,:)   ! Z_start(R)*u(R)

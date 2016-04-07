@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-04-07 12:28:16 takeshi>
+! Time-stamp: <2016-04-07 16:19:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -104,7 +104,6 @@ module Param_module
      real*8 pNa03(3) ![eV]
      real*8 temperature_eV
      logical E_field_always_zero
-     logical relaxor_flag
      !=== etc ============================================================
      character(len=FILE_NAME_LEN) :: filename
   end type Param_type
@@ -183,7 +182,6 @@ contains
     p%k_stripe = 0.0d0
     p%temperature_eV = 0.0d0
     p%E_field_always_zero = .true.
-    p%relaxor_flag = .false.
 
     ! Read parameters from the imput file
     line_number = 0
