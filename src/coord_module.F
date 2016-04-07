@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-04-07 19:13:12 takeshi>
+! Time-stamp: <2016-04-07 20:09:05 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -80,6 +80,7 @@ contains
     real*8,    pointer :: dVdacR(:,:,:,:)
     complex*16,pointer ::  inhoK(:,:,:,:)
     real*8,    pointer ::  inhoR(:,:,:,:)
+    real*8 mass_inv_tmp
 
     LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
     d_embed(1)=p%Lz; d_embed(2)=p%Ly+p%padding_y; d_embed(3)=2*(p%Lx/2+1)
@@ -97,6 +98,12 @@ contains
 !$omp parallel do
     do iz = 0,p%Lz-1
        c%mass_dipo_inv(:,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+    mass_inv_tmp = 1.0d0 / p%mass_dipo(1)
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%mass_dipo_inv(0:p%Lx-1, 0:p%Ly-1, iz) = mass_inv_tmp
     end do
 !$omp end parallel do
 

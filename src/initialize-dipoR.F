@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2016-04-07 19:13:26 takeshi>
+! Time-stamp: <2016-04-07 20:00:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%mass_dipo_inv(:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -58,8 +58,8 @@ subroutine initialize_dipoR(p,c,e)
      c%acouR(:,:,:,:) = 0.0d0
   end if
 
-  call read_defects_u(p,c)   ! Prepares fixed u for defects and c%mass_dipo_inv(:,:,:).
   call read_relaxor(p,c)
+  call read_defects_u(p,c)   ! Prepares fixed u for defects and c%mass_dipo_inv(:,:,:).
 
   call mirror_force_mirror(p,c,e)
 
