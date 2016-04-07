@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-03-15 01:50:49 takeshi>
+! Time-stamp: <2016-04-07 12:16:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -15,6 +15,7 @@ module Coord_module
      real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
      complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoR
+     integer,    allocatable :: relaxor(:,:,:)
      real*8,     allocatable :: Z_starR(:,:,:)   ! Z_start(R)
      real*8,     allocatable :: Z_u_R(:,:,:,:)   ! Z_start(R)*u(R)
      complex*16, allocatable :: Z_u_K(:,:,:,:)   ! FT of Z_u_R(:,:,:,:)
@@ -119,6 +120,15 @@ contains
     c%plan_r2c_3_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
          &                                  c%dipoR,d_embed,stride,dist,&
          &                                  c%dipoK,z_embed,stride,dist,FFTW_MEASURE)
+
+    !--- relaxor -------------------------------
+    if (allocated(c%relaxor)) deallocate(c%relaxor)
+    allocate(     c%relaxor(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%relaxor(:,:,iz) = 1
+    end do
+!$omp end parallel do
 
     !--- Z_star(R) -------------------------------
     if (allocated(c%Z_starR)) deallocate(c%Z_starR)

@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-04-04 20:47:55 takeshi>
+! Time-stamp: <2016-04-07 12:28:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -21,7 +21,6 @@ module Param_module
      !                 14.399644 = Hartree [eV] * r_Bohr [Angstrom]
      !                           = 27.21138344 * 0.5291772083 = Hartree_Bohr
      ! Time:       pico second (ps)
-     ! Frequency:  THz
      ! Mass:       eV Angstrom^-2 ps^2
      !             = 1.60217653e-19 [J] * (1.e-10 [m])^-2 * (1.e-12 [s])^2
      !             = 1.60217653e-23 [kg]
@@ -61,13 +60,13 @@ module Param_module
      real*8    external_E_field(3)  ! External electric field [V/Angstrom]
      character(len=30) :: E_wave_type    ! 'triangular_sin', 'triangular_cos'  !Not yet: 'sin', 'cos'
      !--- On-site (Polynomial of order 6) -------------
-     real*8 P_kappa2    ! P_6(u) = kappa2*u^2 + alpha*u^4
-     real*8 P_alpha     !  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
-     real*8 P_gamma     !  + k1*u^6
-     real*8 P_k1        !  + k2*[u_x^4(u_y^2+u_z^2)+u_y^4(u_z^2+u_x^2)+u_z^4(u^x2+u_y^2)]
-     real*8 P_k2        !  + k3*u_x^2u_y^2u_z^2
-     real*8 P_k3        ! where u^2 = u_x^2 + u_y^2 + u_z^2, u^4=(u^2)^2, u^6=(u^2)^3
-     real*8 P_k4        ! for u^8
+     real*8 P_kappa2(1:RELAXOR_MAX)    ! P_6(u) = kappa2*u^2 + alpha*u^4
+     real*8 P_alpha(1:RELAXOR_MAX)     !  + gamma*(u_y*u_z+u_z*u_x+u_x*u_y),
+     real*8 P_gamma(1:RELAXOR_MAX)     !  + k1*u^6
+     real*8 P_k1(1:RELAXOR_MAX)        !  + k2*[u_x^4(u_y^2+u_z^2)+u_y^4(u_z^2+u_x^2)+u_z^4(u^x2+u_y^2)]
+     real*8 P_k2(1:RELAXOR_MAX)        !  + k3*u_x^2u_y^2u_z^2
+     real*8 P_k3(1:RELAXOR_MAX)        ! where u^2 = u_x^2 + u_y^2 + u_z^2, u^4=(u^2)^2, u^6=(u^2)^3
+     real*8 P_k4(1:RELAXOR_MAX)        ! for u^8
      !--- Inter-site ----------------------------------
      real*8 j(7)
      !--- Elastic Constants ---------------------------
@@ -89,7 +88,7 @@ module Param_module
      !--- Verboseness of .log file --------------------
      integer verbose
      !--- DDB2short -----------------------------------
-     real*8 DDB_a
+     real*8 DDB_a   ! These are for feram_eigenvalues2j.F.
      real*8 DDB_b
      real*8 DDB_c
      real*8 DDB_d
@@ -104,7 +103,8 @@ module Param_module
      real*8 unit_cell_volume
      real*8 pNa03(3) ![eV]
      real*8 temperature_eV
-     logical E_field_always_zero 
+     logical E_field_always_zero
+     logical relaxor_flag
      !=== etc ============================================================
      character(len=FILE_NAME_LEN) :: filename
   end type Param_type
@@ -155,14 +155,14 @@ contains
 
     p%external_E_field(:) = 0.0d0
     p%E_wave_type = ''
-    p%P_kappa2 = 0.0d0
-    p%P_alpha  = 0.0d0
-    p%P_gamma  = 0.0d0
-    p%j(:)     = 0.0d0
-    p%P_k1     = 0.0d0
-    p%P_k2     = 0.0d0
-    p%P_k3     = 0.0d0
-    p%P_k4     = 0.0d0
+    p%P_kappa2(:) = 0.0d0
+    p%P_alpha(:)  = 0.0d0
+    p%P_gamma(:)  = 0.0d0
+    p%j(:)        = 0.0d0
+    p%P_k1(:)     = 0.0d0
+    p%P_k2(:)     = 0.0d0
+    p%P_k3(:)     = 0.0d0
+    p%P_k4(:)     = 0.0d0
     p%seed(1) = 123456789
     p%seed(2) = 987654321
     p%init_dipo_avg(:) = 0.00d0
@@ -183,6 +183,7 @@ contains
     p%k_stripe = 0.0d0
     p%temperature_eV = 0.0d0
     p%E_field_always_zero = .true.
+    p%relaxor_flag = .false.
 
     ! Read parameters from the imput file
     line_number = 0
@@ -276,19 +277,19 @@ contains
        case('distribution_directory')
           read(str,*) dmy1, dmy2, p%distribution_directory
        case('P_kappa2')
-          read(str,*) dmy1, dmy2, p%P_kappa2
+          read(str,*) dmy1, dmy2, p%P_kappa2(1)
        case('P_alpha')
-          read(str,*) dmy1, dmy2, p%P_alpha
+          read(str,*) dmy1, dmy2, p%P_alpha(1)
        case('P_gamma')
-          read(str,*) dmy1, dmy2, p%P_gamma
+          read(str,*) dmy1, dmy2, p%P_gamma(1)
        case('P_k1')
-          read(str,*) dmy1, dmy2, p%P_k1
+          read(str,*) dmy1, dmy2, p%P_k1(1)
        case('P_k2')
-          read(str,*) dmy1, dmy2, p%P_k2
+          read(str,*) dmy1, dmy2, p%P_k2(1)
        case('P_k3')
-          read(str,*) dmy1, dmy2, p%P_k3
+          read(str,*) dmy1, dmy2, p%P_k3(1)
        case('P_k4')
-          read(str,*) dmy1, dmy2, p%P_k4
+          read(str,*) dmy1, dmy2, p%P_k4(1)
        case('j')
           read(str,*) dmy1, dmy2, p%j(1),p%j(2),p%j(3),p%j(4),p%j(5),p%j(6),p%j(7)
        case('B11')

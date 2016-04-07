@@ -1,5 +1,5 @@
 ! read_relaxor.F -*-f90-*-
-! Time-stamp: <2016-03-15 02:13:00 takeshi>
+! Time-stamp: <2016-04-07 12:23:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: read foo.relaxor and prepare Z_starR(:,:,:).
 ! Parents: initialize-dipoR.F
@@ -10,7 +10,7 @@ subroutine read_relaxor(p,c)
   use Coord_module
   use msg_module
   implicit none
-  type(Param_type), intent(in)    :: p
+  type(Param_type), intent(inout) :: p
   type(Coord_type), intent(inout) :: c
   character (len=300) str
   character (len=1)   tmp
@@ -21,6 +21,7 @@ subroutine read_relaxor(p,c)
   open(unit=UNIT_RELAXOR, file=trim(p%filename)//'.relaxor', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.relaxor was found.')
+     p%relaxor_flag = .true.
      line_number = 0
      do
         read(UNIT_RELAXOR, '(a)', IOSTAT=ios) str
@@ -30,6 +31,7 @@ subroutine read_relaxor(p,c)
         if (ios.ne.0 .or. tmp.eq.'#') cycle
         read(str,*,IOSTAT=ios) ix, iy, iz, i_relaxor
         if (ios.eq.0) then
+           c%relaxor(ix, iy, iz) = i_relaxor
            c%Z_starR(ix, iy, iz) = p%Z_star(i_relaxor)
         else
            call msg(UNIT_LOG, trim(p%filename)//'.relaxor', line_number, 'There is something wrong in this line: ', trim(str))

@@ -1,5 +1,5 @@
 ! dipole-dipole-short-range.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:30:17 takeshi>
+! Time-stamp: <2016-04-07 12:34:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -33,7 +33,7 @@ subroutine dipole_dipole_short_range(p,short_range)
 !$omp end parallel do
 
   do alpha = 1, 3
-     TMPreal(0, 0, 0, alpha, alpha) = p%P_kappa2 * 2
+     TMPreal(0, 0, 0, alpha, alpha) = p%P_kappa2(1) * 2
   end do
 
   do beta = 1, 3
@@ -99,19 +99,19 @@ subroutine dipole_dipole_short_range(p,short_range)
   write(message,fmt) 'TMPreal(   1,1,1,3,1) =  j(7)     = ', TMPreal(     1,1,1,3,1)
   call msg_ez(UNIT_LOG, message)
 
-  write(message,fmt) '(a) Gamma = ', p%P_kappa2+2*p%j(1)+p%j(2)+4*p%j(3)+2*p%j(4)+4*p%j(6)
+  write(message,fmt) '(a) Gamma = ', p%P_kappa2(1)+2*p%j(1)+p%j(2)+4*p%j(3)+2*p%j(4)+4*p%j(6)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) '(b) X_LO  = ', p%P_kappa2+2*p%j(1)-p%j(2)-4*p%j(3)+2*p%j(4)-4*p%j(6)
+  write(message,fmt) '(b) X_LO  = ', p%P_kappa2(1)+2*p%j(1)-p%j(2)-4*p%j(3)+2*p%j(4)-4*p%j(6)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) '(c) X_TO  = ', p%P_kappa2         +p%j(2)         -2*p%j(4)-4*p%j(6)
+  write(message,fmt) '(c) X_TO  = ', p%P_kappa2(1)         +p%j(2)         -2*p%j(4)-4*p%j(6)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) '(d) M_TO  = ', p%P_kappa2-2*p%j(1)+p%j(2)-4*p%j(3)+2*p%j(4)+4*p%j(6)
+  write(message,fmt) '(d) M_TO  = ', p%P_kappa2(1)-2*p%j(1)+p%j(2)-4*p%j(3)+2*p%j(4)+4*p%j(6)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) '(e) M_LO  = ', p%P_kappa2         -p%j(2)         -2*p%j(4)+4*p%j(6)
+  write(message,fmt) '(e) M_LO  = ', p%P_kappa2(1)         -p%j(2)         -2*p%j(4)+4*p%j(6)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) '(f) R     = ', p%P_kappa2-2*p%j(1)-p%j(2)+4*p%j(3)+2*p%j(4)-4*p%j(6)
+  write(message,fmt) '(f) R     = ', p%P_kappa2(1)-2*p%j(1)-p%j(2)+4*p%j(3)+2*p%j(4)-4*p%j(6)
   call msg_ez(UNIT_LOG, message)
-  write(message,fmt) '(g) Sigma = ', p%P_kappa2/2 + p%j(1) - 2*p%j(5) - 4*p%j(7)
+  write(message,fmt) '(g) Sigma = ', p%P_kappa2(1)/2 + p%j(1) - 2*p%j(5) - 4*p%j(7)
   call msg_ez(UNIT_LOG, message)
                  !(e) in TABLE 1 of ref_1 is incorrect.
 
