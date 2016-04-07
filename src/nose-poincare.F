@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2015-10-19 19:37:00 takeshi>
+! Time-stamp: <2016-04-07 19:22:06 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
@@ -16,7 +16,7 @@ subroutine nose_poincare(p,c,e)
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   real*8 CB, s_Nose_old, delta_H, kinetic_energy_dipo, dt2s, dt2_s_s
-  integer iz
+  integer ix,iy,iz,alpha
   external kinetic_energy_dipo
   !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
@@ -40,8 +40,14 @@ subroutine nose_poincare(p,c,e)
   dt2_s_s = p%dt_2 * (1/c%s_Nose+1/s_Nose_old)
 !$omp parallel do
      do iz=0, p%Lz-1
-        c%dipoR(:,:,:,iz) = c%dipoR(:,:,:,iz) &
-             & + dt2_s_s * c%dipoP(:,:,:,iz) * c%m_inv(:,:,:,iz)   !(35d)
+        do iy=0, p%Ly-1
+           do ix=0, p%Lx-1
+              do alpha = 1,3
+                 c%dipoR(alpha,ix,iy,iz) = c%dipoR(alpha,ix,iy,iz) &
+                      & + dt2_s_s * c%dipoP(alpha,ix,iy,iz) * c%mass_dipo_inv(ix,iy,iz)   !(35d)
+              end do
+           end do
+        end do
      end do
 !$omp end parallel do
 

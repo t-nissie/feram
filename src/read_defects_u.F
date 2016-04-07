@@ -1,7 +1,7 @@
 ! read_defects_u.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:43:51 takeshi>
+! Time-stamp: <2016-04-07 19:19:48 takeshi>
 ! Author: Takeshi NISHIMATSU
-! Description: Prepares fixed u for defects and c%m_inv(:,:,:,:).
+! Description: Prepares fixed u for defects and c%mass_dipo_inv(:,:,:).
 ! Parents: initialize-dipoR.F
 !!
 #include "define.h"
@@ -18,8 +18,8 @@ subroutine read_defects_u(p,c)
   real*8  u(3)
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 
-  c%m_inv(1:3, 0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1) = 1.0d0 / p%mass_dipo
-  c%sum_p(     0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1) = .true.
+  c%mass_dipo_inv(0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1) = 1.0d0 / p%mass_dipo
+  c%sum_p(        0:p%Lx-1, 0:p%Ly-1, 0:p%Lz-1) = .true.
   !!! They are first-touched in alloc_coord.F.
 
   open(unit=UNIT_DEFECTS_U, file=trim(p%filename)//'.defects', status='old', action='read', iostat=ios)
@@ -34,9 +34,9 @@ subroutine read_defects_u(p,c)
         if (ios.ne.0 .or. tmp.eq.'#') cycle
         read(str,*,IOSTAT=ios) ix, iy, iz, u(:)
         if (ios.eq.0) then
-           c%dipoR(:, ix, iy, iz) = u(:)
-           c%m_inv(:, ix, iy, iz) = 0.0d0   ! 1/infinity
-           c%sum_p(ix, iy, iz) = .false.
+           c%dipoR(     :, ix, iy, iz) = u(:)
+           c%mass_dipo_inv(ix, iy, iz) = 0.0d0   ! 1/infinity
+           c%sum_p(        ix, iy, iz) = .false.
         else
            call msg(UNIT_LOG, trim(p%filename)//'.defects', line_number, 'There is something wrong in this line: ', trim(str))
            call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'there is something wrong in the .defects file.')
@@ -58,13 +58,13 @@ subroutine read_defects_u(p,c)
      c%dipoR(1, 0:p%Lx-1, 0:p%Ly-1, 0) = p%gap_dipole_u(1)
      c%dipoR(2, 0:p%Lx-1, 0:p%Ly-1, 0) = p%gap_dipole_u(2)
      c%dipoR(3, 0:p%Lx-1, 0:p%Ly-1, 0) = p%gap_dipole_u(3)
-     c%m_inv(:, 0:p%Lx-1, 0:p%Ly-1, 0) = 0.0d0   ! 1/infinity
+     c%mass_dipo_inv(0:p%Lx-1, 0:p%Ly-1, 0) = 0.0d0   ! 1/infinity
      c%sum_p(   0:p%Lx-1, 0:p%Ly-1, 0) = .false.
      if (p%gap_id.eq.2) then
         c%dipoR(1, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = p%gap_dipole_u(1)
         c%dipoR(2, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = p%gap_dipole_u(2)
         c%dipoR(3, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = p%gap_dipole_u(3)
-        c%m_inv(:, 0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = 0.0d0   ! 1/infinity
+        c%mass_dipo_inv(0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = 0.0d0   ! 1/infinity
         c%sum_p(   0:p%Lx-1, 0:p%Ly-1, p%Lz/2) = .false.
      end if
   end if

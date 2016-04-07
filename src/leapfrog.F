@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2015-10-19 19:32:01 takeshi>
+! Time-stamp: <2016-04-07 19:20:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -53,7 +53,7 @@ subroutine leapfrog(p,c,e,i_step)
               do alpha = 1,3
                  c%e_layer_dipo(iz) = c%e_layer_dipo(iz) + &
                       & c%dipoP(alpha,ix,iy,iz)**2 * &
-                      & c%m_inv(alpha,ix,iy,iz)
+                      & c%mass_dipo_inv(ix,iy,iz)
               end do
            end do
         end do
@@ -106,7 +106,13 @@ subroutine leapfrog(p,c,e,i_step)
   else
 !$omp parallel do
      do iz=0, p%Lz-1
-        c%dipoR(:,:,:,iz)  =  c%dipoR(:,:,:,iz)  +  p%dt * c%dipoP(:,:,:,iz) * c%m_inv(:,:,:,iz)
+        do iy=0, p%Ly-1
+           do ix=0, p%Lx-1
+              do alpha = 1,3
+                 c%dipoR(alpha,ix,iy,iz)  =  c%dipoR(alpha,ix,iy,iz)  +  p%dt * c%dipoP(alpha,ix,iy,iz) * c%mass_dipo_inv(ix,iy,iz)
+              end do
+           end do
+        end do
      end do
 !$omp end parallel do
      if (p%verbose>=2) then

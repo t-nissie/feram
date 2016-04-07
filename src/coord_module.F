@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-04-07 16:17:10 takeshi>
+! Time-stamp: <2016-04-07 19:13:12 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -12,7 +12,7 @@ module Coord_module
   use, intrinsic :: iso_c_binding
   implicit none
   type Coord_type
-     real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
+     real*8,     allocatable :: mass_dipo_inv(:,:,:)   ! inverse of mass_dipo
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
      complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoR
      logical                 :: relaxor_flag = .false.
@@ -90,13 +90,13 @@ contains
     call fftw_destroy_plan(c%plan_c2r_3_out)
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
-    !--- m_inv ------------------------------
-    if (allocated(c%m_inv)) deallocate(c%m_inv)
-    allocate(c%m_inv(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    !--- mass_dipo_inv ------------------------------
+    if (allocated(c%mass_dipo_inv)) deallocate(c%mass_dipo_inv)
+    allocate(c%mass_dipo_inv(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%m_inv(:,:,:,iz) = 0.0d0
+       c%mass_dipo_inv(:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 
