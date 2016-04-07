@@ -16,6 +16,6 @@ all:
             -e '/fi$$/a ln -sf orderd $$filename.relaxor' $(DIR24)/heating.sh > orderd-heating.sh
 	chmod 755 *.sh
 	../feram_defects_maker.rb 16 16 16 2 2048 2134567890 > random
-	../feram_fcc_maker.rb     16 16 16                   > orderd
+	../feram_fcc_maker.rb     16 16 16 2                 > orderd
 clean:
 	rm -f *.sh random orderd *K*
