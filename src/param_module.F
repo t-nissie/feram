@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-04-07 16:19:59 takeshi>
+! Time-stamp: <2016-04-07 17:32:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -275,19 +275,75 @@ contains
        case('distribution_directory')
           read(str,*) dmy1, dmy2, p%distribution_directory
        case('P_kappa2')
-          read(str,*) dmy1, dmy2, p%P_kappa2(1)
+          read(str,*,IOSTAT=ios_read) dmy1, dmy2, p%P_kappa2(1:RELAXOR_MAX)
+          if (ios_read.eq.0) then
+             write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
+             write(0,'(a,a,i3,a,i1,a)')   __FILE__, ':', __LINE__ , &
+                  & ': ', RELAXOR_MAX, ' values for P_kappa2 are given.'
+          else
+             read(str,*) dmy1, dmy2, p%P_kappa2(1)
+             p%P_kappa2(2:RELAXOR_MAX) = p%P_kappa2(1)
+          end if
        case('P_alpha')
-          read(str,*) dmy1, dmy2, p%P_alpha(1)
+          read(str,*,IOSTAT=ios_read) dmy1, dmy2, p%P_alpha(1:RELAXOR_MAX)
+          if (ios_read.eq.0) then
+             write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
+             write(0,'(a,a,i3,a,i1,a)')   __FILE__, ':', __LINE__ , &
+                  & ': ', RELAXOR_MAX, ' values for P_alpha are given.'
+          else
+             read(str,*) dmy1, dmy2, p%P_alpha(1)
+             p%P_alpha(2:RELAXOR_MAX) = p%P_alpha(1)
+          end if
        case('P_gamma')
-          read(str,*) dmy1, dmy2, p%P_gamma(1)
+          read(str,*,IOSTAT=ios_read) dmy1, dmy2, p%P_gamma(1:RELAXOR_MAX)
+          if (ios_read.eq.0) then
+             write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
+             write(0,'(a,a,i3,a,i1,a)')   __FILE__, ':', __LINE__ , &
+                  & ': ', RELAXOR_MAX, ' values for P_gamma are given.'
+          else
+             read(str,*) dmy1, dmy2, p%P_gamma(1)
+             p%P_gamma(2:RELAXOR_MAX) = p%P_gamma(1)
+          end if
        case('P_k1')
-          read(str,*) dmy1, dmy2, p%P_k1(1)
+          read(str,*,IOSTAT=ios_read) dmy1, dmy2, p%P_k1(1:RELAXOR_MAX)
+          if (ios_read.eq.0) then
+             write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
+             write(0,'(a,a,i3,a,i1,a)')   __FILE__, ':', __LINE__ , &
+                  & ': ', RELAXOR_MAX, ' values for P_k1 are given.'
+          else
+             read(str,*) dmy1, dmy2, p%P_k1(1)
+             p%P_k1(2:RELAXOR_MAX) = p%P_k1(1)
+          end if
        case('P_k2')
-          read(str,*) dmy1, dmy2, p%P_k2(1)
+          read(str,*,IOSTAT=ios_read) dmy1, dmy2, p%P_k2(1:RELAXOR_MAX)
+          if (ios_read.eq.0) then
+             write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
+             write(0,'(a,a,i3,a,i1,a)')   __FILE__, ':', __LINE__ , &
+                  & ': ', RELAXOR_MAX, ' values for P_k2 are given.'
+          else
+             read(str,*) dmy1, dmy2, p%P_k2(1)
+             p%P_k2(2:RELAXOR_MAX) = p%P_k2(1)
+          end if
        case('P_k3')
-          read(str,*) dmy1, dmy2, p%P_k3(1)
+          read(str,*,IOSTAT=ios_read) dmy1, dmy2, p%P_k3(1:RELAXOR_MAX)
+          if (ios_read.eq.0) then
+             write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
+             write(0,'(a,a,i3,a,i1,a)')   __FILE__, ':', __LINE__ , &
+                  & ': ', RELAXOR_MAX, ' values for P_k3 are given.'
+          else
+             read(str,*) dmy1, dmy2, p%P_k3(1)
+             p%P_k3(2:RELAXOR_MAX) = p%P_k3(1)
+          end if
        case('P_k4')
-          read(str,*) dmy1, dmy2, p%P_k4(1)
+          read(str,*,IOSTAT=ios_read) dmy1, dmy2, p%P_k4(1:RELAXOR_MAX)
+          if (ios_read.eq.0) then
+             write(0,'(a,a,i3,a,a)') trim(fn), ':', line_number,': ', trim(str)
+             write(0,'(a,a,i3,a,i1,a)')   __FILE__, ':', __LINE__ , &
+                  & ': ', RELAXOR_MAX, ' values for P_k4 are given.'
+          else
+             read(str,*) dmy1, dmy2, p%P_k4(1)
+             p%P_k4(2:RELAXOR_MAX) = p%P_k4(1)
+          end if
        case('j')
           read(str,*) dmy1, dmy2, p%j(1),p%j(2),p%j(3),p%j(4),p%j(5),p%j(6),p%j(7)
        case('B11')
@@ -320,7 +376,6 @@ contains
              read(str,*) dmy1, dmy2, p%Z_star(1)
              p%Z_star(2:RELAXOR_MAX) = p%Z_star(1)
           end if
-          !write(6,'(a,3f7.3)') 'Z_star = ', p%Z_star(1:RELAXOR_MAX)
        case('epsilon_inf')
           read(str,*) dmy1, dmy2, p%epsilon_inf
        case('kappa')
@@ -423,9 +478,9 @@ contains
 &                                  'mass_acou   =', p%mass_acou,  &
 &                                  'a0          =', p%a0,         &
 &                                  'kappa_short =',               &
-&    p%P_kappa2+2*p%j(1)+p%j(2)+4*p%j(3)+2*p%j(4)+4*p%j(6),       &
-&                                  'P_alpha     =', p%P_alpha,    &
-&                                  'P_gamma     =', p%P_gamma,    &
+&    p%P_kappa2(1)+2*p%j(1)+p%j(2)+4*p%j(3)+2*p%j(4)+4*p%j(6),    &
+&                                  'P_alpha     =', p%P_alpha(1), &
+&                                  'P_gamma     =', p%P_gamma(1), &
 &                                  'B11         =', p%B11,        &
 &                                  'B12         =', p%B12,        &
 &                                  'B44         =', p%B44,        &
