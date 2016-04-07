@@ -1,5 +1,5 @@
 ! dVddi-unharmonic.F   -*-f90-*-
-! Time-stamp: <2016-04-07 12:39:48 takeshi>
+! Time-stamp: <2016-04-07 18:08:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -34,6 +34,8 @@ subroutine dVddi_unharmonic(p,c,e)
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1
            do alpha = 1,3
+              ! 2nd order
+              c%dVddi(alpha,ix,iy,iz) = c%dVddi(alpha,ix,iy,iz) + c%dipoR(alpha,ix,iy,iz) * 2 * (p%P_kappa2(c%relaxor(ix,iy,iz)) - p%P_kappa2(1))
               ! 4th order
               c%dVddi(alpha,ix,iy,iz) = c%dVddi(alpha,ix,iy,iz) + c%dipoR(alpha,ix,iy,iz) * &
                    & ( four_alpha_two_gamma(c%relaxor(ix,iy,iz)) * (c%didiR(1,ix,iy,iz)+c%didiR(2,ix,iy,iz)+c%didiR(3,ix,iy,iz)) &
@@ -66,6 +68,10 @@ subroutine dVddi_unharmonic(p,c,e)
      do iy = 0, p%Ly-1
         do ix = 0, p%Lx-1
            unharm0 = unharm0 &
+                + (p%P_kappa2(c%relaxor(ix,iy,iz)) - p%P_kappa2(1)) &
+                &           * ( c%didiR(1,ix,iy,iz) + &
+                                c%didiR(2,ix,iy,iz) + &
+                                c%didiR(3,ix,iy,iz) ) &
                 + p%P_alpha(c%relaxor(ix,iy,iz)) &
                 &           * ( c%didiR(1,ix,iy,iz) + &
                                 c%didiR(2,ix,iy,iz) + &
