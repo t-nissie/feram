@@ -1,7 +1,7 @@
 ! decay_fuction_check.f   -*-f90-*-
-! Time-stamp: <2016-04-08 18:52:55 takeshi>
 ! Author: Takeshi NISHIMATSU
-! Usage:  ./decay_function_check 4.0 16 0.22
+! Usage1: ./decay_function_check
+! Usage2: ./decay_function_check 3.94 16 0.1125
 ! $Date$
 ! $Rev$
 ! $Author$
@@ -21,8 +21,8 @@ program decay_function_check
      call get_command_argument(2,str); read(str,*) L
      call get_command_argument(3,str); read(str,*) kappa
   else if (command_argument_count().eq.0) then
-     L=16
      a0=3.94d0
+     L=16
      kappa=0.1125d0
   else
      write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, &
