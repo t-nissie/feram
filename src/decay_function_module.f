@@ -1,8 +1,8 @@
 ! decay_function_module.f -*-f90-*-
 ! Author: Takeshi NISHIMATSU
-! $Date: 2012-07-06 21:27:09 +0900 (金, 06  7 2012) $
-! $Rev: 1340 $
-! $Author: t-nissie $
+! $Date$
+! $Rev$
+! $Author$
 !!
 module decay_function_module
 implicit none

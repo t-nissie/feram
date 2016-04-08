@@ -2,9 +2,9 @@
 ! Time-stamp: <2016-04-08 18:52:55 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage:  ./decay_function_check 4.0 16 0.22
-! $Date: 2012-07-06 21:27:09 +0900 (金, 06  7 2012) $
-! $Rev: 1340 $
-! $Author: t-nissie $
+! $Date$
+! $Rev$
+! $Author$
 !!
 program decay_function_check
   use decay_function_module

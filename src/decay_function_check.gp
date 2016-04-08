@@ -1,9 +1,9 @@
 #!/usr/bin/env gnuplot
 # decay_function_check.gp
 # Author: Takeshi Nishimatsu
-# $Date: 2012-07-06 21:27:09 +0900 (金, 06  7 2012) $
-# $Rev: 1340 $
-# $Author: t-nissie $
+# $Date$
+# $Rev$
+# $Author$
 ##
 Lz=16
 a0=3.94
