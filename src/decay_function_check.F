@@ -1,4 +1,4 @@
-! decay_fuction_check.f   -*-f90-*-
+! decay_fuction_check.F   -*-f90-*-
 ! Author: Takeshi NISHIMATSU
 ! Usage1: ./decay_function_check
 ! Usage2: ./decay_function_check 3.94 16 0.1125

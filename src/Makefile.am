@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-04-08 19:03:50 takeshi>
+# Time-stamp: <2016-04-08 19:32:51 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -136,7 +136,6 @@ elastocaloric770K_check.txt \
 elastocaloric770K_check.lf.feram \
 elastocaloric770K_check.vs.feram \
 epit.gp \
-inhomo-K.gp \
 plot.gp \
 splot.gp \
 feram_mpi.F \
