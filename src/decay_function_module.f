@@ -1,9 +1,12 @@
-! decay-functions.f -*-f90-*-
-! Time-stamp: <2011-04-28 08:45:46 t-nissie>
+! decay_function_module.f -*-f90-*-
 ! Author: Takeshi NISHIMATSU
-!
-!OPTION FORM(FREE)
+! $Date: 2012-07-06 21:27:09 +0900 (金, 06  7 2012) $
+! $Rev: 1340 $
+! $Author: t-nissie $
 !!
+module decay_function_module
+implicit none
+contains
 real*8 function B_decay(r,rr,kappa)
   implicit none
   real*8 r,rr,kappa,derfc
@@ -25,3 +28,4 @@ real*8 function C_decay(r,rr,kappa)
   Crr=3*derfc(kappa*r)/(r*rr) + M_2_SQRTPI * kappa * exp(-kappa**2*rr) * (2*kappa**2+3/rr)
   C_decay=Crr/rr
 end function C_decay
+end module decay_function_module

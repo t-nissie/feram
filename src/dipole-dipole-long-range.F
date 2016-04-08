@@ -1,8 +1,7 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:54:40 takeshi>
+! Time-stamp: <2016-04-08 17:30:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
-!UINLINE decay-functions.f
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
@@ -10,6 +9,7 @@
 subroutine dipole_dipole_long_range(p,long_range)
   use Param_module
   use msg_module
+  use decay_function_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type), intent(in)     :: p
@@ -23,9 +23,6 @@ subroutine dipole_dipole_long_range(p,long_range)
   integer  max_x, max_y, max_z
   real*8   k(3), kG(3), kGkG
   real*8   r(3), n(3), rn(3), rnrn, rn_norm
-  !--- decay functions -------------------------------
-  real*8   B_decay,C_decay
-  external B_decay,C_decay
   !--- END of variable definitions -------------------
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
 

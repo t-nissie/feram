@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-04-06 12:37:11 takeshi>
+# Time-stamp: <2016-04-08 19:03:50 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -21,8 +21,9 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_defects_maker.rb \
                    feram_fcc_maker.rb \
                    feram_slicer.rb
-check_PROGRAMS = feram_fftw_SoA marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check date_and_time_check msg_check
-TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp \
+check_PROGRAMS = feram_fftw_SoA marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check\
+                 date_and_time_check msg_check decay_function_check
+TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp decay_function_check.gp\
          feram_defects_maker_check.sh \
          feram_eigenvalues2j_check.sh \
          zzz16.feram_check \
@@ -38,7 +39,7 @@ feram_SRCS = average_module.F \
 	dVddi-unharmonic.F \
 	dVdac.F \
 	date_and_time_module.f \
-	decay-functions.f \
+	decay_function_module.f \
 	acouFFT.F \
 	dipoFFT.F \
 	dipole-dipole-long-range.F \
@@ -89,6 +90,8 @@ rgb_check_SOURCES = rgb_check.f rgb_module.f
 
 date_and_time_check_SOURCES = date_and_time_check.f date_and_time_module.f
 
+decay_function_check_SOURCES = decay_function_check.F decay_function_module.f
+
 marsaglia_tsang_uni64_check_SOURCES  = marsaglia_tsang_uni64_check.F  marsaglia_tsang_uni64_module.f
 
 marsaglia_tsang_uni64_timing_SOURCES = marsaglia_tsang_uni64_timing.f marsaglia_tsang_uni64_module.f
@@ -119,7 +122,7 @@ CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check
 EXTRA_DIST = define.h \
 feram_cross_section_dVddi.sh \
 feram_cross_section_p.sh \
-decay-test.gp \
+decay_function_check.gp \
 feram_fftw_wisdom.Makefile.SR16000-xlf90_r-fftw_xlc_simd \
 feram_fftw_wisdom.Makefile.gfortran \
 feram_fftw_wisdom.Makefile.ifort-with-MKL \
@@ -164,23 +167,6 @@ zzzlf.feram_check \
 zzznp.feram_check \
 zzzvs.feram_check
 
-# all: plot.ps # 300K0000000.ps decay-test.ps
-
-# feram.out: $(INPUT_FILE) feram
-# 	./feram < $< | tee $@
-
-# crosssection: crosssection.gp
-# 	gnuplot $<
-
-# decay-test: decay-test.o decay-functions.o
-# 	$(FC) $(FFLAGS) -o $@ $^
-
-# decay-test.ps: decay-test.gp decay-test feram.out
-# 	gnuplot $<
-
-elastic.o: $(srcdir)/elastic.F
-	$(PPF77COMPILE:-Os=-O3) -c -o $@ $<
-
 feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	$(MPIFC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
 	         $(AM_FFLAGS) $(FFLAGS) -c $(srcdir)/feram_mpi.F
@@ -200,7 +186,7 @@ feram_mpi_check$(EXEEXT): feram_mpi_check.F $(srcdir)/feram_mpi_common_check.F
 
 
 feram_common.o:                 param_module.o coord_module.o date_and_time_module.o define.h
-decay-functions.o param_module.o feram_diagonalize15x15.o: define.h
+param_module.o feram_diagonalize15x15.o: define.h
 feram.o feram_mpi.o:            param_module.o coord_module.o define.h
 dipole-dipole.o mirror.o read_defects_u.o read_relaxor.o elastic.o dipoFFT.o acouFFT.o:\
                                 param_module.o coord_module.o define.h               msg_module.o
@@ -222,8 +208,9 @@ dVddi-dipole-dipole.o optimize-homo-strain.o:\
                                 param_module.o coord_module.o energy_module.o          msg_module.o
 mirror_force_mirror.o dVddi-unharmonic.o optimize-homo-strain.o optimize-inho-strain.o:\
                                 param_module.o coord_module.o energy_module.o
-dipole-dipole-long-range.o dipole-dipole-short-range.o:\
-                                param_module.o         define.h fft_3d_3x3upper_r2c.o  msg_module.o
+dipole-dipole-long-range.o:     param_module.o define.h fft_3d_3x3upper_r2c.o msg_module.o decay_function_module.o
+decay_function_check.o:         decay_function_module.o
+dipole-dipole-short-range.o:    param_module.o define.h fft_3d_3x3upper_r2c.o msg_module.o
 fft_3d_3x3upper_r2c.o:          param_module.o
 feram_frozen_phonon_Gamma.o feram_frozen_phonon_X.o: define.h
 feram_eigenvalues2j.o:          param_module.o define.h msg_module.o
