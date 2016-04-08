@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-04-07 20:43:06 takeshi>
+! Time-stamp: <2016-04-08 16:54:52 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -487,8 +487,8 @@ contains
     write(UNIT_SYSTEM,'(a,i5)')    'Lx          =', p%Lx,         &
                                    'Ly          =', p%Ly,         &
                                    'Lz          =', p%Lz
-    write(UNIT_SYSTEM,'(a,f13.6)') 'mass_dipo   =', p%mass_dipo,  &
-&                                  'mass_acou   =', p%mass_acou,  &
+    write(UNIT_SYSTEM,'(a,f13.6)') 'mass_dipo   =', p%mass_dipo(1),&
+&                                  'mass_acou   =', p%mass_acou(1),&
 &                                  'a0          =', p%a0,         &
 &                                  'kappa_short =',               &
 &    p%P_kappa2(1)+2*p%j(1)+p%j(2)+4*p%j(3)+2*p%j(4)+4*p%j(6),    &
