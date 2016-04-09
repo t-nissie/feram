@@ -1,5 +1,6 @@
 #!/usr/bin/env gnuplot
 # decay_function_check.gp
+# plots decay functions for the Ewald sumation of dipoles.
 # Author: Takeshi Nishimatsu
 # $Date$
 # $Rev$
@@ -15,13 +16,11 @@ set encoding iso_8859_1
 set output 'decay_function_check.eps'
 
 set grid
-#set key -21, 1e-30
 set key right spacing 1.4
 set bmargin 4
 set lmargin 16
-#set rmargin 15
-#set title "{/Times-Italic a}_0 = 4.0 \305, {/Times-Italic L} = 32, {/Symbol k} = 0.08"
-set xlabel '{/Times-Italic r} / {/Times-Italic a}_0 ,   {/Times-Italic k } / (2{/Symbol p} / ({/Times-Italic La}_0))'
+set xlabel '{/Times-Italic r} / {/Times-Italic a}_0 ,'.\
+        '   {/Times-Italic k} / (2{/Symbol p} / ({/Times-Italic La}_0))'
 set ylabel '\305^{-3}'
 set logscale y
 set xtics Lz/2
@@ -41,10 +40,10 @@ set arrow 2 from     0,1e-52 to Lz,  1e-52 heads lt 7 lw 2
 set label 1 'first Brillouin zone' at    0,1e-25 center textcolor lt 4
 set label 2 'super cell size'      at Lz/2,1e-55 center textcolor lt 7
 
-plot inp using 1:3 title '{/Times-Italic B}({/Times-Italic r})'   with lp lw 1,\
-     inp using 1:4 title '{/Times-Italic Crr}({/Times-Italic r})' with lp lw 1,\
-exp(-(2*pi*x/(a0*Lz))**2 / kappa**2 )/a0**3\
-                   title 'exp(-{/Times-Italic k}^2/{/Symbol k}^2) / {/Times-Italic a}_0^3'
+plot inp using 1:3 title '{/Times-Italic B}({/Times-Italic r})'   with lp lw 3,\
+     inp using 1:4 title '{/Times-Italic Crr}({/Times-Italic r})' with lp lw 3,\
+     exp(-(2*pi*x/(a0*Lz))**2 / kappa**2 )/a0**3\
+     title 'exp(-{/Times-Italic k}^2/{/Symbol k}^2) / {/Times-Italic a}_0^3' with l lw 3
 #Local variables:
 #  compile-command: "gnuplot decay_function_check.gp"
 #End:
