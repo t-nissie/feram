@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-04-08 19:32:51 takeshi>
+# Time-stamp: <2016-04-09 14:56:39 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -30,7 +30,8 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          zzzgap.feram_check \
          zzzlf.feram_check \
          zzznp.feram_check \
-         zzzvs.feram_check
+         zzzvs.feram_check \
+         zzzlf.gp
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
 	dVddi-dipole-dipole.F \
@@ -135,9 +136,6 @@ elastocaloric770K_check.sh \
 elastocaloric770K_check.txt \
 elastocaloric770K_check.lf.feram \
 elastocaloric770K_check.vs.feram \
-epit.gp \
-plot.gp \
-splot.gp \
 feram_mpi.F \
 marsaglia_tsang_uni64_check.gp \
 wave_check.gp \
@@ -164,7 +162,8 @@ zzz16.feram_check \
 zzzgap.feram_check \
 zzzlf.feram_check \
 zzznp.feram_check \
-zzzvs.feram_check
+zzzvs.feram_check \
+zzzlf.gp
 
 feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	$(MPIFC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
