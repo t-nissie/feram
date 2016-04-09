@@ -1,8 +1,11 @@
 ! decay_function_module.f -*-f90-*-
+! Decay functions for the Ewald sum of dipoles
 ! Author: Takeshi NISHIMATSU
 ! $Date$
 ! $Rev$
 ! $Author$
+! Reference: M. P. Allen and D. J. Tildesley: "Computer Simulation of Liquids",
+!            sec. 5.5.2 The Ewald sum, p. 160, Oxford Science Publications (1989).
 !!
 module decay_function_module
 implicit none

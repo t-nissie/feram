@@ -1,6 +1,8 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2016-04-08 17:30:49 takeshi>
+! Time-stamp: <2016-04-09 18:39:19 takeshi>
 ! Author: Takeshi NISHIMATSU
+! Reference: M. P. Allen and D. J. Tildesley: "Computer Simulation of Liquids",
+!            sec. 5.5.2 The Ewald sum, p. 160, Oxford Science Publications (1989).
 !!
 #if defined HAVE_CONFIG_H
 #  include "config.h"
