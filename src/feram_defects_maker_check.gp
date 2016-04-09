@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # feram_defects_maker_check.gp
-# Time-stamp: <2016-02-25 20:54:22 takeshi>
+# Time-stamp: <2016-04-09 15:10:05 takeshi>
 # Author: Takeshi NISHIMATSU
 # Usage: gnuplot -e 'basename="feram_defects_maker_check"; binwidth=0.1' feram_defects_maker_check.gp
 ##
@@ -17,3 +17,7 @@ plot defects_file using (bin($4,binwidth)):(1.0) smooth freq t 'x' with linespoi
      defects_file using (bin($5,binwidth)):(1.0) smooth freq t 'y' with linespoints lw 3,\
      defects_file using (bin($6,binwidth)):(1.0) smooth freq t 'z' with linespoints lw 3
 set output
+!epstopdf feram_defects_maker_check.eps
+#Local variables:
+#  compile-command: "./feram_defects_maker_check.gp"
+#End:
