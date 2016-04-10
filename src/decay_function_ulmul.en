@@ -1,0 +1,43 @@
+= Decay functions for dipolar Ewald sum
+This document describes decay functions and their arbitrary constant $\kappa$
+in the Ewald sum of an $N = L_x \times L_y \times L_z$ 3-dimensional dipolar system.
+
+== References
+ * M. P. Allen and D. J. Tildesley: "Computer Simulation of Liquids",
+   sec. 5.5.2 The Ewald sum, p. 160, Oxford Science Publications (1989).
+ * feram http://loto.sourceforge.net/feram/
+
+== Functions and kappa
+$\kappa = \frac{\sqrt{\pi}}{a_0 N^{1/6}}$
+
+== Plot
+=== Requirements
+ * gfortran(1)
+ * gnuplot(1)
+ * w3m(1) (Or any web browser. wget(1) nor curl(1) cannot handle redirection.)
+
+=== Command lines
+ $ w3m https://sourceforge.net/p/loto/code/HEAD/tree/feram/branches/z_star_r/src/decay_function_module.f?format=raw
+ $ w3m https://sourceforge.net/p/loto/code/HEAD/tree/feram/branches/z_star_r/src/decay_function_check.F?format=raw
+ $ w3m https://sourceforge.net/p/loto/code/HEAD/tree/feram/branches/z_star_r/src/decay_function_check.gp?format=raw
+ $ gfortran -ffree-form -o decay_function_check decay_function_module.f decay_function_check.F
+ $ gnuplot   decay_function_check.gp
+ $ gv -watch decay_function_check.eps &
+ $ sed -e 's/0.1125/0.1570/' -e 's/check\.eps/0.1570.eps/' decay_function_check.gp > decay_function_0.1570.gp
+ $ gnuplot   decay_function_2.gp
+ $ gv -watch decay_function_2.eps &
+
+=== Plots
+Plots for $a_0=3.94$ and $N = L_x \times L_y \times L_z = 16\times 16\times 16$.
+
+\Fig:kappa_same decay_function_0.1570.jpg
+$\kappa=0.1570$
+/Fig:kappa_same
+
+\Fig:kappa_feram decay_function_0.1125.jpg
+feram employs $\kappa = \frac{\sqrt{\pi}}{a_0 N^{1/6}} = 0.1125$.
+/Fig:kappa_feram
+
+#Local variables:
+#  compile-command: "ulmul2html5 -s ../style.css -l en -n 'Takeshi Nishimatsu' decay_function_ulmul.en > decay_function_ulmul.en.html"
+#End:

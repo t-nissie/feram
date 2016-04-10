@@ -57,7 +57,7 @@ o In initialize-dipoR.F, c%dipoP() must be multiplied by c%s_Nose after read ???
 
 o FILENAME.avgの出力の見直し polarization -> <u_z> とか
 
-o plot_dispersion = .ture. のとき32x32x32を使う。FILENAME.param.gp は無くす方向で。
+o plot_dispersion = .ture., 8x8x8と32x32x32とで同じになるかチェック in src/08example-BaTiO3-dispersion/ .
 
 o feram_slicer.rb マニュアル
 
