@@ -40,8 +40,8 @@ set arrow 2 from     0,1e-52 to Lz,  1e-52 heads lt 7 lw 2
 set label 1 'first Brillouin zone' at    0,1e-25 center textcolor lt 4
 set label 2 'super cell size'      at Lz/2,1e-55 center textcolor lt 7
 
-plot inp using 1:3 title '{/Times-Italic B}({/Times-Italic r})'   with lp lw 3,\
-     inp using 1:4 title '{/Times-Italic Crr}({/Times-Italic r})' with lp lw 3,\
+plot inp using 1:3 title '{/Times-Italic B}({/Times-Italic r}, {/Symbol k})'   with lp lw 3,\
+     inp using 1:4 title '{/Times-Italic Crr}({/Times-Italic r}, {/Symbol k})' with lp lw 3,\
      exp(-(2*pi*x/(a0*Lz))**2 / kappa**2 )/a0**3\
      title 'exp(-{/Times-Italic k}^2/{/Symbol k}^2) / {/Times-Italic a}_0^3' with l lw 3
 set output
