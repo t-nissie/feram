@@ -11,6 +11,10 @@ o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
   https://gcc.gnu.org/onlinedocs/gfortran/Code-Gen-Options.html
   GCC 6で入る機能かもしれない。
 
+o src/08example-BaTiO3-dispersion/ 以下をTESTSに格上げする。
+  grep 186547824173781 *long.dat | wc -l -> 6.
+  print-eigenvalues.F を P%padding_y に対応させて、dipole-dipole.F を簡単化。
+
 o CUDA化。cuFFTとcuBLASとを使えるようにする。
   * PGI CUDA Fortranは使わない。
   * src/cufft_module.fを通し、できるだけCを使わずにFortran 2003だけで書く。
