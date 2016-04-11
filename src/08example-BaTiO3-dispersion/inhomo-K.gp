@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # inhomo-K.gp
-# Time-stamp: <2010-03-26 13:28:03 takeshi>
+# Time-stamp: <2016-04-11 14:41:38 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 call 'param.gp'
@@ -23,7 +23,7 @@ set ylabel '{/Symbol w}'
 #set ylabel '{/Symbol w} / sqrt( ({/Times-Italic Z}^{*2}/{/Times-Italic m}{/Symbol e_\245}) (4{/Symbol p}/3{/Times-Italic a}_@0^3) )'
 call 'dipole-dipole-axis.gp' '-0.5'
 
-set terminal postscript landscape enhanced solid color "Times-Roman" 21
+set terminal postscript eps enhanced solid color "Times-Roman" 22
 set output "inhomo-K.eps"
 set title 'long-wavelength approximation of acoustic phonon branches in sc'
 plot 0,\

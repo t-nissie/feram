@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # dipole-dipole.gp
-# Time-stamp: <2014-10-15 18:41:46 t-nissie>
+# Time-stamp: <2016-04-11 14:37:42 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set encoding iso_8859_1
@@ -38,7 +38,7 @@ set ylabel '{/Symbol w} / sqrt( 4{/Symbol p}{/Times-Italic Z}^{*2} / 3{/Symbol e
 call 'dipole-dipole-axis.gp' '-1.63'
 
 
-set terminal postscript landscape enhanced color "Times-Roman" 21
+set terminal postscript eps enhanced color "Times-Roman" 22
 set output "dipole-dipole-long.eps"
 set label 1 "Universal for any perovskite ferroelectrics" at 0.4,1.8 left font "Times-Roman,30" tc lt 1
 set label 2 "TO" at 0.1, -0.85 left font "Times-Roman,30" tc lt 2
@@ -50,7 +50,7 @@ plot 0,\
 'bulk32x32x32.dipole-dipole-long.dat' using 1:(($6>0?sqrt($6):-sqrt(-$6))/omega_unit_m) w l,\
 'bulk32x32x32.dipole-dipole-long.dat' using 1:(($7>0?sqrt($7):-sqrt(-$7))/omega_unit_m) w l
 
-set terminal postscript landscape enhanced color "Times-Roman" 21
+set terminal postscript eps enhanced color "Times-Roman" 22
 set output "bulk32x32x32.dipole-dipole-short.eps"
 set nolabel 1
 set nolabel 2
@@ -62,7 +62,7 @@ plot 0,\
 'bulk32x32x32.dipole-dipole-short.dat' using 1:(($6>0?sqrt($6):-sqrt(-$6))/omega_unit_m) w l,\
 'bulk32x32x32.dipole-dipole-short.dat' using 1:(($7>0?sqrt($7):-sqrt(-$7))/omega_unit_m) w l
 
-set terminal postscript landscape enhanced color "Times-Roman" 21
+set terminal postscript eps enhanced color "Times-Roman" 22
 set output "bulk32x32x32.dipole-dipole-long-long+short.eps"
 plot 0,\
 'bulk32x32x32.dipole-dipole-long.dat' using 1:(($5>0?sqrt($5):-sqrt(-$5))/omega_unit_m) w l,\
@@ -72,7 +72,7 @@ plot 0,\
 'bulk32x32x32.dipole-dipole-long+short.dat' using 1:(($6>0?sqrt($6):-sqrt(-$6))/omega_unit_m) w l lt 12 lw 3,\
 'bulk32x32x32.dipole-dipole-long+short.dat' using 1:(($7>0?sqrt($7):-sqrt(-$7))/omega_unit_m) w l lt 13 lw 3
 
-set terminal postscript landscape enhanced color "Times-Roman" 21
+set terminal postscript eps enhanced color "Times-Roman" 22
 set output "bulk32x32x32.dipole-dipole-long+short.eps"
 set label 1 " BaTiO_3 optical phonon dispersion" at 0.6,-0.8 left font "Times-Roman,35" tc lt 1
 plot 0,\
@@ -88,7 +88,7 @@ set format y "%.1f"
 set ylabel '(interaction energy per unit cell) / ( {/Times-Italic Z}^{*2} {/Times-Italic u}^2 / {/Symbol e_\245}{/Times-Italic a}_@0^3 )'
 call 'dipole-dipole-axis.gp' '-3.25'
 
-set terminal postscript landscape enhanced color "Times-Roman" 21
+set terminal postscript eps enhanced color "Times-Roman" 22
 
 set output "bulk32x32x32.dipole-dipole-long.interaction.eps"
 plot 0 w l lt 2,\
@@ -108,21 +108,21 @@ set ytics -5
 set ylabel 'Eigenvalues of {/Symbol F}({/Times-Italic k})/2 [eV \305^{-2} unit-cell^{-1}]'
 call 'dipole-dipole-axis.gp' '-16.3'
 
-set terminal postscript landscape enhanced color "Times-Roman" 21
+set terminal postscript eps enhanced color "Times-Roman" 22
 set output "bulk32x32x32.dipole-dipole-long.energy.eps"
 plot 0,\
 'bulk32x32x32.dipole-dipole-long.dat' using 1:($5/2) w l lw 3,\
 'bulk32x32x32.dipole-dipole-long.dat' using 1:($6/2) w l lw 3,\
 'bulk32x32x32.dipole-dipole-long.dat' using 1:($7/2) w l lw 3
 
-set terminal postscript landscape enhanced color "Times-Roman" 21
+set terminal postscript eps enhanced color "Times-Roman" 22
 set output "bulk32x32x32.dipole-dipole-short.energy.eps"
 plot 0,\
 'bulk32x32x32.dipole-dipole-short.dat' using 1:($5/2) w l lw 3,\
 'bulk32x32x32.dipole-dipole-short.dat' using 1:($6/2) w l lw 3,\
 'bulk32x32x32.dipole-dipole-short.dat' using 1:($7/2) w l lw 3
 
-set terminal postscript landscape enhanced color "Times-Roman" 21
+set terminal postscript eps enhanced color "Times-Roman" 22
 set output "bulk32x32x32.dipole-dipole-long+short.energy.eps"
 plot 0,\
 'bulk32x32x32.dipole-dipole-long+short.dat' using 1:($5/2) w l lw 3,\

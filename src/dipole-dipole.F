@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2016-03-14 22:48:31 takeshi>
+! Time-stamp: <2016-04-11 14:23:46 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -11,39 +11,30 @@ subroutine dipole_dipole(p,c)
   type(Param_type), intent(in)    :: p
   type(Coord_type), intent(inout) :: c
   real*8, allocatable :: dipoI(:,:, :,:,:)
-  character (len=100) :: fn
-  integer             :: ix,iy,iz
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'construction of dipole-dipole interaction.')
-
-  allocate( dipoI(3, 3,  0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
-!$omp parallel do
-  do iz = 0, p%Lz-1
-     dipoI(:,:, :,:,iz) = 0.0d0
-  end do
-!$omp end parallel do
-
+  integer             :: iz
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'construction of short- and long-range interaction.')
   call  dipole_dipole_long_range(p, c%long_range)
   call dipole_dipole_short_range(p,c%short_range)
 
-!$omp parallel do
-  do iz= 0, p%Lz-1
-     do iy= 0, p%Ly-1
-        do ix= 0, p%Lx/2
-           dipoI(:,:, ix,iy,iz) = p%Z_star(1)**2 * c%long_range(:,:, ix,iy,iz) + c%short_range(:,:, ix,iy,iz)
-        end do           ! We use p%Z_star(1), because dipoI is only for the dispersion plot.
-     end do
-  end do
-!$omp end parallel do
-
   if (p%plot_dispersion) then
-     write(fn,'(a,a)') trim(p%filename),'.dipole-dipole-long.dat'
-     call print_eigenvalues(p%Lx, p%Ly, p%Lz,  c%long_range, fn)
-     write(fn,'(a,a)') trim(p%filename),'.dipole-dipole-short.dat'
-     call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%short_range, fn)
-     write(fn,'(a,a)') trim(p%filename),'.dipole-dipole-long+short.dat'
-     call print_eigenvalues(p%Lx, p%Ly, p%Lz, dipoI, fn)
-  end if
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'DISPERSION', 'writing dispersion data.')
+     allocate( dipoI(3, 3,  0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))
+     call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%short_range, trim(p%filename)//'.dipole-dipole-short.dat')
 
-  deallocate(dipoI)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'construction of dipole-dipole interaction.')
+!$omp parallel do
+     do iz= 0, p%Lz-1
+        dipoI(:,:, :,:,iz) = p%Z_star(1)**2 * c%long_range(:,:, :,:,iz)
+     end do         ! We use p%Z_star(1), because dipoI is only for the dispersion plot.
+!$omp end parallel do
+     call print_eigenvalues(p%Lx, p%Ly, p%Lz, dipoI, trim(p%filename)//'.dipole-dipole-long.dat')
+
+!$omp parallel do
+     do iz= 0, p%Lz-1
+        dipoI(:,:, :,:,iz) = dipoI(:,:, :,:,iz) + c%short_range(:,:, :,:,iz)
+     end do
+!$omp end parallel do
+     call print_eigenvalues(p%Lx, p%Ly, p%Lz, dipoI, trim(p%filename)//'.dipole-dipole-long+short.dat')
+     deallocate(dipoI)
+  end if
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'construction of short- and long-range interaction.')
 end subroutine dipole_dipole
