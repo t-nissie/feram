@@ -10,7 +10,7 @@ in the Ewald sum of an $N = L_x \times L_y \times L_z$ 3-dimensional dipolar sys
 == Functions and kappa
 $\kappa = \frac{\sqrt{\pi}}{a_0 N^{1/6}}$
 
-== Plot
+== Plots
 === Requirements
  * gfortran(1)
  * gnuplot(1)
