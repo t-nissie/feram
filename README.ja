@@ -324,6 +324,21 @@ src/dipole-dipole-long-range.Fで双極子のエワルト和に使われる任�
 が指定されたなら，分散関係のプロットのためのデータファイルが書き出される．
 デフォルトは.false.である．
 
+plot_dispersion = .true.のときは
+L_x, L_y, L_z はすべて同じ偶数でなくてはならない。
+ L = 32 32 32
+がよいであろう。
+
+たとえば、
+ $ make check TESTS=dispersion_check.sh
+とすると、dispersion_32x32x32.feram と dispersion_32x32x32.gp とが得られる。
+プロットの結果が
+dispersion_32x32x32.long.interaction.eps と
+dispersion_32x32x32.long+short.interaction.eps とである。
+それぞぞれ Takeshi Nishimatsu el al.: Phys. Rev. B 82,
+134106 (2010), http://dx.doi.org/10.1103/PhysRevB.82.134106 .
+の中の Fig.3(A) と Fig.3(B) とである。
+
 ===== continue
 feramが
  $ feram foo.feram bar.feram

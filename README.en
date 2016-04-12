@@ -342,6 +342,20 @@ If
  plot_dispersion = .true.
 data files for plotting dispersion relation will be written. Default is .false..
 
+In the case of plot_dispersion = .true.,
+L_x = L_y = L_z and they must be an even number.
+ L = 32 32 32
+may be a good idea.
+
+For example, Try
+ $ make check TESTS=dispersion_check.sh
+then, you will get dispersion_32x32x32.feram and dispersion_32x32x32.gp.
+Plotted results will be
+dispersion_32x32x32.long.interaction.eps and
+dispersion_32x32x32.long+short.interaction.eps.
+They are Fig.3(A) and (B) in Takeshi Nishimatsu el al.: Phys. Rev. B 82,
+134106 (2010), http://dx.doi.org/10.1103/PhysRevB.82.134106 .
+
 ===== continue
 If feram is executed as
  $ feram foo.feram bar.feram
