@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-04-12 15:18:29 takeshi>
+# Time-stamp: <2016-04-12 18:10:36 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -32,7 +32,8 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          zzznp.feram_check \
          zzzvs.feram_check \
          zzzlf.gp \
-         dispersion_check.sh
+         dispersion_check.sh \
+         dispersion_32x32x32.inhomo-K.gp
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
 	dVddi-dipole-dipole.F \
@@ -125,8 +126,8 @@ CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check
              dispersion_*.avg \
              dispersion_*.dat \
              dispersion_*.feram \
+             dispersion_*[2486ms].gp \
              dispersion_*.log \
-             dispersion_*.param.gp \
              msg_check.output
 EXTRA_DIST = define.h \
 feram_cross_section_dVddi.sh \
@@ -148,7 +149,6 @@ feram_mpi.F \
 marsaglia_tsang_uni64_check.gp \
 wave_check.gp \
 03example-BaTiO3-bulk-phase-transition \
-08example-BaTiO3-dispersion \
 09example-BaTiO3-bulk-leap-frog \
 10example-PbTiO3-DDB2short \
 17example-PbTiO3-100-900K \
@@ -171,7 +171,9 @@ zzzgap.feram_check \
 zzzlf.feram_check \
 zzznp.feram_check \
 zzzvs.feram_check \
-zzzlf.gp
+zzzlf.gp \
+dispersion_check.sh \
+dispersion_32x32x32.inhomo-K.gp
 
 feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	$(MPIFC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
