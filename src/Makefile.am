@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-04-11 09:09:46 takeshi>
+# Time-stamp: <2016-04-12 15:18:29 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -31,7 +31,8 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          zzzlf.feram_check \
          zzznp.feram_check \
          zzzvs.feram_check \
-         zzzlf.gp
+         zzzlf.gp \
+         dispersion_check.sh
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
 	dVddi-dipole-dipole.F \
@@ -120,6 +121,12 @@ CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check
              elastocaloric770K_check.lf.log.digest \
              elastocaloric770K_check.vs.log \
              elastocaloric770K_check.vs.log.digest \
+             dispersion_*.feram \
+             dispersion_*.avg \
+             dispersion_*.dat \
+             dispersion_*.feram \
+             dispersion_*.log \
+             dispersion_*.param.gp \
              msg_check.output
 EXTRA_DIST = define.h \
 feram_cross_section_dVddi.sh \

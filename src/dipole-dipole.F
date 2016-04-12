@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2016-04-11 15:22:23 takeshi>
+! Time-stamp: <2016-04-12 15:17:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -28,7 +28,7 @@ subroutine dipole_dipole(p,c)
         end do
      end do
 !$omp end parallel do
-     call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%short_range, trim(p%filename)//'.dipole-dipole-short.dat')
+     call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%short_range, trim(p%filename)//'.short.dat')
 
 !$omp parallel do
      do iz= 0, p%Lz-1
@@ -39,7 +39,7 @@ subroutine dipole_dipole(p,c)
         end do
      end do
 !$omp end parallel do
-     call print_eigenvalues(p%Lx, p%Ly, p%Lz, dipoI, trim(p%filename)//'.dipole-dipole-long.dat')
+     call print_eigenvalues(p%Lx, p%Ly, p%Lz, dipoI, trim(p%filename)//'.long.dat')
 
 !$omp parallel do
      do iz= 0, p%Lz-1
@@ -50,7 +50,7 @@ subroutine dipole_dipole(p,c)
         end do
      end do
 !$omp end parallel do
-     call print_eigenvalues(p%Lx, p%Ly, p%Lz, dipoI, trim(p%filename)//'.dipole-dipole-long+short.dat')
+     call print_eigenvalues(p%Lx, p%Ly, p%Lz, dipoI, trim(p%filename)//'.long+short.dat')
      deallocate(dipoI)
   end if
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'construction of short- and long-range interaction.')
