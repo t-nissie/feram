@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-04-12 18:10:36 takeshi>
+# Time-stamp: <2016-04-14 15:24:06 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -152,7 +152,6 @@ wave_check.gp \
 09example-BaTiO3-bulk-leap-frog \
 10example-PbTiO3-DDB2short \
 17example-PbTiO3-100-900K \
-18example-benchmark \
 20example-BaTiO3-new-param-pyro \
 21example-KNbO3 \
 22example-BaTiO3-new-param-hl \
@@ -166,6 +165,7 @@ wave_check.gp \
 30example-BaTiO3-new-param-ramping-off \
 31example-BaTiO3-new-param-thermal-conductivity \
 32example-BaTiO3-old-64x64x1024-benchmark \
+33example-BaTiO3-9.33-11.33-relaxor \
 zzz16.feram_check \
 zzzgap.feram_check \
 zzzlf.feram_check \
