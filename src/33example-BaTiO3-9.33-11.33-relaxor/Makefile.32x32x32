@@ -30,10 +30,12 @@ orderd: ../feram_fcc_maker.rb
 
 orderd32.gp: random.gp
 	sed -e 's/random/orderd/'\
+            -e 's/\.eps/32.eps/'\
             -e 's/= 16/= 32/' $< > $@
 
 random32.gp: random.gp
-	sed -e 's/= 16/= 32/' $< > $@
+	sed -e 's/\.eps/32.eps/'\
+            -e 's/= 16/= 32/' $< > $@
 
 clean:
 	rm -f *.sh random orderd *K* *.eps *.pdf *32.gp
