@@ -414,7 +414,7 @@ Use attached feram_random_field_generator for generating random fields.
  $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
 
 === .relaxor file
-.relaxor input file specifies ionic configurations.
+.relaxor input file specifies "ionic configurations".
 If there is no .relaxor file, the system is an ordinary ABO3 crystal.
 i_relaxor must be from 1 to 3 (RELAXOR_MAX is defined in src/define.h).
 
@@ -430,9 +430,10 @@ i_relaxor must be from 1 to 3 (RELAXOR_MAX is defined in src/define.h).
 
 You can omit the fist line of this example,
 because the default value for i_relaxor is 1.
-Z_star, mass, ... can be changed with
-the .relaxor input file.
-The value should be written in .feram input file.
+Local parameters of
+Z_star, mass_amu, acoustic_mass_amu, P_kappa2, P_alpha, P_gamma, P_k1, P_k2, P_k3, P_k4
+can be changed with the .relaxor input file.
+The three values should be written in .feram input file.
 
  Z_star = 2.0 5.0 4.0
 

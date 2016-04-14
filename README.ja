@@ -400,9 +400,9 @@ feramを次のようにパラメータ・ファイル "foo123.feram" を引数�
  $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
 
 === .relaxor file
-各サイトのイオンを指定します．
+各サイトの「イオン」を指定します．
 リラクサー (relaxor) を想定しています．
-このファイルがなければ普通のABO3。
+このファイルがなければ普通のABO3強誘電体のシミュレーションです．
 i_relaxorは1〜3（最大値はsrc/define.hで指定）．
 デフォルトが1なので，次の例の１行目は省略可．
 
@@ -416,8 +416,8 @@ i_relaxorは1〜3（最大値はsrc/define.hで指定）．
     :
     :
 
-i_relaxorにより変えることができるのは，
-Z_star, mass, ...．
+i_relaxorにより変えることができるのは，ローカルなパラメーターの
+Z_star, mass_amu, acoustic_mass_amu, P_kappa2, P_alpha, P_gamma, P_k1, P_k2, P_k3, P_k4．
 .feramインプットファイルで，
 
  Z_star = 2.0 5.0 4.0
