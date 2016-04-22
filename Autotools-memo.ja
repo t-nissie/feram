@@ -195,6 +195,12 @@ http://loto.sourceforge.net/feram/
  * configure.ac    https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/configure.ac
  * Makefile.am     https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/Makefile.am
  * src/Makefile.am https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/src/Makefile.am
+=== Ruby
+Rubyは独特で高度な方法でconfigureを生成している。真似すべきではないかもしれない。
+configure.inとMakefile.inそしていくつかのツールを独自に書いており、autoconfのみを使う。
+ソースは、src/サブディレクトリではなく、メインディレクトリに置かれている。
+make V=1とverbosityを指定することで、makeの実行するコマンドの詳細が表示されるようになっている。
+https://github.com/ruby/ruby 。
 
 == configureとmakeとの高速化
 大規模なプロジェクトではconfigureとmakeとにかかる時間が増大し、開発者をイライラさせる。
