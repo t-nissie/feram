@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-04-08 16:54:52 takeshi>
+! Time-stamp: <2016-04-25 10:18:21 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -81,6 +81,7 @@ module Param_module
      real*8 epsilon_inf   ! relative dielectric constant of core ions
      real*8 kappa         ! arbitrary kappa for dipole-dipole-long-range.F
      logical plot_dispersion
+     logical output_polarization
      !--- Thermal conductivity ------------------------
      real*8 delta_e      ! [eV/unitcell]
      real*8 delta_e_acou ! [eV/unitcell]
@@ -167,6 +168,7 @@ contains
     p%kappa = 0.0d0
     p%continue = .false.
     p%plot_dispersion = .false.
+    p%output_polarization = .false.
     p%delta_e      = 0.0d0
     p%delta_e_acou = 0.0d0
     p%verbose = 1
@@ -397,6 +399,8 @@ contains
           read(str,*) dmy1, dmy2, p%continue
        case('plot_dispersion')
           read(str,*) dmy1, dmy2, p%plot_dispersion
+       case('output_polarization')
+          read(str,*) dmy1, dmy2, p%output_polarization
        case('delta_e')
           read(str,*) dmy1, dmy2, p%delta_e
        case('delta_e_acou')

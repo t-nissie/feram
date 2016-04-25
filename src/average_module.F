@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2016-04-07 20:47:10 takeshi>
+! Time-stamp: <2016-04-25 10:43:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -54,7 +54,7 @@ contains
     avg%distribution3d(:,:,:) = 0
   end subroutine reset_Average
 
-  subroutine add_to_Average(p,c,e,avg,detail) ! We use p implicitly. Don't worry about compile warning on it.
+  subroutine add_to_Average(p,c,e,avg,detail)
     use Param_module
     use Coord_module
     use msg_module
@@ -159,14 +159,17 @@ contains
        end do
     end if
 
+    u_tmp(:) = u_tmp(:) / c%n_sum_p
+    p_tmp(:) = p_tmp(:) / c%n_sum_p
+
+    if (p%output_polarization) write(UNIT_POLARIZATION, '(f13.10,2f14.10)') p_tmp(1:3)
+
     if (detail) then
-       u_tmp(:) = u_tmp(:) / c%n_sum_p
        write(message,'("<u>   =",3f10.6)') u_tmp(1:3)
        call msg_ez(UNIT_LOG,message)
        write(message,'("sigma =",3f10.6)') sqrt(uu_tmp(1:3)/c%n_sum_p - u_tmp(1:3)**2)
        call msg_ez(UNIT_LOG,message)
 
-       p_tmp(:) = p_tmp(:) / c%n_sum_p
        write(message,'("<p>   =",3f10.6)') p_tmp(1:3)
        call msg_ez(UNIT_LOG,message)
        write(message,'("sigma =",3f10.6)') sqrt(pp_tmp(1:3)/c%n_sum_p - p_tmp(1:3)**2)

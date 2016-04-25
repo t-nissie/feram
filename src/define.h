@@ -9,6 +9,7 @@
 #define UNIT_WISDOM 20
 #define UNIT_QUADRATIC 22
 #define UNIT_RELAXOR 24
+#define UNIT_POLARIZATION 26
 
 /* length */
 #define FILE_NAME_LEN 300
