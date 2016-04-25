@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-04-14 15:24:06 takeshi>
+# Time-stamp: <2016-04-25 11:35:53 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -113,7 +113,7 @@ CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check
              feram_mpi_check.F \
              feram_mpi_check.o \
              feram_mpi_common_check.o \
-             zzz*.log zzz16.*.coord zzzgap.*.fft \
+             zzz*.log zzz*.polarization zzz16.*.coord zzzgap.*.fft \
              decay_function_ulmul.en.html \
              feram_defects_maker_check.defects wisdom_new wisdom_SoA \
              feram_eigenvalues2j_check.in \
