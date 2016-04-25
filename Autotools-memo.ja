@@ -196,8 +196,9 @@ http://loto.sourceforge.net/feram/
  * Makefile.am     https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/Makefile.am
  * src/Makefile.am https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/src/Makefile.am
 === Ruby
-Rubyは独特で高度な方法でconfigureを生成している。真似すべきではないかもしれない。
-configure.inとMakefile.inそしていくつかのツールを独自に書いており、autoconfのみを使う。
+Rubyは独特で高度な方法でconfigureを生成している。安易に真似すべきではないかもしれない。
+configure.inとMakefile.inそしていくつかのツールが独自に書かれていて、autoconfのみを使う。
+configureでGNU makeでもBSD makeでも有効なポータブルなMakefileが生成される。
 ソースは、src/サブディレクトリではなく、メインディレクトリに置かれている。
 make V=1とverbosityを指定することで、makeの実行するコマンドの詳細が表示されるようになっている。
 https://github.com/ruby/ruby 。
