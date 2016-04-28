@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-04-25 11:35:53 takeshi>
+# Time-stamp: <2016-04-28 13:51:32 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -21,7 +21,8 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_defects_maker.rb \
                    feram_fcc_maker.rb \
                    feram_slicer.rb
-check_PROGRAMS = feram_fftw_SoA marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check\
+check_PROGRAMS = feram_fftw_SoA \
+                 feram_fftw_1d marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check\
                  date_and_time_check msg_check decay_function_check
 TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp decay_function_check.gp\
          feram_defects_maker_check.sh \
@@ -76,6 +77,8 @@ feram_SOURCES = $(feram_MODULES) $(feram_SRCS)
 feram_fftw_wisdom_SOURCES = feram_fftw_wisdom.F feram_fftw_wisdom_timing.F feram_fftw_wisdom_out.F feram_fftw_wisdom_in.F
 
 feram_fftw_SoA_SOURCES    = feram_fftw_SoA.F    feram_fftw_wisdom_timing.F feram_fftw_SoA_out.F    feram_fftw_SoA_in.F
+
+feram_fftw_1d_SOURCES     = feram_fftw_1d.F     feram_fftw_1d_timing.F                             feram_fftw_1d_in.F
 
 feram_diagonalize15x15_SOURCES = feram_diagonalize15x15.F
 
@@ -225,6 +228,7 @@ feram_eigenvalues2j.o:          param_module.o define.h msg_module.o
 feram_distribution3d2ppm.o:     average_module.o rgb_module.o
 feram_fftw_wisdom.o:            feram_fftw_wisdom_timing.o feram_fftw_wisdom_out.o feram_fftw_wisdom_in.o
 feram_fftw_SoA.o:               feram_fftw_wisdom_timing.o feram_fftw_SoA_out.o feram_fftw_SoA_in.o
+feram_fftw_1d.o:                feram_fftw_1d_timing.o                          feram_fftw_1d_in.o
 msg_check.o:                    msg_module.o
 msg_module.o:                       define.h
 param_module.o print-eigenvalues.o: define.h msg_module.o

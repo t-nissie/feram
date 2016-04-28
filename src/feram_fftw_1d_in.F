@@ -1,5 +1,5 @@
 ! feram_fftw_1d_in.F -*-f90-*-
-! Time-stamp: <2016-04-26 17:47:02 takeshi>
+! Time-stamp: <2016-04-28 13:44:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine feram_fftw_1d_in(howmany, N_TIMES, n_average, flags, plan_r2c, plan_c2r)
@@ -82,8 +82,8 @@ subroutine feram_fftw_1d_in(howmany, N_TIMES, n_average, flags, plan_r2c, plan_c
   end do
 !$omp end parallel do
 
-!  call feram_fftw_1d_timing(howmany, N_TIMES, n_average, '  in', &
-!     &                              count_begin, count_end, count_rate, count_max)
+ call feram_fftw_1d_timing(howmany, N_TIMES, n_average, '  in', &
+    &                              count_begin, count_end, count_rate, count_max)
 
   call fftw_free(inho_ptr)
 end subroutine feram_fftw_1d_in
