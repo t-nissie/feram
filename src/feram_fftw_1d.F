@@ -1,5 +1,5 @@
 ! feram_fftw_1d.F -*-f90-*-
-! Time-stamp: <2016-04-26 19:50:04 takeshi>
+! Time-stamp: <2016-05-03 16:30:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -52,7 +52,7 @@ program feram_fftw_1d
        &                                                        plan_c2r_3_in)
 
 #ifndef WITH_FFT_MKL
-  ireturn = fftw_export_wisdom_to_filename(C_CHAR_"wisdom_1d"//C_NULL_CHAR)
+  ireturn = fftw_export_wisdom_to_filename(C_CHAR_"wisdom_1d_new"//C_NULL_CHAR)
 #endif
   call fftw_destroy_plan(plan_r2c_3_in)
   call fftw_destroy_plan(plan_c2r_3_in)
