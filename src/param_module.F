@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-04-25 10:18:21 takeshi>
+! Time-stamp: <2016-05-11 10:15:44 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -268,7 +268,7 @@ contains
           read(str,*) dmy1, dmy2, p%n_average
        case('n_E_wave_period')
           read(str,*) dmy1, dmy2, p%n_E_wave_period
-          if (mod(p%n_E_wave_period,4).ne.0) then
+          if (p%E_wave_type(1:7).ne.'ramping' .and. mod(p%n_E_wave_period,4).ne.0) then
              write(0,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
              stop ': Input error: n_E_wave_period must be divided by 4.'
           end if

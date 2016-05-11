@@ -232,7 +232,8 @@ n_E_wave_period is the period of alternating external electric field
 which have external_E_field amplitude. Set 'triangular_sin' or
 'triangular_cos' to E_wave_type. See example files in
 src/27example-BaTiO3-new-param-E_wave/ .
-n_E_wave_period must be a positive integer divisible by 4.
+n_E_wave_period must be a positive integer divisible by 4
+for 'triangular_sin' or 'triangular_cos'.
 You can also use 'ramping_off' and 'ramping_on'.
 \Fig:E_wave doc/figures/E_wave.jpg
   Four options of E_wave_type.

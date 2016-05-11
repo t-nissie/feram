@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-05-07 15:08:18 takeshi>
+# Time-stamp: <2016-05-11 16:35:07 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -30,6 +30,7 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          zzz16.feram_check \
          zzzgap.feram_check \
          zzzlf.feram_check \
+         zzzramping.feram_check \
          zzznp.feram_check \
          zzzvs.feram_check \
          zzzlf.gp \
