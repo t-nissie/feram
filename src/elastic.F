@@ -1,10 +1,11 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:30:38 takeshi>
+! Time-stamp: <2016-05-12 16:17:13 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
 #include "define.h"
 subroutine elastic(p,c)
+  use, intrinsic :: iso_c_binding
   use Param_module
   use Coord_module
   use msg_module
@@ -17,6 +18,14 @@ subroutine elastic(p,c)
   real*8  k(0:3)
   integer, parameter :: ki(3,3) = reshape((/0,3,2, 3,0,1, 2,1,0/),(/3,3/))
   character (len=100) :: fn
+  type(C_PTR) :: plan_r2c_1_out = c_null_ptr
+  include 'fftw3.f03'
+  integer howmany,stride
+  integer, parameter :: rank=3
+  integer, parameter :: dist=1
+  integer  LzLyLx(3)
+  integer d_embed(3)
+  integer z_embed(3)
   !--- END of variable definitions -------------------
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'make elastic constant matrix.')
 
@@ -167,6 +176,30 @@ subroutine elastic(p,c)
      end do
   end do
   !write(6,'(6f10.5)') ((c%inhomo_coup2_K(alpha,i, 1,1,1), i=1,6), alpha=1,3)
+
+  ! c%c_over_N_k_acoustic_penalty_k -----------------------------
+  LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
+  d_embed(1)=p%Lz; d_embed(2)=p%Ly+p%padding_y; d_embed(3)=2*(p%Lx/2+1)
+  z_embed(1)=p%Lz; z_embed(2)=p%Ly+p%padding_y; z_embed(3)=p%Lx/2+1
+  howmany = 1
+  stride = howmany
+  plan_r2c_1_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+       &                                    c%acoustic_penalty_R,d_embed,stride,dist,&
+       &                                    c%acoustic_penalty_k,z_embed,stride,dist,FFTW_ESTIMATE)
+  call fftw_execute_dft_r2c(plan_r2c_1_out, c%acoustic_penalty_R, c%acoustic_penalty_k)
+  !write(6,'(2f10.5)') c%acoustic_penalty_k(0,0,0)
+  do iz = 0, p%Lz-1
+     k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
+     k(3) = k(3) * M_2PI / p%a0
+     do iy = 0, p%Ly-1
+        k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
+        k(2) = k(2) * M_2PI / p%a0
+        do ix = 0, p%Lx/2
+           k(1) = dble(ix) / p%Lx * M_2PI / p%a0
+           c%c_over_N_k_acoustic_penalty_k(:,ix,iy,iz) = k(:) * c%acoustic_penalty_k(ix,iy,iz)
+        end do
+     end do
+  end do
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '')
 end subroutine elastic
