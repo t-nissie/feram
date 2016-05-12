@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-05-12 16:16:42 takeshi>
+! Time-stamp: <2016-05-12 18:47:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -54,6 +54,7 @@ module Coord_module
      type(C_PTR) ::         inho_ptr = c_null_ptr
      type(C_PTR) ::         dVdac_ptr = c_null_ptr
      ! These plans are odered as in feram_fftw_wisdom.F.
+     type(C_PTR) ::         plan_r2c_1_out = c_null_ptr   ! will be made with FFTW_ESTIMATE, used in elastic.F once
      type(C_PTR) ::         plan_c2r_3_in  = c_null_ptr   ! dVdacK->dVdacR (dVdac.F)
      type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr   ! inhoK->inhoR (dVddi_inho_coupling.F)
      type(C_PTR) ::         plan_r2c_3_out = c_null_ptr   ! dipoR->dipoK (dipoFFT.F), acouR->acouK (acouFFT.F)
@@ -328,6 +329,11 @@ contains
        c%c_over_N_k_acoustic_penalty_k(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
+    howmany = 1
+    stride = howmany
+    c%plan_r2c_1_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+         &                                    c%acoustic_penalty_R,d_embed,stride,dist,&
+         &                                    c%acoustic_penalty_k,z_embed,stride,dist,FFTW_ESTIMATE)
 
     !--- force on acoustic displacement --------
     howmany = 3
