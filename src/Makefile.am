@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-05-11 16:35:07 takeshi>
+# Time-stamp: <2016-05-12 09:15:39 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -109,7 +109,7 @@ wave_check_SOURCES = wave_check.f wave_module.F
 
 msg_check_SOURCES = msg_check.F msg_module.F
 
-CLEANFILES = *.mod *.lst *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm $(check_PROGRAMS) \
+CLEANFILES = *.mod *.lst *.hl *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm $(check_PROGRAMS) \
              *.optrpt \
              feram_mpi \
              feram_mpi.o \
@@ -173,6 +173,7 @@ wave_check.gp \
 zzz16.feram_check \
 zzzgap.feram_check \
 zzzlf.feram_check \
+zzzramping.feram_check \
 zzznp.feram_check \
 zzzvs.feram_check \
 zzzlf.gp \

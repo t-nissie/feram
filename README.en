@@ -235,6 +235,8 @@ src/27example-BaTiO3-new-param-E_wave/ .
 n_E_wave_period must be a positive integer divisible by 4
 for 'triangular_sin' or 'triangular_cos'.
 You can also use 'ramping_off' and 'ramping_on'.
+n_E_wave_period must no be divisible by 4 for
+'ramping_on' and 'ramping_off' cases.
 \Fig:E_wave doc/figures/E_wave.jpg
   Four options of E_wave_type.
 /Fig:E_wave
