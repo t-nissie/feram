@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-05-12 12:23:22 takeshi>
+! Time-stamp: <2016-05-13 09:07:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -72,7 +72,7 @@ module Param_module
      real*8 B11, B12 ,B44
      !--- Elastic Coupling ----------------------------
      real*8 B1xx, B1yy, B4yz
-     real*8 acoustic_penalty_constant
+     real*8 acoustic_modulation_constant
      !--- Dipole --------------------------------------
      integer seed(2)
      real*8  init_dipo_avg(3) ! Average   of initial dipole displacements
@@ -168,7 +168,7 @@ contains
     p%B1xx        = 0.0d0
     p%B1yy        = 0.0d0
     p%B4yz        = 0.0d0
-    p%acoustic_penalty_constant = 0.0d0
+    p%acoustic_modulation_constant = 0.0d0
     p%seed(1) = 123456789
     p%seed(2) = 987654321
     p%init_dipo_avg(:) = 0.00d0

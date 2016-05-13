@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-05-12 18:47:56 takeshi>
+! Time-stamp: <2016-05-13 09:07:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -34,9 +34,9 @@ module Coord_module
      real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
      complex*16, allocatable :: acouK(:,:,:,:)   ! Acoustic displacements
      real*8,     allocatable :: acouP(:,:,:,:)
-     real*8,     allocatable :: acoustic_penalty_R(:,:,:)
-     complex*16, allocatable :: acoustic_penalty_k(:,:,:)
-     complex*16, allocatable :: c_over_N_k_acoustic_penalty_k(:,:,:,:)
+     real*8,     allocatable :: acoustic_modulation_R(:,:,:)
+     complex*16, allocatable :: acoustic_modulation_k(:,:,:)
+     complex*16, allocatable :: c_over_N_k_acoustic_modulation_k(:,:,:,:)
      real*8,     allocatable :: inhomo_K(  :,:, :,:,:)     ! FTed potential. See cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621 .
      real*8,     allocatable :: inhomo_K_G(:,:, :,:,:)     ! inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
      real*8,     allocatable :: inhomo_coup2_K(:,:, :,:,:) ! FTed potential
@@ -305,35 +305,35 @@ contains
          &                                  c%acouK,z_embed,stride,dist,&
          &                                  c%acouR,d_embed,stride,dist,FFTW_MEASURE)
 
-    !--- acoustic penalty -------------------------------
-    if (allocated(c%acoustic_penalty_R)) deallocate(c%acoustic_penalty_R)
-    allocate(c%acoustic_penalty_R(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
-    if (allocated(c%acoustic_penalty_k)) deallocate(c%acoustic_penalty_k)
-    allocate(c%acoustic_penalty_k(0:p%Lx/2,         0:p%Ly+p%padding_y-1, 0:p%Lz-1))
-    if (allocated(c%c_over_N_k_acoustic_penalty_k)) deallocate(c%c_over_N_k_acoustic_penalty_k)
-    allocate(c%c_over_N_k_acoustic_penalty_k( &
+    !--- acoustic modulation -------------------------------
+    if (allocated(c%acoustic_modulation_R)) deallocate(c%acoustic_modulation_R)
+    allocate(c%acoustic_modulation_R(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    if (allocated(c%acoustic_modulation_k)) deallocate(c%acoustic_modulation_k)
+    allocate(c%acoustic_modulation_k(0:p%Lx/2,         0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    if (allocated(c%c_over_N_k_acoustic_modulation_k)) deallocate(c%c_over_N_k_acoustic_modulation_k)
+    allocate(c%c_over_N_k_acoustic_modulation_k( &
          &                     3, 0:p%Lx/2,         0:p%Ly+p%padding_y-1, 0:p%Lz-1))
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%acoustic_penalty_R(:,:,iz) = 0.0d0
+       c%acoustic_modulation_R(:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%acoustic_penalty_k(:,:,iz) = (0.0d0,0.0d0)
+       c%acoustic_modulation_k(:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%c_over_N_k_acoustic_penalty_k(:,:,:,iz) = (0.0d0,0.0d0)
+       c%c_over_N_k_acoustic_modulation_k(:,:,:,iz) = (0.0d0,0.0d0)
     end do
 !$omp end parallel do
     howmany = 1
     stride = howmany
     c%plan_r2c_1_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
-         &                                    c%acoustic_penalty_R,d_embed,stride,dist,&
-         &                                    c%acoustic_penalty_k,z_embed,stride,dist,FFTW_ESTIMATE)
+         &                                    c%acoustic_modulation_R,d_embed,stride,dist,&
+         &                                    c%acoustic_modulation_k,z_embed,stride,dist,FFTW_ESTIMATE)
 
     !--- force on acoustic displacement --------
     howmany = 3
