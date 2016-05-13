@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:30:48 takeshi>
+! Time-stamp: <2016-05-13 13:48:35 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -16,6 +16,7 @@ module Energy_module
      real*8 homo_coupling     ! optimize-homo-strain.F
      real*8 inho_strain       ! optimize-inho-strain.F
      real*8 inho_coupling     ! optimize-inho-strain.F
+     real*8 inho_modulation   ! optimize-inho-strain.F
      real*8 total
 
      real*8 H_Nose_Poincare
@@ -41,6 +42,7 @@ contains
     add_Energy%homo_coupling   = a%homo_coupling   + b%homo_coupling
     add_Energy%inho_strain     = a%inho_strain     + b%inho_strain
     add_Energy%inho_coupling   = a%inho_coupling   + b%inho_coupling
+    add_Energy%inho_modulation = a%inho_modulation + b%inho_modulation
     add_Energy%total           = a%total           + b%total
 
     add_Energy%H_Nose_Poincare = a%H_Nose_Poincare + b%H_Nose_Poincare
@@ -62,6 +64,7 @@ contains
     div_Energy%homo_coupling   = a%homo_coupling   / n
     div_Energy%inho_strain     = a%inho_strain     / n
     div_Energy%inho_coupling   = a%inho_coupling   / n
+    div_Energy%inho_modulation = a%inho_modulation / n
     div_Energy%total           = a%total           / n
 
     div_Energy%H_Nose_Poincare = a%H_Nose_Poincare / n
@@ -79,7 +82,8 @@ contains
          + e%homo_strain   &
          + e%homo_coupling &
          + e%inho_strain   &
-         + e%inho_coupling
+         + e%inho_coupling &
+         + e%inho_modulation
   end function sum_potential_energies
 
   subroutine write_Energy(p,c,e,fd)
@@ -108,6 +112,7 @@ contains
     write(message,fmt) 'homo_coupling  ', e%homo_coupling*p%Ninv;   call msg_ez(fd,message)
     write(message,fmt) 'inho_strain    ', e%inho_strain*p%Ninv;     call msg_ez(fd,message)
     write(message,fmt) 'inho_coupling  ', e%inho_coupling*p%Ninv;   call msg_ez(fd,message)
+    write(message,fmt) 'inho_modulation', e%inho_modulation*p%Ninv; call msg_ez(fd,message)
     call msg_ez(fd,'--------------------------------------------')
     write(message,fmt) 'total_energy   ', e%total*p%Ninv;           call msg_ez(fd,message)
 
@@ -201,4 +206,34 @@ contains
 !$omp end parallel do
     e%inho_coupling = tmpS * 2 * p%Ninv
   end subroutine inhomogeneous_coupling_energy
+
+  subroutine inhomogeneous_modulation_energy(p,c,e)
+    use Param_module
+    use Coord_module
+    implicit none
+    !--- arguments -------------------------------------
+    type(Param_type),  intent(in)    :: p
+    type(Coord_type),  intent(in)    :: c
+    type(Energy_type), intent(inout) :: e
+    !--- local -----------------------------------------
+    real*8  :: tmp1,tmp2,tmp3,tmpS
+    integer :: i, alpha, iy,iz
+    !--- END of variable definitions -------------------
+    tmpS = 0.0d0
+!$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
+    do iz = 0, p%Lz-1
+       do iy = 0, p%Ly-1
+          do i = 1,6
+             do alpha = 1,3
+                tmp1 =      dble( conjg(c%acouK(alpha, 0,         iy,iz)) * c%c_k_modulation_k(alpha, 0,         iy,iz) ) / 2
+                tmp2 = sum( dble( conjg(c%acouK(alpha, 1:p%Lx/2-1,iy,iz)) * c%c_k_modulation_k(alpha, 1:p%Lx/2-1,iy,iz) ) )
+                tmp3 =      dble( conjg(c%acouK(alpha,   p%Lx/2,  iy,iz)) * c%c_k_modulation_k(alpha,   p%Lx/2,  iy,iz) ) / 2
+                tmpS = tmpS + tmp1 + tmp2 + tmp3
+             end do
+          end do
+       end do
+    end do
+!$omp end parallel do
+    e%inho_modulation = tmpS * 2 * p%Ninv
+  end subroutine inhomogeneous_modulation_energy
 end module Energy_module

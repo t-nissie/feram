@@ -1,5 +1,5 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2016-04-07 21:16:52 takeshi>
+! Time-stamp: <2016-05-13 14:02:30 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine mirror_force_mirror(p,c,e)
@@ -70,6 +70,7 @@ subroutine mirror_force_mirror(p,c,e)
   end if
   call inhomogeneous_strain_energy(p,c,e)
   call inhomogeneous_coupling_energy(p,c,e)
+  call inhomogeneous_modulation_energy(p,c,e)
   call dVddi_inho_coupling(p,c)
 
   ! mirror (Maybe, it is not necessary.)

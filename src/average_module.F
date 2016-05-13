@@ -1,5 +1,5 @@
 ! average_module.F -*-f90-*-
-! Time-stamp: <2016-04-25 10:43:56 takeshi>
+! Time-stamp: <2016-05-13 14:00:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -34,7 +34,7 @@ contains
     !--- arguments -------------------------------------
     type(Average_type), intent(inout) :: avg
     !--- END of variable definitions -------------------
-    avg%energy            = Energy_type(0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0)
+    avg%energy            = Energy_type(0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0)
     avg%e2                = 0.0d0
     avg%acou_kinetic_true = 0.0d0
     avg%dipo_kinetic_true = 0.0d0
@@ -240,7 +240,7 @@ contains
     write(fn_avg,'(a,a)') trim(p%filename), '.avg'
     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn_avg)
     open(unit=UNIT_AVG,file=fn_avg, status='REPLACE')
-    write(UNIT_AVG,"(f8.3,3f9.5,1(e15.5,5e13.5),1(e15.5,2e13.5),1(e15.5,5e13.5),1(1e17.7,13e15.7),1(e15.5,2e13.5),1(e15.5,5e13.5))")&
+    write(UNIT_AVG,"(f8.3,3f9.5,1(e15.5,5e13.5),1(e15.5,2e13.5),1(e15.5,5e13.5),1(1e17.7,14e15.7),1(e15.5,2e13.5),1(e15.5,5e13.5))")&
          p%kelvin, p%external_E_field(1:3), avg%strain(1:6), avg%u(1:3), avg%uu(1:6),&
          avg%energy%dipo_kinetic    ,&
          avg%energy%long_range      ,&
@@ -256,6 +256,7 @@ contains
          avg%dipo_kinetic_true      ,&
          avg%energy%acou_kinetic    ,&
          avg%energy%short_range     ,&
+         avg%energy%inho_modulation ,&
          avg%p(1:3), avg%pp(1:6)
     close(UNIT_AVG)
 
