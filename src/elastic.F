@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2016-05-12 18:47:34 takeshi>
+! Time-stamp: <2016-05-12 19:02:31 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -178,7 +178,8 @@ subroutine elastic(p,c)
         k(2) = k(2) * M_2PI / p%a0
         do ix = 0, p%Lx/2
            k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-           c%c_over_N_k_acoustic_penalty_k(:,ix,iy,iz) = k(:) * c%acoustic_penalty_k(ix,iy,iz)
+           c%c_over_N_k_acoustic_penalty_k(:,ix,iy,iz) = p%acoustic_penalty_constant * p%Ninv &
+                &                      * k(:) * c%acoustic_penalty_k(ix,iy,iz)
         end do
      end do
   end do
