@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2016-05-13 09:07:32 takeshi>
+! Time-stamp: <2016-05-13 09:36:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -167,9 +167,9 @@ subroutine elastic(p,c)
   end do
   !write(6,'(6f10.5)') ((c%inhomo_coup2_K(alpha,i, 1,1,1), i=1,6), alpha=1,3)
 
-  ! c%c_over_N_k_acoustic_modulation_k -----------------------------
-  call fftw_execute_dft_r2c(c%plan_r2c_1_out, c%acoustic_modulation_R, c%acoustic_modulation_k)
-  !write(6,'(2f10.5)') c%acoustic_modulation_k(0,0,0)
+  ! c%c_over_N_k_modulation_k -----------------------------
+  call fftw_execute_dft_r2c(c%plan_r2c_1_out, c%modulation_R, c%modulation_k)
+  !write(6,'(2f10.5)') c%modulation_k(0,0,0)
   do iz = 0, p%Lz-1
      k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
      k(3) = k(3) * M_2PI / p%a0
@@ -178,8 +178,8 @@ subroutine elastic(p,c)
         k(2) = k(2) * M_2PI / p%a0
         do ix = 0, p%Lx/2
            k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-           c%c_over_N_k_acoustic_modulation_k(:,ix,iy,iz) = p%acoustic_modulation_constant * p%Ninv &
-                &                      * k(:) * c%acoustic_modulation_k(ix,iy,iz)
+           c%c_over_N_k_modulation_k(:,ix,iy,iz) = p%modulation_constant * p%Ninv &
+                &                      * k(:) * c%modulation_k(ix,iy,iz)
         end do
      end do
   end do
