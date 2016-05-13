@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2016-05-13 10:12:33 takeshi>
+! Time-stamp: <2016-05-13 13:06:34 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -168,7 +168,7 @@ subroutine elastic(p,c)
   end do
   !write(6,'(6f10.5)') ((c%inhomo_coup2_K(alpha,i, 1,1,1), i=1,6), alpha=1,3)
 
-  ! c%c_over_N_k_modulation_k -----------------------------
+  ! c%c_k_modulation_k -----------------------------
   open(unit=UNIT_MODULATION, file=trim(p%filename)//'.modulation', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.modulation was found.')
@@ -207,8 +207,7 @@ subroutine elastic(p,c)
               k(2) = k(2) * M_2PI / p%a0
               do ix = 0, p%Lx/2
                  k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-                 c%c_over_N_k_modulation_k(:,ix,iy,iz) = p%modulation_constant * p%Ninv &
-                      &                      * k(:) * c%modulation_k(ix,iy,iz)
+                 c%c_k_modulation_k(:,ix,iy,iz) = p%modulation_constant * k(:) * c%modulation_k(ix,iy,iz)
               end do
            end do
         end do
