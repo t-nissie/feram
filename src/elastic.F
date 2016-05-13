@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2016-05-13 09:36:34 takeshi>
+! Time-stamp: <2016-05-13 10:12:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -12,9 +12,11 @@ subroutine elastic(p,c)
   type(Param_type), intent(in)    :: p
   type(Coord_type), intent(inout) :: c
   integer ix,iy,iz, alpha,beta, i,j, other1, other2
-  real*8  k(0:3)
+  real*8 :: k(0:3), a_modulation
   integer, parameter :: ki(3,3) = reshape((/0,3,2, 3,0,1, 2,1,0/),(/3,3/))
-  character (len=100) :: fn
+  integer :: line_number, ios
+  character (len=300) :: str
+  character (len=1)   :: tmp
   include 'fftw3.f03'
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'make elastic constant matrix.')
@@ -105,9 +107,8 @@ subroutine elastic(p,c)
 !$omp end parallel do
 
   if (p%plot_dispersion) then
-     write(fn,'(a,a)') trim(p%filename),'.inhomo-K.dat'
-     call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%inhomo_K, fn)
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME',fn)
+     call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%inhomo_K, trim(p%filename)//'.inhomo-K.dat')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME',   trim(p%filename)//'.inhomo-K.dat')
   end if
 
   ! See [1] of cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621
@@ -168,21 +169,58 @@ subroutine elastic(p,c)
   !write(6,'(6f10.5)') ((c%inhomo_coup2_K(alpha,i, 1,1,1), i=1,6), alpha=1,3)
 
   ! c%c_over_N_k_modulation_k -----------------------------
-  call fftw_execute_dft_r2c(c%plan_r2c_1_out, c%modulation_R, c%modulation_k)
-  !write(6,'(2f10.5)') c%modulation_k(0,0,0)
-  do iz = 0, p%Lz-1
-     k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
-     k(3) = k(3) * M_2PI / p%a0
-     do iy = 0, p%Ly-1
-        k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
-        k(2) = k(2) * M_2PI / p%a0
-        do ix = 0, p%Lx/2
-           k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-           c%c_over_N_k_modulation_k(:,ix,iy,iz) = p%modulation_constant * p%Ninv &
-                &                      * k(:) * c%modulation_k(ix,iy,iz)
-        end do
+  open(unit=UNIT_MODULATION, file=trim(p%filename)//'.modulation', status='old', action='read', iostat=ios)
+  if (ios.eq.0) then
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.modulation was found.')
+     line_number = 0
+     do
+        read(UNIT_MODULATION, '(a)', IOSTAT=ios) str
+        if (ios.ne.0) exit
+        line_number = line_number + 1
+        read(str,*,IOSTAT=ios) tmp
+        if (ios.ne.0 .or. tmp.eq.'#') cycle
+        read(str,*,IOSTAT=ios) ix, iy, iz, a_modulation
+        if (ios.eq.0) then
+           c%modulation_R(ix, iy, iz) = a_modulation
+        else
+           call msg(0,        trim(p%filename)//'.modulation', line_number, 'There is something wrong in this line', trim(str))
+           call msg(UNIT_LOG, trim(p%filename)//'.modulation', line_number, 'There is something wrong in this line', trim(str))
+           call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'there is something wrong in the .modulation file.')
+           stop 1
+        end if
      end do
-  end do
+     call       msg(UNIT_LOG, trim(p%filename)//'.modulation', line_number, 'EOF', 'reached.')
+     call       msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.modulation was found and read successfully.')
+     close(UNIT_MODULATION)
+     if (p%modulation_constant.eq.0.0d0) then
+        call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'There is a .modulation file, but modulation_constant is zero.')
+        call msg(0,        __FILE__, __LINE__, 'STOP', 'There is a .modulation file, but modulation_constant is zero.')
+        stop 2
+     else
+        call fftw_execute_dft_r2c(c%plan_r2c_1_out, c%modulation_R, c%modulation_k)
+        !write(6,'(2f10.5)') c%modulation_k(0,0,0)
+        do iz = 0, p%Lz-1
+           k(3) = dble(iz)/p%Lz; if (k(3).gt.0.5d0) k(3)=k(3)-1.0d0
+           k(3) = k(3) * M_2PI / p%a0
+           do iy = 0, p%Ly-1
+              k(2) = dble(iy)/p%Ly; if (k(2).gt.0.5d0) k(2)=k(2)-1.0d0
+              k(2) = k(2) * M_2PI / p%a0
+              do ix = 0, p%Lx/2
+                 k(1) = dble(ix) / p%Lx * M_2PI / p%a0
+                 c%c_over_N_k_modulation_k(:,ix,iy,iz) = p%modulation_constant * p%Ninv &
+                      &                      * k(:) * c%modulation_k(ix,iy,iz)
+              end do
+           end do
+        end do
+     end if
+  else
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE_NOT_FOUND', '.modulation file was NOT found.')
+     if (p%modulation_constant.ne.0.0d0) then
+        call msg(UNIT_LOG, __FILE__, __LINE__, 'STOP', 'modulation_constant is non-zero, but .modulation was NOT found.')
+        call msg(0,        __FILE__, __LINE__, 'STOP', 'modulation_constant is non-zero, but .modulation was NOT found.')
+        stop 3
+     end if
+  end if
 
   call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '')
 end subroutine elastic

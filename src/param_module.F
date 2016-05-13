@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-05-13 09:36:34 takeshi>
+! Time-stamp: <2016-05-13 10:33:50 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -381,6 +381,8 @@ contains
           read(str,*) dmy1, dmy2, p%B1yy
        case('B4yz')
           read(str,*) dmy1, dmy2, p%B4yz
+       case('modulation_constant')
+          read(str,*) dmy1, dmy2, p%modulation_constant
        case('seed')
           read(str,*) dmy1, dmy2, p%seed(1), p%seed(2)
        case('init_dipo_avg')
@@ -430,7 +432,7 @@ contains
        case('DDB_g')
           read(str,*) dmy1, dmy2, p%DDB_g
        case default
-          write(0,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
+          write(0,'(a,a,i0,a,a)') trim(fn),':', line_number, ': ', trim(str)
           stop ': Input error: No such parameter'
        end select
        call msg_ez(UNIT_LOG,str)
