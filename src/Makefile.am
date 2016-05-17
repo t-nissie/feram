@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-05-12 09:15:39 takeshi>
+# Time-stamp: <2016-05-17 14:47:33 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -18,6 +18,7 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_cross_section_dVddi.sh \
                    feram_cross_section_p.sh \
                    feram_cross_section_q.sh \
+                   feram_cross_section_acouR.sh \
                    feram_defects_maker.rb \
                    feram_fcc_maker.rb \
                    feram_slicer.rb
@@ -35,6 +36,7 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          zzzvs.feram_check \
          zzzlf.gp \
          dispersion_check.sh \
+         modulation_check.sh \
          dispersion_32x32x32.inhomo-K.gp
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -117,7 +119,8 @@ CLEANFILES = *.mod *.lst *.hl *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_
              feram_mpi_check.F \
              feram_mpi_check.o \
              feram_mpi_common_check.o \
-             zzz*.log zzz*.polarization zzz16.*.coord zzzgap.*.fft \
+             zzz*.log zzz*.polarization zzz*.modulation zzz[1m]*.coord zzzgap.*.fft \
+             zzzmodulation.feram \
              decay_function_ulmul.en.html \
              feram_defects_maker_check.defects wisdom_new wisdom_SoA wisdom_1d_new \
              feram_eigenvalues2j_check.in \
@@ -134,8 +137,6 @@ CLEANFILES = *.mod *.lst *.hl *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_
              dispersion_*.log \
              msg_check.output
 EXTRA_DIST = define.h \
-feram_cross_section_dVddi.sh \
-feram_cross_section_p.sh \
 decay_function_check.gp \
 feram_fftw_wisdom.Makefile.SR16000-xlf90_r-fftw_xlc_simd \
 feram_fftw_wisdom.Makefile.gfortran \
@@ -178,6 +179,7 @@ zzznp.feram_check \
 zzzvs.feram_check \
 zzzlf.gp \
 dispersion_check.sh \
+modulation_check.sh \
 dispersion_32x32x32.inhomo-K.gp
 
 feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
