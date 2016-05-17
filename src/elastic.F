@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2016-05-13 13:06:34 takeshi>
+! Time-stamp: <2016-05-17 13:10:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -207,7 +207,7 @@ subroutine elastic(p,c)
               k(2) = k(2) * M_2PI / p%a0
               do ix = 0, p%Lx/2
                  k(1) = dble(ix) / p%Lx * M_2PI / p%a0
-                 c%c_k_modulation_k(:,ix,iy,iz) = p%modulation_constant * k(:) * c%modulation_k(ix,iy,iz)
+                 c%c_k_modulation_k(1:3,ix,iy,iz) = p%modulation_constant * k(1:3) * c%modulation_k(ix,iy,iz)
               end do
            end do
         end do
