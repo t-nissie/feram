@@ -351,13 +351,15 @@ L_x = L_y = L_z and they must be an even number.
 may be a good idea.
 
 For example, Try
- $ make check TESTS=dispersion_check.sh
+ $ make check TESTS='dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
 then, you will get dispersion_32x32x32.feram and dispersion_32x32x32.gp.
 Plotted results will be
-dispersion_32x32x32.long.interaction.eps and
-dispersion_32x32x32.long+short.interaction.eps.
-They are Fig.3(A) and (B) in Takeshi Nishimatsu el al.: Phys. Rev. B 82,
-134106 (2010), http://dx.doi.org/10.1103/PhysRevB.82.134106 .
+src/dispersion_32x32x32.long+short.energy.eps
+src/dispersion_32x32x32.long+short.eps
+src/dispersion_32x32x32.long+short.interaction.eps
+src/dispersion_32x32x32.inhomo-K.eps .
+Compare them with Fig.3(A) and (B) in [Takeshi Nishimatsu el al.: Phys. Rev. B 82,
+134106 (2010), http://dx.doi.org/10.1103/PhysRevB.82.134106] .
 
 ===== continue
 If feram is executed as
@@ -542,12 +544,24 @@ Parameter file for GNUPLOT.
 rename it to param.gp, then use it with cross_section_q.sh etc.
 
 === foo123.dipole-dipole-long+short.dat
-
-=== foo123.dipole-dipole-long.dat
-
-=== foo123.dipole-dipole-short.dat
-
-=== foo123.inhomo-K.dat
+foo123.dipole-dipole-long+short.dat, foo123.dipole-dipole-long.dat and
+foo123.dipole-dipole-short.dat will be made if plot_dispersion = .true.
+and contain optical phonon dispersion. foo123.inhomo-K.dat contains
+acoustic phonon dispersion. See src/08example-BaTiO3-dispersion/
+or try
+ $ tar xf SOMEWHERE/feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir builddirectory
+ $ cd builddirectory
+ $ ../configure && make -j4
+ $ make check TESTS='dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
+ $ less dispersion_32x32x32.feram   # the input file
+ $ less dispersion_32x32x32.gp      # the GNUPLOT script
+ $ gv src/dispersion_32x32x32.long+short.energy.eps &
+ $ gv src/dispersion_32x32x32.long+short.eps &
+ $ gv src/dispersion_32x32x32.long+short.interaction.eps &
+ $ gv src/dispersion_32x32x32.inhomo-K.eps &
+                                    # previews of plotted
 
 === local.field output file
 The calculated local field from the given ionic configuration (ionic.configuration

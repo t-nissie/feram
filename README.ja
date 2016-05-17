@@ -77,7 +77,7 @@ foo123.log, foo123.cood, ... などとなります．
  # comment lines.
 
 ===== シバン: "#!/usr/local/bin/feram" または "#!./feram"
-.feram入力ファイルの１行目にシバンを書いておいてスクリプトのように実行することができます。
+.feram入力ファイルの１行目にシバンを書いておいてスクリプトのように実行することができます．
 
 ==== タグ行
 タグ行には前後がスペースで挟まれた等号 ' = ' が入っていなくてはいけません．
@@ -324,32 +324,35 @@ src/dipole-dipole-long-range.Fで双極子のエワルト和に使われる任�
 ===== plot_dispersion
 もし
  plot_dispersion = .true.
-が指定されたなら，分散関係のプロットのためのデータファイルが書き出される．
-デフォルトは.false.である．
+が指定されたなら，分散関係のプロットのためのデータファイルが書き出されます．
+デフォルトは.false.です．
 
 plot_dispersion = .true.のときは
-L_x, L_y, L_z はすべて同じ偶数でなくてはならない。
+L_x, L_y, L_z はすべて同じ偶数でなくてはいけません．
  L = 32 32 32
-がよいであろう。
+がよいでしょう．
 
-たとえば、
- $ make check TESTS=dispersion_check.sh
-とすると、dispersion_32x32x32.feram と dispersion_32x32x32.gp とが得られる。
+たとえば，
+ $ make check TESTS=`dispersion_check.sh  dispersion_32x32x32.inhomo-K.gp'
+とすると、dispersion_32x32x32.feram と dispersion_32x32x32.gp とが得られます．
 プロットの結果が
-dispersion_32x32x32.long.interaction.eps と
-dispersion_32x32x32.long+short.interaction.eps とである。
-それぞぞれ Takeshi Nishimatsu el al.: Phys. Rev. B 82,
+src/dispersion_32x32x32.long+short.energy.eps
+src/dispersion_32x32x32.long+short.eps
+src/dispersion_32x32x32.long+short.interaction.eps
+src/dispersion_32x32x32.inhomo-K.eps
+などとして得られます．
+Takeshi Nishimatsu el al.: Phys. Rev. B 82,
 134106 (2010), http://dx.doi.org/10.1103/PhysRevB.82.134106 .
-の中の Fig.3(A) と Fig.3(B) とである。
+の中の Fig.3(A) や Fig.3(B) と比較してください．
 
 ===== continue
 feramが
  $ feram foo.feram bar.feram
 と実行されて，bar.feramの中で
  continue = .true.
-が指定されたなら，bar.feramはfoo.feramの結果を初期状態として計算を始める．
-.restartファイルは使われない．
-デフォルトは.false.である．
+が指定されたなら，bar.feramはfoo.feramの結果を初期状態として計算を始めます．
+.restartファイルは使われません．
+デフォルトは.false.です．
 
 === .restart input file
 feramを次のようにパラメータ・ファイル "foo123.feram" を引数として
@@ -530,6 +533,26 @@ feram_cross_section_dVddi.sh (Bourne Shell scripts) で可視化することが�
 === foo123.param.gp
 GNUPLOT用のパラメーターファイルです．
 param.gpにファイル名を変更してからcross_section_q.shなどで使います．
+
+=== foo123.dipole-dipole-long+short.dat
+foo123.dipole-dipole-long+short.dat, foo123.dipole-dipole-long.dat and
+foo123.dipole-dipole-short.dat は plot_dispersion = .true. とすると作られます．
+光学フォノンの分散関係が入ります．foo123.inhomo-K.dat には音響フォノンの分散関係が入ります．
+例題の src/08example-BaTiO3-dispersion/ を見ていただくか、次のようにテストスクリプト
+dispersion_check.shを実行すると分散関係を描くことができます．
+ $ tar xf SOMEWHERE/feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir builddirectory
+ $ cd builddirectory
+ $ ../configure && make -j4
+ $ make check TESTS='dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
+ $ less dispersion_32x32x32.feram   # the input file
+ $ less dispersion_32x32x32.gp      # the GNUPLOT script
+ $ gv src/dispersion_32x32x32.long+short.energy.eps &
+ $ gv src/dispersion_32x32x32.long+short.eps &
+ $ gv src/dispersion_32x32x32.long+short.interaction.eps &
+ $ gv src/dispersion_32x32x32.inhomo-K.eps &
+                                    # previews of plotted
 
 == シミュレーションの例
 ソフトウエアパッケージの次のディレクトリに入力ファイル（と結果）が入っています．
