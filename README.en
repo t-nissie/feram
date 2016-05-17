@@ -418,6 +418,12 @@ Use attached feram_random_field_generator for generating random fields.
  $ ./feram_random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
  $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
 
+=== .modulation file
+.modulation file gives acoustic modulation, a(R), of each site.
+Energy from acoustic modulation is
+
+ E_acoustic_modulation = modulation_constant Sigma_R_alpha eta_alpha(R) a(R) .
+
 === .relaxor file
 .relaxor input file specifies "ionic configurations".
 If there is no .relaxor file, the system is an ordinary ABO3 crystal.

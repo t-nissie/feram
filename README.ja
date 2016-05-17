@@ -333,7 +333,7 @@ L_x, L_y, L_z はすべて同じ偶数でなくてはいけません．
 がよいでしょう．
 
 たとえば，
- $ make check TESTS=`dispersion_check.sh  dispersion_32x32x32.inhomo-K.gp'
+ $ make check TESTS=`dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
 とすると、dispersion_32x32x32.feram と dispersion_32x32x32.gp とが得られます．
 プロットの結果が
 src/dispersion_32x32x32.long+short.energy.eps
@@ -404,6 +404,14 @@ feramを次のようにパラメータ・ファイル "foo123.feram" を引数�
 各サイトにランダムな局所場をかける場合は付属のferam_random_field_generatorを使って.localfieldファイルを作るとよいでしょう．
  $ ./feram_random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
  $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
+
+=== .modulation file
+各サイトの acoustic modulation a(R) を指定します．
+acoustic modulation に依存するエネルギは
+
+ E_acoustic_modulation = modulation_constant Sigma_R_alpha eta_alpha(R) a(R)
+
+となります．
 
 === .relaxor file
 各サイトの「イオン」を指定します．
