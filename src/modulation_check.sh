@@ -1,6 +1,6 @@
 #!/bin/sh
 # modulation_check.sh
-# Time-stamp: <2016-05-17 14:36:05 takeshi>
+# Time-stamp: <2016-05-18 10:31:55 takeshi>
 # Author:     Takeshi NISHIMATSU
 # Usage:      make check TESTS=modulation_check.sh
 # Results:    zzzmodulation.0000000001-acouR-{x,y,z}.eps
@@ -64,7 +64,7 @@ if [ `grep ' -0\.234808E-01 ' zzzmodulation.0000000001.coord | wc -l` -ne 6 ]; t
     exit 1
 fi
 ln -sf zzzmodulation.param.gp param.gp
-./feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 25.0 8 z
-./feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 25.0 8 y
-./feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 25.0 8 x
+$srcdir/feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 30.0 8 z
+$srcdir/feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 30.0 8 y
+$srcdir/feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 30.0 8 x
 rm -f param.gp
