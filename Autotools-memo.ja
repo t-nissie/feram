@@ -142,6 +142,8 @@ Makefile.amの中のEXTRA_DISTに次のように加えておく必要がある�
 一部のテストだけを選択的に行いたい場合は
  $ make check TESTS='foo.sh bar'
 とTESTS変数で指定するする。
+
+テストスクリプトの中でsrcdirを明示的に参照する必要がある場合は$srcdirを用いる。
 === automakeのオプション
 automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定する。例えば
  AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax])
