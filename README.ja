@@ -332,18 +332,24 @@ L_x, L_y, L_z はすべて同じ偶数でなくてはいけません．
  L = 32 32 32
 がよいでしょう．
 
-たとえば，
- $ make check TESTS=`dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
-とすると、dispersion_32x32x32.feram と dispersion_32x32x32.gp とが得られます．
-プロットの結果が
-src/dispersion_32x32x32.long+short.energy.eps
-src/dispersion_32x32x32.long+short.eps
-src/dispersion_32x32x32.long+short.interaction.eps
-src/dispersion_32x32x32.inhomo-K.eps
-などとして得られます．
-Takeshi Nishimatsu el al.: Phys. Rev. B 82,
-134106 (2010), http://dx.doi.org/10.1103/PhysRevB.82.134106 .
-の中の Fig.3(A) や Fig.3(B) と比較してください．
+例題の src/08example-BaTiO3-dispersion/ を見ていただくか、たとえば，
+次のようにテストスクリプト dispersion_check.sh を実行すると分散関係を描くことができます．
+ $ tar xf SOMEWHERE/feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir builddirectory
+ $ cd builddirectory
+ $ ../configure && make -j4
+ $ make check TESTS='dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
+ $ less dispersion_32x32x32.feram   # the input file
+ $ less dispersion_32x32x32.gp      # the GNUPLOT script
+ $ gv src/dispersion_32x32x32.long+short.energy.eps &
+ $ gv src/dispersion_32x32x32.long+short.eps &
+ $ gv src/dispersion_32x32x32.long+short.interaction.eps &
+ $ gv src/dispersion_32x32x32.inhomo-K.eps &
+                   # Previews of plots. You may also use evince(1) instead of gv(1).
+[Takeshi Nishimatsu el al.: Phys. Rev. B 82, 134106 (2010),
+http://dx.doi.org/10.1103/PhysRevB.82.134106 ] の中の Fig.3 や
+parameters/parameters.html の中の Fig.5 と比較してください．
 
 ===== continue
 feramが
@@ -546,21 +552,17 @@ param.gpにファイル名を変更してからcross_section_q.shなどで使い
 foo123.dipole-dipole-long+short.dat, foo123.dipole-dipole-long.dat and
 foo123.dipole-dipole-short.dat は plot_dispersion = .true. とすると作られます．
 光学フォノンの分散関係が入ります．foo123.inhomo-K.dat には音響フォノンの分散関係が入ります．
-例題の src/08example-BaTiO3-dispersion/ を見ていただくか、次のようにテストスクリプト
-dispersion_check.shを実行すると分散関係を描くことができます．
- $ tar xf SOMEWHERE/feram-X.YY.ZZ.tar.xz
- $ cd feram-X.YY.ZZ
- $ mkdir builddirectory
- $ cd builddirectory
- $ ../configure && make -j4
- $ make check TESTS='dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
- $ less dispersion_32x32x32.feram   # the input file
- $ less dispersion_32x32x32.gp      # the GNUPLOT script
- $ gv src/dispersion_32x32x32.long+short.energy.eps &
- $ gv src/dispersion_32x32x32.long+short.eps &
- $ gv src/dispersion_32x32x32.long+short.interaction.eps &
- $ gv src/dispersion_32x32x32.inhomo-K.eps &
-                                    # previews of plotted
+
+foo123.dipole-dipole-long+short.datの中の１行は
+    0.59375  16   3   0 -0.2022348055959993E+001  0.1270295721445465E+001  0.3455139983790274E+002
+のようになっていますが，これは
+    横軸  k点のインデックス IFC行列の３つの固有値
+です．
+
+詳細は上のplot_dispersionの説明かソースコード
+src/dipole-dipole.F と
+src/print-eigenvalues.F と
+を参照してください．
 
 == シミュレーションの例
 ソフトウエアパッケージの次のディレクトリに入力ファイル（と結果）が入っています．
