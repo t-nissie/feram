@@ -1,7 +1,14 @@
 #!/bin/sh
 # potential_surface_check.sh
-# Time-stamp: <2016-05-23 11:08:11 takeshi>
+# Time-stamp: <2016-05-23 12:21:44 takeshi>
 # Author: Takeshi NISHIMATSU
+# Ref_1: R. D. King-Smith and David Vanderbilt: PRB 49, 5828 (1994).
+# Ref_2: Takeshi Nishimatsu et al.: PRB 82, 134106 (2010).
+# Basically, you can draw three potential surfaces
+# analytically by using Eqs. (14a)--(14c) in Ref_2.
+# You can also plot them with this sh script.
+# Compare resulting potential_surface_check.pdf
+# with Fig.2(c) in Ref_2.
 ##
 for alpha in 1 2 3; do
     data_file=potential_surface_$alpha.dat
