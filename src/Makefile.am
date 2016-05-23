@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-05-17 14:47:33 takeshi>
+# Time-stamp: <2016-05-23 11:05:14 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -37,7 +37,8 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          zzzlf.gp \
          dispersion_check.sh \
          modulation_check.sh \
-         dispersion_32x32x32.inhomo-K.gp
+         dispersion_32x32x32.inhomo-K.gp \
+         potential_surface_check.sh
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
 	dVddi-dipole-dipole.F \
@@ -129,6 +130,14 @@ CLEANFILES = *.mod *.lst *.hl *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_
              elastocaloric770K_check.lf.log.digest \
              elastocaloric770K_check.vs.log \
              elastocaloric770K_check.vs.log.digest \
+             potential_surface_?.dat \
+             potential_surface_check.eps \
+             potential_surface_check.gp \
+             potential_surface_check.pdf \
+             potential_surface_input.feram \
+             potential_surface_input.log \
+             potential_surface_input.param.gp \
+             potential_surface_input.avg \
              dispersion_*.feram \
              dispersion_*.avg \
              dispersion_*.dat \
@@ -180,7 +189,8 @@ zzzvs.feram_check \
 zzzlf.gp \
 dispersion_check.sh \
 modulation_check.sh \
-dispersion_32x32x32.inhomo-K.gp
+dispersion_32x32x32.inhomo-K.gp \
+potential_surface_check.sh
 
 feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	$(MPIFC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
