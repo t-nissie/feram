@@ -169,7 +169,7 @@ gcc version 4.6 or lower to avoid missmatch of ABI.
  $ ../configure --help
  $ strings /home/t-nissie/Linux-x86_64/lib64/libfftw3.a | grep GCC | uniq
  GCC: (GNU) 4.4.6 20110731 (Red Hat 4.4.6-3)
- $ ../configure FC=ifort CPPFLAGS=-I/home/t-nissie/Linux-x86_64/lib64/include LDFLAGS=-L/home/t-nissie/Linux-x86_64/lib64 --with-fft=fftw3_omp --with-lapack=mkl
+ $ ../configure FC=ifort CPPFLAGS=-I/home/t-nissie/Linux-x86_64/include LDFLAGS=-L/home/t-nissie/Linux-x86_64/lib64 --with-fft=fftw3_omp --with-lapack=mkl
  $ cd src
  $ make -j --max-load=10.0
  $ export LD_LIBRARY_PATH=/home/t-nissie/Linux-x86_64/lib64:$LD_LIBRARY_PATH
