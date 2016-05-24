@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-05-13 10:33:50 takeshi>
+! Time-stamp: <2016-05-24 11:02:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -508,6 +508,10 @@ contains
 &    p%P_kappa2(1)+2*p%j(1)+p%j(2)+4*p%j(3)+2*p%j(4)+4*p%j(6),    &
 &                                  'P_alpha     =', p%P_alpha(1), &
 &                                  'P_gamma     =', p%P_gamma(1), &
+&                                  'P_k1        =', p%P_k1(1),    &
+&                                  'P_k2        =', p%P_k2(1),    &
+&                                  'P_k3        =', p%P_k3(1),    &
+&                                  'P_k4        =', p%P_k4(1),    &
 &                                  'B11         =', p%B11,        &
 &                                  'B12         =', p%B12,        &
 &                                  'B44         =', p%B44,        &
