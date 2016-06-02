@@ -1,4 +1,8 @@
 ToDo:
+o configure.ac: After ifort 17.0.1 is released, ifort -openmp should be
+  replaced by ifort -qopenmp, because ifort 16.0.3 says "-openmp is deprecated."
+  14.0: -openmp, 15.0: -openmp or -qopenmp, 16.0: -openmp or -qopenmp, 17.0: ???
+
 o まずacouF.Fとcoord_module.Fとから "!$omp parallel workshare" を使う？
   src/omp_workshare_check.fを見よ。ただし、SoAに戻すとしたら障害になる。
 
