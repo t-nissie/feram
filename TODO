@@ -15,6 +15,8 @@ o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
   https://gcc.gnu.org/onlinedocs/gfortran/Code-Gen-Options.html
   GCC 6で入る機能かもしれない。
 
+o .fftファイルを書き出さないようにする。
+
 o src/08example-BaTiO3-dispersion/ 以下をTESTSに格上げする。
 o plot_dispersion = .ture., 4x4x4, 8x8x8, 32x32x32で同じになるかチェック
 o grep 186547824173781 *long.dat | wc -l -> 6 とか。
