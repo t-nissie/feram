@@ -81,8 +81,8 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
  config.status  configure を実行すると出来るスクリプト。foo.in から foo を作るのは実はこいつ。
  install-sh     automake --add-missing が用意してくれるスクリプト。make installのときに使われることがある。
  missing        automake --add-missing が用意してくれるスクリプト。忘れ物を教えてくれる。
- depcomp        ファイルの依存関係が解決できないときに automake --add-missing が用意してくれることのあるスクリプト。
- test-driver    Makefile.amにTESTSの項目がある場合、automake --add-missing が用意してくれるのスクリプト。
+ depcomp        automake --add-missing が用意してくれることのあるスクリプト。ファイルの依存関係を自動的に調べてくれる。
+ test-driver    Makefile.amにTESTSの項目がある場合、automake --add-missing が用意するスクリプト。
                 make checkのときに使われ、カラフルな表示やログファイルの書き出しをしてくれる。
 
 == 使用方法
