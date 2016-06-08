@@ -1,6 +1,6 @@
 #!/bin/sh
 # modulation_check.sh
-# Time-stamp: <2016-05-18 10:31:55 takeshi>
+# Time-stamp: <2016-06-08 21:52:34 takeshi>
 # Author:     Takeshi NISHIMATSU
 # Usage:      make check TESTS=modulation_check.sh
 # Results:    zzzmodulation.0000000001-acouR-{x,y,z}.eps
@@ -55,16 +55,24 @@ cat > zzzmodulation.modulation <<-EOF
 	8 8 8  1.0
 EOF
 ./feram zzzmodulation.feram
+ln -sf zzzmodulation.param.gp param.gp
+$srcdir/feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 30.0 8 z
+$srcdir/feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 30.0 8 y
+$srcdir/feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 30.0 8 x
+rm -f param.gp
 if [ `grep '  0\.234808E-01 ' zzzmodulation.0000000001.coord | wc -l` -ne 6 ]; then
     echo $0:$LINENO: The number of vectors should be 6.
     exit 1
 fi
 if [ `grep ' -0\.234808E-01 ' zzzmodulation.0000000001.coord | wc -l` -ne 6 ]; then
     echo $0:$LINENO: The number of vectors should be 6.
-    exit 1
+    exit 2
 fi
-ln -sf zzzmodulation.param.gp param.gp
-$srcdir/feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 30.0 8 z
-$srcdir/feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 30.0 8 y
-$srcdir/feram_cross_section_acouR.sh zzzmodulation.0000000001.coord 30.0 8 x
-rm -f param.gp
+if [ `grep 'inho_strain      *0\.000072004971' zzzmodulation.log | wc -l` -ne 3 ]; then
+    echo $0:$LINENO: Wrong V_inho_strain value\(s\).
+    exit 3
+fi
+if [ `grep 'inho_modulation *-0\.000144009942' zzzmodulation.log | wc -l` -ne 3 ]; then
+    echo $0:$LINENO: Wrong V_inho_strain value\(s\).
+    exit 4
+fi
