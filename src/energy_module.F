@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2016-05-13 13:48:35 takeshi>
+! Time-stamp: <2016-06-08 18:37:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -217,20 +217,18 @@ contains
     type(Energy_type), intent(inout) :: e
     !--- local -----------------------------------------
     real*8  :: tmp1,tmp2,tmp3,tmpS
-    integer :: i, alpha, iy,iz
+    integer :: alpha, iy,iz
     !--- END of variable definitions -------------------
     tmpS = 0.0d0
 !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
     do iz = 0, p%Lz-1
        do iy = 0, p%Ly-1
-          do i = 1,6
              do alpha = 1,3
                 tmp1 =      dble( conjg(c%acouK(alpha, 0,         iy,iz)) * c%c_k_modulation_k(alpha, 0,         iy,iz) ) / 2
                 tmp2 = sum( dble( conjg(c%acouK(alpha, 1:p%Lx/2-1,iy,iz)) * c%c_k_modulation_k(alpha, 1:p%Lx/2-1,iy,iz) ) )
                 tmp3 =      dble( conjg(c%acouK(alpha,   p%Lx/2,  iy,iz)) * c%c_k_modulation_k(alpha,   p%Lx/2,  iy,iz) ) / 2
                 tmpS = tmpS + tmp1 + tmp2 + tmp3
              end do
-          end do
        end do
     end do
 !$omp end parallel do
