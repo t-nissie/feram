@@ -1,5 +1,5 @@
 ! energy_module.F -*-f90-*-
-! Time-stamp: <2016-06-08 18:37:59 takeshi>
+! Time-stamp: <2016-06-09 22:35:29 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 module Energy_module
@@ -219,6 +219,10 @@ contains
     real*8  :: tmp1,tmp2,tmp3,tmpS
     integer :: alpha, iy,iz
     !--- END of variable definitions -------------------
+    if (p%modulation_constant.eq.0.0d0) then
+       e%inho_modulation = 0.0d0
+       return
+    end if
     tmpS = 0.0d0
 !$omp parallel do private(tmp1,tmp2,tmp3) reduction (+:tmpS)
     do iz = 0, p%Lz-1
