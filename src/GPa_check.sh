@@ -1,6 +1,6 @@
 #!/bin/sh
 # GPa_check.sh
-# Time-stamp: <2016-06-16 21:31:18 takeshi>
+# Time-stamp: <2016-06-16 22:36:52 takeshi>
 # Author: Takeshi NISHIMATSU
 # Ref_1: R. D. King-Smith and David Vanderbilt: PRB 49, 5828 (1994).
 # Ref_2: Takeshi Nishimatsu et al.: PRB 82, 134106 (2010).
@@ -87,5 +87,5 @@ echo $5
 echo $6
 echo $7
 #Local variables:
-#  compile-command: "OMP_NUM_THREADS=2 make check TESTS=GPa_check.sh"
+#  compile-command: "OMP_NUM_THREADS=2 make check TESTS=GPa_check.sh; cat GPa_check.sh.log"
 #End:
