@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-06-11 14:54:44 takeshi>
+# Time-stamp: <2016-06-16 20:43:11 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -41,6 +41,7 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          dispersion_check.sh \
          modulation_check.sh \
          dispersion_32x32x32.inhomo-K.gp \
+         GPa_check.sh \
          potential_surface_check.sh
 feram_MODULES = param_module.F coord_module.F energy_module.F
 feram_SRCS = average_module.F \
@@ -133,6 +134,14 @@ CLEANFILES = *.mod *.lst *.hl *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_
              elastocaloric770K_check.lf.log.digest \
              elastocaloric770K_check.vs.log \
              elastocaloric770K_check.vs.log.digest \
+             GPa_check.avg \
+             GPa_check.dat \
+             GPa_check.feram \
+             GPa_check.log \
+             GPa_check.param.gp \
+             GPa_check.gp \
+             GPa_check.eps \
+             GPa_check.pdf \
              potential_surface_?.dat \
              potential_surface_check.eps \
              potential_surface_check.gp \
@@ -194,6 +203,7 @@ zzzlf.gp \
 dispersion_check.sh \
 modulation_check.sh \
 dispersion_32x32x32.inhomo-K.gp \
+GPa_check.sh \
 potential_surface_check.sh
 
 feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
