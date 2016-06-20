@@ -1,6 +1,6 @@
 #!/bin/sh
 # GPa_check.sh
-# Time-stamp: <2016-06-16 22:36:52 takeshi>
+# Time-stamp: <2016-06-20 11:14:02 takeshi>
 # Author: Takeshi NISHIMATSU
 # Ref_1: R. D. King-Smith and David Vanderbilt: PRB 49, 5828 (1994).
 # Ref_2: Takeshi Nishimatsu et al.: PRB 82, 134106 (2010).
@@ -72,9 +72,11 @@ cat > GPa_check.gp <<-EOF
 	set xrange [-10:10]
 	set format y "%.3f"
 	set xlabel 'hydrostatic pressure [GPa]'
-	set ylabel '{/Symbol h}_1'
+	set ylabel 'strain'
 	call 'GPa_check.param.gp'
-	plot 'GPa_check.dat' using 1:6 w p ps 2,\
+	plot 'GPa_check.dat' using 1:6 t '{/Symbol h}_1' w p ps 2,\
+	     'GPa_check.dat' using 1:7 t '{/Symbol h}_2' w p ps 2,\
+	     'GPa_check.dat' using 1:8 t '{/Symbol h}_3' w p ps 2 pt 4,\
 	     -x*a0**3/(B11+2*B12)/160.22 \
 	     t '1.6022{\327}10^2 {/Times-Italic a}@^3_0 / ({/Times-Italic B}_{11}+2{/Times-Italic B}_{22})' w l lw 2
 	set output
