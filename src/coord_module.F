@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-05-13 13:05:59 takeshi>
+! Time-stamp: <2016-06-22 11:36:26 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -14,6 +14,7 @@ module Coord_module
   type Coord_type
      real*8,     allocatable :: mass_dipo_inv(:,:,:)   ! inverse of mass_dipo
      real*8,     allocatable :: mass_acou_inv(:,:,:)   ! inverse of mass_dipo
+     real*8,     allocatable :: dipoRavg(:,:,:,:)
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
      complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoR
      logical                 :: relaxor_flag = .false.
@@ -127,6 +128,11 @@ contains
        c%mass_acou_inv(0:p%Lx-1, 0:p%Ly-1, iz) = mass_inv_tmp
     end do
 !$omp end parallel do
+
+    !--- dipoRavg ---------------------------
+    if (allocated(c%dipoRavg)) deallocate(c%dipoRavg)
+    allocate(     c%dipoRavg(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    ! First touch and reset will be done in molecular-dynamics.F
 
     !--- dipo -------------------------------
     if (allocated(c%dipoR)) deallocate(c%dipoR)
@@ -479,6 +485,40 @@ contains
     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(coord_directory_fn))
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
   end subroutine write_system
+
+  subroutine divide_and_write_dipoRavg(p,c)
+    use Param_module
+    use msg_module
+    implicit none
+    type(Param_type), intent(in) :: p
+    type(Coord_type), intent(in) :: c
+    character(len=FILE_NAME_LEN) :: fn
+    integer ix,iy,iz,alpha
+
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+
+    if (p%coord_directory.eq.'never') then
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'never write a .dipoRavg file.')
+       return
+    else if (p%coord_directory.eq.'') then
+       fn = trim(p%filename) // '.dipoRavg'
+    else
+       fn = trim(p%coord_directory) // trim(p%filename) // '.dipoRavg'
+    end if
+
+    open(unit=UNIT_SYSTEM, file=fn, status='replace')
+    do iz = 0, p%Lz-1
+       do iy = 0, p%Ly-1
+          do ix = 0, p%Lx-1
+             write(UNIT_SYSTEM,'(i4,2i5,3f10.6)') ix, iy, iz, &
+                  & (c%dipoRavg(alpha,ix,iy,iz)/p%n_average, alpha=1,3)
+          end do
+       end do
+    end do
+    close(UNIT_SYSTEM)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(fn))
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  end subroutine divide_and_write_dipoRavg
 
   subroutine write_fft(p,c,fn)
     use Param_module

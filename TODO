@@ -1,4 +1,6 @@
 ToDo:
+o .restart fileの高精度化とそれ用のテストスクリプト
+
 o src/GPa_check.sh で図を書くだけでなく、値のチェックをする。
 
 o configure.ac: After ifort 17.0.1 is released, ifort -openmp should be

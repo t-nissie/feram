@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2016-05-13 14:05:09 takeshi>
+! Time-stamp: <2016-06-21 12:30:28 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -55,6 +55,11 @@ subroutine molecular_dynamics(p,c)
   call Nose_Poincare_Hamiltonian(p,c,e)
 
   call reset_Average(avg)
+!$omp parallel do
+  do iz = 0,p%Lz-1
+     c%dipoRavg(:,:,:,iz) = 0.0d0
+  end do
+!$omp end parallel do
 
   do i_step = 1, p%n_thermalize+p%n_average
 
@@ -135,9 +140,15 @@ subroutine molecular_dynamics(p,c)
      if (i_step <= p%n_thermalize) cycle
 
      call add_to_Average(p,c,e,avg,detail)
+!$omp parallel do
+     do iz = 0,p%Lz-1
+        c%dipoRavg(:,:,:,iz) = c%dipoRavg(:,:,:,iz) + c%dipoR(:,:,:,iz)
+     end do
+!$omp end parallel do
   end do
 
   call divide_and_write_Average(p,c,avg)
+  call divide_and_write_dipoRavg(p,c)
 
   write(message,'(a,f6.1,a)') 'T = ', p%kelvin, ' [K] END ============================================================================'
   call msg_ez(UNIT_LOG, message)

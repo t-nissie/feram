@@ -1,6 +1,6 @@
 #!/bin/sh
 # modulation_check.sh
-# Time-stamp: <2016-06-08 21:52:34 takeshi>
+# Time-stamp: <2016-06-22 12:02:39 takeshi>
 # Author:     Takeshi NISHIMATSU
 # Usage:      make check TESTS=modulation_check.sh
 # Results:    zzzmodulation.0000000001-acouR-{x,y,z}.eps
