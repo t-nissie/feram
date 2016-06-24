@@ -1,11 +1,12 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2016-04-07 19:22:06 takeshi>
+! Time-stamp: <2016-06-24 16:10:05 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
 ! ref_1: Stephen D. Bond, Benedict J. Leimkuhler and Brian B. Laird:
 !         J. Comput. Phys. Vol.151 p.114 (1999)
 !!
+#include "define.h"
 subroutine nose_poincare(p,c,e)
   use Param_module
   use Coord_module
@@ -18,7 +19,7 @@ subroutine nose_poincare(p,c,e)
   real*8 CB, s_Nose_old, delta_H, kinetic_energy_dipo, dt2s, dt2_s_s
   integer ix,iy,iz,alpha
   external kinetic_energy_dipo
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'nose_poincare().')
 
   dt2s = p%dt_2*c%s_Nose
 !$omp parallel do
@@ -51,7 +52,7 @@ subroutine nose_poincare(p,c,e)
      end do
 !$omp end parallel do
 
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'is updated.')
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'REMARK', 'dipoR is updated.')
 
   call mirror_force_mirror(p,c,e)
 
@@ -73,5 +74,5 @@ subroutine nose_poincare(p,c,e)
   e%dipo_kinetic = kinetic_energy_dipo(p,c)
   call Nose_Poincare_Hamiltonian(p,c,e)
 
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
 end subroutine nose_poincare
