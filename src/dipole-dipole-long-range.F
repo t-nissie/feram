@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2016-04-09 18:48:09 takeshi>
+! Time-stamp: <2016-06-24 14:49:33 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! $Date: 2016-04-08 19:14:18 +0900 (金, 08  4 2016) $
 ! $Rev: 2757 $
@@ -29,7 +29,7 @@ subroutine dipole_dipole_long_range(p,long_range)
   real*8   k(3), kG(3), kGkG
   real*8   r(3), n(3), rn(3), rnrn, rn_norm
   !--- END of variable definitions -------------------
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dipole_dipole_long_range().')
 
   four_pi_over_unit_cell_volume  = 4 * M_PI / p%a0**3
   two_pi_over_a                  = 2 * M_PI / p%a0

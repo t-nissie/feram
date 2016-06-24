@@ -1,5 +1,5 @@
 ! dipoFFT.F -*-f90-*-
-! Time-stamp: <2016-03-14 23:06:46 takeshi>
+! Time-stamp: <2016-06-24 14:48:43 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -15,12 +15,8 @@ subroutine dipoFFT(p,c)
   type(Coord_type),  intent(inout) :: c
   integer ix,iy,iz
   include 'fftw3.f03'
-
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dipoR -> dipoK, didiR, didiK')
-  end if
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dipoFFT(): dipoR -> dipoK, didiR, didiK.')
   call fftw_execute_dft_r2c(c%plan_r2c_3_out, c%dipoR, c%dipoK)
-
 !$omp parallel do private(iz, iy, ix)
   do iz=0, p%Lz-1
      do iy = 0, p%Ly-1
@@ -36,7 +32,6 @@ subroutine dipoFFT(p,c)
   end do
 !$omp end parallel do
   call fftw_execute_dft_r2c(c%plan_r2c_6_out, c%didiR, c%didiK)
-
 !$omp parallel do
     do iz = 0,p%Lz-1
        do iy=0, p%Ly-1
@@ -47,12 +42,6 @@ subroutine dipoFFT(p,c)
     end do
 !$omp end parallel do
   call fftw_execute_dft_r2c(c%plan_r2c_3_out, c%Z_u_R, c%Z_u_K)
-
-  !write(6,*) c%dipoK(2,1,0,0)
-  !write(6,*) c%Z_u_K(2,1,0,0)
-
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', &
-          & 'didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.')
-  end if
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', &
+          & 'dipoFFT(): didiR will be used in optimize-*-strain.F and dVddi-unharmonic.F.')
 end subroutine dipoFFT

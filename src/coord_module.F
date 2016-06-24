@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-06-22 11:36:26 takeshi>
+! Time-stamp: <2016-06-24 14:41:41 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -443,7 +443,7 @@ contains
     integer alpha,ix,iy,iz
     include 'fftw3.f03'
 
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_system().')
 
     if (p%coord_directory.eq.'never') then
        call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'never write .coord files.')
@@ -482,8 +482,7 @@ contains
        end do
     end do
     close(UNIT_SYSTEM)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(coord_directory_fn))
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(coord_directory_fn)//' was written.')
   end subroutine write_system
 
   subroutine divide_and_write_dipoRavg(p,c)
@@ -495,10 +494,10 @@ contains
     character(len=FILE_NAME_LEN) :: fn
     integer ix,iy,iz,alpha
 
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'divide_and_write_dipoRavg().')
 
     if (p%coord_directory.eq.'never') then
-       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'never write a .dipoRavg file.')
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(p%filename)//'.dipoRavg was NOT written.')
        return
     else if (p%coord_directory.eq.'') then
        fn = trim(p%filename) // '.dipoRavg'
@@ -516,8 +515,7 @@ contains
        end do
     end do
     close(UNIT_SYSTEM)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(fn))
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(fn)//' was written.')
   end subroutine divide_and_write_dipoRavg
 
   subroutine write_fft(p,c,fn)
@@ -529,7 +527,7 @@ contains
     character(len=*) :: fn
     integer ix,iy,yy
 
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_fft().')
     open(unit=UNIT_SYSTEM,file=fn)
     do iy= -p%Ly/2, p%Ly/2
        if (iy<0) then
