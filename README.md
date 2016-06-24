@@ -23,6 +23,9 @@ Takeshi
 ## Changes
 In this feram-0.26.00, a bug in feram-0.24.02 of plot_dispersion is fixed.
 
+From this feram-0.26.00, you can use .modulation input file.
+
+From this feram-0.26.00, a .dipoRavg file will be written in the end.
 Now, feram's development repository came back to
 https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/ .
 https://sourceforge.net/p/loto/code/HEAD/tree/feram/branches/z_star_r/ was removed.
