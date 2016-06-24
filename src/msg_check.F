@@ -1,5 +1,5 @@
 ! msg_check.F -*-f90-*-
-! Time-stamp: <2016-03-22 19:43:08 takeshi>
+! Time-stamp: <2016-06-24 15:41:40 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -11,9 +11,9 @@ subroutine msg_check_sub(ia)
   use msg_module
   implicit none
   integer, intent(in) :: ia
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'subroutine msg_check_sub')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'subroutine msg_check_sub().')
   call msg(UNIT_LOG, __FILE__, ia,       'FILE',  'test a large line number')
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   'subroutine msg_check_sub')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  subroutine msg_check_sub().')
 end subroutine msg_check_sub
 
 program msg_check

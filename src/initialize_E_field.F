@@ -1,5 +1,5 @@
 ! initialize_E_field.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:31:48 takeshi>
+! Time-stamp: <2016-06-24 15:39:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -15,7 +15,7 @@ subroutine initialize_E_field(p,c)
   character (len=300):: str
   character (len=1)  :: tmp
   real*8             :: tmp_E(3)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'initialize_E_field().')
 
   c%E_field_local(:,:,:,:) = 0.0d0
 

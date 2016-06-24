@@ -1,5 +1,5 @@
 ! acouFFT.F -*-f90-*-
-! Time-stamp: <2016-06-24 14:40:57 takeshi>
+! Time-stamp: <2016-06-24 15:33:40 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -16,9 +16,7 @@ subroutine acouFFT(p,c)
   integer iz
   include 'fftw3.f03'
 
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'acouFFT(): acouR -> acouK.')
-  end if
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'acouFFT(): acouR -> acouK.')
 
   call fftw_execute_dft_r2c(c%plan_r2c_3_out, c%acouR, c%acouK)
 
@@ -30,7 +28,5 @@ subroutine acouFFT(p,c)
 
     !write(6,'(a,2(f14.7,f12.7))') '2acouK', c%acouK(1,0,1,1), c%acouK(1,0,15,15)
 
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'acouR -> acouK, done.')
-  end if
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'acouR -> acouK, done.')
 end subroutine acouFFT

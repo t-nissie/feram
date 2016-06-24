@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2016-06-21 12:06:50 takeshi>
+! Time-stamp: <2016-06-24 15:37:32 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%mass_dipo_inv(:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -18,7 +18,7 @@ subroutine initialize_dipoR(p,c,e)
   integer ix, iy, iz, alpha, ios, dummy_x, dummy_y, dummy_z
   real*8 dmy,kinetic_energy_dipo,kinetic_energy_acou
   external kinetic_energy_dipo
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'initialize_dipoR().')
   open(unit=UNIT_SYSTEM, file=trim(p%filename)//'.restart', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.restart was found.')

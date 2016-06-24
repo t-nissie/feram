@@ -1,5 +1,5 @@
 ! mirror.F -*-f90-*-
-! Time-stamp: <2015-10-19 19:32:11 takeshi>
+! Time-stamp: <2016-06-24 15:40:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -14,9 +14,7 @@ subroutine mirror(p, dipo)
   type(Param_type),   intent(in)    :: p
   real*8 :: dipo(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)
   integer iz
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
-  end if
+  if (p%verbose>=2)  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'mirror().')
   if (p%gap_id==0) then ! There is no dead layers.
 !$omp parallel do
      do iz = 0, p%Lz/2-1
@@ -34,7 +32,5 @@ subroutine mirror(p, dipo)
      end do
 !$omp end parallel do
   end if
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
-  end if
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine mirror

@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2016-06-21 12:30:28 takeshi>
+! Time-stamp: <2016-06-24 15:40:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -29,7 +29,7 @@ subroutine molecular_dynamics(p,c)
   character (len=120) :: fn
   logical             :: detail
   !--- END of variable definitions -------------------
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'molecular_dynamics().')
 
   write(message,'(a,f6.1,a)') 'T = ', p%kelvin, ' [K] BEGIN =========================================================================='
   call msg_ez(UNIT_LOG, message)
@@ -155,5 +155,5 @@ subroutine molecular_dynamics(p,c)
 
   if (p%n_E_wave_period>0) close(UNIT_HL)
   if (p%output_polarization) close(UNIT_POLARIZATION)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'molecular_dynamics().')
 end subroutine molecular_dynamics

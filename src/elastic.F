@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2016-05-17 13:10:56 takeshi>
+! Time-stamp: <2016-06-24 15:36:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -19,7 +19,7 @@ subroutine elastic(p,c)
   character (len=1)   :: tmp
   include 'fftw3.f03'
 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'make elastic constant matrix.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'elastic(): make elastic constant matrix.')
 
   ! homogeneous -----------------------------------
   c%homogeneous(:,:) = 0.0d0

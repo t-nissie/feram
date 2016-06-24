@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2016-04-12 15:17:39 takeshi>
+! Time-stamp: <2016-06-24 15:35:53 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -12,7 +12,7 @@ subroutine dipole_dipole(p,c)
   type(Coord_type), intent(inout) :: c
   real*8, allocatable :: dipoI(:,:, :,:,:)
   integer             :: ix,iy,iz
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'construction of short- and long-range interaction.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dipole_dipole(): construction of short- and long-range interactions.')
   call  dipole_dipole_long_range(p, c%long_range)
   call dipole_dipole_short_range(p,c%short_range)
 
@@ -53,5 +53,5 @@ subroutine dipole_dipole(p,c)
      call print_eigenvalues(p%Lx, p%Ly, p%Lz, dipoI, trim(p%filename)//'.long+short.dat')
      deallocate(dipoI)
   end if
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'construction of short- and long-range interaction.')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
 end subroutine dipole_dipole
