@@ -1,5 +1,5 @@
 ! velocity_scaling.F   -*-f90-*-
-! Time-stamp: <2016-04-07 21:16:29 takeshi>
+! Time-stamp: <2016-06-24 17:19:18 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -29,9 +29,7 @@ subroutine velocity_scaling(p,c,e)
      dVdacR(1:howmany, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) => dVdacR_linear
   end if
 
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
-  end if
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'velocity_scaling().')
 
 !$omp parallel do
   do iz=0, p%Lz-1
@@ -101,8 +99,5 @@ subroutine velocity_scaling(p,c,e)
 !$omp end parallel do
      end if
 
-
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP (and acouP) are updated at this end.')
-  end if
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ' velocity_scaling(). dipoP (and acouP) are updated at this end.')
 end subroutine velocity_scaling

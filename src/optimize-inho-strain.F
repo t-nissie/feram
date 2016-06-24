@@ -1,5 +1,5 @@
 ! optimize-inho-strain.F   -*-f90-*-
-! Time-stamp: <2016-06-24 16:35:32 takeshi>
+! Time-stamp: <2016-06-24 17:12:59 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -56,5 +56,5 @@ subroutine optimize_inho_strain(p,c)
      end do
   end do
 !$omp end parallel do
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  optimize_inho_strain().')
 end subroutine optimize_inho_strain

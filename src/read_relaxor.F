@@ -1,5 +1,5 @@
 ! read_relaxor.F -*-f90-*-
-! Time-stamp: <2016-04-07 21:17:17 takeshi>
+! Time-stamp: <2016-06-24 17:18:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: read foo.relaxor and prepare Z_starR(:,:,:).
 ! Parents: initialize-dipoR.F
@@ -16,7 +16,7 @@ subroutine read_relaxor(p,c)
   character (len=1)   tmp
   integer ix, iy, iz, ios, line_number
   integer i_relaxor
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'read_relaxor().')
 
   open(unit=UNIT_RELAXOR, file=trim(p%filename)//'.relaxor', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
@@ -53,6 +53,6 @@ subroutine read_relaxor(p,c)
   !  if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
   !  end if
 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  read_relaxor().')
   flush(UNIT_LOG)
 end subroutine read_relaxor
