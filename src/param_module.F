@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-05-24 11:02:08 takeshi>
+! Time-stamp: <2016-06-24 16:46:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -476,7 +476,6 @@ contains
     use msg_module
     implicit none
     type(Param_type),intent(in) :: p
-    character (len=100) :: fn
     character (len=300) :: str
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_Param(), Parameters for convenience.')
     write(str,'(a,i11)')    'N = Lx * Ly * Lz          =', p%N
@@ -494,10 +493,8 @@ contains
     write(str,'(a,f10.4)')  'kappa for Ewald sum = ', p%kappa
     call msg_ez(UNIT_LOG,str)
 
-    !=== BEGIN: write parameters for gnuplot ============================
-    fn = trim(p%filename) // '.param.gp'
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', fn)
-    open(unit=UNIT_SYSTEM,file=fn)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE',  trim(p%filename)//'.param.gp')
+    open(unit=UNIT_SYSTEM, file=trim(p%filename)//'.param.gp')   ! For gnuplot
     write(UNIT_SYSTEM,'(a,i5)')    'Lx          =', p%Lx,         &
                                    'Ly          =', p%Ly,         &
                                    'Lz          =', p%Lz
@@ -518,11 +515,9 @@ contains
 &                                  'B1xx        =', p%B1xx,       &
 &                                  'B1yy        =', p%B1yy,       &
 &                                  'B4yz        =', p%B4yz,       &
-&                                  'Z_star      =', p%Z_star(1),  &   ! We should not use the .param.gp file.
+&                                  'Z_star      =', p%Z_star(1),  &
 &                                  'epsilon_inf =', p%epsilon_inf
-
     close(UNIT_SYSTEM)
-    !=== END: write parameters for gnuplot ==============================
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '  write_Param().')
   end subroutine write_Param

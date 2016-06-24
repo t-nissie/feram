@@ -1,5 +1,5 @@
 ! dipole-dipole.F -*-f90-*-
-! Time-stamp: <2016-06-24 15:35:53 takeshi>
+! Time-stamp: <2016-06-24 17:02:30 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #include "define.h"
@@ -53,5 +53,5 @@ subroutine dipole_dipole(p,c)
      call print_eigenvalues(p%Lx, p%Ly, p%Lz, dipoI, trim(p%filename)//'.long+short.dat')
      deallocate(dipoI)
   end if
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  dipole_dipole(): short- and long-range interactions were constructed.')
 end subroutine dipole_dipole

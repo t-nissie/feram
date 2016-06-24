@@ -1,5 +1,5 @@
 ! dipole-dipole-short-range.F -*-f90-*-
-! Time-stamp: <2016-06-24 15:34:59 takeshi>
+! Time-stamp: <2016-06-24 16:56:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: W. Zhong, David Vanderbilt and K. M. Rabe: PRB Vol.52 p.6301 (1995)
 !!
@@ -131,5 +131,5 @@ subroutine dipole_dipole_short_range(p,short_range)
 
   deallocate(TMPreal,TMPcomplex)
 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ' dipole_dipole_short_range().')
 end subroutine dipole_dipole_short_range

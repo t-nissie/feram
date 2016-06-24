@@ -1,5 +1,5 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2016-06-24 14:49:33 takeshi>
+! Time-stamp: <2016-06-24 16:54:48 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! $Date: 2016-04-08 19:14:18 +0900 (金, 08  4 2016) $
 ! $Rev: 2757 $
@@ -148,5 +148,5 @@ subroutine dipole_dipole_long_range(p,long_range)
      long_range(:,:,:,:,iz) = long_range(:,:,:,:,iz) * (HARTREE_BOHR / p%epsilon_inf)
   end do
 !$omp end parallel do
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  dipole_dipole_long_range().')
 end subroutine dipole_dipole_long_range
