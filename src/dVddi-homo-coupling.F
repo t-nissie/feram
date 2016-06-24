@@ -1,5 +1,5 @@
 ! dVddi-homo-coupling.F   -*-f90-*-
-! Time-stamp: <2016-06-24 14:51:25 takeshi>
+! Time-stamp: <2016-06-24 22:43:32 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -15,7 +15,7 @@ subroutine dVddi_homo_coupling(p,c) ! We use p implicitly. Don't worry about com
   integer i,j,ix,iy,iz
   real*8  eta_B_over_2m(6)
   !--- END of variable definitions -------------------
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
          & 'dVddi_homo_coupling(): Calculate force on dipoR from (in)harmonic strains.')
 
   eta_B_over_2m(:) = 0.0d0
@@ -49,5 +49,5 @@ subroutine dVddi_homo_coupling(p,c) ! We use p implicitly. Don't worry about com
   end do
 !$omp end parallel do
 
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  dVddi_homo_coupling().')
 end subroutine dVddi_homo_coupling

@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2016-06-24 15:39:26 takeshi>
+! Time-stamp: <2016-06-24 22:54:24 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -164,6 +164,6 @@ subroutine leapfrog(p,c,e,i_step)
   end if
 
   if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ' leapfrog().')
   end if
 end subroutine leapfrog

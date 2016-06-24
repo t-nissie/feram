@@ -1,17 +1,21 @@
 ! mirror_force_mirror.F -*-f90-*-
-! Time-stamp: <2016-05-13 14:02:30 takeshi>
+! Time-stamp: <2016-06-24 23:00:56 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
+#include "define.h"
 subroutine mirror_force_mirror(p,c,e)
   use Param_module
   use Coord_module
   use Energy_module
+  use msg_module
   implicit none
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer ix,iy,iz
   real*8 tmp_dipole_E_field
+
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'mirror_force_mirror().')
 
   ! mirror
   if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
@@ -80,4 +84,6 @@ subroutine mirror_force_mirror(p,c,e)
   end if
 
   ! Fixed u of defects must be really fixed after this.
+
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  mirror_force_mirror().')
 end subroutine mirror_force_mirror

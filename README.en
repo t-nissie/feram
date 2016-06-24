@@ -124,6 +124,9 @@ Minimum messages will be written to the .log file.
  verbose = 2
 When 2 is given for verbose tag, messages will be written to .log file in every iterations.
 
+ verbose = 3
+When 3 is given for verbose tag, more detailed messages will be written to .log file.
+
 ===== method
  method = 'md'
 'md' is for a molecular-dynamics simulation in the canonical ensemble using the Nosé-Poincaré thermostat.

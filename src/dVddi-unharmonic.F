@@ -1,5 +1,5 @@
 ! dVddi-unharmonic.F   -*-f90-*-
-! Time-stamp: <2016-06-24 14:53:22 takeshi>
+! Time-stamp: <2016-06-24 22:41:48 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -22,7 +22,7 @@ subroutine dVddi_unharmonic(p,c,e)
   real*8       four_k2_two_k3(1:RELAXOR_MAX)
   real*8 unharm0
   !--- END of variable definitions -------------------
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
        & 'dVddi_unharmonic(): Calculate unharmonic part of force and energy.')
 
   four_alpha_two_gamma(:) = 4*p%P_alpha(:) + 2*p%P_gamma(:)
@@ -97,5 +97,5 @@ subroutine dVddi_unharmonic(p,c,e)
   end do
 !$omp end parallel do
   e%unharmonic = unharm0
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ' dVddi_unharmonic().')
 end subroutine dVddi_unharmonic

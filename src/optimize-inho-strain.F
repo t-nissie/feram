@@ -1,5 +1,5 @@
 ! optimize-inho-strain.F   -*-f90-*-
-! Time-stamp: <2016-06-24 17:12:59 takeshi>
+! Time-stamp: <2016-06-24 22:51:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -17,7 +17,7 @@ subroutine optimize_inho_strain(p,c)
   complex*16 :: acouK_tmp(3)
   complex*16 :: tmp
   integer    :: alpha,beta, ix,iy,iz
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'optimize_inho_strain().')
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'optimize_inho_strain().')
   !--- optimize inhomogeneous strain -----------------------------------
   ! Linear equations for acouK,
   !    inhomo_K(1:3,1:3) * acouK(1:3) = - inhomo_coup2_K(1:3,1:6) * c%didiK(1:6) ,
@@ -56,5 +56,5 @@ subroutine optimize_inho_strain(p,c)
      end do
   end do
 !$omp end parallel do
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  optimize_inho_strain().')
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  optimize_inho_strain().')
 end subroutine optimize_inho_strain

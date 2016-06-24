@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2016-06-24 16:10:05 takeshi>
+! Time-stamp: <2016-06-24 22:53:01 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
@@ -74,5 +74,5 @@ subroutine nose_poincare(p,c,e)
   e%dipo_kinetic = kinetic_energy_dipo(p,c)
   call Nose_Poincare_Hamiltonian(p,c,e)
 
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
+  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  nose_poincare().')
 end subroutine nose_poincare
