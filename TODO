@@ -1,4 +1,9 @@
 ToDo:
+o .defects fileのテストスクリプト。
+
+o コーディング規則を作る。
+  「subroutineの先頭ではif (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'foo().')」とか。
+
 o .restart fileの高精度化とそれ用のテストスクリプト
 
 o src/GPa_check.sh で図を書くだけでなく、値のチェックをする。
