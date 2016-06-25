@@ -96,13 +96,16 @@ foo123.log, foo123.cood, ... などとなります．
 0のとき，.logファイルは作られません（未実装）．
 
  verbose = 1
-1（デフォルト値）のとき，.logファイルには最小限のメッセージのみが出力されます．
+1（デフォルト値）のとき，.logファイルには最初と最後のイテレーションのエネルギーの値のみがレポートされます．
 
  verbose = 2
-2のとき，.logファイルにはイテレーション毎にメッセージが出力されます．.logファイルのサイズは巨大になります．
+2のとき，.logファイルにはすべてのイテレーション毎にエネルギーの値がレポートされます．.logファイルのサイズは巨大になります．
 
  verbose = 3
-3のとき，.logファイルにはさらに詳細なメッセージが出力されます．
+3のとき，.logファイルにはcallされたサブルーチンがメッセージとして出力されます．
+
+ verbose = 4
+4のとき，.logファイルにはさらに詳細なメッセージが出力されます．
 
 ===== method
 シミュレーションの方法を指定します．
@@ -485,27 +488,26 @@ feram が feram foo123.feram と実行されたなら
 foo123.dipole-dipole-long.dat などです．
 
 === foo123.log
-feramは.logファイルにイテレーション毎にエネルギーを書き出します．ただし
-
-verbose = 0 のとき，.logファイルは作られません（未実装）．
-
-verbose = 1 （デフォルト値）のとき，.logファイルには最小限のメッセージのみが出力されます．
-
-verbose = 2 のとき，.logファイルにはイテレーション毎にメッセージが出力されます．
+feramは.logファイルにエネルギーの値などを書き出します．
+書き出す量はverbose = 1,2,3,4で制御できます．
 
 デバッグのために verbose = 2 にして実行し，
-出力された foo123.log を src/plot.gp でプロットしてみるのもよいでしょう．
- $ feram foo123.feram
- $ gnuplot plot.gp
+出力された.logファイルの中のエネルギーをプロットしてみるのもよいでしょう．
+例：
+ $ ./feram zzznp.feram
+ $ gnuplot zzznp.gp
+ $ ./feram zzzlf.feram
+ $ gnuplot zzzlf.gp
 
 計算時間が.logファイルの最後に秒を単位として書き出されます．
 ただし，SR16000とFX10の場合，計算時間が１日（86,400秒）を越えるとカウンタが一度リセットされてしまいます．
-      :
-   ../../src/feram_common.F: 95: DATE_AND_TIME: 2014-07-14T14:37:23.360+0900
-   t_initialization,  t_simulation,       t_total, n_threads
-               3.73        2117.14        2120.87    6     #TIMING_REPORT
-   ../../src/feram_common.F:111: COUNT_RATE_AND_COUNT_MAX:        1000 2147483647
- ../../src/feram_common.F:113: END
+       :
+    T =  177.1 [K] END ============================================================================
+   molecular-dynamics.F:158: END: molecular_dynamics().
+ feram_common.F:104: DATE_AND_TIME: 2016-06-24T23:16:26.498+0900
+  t_initialization, t_simulation,  t_total, n_threads
+        0.47          39.77          40.24    2     #TIMING_REPORT
+ feram_common.F:117: FINISH: love && peace && free_software
 
 === foo123.avg
 n_thermalizeイテレーションの恒温化の後，

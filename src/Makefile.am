@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-06-22 12:03:36 takeshi>
+# Time-stamp: <2016-06-25 18:26:18 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -38,6 +38,7 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          zzznp.feram_check \
          zzzvs.feram_check \
          zzzlf.gp \
+         zzznp.gp \
          dispersion_check.sh \
          modulation_check.sh \
          dispersion_32x32x32.inhomo-K.gp \
@@ -201,6 +202,7 @@ zzzramping.feram_check \
 zzznp.feram_check \
 zzzvs.feram_check \
 zzzlf.gp \
+zzznp.gp \
 dispersion_check.sh \
 modulation_check.sh \
 dispersion_32x32x32.inhomo-K.gp \
