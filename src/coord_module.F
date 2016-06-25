@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-06-25 17:09:14 takeshi>
+! Time-stamp: <2016-06-25 20:39:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -493,11 +493,11 @@ contains
     type(Coord_type), intent(in) :: c
     character(len=FILE_NAME_LEN) :: fn
     integer ix,iy,iz,alpha
-
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'divide_and_write_dipoRavg().')
 
     if (p%coord_directory.eq.'never') then
-       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(p%filename)//'.dipoRavg was NOT written.')
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', &
+            & '  divide_and_write_dipoRavg(): '//trim(p%filename)//'.dipoRavg was NOT written.')
        return
     else if (p%coord_directory.eq.'') then
        fn = trim(p%filename) // '.dipoRavg'
@@ -515,7 +515,9 @@ contains
        end do
     end do
     close(UNIT_SYSTEM)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(fn)//' was written.')
+
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', &
+         & '  divide_and_write_dipoRavg(): '//trim(fn)//' was written.')
   end subroutine divide_and_write_dipoRavg
 
   subroutine write_fft(p,c,fn)
@@ -542,6 +544,6 @@ contains
     end do
     close(UNIT_SYSTEM)
     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME', fn)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  write_fft().')
   end subroutine write_fft
 end module Coord_module
