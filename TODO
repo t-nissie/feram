@@ -1,12 +1,14 @@
 ToDo:
-o verbose値の階層化。verbose=1では毎イテレーションにはサブルーチン名が出ない方がよいかもしれない。
+o テスト用のタグを作る。例えば、予想される温度とか。
+
+o output_polarization in README.en and README.ja.
 
 o .defects fileのテストスクリプト。
 
 o コーディング規則を作る。
   「subroutineの先頭ではif (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'foo().')」とか。
 
-o .restart fileの高精度化とそれ用のテストスクリプト
+o .coord (or .restart) fileの高精度化とそれ用のテストスクリプト
 
 o src/GPa_check.sh で図を書くだけでなく、値のチェックをする。
 
@@ -17,8 +19,6 @@ o configure.ac: After ifort 17.0.1 is released, ifort -openmp should be
 o まずacouF.Fとcoord_module.Fとから "!$omp parallel workshare" を使う？
   src/omp_workshare_check.fを見よ。ただし、SoAに戻すとしたら障害になる。
 
-o mass_dipole も mass_acou も R-dep できるようにする。
-
 o mass_acou<0.0d0 なら acoustic 関連の配列で要らないモノは確保しない。
   Confirm e%acou_kinetic=0 if mass_acou<0
 
@@ -27,11 +27,6 @@ o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
   GCC 6で入る機能かもしれない。
 
 o .fftファイルを書き出さないようにする。
-
-o src/08example-BaTiO3-dispersion/ 以下をTESTSに格上げする。
-o plot_dispersion = .ture., 4x4x4, 8x8x8, 32x32x32で同じになるかチェック
-o grep 186547824173781 *long.dat | wc -l -> 6 とか。
-o print-eigenvalues.F を P%padding_y に対応させて、dipole-dipole.F を簡単化。
 
 o CUDA化。cuFFTとcuBLASとを使えるようにする。
   * PGI CUDA Fortranは使わない。
@@ -75,6 +70,8 @@ o feram_slicer.rb マニュアル
 
 o feram_cross_section マニュアル
 
+o feram_distribution3d2ppm マニュアル
+
 o dVddi_... -> dV_du_...
 
 o foo-bar.F -> foo_bar.F
@@ -99,10 +96,7 @@ o 依存関係の自動生成。gfortranに新しく導入される-Mオプシ�
 
 o Reduce memory size using in-place FFT and
   rank remapping or array dimension changing (See in-place-FFT.ja.txt)
-
-o coord fileの桁数を上げて高精度化。ファイルサイズは大きくなってしまうけど。
-
-o Use msg() in write_Param() of param_module.F.
+  Or use reshape?
 
 o striped structure を initial configuration にできるようにする.
 
@@ -114,16 +108,7 @@ o 精度の選択がconfigureへのオプションでできるようにしたい
   --with-precision=single
   --with-precision=double
 
-o start.coord があれば読み込む。alloc_Coord(p,c) で？
-
-o (coord を かきだし はじめる ところ おわる ところ AVERAGE の あいだだけ)
-
-o p, q, qdot にして, いつmassで割るか考える.
-
 o Q_nose must be a function of T, N and delta_t. AUTOMATIC determination.
-
-o Automatical determination of kappa
-  kappa for the Ewald summation must be a function of Lx, Ly and Lz
 
 o strain energy の 計算をする部分を分離.
 
@@ -149,8 +134,6 @@ o children, parents, use
 o input file parserを作る。どんなparser？
   input file と param.gp とを共通化？
   タイトルも引数で指定できるようにしないと面倒臭い。
-
-o call msg() DEPTH or p%message_depth
 
 o Use class of Fortran 2003: class Ferroelectrics has a Param, a Coord and a Energy
 
@@ -263,3 +246,17 @@ x Use SSE or AVX with the latest assembler and FCFLAGS='-g -Wall -Ofast -msse4.2
 
 x FILENAME.avgの出力の見直し polarization -> <u_z> とか
 
+x verbose値の階層化。verbose=1では毎イテレーションにはサブルーチン名が出ない方がよいかもしれない。
+
+x mass_dipole も mass_acou も R-dep できるようにする。
+
+x src/08example-BaTiO3-dispersion/ 以下をTESTSに格上げする。
+x plot_dispersion = .ture., 4x4x4, 8x8x8, 32x32x32で同じになるかチェック
+x grep 186547824173781 *long.dat | wc -l -> 6 とか。
+x print-eigenvalues.F を P%padding_y に対応させて、dipole-dipole.F を簡単化。
+
+x Use msg() in write_Param() of param_module.F.
+
+x Automatical determination of kappa
+  kappa for the Ewald summation must be a function of Lx, Ly and Lz
+  p%kappa = sqrt(M_PI) / p%a0 / (dble(p%N))**(1.0d0/6)
