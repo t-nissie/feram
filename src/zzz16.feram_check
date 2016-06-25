@@ -1,5 +1,5 @@
 #!./feram
-verbose = 2
+verbose = 4
 output_polarization = .ture.
 #--- Method, Temperature, and mass ---------------
 method = 'md'

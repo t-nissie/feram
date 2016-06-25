@@ -1,5 +1,5 @@
 ! leapfrog.F   -*-f90-*-
-! Time-stamp: <2016-06-24 22:54:24 takeshi>
+! Time-stamp: <2016-06-25 16:57:42 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -34,9 +34,7 @@ subroutine leapfrog(p,c,e,i_step)
      dVdacR(1:howmany, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) => dVdacR_linear
   end if
 
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'leapfrog().')
-  end if
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'leapfrog().')
 
   Lx_Ly_delta_e      = p%Lx * p%Ly * p%delta_e
   Lx_Ly_delta_e_acou = p%Lx * p%Ly * p%delta_e_acou
@@ -114,9 +112,7 @@ subroutine leapfrog(p,c,e,i_step)
         end do
      end do
 !$omp end parallel do
-     if (p%verbose>=2) then
-        call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'is updated.')
-     end if
+     if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'REMARK', 'dipoR is updated.')
 
      if (p%mass_acou(1) > 0.0d0) then
 !$omp parallel do
@@ -130,9 +126,7 @@ subroutine leapfrog(p,c,e,i_step)
            end do
         end do
 !$omp end parallel do
-        if (p%verbose>=2) then
-           call msg(UNIT_LOG, __FILE__, __LINE__, 'acouR', 'is updated.')
-        end if
+        if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'REMARK', 'acouR is updated.')
      end if
 
      call mirror_force_mirror(p,c,e)
@@ -142,9 +136,7 @@ subroutine leapfrog(p,c,e,i_step)
         c%dipoP(:,:,:,iz) = c%dipoP(:,:,:,iz) - p%dt * c%dVddi(:,:,:,iz)
      end do
 !$omp end parallel do
-     if (p%verbose>=2) then
-        call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoP', 'is updated.')
-     end if
+     if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'REMARK', 'dipoP is updated.')
 
      if (p%mass_acou(1) > 0.0d0) then
 !$omp parallel do
@@ -152,9 +144,7 @@ subroutine leapfrog(p,c,e,i_step)
            c%acouP(:,:,:,iz) = c%acouP(:,:,:,iz) - p%dt * dVdacR(:,:,:,iz)
         end do
 !$omp end parallel do
-        if (p%verbose>=2) then
-           call msg(UNIT_LOG, __FILE__, __LINE__, 'acouP', 'is updated.')
-        end if
+        if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'REMARK', 'acouP is updated.')
      end if
   end if
 
@@ -163,7 +153,5 @@ subroutine leapfrog(p,c,e,i_step)
      e%acou_kinetic = kinetic_energy_acou(p,c)
   end if
 
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ' leapfrog().')
-  end if
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ' leapfrog().')
 end subroutine leapfrog

@@ -1,5 +1,5 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2016-06-24 15:37:32 takeshi>
+! Time-stamp: <2016-06-25 17:21:17 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Description: Initialize dipoR and c%mass_dipo_inv(:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
@@ -67,5 +67,5 @@ subroutine initialize_dipoR(p,c,e)
   e%dipo_kinetic    = kinetic_energy_dipo(p,c)
   e%H_Nose_Poincare = 0.0d0
 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  initialize_dipoR()')
 end subroutine initialize_dipoR

@@ -1,5 +1,5 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2016-06-24 22:53:01 takeshi>
+! Time-stamp: <2016-06-25 16:59:41 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
@@ -19,7 +19,7 @@ subroutine nose_poincare(p,c,e)
   real*8 CB, s_Nose_old, delta_H, kinetic_energy_dipo, dt2s, dt2_s_s
   integer ix,iy,iz,alpha
   external kinetic_energy_dipo
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'nose_poincare().')
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'nose_poincare().')
 
   dt2s = p%dt_2*c%s_Nose
 !$omp parallel do
@@ -52,7 +52,7 @@ subroutine nose_poincare(p,c,e)
      end do
 !$omp end parallel do
 
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'REMARK', 'dipoR is updated.')
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'REMARK', 'dipoR is updated.')
 
   call mirror_force_mirror(p,c,e)
 
@@ -74,5 +74,5 @@ subroutine nose_poincare(p,c,e)
   e%dipo_kinetic = kinetic_energy_dipo(p,c)
   call Nose_Poincare_Hamiltonian(p,c,e)
 
-  if (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  nose_poincare().')
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  nose_poincare().')
 end subroutine nose_poincare

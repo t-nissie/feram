@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-06-24 14:41:41 takeshi>
+! Time-stamp: <2016-06-25 17:09:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -428,7 +428,7 @@ contains
     end do
 !$omp end parallel do
     !--- end --------------------------------
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'alloc_Coord().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ' alloc_Coord().')
   end subroutine alloc_Coord
 
   subroutine write_system(p,c,fn)

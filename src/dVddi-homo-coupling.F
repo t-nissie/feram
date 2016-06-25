@@ -1,5 +1,5 @@
 ! dVddi-homo-coupling.F   -*-f90-*-
-! Time-stamp: <2016-06-24 22:43:32 takeshi>
+! Time-stamp: <2016-06-25 18:17:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -15,9 +15,7 @@ subroutine dVddi_homo_coupling(p,c) ! We use p implicitly. Don't worry about com
   integer i,j,ix,iy,iz
   real*8  eta_B_over_2m(6)
   !--- END of variable definitions -------------------
-  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
-         & 'dVddi_homo_coupling(): Calculate force on dipoR from (in)harmonic strains.')
-
+  if (p%verbose>=4) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dVddi_homo_coupling().')
   eta_B_over_2m(:) = 0.0d0
   do j = 1, 6
      do i = 1, 6
@@ -25,7 +23,6 @@ subroutine dVddi_homo_coupling(p,c) ! We use p implicitly. Don't worry about com
       & eta_B_over_2m(j) + c%strain(i) * c%homogeneous_coupling_2(i,j)
      end do
   end do
-
 !$omp parallel do private(iz, iy, ix)
   do iz=0, p%Lz-1
      do iy = 0, p%Ly-1
@@ -48,6 +45,5 @@ subroutine dVddi_homo_coupling(p,c) ! We use p implicitly. Don't worry about com
      end do
   end do
 !$omp end parallel do
-
-  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  dVddi_homo_coupling().')
+  if (p%verbose>=4) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  dVddi_homo_coupling().')
 end subroutine dVddi_homo_coupling

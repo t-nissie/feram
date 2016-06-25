@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2016-06-24 15:36:07 takeshi>
+! Time-stamp: <2016-06-25 17:10:03 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -221,5 +221,5 @@ subroutine elastic(p,c)
      end if
   end if
 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END',   '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ' elastic().')
 end subroutine elastic

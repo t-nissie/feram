@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-06-24 16:46:42 takeshi>
+! Time-stamp: <2016-06-25 17:16:09 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -493,7 +493,7 @@ contains
     write(str,'(a,f10.4)')  'kappa for Ewald sum = ', p%kappa
     call msg_ez(UNIT_LOG,str)
 
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE',  trim(p%filename)//'.param.gp')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE',  ' '//trim(p%filename)//'.param.gp')
     open(unit=UNIT_SYSTEM, file=trim(p%filename)//'.param.gp')   ! For gnuplot
     write(UNIT_SYSTEM,'(a,i5)')    'Lx          =', p%Lx,         &
                                    'Ly          =', p%Ly,         &
