@@ -1,5 +1,5 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2016-06-25 18:00:24 takeshi>
+# Time-stamp: <2016-06-25 18:39:05 takeshi>
 # Author: Takeshi NISHIMATSU
 # Purpose: Check energy conservation
 ##
@@ -13,7 +13,7 @@ set key outside Left reverse spacing 1.3
 set rmargin 20
 set lmargin  9
 
-set output 'plot.eps'
+set output 'zzznp.eps'
 set yrange [-0.20:0.20]
 set ylabel 'energy [eV/unitcell]'
 plot '< grep " dipo_kinetic    " zzznp.log' using 0:2 title '{/Times-Italic E}_{dipole-kinetic}' w l lt 2,\
@@ -27,7 +27,7 @@ plot '< grep " dipo_kinetic    " zzznp.log' using 0:2 title '{/Times-Italic E}_{
      '< grep " total_energy    " zzznp.log' using 0:2 title '{/Times-Italic E}_{total}'          w l lt 1,\
      '< grep " H_Nose_Poincare " zzznp.log' using 0:2 title '{/Times-Italic H}_{N-P}'            w l lt 6
 
-set output 'plot.Nose.eps'
+set output 'zzznp.Nose.eps'
 set yrange [-0.5:1.5]
 set ylabel ''
 plot '< grep  "s_Nose"           zzznp.log' using 0:2 title '{/Times-Italic s}_{Nose}'           w l lt 4,\
@@ -35,5 +35,5 @@ plot '< grep  "s_Nose"           zzznp.log' using 0:2 title '{/Times-Italic s}_{
 
 set output
 #Local variables:
-#  compile-command: "gnuplot plot.gp"
+#  compile-command: "gnuplot zzznp.gp"
 #End:
