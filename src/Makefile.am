@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-06-25 18:26:18 takeshi>
+# Time-stamp: <2016-06-29 15:32:56 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -23,7 +23,8 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_fcc_maker.rb \
                    feram_modulation_maker.rb \
                    feram_NaCl_maker.rb \
-                   feram_slicer.rb
+                   feram_slicer.rb \
+                   feram_transition_detector.rb
 check_PROGRAMS = feram_fftw_SoA \
                  feram_fftw_1d marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check\
                  date_and_time_check msg_check decay_function_check
