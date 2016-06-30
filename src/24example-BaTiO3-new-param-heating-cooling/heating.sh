@@ -1,6 +1,6 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2016-01-18 21:43:29 t-nissie>
+# Time-stamp: <2016-06-30 22:42:22 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
@@ -67,7 +67,8 @@ EOF
         ln -sf "$prev_coord" $filename.restart
     fi
     ../feram $filename.feram
-    rm -f $prev_coord $filename.restart
+    rm -f $prev_coord $filename.restart $filename.dipoRavg
     prev_coord=$filename.`printf '%.10d' $n_coord_freq`.coord
     cat $filename.avg >> heating.avg
 done
+echo '#' `head -1 $filename.log | sed 's/.*START: //'` `hostname` >> heating.avg

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # feram_transition_detector.rb
-# Time-stamp: <2016-06-29 11:54:24 takeshi>
+# Time-stamp: <2016-06-30 21:02:00 takeshi>
 # Author: Takeshi NISHIMATSU
 # Usage:    ./feram_transition_detector.rb threshold file(s)
 # Example1: ./feram_transition_detector.rb 0.05 cooling.avg
@@ -12,6 +12,7 @@ last_x = Float::MAX
 last_y = Float::MAX
 last_z = Float::MAX
 ARGF.each do |line|
+  next if line =~ /^\s*#/
   ary = line.strip.split
   temperature = ary[0].to_f
   current_x = ary[10].to_f

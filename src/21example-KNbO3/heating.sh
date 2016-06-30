@@ -1,21 +1,16 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2016-06-30 19:41:59 takeshi>
+# Time-stamp: <2016-06-30 22:38:38 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
-echo '#' `strings -a ../feram | grep '^feram by Takeshi NISHIMATSU'` `hostname` > heating.avg
-
-temperature_start=30
-temperature_goal=800
-temperature_step=2
+rm -f heating.avg
 
 n_thermalize=40000
 n_average=20000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
-temperature=$temperature_start
-while [ `perl -e "print $temperature <= $temperature_goal || 0"` = "1" ] ; do
+for temperature in `seq  30  2 800`; do
     GPa=`perl -e "print -0.001 * $temperature"`
     i=`expr $i + 1`
     filename=heating`printf '%.3d' $i`-"$temperature"K
@@ -75,5 +70,5 @@ EOF
     rm -f $prev_coord $filename.restart $filename.dipoRavg
     prev_coord=$filename.`printf '%.10d' $n_coord_freq`.coord
     cat $filename.avg >> heating.avg
-    temperature=`perl -e "print $temperature + $temperature_step"`
 done
+echo '#' `head -1 $filename.log | sed 's/.*START: //'` `hostname` >> heating.avg
