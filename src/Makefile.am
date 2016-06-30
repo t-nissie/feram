@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-06-29 15:32:56 takeshi>
+# Time-stamp: <2016-06-30 14:41:44 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -24,7 +24,8 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_modulation_maker.rb \
                    feram_NaCl_maker.rb \
                    feram_slicer.rb \
-                   feram_transition_detector.rb
+                   feram_transition_detector.rb \
+                   feram_transition_sorter.rb
 check_PROGRAMS = feram_fftw_SoA \
                  feram_fftw_1d marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check\
                  date_and_time_check msg_check decay_function_check
@@ -32,6 +33,7 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          feram_defects_maker_check.sh \
          feram_modulation_maker_check.sh \
          feram_eigenvalues2j_check.sh \
+         feram_transition_check.sh \
          zzz16.feram_check \
          zzzgap.feram_check \
          zzzlf.feram_check \
@@ -170,6 +172,7 @@ feram_defects_maker_check.sh \
 feram_defects_maker_check_sphere.gp \
 feram_modulation_maker_check.sh \
 feram_eigenvalues2j_check.sh \
+feram_transition_check.sh \
 elastocaloric770K_check.csh \
 elastocaloric770K_check.sh \
 elastocaloric770K_check.txt \
