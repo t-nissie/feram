@@ -1,9 +1,9 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2016-06-30 19:19:54 takeshi>
+# Time-stamp: <2016-06-30 19:41:59 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
-echo '#' `strings ../feram | grep '^feram by Takeshi NISHIMATSU'` `hostname` > heating.avg
+echo '#' `strings -a ../feram | grep '^feram by Takeshi NISHIMATSU'` `hostname` > heating.avg
 
 temperature_start=30
 temperature_goal=800
