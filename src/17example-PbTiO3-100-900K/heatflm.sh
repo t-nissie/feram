@@ -1,6 +1,6 @@
 #!/bin/sh
 # heatflm.sh
-# Time-stamp: <2016-01-07 21:41:30 takeshi>
+# Time-stamp: <2016-07-02 14:46:57 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heatflm.avg
@@ -61,7 +61,7 @@ for temperature in `seq 300 1 1000`; do
 	epsilon_inf   = 8.24
 EOF
     if [ -r "$prev_coord" ]; then
-        ln -sf "$prev_coord" $filename.restart
+        ln -sf "$prev_coord" $filename.restart $filename.dipoRavg
     fi
     ../feram $filename.feram
     rm -f "$prev_coord" "$filename.restart"

@@ -1,6 +1,6 @@
 #!/bin/sh
 # coolflm.sh
-# Time-stamp: <2016-01-07 21:41:15 takeshi>
+# Time-stamp: <2016-07-02 14:46:24 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f coolflm.avg
@@ -61,7 +61,7 @@ for temperature in `seq 1000 -1 300`; do
 	epsilon_inf   = 8.24
 EOF
     if [ -r "$prev_coord" ]; then
-        ln -sf "$prev_coord" $filename.restart
+        ln -sf "$prev_coord" $filename.restart $filename.dipoRavg
     fi
     ../feram $filename.feram
     rm -f "$prev_coord" "$filename.restart"

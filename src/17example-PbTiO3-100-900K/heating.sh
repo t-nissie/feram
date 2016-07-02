@@ -1,6 +1,6 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2014-11-05 14:05:00 t-nissie>
+# Time-stamp: <2016-07-02 14:47:08 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
@@ -65,7 +65,7 @@ for temperature in `seq $temperature_start $temperature_step $temperature_goal`;
 	epsilon_inf   = 8.24
 EOF
     if [ -r "$prev_coord" ]; then
-	ln -sf "$prev_coord" $filename.restart
+        ln -sf "$prev_coord" $filename.restart $filename.dipoRavg
     fi
     ../feram $filename.feram
     rm -f "$prev_coord" "$filename.restart"
