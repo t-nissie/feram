@@ -317,6 +317,9 @@ It may be a good idea to generate the seed with jot(1) command.
  $ jot -r 2 1 2147483648
  639779840
  1297280417
+You can also use $((RANDOM)) of bash(1).
+ $ echo $((RANDOM*65536+RANDOM)) $((RANDOM*65536+RANDOM))
+ 2146723680 1863789493
 
 ===== init_dipo_avg, init_dipo_dev
 Values for initial random setting of dipoles.

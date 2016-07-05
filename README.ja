@@ -299,6 +299,9 @@ Marsaglia-Tsang 64-bit uiniversal RNG が使われています．
  $ jot -r 2 1 2147483648
  639779840
  1297280417
+bash(1)の$((RANDOM))機能を使うのもよいでしょう．
+ $ echo $((RANDOM*65536+RANDOM)) $((RANDOM*65536+RANDOM))
+ 2146723680 1863789493
 
 ===== init_dipo_avg, init_dipo_dev
 dipoleの初期状態の平均値とばらつき具合．
