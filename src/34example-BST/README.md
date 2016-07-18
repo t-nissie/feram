@@ -3,11 +3,18 @@ src/34example-BST
 ## Generate subdirectories
     ./xmaker.sh
 
-## Submit jobs in IMR
+## (Skip it!) How to make and distribute a wisdom file (Optional technique only for experts)
+    ../feram_fftw_wisdom 10000 32 32 32 1 FFTW_PATIENT
+    mv wisdom_new wisdom
+    for d in x[01]*; do cp wisdom $d; done
+
+## Submit jobs in IMR (for example)
     cd x0.0
     for x in `seq -w 0.0 0.1 1.0`; do cd ../x$x && submit SC general -pt 16 -exec cooling.csh -J cooling-$x && submit SC general -pt 16 -exec heating.csh -J heating-$x; done
 
 ## Plot with GNUPLOT and convert with ImageMagick:
+How to make a GIF animation.
+
     for x in `seq -w 0.0 0.1 1.0`; do cd ../x$x; ../polarization.gp; convert -density 100 -flatten polarization_a.eps polarization_a.gif; done
     cd ..
     gifsicle --colors=256 --delay=30 --loop  x*/po*.gif > polarization_animation.gif
@@ -29,8 +36,3 @@ Delete `acoustic_mass_amu = 41.67` in cooling.sh and heating.sh.
 Delete `method = 'vs'`.
 Repalce `acoustic_mass_amu = 41.67` in cooling.sh and heating.sh with
 `Q_Nose = 0.1` and `Q_Nose = 0.01`, respectively.
-
-## How to make and distribute a wisdom file
-    ../feram_fftw_wisdom 10000 32 32 32 1 FFTW_PATIENT
-    mv wisdom_new wisdom
-    for d in x[01]*; do cp wisdom $d; done
