@@ -29,3 +29,8 @@ Delete `acoustic_mass_amu = 41.67` in cooling.sh and heating.sh.
 Delete `method = 'vs'`.
 Repalce `acoustic_mass_amu = 41.67` in cooling.sh and heating.sh with
 `Q_Nose = 0.1` and `Q_Nose = 0.01`, respectively.
+
+## How to make and distribute a wisdom file
+    ../feram_fftw_wisdom 10000 32 32 32 1 FFTW_PATIENT
+    mv wisdom_new wisdom
+    for d in x[01]*; do cp wisdom $d; done
