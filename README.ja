@@ -428,30 +428,30 @@ acoustic modulation に依存するエネルギは
 
 となります．
 
-=== .relaxor file
-各サイトの「イオン」を指定します．
-リラクサー (relaxor) を想定しています．
-このファイルがなければ普通のABO3強誘電体のシミュレーションです．
-i_relaxorは1〜3（最大値はsrc/define.hで指定）．
-デフォルトが1なので，次の例の１行目は省略可能です．
-
- 0 0 0   1
- 1 0 0   2
- 2 0 0   3
- 3 0 0   2
-    :
-    :
- position_x position_y position_z i_relaxor
-    :
-    :
-
-i_relaxorにより変えることができるのは，ローカルなパラメーターの
-Z_star, mass_amu, acoustic_mass_amu, P_kappa2, P_alpha, P_gamma, P_k1, P_k2, P_k3, P_k4 です．
-.feramインプットファイルで，
-
- Z_star = 2.0 5.0 4.0
-
-などと３つ指定します．
+# === .relaxor file
+# 各サイトの「イオン」を指定します．
+# リラクサー (relaxor) を想定しています．
+# このファイルがなければ普通のABO3強誘電体のシミュレーションです．
+# i_relaxorは1〜3（最大値はsrc/define.hで指定）．
+# デフォルトが1なので，次の例の１行目は省略可能です．
+#
+#  0 0 0   1
+#  1 0 0   2
+#  2 0 0   3
+#  3 0 0   2
+#     :
+#     :
+#  position_x position_y position_z i_relaxor
+#     :
+#     :
+#
+# i_relaxorにより変えることができるのは，ローカルなパラメーターの
+# Z_star, mass_amu, acoustic_mass_amu, P_kappa2, P_alpha, P_gamma, P_k1, P_k2, P_k3, P_k4 です．
+# .feramインプットファイルで，
+#
+#  Z_star = 2.0 5.0 4.0
+#
+# などと３つ指定します．
 
 === FFTW wisdom file
 必須ではありませんが，FFTW用のwisdomファイルを用意すると，
