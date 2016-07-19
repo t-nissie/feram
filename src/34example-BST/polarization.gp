@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # polarization.gp
-# Time-stamp: <2016-07-04 18:03:58 takeshi>
+# Time-stamp: <2016-07-19 11:22:18 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set encoding iso_8859_1  # for Angstrom
@@ -17,7 +17,8 @@ set key left top
 set ylabel 'lattice constant [\305]'
 
 set output 'polarization_a.eps'
-set title "`pwd | sed -e 's/.*-b/{\/Times-Italic b}=/' -e 's/-SR16000.*//'`, `basename $PWD | sed -e 's/x/{\/Times-Italic x}=/'`"
+set notitle
+#set title "`pwd | sed -e 's/.*-b/{\/Times-Italic b}=/' -e 's/-SR16000.*//'`, `basename $PWD | sed -e 's/x/{\/Times-Italic x}=/'`"
 plot 'heating.avg' using 1:(($5+1)*a0) t 'heating' w l lt 1 lw 3,\
      'heating.avg' using 1:(($6+1)*a0) t ''        w l lt 1 lw 3,\
      'heating.avg' using 1:(($7+1)*a0) t ''        w l lt 1 lw 3,\
@@ -25,8 +26,8 @@ plot 'heating.avg' using 1:(($5+1)*a0) t 'heating' w l lt 1 lw 3,\
      'cooling.avg' using 1:(($6+1)*a0) t ''        w l lt 3 lw 3,\
      'cooling.avg' using 1:(($7+1)*a0) t ''        w l lt 3 lw 3
 
-set notitle
 set output 'polarization.eps'
+set notitle
 set size 1.0,2.0
 set multiplot
 set origin 0.0,1.0
