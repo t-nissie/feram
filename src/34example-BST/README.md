@@ -25,6 +25,7 @@ gifsicle(1) from https://www.lcdf.org/gifsicle/ is used.
 src/feram_transition_detector.rb is a tool to detect transition temperatures.
 The first command line argument for it is a threshold value and the value should be adjusted.
 With src/feram_transition_sorter.rb, you can make a data file for plotting.
+Attached Tc.dat is an example data.
 
     cd x0.0
     cd ../x0.0/ && ../../feram_transition_detector.rb 0.020 cooling.avg | grep Tc | tee Tmp.dat
@@ -44,6 +45,16 @@ With src/feram_transition_sorter.rb, you can make a data file for plotting.
     cd ..
     grep ' [01]' */Tc.dat | sed -e 's%/Tc.dat:%   %'  -e 's%x% %' > Tc.dat
     gnuplot Tc.gp
+
+## Plot x-dependence of polarization
+You can automatically plot x-dependence of
+polarization |P| with P.rb and P.gp.
+Attached P.dat is an example data.
+
+    ruby P.rb Tc.dat > P.dat
+    gnuplot P.gp
+    gv -watch P.eps
+    evince P.pdf
 
 ## Optimization in acoustic displacements
 Delete `acoustic_mass_amu = 41.67` in cooling.sh and heating.sh.

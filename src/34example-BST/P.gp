@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # P.gp
-# Time-stamp: <2016-07-23 18:23:41 takeshi>
+# Time-stamp: <2016-07-23 18:30:14 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set encoding iso_8859_1  # for Angstrom
@@ -33,7 +33,7 @@ plot 'P.dat' index 0 using 1:(c*sqrt($36**2+$37**2+$38**2)) t '<111>' w  p lt 3 
      'P.dat' index 1 using 1:(c*sqrt($36**2+$37**2+$38**2)) t '<110>' w  p lt 2 pt 12 lw 2,\
      'P.dat' index 2 using 1:(c*sqrt($36**2+$37**2+$38**2)) t '<100>' w  p lt 1 pt  8 lw 2
 set output
-#!epstopdf P.eps
+!epstopdf P.eps
 #Local variables:
 #  compile-command: "gnuplot P.gp"
 #End:
