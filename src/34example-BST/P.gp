@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # P.gp
-# Time-stamp: <2016-07-23 18:30:14 takeshi>
+# Time-stamp: <2016-07-25 10:34:53 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set encoding iso_8859_1  # for Angstrom
@@ -23,7 +23,7 @@ set format y '%.0f'
 
 set ylabel '|{/Times-Italic P}| [{/Symbol m}C cm^{-2}]'
 set key left top
-set label 1 at 0.63,11 'M\351noret {/Times-Italic et al.}'
+#set label 1 at 0.63,11 'M\351noret {/Times-Italic et al.}'
 
 #    'PhysRevB.65.224104.BST.Fig6.dat' index 0 t ''                   w lp lt 3 pt  7 lw 2,\
 #    ''                                index 1 t ''                   w lp lt 2 pt 13 lw 2,\
