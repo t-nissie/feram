@@ -67,7 +67,7 @@ Compare the results with Fig.2 in [Malcolm McQuarrie: J. Am. Ceram. Soc. 38, 444
 
     grep ' 300.000 ' x*/heating.avg | sed -e 's%/heating.avg:% %'  -e 's/x//' > a300K.dat
     gnuplot
-    gnuplot> a0=3.9435; plot 'a300K.dat' u 1:((1+$6)*a0) w lp, '' u 1:((1+$7)*a0) w lp, '' u 1:((1+$8)*a0) w
+    gnuplot> a0=3.9435; plot 'a300K.dat' u 1:((1+$6)*a0) w lp, '' u 1:((1+$7)*a0) w lp, '' u 1:((1+$8)*a0) w lp
 
 ## Optimization in acoustic displacements
 Delete `acoustic_mass_amu = 41.67` in cooling.sh and heating.sh.
