@@ -43,7 +43,7 @@ Attached Tc.dat is an example data.
              :
     cd ../x1.0/ && ../../feram_transition_detector.rb 0.050 *ing.avg | grep Tc | ../../feram_transition_sorter.rb | tee Tc.dat
     cd ..
-    grep ' [01]' */Tc.dat | sed -e 's%/Tc.dat:%   %'  -e 's%x% %' > Tc.dat
+    grep ' ' */Tc.dat | sed -e 's%/Tc.dat:%   %'  -e 's%x% %' > Tc.dat
     gnuplot Tc.gp
 
 ## Plot x-dependence of polarization
