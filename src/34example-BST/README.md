@@ -25,7 +25,9 @@ gifsicle(1) from https://www.lcdf.org/gifsicle/ is used.
 src/feram_transition_detector.rb is a tool to detect transition temperatures.
 The first command line argument for it is a threshold value and the value should be adjusted.
 With src/feram_transition_sorter.rb, you can make a data file for plotting.
-Attached Tc.dat is an example data.
+Attached Tc.dat is an example data. Compare the results with
+[V. V. Lemanov et al.: Phys. Rev. B 54, 3151 (1996). http://link.aps.org/doi/10.1103/PhysRevB.65.224104] and
+[C. Ménoret et al.: Phys. Rev. B 65, 224104 (2001). http://link.aps.org/doi/10.1103/PhysRevB.65.224104].
 
     cd x0.0
     cd ../x0.0/ && ../../feram_transition_detector.rb 0.020 cooling.avg | grep Tc | tee Tmp.dat
@@ -50,11 +52,22 @@ Attached Tc.dat is an example data.
 You can automatically plot x-dependence of
 polarization |P| with P.rb and P.gp.
 Attached P.dat is an example data.
+Compare the results with Fig.6 in
+[C. Ménoret et al.: Phys. Rev. B 65, 224104 (2001).
+http://link.aps.org/doi/10.1103/PhysRevB.65.224104].
 
     ruby P.rb Tc.dat > P.dat
     gnuplot P.gp
     gv -watch P.eps
     evince P.pdf
+
+## Plot x-dependence of lattice constans a and c at 300 K
+Plotting x-dependence of lattice constans *a* and *c* at constant temperature is easy.
+Compare the results with Fig.2 in [Malcolm McQuarrie: J. Am. Ceram. Soc. 38, 444 (1955). http://dx.doi.org/10.1111/j.1151-2916.1955.tb14571.x].
+
+    grep ' 300.000 ' x*/heating.avg | sed -e 's%/heating.avg:% %'  -e 's/x//' > a300K.dat
+    gnuplot
+    gnuplot> a0=3.9435; plot 'a300K.dat' u 1:((1+$6)*a0) w lp, '' u 1:((1+$7)*a0) w lp, '' u 1:((1+$8)*a0) w
 
 ## Optimization in acoustic displacements
 Delete `acoustic_mass_amu = 41.67` in cooling.sh and heating.sh.
