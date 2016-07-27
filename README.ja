@@ -572,6 +572,22 @@ src/dipole-dipole.F と
 src/print-eigenvalues.F と
 を参照してください．
 
+== 解析ツール
+解析やプロットのためのツールをsrc/ディレクトリ内に用意しました．
+それらは `feram_` で始まります．
+`make install`すると，デフォルトでは/usr/local/bin/に
+feramコマンドとともにインストールされます．
+ほとんどはRubyスクリプトまたはシェルスクリプトですが，
+いくつかはFortranで書かれていてferamと同時にコンパイルされます．
+基本的に，使用方法はそのソースコードの先頭に書かれています．
+
+=== feram_transition_detector.rb と feram_transition_sorter.rb
+`feram_transition_detector.rb` は降温／昇温シミュレーションの出力の
+cooling.avg または heating.avg ファイルを読み込み，
+<u>の大きな変化がある行に`Tc`のマーカーを印刷します．
+`feram_transition_sorter.rb`はさらにそれを読み取ってソートして，１行に整形します．
+詳細は src/34example-BST/README.md に書かれています．
+
 == シミュレーションの例
 ソフトウエアパッケージの次のディレクトリに入力ファイル（と結果）が入っています．
  feram-X.YY.ZZ/src/03example-BaTiO3-bulk-phase-transition/

@@ -584,6 +584,20 @@ The calculated local field from the given ionic configuration (ionic.configurati
 file) is stored in this file. This file will be reloaded in consequent temperature
 calculations and the other calculations.
 
+== Tools
+Tools for analyzing and plotting are prepared in the src/ directory.
+They are start with `feram_`.
+They will be also installed into /usr/local/bin/ by default,
+if you issue `make install`.
+Most of them are Ruby scripts and shell scripts.
+Some of them are written in Fortran language.
+Basically, usages are described in the head of source code.
+
+=== feram_transition_detector.rb and feram_transition_sorter.rb
+`feram_transition_detector.rb` reads cooling.avg or heating.avg and
+reports transition temperatures by marking `Tc`,
+then `feram_transition_sorter.rb` can sort the results.
+See src/34example-BST/README.md for more details.
 
 == Examples
 You can find input files and their simulated results in following directories in the software package.
