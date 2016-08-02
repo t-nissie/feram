@@ -131,7 +131,40 @@ Note that parallelization beyond NUMA does not give good efficiency.
          500  3   64   64   64    1     262144 out  12   0.867  40.818
          500  6   64   64   64    1     262144 out  12   2.408  29.393
 
+    app27$ pwd
+    /home/t-nissie/benchmark/feram_fft_wisdom/r2883-app4t-gfortran-6.1.0-fftw-3.3.4
+    app27$ taskset -c 6-11 ./feram_fftw_SoA 500 64 64 64 1 FFTW_PATIENT && taskset -c 6-11 ./feram_fftw_wisdom 500 64 64 64 1 FFTW_PATIENT
+    feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+         500  1   64   64   64    1     262144  in   6   0.363  32.5
+         500  1   64   64   64    1     262144 out   6   0.393  30.0
+    
+         500  3   64   64   64    1     262144  in   6   1.095  32.3
+         500  6   64   64   64    1     262144  in   6   2.278  31.1
+         500  3   64   64   64    1     262144 out   6   1.354  26.1
+         500  6   64   64   64    1     262144 out   6   3.512  20.2
+    feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+         500  3   64   64   64    1     262144  in   6   1.244  28.4
+         500  6   64   64   64    1     262144  in   6   2.765  25.6
+         500  3   64   64   64    1     262144 out   6   1.410  25.1
+         500  6   64   64   64    1     262144 out   6   4.050  17.5
+    app27$ 
+    app27$ 
+    app27$ taskset -c 6-11 ./feram_fftw_SoA 100 128 128 128 1 FFTW_PATIENT && taskset -c 6-11 ./feram_fftw_wisdom 100 128 128 128 1 FFTW_PATIENT
+    feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+         100  1  128  128  128    1    2097152  in   6   0.846  26.0
+         100  1  128  128  128    1    2097152 out   6   1.135  19.4
+    
+         100  3  128  128  128    1    2097152  in   6   2.903  22.8
+         100  6  128  128  128    1    2097152  in   6   5.809  22.7
+         100  3  128  128  128    1    2097152 out   6   3.639  18.2
+         100  6  128  128  128    1    2097152 out   6   7.294  18.1
+    feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+         100  3  128  128  128    1    2097152  in   6   3.578  18.5
+         100  6  128  128  128    1    2097152  in   6   7.378  17.9
+         100  3  128  128  128    1    2097152 out   6   4.258  15.5
+         100  6  128  128  128    1    2097152 out   6   8.336  15.8
 
+    
     app14$ pwd
     /home/t-nissie/benchmark/feram_fft_wisdom/r2634-app4t-gfortran-5.2.0-threads
     app14$
@@ -300,6 +333,48 @@ configure options of --enable-sse2 and --enable-avx are not given.
          100  3   64   64   64    1     262144 out   6   0.701  10.1
          100  6   64   64   64    1     262144 out   6   1.573   9.0
     diamond04$
+
+
+## MacBook Pro (Retina, 13-inch, Late 2012) with 2.5 GHz (i5-3210M) dual-core Intel Core i5 Ivy Bridge
+    $ LANG=C date
+    Mon Aug  1 22:50:16 JST 2016
+    $ pwd
+    /Users/takeshi/benchmark/feram_fft_wisdom/r2883-MacBookPro-gfortran-6.1.0-fftw-3.3.4
+    $ OMP_NUM_THREADS=4 ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
+    feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+         100  1   64   64   64    1     262144  in   4   0.184  12.8
+         100  1   64   64   64    1     262144 out   4   0.210  11.2
+    
+         100  3   64   64   64    1     262144  in   4   0.714   9.9
+         100  6   64   64   64    1     262144  in   4   1.404  10.1
+         100  3   64   64   64    1     262144 out   4   0.752   9.4
+         100  6   64   64   64    1     262144 out   4   1.486   9.5
+    $ OMP_NUM_THREADS=4 ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
+    feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+         100  3   64   64   64    1     262144  in   4   0.805   8.8
+         100  6   64   64   64    1     262144  in   4   1.707   8.3
+         100  3   64   64   64    1     262144 out   4   0.827   8.6
+         100  6   64   64   64    1     262144 out   4   1.804   7.8
+
+    $ LANG=C date; pwd
+    Mon Aug  1 23:01:19 JST 2016
+    /Users/takeshi/benchmark/feram_fft_wisdom/r2883-MacBookPro-gfortran-6.1.0-fftw-3.3.5
+    $ OMP_NUM_THREADS=4 ./feram_fftw_SoA 100 64 64 64 1 FFTW_PATIENT
+    feram_fftw_SoA.F:69: flags = FFTW_PATIENT
+         100  1   64   64   64    1     262144  in   4   0.154  15.3
+         100  1   64   64   64    1     262144 out   4   0.191  12.4
+    
+         100  3   64   64   64    1     262144  in   4   0.595  11.9
+         100  6   64   64   64    1     262144  in   4   1.219  11.6
+         100  3   64   64   64    1     262144 out   4   0.716   9.9
+         100  6   64   64   64    1     262144 out   4   1.452   9.7
+    $ OMP_NUM_THREADS=4 ./feram_fftw_wisdom 100 64 64 64 1 FFTW_PATIENT
+    feram_fftw_wisdom.F:63: flags = FFTW_PATIENT
+         100  3   64   64   64    1     262144  in   4   0.795   8.9
+         100  6   64   64   64    1     262144  in   4   1.630   8.7
+         100  3   64   64   64    1     262144 out   4   0.792   8.9
+         100  6   64   64   64    1     262144 out   4   1.658   8.5
+    $
 
 <!--
 Local variables:
