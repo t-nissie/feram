@@ -1,6 +1,6 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2016-07-18 18:23:35 takeshi>
+# Time-stamp: <2016-08-04 16:15:50 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 rm -f heating.avg
@@ -19,7 +19,7 @@ for temperature in `seq  30  1 500`; do
 	method = 'vs'
 	GPa = $GPa
 	kelvin = $temperature
-	mass_amu = 40.9285 
+	mass_amu = 40.9285
 	acoustic_mass_amu = 41.67
 	
 	#--- System geometry -----------------------------
@@ -27,8 +27,8 @@ for temperature in `seq  30  1 500`; do
 	L = 32 32 32
 	
 	#--- Elastic Constants ---------------------------
-	modulation_constant = -0.6554
-	B11 = 129.0286059 
+	modulation_constant = -0.279
+	B11 = 129.0286059
 	B12 =  39.00720516
 	B44 =  45.26949109
 	
@@ -40,7 +40,7 @@ for temperature in `seq  30  1 500`; do
 	P_k2 = 157.2518592
 	P_k3 = 515.9414896
 	P_k4 = 390.6570497
-	P_alpha = 50.68630712 
+	P_alpha = 50.68630712
 	P_gamma = -72.18357441
 	
 	#--- Time step -----------------------------------
@@ -52,7 +52,7 @@ for temperature in `seq  30  1 500`; do
 	
 	#--- From eigenvalues2j --------------------------
 	P_kappa2 = 9.4250031
-	         
+	
 	j = -2.048250285  -1.472144446  0.6396521198  -0.5891190367  0.0 0.2576732039  0.0
 	a0  =   3.9435    [Angstrom]
 	Z_star      =  9.807238756
