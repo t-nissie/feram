@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-08-04 15:30:43 takeshi>
+# Time-stamp: <2016-08-04 15:46:59 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -172,6 +172,7 @@ feram_defects_maker_check.gp \
 feram_defects_maker_check.sh \
 feram_defects_maker_check_sphere.gp \
 feram_modulation_maker_check.sh \
+feram_slicer_check.sh \
 feram_eigenvalues2j_check.sh \
 feram_transition_check.sh \
 elastocaloric770K_check.csh \
