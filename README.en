@@ -599,6 +599,14 @@ reports transition temperatures by marking `Tc`,
 then `feram_transition_sorter.rb` can sort the results.
 See src/34example-BST/README.md for more details.
 
+=== feram_slicer.rb
+feram_slicer.rb reads a .coord file and visualizes the supercell as
+a slice with +z-polarized red empty squares and -z-polarized blue filled squares.
+feram_slicer.rb is a Ruby script file which writes an Encapsulated PostScript file (EPSF, .eps file) directly.
+You can specify the z-height as the second command-line argument.
+ feram_slicer.rb zzz16.0000000060.coord
+ feram_slicer.rb zzz16.0000000060.coord 8   # ---> zzz16.0000000060-slice-z008.eps
+
 == Examples
 You can find input files and their simulated results in following directories in the software package.
  feram-X.YY.ZZ/src/03example-BaTiO3-bulk-phase-transition/

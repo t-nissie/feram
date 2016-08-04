@@ -588,6 +588,13 @@ cooling.avg または heating.avg ファイルを読み込み，
 `feram_transition_sorter.rb`はさらにそれを読み取ってソートして，１行に整形します．
 詳細は src/34example-BST/README.md に書かれています．
 
+=== feram_slicer.rb
+.coordファイルを読み込んで、スーパーセルの断面図を+z分極を赤の四角枠-z分極を青の正方形で可視化するRubyスクリプトです。
+Encapsulated PostScript file（EPSF, .epsファイル）を直接書き出します。
+第２引数に断面図を描くzの値を指定することもできます。
+ feram_slicer.rb zzz16.0000000060.coord
+ feram_slicer.rb zzz16.0000000060.coord 8   # ---> zzz16.0000000060-slice-z008.eps
+
 == シミュレーションの例
 ソフトウエアパッケージの次のディレクトリに入力ファイル（と結果）が入っています．
  feram-X.YY.ZZ/src/03example-BaTiO3-bulk-phase-transition/
