@@ -45,7 +45,7 @@ plot inp using 1:3 title '{/Times-Italic B}({/Times-Italic r}, {/Symbol k})'   w
      exp(-(2*pi*x/(a0*Lz))**2 / kappa**2 )/a0**3\
      title 'exp(-{/Times-Italic k}^2/{/Symbol k}^2) / {/Times-Italic a}_0^3' with l lw 3
 set output
-!epstopdf decay_function_check.eps
+#!epstopdf decay_function_check.eps
 #Local variables:
 #  compile-command: "gnuplot decay_function_check.gp"
 #End:

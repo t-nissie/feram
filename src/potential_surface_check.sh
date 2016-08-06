@@ -1,6 +1,6 @@
 #!/bin/sh
 # potential_surface_check.sh
-# Time-stamp: <2016-05-24 13:47:07 takeshi>
+# Time-stamp: <2016-08-06 09:39:32 takeshi>
 # Author: Takeshi NISHIMATSU
 # Ref_1: R. D. King-Smith and David Vanderbilt: PRB 49, 5828 (1994).
 # Ref_2: Takeshi Nishimatsu et al.: PRB 82, 134106 (2010).
@@ -89,6 +89,7 @@ cat > potential_surface_check.gp <<-EOF
 	set key bottom
 	set xrange [0:1]
 	set yrange [-0.10:0.15]
+	set format y "%.2f"
 	set xlabel '{/Times-Italic u} [\305]'
 	set ylabel '{/Times-Italic E} - {/Times-Italic E}^0 [eV]'
 	call 'potential_surface_input.param.gp'
@@ -116,7 +117,7 @@ cat > potential_surface_check.gp <<-EOF
 	set output
 EOF
 gnuplot  potential_surface_check.gp
-epstopdf potential_surface_check.eps
+#epstopdf potential_surface_check.eps
 #Local variables:
 #  compile-command: "OMP_NUM_THREADS=2 make check TESTS=potential_surface_check.sh"
 #End:

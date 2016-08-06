@@ -1,6 +1,6 @@
 #!/bin/sh
 # GPa_check.sh
-# Time-stamp: <2016-06-20 15:04:21 takeshi>
+# Time-stamp: <2016-08-06 09:43:19 takeshi>
 # Author: Takeshi NISHIMATSU
 # Ref_1: R. D. King-Smith and David Vanderbilt: PRB 49, 5828 (1994).
 # Ref_2: Takeshi Nishimatsu et al.: PRB 82, 134106 (2010).
@@ -86,7 +86,7 @@ cat > GPa_check.gp <<-EOF
 	print -8*a0**3/(B11+2*B12)/160.22
 EOF
 gnuplot  GPa_check.gp
-epstopdf GPa_check.eps
+#epstopdf GPa_check.eps
 set `cat GPa_check.avg`
 echo $5
 echo $6
