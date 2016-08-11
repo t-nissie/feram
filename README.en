@@ -83,8 +83,8 @@ Use taskset(1) or numactl(8) to retrieve or set a process's CPU affinity.
 The parameter file for feram is a text file consisting of
 comment lines and 'tag = value(s)' lines. Filenames of
 parameter files may be foo123 or foo123.feram. In these
-cases, filenames of output files will be foo123.*, e.g.
-foo123.log, foo123.coord, etc.
+cases, filenames of output files will be foo123.*,e.g.
+foo123.log, foo123.0000050000.cood, etc.
 
 How to determine the parameters is described in parameters/parameters.html.
 
@@ -499,8 +499,8 @@ you do not have to prepare the wisdom file.
 == Output files
 If you execute the feram like `feram foo123.feram`,
 filenames of output files are starting from 'foo123',
-e.g. foo123.avg, foo123.320K0050000.coord,
-foo123.dipole-dipole-long.dat, etc.
+e.g. foo123.avg, foo123.0000050000.coord,
+foo123.param.gp, foo123.dipole-dipole-long.dat, etc.
 
 === foo123.log
 To foo123.log, feram reports the energies of each iteration.
@@ -606,6 +606,26 @@ feram_slicer.rb is a Ruby script file which writes an Encapsulated PostScript fi
 You can specify the z-height as the second command-line argument.
  feram_slicer.rb zzz16.0000000060.coord
  feram_slicer.rb zzz16.0000000060.coord 8   # ---> zzz16.0000000060-slice-z008.eps
+
+=== feram_cross_section_q.sh
+feram_cross_section_q.sh reads a .coord file and draws a
+cross section with arrows representing dipoles.
+Prepare param.gp as a symlink.
+If you specify zzz16.0000000060.coord, you will get an
+EPS file, zzz16.0000000060-q-x.eps for example.
+ Example1:
+    ln -s zzz16.param.gp param.gp
+    feram_cross_section_q.sh zzz16.0000000060.coord   # You will get zzz16.0000000060-q-x.eps.
+ Example2:
+    feram_cross_section_q.sh 150K.0000050000.coord 4.0 10 y 0.9
+ Usage: ./feram_cross_section_q.sh coord-file [FACTOR] [CONST_Alpha] [Alpha] [ratio] [max_z]
+ Arguments:
+  [FACTOR]      u*[FACTOR] will be the length of each arrow.
+  [CONST_Alpha] Visulaize cross sections of alpha=[CONST_Alpha]. Default value: 8.
+  [Alpha]       Alpha=x,y,z. Default value: x.
+  [ratio]       Optional argument to keep the shape of unitcell square exactly.
+                You may want to use this argument when Lx=Ly!=Lz. Default value: 0.7231.
+  [max_z]       It is useful for vertical cross section of a thin-film.
 
 == Examples
 You can find input files and their simulated results in following directories in the software package.

@@ -63,7 +63,7 @@ feramはあまり大容量のメモリを必要としませんが，高速な実
 feram用のパラメータファイルはコメント行と 'tag = value(s)' というタグ行
 からなるテキストファイルです．パラメータファイルのファイル名を
 foo123 または foo123.feram とした場合，出力ファイルは
-foo123.log, foo123.cood, ... などとなります．
+foo123.log, foo123.0000000000.cood, ... などとなります．
 それぞれのパラメータをどう決定するかは parameters/parameters.html
 に説明があります．
 
@@ -487,8 +487,8 @@ wisdomファイルを準備する必要はありません．
 == 出力ファイル
 feram が feram foo123.feram と実行されたなら
 出力ファイルは foo123. で始まります．
-すなわち，foo123.avg, foo123.320K0050000.coord,
-foo123.dipole-dipole-long.dat などです．
+すなわち，foo123.avg, foo123.0000050000.coord,
+foo123.param.gp, foo123.dipole-dipole-long.dat などです．
 
 === foo123.log
 feramは.logファイルにエネルギーの値などを書き出します．
@@ -594,6 +594,24 @@ Encapsulated PostScript file（EPSF, .epsファイル）を直接書き出しま
 第２引数に断面図を描くzの値を指定することもできます。
  feram_slicer.rb zzz16.0000000060.coord
  feram_slicer.rb zzz16.0000000060.coord 8   # ---> zzz16.0000000060-slice-z008.eps
+
+=== feram_cross_section_q.sh
+.coordファイルを読み込んで、指定の断面のセルの分極を矢印としてその断面に射影して描画します。
+param.gpをシンボリックリンクなどとして用意してください。
+zzz16.0000000060.coordを指定するとzzz16.0000000060-q-x.epsなどというEPSファイルができます。
+ Example1:
+    ln -s zzz16.param.gp param.gp
+    feram_cross_section_q.sh zzz16.0000000060.coord   # You will get zzz16.0000000060-q-x.eps.
+ Example2:
+    feram_cross_section_q.sh 150K.0000050000.coord 4.0 10 y 0.9
+ Usage: ./feram_cross_section_q.sh coord-file [FACTOR] [CONST_Alpha] [Alpha] [ratio] [max_z]
+ Arguments:
+  [FACTOR]      u*[FACTOR] will be the length of each arrow.
+  [CONST_Alpha] Visulaize cross sections of alpha=[CONST_Alpha]. Default value: 8.
+  [Alpha]       Alpha=x,y,z. Default value: x.
+  [ratio]       Optional argument to keep the shape of unitcell square exactly.
+                You may want to use this argument when Lx=Ly!=Lz. Default value: 0.7231.
+  [max_z]       It is useful for vertical cross section of a thin-film.
 
 == シミュレーションの例
 ソフトウエアパッケージの次のディレクトリに入力ファイル（と結果）が入っています．

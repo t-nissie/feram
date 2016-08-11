@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-08-04 15:46:59 takeshi>
+# Time-stamp: <2016-08-11 19:34:11 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -36,6 +36,7 @@ TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_
          feram_transition_check.sh \
          zzz16.feram_check \
          feram_slicer_check.sh \
+         feram_cross_section_check.sh \
          zzzgap.feram_check \
          zzzlf.feram_check \
          zzzramping.feram_check \
@@ -173,6 +174,7 @@ feram_defects_maker_check.sh \
 feram_defects_maker_check_sphere.gp \
 feram_modulation_maker_check.sh \
 feram_slicer_check.sh \
+feram_cross_section_check.sh \
 feram_eigenvalues2j_check.sh \
 feram_transition_check.sh \
 elastocaloric770K_check.csh \
