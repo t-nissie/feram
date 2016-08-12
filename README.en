@@ -639,6 +639,13 @@ You can find input files and their simulated results in following directories in
  feram-X.YY.ZZ/src/24example-BaTiO3-new-param-heating-cooling/
  feram-X.YY.ZZ/src/25example-BaTiO3-read-quadratic/
  feram-X.YY.ZZ/src/26example-BaTiO3-acoustic-MD/
+ feram-X.YY.ZZ/src/27example-BaTiO3-new-param-E_wave/
+ feram-X.YY.ZZ/src/28example-PbTiO3-elastocaloric-770K/
+ feram-X.YY.ZZ/src/29example-BaTiO3-new-param-defects/
+ feram-X.YY.ZZ/src/30example-BaTiO3-new-param-ramping-off/
+ feram-X.YY.ZZ/src/31example-BaTiO3-new-param-thermal-conductivity/
+ feram-X.YY.ZZ/src/32example-BaTiO3-old-64x64x1024-benchmark/
+ feram-X.YY.ZZ/src/34example-BST/
 
 === Energies vs MD step in cooling simulation
 \Fig:MD doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
