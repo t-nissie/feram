@@ -19,12 +19,12 @@ Takeshi
 ## Changes
 In this feram-0.26.01, some bugs and typos are fixed.
 
-In the feram-0.26.00, a bug in feram-0.24.02 of plot_dispersion is fixed.
-
 From the feram-0.26.00, you can use .modulation input file.
 You can simulate (Ba,Sr)TiO3, now.
 See files in feram-0.26.00/src/34example-BST/.
-I will put our paper on arXiv as soon as possible.
+See http://arxiv.org/abs/1608.06433 also.
+
+In the feram-0.26.00, a bug in feram-0.24.02 of plot_dispersion is fixed.
 
 From this feram-0.26.00, a .dipoRavg file will be written in the end.
 
