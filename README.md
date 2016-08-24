@@ -1,12 +1,12 @@
-feram-0.26.00
+feram-0.26.01
 =============
 Dear current and future feram users,
 
-I released feram-0.26.00.tar.xz from
-https://sourceforge.net/projects/loto/files/feram/feram-0.26.00/ .
+I released feram-0.26.01.tar.xz from
+https://sourceforge.net/projects/loto/files/feram/feram-0.26.01/ .
 This is a stable release, I hope.
 
-MD5 (feram-0.26.00.tar.xz) = 6c146e542cf260ac4fc605aee2c8567b
+MD5 (feram-0.26.01.tar.xz) = 3f4ff69d9f189cf7c9b45bbfeab0f100
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -17,9 +17,11 @@ Enjoy,
 Takeshi
 
 ## Changes
-In this feram-0.26.00, a bug in feram-0.24.02 of plot_dispersion is fixed.
+In this feram-0.26.01, some bugs and typos are fixed.
 
-From this feram-0.26.00, you can use .modulation input file.
+In the feram-0.26.00, a bug in feram-0.24.02 of plot_dispersion is fixed.
+
+From the feram-0.26.00, you can use .modulation input file.
 You can simulate (Ba,Sr)TiO3, now.
 See files in feram-0.26.00/src/34example-BST/.
 I will put our paper on arXiv as soon as possible.
@@ -65,5 +67,5 @@ Bulk calculations go very fine.
     0.23.0? | without           | OK
     0.24.0? | with              | strange peak
     0.24.0? | without           | OK
-    0.26.00 | with              | strange peak
-    0.26.00 | without           | OK
+    0.26.0? | with              | strange peak
+    0.26.0? | without           | OK
