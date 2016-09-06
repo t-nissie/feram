@@ -10,7 +10,7 @@
  $ ssh -X -l YourUsername cmd2.phys.sci.osaka-u.ac.jp
  % which gfortran
  % gfortran --version
- % cat /home/CMD/teac20/f/loto/feram/branches/z_star_r/tutorial.CMD.ja.txt   # this document
+ % cat /home/CMD/teac20/f/loto/feram/branches/z_star_r/tutorial.CMD.en.txt   # this document
  % cp /home/CMD/teac20/.emacs .   # if you prefer
 
 For example, /home/CMD/teac20/.cshrc is Nishimatsu's
@@ -79,9 +79,8 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  % cp -a ~/f/feram/feram-0.26.01/src/26example-BaTiO3-acoustic-MD/ .
  % cd 26example-BaTiO3-acoustic-MD
  % rm *sh
- % cp /home/CMD/teac20/feram/feram-o.02/26example-BaTiO3-acoustic-MD/acoustic-MD.sh .
- % cat  acoustic-MD.sh
- % qsub acoustic-MD.sh
+ % cat  acoustic-MD.cmd2
+ % qsub acoustic-MD.cmd2
  % qstat
  % head acoustic-MD.vs.log
  % cat acoustic-MD.lf.avg
@@ -102,9 +101,8 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
     coord_directory = 'never'   =>   #coord_directory = 'never'
  % diff -u 360cos.feram 360sin.feram
 
- % cp /home/CMD/teac20/feram/feram-o.02/27example-BaTiO3-new-param-E_wave/a360.sh .
- % cat  a360.sh
- % qsub a360.sh
+ % cat  a360.cmd2
+ % qsub a360.cmd2
  % qstat
  % head 360cos.log
 
