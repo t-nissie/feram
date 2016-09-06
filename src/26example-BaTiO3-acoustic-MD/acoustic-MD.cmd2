@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+#$ -cwd
+#$ -S /bin/sh
+#$ -pe mpi 6
+#
+export LD_LIBRARY_PATH=/home/CMD/teac20/Linux-x86_64/lib64
+
+../feram acoustic-MD.vs.feram
+ln -sf acoustic-MD.vs.0000050000.coord acoustic-MD.lf.restart
+../feram acoustic-MD.lf.feram
