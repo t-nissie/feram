@@ -1,6 +1,6 @@
 #!/usr/bin/env gnuplot
 # polarization.gp
-# Time-stamp: <2016-03-17 19:52:49 t-nissie>
+# Time-stamp: <2016-09-07 09:16:07 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 set encoding iso_8859_1  # for Angstrom
@@ -41,12 +41,12 @@ set ylabel '{/Times-Italic P}_{/Symbol a} [{/Symbol m}C cm^{-2}]'
 set key right top
 set label 1 at 50,36 '(b)'
 call 'polarization-local.gp'
-plot 'heating.avg' using 1:(c*$34) t 'heating' w l lt 1 lw 3,\
-     'heating.avg' using 1:(c*$35) t ''        w l lt 1 lw 3,\
+plot 'heating.avg' using 1:(c*$35) t 'heating' w l lt 1 lw 3,\
      'heating.avg' using 1:(c*$36) t ''        w l lt 1 lw 3,\
-     'cooling.avg' using 1:(signx*c*$34) t 'cooling' w l lt 3 lw 3,\
-     'cooling.avg' using 1:(signy*c*$35) t ''       w l lt 3 lw 3,\
-     'cooling.avg' using 1:(signz*c*$36) t ''        w l lt 3 lw 3
+     'heating.avg' using 1:(c*$37) t ''        w l lt 1 lw 3,\
+     'cooling.avg' using 1:(signx*c*$35) t 'cooling' w l lt 3 lw 3,\
+     'cooling.avg' using 1:(signy*c*$36) t ''       w l lt 3 lw 3,\
+     'cooling.avg' using 1:(signz*c*$37) t ''        w l lt 3 lw 3
 set nomultiplot
 set output
 !epstopdf.pl polarization.eps
