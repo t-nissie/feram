@@ -1,8 +1,15 @@
 #!/bin/sh
 # heating.sh
-# Time-stamp: <2016-06-30 22:42:22 takeshi>
+# Time-stamp: <2016-09-08 14:51:43 teac20>
 # Author: Takeshi NISHIMATSU
+# for cmd2:
+#$ -cwd
+#$ -S /bin/sh
+#$ -pe mpi 6
 ##
+if [ -d /home/CMD/teac20/Linux-x86_64/lib64 ]; then
+    export LD_LIBRARY_PATH=/home/CMD/teac20/Linux-x86_64/lib64
+fi
 rm -f heating.avg
 
 n_thermalize=40000
