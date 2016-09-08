@@ -48,16 +48,17 @@ You can use gfortran, FFTW, etc. in /home/CMD/teac20/Linux-x86_64/.
  alias ll "ls -lG"
  alias la "ls -laG"
 
+
 == Compile with gfortran (GNU fortran)
  % cd
  % mkdir -p f/feram
  % cd f/feram
- % wget https://sourceforge.net/projects/loto/files/feram/feram-0.26.01/feram-0.26.01.tar.xz
- % tar xf feram-0.26.01.tar.xz
+ % wget https://sourceforge.net/projects/loto/files/feram/feram-0.26.02/feram-0.26.02.tar.xz
+ % tar xf feram-0.26.02.tar.xz
  % gfortran --version      # should be 4.8 or higher
  % fftw-wisdom --version   # should be 3.3.3 or higher
- % mkdir feram-0.26.01/Linux-x86_64-build1
- % cd feram-0.26.01/Linux-x86_64-build1
+ % mkdir feram-0.26.02/Linux-x86_64-build1
+ % cd feram-0.26.02/Linux-x86_64-build1
  % ../configure CPPFLAGS=-I/home/CMD/teac20/Linux-x86_64/include
  % make -j2
  % ls src/
@@ -68,15 +69,17 @@ You can use gfortran, FFTW, etc. in /home/CMD/teac20/Linux-x86_64/.
 
 See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
 
+
 == Preparation
  % cd
- % mkdir -p feram/feram-0.26.01/
- % cd feram/feram-0.26.01/
- % ln -sf ~/f/feram/feram-0.26.01/Linux-x86_64-build1/src/feram .
+ % mkdir -p feram/feram-0.26.02/
+ % cd feram/feram-0.26.02/
+ % ln -sf ~/f/feram/feram-0.26.02/Linux-x86_64-build1/src/feram .
+
 
 == Execute 26example-BaTiO3-acoustic-MD
- % cd ~/feram/feram-0.26.01
- % cp -a ~/f/feram/feram-0.26.01/src/26example-BaTiO3-acoustic-MD/ .
+ % cd ~/feram/feram-0.26.02
+ % cp -a ~/f/feram/feram-0.26.02/src/26example-BaTiO3-acoustic-MD/ .
  % cd 26example-BaTiO3-acoustic-MD
  % rm *sh
  % cat  acoustic-MD.cmd2
@@ -91,8 +94,9 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
 
 
 == Execute 27example-BaTiO3-new-param-E_wave
- % cd ~/feram/feram-0.26.01
- % cp -a ~/f/feram/feram-0.26.01/src/27example-BaTiO3-new-param-E_wave/ .
+=== Simulation
+ % cd ~/feram/feram-0.26.02
+ % cp -a ~/f/feram/feram-0.26.02/src/27example-BaTiO3-new-param-E_wave/ .
  % cd 27example-BaTiO3-new-param-E_wave
  % rm *sh
  % emacs -nw 360cos.feram
@@ -100,36 +104,48 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
     n_coord_freq = 4000000   =>   n_coord_freq = 5000
     coord_directory = 'never'   =>   #coord_directory = 'never'
  % diff -u 360cos.feram 360sin.feram
-
+ 
  % cat  a360.cmd2
  % qsub a360.cmd2
  % qstat
  % head 360cos.log
 
 === Visualization
- % head ~/f/feram/feram-0.26.01/src/feram_cross_section_q.sh
+ % head ~/f/feram/feram-0.26.02/src/feram_cross_section_q.sh
  % ln -s 360cos.param.gp param.gp
- % ~/f/feram/feram-0.26.01/src/feram_cross_section_q.sh 360sin.0000005000.coord
+ % ~/f/feram/feram-0.26.02/src/feram_cross_section_q.sh 360sin.0000005000.coord
  % evince 360sin.0000005000-q-x.eps
  % ./hysteresis.gp
  % evince hysteresis.eps
  % grep TIMING *log
  360cos.log:           0.76         433.39         434.14     #TIMING_REPORT
  360sin.log:           0.76         433.34         434.10     #TIMING_REPORT
- % head ~/f/feram/feram-0.26.01/src/feram_cross_section_q.sh feram_slicer.rb
- % ~/f/feram/feram-0.26.01/src/feram_slicer.rb 360sin.0000005000.coord
+ % head ~/f/feram/feram-0.26.02/src/feram_slicer.rb
+ % ~/f/feram/feram-0.26.02/src/feram_slicer.rb 360sin.0000005000.coord
  % evince 360sin.0000005000-slice-z006.eps
 
  % foreach c ( 360sin.*.coord )
- foreach? ~/f/feram/feram-0.26.01/src/feram_slicer.rb $c 8
+ foreach? ~/f/feram/feram-0.26.02/src/feram_slicer.rb $c 8
  foreach? end
 
  % foreach e ( 360sin.*-slice-z008.eps )
- foreach? convert -density 400 $e -resize 12.5% `basename $e .eps`.gif
+ foreach? convert -density 100 -flatten $e `basename $e .eps`.gif
  foreach? end
 
  % gifsicle --colors=256 --delay=20 360sin.*-slice-z008.gif > 360sin.animation.gif
  % gifview 360sin.animation.gif
+
+
+== Execute 24example-BaTiO3-new-param-heating-cooling
+ % cd ~/feram/feram-0.26.02
+ % cp -a ~/f/feram/feram-0.26.02/src/24example-BaTiO3-new-param-heating-cooling/ .
+ % cd 24example-BaTiO3-new-param-heating-cooling/
+ % ls
+ % qsub cooling.sh
+ % qsub heating.sh   # Each simulation will take 7 hours.
+ % less cooling.avg
+ % emacs -nw polarization-local.gp
+ % gnuplot polarization.gp
 =end
 
 == 主催者の準備
@@ -143,29 +159,11 @@ See INSTALL or http://loto.sourceforge.net/feram/INSTALL.html for more details.
  * NUMAの概念図
  * テーブルタップ
  * 指し棒またはレーザーポインタ
-
-=== 用意するマシン
-Linuxがベター。MacのXQuartzやWindowsのXエミューレータは遅い。
-Aキーの左をcontrolキーにして、シールを貼っておく。
-XでEmacsを起動してBackSpaceキーが効くかチェックしておくこと。
-要gifsicleとImageMagick。
-
- * guest1 emerald01 HPのデスクトップ(VineLinux 6.2)
- * guest2 emerald02 TOSHIBA dynabook MX/33LWH (Debian 7.5)
- * guest3 platinum  MacBook Air (Early 2008)
- * guest4           tartarをDHCPにして
- * guest5           
- * guest6
-
-=== ゲストアカウントの作成
- # useradd -g 1100 -u 7001 -s /bin/bash -d /localhome/guest1 guest1
- # passwd guest1
-
+ * qsubでしばしば１つのノードで複数のジョブが実行されてしまうので注意。
+   `qstat | colrm 1 71 | sort`や`grep TIMING *.log`などで検出すること。
 == 主催者の後片付け
  * 後片付け
  * この文章の更新
-=== ゲストアカウントの消去
- # userdel guest1
 
 # Local variables:
 #   mode: RD
