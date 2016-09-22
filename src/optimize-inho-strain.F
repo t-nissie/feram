@@ -1,5 +1,5 @@
 ! optimize-inho-strain.F   -*-f90-*-
-! Time-stamp: <2015-06-25 16:03:28 takeshi>
+! Time-stamp: <2016-06-25 16:47:45 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 !!
@@ -10,18 +10,14 @@
 subroutine optimize_inho_strain(p,c)
   use Param_module
   use Coord_module
+  use msg_module
   implicit none
-  !--- arguments -------------------------------------
-  type(Param_type),  intent(in)    :: p
-  type(Coord_type),  intent(inout) :: c
-  !--- local -----------------------------------------
-  complex*16              :: acouK_tmp(3)
-  complex*16              :: tmp
-  integer                 :: alpha,beta, ix,iy,iz
-  !--- END of variable definitions -------------------
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
-  !     & 'Optimize inhomogeneous strain. Calculate related energies and accelerations.')
-
+  type(Param_type), intent(in)    :: p
+  type(Coord_type), intent(inout) :: c
+  complex*16 :: acouK_tmp(3)
+  complex*16 :: tmp
+  integer    :: alpha,beta, ix,iy,iz
+  if (p%verbose>=4) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'optimize_inho_strain().')
   !--- optimize inhomogeneous strain -----------------------------------
   ! Linear equations for acouK,
   !    inhomo_K(1:3,1:3) * acouK(1:3) = - inhomo_coup2_K(1:3,1:6) * c%didiK(1:6) ,
@@ -35,6 +31,7 @@ subroutine optimize_inho_strain(p,c)
         do ix = 0, p%Lx/2
               do alpha = 1, 3
                  acouK_tmp(alpha) = &
+                      & - c%c_k_modulation_k(alpha,ix,iy,iz) &
                       & - dot_product(c%inhomo_coup2_K(alpha,:, ix,iy,iz), c%didiK(:, ix,iy,iz))
               end do
               ! See [2] of cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621
@@ -59,6 +56,5 @@ subroutine optimize_inho_strain(p,c)
      end do
   end do
 !$omp end parallel do
-
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  if (p%verbose>=4) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  optimize_inho_strain().')
 end subroutine optimize_inho_strain

@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2015-07-09 15:43:47 takeshi>
+! Time-stamp: <2016-06-25 20:39:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -12,20 +12,32 @@ module Coord_module
   use, intrinsic :: iso_c_binding
   implicit none
   type Coord_type
-     real*8,     allocatable :: m_inv(:,:,:,:)   ! inverse of mass
+     real*8,     allocatable :: mass_dipo_inv(:,:,:)   ! inverse of mass_dipo
+     real*8,     allocatable :: mass_acou_inv(:,:,:)   ! inverse of mass_dipo
+     real*8,     allocatable :: dipoRavg(:,:,:,:)
      real*8,     allocatable :: dipoR(:,:,:,:)   ! Optical dipole displacements as a function of R
-     complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoQ
+     complex*16, allocatable :: dipoK(:,:,:,:)   ! FT of dipoR
+     logical                 :: relaxor_flag = .false.
+     integer,    allocatable :: relaxor(:,:,:)
+     real*8,     allocatable :: Z_starR(:,:,:)   ! Z_start(R)
+     real*8,     allocatable :: Z_u_R(:,:,:,:)   ! Z_start(R)*u(R)
+     complex*16, allocatable :: Z_u_K(:,:,:,:)   ! FT of Z_u_R(:,:,:,:)
      real*8,     allocatable :: dipoP(:,:,:,:)   ! Momenta
      real*8,     allocatable :: dVddi(:,:,:,:)   ! dV/dq for dipole
+     real*8,     allocatable :: dVddi_long(:,:,:,:)  ! T for temporary
      complex*16, allocatable :: dipoT(:,:,:,:)   ! Only used in dVddi_dipole_dipole.F
      real*8,     allocatable :: E_field(:,:,:,:) ! external and local electric field
      real*8,     allocatable :: E_field_local(:,:,:,:) ! initial external electric field
-     real*8,     allocatable :: dipoI(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8!!!
+     real*8,     allocatable ::  long_range(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8!!!
+     real*8,     allocatable :: short_range(:,:,:,:,:) ! Fourier transformed potential  !!!REAL*8!!!
      real*8,     allocatable :: didiR(:,:,:,:)   ! 6 kind of dipoR*dipoR
      complex*16, allocatable :: didiK(:,:,:,:)   ! 6 kind of dipoR*dipoR
      real*8,     allocatable :: acouR(:,:,:,:)   ! Acoustic displacements in real space
      complex*16, allocatable :: acouK(:,:,:,:)   ! Acoustic displacements
      real*8,     allocatable :: acouP(:,:,:,:)
+     real*8,     allocatable :: modulation_R(:,:,:)   ! acoustic modulation
+     complex*16, allocatable :: modulation_k(:,:,:)
+     complex*16, allocatable :: c_k_modulation_k(:,:,:,:)
      real*8,     allocatable :: inhomo_K(  :,:, :,:,:)     ! FTed potential. See cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621 .
      real*8,     allocatable :: inhomo_K_G(:,:, :,:,:)     ! inhomo_K = G tG, where G is a lower triangular matrix and tG is transpose of G. G(i,4) = 1/G(i,i).
      real*8,     allocatable :: inhomo_coup2_K(:,:, :,:,:) ! FTed potential
@@ -43,11 +55,11 @@ module Coord_module
      type(C_PTR) ::         inho_ptr = c_null_ptr
      type(C_PTR) ::         dVdac_ptr = c_null_ptr
      ! These plans are odered as in feram_fftw_wisdom.F.
+     type(C_PTR) ::         plan_r2c_1_out = c_null_ptr   ! will be made with FFTW_ESTIMATE, used in elastic.F once
      type(C_PTR) ::         plan_c2r_3_in  = c_null_ptr   ! dVdacK->dVdacR (dVdac.F)
      type(C_PTR) ::         plan_c2r_6_in  = c_null_ptr   ! inhoK->inhoR (dVddi_inho_coupling.F)
      type(C_PTR) ::         plan_r2c_3_out = c_null_ptr   ! dipoR->dipoK (dipoFFT.F), acouR->acouK (acouFFT.F)
-     type(C_PTR) ::         plan_c2r_3_out = c_null_ptr   ! dVdacK->dVdacR (dVdac.F), dipoT->dVddi (dVddi-dipole-dipole.F)
-                                                          ! acouK->acouR (write_system(). It is not crucial for seed.)
+     type(C_PTR) ::         plan_c2r_3_out = c_null_ptr   ! dipoT->dVddi (dVddi-dipole-dipole.F), acouK->acouR (write_system(). It is not crucial for speed.)
      type(C_PTR) ::         plan_r2c_6_out = c_null_ptr   ! didiR->didiK (dipoFFT.F)
   end type Coord_type
 
@@ -55,10 +67,11 @@ contains
   subroutine alloc_Coord(p,c)
     use, intrinsic :: iso_c_binding
     use Param_module
+    use msg_module
     implicit none
     type(Param_type), intent(in)    :: p
     type(Coord_type), intent(inout) :: c
-    integer iz
+    integer ix,iy,iz
 
     include 'fftw3.f03'
     integer howmany,stride
@@ -73,6 +86,7 @@ contains
     real*8,    pointer :: dVdacR(:,:,:,:)
     complex*16,pointer ::  inhoK(:,:,:,:)
     real*8,    pointer ::  inhoR(:,:,:,:)
+    real*8 mass_inv_tmp
 
     LzLyLx( 1)=p%Lz; LzLyLx( 2)=p%Ly; LzLyLx( 3)=p%Lx    ! p%padding_y will be introduced.
     d_embed(1)=p%Lz; d_embed(2)=p%Ly+p%padding_y; d_embed(3)=2*(p%Lx/2+1)
@@ -83,15 +97,43 @@ contains
     call fftw_destroy_plan(c%plan_c2r_3_out)
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'alloc_Coord().')
-    !--- m_inv ------------------------------
-    if (allocated(c%m_inv)) deallocate(c%m_inv)
-    allocate(c%m_inv(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    !--- mass_dipo_inv ------------------------------
+    if (allocated(c%mass_dipo_inv)) deallocate(c%mass_dipo_inv)
+    allocate(c%mass_dipo_inv(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%m_inv(:,:,:,iz) = 0.0d0
+       c%mass_dipo_inv(:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
+    mass_inv_tmp = 1.0d0 / p%mass_dipo(1)
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%mass_dipo_inv(0:p%Lx-1, 0:p%Ly-1, iz) = mass_inv_tmp
+    end do
+!$omp end parallel do
+
+    !--- mass_acou_inv ------------------------------
+    if (allocated(c%mass_acou_inv)) deallocate(c%mass_acou_inv)
+    allocate(c%mass_acou_inv(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%mass_acou_inv(:,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+    mass_inv_tmp = 1.0d0 / p%mass_acou(1)
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%mass_acou_inv(0:p%Lx-1, 0:p%Ly-1, iz) = mass_inv_tmp
+    end do
+!$omp end parallel do
+
+    !--- dipoRavg ---------------------------
+    if (allocated(c%dipoRavg)) deallocate(c%dipoRavg)
+    allocate(     c%dipoRavg(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    ! First touch and reset will be done in molecular-dynamics.F
+
     !--- dipo -------------------------------
     if (allocated(c%dipoR)) deallocate(c%dipoR)
     allocate(     c%dipoR(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
@@ -114,16 +156,67 @@ contains
          &                                  c%dipoR,d_embed,stride,dist,&
          &                                  c%dipoK,z_embed,stride,dist,FFTW_MEASURE)
 
+    !--- relaxor -------------------------------
+    if (allocated(c%relaxor)) deallocate(c%relaxor)
+    allocate(     c%relaxor(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%relaxor(:,:,iz) = 1
+    end do
+!$omp end parallel do
+
+    !--- Z_star(R) -------------------------------
+    if (allocated(c%Z_starR)) deallocate(c%Z_starR)
+    allocate(     c%Z_starR(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%Z_starR(:,:,iz) = 0.0d0   ! It may be important that the padding area is 0.0d0.
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       do iy=0, p%Ly-1
+          do ix=0, p%Lx-1
+             c%Z_starR(ix,iy,iz) = p%Z_star(1)
+          end do
+       end do
+    end do
+!$omp end parallel do
+
+    !--- Z(R)*u(R) -------------------------------
+    if (allocated(c%Z_u_R)) deallocate(c%Z_u_R)
+    allocate(     c%Z_u_R(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    if (allocated(c%Z_u_K)) deallocate(c%Z_u_K)
+    allocate(     c%Z_u_K(3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%Z_u_R(:,:,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%Z_u_K(:,:,:,iz) = (0.0d0,0.0d0)
+    end do
+!$omp end parallel do
+
     if (allocated(c%dipoP)) deallocate(c%dipoP)
     allocate(     c%dipoP(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%dVddi)) deallocate(c%dVddi)
     allocate(     c%dVddi(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    if (allocated(c%dVddi_long)) deallocate(c%dVddi_long)
+    allocate(c%dVddi_long(3, 0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
     if (allocated(c%dipoT)) deallocate(c%dipoT)
     allocate(     c%dipoT(3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
        c%dVddi(:,:,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%dVddi_long(:,:,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 !$omp parallel do
@@ -150,12 +243,21 @@ contains
     end do
 !$omp end parallel do
 
-    if (allocated(c%dipoI)) deallocate(c%dipoI)
-    allocate(     c%dipoI(3, 3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+    if (allocated(c%long_range)) deallocate(c%long_range)
+    allocate(     c%long_range(3, 3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
   !!!first touch
 !$omp parallel do
     do iz = 0,p%Lz-1
-       c%dipoI(:,:, :,:,iz) = 0.0d0
+       c%long_range(:,:, :,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+
+    if (allocated(c%short_range)) deallocate(c%short_range)
+    allocate(     c%short_range(3, 3, 0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1)) !"/2" for real<->complex FFT
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%short_range(:,:, :,:,iz) = 0.0d0
     end do
 !$omp end parallel do
 
@@ -209,11 +311,40 @@ contains
          &                                  c%acouK,z_embed,stride,dist,&
          &                                  c%acouR,d_embed,stride,dist,FFTW_MEASURE)
 
+    !--- modulation -------------------------------
+    if (allocated(c%modulation_R)) deallocate(c%modulation_R)
+    allocate(c%modulation_R(0:2*(p%Lx/2+1)-1, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    if (allocated(c%modulation_k)) deallocate(c%modulation_k)
+    allocate(c%modulation_k(        0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+    if (allocated(c%c_k_modulation_k)) deallocate(c%c_k_modulation_k)
+    allocate(c%c_k_modulation_k(3,  0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1))
+  !!!first touch
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%modulation_R(:,:,iz) = 0.0d0
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%modulation_k(:,:,iz) = (0.0d0,0.0d0)
+    end do
+!$omp end parallel do
+!$omp parallel do
+    do iz = 0,p%Lz-1
+       c%c_k_modulation_k(:,:,:,iz) = (0.0d0,0.0d0)
+    end do
+!$omp end parallel do
+    howmany = 1
+    stride = howmany
+    c%plan_r2c_1_out = fftw_plan_many_dft_r2c(rank,LzLyLx,howmany,&
+         &                                    c%modulation_R,d_embed,stride,dist,&
+         &                                    c%modulation_k,z_embed,stride,dist,FFTW_ESTIMATE)
+
     !--- force on acoustic displacement --------
     howmany = 3
     if (c_associated(c%dVdac_ptr)) call fftw_free(c%dVdac_ptr)
     n_alloc = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
-    c%dVdac_ptr = fftw_alloc_complex(n_alloc)
+    c%dVdac_ptr = fftw_malloc(n_alloc * 16)   ! 16 for complex*16
     call c_f_pointer(c%dVdac_ptr, dVdacK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
     call c_f_pointer(c%dVdac_ptr, dVdacR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
 !!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.
@@ -231,7 +362,7 @@ contains
     howmany = 6
     if (c_associated(c%inho_ptr)) call fftw_free(c%inho_ptr)
     n_alloc = howmany * (p%Lx/2+1) * (p%Ly+p%padding_y) * p%Lz
-    c%inho_ptr = fftw_alloc_complex(n_alloc)
+    c%inho_ptr = fftw_malloc(n_alloc * 16)   ! 16 for complex*16
     call c_f_pointer(c%inho_ptr, inhoK, [howmany,   (p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
     call c_f_pointer(c%inho_ptr, inhoR, [howmany, 2*(p%Lx/2+1), p%Ly+p%padding_y, p%Lz])
 !!!first touch!!! Here, indexes of arrays do not have to start from 0. It is simpler than dVddi_inho_coupling.F.
@@ -297,18 +428,108 @@ contains
     end do
 !$omp end parallel do
     !--- end --------------------------------
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'alloc_Coord().')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', ' alloc_Coord().')
   end subroutine alloc_Coord
+
+  subroutine write_system(p,c,fn)
+    use, intrinsic :: iso_c_binding
+    use Param_module
+    use msg_module
+    implicit none
+    type(Param_type), intent(in) :: p
+    type(Coord_type), intent(inout) :: c
+    character(len=*) :: fn
+    character(len=FILE_NAME_LEN) :: coord_directory_fn
+    integer alpha,ix,iy,iz
+    include 'fftw3.f03'
+
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_system().')
+
+    if (p%coord_directory.eq.'never') then
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'never write .coord files.')
+       return
+    else if (p%coord_directory.eq.'') then
+       coord_directory_fn = trim(fn)
+    else
+       coord_directory_fn = trim(p%coord_directory) // '/' // trim(fn)
+    end if
+
+    if (p%mass_acou(1) <= 0.0d0) then
+!$omp parallel do
+       do iz = 0,p%Lz-1
+          c%acouK(:,:,:,iz) = (0.0d0, -1.0d0) * c%acouK(:,:,:,iz)
+       end do
+!$omp end parallel do
+       call fftw_execute_dft_c2r(c%plan_c2r_3_out, c%acouK, c%acouR)
+!$omp parallel do
+       do iz = 0,p%Lz-1
+          c%acouR(:,:,:,iz) = c%acouR(:,:,:,iz) * p%Ninv
+       end do
+!$omp end parallel do
+    end if
+
+    open(unit=UNIT_SYSTEM, file=coord_directory_fn, status='replace')
+    do iz = 0, p%Lz-1
+       do iy = 0, p%Ly-1
+          do ix = 0, p%Lx-1
+             write(UNIT_SYSTEM,'(i4,2i5,3f10.6,9e14.6,3f13.6)') ix, iy, iz, &
+                  & (c%dipoR(alpha,ix,iy,iz)         ,alpha=1,3),&
+                  & (c%dipoP(alpha,ix,iy,iz)/c%s_Nose,alpha=1,3),&
+                  & (c%dVddi(alpha,ix,iy,iz)         ,alpha=1,3),&
+                  & (c%acouR(alpha,ix,iy,iz)         ,alpha=1,3),&
+                  & (c%acouP(alpha,ix,iy,iz)         ,alpha=1,3)
+          end do
+       end do
+    end do
+    close(UNIT_SYSTEM)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(coord_directory_fn)//' was written.')
+  end subroutine write_system
+
+  subroutine divide_and_write_dipoRavg(p,c)
+    use Param_module
+    use msg_module
+    implicit none
+    type(Param_type), intent(in) :: p
+    type(Coord_type), intent(in) :: c
+    character(len=FILE_NAME_LEN) :: fn
+    integer ix,iy,iz,alpha
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'divide_and_write_dipoRavg().')
+
+    if (p%coord_directory.eq.'never') then
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', &
+            & '  divide_and_write_dipoRavg(): '//trim(p%filename)//'.dipoRavg was NOT written.')
+       return
+    else if (p%coord_directory.eq.'') then
+       fn = trim(p%filename) // '.dipoRavg'
+    else
+       fn = trim(p%coord_directory) // trim(p%filename) // '.dipoRavg'
+    end if
+
+    open(unit=UNIT_SYSTEM, file=fn, status='replace')
+    do iz = 0, p%Lz-1
+       do iy = 0, p%Ly-1
+          do ix = 0, p%Lx-1
+             write(UNIT_SYSTEM,'(i4,2i5,3f10.6)') ix, iy, iz, &
+                  & (c%dipoRavg(alpha,ix,iy,iz)/p%n_average, alpha=1,3)
+          end do
+       end do
+    end do
+    close(UNIT_SYSTEM)
+
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', &
+         & '  divide_and_write_dipoRavg(): '//trim(fn)//' was written.')
+  end subroutine divide_and_write_dipoRavg
 
   subroutine write_fft(p,c,fn)
     use Param_module
+    use msg_module
     implicit none
     type(Param_type), intent(in) :: p
     type(Coord_type), intent(in) :: c
     character(len=*) :: fn
     integer ix,iy,yy
 
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_fft().')
     open(unit=UNIT_SYSTEM,file=fn)
     do iy= -p%Ly/2, p%Ly/2
        if (iy<0) then
@@ -323,6 +544,6 @@ contains
     end do
     close(UNIT_SYSTEM)
     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME', fn)
-    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  write_fft().')
   end subroutine write_fft
 end module Coord_module

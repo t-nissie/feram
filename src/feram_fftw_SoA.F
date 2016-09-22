@@ -1,7 +1,10 @@
 ! feram_fftw_SoA.F -*-f90-*-
-! Time-stamp: <2015-08-07 21:18:11 takeshi>
+! Time-stamp: <2015-12-09 14:55:07 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 program feram_fftw_SoA
   use, intrinsic :: iso_c_binding
   implicit none
@@ -12,7 +15,7 @@ program feram_fftw_SoA
   integer :: Lz = 64
   integer :: padding_y = 1
   integer :: flags = FFTW_MEASURE
-  character(len=100) :: str
+  character(len=100) :: str = 'FFTW_MEASURE'
   integer :: OMP_GET_MAX_THREADS
   integer :: narg, ireturn
   type(C_PTR) :: plan_r2c_1_in  = c_null_ptr
@@ -45,22 +48,35 @@ program feram_fftw_SoA
      call get_command_argument(3,str); read(str,*) Ly
      call get_command_argument(4,str); read(str,*) Lz
      call get_command_argument(5,str); read(str,*) padding_y
-     call get_command_argument(6,str); read(str,*)
-     if (str.eq.'FFTW_PATIENT') then
+     call get_command_argument(6,str)
+     select case(str)
+     case(     'FFTW_ESTIMATE')
+        flags = FFTW_ESTIMATE
+     case(     'FFTW_PATIENT')
         flags = FFTW_PATIENT
-        write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': flags = FFTW_PATIENT'
-     else
+     case(     'FFTW_MEASURE')
         flags = FFTW_MEASURE
-        write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': flags = FFTW_MEASURE'
-     end if
+     case(     'FFTW_EXHAUSTIVE')
+        flags = FFTW_EXHAUSTIVE
+     case default
+        write(0,   '(a,a,i2,a)') __FILE__, ':', __LINE__, ': No such FFTW flag.'
+        stop 2
+     end select
   else
      write(0,   '(a,a,i2,a)') __FILE__, ':', __LINE__, ': Illegal number of arguments.'
      stop 1
   end if
+  write(0,'(a,a,i2,a)') __FILE__, ':', __LINE__, ': flags = '//trim(str)
 
   call feram_fftw_SoA_in( 1, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
        &                                                        plan_r2c_1_in, &
        &                                                        plan_c2r_1_in)
+  call feram_fftw_SoA_out(1, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
+       &                                                        plan_r2c_1_out, &
+       &                                                        plan_c2r_1_out)
+
+  write(6,'(a)') ''
+
   call feram_fftw_SoA_in( 3, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
        &                                                        plan_r2c_3_in, &
        &                                                        plan_c2r_3_in)
@@ -68,9 +84,6 @@ program feram_fftw_SoA
        &                                                        plan_r2c_6_in, &
        &                                                        plan_c2r_6_in)
 
-  call feram_fftw_SoA_out(1, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
-       &                                                        plan_r2c_1_out, &
-       &                                                        plan_c2r_1_out)
   call feram_fftw_SoA_out(3, N_TIMES, Lx, Ly, Lz, padding_y, flags, &
        &                                                        plan_r2c_3_out, &
        &                                                        plan_c2r_3_out)
@@ -96,5 +109,5 @@ program feram_fftw_SoA
   call fftw_cleanup_threads()
 end program feram_fftw_SoA
 !local variables:
-!  compile-command: "make -k -f feram_fftw_SoA.Makefile.Intel-gfortran-fftw3_omp && OMP_NUM_THREADS=2 ./feram_fftw_SoA 100 128 128 64 3 T"
+!  compile-command: "make -k -f feram_fftw_wisdom.Makefile.gfortran && OMP_NUM_THREADS=2 ./feram_fftw_SoA 100 128 128 64 1 FFTW_MEASURE"
 !End:

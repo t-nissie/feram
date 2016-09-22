@@ -16,9 +16,12 @@ FortranのプロジェクトにAutotoolsを使う場合の注意点も書いて�
  $ make check
  $ sudo make install
 AutotoolsはそんなGNU流のフリーソフトウェアパッケージの
-構築を半自動化するためのツールである。最終目的はmake dist
+構築を半自動化するための開発者用のツールである。最終目的はmake distcheck
 で foo-1.2.tar.gzなどという[パッケージ名]-[version].tar.gz
 形式のパッケージが自動生成できるようになること。
+
+注意: Autotoolsは開発者用のツールである。パッケージfoo-1.2.tar.gzのユーザは
+そのマシンにAutotoolsをインストールする必要はないし、Autotoolsについて知っている必要もない。
 
 == 必要なもの
 GNUの２つのパッケージautoconfとautomakeとを開発用のマシン
@@ -37,15 +40,16 @@ GNU M4も最新のものを用意したほうがよい。
 == コマンドとファイル
 Autotools (autoconf and automake) では Fig:process に示すとおり
 いくつかのコマンドとファイルとによって処理が進む。
-前半部分はautoreconfが自動的にやってくれる。
+前半の茶色の太い破線で囲まれた部分をautoreconfが自動的にやってくれる。
 以下に関連すコマンドとファイルを列挙した。
-\Fig:process http://upload.wikimedia.org/wikipedia/commons/8/84/Autoconf-automake-process.svg
+\Fig:process doc/figures/autoreconf-automake-process.svg
 Autotools（autoconf と automake）による作業の流れ。
-実際はautoreconfが自動でやってくれる。
-（By Jdthood (Own work) [CC-BY-SA-3.0], via Wikimedia Commons.
-この図はクリエイティブコモンズライセンスの下に
+実際は茶色の太い破線で囲まれた部分をautoreconfが自動でやってくれる。
+（この図はクリエイティブコモンズライセンス[CC-BY-SA-3.0]の下に
 http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
-から配布されているもの。）
+として配布されているJdthoodによるオリジナルに
+Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加えたもの。
+ファイル名はautoreconf-automake-process.svgとした。）
 /Fig:process
 
 === 関連コマンド
@@ -77,8 +81,8 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  config.status  configure を実行すると出来るスクリプト。foo.in から foo を作るのは実はこいつ。
  install-sh     automake --add-missing が用意してくれるスクリプト。make installのときに使われることがある。
  missing        automake --add-missing が用意してくれるスクリプト。忘れ物を教えてくれる。
- depcomp        ファイルの依存関係が解決できないときに automake --add-missing が用意してくれることのあるスクリプト。
- test-driver    Makefile.amにTESTSの項目がある場合、automakeが用意してくれるのスクリプト。
+ depcomp        automake --add-missing が用意してくれることのあるスクリプト。ファイルの依存関係を自動的に調べてくれる。
+ test-driver    Makefile.amにTESTSの項目がある場合、automake --add-missing が用意するスクリプト。
                 make checkのときに使われ、カラフルな表示やログファイルの書き出しをしてくれる。
 
 == 使用方法
@@ -99,6 +103,8 @@ http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
  * AC_FC_FREEFORM()で自由形式のオプションがわかる。
  * C言語のプロジェクトの場合はファイル間の依存関係を自動的に調べてくれるが、
    Fortranの場合はMakefile.amに依存関係を書いておくことがまだ必要。
+ * C言語のプロジェクトの場合はAC_CHECK_HEADERS([fftw3.h])でヘッダファイルの有無を調べることができるが、
+   Fortranの場合はAC_CHECK_HEADERS([fftw3.f])やAC_CHECK_HEADERS([fftw3.f03])とするのはまだ困難。
 === 手順
 configure.ac, Makefile.am, src/Makefile.amを書いて、
  $ autoreconf -v
@@ -114,6 +120,7 @@ configure.ac, Makefile.am, src/Makefile.amを書いて、
 他に
  $ make clean
  $ make check
+ $ sudo make uninstall      # make installしたファイルの消去
 などが便利。
 === make checkでテストの自動化
 src/Makefile.amに
@@ -132,9 +139,11 @@ Makefile.amの中のEXTRA_DISTに次のように加えておく必要がある�
 テストの結果がfoo.sh.trsとbar.trsとbaz.trsとに保存される。
 テスト全体のまとめがtest-suite.logに保存される。
 
-一部のテストだけを選択的に繰り返し行いたい場合は
+一部のテストだけを選択的に行いたい場合は
  $ make check TESTS='foo.sh bar'
 とTESTS変数で指定するする。
+
+テストスクリプトの中でsrcdirを明示的に参照する必要がある場合は$srcdirを用いる。
 === automakeのオプション
 automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定する。例えば
  AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax])
@@ -179,25 +188,64 @@ http://www2m.biglobe.ne.jp/~dolphin/lha/lha-unix.htm
 === ntp
 大規模。libtoolも使われている。
 http://support.ntp.org/bin/view/Main/WebHome
+=== xtalgrowth
+小規模。Cで書かれたX Window Systemのアプリケーション。
+http://loto.sourceforge.net/xtalgrowth/
 === feram
 小規模。Fortranで書かれている。
 http://loto.sourceforge.net/feram/
  * configure.ac    https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/configure.ac
  * Makefile.am     https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/Makefile.am
  * src/Makefile.am https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/src/Makefile.am
+=== Ruby
+Rubyは独特で高度な方法でconfigureを生成している。安易に真似すべきではないかもしれない。
+configure.inとMakefile.inそしていくつかのツールが独自に書かれていて、autoconfのみを使う。
+configureでGNU makeでもBSD makeでもnmakeでも有効なポータブルなMakefile（とGNUmakefile）が生成される。
+ソースは、src/サブディレクトリではなく、メインディレクトリに置かれている。
+make V=1とverbosityを指定することで、makeの実行するコマンドの詳細が表示されるようになっている。
+https://github.com/ruby/ruby 。
+
+== configureとmakeとの高速化
+大規模なプロジェクトではconfigureとmakeとにかかる時間が増大し、開発者をイライラさせる。
+特にconfigureスクリプトは並列化が難しく、簡単には高速化できない。
+以下にconfigureとmakeとの高速化の手法とそれらを解説しているページへのリンクを揚げた。
+=== configureの高速化
+ * Ref: http://superuser.com/questions/298779/is-it-possible-to-speed-up-configure
+=== makeの高速化
+ * RAMディスク（Linuxのtmpfsなど）やSSDなど高速なファイルシステム上でmakeする。
+ * NFSなど遅いファイルシステム上でmakeしない。
+ * make -j8と並列実行させる。
+ * gcc, g++, gfortranで-pipeオプションを使用する。
+   * NFS上でmakeしなくてはいけないときには特に有効。
+   * その他の場合は、キャッシュが効くためか、たいして高速化しないこともある。
+ * Ref1: http://nippondanji.blogspot.jp/2011/04/mysql-5530.html
+ * Ref2: http://stackoverflow.com/questions/1512933/when-should-i-use-gccs-pipe-option
 
 == Autotoolsの代わりになるもの
-改良版のAutotoolsを目指していくつかのパッケージングツール／ビルドツールが開発されている。
+改良版のAutotoolsやより高速なmakeを目指していくつかのパッケージングツール／ビルドツールが開発されている。
 CMakeとSConsではFortranのプロジェクトもサポートされている。
  * CMake http://www.cmake.org/
  * SCons http://www.scons.org/
- * Ninja https://github.com/martine/ninja
+ * GYP   https://chromium.googlesource.com/external/gyp
+ * Ninja https://ninja-build.org
+ * OMake http://omake.metaprl.org/index.html （OCamlで書かれている。）
+
+古いX Window Systemのアプリケーションのためには
+ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられることがある。
+マシンに依存するXのライブラリの場所などを解決してくれる。
+最近はAutotoolsが使われることが多い。
+Wikipedia: https://en.wikipedia.org/wiki/Imake
+参考: http://d.hatena.ne.jp/torazuka/20110508/imake
+
+== libtoolとは
+Autotoolsの仲間には他に libtool http://www.gnu.org/software/libtool/ がある。
+共有ライブラリのビルドするときにautoconfとautomakeとともに使ってマシン依存性を解決する。
+参考: http://klabgames.tech.blog.jp.klab.com/archives/1047107113.html
 
 == まとめ
 autoconfとautomakeとの使い方を説明した。
 configure.acとMakefile.amとを書くことによりパッケージの自動生成が可能になる。
 複数のプラットフォームでMakefileを共通化できる。
-他に共有ライブラリを操るための libtool http://www.gnu.org/software/libtool/ もある。
 これらGNU Autotoolsを活用すれば、簡単に配布用のフリーソフトウェアパッケージを作ることができる。
 
 == 著者

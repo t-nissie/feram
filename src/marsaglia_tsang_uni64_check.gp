@@ -9,7 +9,8 @@ if ("`ls -1 marsaglia_tsang_uni64_check.dat`" ne 'marsaglia_tsang_uni64_check.da
         marsaglia_tsang_uni64_check.gp: cannot find marsaglia_tsang_uni64_check.dat
 }
 
-set terminal postscript portrait enhanced color solid  "Times-Roman,20"
+set terminal postscript eps enhanced color solid  "Times-Roman,30"
+set size 1.0,2.0
 set output 'marsaglia_tsang_uni64_check.eps'
 set title '10^7 samples'
 set xrange [0:100]
@@ -25,7 +26,7 @@ plot 'marsaglia_tsang_uni64_check.dat' title 'data' w points,\
 
 set output
 print 'marsaglia_tsang_uni64_check.eps is generated.'
-# !epstopdf.pl marsaglia_tsang_uni64_check.eps
+# !epstopdf marsaglia_tsang_uni64_check.eps
 
 #Local variables:
 #  compile-command: "gnuplot marsaglia_tsang_uni64_check.gp"

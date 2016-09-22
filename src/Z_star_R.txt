@@ -1,0 +1,43 @@
+= Z_star_R
+== 履歴
+r2602 https://sourceforge.net/p/loto/code/2602/ が元
+
+r2603で
+    svn copy https://svn.code.sf.net/p/loto/code/feram/trunk https://svn.code.sf.net/p/loto/code/feram/branches/z_star_r -m 'for R-dep Z*'
+とした
+
+r2605: The first step of Z_star_R. It cleared TESTS. https://sourceforge.net/p/loto/code/2605/
+
+r2607: energy_module.F で dipole_dipole を long_range と short_range とに分けた
+　　　　24example-BaTiO3-new-param-heating-coolingと29example-BaTiO3-new-param-defectsとは動いたみたい
+
+== ToDo
+o dipole-dipole-long-range.F, dipole-dipole-short-range.F をc%を使うように書き直す。配列の構造が違うので*超注意*が必要。
+
+o print-eigenvalues.F で c%long_range に Z_star**2 がかけられていないのをどうしたものか。
+
+o ZstarRを読み込めるようにする。
+
+o 0.24.02とベンチマークで比較。
+
+o Something for 'film' or 'epit' in read_Z_star.F
+
+
+== Done
+x dVddi-dipole-dipole.F でdipoIを使って力とエネルギーを計算してる。dipoIを分ける。
+
+x param_module.Fで
+  dipoIを c%dipoI(:,:, ix,iy,iz) = long_range(:,:, ix,iy,iz) + short_range(:,:, ix,iy,iz) に分ける。
+
+x dipole-dipole.Fの
+  open(unit=UNIT_QUADRATIC, file=trim(p%filename)//'.quadratic', status='old', action='read', iostat=ios)
+  の機能は停止。
+
+x dipole-dipole-long-range.FでZ_star**2を掛けない。
+
+x Z_u_R(:,:,:,:), Z_u_K(:,:,:,:) を coord_module.F に加える。
+
+x feram_eigenvalues2j.F:61:  b(0) = p%DDB_a  -  ( -4.188790 * p%Z_star**2 * HARTREE_BOHR / p%epsilon_inf / ...
+  ここにあるZ_starは気にしなくてよい。
+
+x energy_module.F で dipole_dipole を long_range と short_range とに分ける (r2607)

@@ -1,4 +1,6 @@
 #!./feram
+verbose = 4
+output_polarization = .ture.
 #--- Method, Temperature, and mass ---------------
 method = 'md'
 GPa = -0.21

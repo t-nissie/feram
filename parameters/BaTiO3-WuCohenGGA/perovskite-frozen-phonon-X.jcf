@@ -1,0 +1,20 @@
+#!/bin/sh
+#@ shell = /bin/sh
+#@ job_name = perovskite-frozen-phonon-X
+#@ output = $(job_name).$(jobid).$(stepid).out
+#@ error  = $(job_name).$(jobid).$(stepid).err
+#@ job_type = parallel
+#@ total_tasks = 32
+#@ stack_limit = 960mb
+#@ task_affinity = cpu(1)
+#@ cpus_per_core = 1
+#@ queue
+# Usage: submit EJCF general -jcf perovskite-frozen-phonon-X.jcf
+##
+poe /usr/local/bin/abinit < perovskite-frozen-phonon-X.files > perovskite-frozen-phonon-X.log
+
+sed -n '/after computation/,$p' perovskite-frozen-phonon-X.out | grep acell > perovskite-frozen-phonon-X.dat
+
+for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+    tail -36 perovskite-frozen-phonon-X_o_DS"$i"_DDB >> perovskite-frozen-phonon-X.dat
+done

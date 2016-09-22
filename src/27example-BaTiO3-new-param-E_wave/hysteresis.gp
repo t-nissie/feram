@@ -1,14 +1,15 @@
 #!/usr/bin/env gnuplot
 # hysteresis.gp
-# Time-stamp: <2013-10-06 22:51:01 takeshi>
+# Time-stamp: <2016-04-08 16:23:03 t-nissie>
 # Author: Takeshi NISHIMATSU
 ##
 #set encoding iso_8859_1
 set grid
-set terminal postscript portrait enhanced solid color 'Times-Roman' 20
+set terminal postscript eps enhanced solid color 'Times-Roman' 15
 set output 'hysteresis.eps'
 set xrang [-400:400]
 set key bottom right
+set size 0.5,1.0
 maxy=60.0
 #set yrang [-maxy:maxy]
 set xlabel '{/Times-Italic E} [kV/cm]'

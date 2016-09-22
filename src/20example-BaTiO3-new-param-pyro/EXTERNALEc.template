@@ -7,7 +7,7 @@ set n_coord_freq=`expr $n_thermalize + $n_average`
 
 set prev_coord=dummy
 set i=0
-foreach temperature (`jot - 900 250 -1`)
+foreach temperature (`seq 900 -1 250`)
     set GPa=`perl -e "print -0.005 * $temperature"`
     set i=`expr $i + 1`
     set filename=EXTERNALEc`printf '%.4d' $i`-"$temperature"K

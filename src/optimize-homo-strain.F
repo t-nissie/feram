@@ -1,13 +1,15 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2015-03-26 15:41:04 takeshi>
+! Time-stamp: <2016-06-25 16:48:00 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
+#include "define.h"
 subroutine optimize_homo_strain(p,c,e)
   use Param_module
   use Coord_module
   use Energy_module
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type),  intent(in)    :: p
@@ -18,8 +20,7 @@ subroutine optimize_homo_strain(p,c,e)
   real*8 tmp
   integer i,j
   !--- END of variable definitions -------------------
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', &
-  !     & 'Optimize homogeneous strain. Calculate related energies and accelerations.')
+  if (p%verbose>=4) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'optimize_homo_strain().')
 
   !--- prepare homogeneous_coupling_2_uu ------------------------
   do i = 1, 6
@@ -67,5 +68,6 @@ subroutine optimize_homo_strain(p,c,e)
   !--- compute homogeneous coupling energy ----------------------
   e%homo_coupling = dot_product( c%strain(:), homogeneous_coupling_2_uu(:) )
 
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  if (p%verbose>=4) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', &
+       & '  optimize_homo_strain(): e%homo_strain and e%homo_coupling are also calculated.')
 end subroutine optimize_homo_strain

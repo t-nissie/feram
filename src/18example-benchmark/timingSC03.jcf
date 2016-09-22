@@ -19,7 +19,7 @@ export HF_ERR_STATUS_MODE=1
 export HF_PRUNST_BIND=1
 export HF_BINDPROC_NUM=0
 export HF_BINDPROC_STRIDE=2
-for i in `jot 16`; do
+for i in `seq 16`; do
     for j in 1 2 3; do
 	HF_90OPTS="-FPRUNST(THREADNUM($i))" OMP_NUM_THREADS=$i /usr/bin/timex ../feram forward.feram
     done

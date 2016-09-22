@@ -1,5 +1,5 @@
 ! hysteresis_loop.F -*-f90-*-
-! Time-stamp: <2015-03-22 17:08:52 takeshi>
+! Time-stamp: <2016-06-24 15:37:05 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -10,6 +10,7 @@ subroutine hysteresis_loop(p,c)
   use Param_module
   use Coord_module
   use Energy_module
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type) :: p
@@ -24,7 +25,7 @@ subroutine hysteresis_loop(p,c)
   character (len=120) :: fn_hl, fn_system
   !character (len=126) :: bzip2_command
   !--- END of variable definitions -------------------
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'hysteresis_loop().')
 
   write(message,'(f5.1,a)') p%kelvin, ' [K] BEGIN ================================================'
   call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
@@ -98,5 +99,5 @@ subroutine hysteresis_loop(p,c)
   write(message,'(f5.1,a)') p%kelvin, ' [K] END =================================================='
   call msg(UNIT_LOG, __FILE__, __LINE__, 'T = ', message)
 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'hysteresis_loop().')
 end subroutine hysteresis_loop

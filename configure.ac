@@ -1,11 +1,11 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2015-08-28 21:51:27 takeshi>
+dnl Time-stamp: <2016-08-24 12:53:45 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.69)
-AC_INIT([feram by Takeshi NISHIMATSU],[0.24.02],[t-nissie{at}imr.tohoku.ac.jp],[feram],[http://loto.sourceforge.net/feram/])
+AC_INIT([feram by Takeshi NISHIMATSU],[0.26.01],[t-nissie{at}imr.tohoku.ac.jp],[feram],[http://loto.sourceforge.net/feram/])
 AC_CONFIG_SRCDIR(src/feram.F)
 AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax])
 AC_CONFIG_HEADERS([config.h])
@@ -49,6 +49,7 @@ case "$FC" in
     test -n "$FCFLAGS" || FCFLAGS="-q64 -O4 -qsmp=omp -qinfo=all"
     test -n "$MPIFC" || MPIFC=mp"$FC"
     LDFLAGS="$LDFLAGS -Wl,-blpdata -Wl,-bmaxdata:90000000000"
+    AC_DEFINE([hostnm], [hostnm_], [This subroutine retrieves the host name of the system on which the program is running.])
     ;;
   *)
     test -n "$FCFLAGS" || FCFLAGS="-O2"
@@ -85,7 +86,7 @@ case "$with_fft" in
                  [AC_MSG_ERROR([Your FFTW3 library does not combine threads. See config.log.])])
     ;;
   mkl)
-    AC_CHECK_LIB(mkl_gf_lp64, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) AC_DEFINE([WITH_FFT_MKL], [1], [Use FFTW3 wrappers to Intel MKL functions]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 $LIBS"],
+    AC_CHECK_LIB(mkl_intel_lp64, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) AC_DEFINE([WITH_FFT_MKL], [1], [Use FFTW3 wrappers to Intel MKL functions]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_intel_lp64 $LIBS"],
                  AC_MSG_ERROR([You need Intel Math Kernel Library (MKL). See config.log.]),[-lmkl_core -lmkl_intel_thread])
     ;;
   ssl2)
@@ -117,12 +118,12 @@ case "$with_lapack" in
     ;;  
   mkl)
     case "$LIBS" in
-      *mkl_gf_lp64*)
-        AC_MSG_NOTICE([lapack... It seems that there is -lmkl_gf_lp64 already in LIBS.])
+      *mkl_intel_lp64*)
+        AC_MSG_NOTICE([lapack... It seems that there is -lmkl_intel_lp64 already in LIBS.])
         ;;
       *)
-        AC_MSG_NOTICE([lapack... Add -lmkl_core -lmkl_intel_thread -lmkl_gf_lp64 at the tail of LIBS.])
-        LIBS="$LIBS -lmkl_core -lmkl_intel_thread -lmkl_gf_lp64"
+        AC_MSG_NOTICE([lapack... Add -lmkl_core -lmkl_intel_thread -lmkl_intel_lp64 at the tail of LIBS.])
+        LIBS="$LIBS -lmkl_core -lmkl_intel_thread -lmkl_intel_lp64"
         ;;
     esac
     ;;

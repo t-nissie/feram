@@ -121,7 +121,8 @@ T. Nishimatsu, H. Mizuseki, Y. Kawazoe, A. Sasaki and Y. Ikeda: Jpn. J. Appl. Ph
 === Patch for ABINIT
 We apply our original patch to ABINIT, rename from abinit to abinit-xyz, then use it.
 This brdmin-6.2.3-2011-07-01.patch is applicable to abinit-6.2.3.
- % tar zxf abinit-6.2.3.tar.gz
+ % wget http://ftp.abinit.org/abinit-6.2.3.tar.gz
+ % tar xf abinit-6.2.3.tar.gz
  % cd abinit-6.2.3
  % mkdir x86_64-Linux-mpif90-gfortran-4.3.3-O3-perovskite-xyz
  % cd x86_64-Linux-mpif90-gfortran-4.3.3-O3-perovskite-xyz/

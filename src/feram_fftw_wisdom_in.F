@@ -1,5 +1,5 @@
 ! feram_fftw_wisdom_in.F -*-f90-*-
-! Time-stamp: <2015-06-30 18:33:07 takeshi>
+! Time-stamp: <2015-11-13 18:26:57 t-nissie>
 ! Author: Takeshi NISHIMATSU
 !!
 subroutine feram_fftw_wisdom_in(howmany, N_TIMES, Lx, Ly, Lz, padding_y, flags, plan_r2c, plan_c2r)
@@ -37,7 +37,7 @@ subroutine feram_fftw_wisdom_in(howmany, N_TIMES, Lx, Ly, Lz, padding_y, flags, 
   N_inv = 1.0d0/N
 
   n_alloc_inho = howmany * (Lx/2+1) * (Ly+padding_y) * Lz
-  inho_ptr = fftw_alloc_complex(n_alloc_inho)
+  inho_ptr = fftw_malloc(n_alloc_inho * 16)   ! 16 for complex*16
   call c_f_pointer(inho_ptr, inhoK, [howmany,   (Lx/2+1), Ly+padding_y, Lz])
   call c_f_pointer(inho_ptr, inhoR, [howmany, 2*(Lx/2+1), Ly+padding_y, Lz])
 !!!first touch!!! Here, indexes of arrays do not have to start from 0.

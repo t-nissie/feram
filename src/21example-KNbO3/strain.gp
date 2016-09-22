@@ -1,10 +1,10 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2012-08-28 10:02:51 takeshi>
+# Time-stamp: <2016-05-17 10:18:16 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 a0=4.01688
 
-set terminal postscript landscape enhanced solid color 'Times-Roman' 22
+set terminal postscript eps enhanced solid color 'Times-Roman' 30
 set encoding iso_8859_1
 set xlabel 'Temperature [K]'
 set ylabel 'lattice parameters [\305]'

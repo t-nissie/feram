@@ -1,23 +1,25 @@
 ! nose-poincare.F   -*-f90-*-
-! Time-stamp: <2015-04-02 13:52:38 takeshi>
+! Time-stamp: <2016-06-25 16:59:41 takeshi>
 ! Author: Takeshi NISHIMATSU and Umesh V Waghmare
 ! Description:
 ! Pearents: hysteresis_loop.F, initialize-dipoR.F, leapfrog.F, nose-poincare.F
 ! ref_1: Stephen D. Bond, Benedict J. Leimkuhler and Brian B. Laird:
 !         J. Comput. Phys. Vol.151 p.114 (1999)
 !!
+#include "define.h"
 subroutine nose_poincare(p,c,e)
   use Param_module
   use Coord_module
   use Energy_module
+  use msg_module
   implicit none
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   real*8 CB, s_Nose_old, delta_H, kinetic_energy_dipo, dt2s, dt2_s_s
-  integer iz
+  integer ix,iy,iz,alpha
   external kinetic_energy_dipo
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'nose_poincare().')
 
   dt2s = p%dt_2*c%s_Nose
 !$omp parallel do
@@ -39,12 +41,18 @@ subroutine nose_poincare(p,c,e)
   dt2_s_s = p%dt_2 * (1/c%s_Nose+1/s_Nose_old)
 !$omp parallel do
      do iz=0, p%Lz-1
-        c%dipoR(:,:,:,iz) = c%dipoR(:,:,:,iz) &
-             & + dt2_s_s * c%dipoP(:,:,:,iz) * c%m_inv(:,:,:,iz)   !(35d)
+        do iy=0, p%Ly-1
+           do ix=0, p%Lx-1
+              do alpha = 1,3
+                 c%dipoR(alpha,ix,iy,iz) = c%dipoR(alpha,ix,iy,iz) &
+                      & + dt2_s_s * c%dipoP(alpha,ix,iy,iz) * c%mass_dipo_inv(ix,iy,iz)   !(35d)
+              end do
+           end do
+        end do
      end do
 !$omp end parallel do
 
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'dipoR', 'is updated.')
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'REMARK', 'dipoR is updated.')
 
   call mirror_force_mirror(p,c,e)
 
@@ -66,5 +74,5 @@ subroutine nose_poincare(p,c,e)
   e%dipo_kinetic = kinetic_energy_dipo(p,c)
   call Nose_Poincare_Hamiltonian(p,c,e)
 
-  !call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'dipoP is updated at this end.')
+  if (p%verbose>=3) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  nose_poincare().')
 end subroutine nose_poincare

@@ -1,6 +1,6 @@
 /* -*-CSS-*-
  * style.css for README.html of feram
- * Time-stamp: <2013-11-30 12:19:00 takeshi>
+ * Time-stamp: <2015-10-28 11:55:21 takeshi>
  * Author: Takeshi NISHIMATSU
  */
 body {
@@ -55,18 +55,6 @@ pre {
   white-space:      pre;
   color:            darkred;
   background-color: #f3f3f3;
-}
-
-div.figure img {
-    width:50%;
-    margin: auto;
-    display: block;
-}
-
-div.figure div.figcaption {
-    width: 60%;
-    margin: auto;
-    display: block;
 }
 
 div.navi {

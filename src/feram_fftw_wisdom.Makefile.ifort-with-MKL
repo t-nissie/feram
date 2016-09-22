@@ -1,0 +1,15 @@
+# -*-Makefile-*- for feram_fftw_wisdom
+# cp SOMEWHERE/fftw3.f03 .
+##
+FC=ifort
+FFLAGS=-free -r8 -O3 -warn all -openmp -openmp-report2 -parallel -qopt-report=2
+CPPFLAGS=-DWITH_FFT_MKL
+LDFLAGS=-lmkl_core -lmkl_intel_thread -lmkl_gf_lp64
+
+all: feram_fftw_wisdom feram_fftw_SoA
+feram_fftw_SoA:    feram_fftw_SoA.o    feram_fftw_SoA_in.o    feram_fftw_SoA_out.o    feram_fftw_wisdom_timing.o
+	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
+feram_fftw_wisdom: feram_fftw_wisdom.o feram_fftw_wisdom_in.o feram_fftw_wisdom_out.o feram_fftw_wisdom_timing.o
+	$(FC) $(FFLAGS) -o $@ $^ $(LDFLAGS)
+clean:
+	rm -f core* feram_fftw_wisdom feram_fftw_SoA feram_fftw_*.o *.optrpt *__genmod.mod *__genmod.f90

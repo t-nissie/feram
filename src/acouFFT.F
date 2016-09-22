@@ -1,5 +1,5 @@
 ! acouFFT.F -*-f90-*-
-! Time-stamp: <2015-06-23 14:25:07 takeshi>
+! Time-stamp: <2016-06-25 16:48:01 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,27 +9,18 @@
 subroutine acouFFT(p,c)
   use Param_module
   use Coord_module
+  use msg_module
   implicit none
   type(Param_type),  intent(in)    :: p
   type(Coord_type),  intent(inout) :: c
   integer iz
   include 'fftw3.f03'
-
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'acouR -> acouK')
-  end if
-
+  if (p%verbose>=4) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'acouFFT(): acouR -> acouK.')
   call fftw_execute_dft_r2c(c%plan_r2c_3_out, c%acouR, c%acouK)
-
 !$omp parallel do
     do iz = 0,p%Lz-1
        c%acouK(:,:,:,iz) = (0.0d0, 1.0d0) * c%acouK(:,:,:,iz)
     end do
 !$omp end parallel do
-
-    !write(6,'(a,2(f14.7,f12.7))') '2acouK', c%acouK(1,0,1,1), c%acouK(1,0,15,15)
-
-  if (p%verbose>=2) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'acouR -> acouK, done')
-  end if
+  if (p%verbose>=4) call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  acouFFT(): acouR -> acouK, done.')
 end subroutine acouFFT

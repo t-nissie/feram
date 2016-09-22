@@ -1,13 +1,32 @@
 ToDo:
-o Fix "610.1vs.defects:***: EOF: reached." in msg.F.
-  See /home/t-nissie/feram/feram-o.00/directECE-on-0.005TGPa-parallel/BTOnew-050/ .
-  また、欠陥の情報も2lfの計算に引き継がれてるかチェックが必要。引き継がれているはずだけど。
+o テスト用のタグを作る。例えば、予想される温度とか。
+
+o output_polarization in README.en and README.ja.
+
+o .defects fileのテストスクリプト。
+
+o コーディング規則を作る。
+  「subroutineの先頭ではif (p%verbose>=2) call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'foo().')」とか。
+
+o .coord (or .restart) fileの高精度化とそれ用のテストスクリプト
+
+o src/GPa_check.sh で図を書くだけでなく、値のチェックをする。
+
+o configure.ac: After ifort 17.0.1 is released, ifort -openmp should be
+  replaced by ifort -qopenmp, because ifort 16.0.3 says "-openmp is deprecated."
+  14.0: -openmp, 15.0: -openmp or -qopenmp, 16.0: -openmp or -qopenmp, 17.0: ???
+
+o まずacouF.Fとcoord_module.Fとから "!$omp parallel workshare" を使う？
+  src/omp_workshare_check.fを見よ。ただし、SoAに戻すとしたら障害になる。
 
 o mass_acou<0.0d0 なら acoustic 関連の配列で要らないモノは確保しない。
+  Confirm e%acou_kinetic=0 if mass_acou<0
 
 o dVdac.Fのために-finline-matmul-limit=7を使ってみる。
   https://gcc.gnu.org/onlinedocs/gfortran/Code-Gen-Options.html
   GCC 6で入る機能かもしれない。
+
+o .fftファイルを書き出さないようにする。
 
 o CUDA化。cuFFTとcuBLASとを使えるようにする。
   * PGI CUDA Fortranは使わない。
@@ -24,17 +43,11 @@ o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
   src/mirror_force_mirror.Fで単にc%acouRとc%dVdacRをミラーすればよいわけではない。
   acoustic displacementは双極子でないので静電的ミラーではない！！！
 
-o Use SSE or AVX with the latest assembler and FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'.
-
 o TESTS for feram_slicer.rb and feram_cross-section-q.sh
 
 o (nightly) automation of unit test with "make check"
 
 o (nightly) automation of profiling and timing
-
-o Replace jot(1) with seq(1). Do not use --separator option for seq. Use -s.
-
-o Replace colrm(1) with cut(1).  `cut -b -14` is equivalent with `colrm 15`.
 
 o No need to initialize Energy_type ???
 
@@ -43,15 +56,9 @@ o remove redundant procedures:
   - molecular-dynamics.F: around u(alpha) = SUM(c%dipoR(:,:,:,alpha), MASK=c%sum_p(:,:,:))
   - Then, report uu() and energies in the .hl file.
 
-o e%acou_kinetic=0 if mass_acou<0
-
 o 'md' have to be changed to 'np' Nose-Poincare.
 o Nose-Poincareでもacoustic displacementのMDができるように．
 o Imprement Nose:JPhysSocJpn:70:p75-77:2001
-
-o Use -simd=aggressive ???
-
-o Error messages to stderr.
 
 o Copyright
 
@@ -59,13 +66,11 @@ o Examples
 
 o In initialize-dipoR.F, c%dipoP() must be multiplied by c%s_Nose after read ???
 
-o FILENAME.avgの出力の見直し polarization -> <u_z> とか
-
-o plot_dispersion = .ture. のとき32x32x32を使う。FILENAME.param.gp は無くす方向で。
-
 o feram_slicer.rb マニュアル
 
 o feram_cross_section マニュアル
+
+o feram_distribution3d2ppm マニュアル
 
 o dVddi_... -> dV_du_...
 
@@ -91,10 +96,7 @@ o 依存関係の自動生成。gfortranに新しく導入される-Mオプシ�
 
 o Reduce memory size using in-place FFT and
   rank remapping or array dimension changing (See in-place-FFT.ja.txt)
-
-o coord fileの桁数を上げて高精度化。ファイルサイズは大きくなってしまうけど。
-
-o Use msg() in write_Param() of param_module.F.
+  Or use reshape?
 
 o striped structure を initial configuration にできるようにする.
 
@@ -106,16 +108,7 @@ o 精度の選択がconfigureへのオプションでできるようにしたい
   --with-precision=single
   --with-precision=double
 
-o start.coord があれば読み込む。alloc_Coord(p,c) で？
-
-o (coord を かきだし はじめる ところ おわる ところ AVERAGE の あいだだけ)
-
-o p, q, qdot にして, いつmassで割るか考える.
-
 o Q_nose must be a function of T, N and delta_t. AUTOMATIC determination.
-
-o Automatical determination of kappa
-  kappa for the Ewald summation must be a function of Lx, Ly and Lz
 
 o strain energy の 計算をする部分を分離.
 
@@ -141,8 +134,6 @@ o children, parents, use
 o input file parserを作る。どんなparser？
   input file と param.gp とを共通化？
   タイトルも引数で指定できるようにしないと面倒臭い。
-
-o call msg() DEPTH or p%message_depth
 
 o Use class of Fortran 2003: class Ferroelectrics has a Param, a Coord and a Energy
 
@@ -228,3 +219,44 @@ x continue = .true. でも、前に続けるべき計算がなかったら、エ
 x configure.acでulmul2html5のversionが0.5.3であることをチェック。
 
 x Do not make fft.F module. (Done in feram-0.22.00)
+
+x .feram_checkは`make distcheck`のためなので、
+  zzz16.feram_check -> check16.feram はしない。
+  zzzgap.feram_checkを16x16x16にして、wisdomを使えるようにした。
+  See feram_common.F, around basename().
+
+x Z_star(R) in feram-0.25.00unstable
+
+x Fix "610.1vs.defects:***: EOF: reached." in msg.F.
+  See /home/t-nissie/feram/feram-o.00/directECE-on-0.005TGPa-parallel/BTOnew-050/ .
+  また、欠陥の情報も2lfの計算に引き継がれてるかチェックが必要。引き継がれているはずだけど。
+
+x Replace jot(1) with seq(1). Do not use --separator option for seq. Use -s.
+
+x Replace colrm(1) with cut(1).  `cut -b -14` is equivalent with `colrm 15`.
+  We do not do it, because all the systems may have `colrm` by default.
+  Cygwin may not? http://qiita.com/mdstoy/items/9108b7c44be409d4b74f
+  src/elastocaloric770K_check.csh:32:set t_final=`colrm 8 < elastocaloric770K_check.lf.avg`
+  src/elastocaloric770K_check.sh:21:t_final=`colrm 8 < elastocaloric770K_check.lf.avg`
+
+x Error messages to stderr.
+
+x Use SSE or AVX with the latest assembler and FCFLAGS='-g -Wall -Ofast -msse4.2 -pipe -fopenmp'.
+  E5 v3 で ifort で -march=native コンパイルオプションを使っても速くならなかった。
+
+x FILENAME.avgの出力の見直し polarization -> <u_z> とか
+
+x verbose値の階層化。verbose=1では毎イテレーションにはサブルーチン名が出ない方がよいかもしれない。
+
+x mass_dipole も mass_acou も R-dep できるようにする。
+
+x src/08example-BaTiO3-dispersion/ 以下をTESTSに格上げする。
+x plot_dispersion = .ture., 4x4x4, 8x8x8, 32x32x32で同じになるかチェック
+x grep 186547824173781 *long.dat | wc -l -> 6 とか。
+x print-eigenvalues.F を P%padding_y に対応させて、dipole-dipole.F を簡単化。
+
+x Use msg() in write_Param() of param_module.F.
+
+x Automatical determination of kappa
+  kappa for the Ewald summation must be a function of Lx, Ly and Lz
+  p%kappa = sqrt(M_PI) / p%a0 / (dble(p%N))**(1.0d0/6)

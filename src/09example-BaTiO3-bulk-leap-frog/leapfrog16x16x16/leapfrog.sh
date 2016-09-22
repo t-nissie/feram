@@ -1,13 +1,13 @@
 #!/bin/sh
 # leapfrog.sh
-# Time-stamp: <2013-05-24 10:22:31 takeshi>
+# Time-stamp: <2016-01-07 21:51:12 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 n_thermalize=40000
 n_average=10000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
-for i in `jot 40`; do
+for i in `seq 40`; do
     dev=`printf '%.3d' $i`
     filename=leapfrog"$dev"
     cat > $filename.feram <<-EOF

@@ -1,7 +1,7 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2012-07-26 13:42:27 t-nissie>
+# Time-stamp: <2016-01-07 21:47:55 takeshi>
 # Author: Takeshi NISHIMATSU
-# for E in `jot - 25 310 5`; do echo "'$Eh.avg' using 1:13:(weight) t '$Eh' smooth acsplines,\\"; done
+# for E in `seq 25 5 310`; do echo "'$Eh.avg' using 1:13:(weight) t '$Eh' smooth acsplines,\\"; done
 ##
 weight=0.0001
 

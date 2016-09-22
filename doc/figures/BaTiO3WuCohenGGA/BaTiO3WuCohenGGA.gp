@@ -5,8 +5,7 @@ HARTREE=27.21138386
 
 E0_WuC=  -1.3136340444E+02
 
-set terminal postscript portrait enhanced color 'Times-Roman,16'
-set size 1.0,0.5
+set terminal postscript landscape enhanced color 'Times-Roman,23'
 set output 'BaTiO3WuCohenGGA.eps'
 set encoding iso_8859_1
 set format y '%.2f'

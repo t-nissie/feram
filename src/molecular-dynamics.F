@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2015-03-22 17:12:00 takeshi>
+! Time-stamp: <2016-06-24 15:40:37 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -13,6 +13,7 @@ subroutine molecular_dynamics(p,c)
   use Energy_module
   use Average_module
   use wave_module
+  use msg_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type) :: p
@@ -23,14 +24,14 @@ subroutine molecular_dynamics(p,c)
   integer i_step, ix, iy, iz, alpha
   real*8 E_field_add(3), u(3)
   character(120), parameter :: fmt_time_step = &
-       "('TIME_STEP ',i8,3f16.12,' -----------------------------------------------------')"
+       "('TIME_STEP ',i8,3f16.12,' ------------------------------------------------')"
   character (len=120) :: message
   character (len=120) :: fn
   logical             :: detail
   !--- END of variable definitions -------------------
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'MD')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'molecular_dynamics().')
 
-  write(message,'(a,f6.1,a)') 'T = ', p%kelvin, ' [K] BEGIN ========================================================'
+  write(message,'(a,f6.1,a)') 'T = ', p%kelvin, ' [K] BEGIN =========================================================================='
   call msg_ez(UNIT_LOG, message)
 
   call initialize_E_field(p,c)
@@ -46,6 +47,7 @@ subroutine molecular_dynamics(p,c)
   !call msg_ez(UNIT_LOG,message)
 
   if (p%n_E_wave_period>0) open(unit=UNIT_HL,file=trim(p%filename)//'.hl', status='REPLACE')
+  if (p%output_polarization) open(unit=UNIT_POLARIZATION, file=trim(p%filename)//'.polarization', status='REPLACE')
 
   c%H0 = 0.0d0
   call Nose_Poincare_Hamiltonian(p,c,e)
@@ -53,6 +55,11 @@ subroutine molecular_dynamics(p,c)
   call Nose_Poincare_Hamiltonian(p,c,e)
 
   call reset_Average(avg)
+!$omp parallel do
+  do iz = 0,p%Lz-1
+     c%dipoRavg(:,:,:,iz) = 0.0d0
+  end do
+!$omp end parallel do
 
   do i_step = 1, p%n_thermalize+p%n_average
 
@@ -75,16 +82,18 @@ subroutine molecular_dynamics(p,c)
               u(alpha) = SUM(c%dipoR(alpha,:,:,:), MASK=c%sum_p(:,:,:))
            end do
            u(:) = u(:) / c%n_sum_p
-           write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5,6f4.1,1(1e15.5,12e13.5))") &
+           write(UNIT_HL,"(i10.10,f6.1,3f16.12,9e13.5,6f4.1,1(1e15.5,14e13.5))") &
                 i_step,p%kelvin, E_field_add, c%strain(1:6), u(1:3), 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, &
                 e%dipo_kinetic    ,&
-                e%dipole_dipole   ,&
+                e%short_range     ,&
+                e%long_range      ,&
                 e%dipole_E_field  ,&
                 e%unharmonic      ,&
                 e%homo_strain     ,&
                 e%homo_coupling   ,&
                 e%inho_strain     ,&
                 e%inho_coupling   ,&
+                e%inho_modulation ,&
                 e%total           ,&
                 e%H_Nose_Poincare ,&
                 e%total**2        ,&
@@ -131,13 +140,20 @@ subroutine molecular_dynamics(p,c)
      if (i_step <= p%n_thermalize) cycle
 
      call add_to_Average(p,c,e,avg,detail)
+!$omp parallel do
+     do iz = 0,p%Lz-1
+        c%dipoRavg(:,:,:,iz) = c%dipoRavg(:,:,:,iz) + c%dipoR(:,:,:,iz)
+     end do
+!$omp end parallel do
   end do
 
   call divide_and_write_Average(p,c,avg)
+  call divide_and_write_dipoRavg(p,c)
 
-  write(message,'(a,f6.1,a)') 'T = ', p%kelvin, ' [K] END =========================================================='
+  write(message,'(a,f6.1,a)') 'T = ', p%kelvin, ' [K] END ============================================================================'
   call msg_ez(UNIT_LOG, message)
 
   if (p%n_E_wave_period>0) close(UNIT_HL)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'MD')
+  if (p%output_polarization) close(UNIT_POLARIZATION)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'molecular_dynamics().')
 end subroutine molecular_dynamics

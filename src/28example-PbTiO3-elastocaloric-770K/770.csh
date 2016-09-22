@@ -1,5 +1,5 @@
 #!/bin/csh
-# Usage: submit SC general -exec 770.csh -J 770
+# Usage: submit SC general -longtime -pt 16 -exec 770.csh -J 770example28
 ##
 # For IBM XL Fortran
 setenv MALLOCMULTIHEAP true

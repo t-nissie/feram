@@ -1,7 +1,7 @@
 ! initialize-dipoR.F -*-f90-*-
-! Time-stamp: <2015-03-23 15:28:04 takeshi>
+! Time-stamp: <2016-06-25 17:21:17 takeshi>
 ! Author: Takeshi NISHIMATSU
-! Description: Initialize dipoR and c%m_inv(:,:,:,:) with read_defects_u.F.
+! Description: Initialize dipoR and c%mass_dipo_inv(:,:,:) with read_defects_u.F.
 ! Parents: hysteresis_loop.F or molecular-dynamics.F
 !!
 #include "define.h"
@@ -10,19 +10,18 @@ subroutine initialize_dipoR(p,c,e)
   use Coord_module
   use Energy_module
   use marsaglia_tsang_uni64_module
+  use msg_module
   implicit none
   type(Param_type),  intent(inout) :: p
   type(Coord_type),  intent(inout) :: c
   type(Energy_type), intent(out)   :: e
   integer ix, iy, iz, alpha, ios, dummy_x, dummy_y, dummy_z
   real*8 dmy,kinetic_energy_dipo,kinetic_energy_acou
-  character (len=120) :: restart_fn
   external kinetic_energy_dipo
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
-  write(restart_fn,'(a,a)') trim(p%filename), '.restart'
-  open(unit=UNIT_SYSTEM, file=restart_fn, status='old', action='read', iostat=ios)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'initialize_dipoR().')
+  open(unit=UNIT_SYSTEM, file=trim(p%filename)//'.restart', status='old', action='read', iostat=ios)
   if (ios.eq.0) then
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(restart_fn)//' was found.')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE', trim(p%filename)//'.restart was found.')
      do iz = 0, p%Lz-1
         do iy = 0, p%Ly-1
            do ix = 0, p%Lx-1
@@ -38,7 +37,7 @@ subroutine initialize_dipoR(p,c,e)
      ! c%dipoP() must be multiplied by c%s_Nose ???
      close(UNIT_SYSTEM)
   else
-     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE_NOT_FOUND', trim(restart_fn)//' was NOT found.')
+     call msg(UNIT_LOG, __FILE__, __LINE__, 'FILE_NOT_FOUND', trim(p%filename)//'.restart was NOT found.')
      dmy = normal_dist(p%init_dipo_avg(1),p%init_dipo_dev(1),p%seed(1), p%seed(2))
      do alpha = 1, 3
         do iz = 0, p%Lz-1
@@ -57,7 +56,8 @@ subroutine initialize_dipoR(p,c,e)
      c%acouR(:,:,:,:) = 0.0d0
   end if
 
-  call read_defects_u(p,c)   ! Prepares fixed u for defects and c%m_inv(:,:,:,:).
+  call read_relaxor(p,c)
+  call read_defects_u(p,c)   ! Prepares fixed u for defects and c%mass_dipo_inv(:,:,:).
 
   call mirror_force_mirror(p,c,e)
 
@@ -67,5 +67,5 @@ subroutine initialize_dipoR(p,c,e)
   e%dipo_kinetic    = kinetic_energy_dipo(p,c)
   e%H_Nose_Poincare = 0.0d0
 
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  initialize_dipoR()')
 end subroutine initialize_dipoR

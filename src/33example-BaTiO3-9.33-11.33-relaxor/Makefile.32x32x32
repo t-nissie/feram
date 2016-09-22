@@ -1,0 +1,41 @@
+# -*-Makefile-*- for 32x32x32 of src/33example-BaTiO3-9.33-11.33-relaxor/
+##
+DIR24 = ../24example-BaTiO3-new-param-heating-cooling
+all: random orderd orderd32.gp random32.gp
+	sed -e 's/10\.33000/9.33 11.33 9.33/'\
+            -e 's/16 16 16/32 32 32/'\
+            -e 's/Q_Nose = 0.1/Q_Nose = 0.5/'\
+            -e 's/cooling/random-cooling/'\
+            -e '/fi$$/a ln -sf random $$filename.relaxor' $(DIR24)/cooling.sh > random-cooling.sh
+	sed -e 's/10\.33000/9.33 11.33 9.33/'\
+            -e 's/16 16 16/32 32 32/'\
+            -e 's/heating/random-heating/'\
+            -e '/fi$$/a ln -sf random $$filename.relaxor' $(DIR24)/heating.sh > random-heating.sh
+	sed -e 's/10\.33000/9.33 11.33 9.33/'\
+            -e 's/16 16 16/32 32 32/'\
+            -e 's/Q_Nose = 0.1/Q_Nose = 0.5/'\
+            -e 's/cooling/orderd-cooling/'\
+            -e '/fi$$/a ln -sf orderd $$filename.relaxor' $(DIR24)/cooling.sh > orderd-cooling.sh
+	sed -e 's/10\.33000/9.33 11.33 9.33/'\
+            -e 's/16 16 16/32 32 32/'\
+            -e 's/heating/orderd-heating/'\
+            -e '/fi$$/a ln -sf orderd $$filename.relaxor' $(DIR24)/heating.sh > orderd-heating.sh
+	chmod 755 *.sh
+
+random: ../feram_defects_maker.rb
+	$< 32 32 32 2 16384 2134567890 > $@
+
+orderd: ../feram_fcc_maker.rb
+	$< 32 32 32 2 > $@
+
+orderd32.gp: random.gp
+	sed -e 's/random/orderd/'\
+            -e 's/\.eps/32.eps/'\
+            -e 's/= 16/= 32/' $< > $@
+
+random32.gp: random.gp
+	sed -e 's/\.eps/32.eps/'\
+            -e 's/= 16/= 32/' $< > $@
+
+clean:
+	rm -f *.sh random orderd *K* *.eps *.pdf *32.gp

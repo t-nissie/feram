@@ -10,7 +10,6 @@ real*8 function kinetic_energy_dipo(p,c)
   integer :: alpha, ix,iy,iz
   !--- END of variable definitions -------------------
   ! You can write it with single line...
-  ! kinetic_energy_dipo = SUM( c%dipoP(:,:,:,:)**2 * c%m_inv(:,:,:,:) ) / 2
 
   tmp_e = 0.0d0
 !$omp parallel do private(iz, alpha, iy, ix) reduction(+:tmp_e)
@@ -19,7 +18,7 @@ real*8 function kinetic_energy_dipo(p,c)
         do ix=0, p%Lx-1
            do alpha = 1,3
               if (c%sum_p(ix, iy, iz)) then
-                 tmp_e = tmp_e + c%dipoP(alpha,ix,iy,iz)**2 * c%m_inv(alpha,ix,iy,iz)
+                 tmp_e = tmp_e + c%dipoP(alpha,ix,iy,iz)**2 * c%mass_dipo_inv(ix,iy,iz)
               end if
            end do
         end do

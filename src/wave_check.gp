@@ -5,7 +5,8 @@
 # $Rev: 1340 $
 # $Author: t-nissie $
 ##
-set terminal postscript landscape enhanced color dashed "Times-Roman,20"
+set terminal postscript eps enhanced color dashed "Times-Roman,24"
+set encoding iso_8859_1
 set output 'wave_check.eps'
 set title 'wave\_check.f checks wave\_module.F'
 set xtics 4
@@ -19,7 +20,7 @@ plot 'wave_check.dat' using 1:2  title 'triangular\_sin' with linespoints lt 1 l
 
 set output
 print 'wave_check.eps is generated.'
-# !epstopdf.pl wave_check.eps
+# !epstopdf wave_check.eps
 
 #Local variables:
 #  compile-command: "make check TESTS='wave_check wave_check.gp'"

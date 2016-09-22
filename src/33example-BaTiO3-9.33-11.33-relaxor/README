@@ -1,0 +1,9 @@
+You may need ../feram -> ./feram
+
+How to submit 16x16x16 jobs:
+ $ make
+ $ for c in *.csh; do submit SC general -pt 16 -exec $c -J `basename $c .csh`; done
+
+How to submit 32x32x32 jobs:
+ $ make -f Makefile.32x32x32
+ $ for c in *.csh; do submit SC general -pt 16 -exec $c -J `basename $c .csh`; done

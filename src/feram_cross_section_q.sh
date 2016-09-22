@@ -1,6 +1,6 @@
 #!/bin/sh
 # feram_cross_section_q.sh
-# Time-stamp: <2015-04-23 15:40:57 takeshi>
+# Time-stamp: <2016-05-17 11:33:52 takeshi>
 # Author: Takeshi NISHIMATSU
 # Usage: ./feram_cross_section_X.sh coord-file [FACTOR] [CONST_Alpha] [Alpha] [ratio] [max_z]
 #  (X=q, p, dVddi; Alpha=x,y,z)
@@ -34,6 +34,10 @@ case "$0" in
 	EPSFILE=$BASENAME-dVddi
 	COLOR='$12'
 	FACTOR=0.5 ;;
+    *feram_cross_section_acouR.sh)
+	EPSFILE=$BASENAME-acouR
+	COLOR='$15'
+	FACTOR=5.0 ;;
 esac
 
 if [ ! -r "$1" ]; then
@@ -68,6 +72,9 @@ case "$4" in
 	    *feram_cross_section_dVddi.sh)
 		H_VALUE='$10'
 		V_VALUE='$11';;
+	    *feram_cross_section_acouR.sh)
+		H_VALUE='$13'
+		V_VALUE='$14';;
 	esac
 	EGREP_ARG="\"^[ 0-9]*[0-9] [ 0-9]*[0-9] $CONST_Alpha \"" ;;
     y)
@@ -86,6 +93,9 @@ case "$4" in
 	    *feram_cross_section_dVddi.sh)
 		H_VALUE='$10'
 		V_VALUE='$12';;
+	    *feram_cross_section_acouR.sh)
+		H_VALUE='$13'
+		V_VALUE='$15';;
 	esac
 	EGREP_ARG="\"^[ 0-9]*[0-9] $CONST_Alpha [ 0-9]*[0-9] \"" ;;
     *)
@@ -104,6 +114,9 @@ case "$4" in
 	    *feram_cross_section_dVddi.sh)
 		H_VALUE='$11'
 		V_VALUE='$12';;
+	    *feram_cross_section_acouR.sh)
+		H_VALUE='$14'
+		V_VALUE='$15';;
 	esac
 	EGREP_ARG="\"^$CONST_Alpha [ 0-9]*[0-9] [ 0-9]*[0-9] \"" ;;
 esac
@@ -111,7 +124,7 @@ esac
 if [ "$5" ]; then
     RATIO=$5
 else
-    RATIO=0.7231
+    RATIO=1.48
 fi
 
 if [ "$6" ]; then
@@ -126,7 +139,7 @@ V_LABEL="'{/Times-Italic $LV}'"
 
 gnuplot <<EOF
 call 'param.gp'
-set terminal postscript portrait enhanced color solid 22
+set terminal postscript eps enhanced color solid "Times-Roman" 32
 set output '$EPSFILE'
 
 set xtics 0.5,1.0

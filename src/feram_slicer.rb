@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # feram_slicer.rb
-# Time-stamp: <2015-04-23 14:45:18 takeshi>
+# Time-stamp: <2016-08-04 12:05:27 takeshi>
 # Author: Takeshi NISHIMATSU
 # Usage: ./feram_slicer.rb coord-file [const_z]
 ##
@@ -15,7 +15,7 @@ class EPSF
   end
 
   def header(l_x,l_y)
-    @epsf << "%!PS-Adobe-3.0
+    @epsf << "%!PS-Adobe-2.0 EPSF-2.0
 %%BoundingBox: #{X_OFFSET} #{Y_OFFSET} #{X_OFFSET+X_WIDTH*l_x} #{Y_OFFSET+Y_HEIGHT*l_y}
 %%Creator: feram_slicer.rb by Takeshi NISHIMATSU
 %%Orientation: Portrait

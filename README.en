@@ -83,8 +83,8 @@ Use taskset(1) or numactl(8) to retrieve or set a process's CPU affinity.
 The parameter file for feram is a text file consisting of
 comment lines and 'tag = value(s)' lines. Filenames of
 parameter files may be foo123 or foo123.feram. In these
-cases, filenames of output files will be foo123.*, e.g.
-foo123.log, foo123.coord, etc.
+cases, filenames of output files will be foo123.*,e.g.
+foo123.log, foo123.0000050000.cood, etc.
 
 How to determine the parameters is described in parameters/parameters.html.
 
@@ -119,10 +119,16 @@ verbose tag determines how much messages will be written to the .log file.
 
  verbose = 1
 1 is the default value for verbose tag.
-Minimum messages will be written to the .log file.
+Energies of the first and last iterations will be reported in the .log file.
 
  verbose = 2
-When 2 is given for verbose tag, messages will be written to .log file in every iterations.
+When 2 is given, energies will be reported in the .log file for EVERY iterations.
+
+ verbose = 3
+When 3 is given, detailed messages will be written into the .log file.
+
+ verbose = 4
+When 4 is given, more detailed messages will be written into the .log file.
 
 ===== method
  method = 'md'
@@ -138,7 +144,7 @@ When 2 is given for verbose tag, messages will be written to .log file in every 
 'mc' is for a Monte Carlo simulation, but it is NOT IMPLEMENTED YET.
 
  method = 'hl'
-This 'hl' feature will be obsolere.
+This 'hl' feature will be obsolete.
 For simulations of hysteresis loops,
 use n_E_wave_period and E_wave_type instead.
 
@@ -164,7 +170,7 @@ If it is set to the effective mass of acoustic displacements
 molecular dynamics is performed on acoustic displacements.
 Its unit is atomic mass unit.
 Generally, it is average of mass of 5 atoms.
-You cannot use method = 'md' togeter with acoustic_mass_amu, currently.
+You cannot use method = 'md' together with acoustic_mass_amu, currently.
 
 ===== Q_Nose
 Q_Nose for Nose-Poincare thermostat.
@@ -232,8 +238,11 @@ n_E_wave_period is the period of alternating external electric field
 which have external_E_field amplitude. Set 'triangular_sin' or
 'triangular_cos' to E_wave_type. See example files in
 src/27example-BaTiO3-new-param-E_wave/ .
-n_E_wave_period must be a positive integer divisible by 4.
+n_E_wave_period must be a positive integer divisible by 4
+for 'triangular_sin' or 'triangular_cos'.
 You can also use 'ramping_off' and 'ramping_on'.
+n_E_wave_period must no be divisible by 4 for
+'ramping_on' and 'ramping_off' cases.
 \Fig:E_wave doc/figures/E_wave.jpg
   Four options of E_wave_type.
 /Fig:E_wave
@@ -301,13 +310,16 @@ Elastic Coupling
  B4yz =   -7.75 [eV/Angstrom^2]
 
 ===== seed
-Two integers for Marsaglia-Tsang 64-bit uiniversal RNG (random number generator).
+Two integers for Marsaglia-Tsang 64-bit universal RNG (random number generator).
  seed = 123384 8984847
 Its default values are 123456789 987654321.
 It may be a good idea to generate the seed with jot(1) command.
  $ jot -r 2 1 2147483648
  639779840
  1297280417
+You can also use $((RANDOM)) of bash(1).
+ $ echo $((RANDOM*65536+RANDOM)) $((RANDOM*65536+RANDOM))
+ 2146723680 1863789493
 
 ===== init_dipo_avg, init_dipo_dev
 Values for initial random setting of dipoles.
@@ -342,6 +354,29 @@ If
  plot_dispersion = .true.
 data files for plotting dispersion relation will be written. Default is .false..
 
+For plot_dispersion = .true.,
+L_x, L_y and L_z must be a same even number.
+ L = 32 32 32
+may be a good idea.
+
+See an example of src/08example-BaTiO3-dispersion/ or try
+ $ tar xf SOMEWHERE/feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir builddirectory
+ $ cd builddirectory
+ $ ../configure && make -j4
+ $ make check TESTS='dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
+ $ less dispersion_32x32x32.feram   # the input file
+ $ less dispersion_32x32x32.gp      # the GNUPLOT script
+ $ gv src/dispersion_32x32x32.long+short.energy.eps &
+ $ gv src/dispersion_32x32x32.long+short.eps &
+ $ gv src/dispersion_32x32x32.long+short.interaction.eps &
+ $ gv src/dispersion_32x32x32.inhomo-K.eps &
+                   # Previews of plots. You may also use evince(1) instead of gv(1).
+Compare the plots with Fig.3 in [Takeshi Nishimatsu el al.: Phys. Rev. B 82,
+134106 (2010), http://dx.doi.org/10.1103/PhysRevB.82.134106 ] and
+Fig.5 in parameters/parameters.html.
+
 ===== continue
 If feram is executed as
  $ feram foo.feram bar.feram
@@ -349,7 +384,7 @@ and, in bar.feram,
  continue = .true.
 is declared, simulation of bar.feram uses results of foo.feram as initial configurations.
 The .restart file will not be used.
-Deafault value of continue is .false..
+Default value of continue is .false..
 
 === .restart input file
 If you executed feram with a parameter file "foo123.feram" as
@@ -359,7 +394,7 @@ initial configurations. If there is no such file, feram
 starts from a random configurations.
 
 === .quadratic input file
-Qudratic inter-atomic force constant (IFC) matrices can be
+Quadratic inter-atomic force constant (IFC) matrices can be
 read from .quadratic file. Set all j1-j7 to ZERO. Use P_kappa2
 for *elevation*. (Lx/2+1)*Ly*Lz 3x3 matrices are required.
 See src/25example-BaTiO3-read-quadratic/ for more details.
@@ -395,25 +430,40 @@ The unit of local field is V/Angstrom.
 If feram cannot find both ionic.configuration and .localfield,
 it will set the local field to ZERO for all sites.
 
-Use attached feram_random_field_generator for generating ramdom fields.
+Use attached feram_random_field_generator for generating random fields.
  $ ./feram_random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
  $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
 
-=== ionic.configuration file
-(Not implemented yet.)
-This file is required for the calculation of the local field.
+=== .modulation file
+.modulation file gives acoustic modulation, a(R), of each site.
+Energy from acoustic modulation is
 
- 0.0 0.0 0.0   +3.0
- 0.5 0.0 0.0   -2.0
- 0.0 0.5 0.0   -2.0
- 0.0 0.0 0.5   -2.0
-    :
-    :
- position_x position_y position_z    effective_charge_of_the_ion
-    :
-    :
+ E_acoustic_modulation = modulation_constant Sigma_R_alpha eta_alpha(R) a(R) .
 
-Position must be given in the unit of a0.
+# === .relaxor file
+# .relaxor input file specifies "ionic configurations".
+# If there is no .relaxor file, the system is an ordinary ABO3 crystal.
+# i_relaxor must be from 1 to 3 (RELAXOR_MAX is defined in src/define.h).
+#
+#  0 0 0   1
+#  1 0 0   2
+#  2 0 0   3
+#  3 0 0   2
+#     :
+#     :
+#  position_x position_y position_z i_relaxor
+#     :
+#     :
+#
+# You can omit the fist line of this example,
+# because the default value for i_relaxor is 1.
+# Local parameters of
+# Z_star, mass_amu, acoustic_mass_amu, P_kappa2, P_alpha, P_gamma, P_k1, P_k2, P_k3, P_k4
+# can be changed with the .relaxor input file.
+# The three values should be written in .feram input file.
+#
+#  Z_star = 2.0 5.0 4.0
+
 
 === FFTW wisdom file
 By preparing an FFTW wisdom file in your current directory,
@@ -449,35 +499,33 @@ you do not have to prepare the wisdom file.
 == Output files
 If you execute the feram like `feram foo123.feram`,
 filenames of output files are starting from 'foo123',
-e.g. foo123.avg, foo123.320K0050000.coord,
-foo123.dipole-dipole-long.dat, etc.
+e.g. foo123.avg, foo123.0000050000.coord,
+foo123.param.gp, foo123.dipole-dipole-long.dat, etc.
 
 === foo123.log
 To foo123.log, feram reports the energies of each iteration.
-"verbose" tag determines how much messages will be written to the .log file.
+The "verbose" tag determines how much messages will be written into the .log file.
 
-"verbose = 0" (NOT IMPLEMENTED YET). The .log file will not be created.
-
-"verbose = 1" is the default value for verbose tag.
-Minimum messages will be written to the .log file.
-
-"verbose = 2". feram reports the energies of EVERY iterations.
-
-For debugging, using "verbose = 2", src/plot.gp can plot the energies.
- $ feram foo123.feram
- $ gnuplot plot.gp
+For debugging, it may be a good idea to use
+"verbose = 2" and plot energies in the .log file.
+For example:
+ $ ./feram zzznp.feram
+ $ gnuplot zzznp.gp
+ $ ./feram zzzlf.feram
+ $ gnuplot zzzlf.gp
 
 In the end of the .log file, you will have a TIMING_REPORT.
-      :
-   ../../src/feram_common.F: 95: DATE_AND_TIME: 2014-07-14T14:37:23.360+0900
-   t_initialization,  t_simulation,       t_total, n_threads
-               3.73        2117.14        2120.87    6     #TIMING_REPORT
-   ../../src/feram_common.F:111: COUNT_RATE_AND_COUNT_MAX:        1000 2147483647
- ../../src/feram_common.F:113: END
+       :
+    T =  177.1 [K] END ============================================================================
+   molecular-dynamics.F:158: END: molecular_dynamics().
+ feram_common.F:104: DATE_AND_TIME: 2016-06-24T23:16:26.498+0900
+  t_initialization, t_simulation,  t_total, n_threads
+        0.47          39.77          40.24    2     #TIMING_REPORT
+ feram_common.F:117: FINISH: love && peace && free_software
 
 === foo123.avg
 After n_thermalize iterations of thermalization,
-feram averages properties for n_average iterations.
+feram averages propertqies for n_average iterations.
 For example, by combining .avg files of some
 calculations altering temperature (kelvin tag),
 you can see temperature dependence of properties.
@@ -516,18 +564,68 @@ Parameter file for GNUPLOT.
 rename it to param.gp, then use it with cross_section_q.sh etc.
 
 === foo123.dipole-dipole-long+short.dat
+foo123.dipole-dipole-long+short.dat, foo123.dipole-dipole-long.dat and
+foo123.dipole-dipole-short.dat will be made if plot_dispersion = .true.
+and contain optical phonon dispersion. foo123.inhomo-K.dat contains
+acoustic phonon dispersion.
 
-=== foo123.dipole-dipole-long.dat
+A line in foo123.dipole-dipole-long+short.dat may be
+    0.59375  16   3   0 -0.2022348055959993E+001  0.1270295721445465E+001  0.3455139983790274E+002
+that is
+    length  index_of_k-point  3_eigenvalues_of_IFC_matrix.
+Eigenvectors are also written in the lines starting with "#".
 
-=== foo123.dipole-dipole-short.dat
-
-=== foo123.inhomo-K.dat
+For more details, see descriptions of plot_dispersion above or source code of
+src/dipole-dipole.F and
+src/print-eigenvalues.F .
 
 === local.field output file
 The calculated local field from the given ionic configuration (ionic.configuration
 file) is stored in this file. This file will be reloaded in consequent temperature
 calculations and the other calculations.
 
+== Tools
+Tools for analyzing and plotting are prepared in the src/ directory.
+They are start with `feram_`.
+They will be also installed into /usr/local/bin/ by default,
+if you invoke `make install`.
+Most of them are Ruby scripts and shell scripts.
+Some of them are written in Fortran language.
+Basically, usages are described in the head of source code.
+
+=== feram_transition_detector.rb and feram_transition_sorter.rb
+`feram_transition_detector.rb` reads cooling.avg or heating.avg and
+reports transition temperatures by marking `Tc`,
+then `feram_transition_sorter.rb` can sort the results.
+See src/34example-BST/README.md for more details.
+
+=== feram_slicer.rb
+feram_slicer.rb reads a .coord file and visualizes the supercell as
+a slice with +z-polarized red empty squares and -z-polarized blue filled squares.
+feram_slicer.rb is a Ruby script file which writes an Encapsulated PostScript file (EPSF, .eps file) directly.
+You can specify the z-height as the second command-line argument.
+ feram_slicer.rb zzz16.0000000060.coord
+ feram_slicer.rb zzz16.0000000060.coord 8   # ---> zzz16.0000000060-slice-z008.eps
+
+=== feram_cross_section_q.sh
+feram_cross_section_q.sh reads a .coord file and draws a
+cross section with arrows representing dipoles.
+Prepare param.gp as a symlink.
+If you specify zzz16.0000000060.coord, you will get an
+EPS file, zzz16.0000000060-q-x.eps for example.
+ Example1:
+    ln -s zzz16.param.gp param.gp
+    feram_cross_section_q.sh zzz16.0000000060.coord   # You will get zzz16.0000000060-q-x.eps.
+ Example2:
+    feram_cross_section_q.sh 150K.0000050000.coord 4.0 10 y 0.9
+ Usage: ./feram_cross_section_q.sh coord-file [FACTOR] [CONST_Alpha] [Alpha] [ratio] [max_z]
+ Arguments:
+  [FACTOR]      u*[FACTOR] will be the length of each arrow.
+  [CONST_Alpha] Visulaize cross sections of alpha=[CONST_Alpha]. Default value: 8.
+  [Alpha]       Alpha=x,y,z. Default value: x.
+  [ratio]       Optional argument to keep the shape of unitcell square exactly.
+                You may want to use this argument when Lx=Ly!=Lz. Default value: 0.7231.
+  [max_z]       It is useful for vertical cross section of a thin-film.
 
 == Examples
 You can find input files and their simulated results in following directories in the software package.
@@ -541,6 +639,13 @@ You can find input files and their simulated results in following directories in
  feram-X.YY.ZZ/src/24example-BaTiO3-new-param-heating-cooling/
  feram-X.YY.ZZ/src/25example-BaTiO3-read-quadratic/
  feram-X.YY.ZZ/src/26example-BaTiO3-acoustic-MD/
+ feram-X.YY.ZZ/src/27example-BaTiO3-new-param-E_wave/
+ feram-X.YY.ZZ/src/28example-PbTiO3-elastocaloric-770K/
+ feram-X.YY.ZZ/src/29example-BaTiO3-new-param-defects/
+ feram-X.YY.ZZ/src/30example-BaTiO3-new-param-ramping-off/
+ feram-X.YY.ZZ/src/31example-BaTiO3-new-param-thermal-conductivity/
+ feram-X.YY.ZZ/src/32example-BaTiO3-old-64x64x1024-benchmark/
+ feram-X.YY.ZZ/src/34example-BST/
 
 === Energies vs MD step in cooling simulation
 \Fig:MD doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
@@ -615,7 +720,7 @@ After editing README.ja (Japanese) or README.en (English), transform them with
 
 == Copying
 === feram
-Copyright © 2007-2015 by Takeshi Nishimatsu
+Copyright © 2007-2016 by Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
@@ -675,6 +780,9 @@ This project is/was partially supported by:
  * Tohoku University  http://www.tohoku.ac.jp/
  * Institute of Materials Research (IMR)  http://www.imr.tohoku.ac.jp/
 
+TOHOKU_LOGO
+KAKENHI_LOGO
+
 http://loto.sourceforge.net/feram/ is hosted by SourceForge.net .
 
 =end
@@ -715,6 +823,8 @@ u.subs_rules = lambda{|s|
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').
   gsub(/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ').
+  gsub(/TOHOKU_LOGO/, '<img src="http://www.tohoku.ac.jp/japanese/profile/about/03/about0301/logo_e_n.png" alt="Tohoku University Logo" />').
+  gsub(/KAKENHI_LOGO/, '<img src="http://www.mext.go.jp/a_menu/shinkou/hojyo/__icsFiles/artimage/2012/06/13/c_scn04_04/KAKENHIlogoS.jpg" alt="Kakenhig Logo" />').
   gsub(/SourceForge\.net/,'<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" alt="SourceForge.net Logo" /></a>')
 # gsub(/\$(.*?)\$/){|s| Regexp.last_match[1].to_mathml}       # There is no equation in this document.
 }

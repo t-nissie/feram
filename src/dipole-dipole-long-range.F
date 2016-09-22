@@ -1,18 +1,24 @@
 ! dipole-dipole-long-range.F -*-f90-*-
-! Time-stamp: <2015-04-03 17:49:47 takeshi>
+! Time-stamp: <2016-06-24 16:54:48 takeshi>
 ! Author: Takeshi NISHIMATSU
+! $Date: 2016-04-08 19:14:18 +0900 (金, 08  4 2016) $
+! $Rev: 2757 $
+! $Author: t-nissie $
+! Reference: M. P. Allen and D. J. Tildesley: "Computer Simulation of Liquids",
+!            sec. 5.5.2 The Ewald sum, p. 160, Oxford Science Publications (1989).
 !!
-!UINLINE decay-functions.f
 #if defined HAVE_CONFIG_H
 #  include "config.h"
 #endif
 #include "define.h"
 subroutine dipole_dipole_long_range(p,long_range)
   use Param_module
+  use msg_module
+  use decay_function_module
   implicit none
   !--- arguments -------------------------------------
   type(Param_type), intent(in)     :: p
-  real*8,           intent(out)    :: long_range(3, 3,  0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1) !"/2" for real<->complex FFT
+  real*8,           intent(out)    :: long_range(3, 3,  0:p%Lx/2, 0:p%Ly+p%padding_y-1, 0:p%Lz-1) !"/2" for real<->complex FFT
   !--- local -----------------------------------------
   real*8,     allocatable :: TMPreal(:,:,:,:,:)
   complex*16, allocatable :: TMPcomplex(:,:,:,:,:)
@@ -22,11 +28,8 @@ subroutine dipole_dipole_long_range(p,long_range)
   integer  max_x, max_y, max_z
   real*8   k(3), kG(3), kGkG
   real*8   r(3), n(3), rn(3), rnrn, rn_norm
-  !--- decay functions -------------------------------
-  real*8   B_decay,C_decay
-  external B_decay,C_decay
   !--- END of variable definitions -------------------
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', '')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'dipole_dipole_long_range().')
 
   four_pi_over_unit_cell_volume  = 4 * M_PI / p%a0**3
   two_pi_over_a                  = 2 * M_PI / p%a0
@@ -140,7 +143,10 @@ subroutine dipole_dipole_long_range(p,long_range)
   end do
   !--- END of reciplocal-space summation -------------------
 
-  long_range(:,:,:,:,:) = long_range(:,:,:,:,:) &
-       &               * (HARTREE_BOHR * p%Z_star**2 / p%epsilon_inf)
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '')
+!$omp parallel do
+  do iz = 0, p%Lz-1
+     long_range(:,:,:,:,iz) = long_range(:,:,:,:,iz) * (HARTREE_BOHR / p%epsilon_inf)
+  end do
+!$omp end parallel do
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', '  dipole_dipole_long_range().')
 end subroutine dipole_dipole_long_range

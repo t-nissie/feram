@@ -1,0 +1,15 @@
+#!/usr/bin/csh -f
+#@ job_name = perovskite-B44
+#@ output = $(job_name).$(jobid).$(stepid).out
+#@ error  = $(job_name).$(jobid).$(stepid).err
+#@ job_type = parallel
+#@ total_tasks = 20
+#@ stack_limit = 960mb
+#@ task_affinity = cpu(1)
+#@ cpus_per_core = 1
+#@ queue
+# Usage: submit EJCF general -jcf perovskite-B44.jcf
+##
+poe /usr/local/bin/abinit < perovskite-B44.files > perovskite-B44.log
+
+sed -n '/after computation/,$p' perovskite-B44.out | grep 'etotal' | paste perovskite-B44.delta - > perovskite-B44.dat

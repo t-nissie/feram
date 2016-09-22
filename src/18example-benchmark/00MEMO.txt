@@ -2,7 +2,7 @@ SR16000: performance monitor
      see the head of timing64.gp
 
 SR16000: timing
-     $ for i in `jot -w '%02d' 64`; do ln -s forward.feram $i.feram; echo "timex ../feram $i.feram" > $i; submit EB general -pt $i -J time$i -exec $i; done
+     $ for i in `seq -w 64`; do ln -s forward.feram $i.feram; echo "timex ../feram $i.feram" > $i; submit EB general -pt $i -J time$i -exec $i; done
 
 app1: timing with forward.feram and timing.csh
      $ submit AEB general -J app1 -exec timing.csh

@@ -18,11 +18,11 @@ real*8 function kinetic_energy_acou(p,c)
      do iy=0, p%Ly-1
         do ix=0, p%Lx-1
            do alpha = 1,3
-              tmp_e = tmp_e + c%acouP(alpha,ix,iy,iz)**2
+              tmp_e = tmp_e + c%acouP(alpha,ix,iy,iz)**2 * c%mass_acou_inv(ix,iy,iz)
            end do
         end do
      end do
   end do
 !$omp end parallel do
-  kinetic_energy_acou = tmp_e * p%mass_acou_inv / 2
+  kinetic_energy_acou = tmp_e / 2
 end function kinetic_energy_acou

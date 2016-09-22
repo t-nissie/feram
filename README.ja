@@ -63,7 +63,7 @@ feramはあまり大容量のメモリを必要としませんが，高速な実
 feram用のパラメータファイルはコメント行と 'tag = value(s)' というタグ行
 からなるテキストファイルです．パラメータファイルのファイル名を
 foo123 または foo123.feram とした場合，出力ファイルは
-foo123.log, foo123.cood, ... などとなります．
+foo123.log, foo123.0000000000.cood, ... などとなります．
 それぞれのパラメータをどう決定するかは parameters/parameters.html
 に説明があります．
 
@@ -77,7 +77,7 @@ foo123.log, foo123.cood, ... などとなります．
  # comment lines.
 
 ===== シバン: "#!/usr/local/bin/feram" または "#!./feram"
-.feram入力ファイルの１行目にシバンを書いておいてスクリプトのように実行することができます。
+.feram入力ファイルの１行目にシバンを書いておいてスクリプトのように実行することができます．
 
 ==== タグ行
 タグ行には前後がスペースで挟まれた等号 ' = ' が入っていなくてはいけません．
@@ -96,10 +96,16 @@ foo123.log, foo123.cood, ... などとなります．
 0のとき，.logファイルは作られません（未実装）．
 
  verbose = 1
-1（デフォルト値）のとき，.logファイルには最小限のメッセージのみが出力されます．
+1（デフォルト値）のとき，.logファイルには最初と最後のイテレーションのエネルギーの値のみがレポートされます．
 
  verbose = 2
-2のとき，.logファイルにはイテレーション毎にメッセージが出力されます．.logファイルのサイズは巨大になります．
+2のとき，.logファイルにはすべてのイテレーション毎にエネルギーの値がレポートされます．.logファイルのサイズは巨大になります．
+
+ verbose = 3
+3のとき，.logファイルにはcallされたサブルーチンがメッセージとして出力されます．
+
+ verbose = 4
+4のとき，.logファイルにはさらに詳細なメッセージが出力されます．
 
 ===== method
 シミュレーションの方法を指定します．
@@ -207,10 +213,13 @@ thermalizeにかけるステップ数，物理量の平均を取るのにかけ�
 
 ===== n_E_wave_period, E_wave_type
 external_E_fieldの振幅を持つ外部電場を時間により振動させるときの周期．
-E_wave_typeに'triangular_sin'か'triangular_cos'を指定する．
-src/27example-BaTiO3-new-param-E_wave/ 以下に例がある．
-n_E_wave_periodは４で割り切れる正の整数でなくてはならない．
-'ramping_off'と'ramping_on'も使うことができる．
+E_wave_typeに'triangular_sin'か'triangular_cos'を指定します．
+src/27example-BaTiO3-new-param-E_wave/ 以下に例があります．
+'triangular_sin'か'triangular_cos'の場合
+n_E_wave_periodは４で割り切れる正の整数でなくてはなりません．
+'ramping_off'と'ramping_on'も使うことができます．
+先にE_wave_typeに'ramping_off'または'ramping_on'を指定しておけば
+n_E_wave_periodはどんな正の整数でもかまいません．
 \Fig:E_wave doc/figures/E_wave.jpg
   Four options of E_wave_type.
 /Fig:E_wave
@@ -290,6 +299,9 @@ Marsaglia-Tsang 64-bit uiniversal RNG が使われています．
  $ jot -r 2 1 2147483648
  639779840
  1297280417
+bash(1)の$((RANDOM))機能を使うのもよいでしょう．
+ $ echo $((RANDOM*65536+RANDOM)) $((RANDOM*65536+RANDOM))
+ 2146723680 1863789493
 
 ===== init_dipo_avg, init_dipo_dev
 dipoleの初期状態の平均値とばらつき具合．
@@ -321,17 +333,41 @@ src/dipole-dipole-long-range.Fで双極子のエワルト和に使われる任�
 ===== plot_dispersion
 もし
  plot_dispersion = .true.
-が指定されたなら，分散関係のプロットのためのデータファイルが書き出される．
-デフォルトは.false.である．
+が指定されたなら，分散関係のプロットのためのデータファイルが書き出されます．
+デフォルトは.false.です．
+
+plot_dispersion = .true.のときは
+L_x, L_y, L_z はすべて同じ偶数でなくてはいけません．
+ L = 32 32 32
+がよいでしょう．
+
+例題の src/08example-BaTiO3-dispersion/ を見ていただくか、たとえば，
+次のようにテストスクリプト dispersion_check.sh を実行すると分散関係を描くことができます．
+ $ tar xf SOMEWHERE/feram-X.YY.ZZ.tar.xz
+ $ cd feram-X.YY.ZZ
+ $ mkdir builddirectory
+ $ cd builddirectory
+ $ ../configure && make -j4
+ $ make check TESTS='dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
+ $ less dispersion_32x32x32.feram   # the input file
+ $ less dispersion_32x32x32.gp      # the GNUPLOT script
+ $ gv src/dispersion_32x32x32.long+short.energy.eps &
+ $ gv src/dispersion_32x32x32.long+short.eps &
+ $ gv src/dispersion_32x32x32.long+short.interaction.eps &
+ $ gv src/dispersion_32x32x32.inhomo-K.eps &
+                   # Previews of plots. You may also use evince(1) instead of gv(1).
+[Takeshi Nishimatsu el al.: Phys. Rev. B 82, 134106 (2010),
+http://dx.doi.org/10.1103/PhysRevB.82.134106 ] の中の Fig.3 や
+parameters/parameters.html の中の Fig.5 と比較してください．
 
 ===== continue
 feramが
  $ feram foo.feram bar.feram
 と実行されて，bar.feramの中で
  continue = .true.
-が指定されたなら，bar.feramはfoo.feramの結果を初期状態として計算を始める．
-.restartファイルは使われない．
-デフォルトは.false.である．
+が指定されたなら，bar.feramはfoo.feramの結果を初期状態として計算を始めます．
+.restartファイルは使われません．
+デフォルトは.false.です．
 
 === .restart input file
 feramを次のようにパラメータ・ファイル "foo123.feram" を引数として
@@ -384,22 +420,38 @@ feramを次のようにパラメータ・ファイル "foo123.feram" を引数�
  $ ./feram_random_field_generator Lx Ly Lz  mu_x mu_y mu_z  sigma_x sigma_y sigma_z  seed1 seed2
  $ ./feram_random_field_generator 32 32 243  0.0 0.0 0.0  0.02 0.02 0.02  123456789 987654321
 
+=== .modulation file
+各サイトの acoustic modulation a(R) を指定します．
+acoustic modulation に依存するエネルギは
 
-=== ionic.configuration file
-(Not implemented yet.)
-This file is required for the calculation of the local field.
+ E_acoustic_modulation = modulation_constant Sigma_R_alpha eta_alpha(R) a(R)
 
- 0.0 0.0 0.0   +3.0
- 0.5 0.0 0.0   -2.0
- 0.0 0.5 0.0   -2.0
- 0.0 0.0 0.5   -2.0
-    :
-    :
- position_x position_y position_z    effective_charge_of_the_ion
-    :
-    :
+となります．
 
-Position must be given in the unit of a0.
+# === .relaxor file
+# 各サイトの「イオン」を指定します．
+# リラクサー (relaxor) を想定しています．
+# このファイルがなければ普通のABO3強誘電体のシミュレーションです．
+# i_relaxorは1〜3（最大値はsrc/define.hで指定）．
+# デフォルトが1なので，次の例の１行目は省略可能です．
+#
+#  0 0 0   1
+#  1 0 0   2
+#  2 0 0   3
+#  3 0 0   2
+#     :
+#     :
+#  position_x position_y position_z i_relaxor
+#     :
+#     :
+#
+# i_relaxorにより変えることができるのは，ローカルなパラメーターの
+# Z_star, mass_amu, acoustic_mass_amu, P_kappa2, P_alpha, P_gamma, P_k1, P_k2, P_k3, P_k4 です．
+# .feramインプットファイルで，
+#
+#  Z_star = 2.0 5.0 4.0
+#
+# などと３つ指定します．
 
 === FFTW wisdom file
 必須ではありませんが，FFTW用のwisdomファイルを用意すると，
@@ -435,31 +487,30 @@ wisdomファイルを準備する必要はありません．
 == 出力ファイル
 feram が feram foo123.feram と実行されたなら
 出力ファイルは foo123. で始まります．
-すなわち，foo123.avg, foo123.320K0050000.coord,
-foo123.dipole-dipole-long.dat などです．
+すなわち，foo123.avg, foo123.0000050000.coord,
+foo123.param.gp, foo123.dipole-dipole-long.dat などです．
 
 === foo123.log
-feramは.logファイルにイテレーション毎にエネルギーを書き出します．ただし
-
-verbose = 0 のとき，.logファイルは作られません（未実装）．
-
-verbose = 1 （デフォルト値）のとき，.logファイルには最小限のメッセージのみが出力されます．
-
-verbose = 2 のとき，.logファイルにはイテレーション毎にメッセージが出力されます．
+feramは.logファイルにエネルギーの値などを書き出します．
+書き出す量はverbose = 1,2,3,4で制御できます．
 
 デバッグのために verbose = 2 にして実行し，
-出力された foo123.log を src/plot.gp でプロットしてみるのもよいでしょう．
- $ feram foo123.feram
- $ gnuplot plot.gp
+出力された.logファイルの中のエネルギーをプロットしてみるのもよいでしょう．
+例：
+ $ ./feram zzznp.feram
+ $ gnuplot zzznp.gp
+ $ ./feram zzzlf.feram
+ $ gnuplot zzzlf.gp
 
 計算時間が.logファイルの最後に秒を単位として書き出されます．
 ただし，SR16000とFX10の場合，計算時間が１日（86,400秒）を越えるとカウンタが一度リセットされてしまいます．
-      :
-   ../../src/feram_common.F: 95: DATE_AND_TIME: 2014-07-14T14:37:23.360+0900
-   t_initialization,  t_simulation,       t_total, n_threads
-               3.73        2117.14        2120.87    6     #TIMING_REPORT
-   ../../src/feram_common.F:111: COUNT_RATE_AND_COUNT_MAX:        1000 2147483647
- ../../src/feram_common.F:113: END
+       :
+    T =  177.1 [K] END ============================================================================
+   molecular-dynamics.F:158: END: molecular_dynamics().
+ feram_common.F:104: DATE_AND_TIME: 2016-06-24T23:16:26.498+0900
+  t_initialization, t_simulation,  t_total, n_threads
+        0.47          39.77          40.24    2     #TIMING_REPORT
+ feram_common.F:117: FINISH: love && peace && free_software
 
 === foo123.avg
 n_thermalizeイテレーションの恒温化の後，
@@ -505,6 +556,63 @@ feram_cross_section_dVddi.sh (Bourne Shell scripts) で可視化することが�
 GNUPLOT用のパラメーターファイルです．
 param.gpにファイル名を変更してからcross_section_q.shなどで使います．
 
+=== foo123.dipole-dipole-long+short.dat
+foo123.dipole-dipole-long+short.dat, foo123.dipole-dipole-long.dat and
+foo123.dipole-dipole-short.dat は plot_dispersion = .true. とすると作られます．
+光学フォノンの分散関係が入ります．foo123.inhomo-K.dat には音響フォノンの分散関係が入ります．
+
+foo123.dipole-dipole-long+short.datの中の１行は
+    0.59375  16   3   0 -0.2022348055959993E+001  0.1270295721445465E+001  0.3455139983790274E+002
+のようになっていますが，これは
+    横軸  k点のインデックス IFC行列の３つの固有値
+です．
+
+詳細は上のplot_dispersionの説明かソースコード
+src/dipole-dipole.F と
+src/print-eigenvalues.F と
+を参照してください．
+
+== 解析ツール
+解析やプロットのためのツールをsrc/ディレクトリ内に用意しました．
+それらは `feram_` で始まります．
+`make install`すると，デフォルトでは/usr/local/bin/に
+feramコマンドとともにインストールされます．
+ほとんどはRubyスクリプトまたはシェルスクリプトですが，
+いくつかはFortranで書かれていてferamと同時にコンパイルされます．
+基本的に使用方法はそのソースコードの先頭に書かれています．
+
+=== feram_transition_detector.rb と feram_transition_sorter.rb
+`feram_transition_detector.rb` は降温／昇温シミュレーションの出力の
+cooling.avg または heating.avg ファイルを読み込み，
+<u>の大きな変化がある行に`Tc`のマーカーを印刷します．
+`feram_transition_sorter.rb`はさらにそれを読み取ってソートして，１行に整形します．
+詳細は src/34example-BST/README.md に書かれています．
+
+=== feram_slicer.rb
+.coordファイルを読み込んで、スーパーセルの断面図を+z分極を赤の四角枠-z分極を青の正方形で可視化するRubyスクリプトです。
+Encapsulated PostScript file（EPSF, .epsファイル）を直接書き出します。
+第２引数に断面図を描くzの値を指定することもできます。
+ feram_slicer.rb zzz16.0000000060.coord
+ feram_slicer.rb zzz16.0000000060.coord 8   # ---> zzz16.0000000060-slice-z008.eps
+
+=== feram_cross_section_q.sh
+.coordファイルを読み込んで、指定の断面のセルの分極を矢印としてその断面に射影して描画します。
+param.gpをシンボリックリンクなどとして用意してください。
+zzz16.0000000060.coordを指定するとzzz16.0000000060-q-x.epsなどというEPSファイルができます。
+ Example1:
+    ln -s zzz16.param.gp param.gp
+    feram_cross_section_q.sh zzz16.0000000060.coord   # You will get zzz16.0000000060-q-x.eps.
+ Example2:
+    feram_cross_section_q.sh 150K.0000050000.coord 4.0 10 y 0.9
+ Usage: ./feram_cross_section_q.sh coord-file [FACTOR] [CONST_Alpha] [Alpha] [ratio] [max_z]
+ Arguments:
+  [FACTOR]      u*[FACTOR] will be the length of each arrow.
+  [CONST_Alpha] Visulaize cross sections of alpha=[CONST_Alpha]. Default value: 8.
+  [Alpha]       Alpha=x,y,z. Default value: x.
+  [ratio]       Optional argument to keep the shape of unitcell square exactly.
+                You may want to use this argument when Lx=Ly!=Lz. Default value: 0.7231.
+  [max_z]       It is useful for vertical cross section of a thin-film.
+
 == シミュレーションの例
 ソフトウエアパッケージの次のディレクトリに入力ファイル（と結果）が入っています．
  feram-X.YY.ZZ/src/03example-BaTiO3-bulk-phase-transition/
@@ -517,6 +625,13 @@ param.gpにファイル名を変更してからcross_section_q.shなどで使い
  feram-X.YY.ZZ/src/24example-BaTiO3-new-param-heating-cooling/
  feram-X.YY.ZZ/src/25example-BaTiO3-read-quadratic/
  feram-X.YY.ZZ/src/26example-BaTiO3-acoustic-MD/
+ feram-X.YY.ZZ/src/27example-BaTiO3-new-param-E_wave/
+ feram-X.YY.ZZ/src/28example-PbTiO3-elastocaloric-770K/
+ feram-X.YY.ZZ/src/29example-BaTiO3-new-param-defects/
+ feram-X.YY.ZZ/src/30example-BaTiO3-new-param-ramping-off/
+ feram-X.YY.ZZ/src/31example-BaTiO3-new-param-thermal-conductivity/
+ feram-X.YY.ZZ/src/32example-BaTiO3-old-64x64x1024-benchmark/
+ feram-X.YY.ZZ/src/34example-BST/
 
 === 降温シミュレーションでの各種エネルギー対MDステップのグラフ
 \Fig:MD doc/figures/plot.epit-16x16-15-01-5.0GPa-0.01-cooling.jpg
@@ -593,7 +708,7 @@ index.ja.htmlはREADME.jaからULMUL http://t-nissie.users.sourceforge.net/ULMUL
 
 == ソフトウエアの再配布について
 === feram
-Copyright © 2007-2015 by Takeshi Nishimatsu
+Copyright © 2007-2016 by Takeshi Nishimatsu
 
 feram is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY.
@@ -649,6 +764,9 @@ feramのドキュメントで引用した下記の図版についてはその作
  * 東北大学  http://www.tohoku.ac.jp/
  * 金属材料研究所  http://www.imr.tohoku.ac.jp/
 
+TOHOKU_LOGO
+KAKENHI_LOGO
+
 http://loto.sourceforge.net/feram/ is hosted by SourceForge.net .
 
 =end
@@ -676,7 +794,6 @@ u.subs_rules = lambda{|s|
   gsub(/&/,'&amp;').
   gsub(/</,'&lt;').
   gsub(/>/,'&gt;').
-  gsub(/logo\.jpg/, '<img src="logo.jpg" alt="feram logo mark" />').
   gsub(/(doc\/figures\/\S*\.eps)(\s|,|$)/, '<a href="\1">\1</a>\2').
   gsub(/(doc\/figures\/\S*\.jpg)(\s|,|$)/, '<a href="\1">\1</a>\2').
   gsub(/(doc\/publication\.html)/,         '<a href="\1">\1</a>').
@@ -690,6 +807,8 @@ u.subs_rules = lambda{|s|
   gsub(/(http:\S*|https:\S*)(\s|$)/, '<a href="\1">\1</a>\2').
   gsub(/doi:(.*)\./,  '<a href="http://dx.doi.org/\1">doi:\1</a>.').
   gsub(/arXiv:(.*) /, '<a href="http://arxiv.org/abs/\1">arXiv:\1</a> ').
+  gsub(/TOHOKU_LOGO/, '<img src="http://www.tohoku.ac.jp/japanese/profile/about/03/logo_j_p.png" alt="Tohoku University Logo" />').
+  gsub(/KAKENHI_LOGO/, '<img src="http://www.mext.go.jp/a_menu/shinkou/hojyo/__icsFiles/artimage/2012/06/13/c_scn04_04/KAKENHIlogoS.jpg" alt="Kakenhig Logo" />').
   gsub(/SourceForge\.net/,'<a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=204591&amp;type=4" width="125" height="37" alt="SourceForge.net Logo" /></a>')
 # gsub(/\$(.*?)\$/){|s| Regexp.last_match[1].to_mathml}       # There is no equation in this document.
 }

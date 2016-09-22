@@ -1,5 +1,5 @@
 ! feram_common.F -*-f90-*-
-! Time-stamp: <2015-06-26 14:47:49 takeshi>
+! Time-stamp: <2016-02-26 12:41:38 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -10,6 +10,7 @@ subroutine feram_common(fn)
   use Param_module
   use Coord_module
   use date_and_time_module
+  use msg_module
   implicit none
   type(Param_type),save :: p
   type(Coord_type),save :: c
@@ -33,7 +34,7 @@ subroutine feram_common(fn)
      if (suffix.eq.fn_len_trim-5) then
         p%filename = fn(1:fn_len_trim-6)
      else if (index(fn,'.feram_check',back=.true.).eq.fn_len_trim-11) then
-        p%filename = basename(fn(1:fn_len_trim-12))  ! for `make distcheck`
+        p%filename = basename(fn(1:fn_len_trim-12)) ! ../../src/zzz16.feram_check -> zzz16 for `make distcheck`
      end if
   else
      p%filename = fn
@@ -41,7 +42,9 @@ subroutine feram_common(fn)
 
   fn_log = trim(p%filename) // '.log'
   open(unit=UNIT_LOG,file=fn_log,status='replace')
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', PACKAGE_STRING)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'START', PACKAGE_STRING)
+  call hostnm(message)
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'HOSTNAME', message)
 
   call system_clock(count_array(0))
   call date_and_time2message(message)
@@ -104,18 +107,14 @@ subroutine feram_common(fn)
      time_array(i) = dble(count_array(i)-count_array(i-1))/count_rate
      if (time_array(i)<0.0d0) time_array(i)=time_array(i)+dble(count_max)/count_rate
   end do
-  write(message,'(a,a,a)') &
-       & 't_initialization, ', &
-       & ' t_simulation, ', &
-       & '      t_total, n_threads'
-  call msg_ez(UNIT_LOG, message)
-  write(message,'(f16.2,2f15.2,i5,a)') time_array(1),time_array(2), &
+  call msg_ez(UNIT_LOG, 't_initialization, t_simulation,  t_total, n_threads')
+  write(message,'(f10.2,2f15.2,i5,a)') time_array(1),time_array(2), &
        &                               time_array(1)+time_array(2), &
        & OMP_GET_MAX_THREADS(), "     #TIMING_REPORT"
   call msg_ez(UNIT_LOG, message)
 
   ! We do NOT call fftw_cleanup_threads().
-  call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'love && peace && free_software')
+  call msg(UNIT_LOG, __FILE__, __LINE__, 'FINISH', 'love && peace && free_software')
   close(unit=UNIT_LOG)
 end subroutine feram_common
 

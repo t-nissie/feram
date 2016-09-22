@@ -1,21 +1,23 @@
 #!/bin/sh
 # cooling.sh
-# Time-stamp: <2014-07-04 13:24:50 takeshi>
+# Time-stamp: <2016-09-08 14:51:52 teac20>
 # Author: Takeshi NISHIMATSU
+# for cmd2:
+#$ -cwd
+#$ -S /bin/sh
+#$ -pe mpi 6
 ##
+if [ -d /home/CMD/teac20/Linux-x86_64/lib64 ]; then
+    export LD_LIBRARY_PATH=/home/CMD/teac20/Linux-x86_64/lib64
+fi
 rm -f cooling.avg
 
-temperature_start=500
-temperature_goal=30
-temperature_step=-2
-
 n_thermalize=40000
-n_average=20000
+n_average=200000
 n_coord_freq=`expr $n_thermalize + $n_average`
 
 i=0
-temperature=$temperature_start
-while [ `perl -e "print $temperature >= $temperature_goal || 0"` = "1" ] ; do
+for temperature in `seq 800 -2  30`; do
     GPa=`perl -e "print -0.005 * $temperature"`
     i=`expr $i + 1`
     filename=cooling`printf '%.3d' $i`-"$temperature"K
@@ -72,8 +74,8 @@ EOF
         ln -sf "$prev_coord" $filename.restart
     fi
     ../feram $filename.feram
-    rm -f $prev_coord $filename.restart
+    rm -f $prev_coord $filename.restart $filename.dipoRavg
     prev_coord=$filename.`printf '%.10d' $n_coord_freq`.coord
     cat $filename.avg >> cooling.avg
-    temperature=`perl -e "print $temperature + $temperature_step"`
 done
+echo '#' `head -1 $filename.log | sed 's/.*START: //'` `hostname` >> cooling.avg
