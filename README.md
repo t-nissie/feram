@@ -1,12 +1,12 @@
-feram-0.26.01
+feram-0.26.02
 =============
 Dear current and future feram users,
 
-I released feram-0.26.01.tar.xz from
-https://sourceforge.net/projects/loto/files/feram/feram-0.26.01/ .
+I released feram-0.26.02.tar.xz from
+https://sourceforge.net/projects/loto/files/feram/feram-0.26.02/ .
 This is a stable release, I hope.
 
-MD5 (feram-0.26.01.tar.xz) = 3f4ff69d9f189cf7c9b45bbfeab0f100
+MD5 (feram-0.26.02.tar.xz) = 1f9f12d0a3c869710a7777b5688c1b95
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -17,7 +17,14 @@ Enjoy,
 Takeshi
 
 ## Changes
-In this feram-0.26.01, some bugs and typos are fixed.
+In this feram-0.26.02, some bugs and typos are fixed.
+For example, src/24example-BaTiO3-new-param-heating-cooling/polarization.gp .
+
+Now, feram's development repository came back to
+https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/ .
+https://sourceforge.net/p/loto/code/HEAD/tree/feram/branches/z_star_r/ was removed.
+
+In the feram-0.26.01, some bugs and typos are fixed.
 
 From the feram-0.26.00, you can use .modulation input file.
 You can simulate (Ba,Sr)TiO3, now.
