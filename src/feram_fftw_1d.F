@@ -1,5 +1,5 @@
 ! feram_fftw_1d.F -*-f90-*-
-! Time-stamp: <2016-05-03 16:30:37 takeshi>
+! Time-stamp: <2016-10-06 18:52:41 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -9,8 +9,8 @@ program feram_fftw_1d
   use, intrinsic :: iso_c_binding
   implicit none
   include 'fftw3.f03'
-  integer :: N_TIMES = 100
-  integer :: n_average = 64
+  integer :: N_TIMES = 10000
+  integer :: n_average = 256
   integer :: flags = FFTW_MEASURE
   character(len=100) :: str = 'FFTW_MEASURE'
   integer :: OMP_GET_MAX_THREADS
