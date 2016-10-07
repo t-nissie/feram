@@ -1,4 +1,4 @@
 The author is too lazy to write ChangeLog.
 Please try svn(1) command as
- $ svn log -l 30 -v http://loto.svn.sourceforge.net/svnroot/loto/feram/trunk
+ $ svn log -l 30 -v http://svn.code.sf.net/p/loto/code/feram/trunk
 for viewing last 30 changes.
