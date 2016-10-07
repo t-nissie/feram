@@ -1,4 +1,6 @@
 ToDo:
+o feram_slicer.rb を本体に取り込む．z=1/4のところで常にスライス．
+
 o テスト用のタグを作る。例えば、予想される温度とか。
 
 o output_polarization in README.en and README.ja.
@@ -43,8 +45,6 @@ o src/23example-BaTiO3-new-param-hl-film-acoustic-mass/
   src/mirror_force_mirror.Fで単にc%acouRとc%dVdacRをミラーすればよいわけではない。
   acoustic displacementは双極子でないので静電的ミラーではない！！！
 
-o TESTS for feram_slicer.rb and feram_cross-section-q.sh
-
 o (nightly) automation of unit test with "make check"
 
 o (nightly) automation of profiling and timing
@@ -62,13 +62,9 @@ o Imprement Nose:JPhysSocJpn:70:p75-77:2001
 
 o Copyright
 
-o Examples
+o Examples整理
 
 o In initialize-dipoR.F, c%dipoP() must be multiplied by c%s_Nose after read ???
-
-o feram_slicer.rb マニュアル
-
-o feram_cross_section マニュアル
 
 o feram_distribution3d2ppm マニュアル
 
@@ -260,3 +256,9 @@ x Use msg() in write_Param() of param_module.F.
 x Automatical determination of kappa
   kappa for the Ewald summation must be a function of Lx, Ly and Lz
   p%kappa = sqrt(M_PI) / p%a0 / (dble(p%N))**(1.0d0/6)
+
+x TESTS for feram_slicer.rb and feram_cross-section-q.sh
+
+x feram_slicer.rb マニュアル
+
+x feram_cross_section マニュアル
