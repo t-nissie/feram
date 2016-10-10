@@ -92,16 +92,16 @@ installed into Fedora systems with yum(8) command. See http://fedoraproject.org 
  $ ../configure && make -j --max-load=10.0
  $ make check   # OPTIONAL
 
-=== CentOS 7 (feram-0.25.02unstable, 2015-12-12)
+=== CentOS 7 (feram-0.26.02, 2016-10-10)
 FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
 installed into CentOS 7 systems with yum(8) command.
 ==== install required packages
  # yum install gcc gcc-gfortran fftw-devel blas-devel lapack-devel gnuplot csh
  # yum install autoconf.noarch automake.noarch libtool subversion   # For developers
 ==== compile feram
- $ wget http://sourceforge.net/projects/loto/files/feram/unstable/feram-0.25.02unstable/feram-0.25.02unstable.tar.xz
- $ tar xf feram-0.25.02unstable.tar.xz
- $ mkdir  feram-0.25.02unstable/CentOS7
+ $ wget http://sourceforge.net/projects/loto/files/feram//feram-0.26.02/feram-0.26.02.tar.xz
+ $ tar xf feram-0.26.02.tar.xz
+ $ mkdir  feram-0.26.02/CentOS7
  $ cd $_
  $ ../configure
  $ make -j4
