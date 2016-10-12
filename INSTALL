@@ -64,7 +64,7 @@ specify CPPFLAGS and LDFLAGS for configure.
  $ ../configure FC=gfortran CPPFLAGS=-I/home/takeshi/include LDFLAGS=-L/home/takeshi/lib
 
 == Linux
-=== Debian 7.x and Ubuntu 12.10, 13.04, 13.10 and 14.04 LTS (feram-0.22.05, 2014-10-21)
+=== Debian 7.x and 8.x and Ubuntu 14.04 LTS and 16.04 LTS (feram-0.26.02, 2016-10-10)
 FFTW3, ATLAS libraries and GNU Fortran (gfortran) can be easily
 installed into Debian 7.x (Wheezy) GNU/Linux systems or Ubuntu systems
 with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
@@ -72,9 +72,9 @@ with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
  $ sudo apt-get install libatlas-base-dev gfortran libfftw3-dev athena-jot
  $ sudo apt-get --purge remove liblapack-dev liblapack3 liblapack3gf
 ==== compile feram
- $ tar xf feram-0.22.05.tar.xz
- $ mkdir feram-0.22.05/build-with-gfortran
- $ cd feram-0.22.05/build-with-gfortran
+ $ tar xf feram-0.26.02.tar.xz
+ $ mkdir feram-0.26.02/build-with-gfortran
+ $ cd feram-0.26.02/build-with-gfortran
  $ ../configure && make -j --max-load=10.0
  $ make check   # OPTIONAL
 
@@ -232,7 +232,7 @@ See http://www-01.ibm.com/support/docview.wss?uid=swg1IV73551 .)
 == Windows
 On Windows OS, you can use feram through Cygwin or MinGW.
 
-=== Through Cygwin of gnupack (feram-0.24.02, 2015-10-09)
+=== Through Cygwin of gnupack (feram-0.26.02, 2016-10-09)
 We install Cygwin with gnupack http://gnupack.sourceforge.jp/docs/latest/UsersGuide.html .
 Then, we install gfortran, FFTW3 and LAPACK packages with apt-cyg command.
 Then, we compile and execute feram.
@@ -255,9 +255,9 @@ Now, let's compile and execute feram!
  # cd
  # mkdir -p f/feram
  # cd f/feram
- # wget http://sourceforge.net/projects/loto/files/feram/feram-0.24.02/feram-0.24.02.tar.xz
- # tar xf feram-0.24.02.tar.xz
- # cd feram-0.24.02
+ # wget http://sourceforge.net/projects/loto/files/feram/feram-0.26.02/feram-0.26.02.tar.xz
+ # tar xf feram-0.26.02.tar.xz
+ # cd feram-0.26.02
  # mkdir Cygwin
  # cd Cygwin
  # ../configure
@@ -426,9 +426,9 @@ Install MacPorts, then install ports of gfortran and FFTW3.
  $ gfortran --version
  GNU Fortran (GCC) 4.8.x
  $ port install fftw-3 +gfortran
- $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.22.06/feram-0.22.06.tar.xz
- $ tar xf feram-0.22.06.tar.xz
- $ cd feram-0.22.06
+ $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.26.02/feram-0.26.02.tar.xz
+ $ tar xf feram-0.26.02.tar.xz
+ $ cd feram-0.26.02
  $ ./configure LDFLAGS=-L/opt/local/lib --with-fft=fftw3_threads
  $ make
  $ make check
@@ -438,8 +438,8 @@ Homebrew http://brew.sh/ is an altanative way to install gfortran etc. into Mac 
  $ brew install gcc49 --enable-fortran
 Details will be comming soon.
 
-=== From sources (feram-0.22.06, 2015-01-09)
-You can easily compile the latest gfortran in GCC 4.9.2 package
+=== From sources (feram-0.26.02, 2016-10-09)
+You can easily compile the latest gfortran in GCC 6.2.0 package
 with Xcode and its Command Line Tools on Mac OS X.
 And then, you can compile FFTW with gcc and feram with gfortran.
 ==== Install libraries for GCC
@@ -457,20 +457,21 @@ Basically, these libraries can be installed with configure && make && make insta
    * Use mpc-1.0.2.tar.gz in http://ring.tains.tohoku.ac.jp/pub/GNU/mpc/ or somewhere.
    * Configure: ./configure --with-gmp=/usr/local --with-mpfr=/usr/local
 ==== Install GCC
- $ tar xf gcc-4.9.2.tar.bz2
- $ cd gcc-4.9.2
- $ ./configure --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local \
-   -enable-languages=c,c++,fortran,go,objc CC=/usr/bin/gcc CXX=/usr/bin/g++
- $ make
+ $ tar xf gcc-6.2.0.tar.bz2
+ $ cd gcc-6.2.0
+ $ ./configure CFLAGS="-O3 -pipe -march=native -msse2" CXXFLAGS="-O3 -pipe -march=native -msse2" \
+   --with-gmp=/usr/local --with-mpfr=/usr/local --with-mpc=/usr/local -enable-languages=c,c++,fortran,objc \
+   CC=/usr/local/bin/gcc CXX=/usr/local/bin/g++
+ $ make -j4
  $ sudo make install
 ==== Install FFTW3
- $ tar xf fftw-3.3.4.tar.gz
- $ cd fftw-3.3.4
+ $ tar xf fftw-3.3.5.tar.gz
+ $ cd fftw-3.3.5
  $ mkdir Darwin
  $ cd Darwin
  $ ../configure --enable-openmp --enable-threads --enable-sse2 --enable-avx --enable-shared
  $ emacs tools/Makefile   # Edit LIBFFTWTHREADS to link libfftw3_omp, not libfftw3_threads.
- $ make -j2
+ $ make -j4
  $ make check
  $ sudo make install
 ==== Compile feram
@@ -483,7 +484,7 @@ Basically, these libraries can be installed with configure && make && make insta
  $ make -j2
  $ ls -l src/feram
  $ ldd src/feram
- $ OMP_NUM_THREADS=2 make check   # OPTIONAL
+ $ OMP_NUM_THREADS=4 make check   # OPTIONAL
 =end
 # Local variables:
 #   mode: RD
