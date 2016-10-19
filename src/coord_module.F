@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-06-25 20:39:01 takeshi>
+! Time-stamp: <2016-10-19 20:09:18 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -484,6 +484,96 @@ contains
     close(UNIT_SYSTEM)
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(coord_directory_fn)//' was written.')
   end subroutine write_system
+
+  subroutine write_slice(p,c,fn)
+    use Param_module
+    use msg_module
+    implicit none
+    type(Param_type), intent(in) :: p
+    type(Coord_type), intent(inout) :: c
+    character(len=*) :: fn
+    character(len=FILE_NAME_LEN) :: slice_directory_fn
+    integer ix,iy
+    integer, parameter :: X_OFFSET =  50
+    integer, parameter :: Y_OFFSET =  50
+    integer, parameter :: X_WIDTH  =  10
+    integer, parameter :: Y_HEIGHT =  10
+
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_slice().')
+
+    if (p%slice_directory.eq.'never' .or. p%bulk_or_film.eq.'bulk') then
+       call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'never write .slice.eps files.')
+       return
+    else if (p%slice_directory.eq.'') then
+       slice_directory_fn = trim(fn)
+    else
+       slice_directory_fn = trim(p%slice_directory) // '/' // trim(fn)
+    end if
+
+    open(unit=UNIT_SYSTEM, file=slice_directory_fn, status='replace')
+
+    write(UNIT_SYSTEM,'(a)') '%!PS-Adobe-2.0 EPSF-2.0'
+    write(UNIT_SYSTEM,'(a,2i3,2i10)') '%%BoundingBox:', X_OFFSET, Y_OFFSET, X_OFFSET+X_WIDTH * p%Lx, &
+         &                                                                       Y_OFFSET+Y_HEIGHT* p%Ly
+    write(UNIT_SYSTEM,'(a)') '%%Creator: feram_slicer.rb by Takeshi NISHIMATSU'
+    write(UNIT_SYSTEM,'(a)') '%%Orientation: Portrait'
+    write(UNIT_SYSTEM,'(a,a)') '%%Title: ', trim(slice_directory_fn)
+    write(UNIT_SYSTEM,'(a)') '%%EndComments'
+    write(UNIT_SYSTEM,'(a,i3,a)') '/x_offset ',  X_OFFSET, ' def'
+    write(UNIT_SYSTEM,'(a,i3,a)') '/y_offset ',  Y_OFFSET, ' def'
+    write(UNIT_SYSTEM,'(a,i3,a)') '/x_width   ', X_WIDTH,  ' def'
+    write(UNIT_SYSTEM,'(a,i3,a)') '/y_height  ', Y_HEIGHT, ' def'
+    write(UNIT_SYSTEM,'(a)') '/LineWidth   1 def'
+    write(UNIT_SYSTEM,'(a)') '/LineWidth20 LineWidth 2.0 mul def'
+    write(UNIT_SYSTEM,'(a)') '/LineWidth15 LineWidth 1.5 mul def'
+    write(UNIT_SYSTEM,'(a)') '/LineWidth05 LineWidth 0.5 mul def'
+    write(UNIT_SYSTEM,'(a)') ''
+    write(UNIT_SYSTEM,'(a)') '/Up {'
+    write(UNIT_SYSTEM,'(a)') ' newpath'
+    write(UNIT_SYSTEM,'(a)') '  exch'
+    write(UNIT_SYSTEM,'(a)') '  x_width  mul x_offset add'
+    write(UNIT_SYSTEM,'(a)') '  exch'
+    write(UNIT_SYSTEM,'(a)') '  y_height mul y_offset add'
+    write(UNIT_SYSTEM,'(a)') '  moveto'
+    write(UNIT_SYSTEM,'(a)') '  LineWidth dup rmoveto'
+    write(UNIT_SYSTEM,'(a)') '  x_width LineWidth20 sub     0 rlineto'
+    write(UNIT_SYSTEM,'(a)') '  0    y_height LineWidth20 sub rlineto'
+    write(UNIT_SYSTEM,'(a)') '  x_width LineWidth20 sub neg 0 rlineto'
+    write(UNIT_SYSTEM,'(a)') ' closepath'
+    write(UNIT_SYSTEM,'(a)') ' 1 0 0 setrgbcolor'
+    write(UNIT_SYSTEM,'(a)') ' LineWidth setlinewidth'
+    write(UNIT_SYSTEM,'(a)') ' stroke'
+    write(UNIT_SYSTEM,'(a)') '} def'
+    write(UNIT_SYSTEM,'(a)') ''
+    write(UNIT_SYSTEM,'(a)') '/Down {'
+    write(UNIT_SYSTEM,'(a)') ' newpath'
+    write(UNIT_SYSTEM,'(a)') '  exch'
+    write(UNIT_SYSTEM,'(a)') '  x_width  mul x_offset add'
+    write(UNIT_SYSTEM,'(a)') '  exch'
+    write(UNIT_SYSTEM,'(a)') '  y_height mul y_offset add'
+    write(UNIT_SYSTEM,'(a)') '  moveto'
+    write(UNIT_SYSTEM,'(a)') '  LineWidth05 dup rmoveto'
+    write(UNIT_SYSTEM,'(a)') '  x_width LineWidth sub     0 rlineto'
+    write(UNIT_SYSTEM,'(a)') '  0    y_height LineWidth sub rlineto'
+    write(UNIT_SYSTEM,'(a)') '  x_width LineWidth sub neg 0 rlineto'
+    write(UNIT_SYSTEM,'(a)') '  closepath'
+    write(UNIT_SYSTEM,'(a)') '  0 0 1 setrgbcolor fill'
+    write(UNIT_SYSTEM,'(a)') '} def'
+
+    do iy = 0, p%Ly-1
+       do ix = 0, p%Lx-1
+          if (c%dipoR(3,ix,iy,p%Lz/4)<=0.0d0) then
+             write(UNIT_SYSTEM,'(i4,i5,a)') ix, iy, ' Down'
+          else
+             write(UNIT_SYSTEM,'(i4,i5,a)') ix, iy, ' Down'
+          end if
+       end do
+    end do
+
+    write(UNIT_SYSTEM,'(a)') 'showpage'
+    close(UNIT_SYSTEM)
+    call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(slice_directory_fn)//' was written.')
+  end subroutine write_slice
 
   subroutine divide_and_write_dipoRavg(p,c)
     use Param_module

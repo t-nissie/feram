@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2016-06-24 15:40:37 takeshi>
+! Time-stamp: <2016-10-19 19:27:14 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -123,6 +123,8 @@ subroutine molecular_dynamics(p,c)
      if (mod(i_step,p%n_coord_freq).eq.0) then
         write(   fn,'(a,a,i10.10,a)') trim(p%filename), '.', i_step, '.coord'
         call write_system(p,c,fn)
+        write(   fn,'(a,a,i10.10,a)') trim(p%filename), '.', i_step, '.slice.eps'
+        call write_slice(p,c,fn)
         if (p%bulk_or_film.eq.'film' .or. p%bulk_or_film.eq.'epit') then
            write(fn,'(a,a,i10.10,a)') trim(p%filename), '.', i_step, '.fft'
            call write_fft(p,c,fn)

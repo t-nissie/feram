@@ -1,6 +1,4 @@
 ToDo:
-o feram_slicer.rb を本体に取り込む．z=1/4のところで常にスライス．
-
 o テスト用のタグを作る。例えば、予想される温度とか。
 
 o output_polarization in README.en and README.ja.
@@ -262,3 +260,5 @@ x TESTS for feram_slicer.rb and feram_cross-section-q.sh
 x feram_slicer.rb マニュアル
 
 x feram_cross_section マニュアル
+
+x feram_slicer.rb を本体に取り込む．z=1/4のところで常にスライス．
