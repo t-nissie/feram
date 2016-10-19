@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-06-25 17:16:09 takeshi>
+! Time-stamp: <2016-10-19 18:26:27 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -54,6 +54,7 @@ module Param_module
      integer n_hl_freq     ! frequency for writing to .hl file
      integer n_hysteresis_loop_continue
      character (len=FILE_NAME_LEN) coord_directory
+     character (len=FILE_NAME_LEN) slice_directory
      character (len=FILE_NAME_LEN) distribution_directory
      !!--- External electric field ---------------------
      real*8    external_E_field(3)  ! External electric field [V/Angstrom]
@@ -150,6 +151,7 @@ contains
     p%n_hl_freq    =  10000
     p%n_hysteresis_loop_continue = 1
     p%coord_directory = ''
+    p%slice_directory = ''
     p%distribution_directory = ''
 
     p%external_E_field(:) = 0.0d0
@@ -295,6 +297,8 @@ contains
           read(str,*) dmy1, dmy2, p%n_hysteresis_loop_continue
        case('coord_directory')
           read(str,*) dmy1, dmy2, p%coord_directory
+       case('slice_directory')
+          read(str,*) dmy1, dmy2, p%slice_directory
        case('distribution_directory')
           read(str,*) dmy1, dmy2, p%distribution_directory
        case('P_kappa2')
