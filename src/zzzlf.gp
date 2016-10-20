@@ -1,5 +1,5 @@
 #!/usr/bin/env gnuplot
-# Time-stamp: <2016-06-25 18:25:07 takeshi>
+# Time-stamp: <2016-10-20 16:08:45 takeshi>
 # Author: Takeshi NISHIMATSU
 # Purpose: Check energy conservation
 ##
@@ -19,9 +19,9 @@ set tmargin 6
 set key outside above
 plot '< grep " acou_kinetic  " zzzlf.log' using 0:2 t 'acou kinetic'  w l lt  2 lw 2,\
      '< grep " dipo_kinetic  " zzzlf.log' using 0:2 t 'dipo kinetic'  w l lt  3 lw 2,\
-     '< grep " short_range   " zzzlf.log' using 0:2 t 'unharmonic'    w l lt  1 lw 2,\
-     '< grep " long_range    " zzzlf.log' using 0:2 t 'unharmonic'    w l lt  4 lw 2,\
-     '< grep " unharmonic    " zzzlf.log' using 0:2 t 'homo strain'   w l lt  5 lw 2,\
+     '< grep " short_range   " zzzlf.log' using 0:2 t 'short range'   w l lt  1 lw 2,\
+     '< grep " long_range    " zzzlf.log' using 0:2 t 'long range'    w l lt  4 lw 2,\
+     '< grep " unharmonic    " zzzlf.log' using 0:2 t 'unharmonic'    w l lt  5 lw 2,\
      '< grep " homo_strain   " zzzlf.log' using 0:2 t 'homo strain'   w l lt  6 lw 2,\
      '< grep " homo_coupling " zzzlf.log' using 0:2 t 'homo coupling' w l lt  7 lw 2,\
      '< grep " inho_strain   " zzzlf.log' using 0:2 t 'inho strain'   w l lt  8 lw 2,\
