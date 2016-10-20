@@ -14,6 +14,7 @@ n_thermalize = 40000
 n_average    = 10000
 n_coord_freq = 50000
 coord_directory = 'never'
+slice_directory = 'never'
 distribution_directory = 'never'
 
 #--- On-site (Polynomial of order 4) -------------

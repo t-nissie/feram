@@ -17,6 +17,7 @@ B11 = 126.731671475652
 B12 =  41.7582963902598
 B44 =  49.2408864348646
 #coord_directory = 'never'
+slice_directory = 'never'
 distribution_directory = 'never'
 seed = 1242914819 1957271591
 

@@ -33,8 +33,9 @@ n_thermalize =   20000
 n_average    = 1000000
 n_hl_freq    =    5000
 n_coord_freq =  100000
-distribution_directory = 'never'
 coord_directory = 'never'
+slice_directory = 'never'
+distribution_directory = 'never'
 
 #--- External electric field ---------------------
 external_E_field = 0.00 0.00 -0.003

@@ -1,6 +1,6 @@
 #!/bin/sh
 # generator.sh for thermal conductivity in BaTiO3
-# Time-stamp: <2015-05-20 18:52:00 t-nissie>
+# Time-stamp: <2016-10-20 12:21:11 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 n_thermalize_1vs=30000
@@ -46,8 +46,9 @@ for temperature in `seq 200 5 600`; do
 	n_average    =    $n_average_1vs
 	n_coord_freq =    9999999
 	n_hl_freq    =       50
-	distribution_directory = 'never'
 	coord_directory = 'never'
+	slice_directory = 'never'
+	distribution_directory = 'never'
 	
 	#--- From eigenvalues2j --------------------------
 	# original  P_kappa2 =    8.1460516421 [eV/Angstrom^2] =    0.0838298622 [Hartree/Bohr^2]

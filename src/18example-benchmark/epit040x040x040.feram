@@ -41,6 +41,8 @@ n_average    =    10000
 n_hl_freq    =   100000
 n_coord_freq =  1000000
 coord_directory = 'never'
+slice_directory = 'never'
+distribution_directory = 'never'
 
 #--- External electric field ---------------------
 external_E_field = 0.00 0.00 -0.005

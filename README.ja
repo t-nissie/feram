@@ -551,6 +551,17 @@ feram_cross_section_q.sh, feram_cross_section_p.sh, and
 feram_cross_section_dVddi.sh (Bourne Shell scripts) で可視化することができます．
 停電や時間切れなどで計算が止まってしまった場合には，
 このファイルを.restartファイルとして計算を再開することができます．
+この.coordファイルの出力は，.feram入力ファイルで
+ coord_directory = 'never'
+と書くことで抑止することができます．
+
+=== foo123.nnnnnnnnnn.slice.eps
+z=Lz/4 での断面図を可視化したものが Encapsulated PostScript file（EPSF,
+.epsファイル）として書き出されます．nnnnnnnnnnがイテレーションで，
+.coordファイルと同様，n_coord_freqイテレーション毎に出力されます．
+この .slice.eps ファイルの出力は .feram 入力ファイルに
+ slice_directory = 'never'
+と書くことで抑止することができます．
 
 === foo123.param.gp
 GNUPLOT用のパラメーターファイルです．

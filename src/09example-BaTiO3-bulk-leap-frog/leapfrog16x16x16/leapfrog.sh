@@ -1,6 +1,6 @@
 #!/bin/sh
 # leapfrog.sh
-# Time-stamp: <2016-01-07 21:51:12 takeshi>
+# Time-stamp: <2016-10-20 12:21:29 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 n_thermalize=40000
@@ -27,6 +27,7 @@ for i in `seq 40`; do
 	n_average    = $n_average
 	n_coord_freq = $n_coord_freq
 	coord_directory = 'never'
+	slice_directory = 'never'
 	distribution_directory = 'never'
 	
 	#--- On-site (Polynomial of order 4) -------------

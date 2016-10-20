@@ -38,6 +38,7 @@ n_average    =    100000
 n_E_wave_period =  35000
 n_hl_freq    =       100
 coord_directory = 'never'
+slice_directory = 'never'
 distribution_directory = 'never'
 E_wave_type = 'triangular_cos'
 

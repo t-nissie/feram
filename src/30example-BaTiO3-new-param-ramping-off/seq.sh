@@ -40,8 +40,9 @@ for period in `seq 900000 -100000 300000` `seq 200000 -1000 1000`; do
 	n_E_wave_period =  $period
 	n_average       = 20000
 	external_E_field = 0.00 0.00 0.000500000
-	distribution_directory = 'never'
 	coord_directory = 'never'
+	slice_directory = 'never'
+	distribution_directory = 'never'
 	E_wave_type = 'ramping_off'
 	
 	#--- From eigenvalues2j --------------------------

@@ -1,6 +1,6 @@
 #!/bin/sh
 # modulation_check.sh
-# Time-stamp: <2016-06-22 12:02:39 takeshi>
+# Time-stamp: <2016-10-20 12:12:19 takeshi>
 # Author:     Takeshi NISHIMATSU
 # Usage:      make check TESTS=modulation_check.sh
 # Results:    zzzmodulation.0000000001-acouR-{x,y,z}.eps
@@ -23,6 +23,7 @@ cat > zzzmodulation.feram <<-EOF
 	n_thermalize =  1
 	n_average    =  1
 	n_coord_freq =  1
+	slice_directory = 'never'
 	distribution_directory = 'never'
 	
 	#--- On-site (Polynomial of order 4) -------------

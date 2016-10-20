@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-10-19 20:09:18 takeshi>
+! Time-stamp: <2016-10-20 10:44:49 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -501,7 +501,7 @@ contains
 
     call msg(UNIT_LOG, __FILE__, __LINE__, 'BEGIN', 'write_slice().')
 
-    if (p%slice_directory.eq.'never' .or. p%bulk_or_film.eq.'bulk') then
+    if (p%slice_directory.eq.'never') then
        call msg(UNIT_LOG, __FILE__, __LINE__, 'END', 'never write .slice.eps files.')
        return
     else if (p%slice_directory.eq.'') then

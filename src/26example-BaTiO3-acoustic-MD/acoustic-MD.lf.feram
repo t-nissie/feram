@@ -34,8 +34,9 @@ n_thermalize = 40000
 n_average    = 10000
 n_coord_freq = 50000
 external_E_field = 0.00 0.00 0.000600000
-distribution_directory = 'never'
 coord_directory = 'never'
+slice_directory = 'never'
+distribution_directory = 'never'
 
 #--- From eigenvalues2j --------------------------
 # original  P_kappa2 =    8.1460516421 [eV/Angstrom^2] =    0.0838298622 [Hartree/Bohr^2]
