@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-10-20 10:44:49 takeshi>
+! Time-stamp: <2016-10-24 19:25:15 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -565,7 +565,7 @@ contains
           if (c%dipoR(3,ix,iy,p%Lz/4)<=0.0d0) then
              write(UNIT_SYSTEM,'(i4,i5,a)') ix, iy, ' Down'
           else
-             write(UNIT_SYSTEM,'(i4,i5,a)') ix, iy, ' Down'
+             write(UNIT_SYSTEM,'(i4,i5,a)') ix, iy, ' Up'
           end if
        end do
     end do
