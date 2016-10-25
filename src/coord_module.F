@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-10-24 19:25:15 takeshi>
+! Time-stamp: <2016-10-25 15:50:57 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -558,7 +558,7 @@ contains
     write(UNIT_SYSTEM,'(a)') '  x_width LineWidth sub neg 0 rlineto'
     write(UNIT_SYSTEM,'(a)') '  closepath'
     write(UNIT_SYSTEM,'(a)') '  0 0 1 setrgbcolor fill'
-    write(UNIT_SYSTEM,'(a)') '} def'
+    write(UNIT_SYSTEM,'(a,/)') '} def'
 
     do iy = 0, p%Ly-1
        do ix = 0, p%Lx-1
@@ -570,7 +570,7 @@ contains
        end do
     end do
 
-    write(UNIT_SYSTEM,'(a)') 'showpage'
+    write(UNIT_SYSTEM,'(/,a)') 'showpage'
     close(UNIT_SYSTEM)
     call msg(UNIT_LOG, __FILE__, __LINE__, 'END', trim(slice_directory_fn)//' was written.')
   end subroutine write_slice
