@@ -1,5 +1,5 @@
 ! coord_module.F -*-f90-*-
-! Time-stamp: <2016-10-25 15:50:57 takeshi>
+! Time-stamp: <2016-10-25 17:56:39 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 #if defined HAVE_CONFIG_H
@@ -513,9 +513,9 @@ contains
     open(unit=UNIT_SYSTEM, file=slice_directory_fn, status='replace')
 
     write(UNIT_SYSTEM,'(a)') '%!PS-Adobe-2.0 EPSF-2.0'
-    write(UNIT_SYSTEM,'(a,2i3,2i10)') '%%BoundingBox:', X_OFFSET, Y_OFFSET, X_OFFSET+X_WIDTH * p%Lx, &
-         &                                                                       Y_OFFSET+Y_HEIGHT* p%Ly
-    write(UNIT_SYSTEM,'(a)') '%%Creator: feram_slicer.rb by Takeshi NISHIMATSU'
+    write(UNIT_SYSTEM,'(a,2i3,2i6)') '%%BoundingBox:', X_OFFSET, Y_OFFSET, X_OFFSET+X_WIDTH * p%Lx, &
+         &                                                                 Y_OFFSET+Y_HEIGHT* p%Ly
+    write(UNIT_SYSTEM,'(a)') '%%Creator: feram (src/coord_module.F) by Takeshi NISHIMATSU'
     write(UNIT_SYSTEM,'(a)') '%%Orientation: Portrait'
     write(UNIT_SYSTEM,'(a,a)') '%%Title: ', trim(slice_directory_fn)
     write(UNIT_SYSTEM,'(a)') '%%EndComments'
