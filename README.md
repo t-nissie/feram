@@ -1,12 +1,12 @@
-feram-0.26.02
+feram-0.26.04
 =============
 Dear current and future feram users,
 
-I released feram-0.26.02.tar.xz from
-https://sourceforge.net/projects/loto/files/feram/feram-0.26.02/ .
-This is a stable release, I hope.
+I released feram-0.26.04.tar.xz from
+https://sourceforge.net/projects/loto/files/feram/feram-0.26.04/ .
+This is a stable release.
 
-MD5 (feram-0.26.02.tar.xz) = 1f9f12d0a3c869710a7777b5688c1b95
+MD5 (feram-0.26.04.tar.xz) = 
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -17,12 +17,17 @@ Enjoy,
 Takeshi
 
 ## Changes
-In this feram-0.26.02, some bugs and typos are fixed.
-For example, src/24example-BaTiO3-new-param-heating-cooling/polarization.gp .
+In this feram-0.26.04, ...
 
-Now, feram's development repository came back to
-https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/ .
-https://sourceforge.net/p/loto/code/HEAD/tree/feram/branches/z_star_r/ was removed.
+With this feram-0.26.03, you can draw a slice of the
+supercell directly by feram. Output file `foo123.nnnnnnnnnn.slice.eps`
+is the visualized slice of a film at z=Lz/4, at the nnnnnnnnnn-th
+iteration and at evry `n_coord_freq` iterations.
+Output of this .slice.eps file can be suppressed with
+`slice_directory = 'never'` in the .feram input file.
+
+In the feram-0.26.02, some bugs and typos are fixed.
+For example, src/24example-BaTiO3-new-param-heating-cooling/polarization.gp .
 
 In the feram-0.26.01, some bugs and typos are fixed.
 
@@ -34,6 +39,40 @@ See http://arxiv.org/abs/1608.06433 also.
 In the feram-0.26.00, a bug in feram-0.24.02 of plot_dispersion is fixed.
 
 From this feram-0.26.00, a .dipoRavg file will be written in the end.
+
+## Tips for *.slice.eps
+### animation
+convert(1) of http://www.imagemagick.org
+gifsicle(1) and figview(1) of https://www.lcdf.org/gifsicle/ are useful.
+
+    $ for e in *.eps; do convert -density 40 -flatten $e `basename $e .eps`.gif; done
+    $ gifsicle --delay=5 e*.gif > animation.gif
+
+### color to black-and-white
+Edit .eps files dilectly,
+or you can edit src/coord_module.F or src/feram_slicer.rb .
+
+    --- color.slice.eps	2016-10-21 21:19:02.000000000 +0900
+    +++ bw.slice.eps	2016-10-21 21:21:39.000000000 +0900
+    @@ -25,7 +25,7 @@
+       0    y_height LineWidth20 sub rlineto
+       x_width LineWidth20 sub neg 0 rlineto
+      closepath
+    - 1 0 0 setrgbcolor
+    + 0.5 setgray
+      LineWidth setlinewidth
+      stroke
+     } def
+    @@ -42,7 +42,7 @@
+       0    y_height LineWidth sub rlineto
+       x_width LineWidth sub neg 0 rlineto
+       closepath
+    -  0 0 1 setrgbcolor fill
+    +  0.0 setgray fill
+     } def
+     0 0 Down
+     1 0 Down
+
 
 ## Known bug
 OpenMP-parallelization does not work efficiently over two or
