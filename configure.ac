@@ -1,13 +1,13 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2016-10-25 11:09:45 takeshi>
+dnl Time-stamp: <2017-02-02 06:23:07 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
 AC_PREREQ(2.69)
 AC_INIT([feram by Takeshi NISHIMATSU],[0.26.03],[t-nissie{at}imr.tohoku.ac.jp],[feram],[http://loto.sourceforge.net/feram/])
 AC_CONFIG_SRCDIR(src/feram.F)
-AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax])
+AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax foreign])
 AC_CONFIG_HEADERS([config.h])
 
 ## fftw3.f must be in /usr/include/, /usr/local/include/.

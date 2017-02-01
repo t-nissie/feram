@@ -67,9 +67,6 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
 === 関連するファイルとディレクトリ
  configure.ac   configureの雛型。自分で書く。
  Makefile.am    Makefileの雛型のMakefile.inの雛型。自分で書く。
-                ライセンスをGPL以外にしたい場合はMakefile.amに
-                AUTOMAKE_OPTIONS = foreign と書いておく。
-                書いておかないとGLPが採用されてCOPYING等をコピーしてくれる。
  config/gnu/    ファイルがごちゃごちゃ出来てイヤな場合はMakefile.amに
                 AC_CONFIG_AUX_DIR(config/gnu)と指定するとmissing等がそこに置かれる。
  config.guess   Makefile.amにAC_CANONICAL_TARGETなどと書くとautomake --add-missingが
@@ -91,6 +88,7 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
  * ある程度開発が進んで、ソースファイルとMakefileができあがってからAutotoolsを使いはじめるとよい。
  * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
    http://www.gnu.org/software/automake/manual/automake.html やinfoを参照せよ。
+ * Autotools Mythbuster https://autotools.io/ も詳しい。
  * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, src/Makefile.amを見よう見まねで書く。
  * automake --add-missingやautoreconfで生成されるファイルはGitやSubversionなどのリポジトリに登録しないほうがよい。
    それらのファイルは.gitignoreにリストしたり、svn propset svn:ignoreしておくとstatusで表示されないので便利。
@@ -146,10 +144,16 @@ Makefile.amの中のEXTRA_DISTに次のように加えておく必要がある�
 テストスクリプトの中でsrcdirを明示的に参照する必要がある場合は$srcdirを用いる。
 === automakeのオプション
 automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定する。例えば
- AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax])
+ AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax foreign])
 では、automakeのバージョン1.14.1以上を使用することを強制し、
 パッケージをtar.gzでなくtar.xzで作るように指定している。
 また、長いディレクトリ名／ファイル名でもパッケージに入るようなtarのオプションを指定している。
+foreignを指定しておけば、NEWS, COPYING, AUTHORS, ChangeLog, READMEのファイルが勝手に作られるのを防ぐことができる。
+ライセンスとしてGLPを採用するとしても、ここにforeignを指定して、
+パッケージに含めたいファイルはMakefile.amに明示的にリストアップするのがよいだろう。
+
+Autotools Mythbuster の該当ページ https://autotools.io/automake/options.html が詳しい。
+
 === コンパイラとコンパイラオプションの設定と決定
 C, Fortran, C++コンパイラとそのオプションはそれぞれ
 AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
