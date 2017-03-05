@@ -237,7 +237,7 @@ We install Cygwin with gnupack http://gnupack.sourceforge.jp/docs/latest/UsersGu
 Then, we install gfortran, FFTW3 and LAPACK packages with apt-cyg command.
 Then, we compile and execute feram.
 ==== Downlaod and install gnupack
-Download the latest self-extracting archive gnupack_devel-13.XX-2015.MM.DD.exe
+Download the latest self-extracting archive gnupack_devel-13.06-2015.11.08.exe
 from http://sourceforge.jp/projects/gnupack/releases/p10360
 and extract it into C:/ .
 ==== Install gfortran, FFTW3 and LAPACK
@@ -250,6 +250,17 @@ and from the terminal you can install gfortran, FFTW3 and LAPACK.
  # cp /usr/lib/lapack/cyg*.dll /usr/bin   # Copy DLLs under the PATH.
  # gfortran --version
  GNU Fortran (GCC) 4.9.3
+ # cat > aaa.f
+ program aaa
+ write(6,*) 'asdf'
+ end program aaa
+ [Control-D]
+ # gfortran -ffree-form aaa.f
+ # ./a.out
+ asdf
+ #
+If you cannot properly execute a.out here,
+please try a pretest package of gnupak, gnupack-pretest_devel-2016.08.14.exe.
 ==== Compile feram
 Now, let's compile and execute feram!
  # cd
@@ -293,7 +304,7 @@ going to the Advanced tab, and clicking the Environment Variables button.
 Making a shortcut of
  c:\MinGW\msys\1.0\bin\mintty.exe /bin/bash --login -i
 on your desktop may be useful.
-You can do following compilations and installations on this mintty. 
+You can do following compilations and installations on this mintty.
 
 To add more packages, you can double-click "MinGW Install", select new packages, then
 apply changes. Or you can add packages with mingw-get:
