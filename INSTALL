@@ -242,7 +242,8 @@ from http://sourceforge.jp/projects/gnupack/releases/p10360
 and extract it into C:/ .
 ==== Install gfortran, FFTW3 and LAPACK
 You can start a UNIX-like terminal with the startup_cygwin.exe command,
-and from the terminal you can install gfortran, FFTW3 and LAPACK.
+then install software packages of gfortran, FFTW3 and LAPACK
+with `apt-cyg` command from the terminal.
  # cd
  # export LANG=C   # It may be unnecessary. Add it if apt-cyg does not work properly.
  # apt-cyg update
@@ -259,7 +260,7 @@ and from the terminal you can install gfortran, FFTW3 and LAPACK.
  # ./a.out
  asdf
  #
-If you cannot properly execute a.out here,
+If you cannot properly execute `a.out` here,
 please try a pretest package of gnupak, gnupack-pretest_devel-2016.08.14.exe.
 ==== Compile feram
 Now, let's compile and execute feram!
