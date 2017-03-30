@@ -247,7 +247,7 @@ CMake, SCons, MesonではFortranのプロジェクトもサポートされてい
 
 == libtoolとは
 Autotoolsの仲間には他に libtool http://www.gnu.org/software/libtool/ がある。
-共有ライブラリのビルドするときにautoconfとautomakeとともに使ってマシン依存性を解決する。
+共有ライブラリをビルドするときにautoconfとautomakeとともに使ってマシン依存性を解決する。
 参考: http://klabgames.tech.blog.jp.klab.com/archives/1047107113.html
 
 == まとめ
