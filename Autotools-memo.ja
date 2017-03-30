@@ -85,11 +85,12 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
 == 使用方法
 === メモ
  * ソースファイルは伝統的にsrc/以下に置く。例: src/foo.c, src/bar.F
- * ある程度開発が進んで、ソースファイルとMakefileができあがってからAutotoolsを使いはじめるとよい。
+ * ある程度開発が進んでソースファイルとMakefileができあがったら、それらをバックアップして、Autotoolsを使いはじめるとよい。
+ * autoscanを実行してconfigure.scanを作ってそれを元にconfigure.acを書いてもよい。
+ * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, src/Makefile.amを見よう見まねで書く。
  * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
    http://www.gnu.org/software/automake/manual/automake.html やinfoを参照せよ。
  * Autotools Mythbuster https://autotools.io/ も詳しい。
- * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, src/Makefile.amを見よう見まねで書く。
  * automake --add-missingやautoreconfで生成されるファイルはGitやSubversionなどのリポジトリに登録しないほうがよい。
    それらのファイルは.gitignoreにリストしたり、svn propset svn:ignoreしておくとstatusで表示されないので便利。
 === Fortranについてのメモ
@@ -227,19 +228,22 @@ https://github.com/ruby/ruby 。
 
 == Autotoolsの代わりになるもの
 改良版のAutotoolsやより高速なmakeを目指していくつかのパッケージングツール／ビルドツールが開発されている。
-CMakeとSConsではFortranのプロジェクトもサポートされている。
- * CMake http://www.cmake.org/
- * SCons http://www.scons.org/
- * GYP   https://chromium.googlesource.com/external/gyp
+CMake, SCons, MesonではFortranのプロジェクトもサポートされている。
+=== 新しいもの
+ * CMake http://www.cmake.org
+ * SCons http://www.scons.org
+ * GYP   https://gyp.gsrc.io
  * Ninja https://ninja-build.org
- * OMake http://omake.metaprl.org/index.html （OCamlで書かれている。）
+ * Meson http://mesonbuild.com
 
-古いX Window Systemのアプリケーションのためには
-ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられることがある。
-マシンに依存するXのライブラリの場所などを解決してくれる。
-最近はAutotoolsが使われることが多い。
-Wikipedia: https://en.wikipedia.org/wiki/Imake
-参考: http://d.hatena.ne.jp/torazuka/20110508/imake
+=== 古いもの
+ * OMake http://omake.metaprl.org/index.html （OCamlで書かれている。）
+ * xmkmf(1)とimake(1)。古いX Window Systemのアプリケーションのためには
+   ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられることがある。
+   マシンに依存するXのライブラリの場所などを解決してくれる。
+   最近はAutotoolsが使われることが多い。
+   Wikipedia: https://en.wikipedia.org/wiki/Imake
+   参考: http://d.hatena.ne.jp/torazuka/20110508/imake
 
 == libtoolとは
 Autotoolsの仲間には他に libtool http://www.gnu.org/software/libtool/ がある。
