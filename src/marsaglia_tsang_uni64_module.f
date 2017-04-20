@@ -1,7 +1,7 @@
 ! marsaglia_tsang_uni64_module.f -*-f90-*-
 ! Marsaglia-Tsang 64-bit universal RNG
 ! It does not use global variable.
-! Time-stamp: <2013-10-10 15:17:48 takeshi>
+! Time-stamp: <2017-04-20 20:38:03 takeshi>
 ! Author:     Takeshi NISHIMATSU
 ! Usage:      See marsaglia_tsang_uni64_check.f for example.
 !             (1) Set two integers for seeds. It will return 1.0d0.
@@ -29,11 +29,12 @@
 ! Reference2: Haruhiko Okumura: C-gengo niyoru saishin algorithm jiten
 !             (New Algorithm handbook in C language) (Gijyutsu hyouron
 !             sha, Tokyo, 1991) [in Japanese]
+! Reference3: https://en.wikipedia.org/wiki/Triangular_distribution
 !!
 module marsaglia_tsang_uni64_module
   implicit none
   private
-  public :: uni64, normal_dist
+  public :: uni64, normal_dist, triangular_dist
 contains
   subroutine fillu(u,seed1,seed2)
     implicit none
@@ -74,7 +75,10 @@ contains
        times_initialized=times_initialized+1.0d0
        uni64=times_initialized
     else
-       if (times_initialized<1.0d0) stop 'uni64.f is not initialized yet.'
+       if (times_initialized<1.0d0) then
+          write(0, '(a)') 'uni64() is not initialized yet.'
+          stop 1
+       end if
        x=u(i)-u(j)
        if (x.lt.0.0d0) x=x+1.0d0
        u(i)=x
@@ -117,4 +121,29 @@ contains
        normal_dist = N01*sigma + mu
     end if
   end function normal_dist
+
+  ! triangular-distributed random number generator
+  ! [a,b), and mode c must be a<=c<=b.
+  ! See Reference3
+  real*8 function triangular_dist(a,b,c,seed1,seed2)
+    implicit none
+    real*8,            intent(in) :: a,b,c
+    integer, optional, intent(in) :: seed1, seed2
+    real*8, parameter :: M_2PI = 6.28318530717958647693d0
+    real*8 :: u
+    if (present(seed1)) then
+       triangular_dist = uni64(seed1,seed2)
+    else
+       if (b<=a.or.c<a.or.b<c) then
+          write(0,'(a)') 'triangular_dist(): It must be a<=c<=b for triangular_dist().'
+          stop 2
+       end if
+       u = uni64()
+       if (u<(c-a)/(b-a)) then
+          triangular_dist = a + sqrt(u*(b-a)*(c-a))
+       else
+          triangular_dist = b - sqrt((1.0d0-u)*(b-a)*(b-c))
+       end if
+    end if
+  end function triangular_dist
 end module marsaglia_tsang_uni64_module
