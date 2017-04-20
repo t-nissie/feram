@@ -1,6 +1,6 @@
 #!/bin/sh
 # dispersion_check.sh
-# Time-stamp: <2016-04-12 17:55:03 takeshi>
+# Time-stamp: <2017-04-20 19:32:15 takeshi>
 # Author: Takeshi NISHIMATSU
 # Ref1: Takeshi Nishimatsu el al.: Phys. Rev. B 82, 134106 (2010),
 #       http://dx.doi.org/10.1103/PhysRevB.82.134106 .
@@ -9,17 +9,31 @@
 #          dispersion_32x32x32.long+short.interaction.eps
 #          be same as Fig.3(A) and (B) in Ref1.
 ##
-cat > dispersion_axes.gp <<-EOF
-	# dispersion_axes.gp created by dispersion_check.sh
+if gnuplot --version | grep 'gnuplot 5' > /dev/null; then
+    cat > dispersion_axes.gp <<-EOF
+	# dispersion_axes.gp for gnuplot 5.x created by dispersion_check.sh
 	##
-	set label 9991 'D' at 0.25                          ,\$0 center font      "Symbol,19"
-	set label 9992 'Z' at 0.75                          ,\$0 center font "Times-Roman,19"
-	set label 9993 'S' at 1.00+  sqrt(2.0)/4            ,\$0 center font      "Symbol,19"
-	set label 9994 'L' at 1.00+  sqrt(2.0)/2+sqrt(3.0)/4,\$0 center font      "Symbol,19"
-	set label 9995 'S' at 1.00+3*sqrt(2.0)/4+sqrt(3.0)/2,\$0 center font "Times-Roman,19"
-	set label 9996 'S' at 1.00+5*sqrt(2.0)/4+sqrt(3.0)/2,\$0 center font "Times-Roman,19"
-	set label 9997 'T' at 1.25+3*sqrt(2.0)/2+sqrt(3.0)/2,\$0 center font "Times-Roman,19"
+	set label 9991 'D' at 0.25                          ,@ARG1 center font      "Symbol,19"
+	set label 9992 'Z' at 0.75                          ,@ARG1 center font "Times-Roman,19"
+	set label 9993 'S' at 1.00+  sqrt(2.0)/4            ,@ARG1 center font      "Symbol,19"
+	set label 9994 'L' at 1.00+  sqrt(2.0)/2+sqrt(3.0)/4,@ARG1 center font      "Symbol,19"
+	set label 9995 'S' at 1.00+3*sqrt(2.0)/4+sqrt(3.0)/2,@ARG1 center font "Times-Roman,19"
+	set label 9996 'S' at 1.00+5*sqrt(2.0)/4+sqrt(3.0)/2,@ARG1 center font "Times-Roman,19"
+	set label 9997 'T' at 1.25+3*sqrt(2.0)/2+sqrt(3.0)/2,@ARG1 center font "Times-Roman,19"
 EOF
+else
+    cat > dispersion_axes.gp <<-EOF
+	# dispersion_axes.gp for gnuplot 4.x created by dispersion_check.sh
+	##
+	set label 9991 'D' at 0.25                          ,\$0   center font      "Symbol,19"
+	set label 9992 'Z' at 0.75                          ,\$0   center font "Times-Roman,19"
+	set label 9993 'S' at 1.00+  sqrt(2.0)/4            ,\$0   center font      "Symbol,19"
+	set label 9994 'L' at 1.00+  sqrt(2.0)/2+sqrt(3.0)/4,\$0   center font      "Symbol,19"
+	set label 9995 'S' at 1.00+3*sqrt(2.0)/4+sqrt(3.0)/2,\$0   center font "Times-Roman,19"
+	set label 9996 'S' at 1.00+5*sqrt(2.0)/4+sqrt(3.0)/2,\$0   center font "Times-Roman,19"
+	set label 9997 'T' at 1.25+3*sqrt(2.0)/2+sqrt(3.0)/2,\$0   center font "Times-Roman,19"
+EOF
+fi
 
 for L1 in 4 8 16 32; do
     L2=`printf "%.2d" $L1`
