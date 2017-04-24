@@ -1,5 +1,5 @@
 ! molecular-dynamics.F -*-f90-*-
-! Time-stamp: <2016-10-19 19:27:14 takeshi>
+! Time-stamp: <2017-04-24 21:10:19 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: Bond
 !!
@@ -100,8 +100,7 @@ subroutine molecular_dynamics(p,c)
                 e%dipo_kinetic/c%s_Nose**2 ,&
                 e%acou_kinetic
            flush(UNIT_HL)
-           write(fn,'(a,a)') trim(p%filename), '.coord'
-           call write_system(p,c,fn)
+           call write_system(p,c,trim(p%filename)//'.coord')
         end if
      end if
 
