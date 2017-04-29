@@ -1,12 +1,12 @@
-feram-0.26.04
+feram-0.26.05
 =============
 Dear current and future feram users,
 
-I released feram-0.26.04.tar.xz from
-https://sourceforge.net/projects/loto/files/feram/feram-0.26.04/ .
+I released feram-0.26.05.tar.xz from
+https://sourceforge.net/projects/loto/files/feram/feram-0.26.05/ .
 This is a stable release.
 
-SHA1 (feram-0.26.04.tar.xz) = d2c30cdd86361fd83fd726f2f89e93092eaf54ac
+SHA1 (feram-0.26.05.tar.xz) = 
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -17,11 +17,13 @@ Enjoy,
 Takeshi
 
 ## Changes
-In this feram-0.26.04, author's email address is changed.
+In this feram-0.26.05,
+
+In the feram-0.26.04, author's email address is changed.
 Some test scripts are fixed for gnuplot 5.x.
 If you are currently using feram-0.26.03, you do not have to update that.
 
-With this feram-0.26.03, you can draw a slice of the
+With the feram-0.26.03, you can draw a slice of the
 supercell directly by feram. Output file `foo123.nnnnnnnnnn.slice.eps`
 is the visualized slice of a film at z=Lz/4, at the nnnnnnnnnn-th
 iteration and at evry `n_coord_freq` iterations.
