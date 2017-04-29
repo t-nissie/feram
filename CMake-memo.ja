@@ -1,56 +1,47 @@
-= Autotoolsについてのメモ
-このメモはGNU Autotoolsのautoconfとautomakeとを使って
-フリーソフトウェアの配布用パッケージを作る方法を解説している。
-FortranのプロジェクトにAutotoolsを使う場合の注意点も書いてある。
+= CMakeについてのメモ
+このメモはCMakeを使ってフリーソフトウェアの配布用パッケージを作る方法を解説している。
+FortranのプロジェクトにCMakeを使う場合の注意点も書いてある。
 
 == はじめに
-たいていのGNUのフリーソフトウェアは次のようにtar ballを展開して、
-./configure && make && make installとすることで簡単にソースからインストールすることができる。
- $ tar xf feram-X.YY.ZZ.tar.xz
- $ cd feram-X.YY.ZZ
- $ mkdir Linux   # Use build directory.
- $ cd Linux
- $ ../configure --help
- $ ../configure
- $ make
- $ make check
- $ sudo make install
-AutotoolsはそんなGNU流のフリーソフトウェアパッケージの
-構築を半自動化するための開発者用のツールである。最終目的はmake distcheck
-で foo-1.2.tar.gzなどという[パッケージ名]-[version].tar.gz
-形式のパッケージが自動生成できるようになること。
+CMakeはビルドツールの１つで、
+GNU Autotoolsより高速であることを売りにしている。
 
-注意: Autotoolsは開発者用のツールである。パッケージfoo-1.2.tar.gzのユーザは
-そのマシンにAutotoolsをインストールする必要はないし、Autotoolsについて知っている必要もない。
+CMakeは Kitware http://kitware.com/cmake によって開発されている。
+KitwareのVTKで使われていて有名。
+
+ $ mkdir build
+ $ 
+
 
 == 必要なもの
-GNUの２つのパッケージautoconfとautomakeとを開発用のマシン
-にインストールしておく必要がある。また、GNU makeやbashそして
-GNU M4も最新のものを用意したほうがよい。
- * autoconf http://www.gnu.org/software/autoconf/
- * automake http://www.gnu.org/software/automake/
- * make     http://www.gnu.org/software/make/
- * bash     http://www.gnu.org/software/bash/
- * M4       http://www.gnu.org/software/m4/
-たいていのLinuxディストリビューションにはこれらのツールの
-パッケージがある。たとえばDebianやUbuntuなら
- $ sudo apt-get install autoconf automake libtool autoconf-doc libtool-doc
+たいていのLinuxディストリビューションにはCMakeパッケージがある。たとえばDebianやUbuntuなら
+ $ sudo apt-get install cmake
 でインストールできる。
 
 == コマンドとファイル
-Autotools (autoconf and automake) では Fig:process に示すとおり
-いくつかのコマンドとファイルとによって処理が進む。
-前半の茶色の太い破線で囲まれた部分をautoreconfが自動的にやってくれる。
-以下に関連すコマンドとファイルを列挙した。
-\Fig:process doc/figures/autoreconf-automake-process.svg
-Autotools（autoconf と automake）による作業の流れ。
-実際は茶色の太い破線で囲まれた部分をautoreconfが自動でやってくれる。
-（この図はクリエイティブコモンズライセンス[CC-BY-SA-3.0]の下に
-http://commons.wikimedia.org/wiki/File:Autoconf-automake-process.svg
-として配布されているJdthoodによるオリジナルに
-Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加えたもの。
-ファイル名はautoreconf-automake-process.svgとした。）
-/Fig:process
+CMakeList.txt
+
+== エディタ
+=== Emacs
+/usr/share/cmake-3.0/editors/emacs/cmake-mode.el もしくは
+/usr/local/share/cmake-3.0/editors/emacs/cmake-mode.el などがあるはずなので、
+load-pathの通っているところにコピーして、バイトコンパイルして、~/emacs.d/init.el に
+ (autoload 'cmake-mode "cmake-mode" nil t)
+などと書いておく。
+ (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
+と書いても.txtが優先されてText-modeになってしまうのはなぜなんだー。
+
+== 実行の様子
+
+ $ cmake .
+ $ make
+ $ make clean
+Mac OS では /usr/bin/cc がデフォルトで使われるが、
+自分でインストールした /usr/local/bin/gcc を使いたいなら
+ $ cmake -DCMAKE_C_COMPILER:FILEPATH=/usr/local/bin/gcc .
+ $ make VERBOSE=1
+とする。CMakeCache.txt や CMakeFiles/ は必要があれば自動的に更新されるので消す必要はない。
+make のときに VERBOSE=1 を指定しておくと、どんな処理をしているか表示される。
 
 === 関連コマンド
  autoscan       Autotoolsの利用を開始するときに１回だけ実行するコマンド。
@@ -85,7 +76,7 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
 == 使用方法
 === メモ
  * ソースファイルは伝統的にsrc/以下に置く。例: src/foo.c, src/bar.F
- * ある程度開発が進んでソースファイルとMakefileができあがったら、それらをバックアップして、Autotoolsを使いはじめるとよい。
+ * ある程度開発が進んでソースファイルとMakefileができあがって、それらをバックアップしてからAutotoolsを使いはじめるとよい。
  * autoscanを実行してconfigure.scanを作ってそれを元にconfigure.acを書いてもよい。
  * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, src/Makefile.amを見よう見まねで書く。
  * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
@@ -228,26 +219,24 @@ https://github.com/ruby/ruby 。
 
 == Autotoolsの代わりになるもの
 改良版のAutotoolsやより高速なmakeを目指していくつかのパッケージングツール／ビルドツールが開発されている。
-CMake, SCons, MesonではFortranのプロジェクトもサポートされている。
-=== 新しいもの
- * CMake http://www.cmake.org
- * SCons http://www.scons.org
- * GYP   https://gyp.gsrc.io
+CMakeとSConsではFortranのプロジェクトもサポートされている。
+ * CMake http://www.cmake.org/
+ * SCons http://www.scons.org/
+ * GYP   https://chromium.googlesource.com/external/gyp
  * Ninja https://ninja-build.org
- * Meson http://mesonbuild.com
-
-=== 古いもの
+ * Meson https://meson.org
  * OMake http://omake.metaprl.org/index.html （OCamlで書かれている。）
- * xmkmf(1)とimake(1)。古いX Window Systemのアプリケーションのためには
-   ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられることがある。
-   マシンに依存するXのライブラリの場所などを解決してくれる。
-   最近はAutotoolsが使われることが多い。
-   Wikipedia: https://en.wikipedia.org/wiki/Imake
-   参考: http://d.hatena.ne.jp/torazuka/20110508/imake
+
+古いX Window Systemのアプリケーションのためには
+ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられることがある。
+マシンに依存するXのライブラリの場所などを解決してくれる。
+最近はAutotoolsが使われることが多い。
+Wikipedia: https://en.wikipedia.org/wiki/Imake
+参考: http://d.hatena.ne.jp/torazuka/20110508/imake
 
 == libtoolとは
 Autotoolsの仲間には他に libtool http://www.gnu.org/software/libtool/ がある。
-共有ライブラリをビルドするときにautoconfとautomakeとともに使ってマシン依存性を解決する。
+共有ライブラリのビルドするときにautoconfとautomakeとともに使ってマシン依存性を解決する。
 参考: http://klabgames.tech.blog.jp.klab.com/archives/1047107113.html
 
 == まとめ

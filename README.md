@@ -6,7 +6,7 @@ I released feram-0.26.04.tar.xz from
 https://sourceforge.net/projects/loto/files/feram/feram-0.26.04/ .
 This is a stable release.
 
-MD5 (feram-0.26.04.tar.xz) = 
+SHA1 (feram-0.26.04.tar.xz) = d2c30cdd86361fd83fd726f2f89e93092eaf54ac
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -17,7 +17,9 @@ Enjoy,
 Takeshi
 
 ## Changes
-In this feram-0.26.04, ...
+In this feram-0.26.04, author's email address is changed.
+Some test scripts are fixed for gnuplot 5.x.
+If you are currently using feram-0.26.03, you do not have to update that.
 
 With this feram-0.26.03, you can draw a slice of the
 supercell directly by feram. Output file `foo123.nnnnnnnnnn.slice.eps`
@@ -46,7 +48,7 @@ convert(1) of http://www.imagemagick.org
 gifsicle(1) and figview(1) of https://www.lcdf.org/gifsicle/ are useful.
 
     $ for e in *.eps; do convert -density 40 -flatten $e `basename $e .eps`.gif; done
-    $ gifsicle --delay=5 e*.gif > animation.gif
+    $ gifsicle --delay=5 *.slice.gif > animation.gif
 
 ### color to black-and-white
 Edit .eps files dilectly,

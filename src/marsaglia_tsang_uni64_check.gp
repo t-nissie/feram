@@ -29,7 +29,7 @@ plot 'marsaglia_tsang_uni64_check.dat' using 1:3 title 'triangular' w points,\
 
 set output
 print 'marsaglia_tsang_uni64_check.eps is generated.'
-!epstopdf marsaglia_tsang_uni64_check.eps
+#!epstopdf marsaglia_tsang_uni64_check.eps
 
 #Local variables:
 #  compile-command: "gnuplot marsaglia_tsang_uni64_check.gp"
