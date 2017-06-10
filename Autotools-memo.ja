@@ -151,7 +151,7 @@ automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定す�
 また、長いディレクトリ名／ファイル名でもパッケージに入るようなtarのオプションを指定している。
 foreignを指定しておけば、NEWS, COPYING, AUTHORS, ChangeLog, READMEのファイルが勝手に作られるのを防ぐことができる。
 ライセンスとしてGLPを採用するとしても、ここにforeignを指定して、
-パッケージに含めたいファイルはMakefile.amに明示的にリストアップするのがよいだろう。
+パッケージに含めたいファイルはMakefile.amのEXTRA_DISTに明示的にリストアップするのがよいだろう。
 
 Autotools Mythbuster の該当ページ https://autotools.io/automake/options.html が詳しい。
 
@@ -185,6 +185,13 @@ configureにオプションや変数を与える方法は
 
 configureに与えられた引数はconfig.logの先頭に記録されるので、後々の再確認に便利である。
 ただし、''や""のクォーテイションは消えてしまう。
+=== Manpage
+パッケージにUNIXのmanシステムの流儀に則って書いたmanpageを同梱する場合は、Makefile.amに
+ man_MANS = xtalgrowth.1 crystal_growth.7
+ EXTRA_DIST = README COPYING $(man_MANS)
+などと書く。ここで数字の1や7はmanpageのセクション番号で1〜9の値をとり、
+その番号にしたがってmanpageは/usr/local/share/man/man1/などにmake installでインストールされる。
+manpageはデフォルトでパッケージに同梱されないのでEXTRA_DISTに加えておく。
 
 == Autotoolsの使用方法として参考になるパッケージ
 === LHa for Unix
