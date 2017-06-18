@@ -15,6 +15,7 @@ FortranのプロジェクトにAutotoolsを使う場合の注意点も書いて�
  $ make
  $ make check
  $ sudo make install
+ $ make installcheck
 AutotoolsはそんなGNU流のフリーソフトウェアパッケージの
 構築を半自動化するための開発者用のツールである。最終目的はmake distcheck
 で foo-1.2.tar.gzなどという[パッケージ名]-[version].tar.gz
@@ -117,8 +118,10 @@ configure.ac, Makefile.am, src/Makefile.amを書いて、
  $ make dist                # 配布用パッケージの作成
 新たにconfigure.ac, Makefile.am, src/Makefile.amを書き変えたら☆からやり直す。
 他に
- $ make clean
- $ make check
+ $ make clean               # makeでできたファイルを消去
+ $ make check               # コンパイルしたバイナリをテスト（後述）
+ $ sudo make install
+ $ make installcheck        # インストールしたバイナリをテスト（後述）
  $ sudo make uninstall      # make installしたファイルの消去
 などが便利。
 === make checkでテストの自動化
@@ -154,7 +157,15 @@ foreignを指定しておけば、NEWS, COPYING, AUTHORS, ChangeLog, READMEの�
 パッケージに含めたいファイルはMakefile.amのEXTRA_DISTに明示的にリストアップするのがよいだろう。
 
 Autotools Mythbuster の該当ページ https://autotools.io/automake/options.html が詳しい。
+=== インストールしたバイナリのテスト
+さらにAM_INIT_AUTOMAKEにstd-optionsを加えておけば
+ $ sudo make install
+でバイナリをインストールした後に
+ $ make installcheck
+とするとGNU的なコマンドラインオプションの--helpと--versionとが試される。
+さらにさらにMakefile.amの中にinstallcheck-local:ルールを書いておけばそれも実行される。
 
+ただしinstallcheckは一般的なテストではないので、make installcheckとしても何も実行されないパッケージも多い。
 === コンパイラとコンパイラオプションの設定と決定
 C, Fortran, C++コンパイラとそのオプションはそれぞれ
 AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
