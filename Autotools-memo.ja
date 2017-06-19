@@ -8,8 +8,8 @@ FortranのプロジェクトにAutotoolsを使う場合の注意点も書いて�
 ./configure && make && make installとすることで簡単にソースからインストールすることができる。
  $ tar xf feram-X.YY.ZZ.tar.xz
  $ cd feram-X.YY.ZZ
- $ mkdir Linux   # Use build directory.
- $ cd Linux
+ $ mkdir build   # Use build directory.
+ $ cd build
  $ ../configure --help
  $ ../configure
  $ make
@@ -146,6 +146,9 @@ Makefile.amの中のEXTRA_DISTに次のように加えておく必要がある�
 とTESTS変数で指定するする。
 
 テストスクリプトの中でsrcdirを明示的に参照する必要がある場合は$srcdirを用いる。
+
+make distcheck とすると、上記テストとさらにファイルの過不足のチェックして、最終的にパッケージを作ることができる。
+make distcheck で作るパッケージは、簡単かつ自動的に in-source build, out-of-source build のどちらも可能になる。
 === automakeのオプション
 automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定する。例えば
  AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax foreign])
@@ -157,15 +160,18 @@ foreignを指定しておけば、NEWS, COPYING, AUTHORS, ChangeLog, READMEの�
 パッケージに含めたいファイルはMakefile.amのEXTRA_DISTに明示的にリストアップするのがよいだろう。
 
 Autotools Mythbuster の該当ページ https://autotools.io/automake/options.html が詳しい。
-=== インストールしたバイナリのテスト
+=== インストールしたバイナリのテスト make installcheck
 さらにAM_INIT_AUTOMAKEにstd-optionsを加えておけば
  $ sudo make install
 でバイナリをインストールした後に
  $ make installcheck
-とするとGNU的なコマンドラインオプションの--helpと--versionとが試される。
-さらにさらにMakefile.amの中にinstallcheck-local:ルールを書いておけばそれも実行される。
+とすると、そのインストールしたバイナリで
+GNU的なコマンドラインオプションの--helpと--versionとをテストできる。
+エラーが起きればログが残こされ、テストが成功したなら何も残らない。
 
-ただしinstallcheckは一般的なテストではないので、make installcheckとしても何も実行されないパッケージも多い。
+Makefile.amの中にinstallcheck-local:ルールを書いておけばそれも実行される。
+
+installcheckは一般的なテストではないので、make installcheckとしても何も実行されないパッケージも多い。
 === コンパイラとコンパイラオプションの設定と決定
 C, Fortran, C++コンパイラとそのオプションはそれぞれ
 AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
