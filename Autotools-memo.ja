@@ -234,6 +234,21 @@ configureでGNU makeでもBSD makeでもnmakeでも有効なポータブルなMa
 make V=1とverbosityを指定することで、makeの実行するコマンドの詳細が表示されるようになっている。
 https://github.com/ruby/ruby 。
 
+== Autotoolsトラブルシューティング
+Autotoolsは強力なツールで、make distcheckが動くようになればほぼすべてがうまく進むようになる。
+しかしながら、トラブルに遭遇する場合もある。
+Autotoolsやconfigure, makeに関連するバグの発見方法をいくつか紹介する。
+ * autoreconfを-vオプションをつけて実行し、エラーメッセージをよく読む。
+ * ./configure --helpをよく読む。
+ * コンパイルオプションに-Wallを付け、コンパイル時の警告がなくなるまでひとつひとつ潰してゆく。
+ * 時計を正確に合わせる。NFSの場合サーバ・クライアント間で更新日時の不整合が起きることがある。
+ * configure.acの中では=の両側に空白を開けない。FOO=foo, not FOO = foo.
+ * makeの並列実行（-jオプション）をしない。-jオプションなしでmakeに成功する場合は、依存関係の取得や記述が誤っている。
+ * config.logをよく読む。
+ * LD_LIBRARY_PATHなどの環境変数をチェックする。
+ * サイレントルール (./configure --enable-silent-rules) を使わないで、makeの様子をよく観察する。
+   デフォルトでオン (AM_SILENT_RULES([yes])) になっている場合はオフにするか、make V=1とする。
+
 == configureとmakeとの高速化
 大規模なプロジェクトではconfigureとmakeとにかかる時間が増大し、開発者をイライラさせる。
 特にconfigureスクリプトは並列化が難しく、簡単には高速化できない。
