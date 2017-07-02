@@ -36,6 +36,8 @@ GNU M4も最新のものを用意したほうがよい。
 たいていのLinuxディストリビューションにはこれらのツールの
 パッケージがある。たとえばDebianやUbuntuなら
  $ sudo apt-get install autoconf automake libtool autoconf-doc libtool-doc
+でインストールできる。Mac OS X で Mac Ports https://www.macports.org を使っているなら
+ $ sudo port install automake autoconf
 でインストールできる。
 
 == コマンドとファイル
