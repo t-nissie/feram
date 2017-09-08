@@ -268,14 +268,22 @@ Autotoolsやconfigure, makeに関連するバグの発見方法をいくつか�
  * Ref2: http://stackoverflow.com/questions/1512933/when-should-i-use-gccs-pipe-option
 
 == Autotoolsの代わりになるもの
-改良版のAutotoolsやより高速なmakeを目指していくつかのパッケージングツール／ビルドツールが開発されている。
-CMake, SCons, MesonではFortranのプロジェクトもサポートされている。
-=== 新しいもの
+改良版のAutotoolsやより高速なmakeを目指していくつかのパッケージングツール／ビルドシステムが開発されている。
+=== より便利で高速（かもしれない）ビルドシステム
  * CMake http://www.cmake.org
  * SCons http://www.scons.org
- * GYP   https://gyp.gsrc.io
- * Ninja https://ninja-build.org
  * Meson http://mesonbuild.com
+ * GYP   https://gyp.gsrc.io
+ * Ninja https://ninja-build.org "Ninja is a small build system with a focus on speed."
+
+CMake, SCons, MesonではFortranのプロジェクトもサポートされている。
+
+Autotoolsに限らずこれらのビルドシステムを使うことによって
+ユーザーも他の開発者も何がどこにあってどうしたらよいかを容易に推測しやすくなる。
+それぞれのビルドシステムの流儀に従えば、いくつかのプラットフォームに対応したバイナリやライブラリの
+コンパイル、リンク、テスト、インストール、パッケージングの自動化を簡単かつ忘れ物なく実現できる。
+先人の知恵をおろそかにして独自のスクリプトでこれらをやろうとすると
+とんでもない我流に陥って悲惨な結果を招きがちである。
 
 === 古いもの
  * OMake http://omake.metaprl.org/index.html （OCamlで書かれている。）
