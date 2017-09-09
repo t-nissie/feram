@@ -299,6 +299,11 @@ Autotoolsの仲間には他に libtool http://www.gnu.org/software/libtool/ が�
 共有ライブラリをビルドするときにautoconfとautomakeとともに使ってマシン依存性を解決する。
 参考: http://klabgames.tech.blog.jp.klab.com/archives/1047107113.html
 
+なお、Mac OS X の Mac Ports https://www.macports.org で
+ $ sudo port install libtool
+としてインストールされるGNU libtoolはglibtool/glibtoolizeとしてインストールされる。
+Xcodeの /usr/bin/libtool (BSD origin) との衝突を避けるためのようである。
+
 == まとめ
 autoconfとautomakeとの使い方を説明した。
 configure.acとMakefile.amとを書くことによりパッケージの自動生成が可能になる。
