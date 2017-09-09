@@ -1,26 +1,27 @@
 = CMakeについてのメモ
 このメモはCMakeを使ってフリーソフトウェアの配布用パッケージを作る方法を解説している。
 FortranのプロジェクトにCMakeを使う場合の注意点も書いてある。
-
 == はじめに
-CMakeはビルドツールの１つで、
-GNU Autotoolsより高速であることを売りにしている。
+CMakeはビルドツールの１つで、GNU Autotoolsより高速であることを売りにしている。
 
 CMakeは Kitware http://kitware.com/cmake によって開発されている。
 KitwareのVTKで使われていて有名。
-
- $ mkdir build
- $ 
-
-
 == 必要なもの
-たいていのLinuxディストリビューションにはCMakeパッケージがある。たとえばDebianやUbuntuなら
+たいていのLinuxディストリビューションにはCMakeパッケージがある。
+
+DebianやUbuntuなら
  $ sudo apt-get install cmake
 でインストールできる。
 
-== コマンドとファイル
-CMakeList.txt
+Mac OS X で Mac Ports https://www.macports.org を使っているなら
+ $ sudo port install cmake
+でインストールできる。
 
+== 日本語の参考文献
+ * CMake Advent Calendar 2014 http://qiita.com/advent-calendar/2014/cmake
+ * CMake チュートリアル http://opencv.jp/cmake/cmake_tutorial.html
+== コマンドとファイル
+CMakeLists.txt
 == エディタ
 === Emacs
 /usr/share/cmake-3.0/editors/emacs/cmake-mode.el もしくは
@@ -30,10 +31,10 @@ load-pathの通っているところにコピーして、バイトコンパイ�
 などと書いておく。
  (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
 と書いても.txtが優先されてText-modeになってしまうのはなぜなんだー。
-
 == 実行の様子
 
- $ cmake .
+ $ mkdir build
+ $ cmake ..
  $ make
  $ make clean
 Mac OS では /usr/bin/cc がデフォルトで使われるが、
@@ -44,212 +45,29 @@ Mac OS では /usr/bin/cc がデフォルトで使われるが、
 make のときに VERBOSE=1 を指定しておくと、どんな処理をしているか表示される。
 
 === 関連コマンド
- autoscan       Autotoolsの利用を開始するときに１回だけ実行するコマンド。
-                configure.acの雛形configure.scanを生成してくれる。
- autoreconf     定番。-vオプションを付けて実行すれば何をしているのかがわかる。
-                以下のコマンド自動的に再実行してくれる。
- autoconf       configure.ac を元に configure を生成。
- automake       Makefile.amからMakefile.inを生成。
-                オプション --add-missing を付けて実行すると install-sh, missing, test-driver
-                などの必要なスクリプトを /usr/share/automake-1.14/ からシンボリックリンクしてくれる。
- autoheader     config.h.in を作ってくれる。
- aclocal        aclocal.m4を作ってくれる。
 
 === 関連するファイルとディレクトリ
- configure.ac   configureの雛型。自分で書く。
- Makefile.am    Makefileの雛型のMakefile.inの雛型。自分で書く。
- config/gnu/    ファイルがごちゃごちゃ出来てイヤな場合はMakefile.amに
-                AC_CONFIG_AUX_DIR(config/gnu)と指定するとmissing等がそこに置かれる。
- config.guess   Makefile.amにAC_CANONICAL_TARGETなどと書くとautomake --add-missingが
-                用意してくれるOSやCPUの自動判別をしてくれるスクリプト。
- config.h.in    config.hの雛型。autoheaderによりMakefile.amやconfigure.acから自動的に作られる。
- config.h       configure.acにAC_CONFIG_HEADERS([config.h])と指定。
-                ないとコンパイルオプションが長くややこしくなるので、使ったほうがよい。
- config.log     configure の実行時のログ。問題が起きたら読む。
- config.status  configure を実行すると出来るスクリプト。foo.in から foo を作るのは実はこいつ。
- install-sh     automake --add-missing が用意してくれるスクリプト。make installのときに使われることがある。
- missing        automake --add-missing が用意してくれるスクリプト。忘れ物を教えてくれる。
- depcomp        automake --add-missing が用意してくれることのあるスクリプト。ファイルの依存関係を自動的に調べてくれる。
- test-driver    Makefile.amにTESTSの項目がある場合、automake --add-missing が用意するスクリプト。
-                make checkのときに使われ、カラフルな表示やログファイルの書き出しをしてくれる。
 
 == 使用方法
 === メモ
  * ソースファイルは伝統的にsrc/以下に置く。例: src/foo.c, src/bar.F
- * ある程度開発が進んでソースファイルとMakefileができあがって、それらをバックアップしてからAutotoolsを使いはじめるとよい。
- * autoscanを実行してconfigure.scanを作ってそれを元にconfigure.acを書いてもよい。
- * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, src/Makefile.amを見よう見まねで書く。
- * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
-   http://www.gnu.org/software/automake/manual/automake.html やinfoを参照せよ。
- * Autotools Mythbuster https://autotools.io/ も詳しい。
- * automake --add-missingやautoreconfで生成されるファイルはGitやSubversionなどのリポジトリに登録しないほうがよい。
-   それらのファイルは.gitignoreにリストしたり、svn propset svn:ignoreしておくとstatusで表示されないので便利。
+ * ある程度開発が進んでソースファイルとMakefileができあがって、それらをバックアップしてからCMakeを使いはじめるとよい。
 === Fortranについてのメモ
- * AutotoolsはFortranのプロジェクトにも使える。
- * AC_LANG(Fortran), AC_PROG_FC(gfortran ifort)などを使う。
- * 関係する変数はFC, FCFLAGS, FCLIBS, CPPFLAGSなど。
- * Fortranでもcpp（Cプリプロセッサ）を使うと便利。
-   その場合、ソースのファイル名の拡張子は.Fを使う。.F90はGNU makeのデフォルトでないので使わない。
- * AC_FC_FREEFORM()で自由形式のオプションがわかる。
- * C言語のプロジェクトの場合はファイル間の依存関係を自動的に調べてくれるが、
-   Fortranの場合はMakefile.amに依存関係を書いておくことがまだ必要。
- * C言語のプロジェクトの場合はAC_CHECK_HEADERS([fftw3.h])でヘッダファイルの有無を調べることができるが、
-   Fortranの場合はAC_CHECK_HEADERS([fftw3.f])やAC_CHECK_HEADERS([fftw3.f03])とするのはまだ困難。
+ * CMakeはFortranのプロジェクトにも使える。
 === 手順
-configure.ac, Makefile.am, src/Makefile.amを書いて、
- $ autoreconf -v
- $ automake --add-missing   # 初回にautoreconfで実行を要求されたとき
- $ autoreconf -v            # ☆
- $ ./configure
- $ make                     # ソースの編集など開発を進め、最後にmakeでコンパイルできることを確認
- $ make distclean           # Makefileなどをきれいさっぱり消す
- $ ./configure
- $ make distcheck           # 配布用パッケージをテストしてから作成（オプションは DISTCHECK_CONFIGURE_FLAGS で指定できる）
- $ make dist                # 配布用パッケージの作成
-新たにconfigure.ac, Makefile.am, src/Makefile.amを書き変えたら☆からやり直す。
-他に
- $ make clean
- $ make check
- $ sudo make uninstall      # make installしたファイルの消去
-などが便利。
+CMakeLists.txt
 === make checkでテストの自動化
-src/Makefile.amに
- TESTS=foo.sh bar baz
-と書いておけば
- $ make check
-でsrc/の中でfoo.shとbarとbazとがテストとして実行される。
-ソフトウェアのテストを自動化できる。
-foo.shとbarとbazとはカレントディレクトリになければsrcdirの中も探されるので、
-build directoryの中でもテストができる。
-ただし、foo.shは自動的にパッケージに入れてくれるわけではないので、
-Makefile.amの中のEXTRA_DISTに次のように加えておく必要がある。
- EXTRA_DIST = README foo.sh
-
-テストのログがfoo.sh.logとbar.logとbaz.logとに、
-テストの結果がfoo.sh.trsとbar.trsとbaz.trsとに保存される。
-テスト全体のまとめがtest-suite.logに保存される。
-
-一部のテストだけを選択的に行いたい場合は
- $ make check TESTS='foo.sh bar'
-とTESTS変数で指定するする。
-
-テストスクリプトの中でsrcdirを明示的に参照する必要がある場合は$srcdirを用いる。
-=== automakeのオプション
-automakeのオプションはconfigure.acの中にAM_INIT_AUTOMAKEで指定する。例えば
- AM_INIT_AUTOMAKE([1.14.1 no-dist-gzip dist-xz tar-pax foreign])
-では、automakeのバージョン1.14.1以上を使用することを強制し、
-パッケージをtar.gzでなくtar.xzで作るように指定している。
-また、長いディレクトリ名／ファイル名でもパッケージに入るようなtarのオプションを指定している。
-foreignを指定しておけば、NEWS, COPYING, AUTHORS, ChangeLog, READMEのファイルが勝手に作られるのを防ぐことができる。
-ライセンスとしてGLPを採用するとしても、ここにforeignを指定して、
-パッケージに含めたいファイルはMakefile.amに明示的にリストアップするのがよいだろう。
-
-Autotools Mythbuster の該当ページ https://autotools.io/automake/options.html が詳しい。
-
 === コンパイラとコンパイラオプションの設定と決定
-C, Fortran, C++コンパイラとそのオプションはそれぞれ
-AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
-configure.ac の中で決定する。コンパイラは CC, FC, CXX に、
-コンパイラオプションは CFLAGS, FCFLAGS, CXXFLAGS に
-セットされる。 コンパイラオプションのデフォルトはたいてい
--g -O2 または -O2 である。configure.ac の中で
-デフォルト以外に独自に設定したい場合には
- cflags_save="$CFLAGS"
- AC_PROG_CC()
- CFLAGS="$cflags_save"
- test -n "$CFLAGS" || CFLAGS="-g -Wall -O3"
-などとAC_PROG_*()の前後でsave/restoreし、その後に独自設定をする。
-=== configureにオプションや変数を与える方法
-configureにオプションや変数を与える方法は
- $ ./configure --help
-で表示されるように、
- $ ./configure --enable-openmp --with-lapack=mkl CPPFLAGS=-I/home/t-nissie/include
-などと
- * --enable-FEATURE, --disable-FEATURE
- * --with-PACKAGE, --without-PACKAGE
- * FOO='bar baz'と変数を設定
-の３つがある。それぞれconfigure.acの中で
- * AC_ARG_ENABLE(openmp, [AC_HELP_STRING([--enable-openmp],[use OpenMP directives for parallelism])], enable_openmp=$enableval, enable_openmp=no)
- * AC_ARG_WITH(lapack,[AS_HELP_STRING([--with-lapack=ARG],[LAPACK library.])])
- * AC_ARG_VAR(CPPFLAGS, [C preprocessor (CPP) Flags, e.g. -I<include dir>])
-と設定する。
-
-configureに与えられた引数はconfig.logの先頭に記録されるので、後々の再確認に便利である。
-ただし、''や""のクォーテイションは消えてしまう。
-
-== Autotoolsの使用方法として参考になるパッケージ
-=== LHa for Unix
-シンプル。
-http://www2m.biglobe.ne.jp/~dolphin/lha/lha-unix.htm
-=== ntp
-大規模。libtoolも使われている。
-http://support.ntp.org/bin/view/Main/WebHome
-=== xtalgrowth
-小規模。Cで書かれたX Window Systemのアプリケーション。
-http://loto.sourceforge.net/xtalgrowth/
-=== feram
-小規模。Fortranで書かれている。
-http://loto.sourceforge.net/feram/
- * configure.ac    https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/configure.ac
- * Makefile.am     https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/Makefile.am
- * src/Makefile.am https://sourceforge.net/p/loto/code/HEAD/tree/feram/trunk/src/Makefile.am
-=== Ruby
-Rubyは独特で高度な方法でconfigureを生成している。安易に真似すべきではないかもしれない。
-configure.inとMakefile.inそしていくつかのツールが独自に書かれていて、autoconfのみを使う。
-configureでGNU makeでもBSD makeでもnmakeでも有効なポータブルなMakefile（とGNUmakefile）が生成される。
-ソースは、src/サブディレクトリではなく、メインディレクトリに置かれている。
-make V=1とverbosityを指定することで、makeの実行するコマンドの詳細が表示されるようになっている。
-https://github.com/ruby/ruby 。
-
-== configureとmakeとの高速化
-大規模なプロジェクトではconfigureとmakeとにかかる時間が増大し、開発者をイライラさせる。
-特にconfigureスクリプトは並列化が難しく、簡単には高速化できない。
-以下にconfigureとmakeとの高速化の手法とそれらを解説しているページへのリンクを揚げた。
-=== configureの高速化
- * Ref: http://superuser.com/questions/298779/is-it-possible-to-speed-up-configure
-=== makeの高速化
- * RAMディスク（Linuxのtmpfsなど）やSSDなど高速なファイルシステム上でmakeする。
- * NFSなど遅いファイルシステム上でmakeしない。
- * make -j8と並列実行させる。
- * gcc, g++, gfortranで-pipeオプションを使用する。
-   * NFS上でmakeしなくてはいけないときには特に有効。
-   * その他の場合は、キャッシュが効くためか、たいして高速化しないこともある。
- * Ref1: http://nippondanji.blogspot.jp/2011/04/mysql-5530.html
- * Ref2: http://stackoverflow.com/questions/1512933/when-should-i-use-gccs-pipe-option
-
-== Autotoolsの代わりになるもの
-改良版のAutotoolsやより高速なmakeを目指していくつかのパッケージングツール／ビルドツールが開発されている。
-CMakeとSConsではFortranのプロジェクトもサポートされている。
- * CMake http://www.cmake.org/
- * SCons http://www.scons.org/
- * GYP   https://chromium.googlesource.com/external/gyp
- * Ninja https://ninja-build.org
- * Meson https://meson.org
- * OMake http://omake.metaprl.org/index.html （OCamlで書かれている。）
-
-古いX Window Systemのアプリケーションのためには
-ImakefileからMakefileを生成するxmkmf(1)とimake(1)とが用いられることがある。
-マシンに依存するXのライブラリの場所などを解決してくれる。
-最近はAutotoolsが使われることが多い。
-Wikipedia: https://en.wikipedia.org/wiki/Imake
-参考: http://d.hatena.ne.jp/torazuka/20110508/imake
-
-== libtoolとは
-Autotoolsの仲間には他に libtool http://www.gnu.org/software/libtool/ がある。
-共有ライブラリのビルドするときにautoconfとautomakeとともに使ってマシン依存性を解決する。
-参考: http://klabgames.tech.blog.jp.klab.com/archives/1047107113.html
-
+=== cmakeにオプションや変数を与える方法
+== CMakeの使用方法として参考になるパッケージ
 == まとめ
-autoconfとautomakeとの使い方を説明した。
-configure.acとMakefile.amとを書くことによりパッケージの自動生成が可能になる。
+CMakeの使い方を説明した。
 複数のプラットフォームでMakefileを共通化できる。
-これらGNU Autotoolsを活用すれば、簡単に配布用のフリーソフトウェアパッケージを作ることができる。
-
+CMakeを活用すれば簡単に配布用のフリーソフトウェアパッケージを作ることができる。
 == 著者
 西松 毅 (t_nissie{at}yahoo.co.jp)
-
 =end
 # Local variables:
 #   mode: RD
-#   compile-command: "make Autotools-memo.ja.html"
+#   compile-command: "make CMake-memo.ja.html"
 # End:
