@@ -237,7 +237,7 @@ make V=1とverbosityを指定することで、makeの実行するコマンド�
 https://github.com/ruby/ruby 。
 
 == Autotoolsトラブルシューティング
-Autotoolsは強力なツールで、make distcheckが動くようになればほぼすべてがうまく進むようになる。
+Autotoolsは強力なツールで、make distcheckがエラーなく成功するようになればほぼすべてがうまく進むようになる。
 しかしながら、トラブルに遭遇する場合もある。
 Autotoolsやconfigure, makeに関連するバグの発見方法をいくつか紹介する。
  * autoreconfを-vオプションをつけて実行し、エラーメッセージをよく読む。
