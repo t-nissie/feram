@@ -1,10 +1,18 @@
 ! feram_diagonalize15x15.F -*-f90-*-
-! Time-stamp: <2015-07-30 16:53:49 takeshi>
+! Time-stamp: <2017-09-09 15:29:08 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Usage: ./feram_diagonalize15x15 < perovskite-Gamma_o_DS3_DDB
 !        ./feram_diagonalize15x15 < perovskite-Sigma_o_DS1_DDB
 !!
+#if defined HAVE_CONFIG_H
+#  include "config.h"
+#endif
 #include "define.h"
+
+#if defined(__PGI) || defined(__sparc)
+#  define command_argument_count iargc
+#  define get_command_argument getarg
+#endif
 
 program feram_diagonalize15x15
   implicit none
@@ -31,6 +39,21 @@ program feram_diagonalize15x15
   character(len=50) ::  c0, c1, c2, c3
   character(len=200) :: str
   logical   all_real
+  integer   command_argument_count
+
+  if (command_argument_count()>0) then
+     call get_command_argument(1,str)
+     if (str.eq.'--version') then
+        write(6,'(a,a)') "feram_diagonalize15x15 in ", PACKAGE_STRING
+        stop 0
+     else
+        write(6,'(a)') 'Usage: feram_diagonalize15x15 < perovskite-Gamma_o_DS3_DDB'
+        write(6,'(a)') '       feram_diagonalize15x15 < perovskite-Sigma_o_DS1_DDB'
+        write(6,'(a)') 'For more details, see http://loto.sourceforge.net/feram/ and'
+        write(6,'(a)') '                      http://loto.sourceforge.net/feram/parameters/parameters.html .'
+        stop 0
+     end if
+  end if
 
   do
      read(5, '(a)', IOSTAT=io) str
