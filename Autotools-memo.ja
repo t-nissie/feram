@@ -93,6 +93,8 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
  * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, src/Makefile.amを見よう見まねで書く。
  * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
    http://www.gnu.org/software/automake/manual/automake.html やinfoを参照せよ。
+ * 日本語マニュアル http://www.bookshelf.jp/texi/autoconf-ja/autoconf-ja.html
+   http://www.bookshelf.jp/texi/automake-ja/automake-ja.html
  * Autotools Mythbuster https://autotools.io/ も詳しい。
  * automake --add-missingやautoreconfで生成されるファイルはGitやSubversionなどのリポジトリに登録しないほうがよい。
    それらのファイルは.gitignoreにリストしたり、svn propset svn:ignoreしておくとstatusで表示されないので便利。
@@ -107,6 +109,13 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
    Fortranの場合はMakefile.amに依存関係を書いておくことがまだ必要。
  * C言語のプロジェクトの場合はAC_CHECK_HEADERS([fftw3.h])でヘッダファイルの有無を調べることができるが、
    Fortranの場合はAC_CHECK_HEADERS([fftw3.f])やAC_CHECK_HEADERS([fftw3.f03])とするのはまだ困難。
+ * module名とそのファイル名は_moduleを付けて、例えばmodule foo_module, foo_module.Fと一致させる。
+ * use foo_module しているソースはfoo_module.oに依存している（例: bar.o: foo_module.o）とsrc/Makefile.amに記述する。
+ * foo_module.Fをコンパイルするとfoo_module.modとfoo_module.oとの２つのファイルができる。
+   そのような複数ターゲットができる状況をMakefileに記述するにはコツがいることが知られている
+   http://www.bookshelf.jp/texi/automake-ja/automake-ja_26.html#SEC150 が、
+   わざわざ記述する必要はない。上述の通り bar.o: foo_module.o と書いておけば十分である。
+
 === 手順
 configure.ac, Makefile.am, src/Makefile.amを書いて、
  $ autoreconf -v
