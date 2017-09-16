@@ -114,7 +114,8 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
  * foo_module.Fをコンパイルするとfoo_module.modとfoo_module.oとの２つのファイルができる。
    そのような複数ターゲットができる状況をMakefileに記述するにはコツがいることが知られている
    http://www.bookshelf.jp/texi/automake-ja/automake-ja_26.html#SEC150 が、
-   わざわざ記述する必要はない。上述の通り bar.o: foo_module.o と書いておけば十分である。
+   わざわざ記述する必要はない。上述の通り bar.o: foo_module.o と書いておけば十分。
+ * Fortranは.modファイルを通してサブルーチンの引数の型のチェックを行うので、moduleは積極的に用いるべき。
 
 === 手順
 configure.ac, Makefile.am, src/Makefile.amを書いて、
