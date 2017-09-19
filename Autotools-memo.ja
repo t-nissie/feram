@@ -206,12 +206,12 @@ configureにオプションや変数を与える方法は
 などと
  * --enable-FEATURE, --disable-FEATURE
  * --with-PACKAGE, --without-PACKAGE
- * FOO='bar baz'と変数を設定
+ * FOO='bar baz'
 の３つがある。それぞれconfigure.acの中で
  * AC_ARG_ENABLE(openmp, [AC_HELP_STRING([--enable-openmp],[use OpenMP directives for parallelism])], enable_openmp=$enableval, enable_openmp=no)
  * AC_ARG_WITH(lapack,[AS_HELP_STRING([--with-lapack=ARG],[LAPACK library.])])
  * AC_ARG_VAR(CPPFLAGS, [C preprocessor (CPP) Flags, e.g. -I<include dir>])
-と設定する。
+と宣言しておく。設定される変数はconfig.hを通してプログラム内で参照できる。
 
 configureに与えられた引数はconfig.logの先頭に記録されるので、後々の再確認に便利である。
 ただし、''や""のクォーテイションは消えてしまう。
