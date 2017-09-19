@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2017-04-29 13:28:12 takeshi>
+dnl Time-stamp: <2017-09-20 06:26:36 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -63,8 +63,7 @@ AC_ARG_WITH(fft,[AS_HELP_STRING([--with-fft=ARG],[FFT library.
                                    fftw3_omp (default, fast),
                                    fftw3_threads,
                                    fftw3_combined_threads (for Windows),
-                                   mkl (Intel MKL, FFTW3 wrappers to Intel MKL functions),
-                                   ssl2 (Fujitsu SSL II), or
+                                   mkl (Intel MKL, FFTW3 wrappers to Intel MKL functions), or
                                    no (error).])])
 case "$with_fft" in
   fftw3_omp | fftw | fftw3 | yes | "")
@@ -88,11 +87,6 @@ case "$with_fft" in
   mkl)
     AC_CHECK_LIB(mkl_intel_lp64, dfftw_execute,[AC_DEFINE([HAVE_LIBFFTW3]) AC_DEFINE([WITH_FFT_MKL], [1], [Use FFTW3 wrappers to Intel MKL functions]) LIBS="-lmkl_core -lmkl_intel_thread -lmkl_intel_lp64 $LIBS"],
                  AC_MSG_ERROR([You need Intel Math Kernel Library (MKL). See config.log.]),[-lmkl_core -lmkl_intel_thread])
-    ;;
-  ssl2)
-    ;;
-  cufft*)
-    AC_CHECK_LIB(libcufft, cufftPlan3d,, AC_MSG_ERROR([You need CUFFT. See config.log.]))
     ;;
   no)
     AC_MSG_ERROR([You need an FFT library.])
