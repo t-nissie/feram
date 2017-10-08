@@ -229,8 +229,8 @@ manpageはデフォルトでパッケージに同梱されないのでEXTRA_DIST
  This is a manpage of foo version @PACAGE_VERSION@.
 と書いておき、configure.acの中で
  AC_CONFIG_FILES([Makefile src/Makefile foo.1])
-とAC_CONFIG_FILESにMakefileに加えてfoo.1を指定しておけば、
-config.statusがfoo.1.inを処理してfoo.1を作ってくれるようになる。
+とAC_CONFIG_FILESにMakefileに加えてfoo.1を指定しておく。
+config.statusがMakefile.in→Makefileと同様にfoo.1.in→foo.1の変換もするようになる。
 
 == Autotoolsの使用方法として参考になるパッケージ
 === LHa for Unix
