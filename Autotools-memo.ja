@@ -223,6 +223,15 @@ configureに与えられた引数はconfig.logの先頭に記録されるので�
 その番号にしたがってmanpageは/usr/local/share/man/man1/などにmake installでインストールされる。
 manpageはデフォルトでパッケージに同梱されないのでEXTRA_DISTに加えておく。
 
+=== 任意のファイル内の変数の置換
+テキストファイルの中にconfogureで決定された変数を挿入したいことはしばしばある。
+たとえば、foo.1.inに
+ This is a manpage of foo version @PACAGE_VERSION@.
+と書いておき、
+ AC_CONFIG_FILES([Makefile src/Makefile foo.1])
+とAC_CONFIG_FILESにMakefileに加えてfoo.1を指定しておけば、
+config.statusがfoo.1.inを処理してfoo.1を作ってくれるようになる。
+
 == Autotoolsの使用方法として参考になるパッケージ
 === LHa for Unix
 シンプル。
