@@ -215,7 +215,7 @@ configureにオプションや変数を与える方法は
  * AC_ARG_VAR(CPPFLAGS, [C preprocessor (CPP) Flags, e.g. -I<include dir>])
 と宣言しておく。設定される変数はconfig.hを通してプログラム内で参照できる。
 
-注意：CPPFLAGS変数はC/C++のプロジェクトの場合は自動的に使用される。
+注意：CPPFLAGS変数はC/C++のプロジェクトの場合は自動的に使用されるので宣言の必要はない。
 Fortranのプロジェクトの場合は明示的に宣言してはじめてconfigure --helpで説明が表示されるようになる。
 
 configureに与えられた引数はconfig.logの先頭に記録されるので、後々の再確認に便利である。
