@@ -32,17 +32,27 @@ load-pathの通っているところにコピーして、バイトコンパイ�
  (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
 と書いても.txtが優先されてText-modeになってしまうのはなぜなんだー。
 == 実行の様子
-
+=== コンパイルとインストール
+ビルドディレクトリでビルドする。
  $ mkdir build
+ $ cd build
  $ cmake ..
  $ make
- $ make clean
+ $ sudo make install
 Mac OS では /usr/bin/cc がデフォルトで使われるが、
 自分でインストールした /usr/local/bin/gcc を使いたいなら
  $ cmake -DCMAKE_C_COMPILER:FILEPATH=/usr/local/bin/gcc .
  $ make VERBOSE=1
 とする。CMakeCache.txt や CMakeFiles/ は必要があれば自動的に更新されるので消す必要はない。
 make のときに VERBOSE=1 を指定しておくと、どんな処理をしているか表示される。
+
+install_manifest.txtにインストールされたファイルが記録される。
+install_manifest.txtのownerはrootになっていることがあるので、消去のときには注意。
+
+=== アンインストール
+cmakeではmake uninstallはない。
+ $ xargs rm < install_manifest.txt
+でインストールされたファイルを消すことができる。
 
 === 関連コマンド
 
@@ -59,6 +69,16 @@ CMakeLists.txt
 === make checkでテストの自動化
 === コンパイラとコンパイラオプションの設定と決定
 === cmakeにオプションや変数を与える方法
+
+== CMakeを使ってみた感想
+=== よいと思ったこと
+* ファイル毎にコンパイルオプションを変更するのが簡単。
+* cmake -G Ninja .. とbuild toolを選択できる。
+
+=== よくないとと思ったこと
+* sudo make installの後、install_manifest.txtのownerがrootになっていることがある。
+* manpageのインストールの設定がAutotoolsより面倒。
+
 == CMakeの使用方法として参考になるパッケージ
 == まとめ
 CMakeの使い方を説明した。
