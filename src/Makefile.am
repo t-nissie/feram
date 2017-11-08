@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2016-08-11 19:34:11 takeshi>
+# Time-stamp: <2017-11-09 00:36:59 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -216,6 +216,8 @@ modulation_check.sh \
 dispersion_32x32x32.inhomo-K.gp \
 GPa_check.sh \
 potential_surface_check.sh
+clean-local:
+	-rm -rf *.dSYM
 
 feram_mpi$(EXEEXT): $(srcdir)/feram_mpi.F $(feram_OBJECTS) $(feram_DEPENDENCIES)
 	$(MPIFC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) \
