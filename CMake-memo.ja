@@ -78,6 +78,8 @@ CMakeLists.txt
 === よくないとと思ったこと
 * sudo make installの後、install_manifest.txtのownerがrootになっていることがある。
 * manpageのインストールの設定がAutotoolsより面倒。
+* make distcleanがない
+* make uninstallがない（install_manifest.txtをつかう？）
 
 == CMakeの使用方法として参考になるパッケージ
 == まとめ
