@@ -96,8 +96,10 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
  * 日本語マニュアル http://www.bookshelf.jp/texi/autoconf-ja/autoconf-ja.html
    http://www.bookshelf.jp/texi/automake-ja/automake-ja.html
  * Autotools Mythbuster https://autotools.io/ も詳しい。
- * automake --add-missingやautoreconfで生成されるファイルはGitやSubversionなどのリポジトリに登録しないほうがよい。
-   それらのファイルは.gitignoreにリストしたり、svn propset svn:ignoreしておくとstatusで表示されないので便利。
+ * automake --add-missingやautoreconfで生成されるファイルはGitやSubversionなどのリポジトリに登録すべきではない。
+   それらのファイルは.gitignoreにリストしてgit statusで表示されないようにする。
+   .gitignoreの例は https://github.com/github/gitignore/blob/master/Autotools.gitignore にある。
+   Subversionの場合は svn propedit svn:ignore . でそれらの除外すべきファイルを指定しておく。
 === Fortranについてのメモ
  * AutotoolsはFortranのプロジェクトにも使える。
  * AC_LANG(Fortran), AC_PROG_FC(gfortran ifort)などを使う。
