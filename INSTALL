@@ -424,25 +424,27 @@ environments on Mac OS X are described below.
 === With Mac Ports
 The MacPorts Project's official homepage is https://www.macports.org .
 Install MacPorts, then install ports of gfortran and FFTW3.
- $ sudo port install gcc48
+ $ sudo port install gcc7
  $ sudo port select --list gcc
  Available versions for gcc:
  llvm-gcc42
- mp-gcc48
+ mp-gcc7
  none (active)
- $ sudo port select gcc mp-gcc48
+ $ sudo port select gcc mp-gcc7
  Available versions for gcc:
  llvm-gcc42
- mp-gcc48 (active)
+ mp-gcc7 (active)
  none
  $ gfortran --version
- GNU Fortran (GCC) 4.8.x
+ GNU Fortran (GCC) 7.2.0
  $ port install fftw-3 +gfortran
- $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.26.02/feram-0.26.02.tar.xz
- $ tar xf feram-0.26.02.tar.xz
- $ cd feram-0.26.02
- $ ./configure LDFLAGS=-L/opt/local/lib --with-fft=fftw3_threads
+ $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.26.04/feram-0.26.04.tar.xz
+ $ tar xf feram-0.26.04.tar.xz
+ $ cd feram-0.26.04
+ $ ./configure --help
+ $ ./configure LDFLAGS=-L/opt/local/lib CPPFLAGS=-I/opt/local/include --with-fft=fftw3_threads
  $ make
+ $ sudo port install gnuplot
  $ make check
 
 === With Homebrew
