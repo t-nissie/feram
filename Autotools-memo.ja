@@ -96,6 +96,7 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
  * 日本語マニュアル http://www.bookshelf.jp/texi/autoconf-ja/autoconf-ja.html
    http://www.bookshelf.jp/texi/automake-ja/automake-ja.html
  * Autotools Mythbuster https://autotools.io/ も詳しい。
+   ちなみに https://Makefile.am/ はこのページにリダイレクトされる。.amはアルメニア共和国のccTLD。
  * automake --add-missingやautoreconfで生成されるファイルはGitやSubversionなどのリポジトリに登録すべきではない。
    それらのファイルは.gitignoreにリストしてgit statusで表示されないようにする。
    .gitignoreの例は https://github.com/github/gitignore/blob/master/Autotools.gitignore にある。
