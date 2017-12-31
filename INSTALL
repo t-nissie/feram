@@ -20,6 +20,7 @@ Version and date of installation is written in parentheses ().
    * Fortran 90 (frtpx) for Fujitsu supercomputers: Kei and FX10
  * xz (data compression software)  http://tukaani.org/xz/
  * gnuplot (version 4.6 or higher)  http://www.gnuplot.info/
+ * ruby (version 2.2 or higher)  http://www.ruby-lang.org/
 Modern Linux distributions (Debian, Ubuntu, RedHat, CentOS, etc.) have their
 packages of these software required to compile feram. Check their versions
 with --version option, e.g. make --version, fftw-wisdom --version, etc.
@@ -27,7 +28,6 @@ You can install them with package managers (apt-get, yum, etc.).
 
 == Useful software
 These software are useful for executing feram and analyzing calculated results.
- * Ruby (version 2.2 or higher)  http://www.ruby-lang.org/
  * epstopdf.pl http://www.ctan.org/pkg/epstopdf
    ftp://ctan.tug.org/tex-archive/support/epstopdf/epstopdf.pl
  * tar (version 1.22 or higher)  http://www.gnu.org/software/tar/
@@ -69,7 +69,7 @@ FFTW3, ATLAS libraries and GNU Fortran (gfortran) can be easily
 installed into Debian 7.x (Wheezy) GNU/Linux systems or Ubuntu systems
 with apt-get(8) command. See http://www.ubuntu.com or http://www.debian.org .
 ==== install required packages
- $ sudo apt-get install libatlas-base-dev gfortran libfftw3-dev gnuplot
+ $ sudo apt-get install libatlas-base-dev gfortran libfftw3-dev gnuplot ruby
  $ sudo apt-get --purge remove liblapack-dev liblapack3 liblapack3gf
 ==== compile feram
  $ tar xf feram-0.26.02.tar.xz
@@ -83,7 +83,7 @@ FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
 installed into Fedora systems with yum(8) command. See http://fedoraproject.org .
 ==== install required packages
  # yum install gcc gcc-gfortran
- # yum install fftw-devel blas-devel lapack-devel gnuplot csh
+ # yum install fftw-devel blas-devel lapack-devel gnuplot csh ruby
  # yum install autoconf.noarch automake.noarch libtool subversion   # For developers
 ==== compile feram
  $ tar xf feram-0.22.05.tar.xz
@@ -96,7 +96,7 @@ installed into Fedora systems with yum(8) command. See http://fedoraproject.org 
 FFTW3, BLAS and LAPACK libraries and GNU Fortran (gfortran) can be easily
 installed into CentOS 7 systems with yum(8) command.
 ==== install required packages
- # yum install gcc gcc-gfortran fftw-devel blas-devel lapack-devel gnuplot csh
+ # yum install gcc gcc-gfortran fftw-devel blas-devel lapack-devel gnuplot csh ruby
  # yum install autoconf.noarch automake.noarch libtool subversion   # For developers
 ==== compile feram
  $ wget http://sourceforge.net/projects/loto/files/feram//feram-0.26.02/feram-0.26.02.tar.xz
