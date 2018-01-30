@@ -292,6 +292,9 @@ Autotoolsやconfigure, makeに関連するバグの発見方法をいくつか�
  * gcc, g++, gfortranで-pipeオプションを使用する。
    * NFS上でmakeしなくてはいけないときには特に有効。
    * その他の場合は、キャッシュが効くためか、たいして高速化しないこともある。
+ * まれに１つのファイルのコンパイルだけに時間がかかっている場合がある。
+   コンパイラが最適化に失敗していることが多い。ソースコードまたはコンパイルオプションを見直す。
+ * C++なら、より高速なリンカgoldを使用する。https://en.wikipedia.org/wiki/Gold_(linker)
  * Ref1: http://nippondanji.blogspot.jp/2011/04/mysql-5530.html
  * Ref2: http://stackoverflow.com/questions/1512933/when-should-i-use-gccs-pipe-option
 
