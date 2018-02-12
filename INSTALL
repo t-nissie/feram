@@ -437,7 +437,7 @@ Install MacPorts, then install ports of gfortran and FFTW3.
  none
  $ gfortran --version
  GNU Fortran (GCC) 7.2.0
- $ port install fftw-3 +gfortran
+ $ sudo port install fftw-3 +gfortran
  $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.26.04/feram-0.26.04.tar.xz
  $ tar xf feram-0.26.04.tar.xz
  $ cd feram-0.26.04
