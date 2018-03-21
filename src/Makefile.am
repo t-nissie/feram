@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2017-11-09 00:36:59 takeshi>
+# Time-stamp: <2018-03-21 07:52:05 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -28,7 +28,7 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_transition_sorter.rb
 check_PROGRAMS = feram_fftw_SoA \
                  feram_fftw_1d marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check\
-                 date_and_time_check msg_check decay_function_check
+                 date_and_time_check filename_check msg_check decay_function_check
 TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp decay_function_check.gp\
          feram_defects_maker_check.sh \
          feram_modulation_maker_check.sh \
@@ -66,6 +66,7 @@ feram_SRCS = average_module.F \
 	elastic.F \
 	feram.F \
 	feram_common.F \
+	filename_module.F \
 	fft_3d_3x3upper_r2c.F \
 	hysteresis_loop.F \
 	initialize_E_field.F \
@@ -121,6 +122,8 @@ feram_random_field_generator_SOURCES = feram_random_field_generator.F marsaglia_
 wave_check_SOURCES = wave_check.f wave_module.F
 
 msg_check_SOURCES = msg_check.F msg_module.F
+
+filename_check_SOURCES = filename_check.F filename_module.F
 
 CLEANFILES = *.mod *.lst *.hl *.dat *.eps *.ps *.pdf *.f90 *.param.gp *.avg rgb_check.ppm $(check_PROGRAMS) \
              *.optrpt \
@@ -237,7 +240,8 @@ feram_mpi_check$(EXEEXT): feram_mpi_check.F $(srcdir)/feram_mpi_common_check.F
 
 
 
-feram_common.o:                 param_module.o coord_module.o date_and_time_module.o define.h
+feram_common.o:                 param_module.o coord_module.o date_and_time_module.o define.h \
+                                                                   filename_module.o msg_module.o
 param_module.o feram_diagonalize15x15.o: define.h
 feram.o feram_mpi.o:            param_module.o coord_module.o define.h
 dipole-dipole.o mirror.o read_defects_u.o read_relaxor.o elastic.o dipoFFT.o acouFFT.o:\
@@ -270,8 +274,9 @@ feram_distribution3d2ppm.o:     average_module.o rgb_module.o
 feram_fftw_wisdom.o:            feram_fftw_wisdom_timing.o feram_fftw_wisdom_out.o feram_fftw_wisdom_in.o
 feram_fftw_SoA.o:               feram_fftw_wisdom_timing.o feram_fftw_SoA_out.o feram_fftw_SoA_in.o
 feram_fftw_1d.o:                feram_fftw_1d_timing.o                          feram_fftw_1d_in.o
-msg_check.o:                    msg_module.o
+msg_check.o:                    msg_module.o define.h
 msg_module.o:                       define.h
+filename_check.o:               filename_module.o
 param_module.o print-eigenvalues.o: define.h msg_module.o
 coord_module.o:                     define.h msg_module.o param_module.o
 average_module.o:                   define.h msg_module.o param_module.o energy_module.o
