@@ -1,11 +1,13 @@
 = CMakeについてのメモ
 このメモはCMakeを使ってフリーソフトウェアの配布用パッケージを作る方法を解説している。
 FortranのプロジェクトにCMakeを使う場合の注意点も書いてある。
+
 == はじめに
 CMakeはビルドツールの１つで、GNU Autotoolsより高速であることを売りにしている。
 
 CMakeは Kitware http://kitware.com/cmake によって開発されている。
 KitwareのVTKで使われていて有名。
+
 == 必要なもの
 たいていのLinuxディストリビューションにはCMakeパッケージがある。
 
@@ -20,17 +22,19 @@ Mac OS X で Mac Ports https://www.macports.org を使っているなら
 == 日本語の参考文献
  * CMake Advent Calendar 2014 http://qiita.com/advent-calendar/2014/cmake
  * CMake チュートリアル http://opencv.jp/cmake/cmake_tutorial.html
+
 == コマンドとファイル
 CMakeLists.txt
+
 == エディタ
 === Emacs
 /usr/share/cmake-3.0/editors/emacs/cmake-mode.el もしくは
 /usr/local/share/cmake-3.0/editors/emacs/cmake-mode.el などがあるはずなので、
 load-pathの通っているところにコピーして、バイトコンパイルして、~/emacs.d/init.el に
  (autoload 'cmake-mode "cmake-mode" nil t)
+ (add-to-list 'auto-mode-alist '("CMakeLists\\.txt" . cmake-mode))
 などと書いておく。
- (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-mode))
-と書いても.txtが優先されてText-modeになってしまうのはなぜなんだー。
+
 == 実行の様子
 === コンパイルとインストール
 ビルドディレクトリでビルドする。
@@ -82,12 +86,15 @@ CMakeLists.txt
 * make uninstallがない（install_manifest.txtをつかう？）
 
 == CMakeの使用方法として参考になるパッケージ
+
 == まとめ
 CMakeの使い方を説明した。
 複数のプラットフォームでMakefileを共通化できる。
 CMakeを活用すれば簡単に配布用のフリーソフトウェアパッケージを作ることができる。
+
 == 著者
 西松 毅 (t_nissie{at}yahoo.co.jp)
+
 =end
 # Local variables:
 #   mode: RD
