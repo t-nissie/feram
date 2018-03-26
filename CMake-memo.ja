@@ -76,14 +76,14 @@ CMakeLists.txt
 
 == CMakeを使ってみた感想
 === よいと思ったこと
-* ファイル毎にコンパイルオプションを変更するのが簡単。
-* cmake -G Ninja .. とbuild toolを選択できる。
+ * ファイル毎にコンパイルオプションを変更するのが簡単。
+ * cmake -G Ninja .. とbuild toolを選択できる。
 
 === よくないとと思ったこと
-* sudo make installの後、install_manifest.txtのownerがrootになっていることがある。
-* manpageのインストールの設定がAutotoolsより面倒。
-* make distcleanがない
-* make uninstallがない（install_manifest.txtをつかう？）
+ * sudo make installの後、install_manifest.txtのownerがrootになっていることがある。
+ * manpageのインストールの設定がAutotoolsより面倒。
+ * make distcleanがない
+ * make uninstallがない（install_manifest.txtをつかう？）
 
 == CMakeの使用方法として参考になるパッケージ
 === VTK
