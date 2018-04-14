@@ -66,6 +66,8 @@ cmakeではmake uninstallはない。
 === メモ
  * ソースファイルは伝統的にsrc/以下に置く。例: src/foo.c, src/bar.F
  * ある程度開発が進んでソースファイルとMakefileができあがって、それらをバックアップしてからCMakeを使いはじめるとよい。
+ * cmake -G Ninja .. とbuild systemに Ninja https://ninja-build.org を指定できる。
+   ただし、最新のCMakeを使用すること。参考: https://qiita.com/chapuni/items/abfe155b6e67be0e6730
 === Fortranについてのメモ
  * CMakeはFortranのプロジェクトにも使える。
 === 手順
@@ -78,6 +80,7 @@ CMakeLists.txt
 === よいと思ったこと
  * ファイル毎にコンパイルオプションを変更するのが簡単。
  * cmake -G Ninja .. とbuild toolを選択できる。
+ * 適切な FindPOPT.cmake を用意すれば、Mac Portsで/opt/local/以下にインストールしたpoptを探してくれる。
 
 === よくないとと思ったこと
  * sudo make installの後、install_manifest.txtのownerがrootになっていることがある。
