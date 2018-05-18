@@ -87,6 +87,8 @@ CMakeLists.txt
  * manpageのインストールの設定がAutotoolsより面倒。
  * make distcleanがない
  * make uninstallがない（install_manifest.txtをつかう？）
+ * Autotoolsのconfig.logに相当する実行されたコマンドラインのログがない。
+   cf. https://stackoverflow.com/questions/24645017/how-to-find-the-cmake-command-line-i-used-for-the-build
 
 == CMakeの使用方法として参考になるパッケージ
 === VTK
