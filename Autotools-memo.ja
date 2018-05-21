@@ -91,6 +91,7 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
  * ある程度開発が進んでソースファイルとMakefileができあがったら、それらをバックアップして、Autotoolsを使いはじめるとよい。
  * autoscanを実行してconfigure.scanを作ってそれを元にconfigure.acを書いてもよい。
  * よくできたパッケージを参考にしてconfigure.ac, Makefile.am, src/Makefile.amを見よう見まねで書く。
+ * C/C++のプロジェクトの場合はファイル間の依存関係を自動的に調べてくれるので、src/Makefile.amに依存関係を書く必要はない。
  * autoconfとautomakeのマニュアル http://www.gnu.org/software/autoconf/manual/autoconf.html
    http://www.gnu.org/software/automake/manual/automake.html やinfoを参照せよ。
  * 日本語マニュアル http://www.bookshelf.jp/texi/autoconf-ja/autoconf-ja.html
@@ -110,7 +111,7 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
  * CプリプロセッサのオプションはCPPFLAGS変数で与える。
    Fortranのプロジェクトの場合はAC_ARG_VARでその使用を明示的に宣言する（後述）。
  * AC_FC_FREEFORM()で自由形式のオプションがわかる。
- * C言語のプロジェクトの場合はファイル間の依存関係を自動的に調べてくれるが、
+ * C/C++のプロジェクトの場合はファイル間の依存関係を自動的に調べてくれるが、
    Fortranの場合はMakefile.amに依存関係を書いておくことがまだ必要。
  * C言語のプロジェクトの場合はAC_CHECK_HEADERS([fftw3.h])でヘッダファイルの有無を調べることができるが、
    Fortranの場合はAC_CHECK_HEADERS([fftw3.f])やAC_CHECK_HEADERS([fftw3.f03])とするのはまだ困難。
