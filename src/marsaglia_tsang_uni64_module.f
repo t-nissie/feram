@@ -1,7 +1,7 @@
 ! marsaglia_tsang_uni64_module.f -*-f90-*-
 ! Marsaglia-Tsang 64-bit universal RNG
 ! It does not use global variable.
-! Time-stamp: <2017-04-20 20:38:03 takeshi>
+! Time-stamp: <2018-05-23 04:57:58 takeshi>
 ! Author:     Takeshi NISHIMATSU
 ! Usage:      See marsaglia_tsang_uni64_check.f for example.
 !             (1) Set two integers for seeds. It will return 1.0d0.
@@ -34,7 +34,7 @@
 module marsaglia_tsang_uni64_module
   implicit none
   private
-  public :: uni64, normal_dist, triangular_dist
+  public :: uni64, normal_dist, triangular_dist, uni64_fill, normal_dist_fill, triangular_dist_fill
 contains
   subroutine fillu(u,seed1,seed2)
     implicit none
@@ -94,6 +94,12 @@ contains
     end if
   end function uni64
 
+  impure elemental subroutine uni64_fill(x)
+    implicit none
+    real*8, intent(out) :: x
+    x = uni64()
+  end subroutine uni64_fill
+
   ! N(mu,sigma^2) normal-distributed random number generator
   ! N(mu,sigma^2) = N(0,1)*sigma + mu
   ! See Reference2
@@ -122,6 +128,13 @@ contains
     end if
   end function normal_dist
 
+  impure elemental subroutine normal_dist_fill(mu, sigma, x)
+    implicit none
+    real*8, intent(in)  :: mu, sigma
+    real*8, intent(out) :: x
+    x = normal_dist(mu, sigma)
+  end subroutine normal_dist_fill
+
   ! triangular-distributed random number generator
   ! [a,b), and mode c must be a<=c<=b.
   ! See Reference3
@@ -146,4 +159,12 @@ contains
        end if
     end if
   end function triangular_dist
+
+  impure elemental subroutine triangular_dist_fill(a,b,c, x)
+    implicit none
+    real*8, intent(in)  :: a,b,c
+    real*8, intent(out) :: x
+    x = triangular_dist(a,b,c)
+  end subroutine triangular_dist_fill
+
 end module marsaglia_tsang_uni64_module

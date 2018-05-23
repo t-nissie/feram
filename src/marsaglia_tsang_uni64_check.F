@@ -1,5 +1,5 @@
 ! marsaglia_tsang_uni64_check.F -*-f90-*-
-! Time-stamp: <2017-04-20 20:36:54 takeshi>
+! Time-stamp: <2018-05-23 22:24:11 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 program marsaglia_tsang_uni64_check
@@ -14,7 +14,8 @@ program marsaglia_tsang_uni64_check
        3591084909746267.0d0, &
        6938004922860200.0d0, &
        3518398318353033.0d0/)
-  character(len=100), parameter :: f = '(a, ":", i2, ": expected: x = ", e24.17, ",   but was: x = ", e24.17)'
+  character(len=100), parameter :: f = '(a, ":", i0, ": expected: x = ", e24.17, ",   but was: x = ", e24.17)'
+  real*8, allocatable :: a(:,:)
 
   hist(1:2,1:100) = 0
 
@@ -66,4 +67,41 @@ program marsaglia_tsang_uni64_check
      write(8,'(i3,2i10)') j,hist(1:2,j)
   end do
   close(8)
+
+  allocate(a(1000,10000))   !-----------------------------------------
+
+  write (6,'(a)') 'uni64_fill(x)'
+  x=uni64(123456789,987654321)
+  if (x .ne. dble(7)) then
+     write(0,f) __FILE__, __LINE__, dble(7), x
+     stop 4
+  end if
+  call uni64_fill(a)
+  do i=1,5
+     call uni64_fill(x)
+     x=x*9007199254740992.0d0   ! multiply 2^53
+     if (x.ne.r(i)) then
+        write(0,f) __FILE__, __LINE__, r(i), x
+        stop 5
+     end if
+     write (6,*) x
+  end do
+
+  write (6,'(a)') 'normal_dist_fill(mu,sigma, x)'
+  x=normal_dist(-50.0d0, 10.0d0, 123456789, 987654321)
+  if (x .ne. dble(8)) then
+     write(0,f) __FILE__, __LINE__, dble(8), x
+     stop 6
+  end if
+  call normal_dist_fill(-50.0d0, 10.0d0, a)
+
+  write (6,'(a)') 'triangular_dist_fill(a,b,c, x)'
+  x=triangular_dist(40.0d0, 90.0d0, 70.0d0, 123456789, 987654321)
+  if (x .ne. dble(9)) then
+     write(0,f) __FILE__, __LINE__, dble(9), x
+     stop 7
+  end if
+  call triangular_dist_fill(40.0d0, 90.0d0, 70.0d0, a)
+
+  deallocate(a)   !---------------------------------------------------
 end program marsaglia_tsang_uni64_check
