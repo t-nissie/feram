@@ -3,9 +3,9 @@ CMakeを使ってフリーソフトウェアの配布用パッケージを作る
 FortranのプロジェクトにCMakeを使う場合の注意点も書く予定。
 
 == はじめに
-CMakeはビルドツールの１つで、GNU Autotoolsより高速であることを売りにしている。
+CMake https://cmake.org/ はビルドツールの１つで、GNU Autotoolsより高速であることを売りにしている。
 
-CMakeは Kitware http://kitware.com/cmake によって開発されている。
+CMakeは Kitware https://kitware.com/ によって開発されている。
 KitwareのVTKで使われていて有名。
 
 == 必要なもの
@@ -23,8 +23,8 @@ Mac OS X で Mac Ports https://www.macports.org を使っているなら
  * CMake Advent Calendar 2014 http://qiita.com/advent-calendar/2014/cmake
  * CMake チュートリアル http://opencv.jp/cmake/cmake_tutorial.html
 
-== コマンドとファイル
-CMakeLists.txt
+== ファイル
+CMakeLists.txt, src/CMakeLists.txt
 
 == エディタ
 === Emacs
