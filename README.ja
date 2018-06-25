@@ -555,6 +555,9 @@ feram_cross_section_dVddi.sh (Bourne Shell scripts) で可視化することが�
  coord_directory = 'never'
 と書くことで抑止することができます．
 
+このファイルの各カラムに何が書き出されているかは
+src/coord_module.Fのサブルーチンwrite_system()を見てください。
+
 === foo123.nnnnnnnnnn.slice.eps
 z=Lz/4 での断面図を可視化したものが Encapsulated PostScript file（EPSF,
 .epsファイル）として書き出されます．nnnnnnnnnnがイテレーションで，

@@ -563,6 +563,9 @@ Output of this file can be suppressed with
  coord_directory = 'never'
 in the .feram input file.
 
+Please see a subroutine of write_system() in src/coord_module.F to
+know each column corresponding to what.
+
 === foo123.nnnnnnnnnn.slice.eps
 Visualized slice of a film at z=Lz/4, at the nnnnnnnnnn-th
 iteration and at evry n_coord_freq iterations.
