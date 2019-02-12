@@ -305,6 +305,7 @@ Autotoolsやconfigure, makeに関連するバグの発見方法をいくつか�
  * CMake http://www.cmake.org
  * SCons http://www.scons.org
  * Meson http://mesonbuild.com
+ * Gradle https://gradle.org
  * Waf   https://waf.io
  * GYP   https://gyp.gsrc.io
  * Ninja https://ninja-build.org "Ninja is a small build system with a focus on speed."
