@@ -126,7 +126,7 @@ Takeshi Nishimatsuが茶色の太い破線と"autoreconf"の文字を描き加�
 === 手順
 configure.ac, Makefile.am, src/Makefile.amを書いて、
  $ autoreconf -v
- $ automake --add-missing   # 初回にautoreconfで実行を要求されたとき
+ $ automake --add-missing   # 初回にautoreconfで実行を要求されたとき。Cygwinの場合は--copyもつけた方がよい。
  $ autoreconf -v            # ☆
  $ ./configure
  $ make                     # ソースの編集など開発を進め、最後にmakeでコンパイルできることを確認
@@ -279,6 +279,9 @@ Autotoolsやconfigure, makeに関連するバグの発見方法をいくつか�
  * LD_LIBRARY_PATHなどの環境変数をチェックする。
  * サイレントルール (./configure --enable-silent-rules) を使わないで、makeの様子をよく観察する。
    デフォルトでオン (AM_SILENT_RULES([yes])) になっている場合はオフにするか、make V=1とする。
+ * Cygwinでmake distするとcpが "preserving permission: Invalid argument" などというエラーを起こす場合、
+   上記☆印の前のautomake --add-missingの実行時に--copyオプションも付ける。
+   install-shなどがシンボリックリンクだとcp -pがうまくいかないようである。
 
 == configureとmakeとの高速化
 大規模なプロジェクトではconfigureとmakeとにかかる時間が増大し、開発者をイライラさせる。

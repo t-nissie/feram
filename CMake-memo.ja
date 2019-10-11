@@ -35,6 +35,10 @@ load-pathの通っているところにコピーして、バイトコンパイ�
  (add-to-list 'auto-mode-alist '("CMakeLists\\.txt" . cmake-mode))
 などと書いておく。
 
+=== CLion
+IDEの CLion https://www.jetbrains.com/clion/ はCMakeを使ってビルドをする。
+マルチプラットフォームで便利らしい。
+
 == 実行の様子
 === コンパイルとインストール
 ビルドディレクトリでビルドする。
@@ -86,7 +90,7 @@ CMakeLists.txt
  * sudo make installの後、install_manifest.txtのownerがrootになっていることがある。
  * manpageのインストールの設定がAutotoolsより面倒。
  * make distcleanがない
- * make uninstallがない（install_manifest.txtをつかう？）
+ * make uninstallがない（代替: xargs rm < install_manifest.txt）
  * Autotoolsのconfig.logに相当するログがない。cmakeに与えたオプションなどコマンドラインも記録されない。
    cf. https://stackoverflow.com/questions/24645017/how-to-find-the-cmake-command-line-i-used-for-the-build
 
