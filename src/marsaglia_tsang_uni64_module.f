@@ -1,7 +1,7 @@
 ! marsaglia_tsang_uni64_module.f -*-f90-*-
 ! Marsaglia-Tsang 64-bit universal RNG
 ! It does not use global variable.
-! Time-stamp: <2018-05-23 04:57:58 takeshi>
+! Time-stamp: <2022-12-17 08:08:36 takeshi>
 ! Author:     Takeshi NISHIMATSU
 ! Usage:      See marsaglia_tsang_uni64_check.f for example.
 !             (1) Set two integers for seeds. It will return 1.0d0.
@@ -30,11 +30,13 @@
 !             (New Algorithm handbook in C language) (Gijyutsu hyouron
 !             sha, Tokyo, 1991) [in Japanese]
 ! Reference3: https://en.wikipedia.org/wiki/Triangular_distribution
+! Reference4: https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 !!
 module marsaglia_tsang_uni64_module
   implicit none
   private
-  public :: uni64, normal_dist, triangular_dist, uni64_fill, normal_dist_fill, triangular_dist_fill
+  public :: uni64, normal_dist, triangular_dist, uni64_fill, normal_dist_fill, triangular_dist_fill, &
+       &    shuffle_integer_array
 contains
   subroutine fillu(u,seed1,seed2)
     implicit none
@@ -167,4 +169,17 @@ contains
     x = triangular_dist(a,b,c)
   end subroutine triangular_dist_fill
 
+  impure subroutine shuffle_integer_array(ary)
+    implicit none
+    integer, intent(inout) :: ary(:)
+    integer :: tmp
+    integer :: n, i, j
+    n=size(ary)
+    do i=n,2,-1
+       j = int(i*uni64())+1   ! 1 <= j <= i
+       tmp = ary(j)
+       ary(j) = ary(i)
+       ary(i) = tmp
+    end do
+  end subroutine shuffle_integer_array
 end module marsaglia_tsang_uni64_module

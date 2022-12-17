@@ -1,5 +1,5 @@
 # -*-Makefile-*- for feram
-# Time-stamp: <2018-03-21 07:52:05 takeshi>
+# Time-stamp: <2022-12-17 07:49:44 takeshi>
 # Author: Takeshi NISHIMATSU
 ##
 FC=@FC@
@@ -28,7 +28,7 @@ dist_bin_SCRIPTS = feram_coord2dist.rb \
                    feram_transition_sorter.rb
 check_PROGRAMS = feram_fftw_SoA \
                  feram_fftw_1d marsaglia_tsang_uni64_check marsaglia_tsang_uni64_timing rgb_check wave_check\
-                 date_and_time_check filename_check msg_check decay_function_check
+                 date_and_time_check filename_check msg_check decay_function_check shuffle_integer_array_check
 TESTS = feram_fftw_wisdom $(check_PROGRAMS) marsaglia_tsang_uni64_check.gp wave_check.gp decay_function_check.gp\
          feram_defects_maker_check.sh \
          feram_modulation_maker_check.sh \
@@ -114,6 +114,8 @@ date_and_time_check_SOURCES = date_and_time_check.f date_and_time_module.f
 decay_function_check_SOURCES = decay_function_check.F decay_function_module.f
 
 marsaglia_tsang_uni64_check_SOURCES  = marsaglia_tsang_uni64_check.F  marsaglia_tsang_uni64_module.f
+
+shuffle_integer_array_check_SOURCES  = shuffle_integer_array_check.f  marsaglia_tsang_uni64_module.f
 
 marsaglia_tsang_uni64_timing_SOURCES = marsaglia_tsang_uni64_timing.f marsaglia_tsang_uni64_module.f
 
@@ -253,7 +255,7 @@ molecular-dynamics.o:           param_module.o coord_module.o energy_module.o av
 dVddi-homo-coupling.o dVddi-unharmonic.o kinetic_energy_dipo.o energy_module.o:\
                                 param_module.o coord_module.o msg_module.o
 initialize-dipoR.o:             param_module.o coord_module.o energy_module.o define.h marsaglia_tsang_uni64_module.o msg_module.o
-marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o feram_random_field_generator.o: marsaglia_tsang_uni64_module.o
+marsaglia_tsang_uni64_check.o marsaglia_tsang_uni64_timing.o feram_random_field_generator.o shuffle_integer_array_check.o: marsaglia_tsang_uni64_module.o
 wave_check.o:                   wave_module.o
 rgb_check.o:                    rgb_module.o
 nose-poincare.o velocity_scaling.o:\
