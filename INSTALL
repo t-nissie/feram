@@ -407,32 +407,30 @@ Use good installers for Ruby, GNUPLOT and Ghostscript.
  * GhostScript: gs915w32.exe from http://www.ghostscript.com
  * You may have to modify epstopdf.pl for MinGW: http://www.ctan.org/pkg/epstopdf
 
-== Mac OS X
+== macOS
 Before everything, you have to install Xcode from Mac App Store.
 It is free of charge. Its Command Line Tools is also useful.
-(Note that /usr/bin/gcc is Apple LLVM, not GCC.
-And LLVM does not have OpenMP yet.)
 
-Mac OS X has LAPACK and BLAS in /usr/lib/ by default.
+macOS has LAPACK and BLAS in /usr/lib/ by default.
 
 Three ways of setting up software-developing
-environments on Mac OS X are described below.
+environments on macOS are described below.
  * With Mac Ports
  * With Homebrew
  * From source
 
-=== With Mac Ports
+=== With MacPorts
 The MacPorts Project's official homepage is https://www.macports.org .
 Install MacPorts, then install ports of gfortran and FFTW3.
- $ sudo port install gcc10
+ $ sudo port install gcc12
  $ sudo port select --list gcc
  Available versions for gcc:
- mp-gcc10
+ mp-gcc12
  none (active)
- $ sudo port select gcc mp-gcc10
- Selecting 'mp-gcc10' for 'gcc' succeeded. 'mp-gcc10' is now active.
+ $ sudo port select gcc mp-gcc12
+ Selecting 'mp-gcc12' for 'gcc' succeeded. 'mp-gcc12' is now active.
  $ gfortran --version
- GNU Fortran (MacPorts gcc10 10.2.0_0) 10.2.0
+ GNU Fortran (MacPorts gcc12 12.2.0_2+stdlib_flag) 12.2.0
  $ sudo port install fftw-3 +gfortran
  $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.26.04/feram-0.26.04.tar.xz
  $ tar xf feram-0.26.04.tar.xz
@@ -444,13 +442,13 @@ Install MacPorts, then install ports of gfortran and FFTW3.
  $ make check
 
 === With Homebrew
-Homebrew http://brew.sh/ is an altanative way to install gfortran etc. into Mac OS X.
- $ brew install gcc49 --enable-fortran
+Homebrew http://brew.sh/ is an altanative way to install gfortran etc. into macOS.
+ $ brew install gcc --enable-fortran
 Details will be comming soon.
 
 === From sources (feram-0.26.02, 2016-10-09)
 You can easily compile the latest gfortran in GCC 6.2.0 package
-with Xcode and its Command Line Tools on Mac OS X.
+with Xcode and its Command Line Tools on macOS.
 And then, you can compile FFTW with gcc and feram with gfortran.
 ==== Install libraries for GCC
 Basically, these libraries can be installed with configure && make && make install manner.

@@ -1,6 +1,6 @@
 dnl -*-Autoconf-*-
 dnl configure.ac for feram
-dnl Time-stamp: <2017-09-20 06:26:36 takeshi>
+dnl Time-stamp: <2022-12-17 15:38:07 takeshi>
 dnl Author: Takeshi NISHIMATSU
 
 ## Initialize.
@@ -146,7 +146,7 @@ esac
 
 ## ulmul2html5
 if /usr/bin/which ulmul2html5 > /dev/null 2>&1 ; then
-    ulmul2html5 --version | grep 0.5.3 || AC_MSG_ERROR([ulmul2html5 exists, but old.])
+    ulmul2html5 --version | grep '0\.6' || AC_MSG_ERROR([ulmul2html5 exists, but old. It should be version 0.6.x.])
 fi
 
 ## Finalize.
