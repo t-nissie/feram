@@ -1,5 +1,5 @@
 ! param_module.F -*-f90-*-
-! Time-stamp: <2016-10-19 18:26:27 takeshi>
+! Time-stamp: <2024-03-27 14:12:06 takeshi>
 ! Author: Takeshi NISHIMATSU
 !!
 # include "define.h"
@@ -254,7 +254,10 @@ contains
           read(str,*) dmy1, dmy2, p%Q_Nose
        case('bulk_or_film')
           read(str,*) dmy1, dmy2, p%bulk_or_film
-          if (p%bulk_or_film.ne.'bulk' .and. p%bulk_or_film.ne.'film' .and. p%bulk_or_film.ne.'epit')  then
+          if ( p%bulk_or_film.ne.'bulk' .and. &
+               p%bulk_or_film.ne.'film' .and. &
+               p%bulk_or_film.ne.'epit' .and. &
+               p%bulk_or_film.ne.'e110' )  then
              write(0,'(a,a,i3,a,a)') trim(fn),':', line_number, ':', trim(str)
              stop ': Input error: bulk_or_film must be bulk, film or epit.'
           end if

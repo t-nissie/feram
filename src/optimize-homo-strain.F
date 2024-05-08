@@ -1,5 +1,5 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2016-06-25 16:48:00 takeshi>
+! Time-stamp: <2024-03-27 15:04:16 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
@@ -17,6 +17,7 @@ subroutine optimize_homo_strain(p,c,e)
   type(Energy_type), intent(out)   :: e
   !--- local -----------------------------------------
   real*8 homogeneous_coupling_2_uu(6)
+  real*8 denominator, numerator, delta
   real*8 tmp
   integer i,j
   !--- END of variable definitions -------------------
@@ -38,6 +39,21 @@ subroutine optimize_homo_strain(p,c,e)
      c%strain(4) =   - homogeneous_coupling_2_uu(4)   / c%homogeneous(4,4)
      c%strain(5) =   - homogeneous_coupling_2_uu(5)   / c%homogeneous(5,5)
      c%strain(6) = 0.0d0
+  else if (p%bulk_or_film.eq.'e110') then
+     c%strain(3) = p%epi_strain   ! We assume that f=eta_3.
+     c%strain(4) = 0.0d0
+     c%strain(5) = 0.0d0
+     numerator = &
+          -(c%homogeneous(1,1)+c%homogeneous(2,2)+2*c%homogeneous(2,2))*p%epi_strain &
+          -(c%homogeneous(3,1)+c%homogeneous(3,2)                     )*c%strain(3) &
+          -   homogeneous_coupling_2_uu(1) &
+          -   homogeneous_coupling_2_uu(2) &
+          + 2*homogeneous_coupling_2_uu(6)
+     denominator = c%homogeneous(1,1)+c%homogeneous(2,2)+2*c%homogeneous(2,1)+4*c%homogeneous(6,6)
+     delta = numerator/denominator
+     c%strain(1) = p%epi_strain + delta
+     c%strain(2) = p%epi_strain + delta
+     c%strain(6) =             -2*delta
   else
      c%strain(:) = -homogeneous_coupling_2_uu(:) !!!minus!!!
      do i = 1, 6
