@@ -1,5 +1,5 @@
 ! elastic.F -*-f90-*-
-! Time-stamp: <2016-06-25 17:10:03 takeshi>
+! Time-stamp: <2024-05-08 05:49:27 takeshi>
 ! Author: Takeshi NISHIMATSU
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !!
@@ -13,6 +13,7 @@ subroutine elastic(p,c)
   type(Coord_type), intent(inout) :: c
   integer ix,iy,iz, alpha,beta, i,j, other1, other2
   real*8 :: k(0:3), a_modulation
+  real*8, allocatable :: wo_padding(:,:, :,:,:) !!! Allocate it without padding_y for print_eigenvalues.F. !!!
   integer, parameter :: ki(3,3) = reshape((/0,3,2, 3,0,1, 2,1,0/),(/3,3/))
   integer :: line_number, ios
   character (len=300) :: str
@@ -107,8 +108,19 @@ subroutine elastic(p,c)
 !$omp end parallel do
 
   if (p%plot_dispersion) then
-     call print_eigenvalues(p%Lx, p%Ly, p%Lz, c%inhomo_K, trim(p%filename)//'.inhomo-K.dat')
+     allocate( wo_padding(3, 3,  0:p%Lx/2, 0:p%Ly-1, 0:p%Lz-1))  !!!Do NOT change it for print_eigenvalues.F!!!
+!$omp parallel do
+     do iz= 0, p%Lz-1
+        do iy= 0, p%Ly-1
+           do ix= 0, p%Lx/2
+              wo_padding(:,:, ix,iy,iz) = c%inhomo_K(:,:, ix,iy,iz)
+           end do
+        end do
+     end do
+!$omp end parallel do
+     call print_eigenvalues(p%Lx, p%Ly, p%Lz, wo_padding, trim(p%filename)//'.inhomo-K.dat')
      call msg(UNIT_LOG, __FILE__, __LINE__, 'FILENAME',   trim(p%filename)//'.inhomo-K.dat')
+     deallocate(wo_padding)
   end if
 
   ! See [1] of cholesky_d.f in https://gist.github.com/t-nissie/6386f1acc19cd38af621
