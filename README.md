@@ -2,11 +2,11 @@ feram-0.26.05
 =============
 Dear current and future feram users,
 
-I released feram-0.26.05.tar.xz from
+I just released feram-0.26.05.tar.xz from
 https://sourceforge.net/projects/loto/files/feram/feram-0.26.05/ .
 This is a stable release.
 
-SHA1 (feram-0.26.05.tar.xz) = 
+SHA1 (feram-0.26.05.tar.xz) = TBA
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
@@ -17,7 +17,14 @@ Enjoy,
 Takeshi
 
 ## Changes
-In this feram-0.26.05,
+In this feram-0.26.05, a bug in plots of inhomo-K (long-wavelength-approximated
+acoustic phonon) along Lambda-axis and S-axis is fixed in src/elastic.F.
+This fix does not affect results of MD simulations.
+You can check the degeneracy of phonon branches with:
+
+    make check TESTS='dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
+    less   dispersion_32x32x32.inhomo-K.dat
+    evince dispersion_32x32x32.inhomo-K.eps
 
 In the feram-0.26.04, author's email address is changed.
 Some test scripts are fixed for gnuplot 5.x.
@@ -26,7 +33,7 @@ If you are currently using feram-0.26.03, you do not have to update that.
 With the feram-0.26.03, you can draw a slice of the
 supercell directly by feram. Output file `foo123.nnnnnnnnnn.slice.eps`
 is the visualized slice of a film at z=Lz/4, at the nnnnnnnnnn-th
-iteration and at evry `n_coord_freq` iterations.
+iteration and at every `n_coord_freq` iterations.
 Output of this .slice.eps file can be suppressed with
 `slice_directory = 'never'` in the .feram input file.
 
@@ -53,7 +60,7 @@ gifsicle(1) and figview(1) of https://www.lcdf.org/gifsicle/ are useful.
     $ gifsicle --delay=5 *.slice.gif > animation.gif
 
 ### color to black-and-white
-Edit .eps files dilectly,
+Edit .eps files directly,
 or you can edit src/coord_module.F or src/feram_slicer.rb .
 
     --- color.slice.eps	2016-10-21 21:19:02.000000000 +0900
