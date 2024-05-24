@@ -1,17 +1,16 @@
 #!/bin/sh
 # dispersion_check.sh
-# Time-stamp: <2017-04-20 19:32:15 takeshi>
 # Author: Takeshi NISHIMATSU
 # Ref1: Takeshi Nishimatsu el al.: Phys. Rev. B 82, 134106 (2010),
 #       http://dx.doi.org/10.1103/PhysRevB.82.134106 .
-# Usage: make check TESTS=dispersion_check.sh
+# Usage: make check TESTS='dispersion_check.sh dispersion_32x32x32.inhomo-K.gp'
 # Results: dispersion_32x32x32.long.interaction.eps and
 #          dispersion_32x32x32.long+short.interaction.eps
-#          be same as Fig.3(A) and (B) in Ref1.
+#          will be the same figures as Fig.3(A) and (B) in Ref1.
 ##
-if gnuplot --version | grep 'gnuplot 5' > /dev/null; then
+if gnuplot --version | egrep 'gnuplot 5|gnuplot 6' > /dev/null; then
     cat > dispersion_axes.gp <<-EOF
-	# dispersion_axes.gp for gnuplot 5.x created by dispersion_check.sh
+	# dispersion_axes.gp for gnuplot 5.x and 6.x created by dispersion_check.sh
 	##
 	set label 9991 'D' at 0.25                          ,@ARG1 center font      "Symbol,19"
 	set label 9992 'Z' at 0.75                          ,@ARG1 center font "Times-Roman,19"
