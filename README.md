@@ -6,7 +6,7 @@ I just released feram-0.26.05.tar.xz from
 https://sourceforge.net/projects/loto/files/feram/feram-0.26.05/ .
 This is a stable release.
 
-SHA1 (feram-0.26.05.tar.xz) = TBA
+SHA1 (feram-0.26.05.tar.xz) = b2c3b8383c8405a11be40822811db6affd8dbe86
 
 `feram` is a fast molecular dynamics (MD) simulator
 for bulk and thin-film ferroelectrics. Its homepage is
