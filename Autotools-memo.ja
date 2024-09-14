@@ -232,6 +232,19 @@ configureに与えられた引数はconfig.logの先頭に記録されるので�
 その番号にしたがってmanpageは/usr/local/share/man/man1/などにmake installでインストールされる。
 manpageはデフォルトでパッケージに同梱されないのでEXTRA_DISTに加えておく。
 
+Ref.: https://stackoverflow.com/questions/23839858/autotools-not-installing-directories-appends-to-directories-only
+
+=== Documents
+マニュアルなどドキュメントを (prefix)/share/doc/(パッケージ名)/ にインストールするには
+Makefile.am の中の dist_doc_DATA にインストールしたいファイルを指定する。
+さらに例えば figures/ サブディレクトリを作ってその中にJPEGファイルなどをインストールしたい場合は次の通り。
+ docfiguresdir = $(docdir)/figures
+ dist_doc_DATA = index.en.html index.es.html index.ja.html COPYING style.css favicon.ico README.md
+ EXTRA_DIST =    index.en.html index.es.html index.ja.html COPYING style.css favicon.ico figures\
+              CMakeLists.txt ChangeLog.md $(man_MANS)
+ dist_docfigures_DATA = figures/cd.jpg figures/example.jpg figures/large.jpg figures/xtals.jpg
+dist_doc_DATAに指定してもREADME.md以外はソースパッケージに自動で同梱されないのでEXTRA_DISTに加えておく。
+
 === 任意のファイル内の変数の置換
 テキストファイルの中にconfogureで決定された変数を挿入したいことはしばしばある。
 たとえば、foo.1.inに
