@@ -255,9 +255,9 @@ Ref.: https://stackoverflow.com/questions/23839858/autotools-not-installing-dire
 config.statusがMakefile.in→Makefileと同様にfoo.1.in→foo.1の変換もするようになる。
 
 == Autotoolsの使用方法として参考になるパッケージ
-=== LHa for Unix
+=== LHa for Unix with Autoconf
 シンプル。
-http://www2m.biglobe.ne.jp/~dolphin/lha/lha-unix.htm
+https://github.com/jca02266/lha
 === ntp
 大規模。libtoolも使われている。
 http://support.ntp.org/bin/view/Main/WebHome
