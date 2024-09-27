@@ -191,6 +191,7 @@ GNU的なコマンドラインオプションの--helpと--versionとをテス�
 Makefile.amの中にinstallcheck-local:ルールを書いておけばそれも実行される。
 
 installcheckは一般的なテストではないので、make installcheckとしても何も実行されないパッケージも多い。
+
 === コンパイラとコンパイラオプションの設定と決定
 C, Fortran, C++コンパイラとそのオプションはそれぞれ
 AC_PROG_CC(), AC_PROG_FC(), AC_PROG_CXX() が
@@ -204,6 +205,7 @@ configure.ac の中で決定する。コンパイラは CC, FC, CXX に、
  CFLAGS="$cflags_save"
  test -n "$CFLAGS" || CFLAGS="-g -Wall -O3"
 などとAC_PROG_*()の前後でsave/restoreし、その後に独自設定をする。
+
 === configureにオプションや変数を与える方法
 configureにオプションや変数を与える方法は
  $ ./configure --help
@@ -224,6 +226,7 @@ Fortranのプロジェクトの場合は明示的に宣言してはじめてconf
 
 configureに与えられた引数はconfig.logの先頭に記録されるので、後々の再確認に便利である。
 ただし、''や""のクォーテイションは消えてしまう。
+
 === Manpage
 パッケージにUNIXのmanシステムの流儀に則って書いたmanpageを同梱する場合は、Makefile.amに
  man_MANS = xtalgrowth.1 crystal_growth.7
@@ -244,6 +247,23 @@ Makefile.am の中の dist_doc_DATA にインストールしたいファイル�
 dist_doc_DATAに指定してもREADME.md以外はソースパッケージに自動で同梱されないのでEXTRA_DISTに加えておく。
 
 Ref.: https://stackoverflow.com/questions/23839858/autotools-not-installing-directories-appends-to-directories-only
+
+=== 任意のディレクトリへのファイルのインストール
+PREFIX/bin/やPREFIX/share/ではない任意のディレクトリへファイルをインストールしたい場合は
+https://stackoverflow.com/questions/3538705 とその中のproski氏のアドバイスを参考に
+configure.ac には
+
+    AC_ARG_WITH([pkgconfigdir],
+                [AS_HELP_STRING([--with-pkgconfigdir=DIR], [pkgconfig files [LIBDIR/pkgconfig]])],
+                [pkgconfigdir=$withval],
+                [pkgconfigdir='${libdir}/pkgconfig'])
+    AC_SUBST(pkgconfigdir)
+
+Makefile.am には
+
+    dist_pkgconfig_DATA = mylibrary.pc
+
+と書く。`--pkgconfigdir`のような新しいconfigureオプションを作るのは難しそう。
 
 === 任意のファイル内の変数の置換
 テキストファイルの中にconfogureで決定された変数を挿入したいことはしばしばある。
