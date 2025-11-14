@@ -1,6 +1,6 @@
 ! optimize-homo-strain.F   -*-f90-*-
-! Time-stamp: <2016-06-25 16:48:00 takeshi>
-! Author: Takeshi NISHIMATSU
+! Time-stamp: <2025-11-14 21:32:33 takeshi>
+! Author: Takeshi NISHIMATSU and Lan-Tien Hsu
 ! Caution: Before calling this subroutine, didiR should be prepared by dipoFFT.F
 ! ref_1: R. D. King-Smith and David Vanderbilt: PRB Vol.49 p.5828 (1994)
 !

@@ -408,8 +408,8 @@ Use good installers for Ruby, GNUPLOT and Ghostscript.
  * You may have to modify epstopdf.pl for MinGW: http://www.ctan.org/pkg/epstopdf
 
 == macOS
-Before everything, you have to install Xcode from Mac App Store.
-It is free of charge. Its Command Line Tools is also useful.
+Before everything, you have to install Command Line Tools or Xcode.
+It is free of charge.
 
 macOS has LAPACK and BLAS in /usr/lib/ by default.
 
@@ -419,26 +419,27 @@ environments on macOS are described below.
  * With Homebrew
  * From source
 
-=== With MacPorts
+=== With MacPorts (feram-0.26.05, 2025-05-18)
 The MacPorts Project's official homepage is https://www.macports.org .
 Install MacPorts, then install ports of gfortran and FFTW3.
- $ sudo port install gcc12
+ $ sudo port install gcc14
  $ sudo port select --list gcc
  Available versions for gcc:
- mp-gcc12
+ mp-gcc14
  none (active)
- $ sudo port select gcc mp-gcc12
- Selecting 'mp-gcc12' for 'gcc' succeeded. 'mp-gcc12' is now active.
+ $ sudo port select gcc mp-gcc14
+ Selecting 'mp-gcc14' for 'gcc' succeeded. 'mp-gcc14' is now active.
  $ gfortran --version
- GNU Fortran (MacPorts gcc12 12.2.0_2+stdlib_flag) 12.2.0
+ GNU Fortran (MacPorts gcc14 14.2.0_3+stdlib_flag) 14.2.0
  $ sudo port install fftw-3 +gfortran
- $ wget http://sourceforge.net/projects/loto/files/feram/feram-0.26.04/feram-0.26.04.tar.xz
- $ tar xf feram-0.26.04.tar.xz
- $ cd feram-0.26.04
+ $ tar xf feram-0.26.05.tar.xz
+ $ cd feram-0.26.05
  $ ./configure --help
  $ ./configure LDFLAGS=-L/opt/local/lib CPPFLAGS=-I/opt/local/include --with-fft=fftw3_threads
- $ make
+ $ make -j11
  $ sudo port install gnuplot
+ $ gnuplot --version
+ gnuplot 6.0 patchlevel 2
  $ make check
 
 === With Homebrew
